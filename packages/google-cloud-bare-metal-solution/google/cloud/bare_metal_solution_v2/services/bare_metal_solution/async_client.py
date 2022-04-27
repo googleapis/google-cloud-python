@@ -246,9 +246,9 @@ class BareMetalSolutionAsyncClient:
 
             from google.cloud import bare_metal_solution_v2
 
-            def sample_list_instances():
+            async def sample_list_instances():
                 # Create a client
-                client = bare_metal_solution_v2.BareMetalSolutionClient()
+                client = bare_metal_solution_v2.BareMetalSolutionAsyncClient()
 
                 # Initialize request argument(s)
                 request = bare_metal_solution_v2.ListInstancesRequest(
@@ -259,7 +259,7 @@ class BareMetalSolutionAsyncClient:
                 page_result = client.list_instances(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -354,9 +354,9 @@ class BareMetalSolutionAsyncClient:
 
             from google.cloud import bare_metal_solution_v2
 
-            def sample_get_instance():
+            async def sample_get_instance():
                 # Create a client
-                client = bare_metal_solution_v2.BareMetalSolutionClient()
+                client = bare_metal_solution_v2.BareMetalSolutionAsyncClient()
 
                 # Initialize request argument(s)
                 request = bare_metal_solution_v2.GetInstanceRequest(
@@ -364,7 +364,7 @@ class BareMetalSolutionAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_instance(request=request)
+                response = await client.get_instance(request=request)
 
                 # Handle the response
                 print(response)
@@ -447,9 +447,9 @@ class BareMetalSolutionAsyncClient:
 
             from google.cloud import bare_metal_solution_v2
 
-            def sample_reset_instance():
+            async def sample_reset_instance():
                 # Create a client
-                client = bare_metal_solution_v2.BareMetalSolutionClient()
+                client = bare_metal_solution_v2.BareMetalSolutionAsyncClient()
 
                 # Initialize request argument(s)
                 request = bare_metal_solution_v2.ResetInstanceRequest(
@@ -461,7 +461,7 @@ class BareMetalSolutionAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -555,9 +555,9 @@ class BareMetalSolutionAsyncClient:
 
             from google.cloud import bare_metal_solution_v2
 
-            def sample_list_volumes():
+            async def sample_list_volumes():
                 # Create a client
-                client = bare_metal_solution_v2.BareMetalSolutionClient()
+                client = bare_metal_solution_v2.BareMetalSolutionAsyncClient()
 
                 # Initialize request argument(s)
                 request = bare_metal_solution_v2.ListVolumesRequest(
@@ -568,7 +568,7 @@ class BareMetalSolutionAsyncClient:
                 page_result = client.list_volumes(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -663,9 +663,9 @@ class BareMetalSolutionAsyncClient:
 
             from google.cloud import bare_metal_solution_v2
 
-            def sample_get_volume():
+            async def sample_get_volume():
                 # Create a client
-                client = bare_metal_solution_v2.BareMetalSolutionClient()
+                client = bare_metal_solution_v2.BareMetalSolutionAsyncClient()
 
                 # Initialize request argument(s)
                 request = bare_metal_solution_v2.GetVolumeRequest(
@@ -673,7 +673,7 @@ class BareMetalSolutionAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_volume(request=request)
+                response = await client.get_volume(request=request)
 
                 # Handle the response
                 print(response)
@@ -755,9 +755,9 @@ class BareMetalSolutionAsyncClient:
 
             from google.cloud import bare_metal_solution_v2
 
-            def sample_update_volume():
+            async def sample_update_volume():
                 # Create a client
-                client = bare_metal_solution_v2.BareMetalSolutionClient()
+                client = bare_metal_solution_v2.BareMetalSolutionAsyncClient()
 
                 # Initialize request argument(s)
                 request = bare_metal_solution_v2.UpdateVolumeRequest(
@@ -768,7 +768,7 @@ class BareMetalSolutionAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -878,9 +878,9 @@ class BareMetalSolutionAsyncClient:
 
             from google.cloud import bare_metal_solution_v2
 
-            def sample_list_networks():
+            async def sample_list_networks():
                 # Create a client
-                client = bare_metal_solution_v2.BareMetalSolutionClient()
+                client = bare_metal_solution_v2.BareMetalSolutionAsyncClient()
 
                 # Initialize request argument(s)
                 request = bare_metal_solution_v2.ListNetworksRequest(
@@ -891,7 +891,7 @@ class BareMetalSolutionAsyncClient:
                 page_result = client.list_networks(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -986,9 +986,9 @@ class BareMetalSolutionAsyncClient:
 
             from google.cloud import bare_metal_solution_v2
 
-            def sample_get_network():
+            async def sample_get_network():
                 # Create a client
-                client = bare_metal_solution_v2.BareMetalSolutionClient()
+                client = bare_metal_solution_v2.BareMetalSolutionAsyncClient()
 
                 # Initialize request argument(s)
                 request = bare_metal_solution_v2.GetNetworkRequest(
@@ -996,7 +996,7 @@ class BareMetalSolutionAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_network(request=request)
+                response = await client.get_network(request=request)
 
                 # Handle the response
                 print(response)
@@ -1080,9 +1080,9 @@ class BareMetalSolutionAsyncClient:
 
             from google.cloud import bare_metal_solution_v2
 
-            def sample_list_snapshot_schedule_policies():
+            async def sample_list_snapshot_schedule_policies():
                 # Create a client
-                client = bare_metal_solution_v2.BareMetalSolutionClient()
+                client = bare_metal_solution_v2.BareMetalSolutionAsyncClient()
 
                 # Initialize request argument(s)
                 request = bare_metal_solution_v2.ListSnapshotSchedulePoliciesRequest(
@@ -1093,7 +1093,7 @@ class BareMetalSolutionAsyncClient:
                 page_result = client.list_snapshot_schedule_policies(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -1189,9 +1189,9 @@ class BareMetalSolutionAsyncClient:
 
             from google.cloud import bare_metal_solution_v2
 
-            def sample_get_snapshot_schedule_policy():
+            async def sample_get_snapshot_schedule_policy():
                 # Create a client
-                client = bare_metal_solution_v2.BareMetalSolutionClient()
+                client = bare_metal_solution_v2.BareMetalSolutionAsyncClient()
 
                 # Initialize request argument(s)
                 request = bare_metal_solution_v2.GetSnapshotSchedulePolicyRequest(
@@ -1199,7 +1199,7 @@ class BareMetalSolutionAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_snapshot_schedule_policy(request=request)
+                response = await client.get_snapshot_schedule_policy(request=request)
 
                 # Handle the response
                 print(response)
@@ -1285,9 +1285,9 @@ class BareMetalSolutionAsyncClient:
 
             from google.cloud import bare_metal_solution_v2
 
-            def sample_create_snapshot_schedule_policy():
+            async def sample_create_snapshot_schedule_policy():
                 # Create a client
-                client = bare_metal_solution_v2.BareMetalSolutionClient()
+                client = bare_metal_solution_v2.BareMetalSolutionAsyncClient()
 
                 # Initialize request argument(s)
                 request = bare_metal_solution_v2.CreateSnapshotSchedulePolicyRequest(
@@ -1296,7 +1296,7 @@ class BareMetalSolutionAsyncClient:
                 )
 
                 # Make the request
-                response = client.create_snapshot_schedule_policy(request=request)
+                response = await client.create_snapshot_schedule_policy(request=request)
 
                 # Handle the response
                 print(response)
@@ -1402,16 +1402,16 @@ class BareMetalSolutionAsyncClient:
 
             from google.cloud import bare_metal_solution_v2
 
-            def sample_update_snapshot_schedule_policy():
+            async def sample_update_snapshot_schedule_policy():
                 # Create a client
-                client = bare_metal_solution_v2.BareMetalSolutionClient()
+                client = bare_metal_solution_v2.BareMetalSolutionAsyncClient()
 
                 # Initialize request argument(s)
                 request = bare_metal_solution_v2.UpdateSnapshotSchedulePolicyRequest(
                 )
 
                 # Make the request
-                response = client.update_snapshot_schedule_policy(request=request)
+                response = await client.update_snapshot_schedule_policy(request=request)
 
                 # Handle the response
                 print(response)
@@ -1515,9 +1515,9 @@ class BareMetalSolutionAsyncClient:
 
             from google.cloud import bare_metal_solution_v2
 
-            def sample_delete_snapshot_schedule_policy():
+            async def sample_delete_snapshot_schedule_policy():
                 # Create a client
-                client = bare_metal_solution_v2.BareMetalSolutionClient()
+                client = bare_metal_solution_v2.BareMetalSolutionAsyncClient()
 
                 # Initialize request argument(s)
                 request = bare_metal_solution_v2.DeleteSnapshotSchedulePolicyRequest(
@@ -1525,7 +1525,7 @@ class BareMetalSolutionAsyncClient:
                 )
 
                 # Make the request
-                client.delete_snapshot_schedule_policy(request=request)
+                await client.delete_snapshot_schedule_policy(request=request)
 
         Args:
             request (Union[google.cloud.bare_metal_solution_v2.types.DeleteSnapshotSchedulePolicyRequest, dict]):
@@ -1600,9 +1600,9 @@ class BareMetalSolutionAsyncClient:
 
             from google.cloud import bare_metal_solution_v2
 
-            def sample_create_volume_snapshot():
+            async def sample_create_volume_snapshot():
                 # Create a client
-                client = bare_metal_solution_v2.BareMetalSolutionClient()
+                client = bare_metal_solution_v2.BareMetalSolutionAsyncClient()
 
                 # Initialize request argument(s)
                 request = bare_metal_solution_v2.CreateVolumeSnapshotRequest(
@@ -1610,7 +1610,7 @@ class BareMetalSolutionAsyncClient:
                 )
 
                 # Make the request
-                response = client.create_volume_snapshot(request=request)
+                response = await client.create_volume_snapshot(request=request)
 
                 # Handle the response
                 print(response)
@@ -1704,9 +1704,9 @@ class BareMetalSolutionAsyncClient:
 
             from google.cloud import bare_metal_solution_v2
 
-            def sample_restore_volume_snapshot():
+            async def sample_restore_volume_snapshot():
                 # Create a client
-                client = bare_metal_solution_v2.BareMetalSolutionClient()
+                client = bare_metal_solution_v2.BareMetalSolutionAsyncClient()
 
                 # Initialize request argument(s)
                 request = bare_metal_solution_v2.RestoreVolumeSnapshotRequest(
@@ -1718,7 +1718,7 @@ class BareMetalSolutionAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1814,9 +1814,9 @@ class BareMetalSolutionAsyncClient:
 
             from google.cloud import bare_metal_solution_v2
 
-            def sample_delete_volume_snapshot():
+            async def sample_delete_volume_snapshot():
                 # Create a client
-                client = bare_metal_solution_v2.BareMetalSolutionClient()
+                client = bare_metal_solution_v2.BareMetalSolutionAsyncClient()
 
                 # Initialize request argument(s)
                 request = bare_metal_solution_v2.DeleteVolumeSnapshotRequest(
@@ -1824,7 +1824,7 @@ class BareMetalSolutionAsyncClient:
                 )
 
                 # Make the request
-                client.delete_volume_snapshot(request=request)
+                await client.delete_volume_snapshot(request=request)
 
         Args:
             request (Union[google.cloud.bare_metal_solution_v2.types.DeleteVolumeSnapshotRequest, dict]):
@@ -1897,9 +1897,9 @@ class BareMetalSolutionAsyncClient:
 
             from google.cloud import bare_metal_solution_v2
 
-            def sample_get_volume_snapshot():
+            async def sample_get_volume_snapshot():
                 # Create a client
-                client = bare_metal_solution_v2.BareMetalSolutionClient()
+                client = bare_metal_solution_v2.BareMetalSolutionAsyncClient()
 
                 # Initialize request argument(s)
                 request = bare_metal_solution_v2.GetVolumeSnapshotRequest(
@@ -1907,7 +1907,7 @@ class BareMetalSolutionAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_volume_snapshot(request=request)
+                response = await client.get_volume_snapshot(request=request)
 
                 # Handle the response
                 print(response)
@@ -1991,9 +1991,9 @@ class BareMetalSolutionAsyncClient:
 
             from google.cloud import bare_metal_solution_v2
 
-            def sample_list_volume_snapshots():
+            async def sample_list_volume_snapshots():
                 # Create a client
-                client = bare_metal_solution_v2.BareMetalSolutionClient()
+                client = bare_metal_solution_v2.BareMetalSolutionAsyncClient()
 
                 # Initialize request argument(s)
                 request = bare_metal_solution_v2.ListVolumeSnapshotsRequest(
@@ -2004,7 +2004,7 @@ class BareMetalSolutionAsyncClient:
                 page_result = client.list_volume_snapshots(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -2100,9 +2100,9 @@ class BareMetalSolutionAsyncClient:
 
             from google.cloud import bare_metal_solution_v2
 
-            def sample_get_lun():
+            async def sample_get_lun():
                 # Create a client
-                client = bare_metal_solution_v2.BareMetalSolutionClient()
+                client = bare_metal_solution_v2.BareMetalSolutionAsyncClient()
 
                 # Initialize request argument(s)
                 request = bare_metal_solution_v2.GetLunRequest(
@@ -2110,7 +2110,7 @@ class BareMetalSolutionAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_lun(request=request)
+                response = await client.get_lun(request=request)
 
                 # Handle the response
                 print(response)
@@ -2193,9 +2193,9 @@ class BareMetalSolutionAsyncClient:
 
             from google.cloud import bare_metal_solution_v2
 
-            def sample_list_luns():
+            async def sample_list_luns():
                 # Create a client
-                client = bare_metal_solution_v2.BareMetalSolutionClient()
+                client = bare_metal_solution_v2.BareMetalSolutionAsyncClient()
 
                 # Initialize request argument(s)
                 request = bare_metal_solution_v2.ListLunsRequest(
@@ -2206,7 +2206,7 @@ class BareMetalSolutionAsyncClient:
                 page_result = client.list_luns(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:

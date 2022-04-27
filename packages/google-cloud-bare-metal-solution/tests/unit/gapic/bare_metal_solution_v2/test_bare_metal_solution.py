@@ -773,7 +773,7 @@ def test_list_instances_field_headers():
     # a field header. Set these to a non-empty value.
     request = baremetalsolution.ListInstancesRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_instances), "__call__") as call:
@@ -789,7 +789,7 @@ def test_list_instances_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -803,7 +803,7 @@ async def test_list_instances_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = baremetalsolution.ListInstancesRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_instances), "__call__") as call:
@@ -821,7 +821,7 @@ async def test_list_instances_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -952,7 +952,7 @@ def test_list_instances_pager(transport_name: str = "grpc"):
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, baremetalsolution.Instance) for i in results)
 
@@ -1209,7 +1209,7 @@ def test_get_instance_field_headers():
     # a field header. Set these to a non-empty value.
     request = baremetalsolution.GetInstanceRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_instance), "__call__") as call:
@@ -1225,7 +1225,7 @@ def test_get_instance_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1239,7 +1239,7 @@ async def test_get_instance_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = baremetalsolution.GetInstanceRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_instance), "__call__") as call:
@@ -1257,7 +1257,7 @@ async def test_get_instance_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1435,7 +1435,7 @@ def test_reset_instance_field_headers():
     # a field header. Set these to a non-empty value.
     request = baremetalsolution.ResetInstanceRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.reset_instance), "__call__") as call:
@@ -1451,7 +1451,7 @@ def test_reset_instance_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1465,7 +1465,7 @@ async def test_reset_instance_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = baremetalsolution.ResetInstanceRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.reset_instance), "__call__") as call:
@@ -1483,7 +1483,7 @@ async def test_reset_instance_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1671,7 +1671,7 @@ def test_list_volumes_field_headers():
     # a field header. Set these to a non-empty value.
     request = baremetalsolution.ListVolumesRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_volumes), "__call__") as call:
@@ -1687,7 +1687,7 @@ def test_list_volumes_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -1701,7 +1701,7 @@ async def test_list_volumes_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = baremetalsolution.ListVolumesRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_volumes), "__call__") as call:
@@ -1719,7 +1719,7 @@ async def test_list_volumes_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -1850,7 +1850,7 @@ def test_list_volumes_pager(transport_name: str = "grpc"):
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, baremetalsolution.Volume) for i in results)
 
@@ -2129,7 +2129,7 @@ def test_get_volume_field_headers():
     # a field header. Set these to a non-empty value.
     request = baremetalsolution.GetVolumeRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_volume), "__call__") as call:
@@ -2145,7 +2145,7 @@ def test_get_volume_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2159,7 +2159,7 @@ async def test_get_volume_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = baremetalsolution.GetVolumeRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_volume), "__call__") as call:
@@ -2177,7 +2177,7 @@ async def test_get_volume_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2355,7 +2355,7 @@ def test_update_volume_field_headers():
     # a field header. Set these to a non-empty value.
     request = baremetalsolution.UpdateVolumeRequest()
 
-    request.volume.name = "volume.name/value"
+    request.volume.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_volume), "__call__") as call:
@@ -2371,7 +2371,7 @@ def test_update_volume_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "volume.name=volume.name/value",
+        "volume.name=name_value",
     ) in kw["metadata"]
 
 
@@ -2385,7 +2385,7 @@ async def test_update_volume_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = baremetalsolution.UpdateVolumeRequest()
 
-    request.volume.name = "volume.name/value"
+    request.volume.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_volume), "__call__") as call:
@@ -2403,7 +2403,7 @@ async def test_update_volume_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "volume.name=volume.name/value",
+        "volume.name=name_value",
     ) in kw["metadata"]
 
 
@@ -2601,7 +2601,7 @@ def test_list_networks_field_headers():
     # a field header. Set these to a non-empty value.
     request = baremetalsolution.ListNetworksRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_networks), "__call__") as call:
@@ -2617,7 +2617,7 @@ def test_list_networks_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -2631,7 +2631,7 @@ async def test_list_networks_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = baremetalsolution.ListNetworksRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_networks), "__call__") as call:
@@ -2649,7 +2649,7 @@ async def test_list_networks_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -2780,7 +2780,7 @@ def test_list_networks_pager(transport_name: str = "grpc"):
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, baremetalsolution.Network) for i in results)
 
@@ -3049,7 +3049,7 @@ def test_get_network_field_headers():
     # a field header. Set these to a non-empty value.
     request = baremetalsolution.GetNetworkRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_network), "__call__") as call:
@@ -3065,7 +3065,7 @@ def test_get_network_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -3079,7 +3079,7 @@ async def test_get_network_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = baremetalsolution.GetNetworkRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_network), "__call__") as call:
@@ -3097,7 +3097,7 @@ async def test_get_network_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -3288,7 +3288,7 @@ def test_list_snapshot_schedule_policies_field_headers():
     # a field header. Set these to a non-empty value.
     request = baremetalsolution.ListSnapshotSchedulePoliciesRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3306,7 +3306,7 @@ def test_list_snapshot_schedule_policies_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -3320,7 +3320,7 @@ async def test_list_snapshot_schedule_policies_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = baremetalsolution.ListSnapshotSchedulePoliciesRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3340,7 +3340,7 @@ async def test_list_snapshot_schedule_policies_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -3477,7 +3477,7 @@ def test_list_snapshot_schedule_policies_pager(transport_name: str = "grpc"):
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(
             isinstance(i, baremetalsolution.SnapshotSchedulePolicy) for i in results
@@ -3739,7 +3739,7 @@ def test_get_snapshot_schedule_policy_field_headers():
     # a field header. Set these to a non-empty value.
     request = baremetalsolution.GetSnapshotSchedulePolicyRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3757,7 +3757,7 @@ def test_get_snapshot_schedule_policy_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -3771,7 +3771,7 @@ async def test_get_snapshot_schedule_policy_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = baremetalsolution.GetSnapshotSchedulePolicyRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3791,7 +3791,7 @@ async def test_get_snapshot_schedule_policy_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -3990,7 +3990,7 @@ def test_create_snapshot_schedule_policy_field_headers():
     # a field header. Set these to a non-empty value.
     request = baremetalsolution.CreateSnapshotSchedulePolicyRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4008,7 +4008,7 @@ def test_create_snapshot_schedule_policy_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -4022,7 +4022,7 @@ async def test_create_snapshot_schedule_policy_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = baremetalsolution.CreateSnapshotSchedulePolicyRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4042,7 +4042,7 @@ async def test_create_snapshot_schedule_policy_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -4269,7 +4269,7 @@ def test_update_snapshot_schedule_policy_field_headers():
     # a field header. Set these to a non-empty value.
     request = baremetalsolution.UpdateSnapshotSchedulePolicyRequest()
 
-    request.snapshot_schedule_policy.name = "snapshot_schedule_policy.name/value"
+    request.snapshot_schedule_policy.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4287,7 +4287,7 @@ def test_update_snapshot_schedule_policy_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "snapshot_schedule_policy.name=snapshot_schedule_policy.name/value",
+        "snapshot_schedule_policy.name=name_value",
     ) in kw["metadata"]
 
 
@@ -4301,7 +4301,7 @@ async def test_update_snapshot_schedule_policy_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = baremetalsolution.UpdateSnapshotSchedulePolicyRequest()
 
-    request.snapshot_schedule_policy.name = "snapshot_schedule_policy.name/value"
+    request.snapshot_schedule_policy.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4321,7 +4321,7 @@ async def test_update_snapshot_schedule_policy_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "snapshot_schedule_policy.name=snapshot_schedule_policy.name/value",
+        "snapshot_schedule_policy.name=name_value",
     ) in kw["metadata"]
 
 
@@ -4526,7 +4526,7 @@ def test_delete_snapshot_schedule_policy_field_headers():
     # a field header. Set these to a non-empty value.
     request = baremetalsolution.DeleteSnapshotSchedulePolicyRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4544,7 +4544,7 @@ def test_delete_snapshot_schedule_policy_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -4558,7 +4558,7 @@ async def test_delete_snapshot_schedule_policy_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = baremetalsolution.DeleteSnapshotSchedulePolicyRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4576,7 +4576,7 @@ async def test_delete_snapshot_schedule_policy_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -4781,7 +4781,7 @@ def test_create_volume_snapshot_field_headers():
     # a field header. Set these to a non-empty value.
     request = baremetalsolution.CreateVolumeSnapshotRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4799,7 +4799,7 @@ def test_create_volume_snapshot_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -4813,7 +4813,7 @@ async def test_create_volume_snapshot_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = baremetalsolution.CreateVolumeSnapshotRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4833,7 +4833,7 @@ async def test_create_volume_snapshot_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -5032,7 +5032,7 @@ def test_restore_volume_snapshot_field_headers():
     # a field header. Set these to a non-empty value.
     request = baremetalsolution.RestoreVolumeSnapshotRequest()
 
-    request.volume_snapshot = "volume_snapshot/value"
+    request.volume_snapshot = "volume_snapshot_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5050,7 +5050,7 @@ def test_restore_volume_snapshot_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "volume_snapshot=volume_snapshot/value",
+        "volume_snapshot=volume_snapshot_value",
     ) in kw["metadata"]
 
 
@@ -5064,7 +5064,7 @@ async def test_restore_volume_snapshot_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = baremetalsolution.RestoreVolumeSnapshotRequest()
 
-    request.volume_snapshot = "volume_snapshot/value"
+    request.volume_snapshot = "volume_snapshot_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5084,7 +5084,7 @@ async def test_restore_volume_snapshot_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "volume_snapshot=volume_snapshot/value",
+        "volume_snapshot=volume_snapshot_value",
     ) in kw["metadata"]
 
 
@@ -5271,7 +5271,7 @@ def test_delete_volume_snapshot_field_headers():
     # a field header. Set these to a non-empty value.
     request = baremetalsolution.DeleteVolumeSnapshotRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5289,7 +5289,7 @@ def test_delete_volume_snapshot_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -5303,7 +5303,7 @@ async def test_delete_volume_snapshot_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = baremetalsolution.DeleteVolumeSnapshotRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5321,7 +5321,7 @@ async def test_delete_volume_snapshot_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -5526,7 +5526,7 @@ def test_get_volume_snapshot_field_headers():
     # a field header. Set these to a non-empty value.
     request = baremetalsolution.GetVolumeSnapshotRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5544,7 +5544,7 @@ def test_get_volume_snapshot_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -5558,7 +5558,7 @@ async def test_get_volume_snapshot_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = baremetalsolution.GetVolumeSnapshotRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5578,7 +5578,7 @@ async def test_get_volume_snapshot_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -5777,7 +5777,7 @@ def test_list_volume_snapshots_field_headers():
     # a field header. Set these to a non-empty value.
     request = baremetalsolution.ListVolumeSnapshotsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5795,7 +5795,7 @@ def test_list_volume_snapshots_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -5809,7 +5809,7 @@ async def test_list_volume_snapshots_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = baremetalsolution.ListVolumeSnapshotsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5829,7 +5829,7 @@ async def test_list_volume_snapshots_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -5966,7 +5966,7 @@ def test_list_volume_snapshots_pager(transport_name: str = "grpc"):
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, baremetalsolution.VolumeSnapshot) for i in results)
 
@@ -6245,7 +6245,7 @@ def test_get_lun_field_headers():
     # a field header. Set these to a non-empty value.
     request = baremetalsolution.GetLunRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_lun), "__call__") as call:
@@ -6261,7 +6261,7 @@ def test_get_lun_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -6275,7 +6275,7 @@ async def test_get_lun_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = baremetalsolution.GetLunRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_lun), "__call__") as call:
@@ -6293,7 +6293,7 @@ async def test_get_lun_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -6481,7 +6481,7 @@ def test_list_luns_field_headers():
     # a field header. Set these to a non-empty value.
     request = baremetalsolution.ListLunsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_luns), "__call__") as call:
@@ -6497,7 +6497,7 @@ def test_list_luns_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -6511,7 +6511,7 @@ async def test_list_luns_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = baremetalsolution.ListLunsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_luns), "__call__") as call:
@@ -6529,7 +6529,7 @@ async def test_list_luns_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -6660,7 +6660,7 @@ def test_list_luns_pager(transport_name: str = "grpc"):
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, baremetalsolution.Lun) for i in results)
 
