@@ -258,9 +258,9 @@ class ContainerAnalysisAsyncClient:
             from google.cloud.devtools import containeranalysis_v1
             from google.iam.v1 import iam_policy_pb2  # type: ignore
 
-            def sample_set_iam_policy():
+            async def sample_set_iam_policy():
                 # Create a client
-                client = containeranalysis_v1.ContainerAnalysisClient()
+                client = containeranalysis_v1.ContainerAnalysisAsyncClient()
 
                 # Initialize request argument(s)
                 request = iam_policy_pb2.SetIamPolicyRequest(
@@ -268,7 +268,7 @@ class ContainerAnalysisAsyncClient:
                 )
 
                 # Make the request
-                response = client.set_iam_policy(request=request)
+                response = await client.set_iam_policy(request=request)
 
                 # Handle the response
                 print(response)
@@ -425,9 +425,9 @@ class ContainerAnalysisAsyncClient:
             from google.cloud.devtools import containeranalysis_v1
             from google.iam.v1 import iam_policy_pb2  # type: ignore
 
-            def sample_get_iam_policy():
+            async def sample_get_iam_policy():
                 # Create a client
-                client = containeranalysis_v1.ContainerAnalysisClient()
+                client = containeranalysis_v1.ContainerAnalysisAsyncClient()
 
                 # Initialize request argument(s)
                 request = iam_policy_pb2.GetIamPolicyRequest(
@@ -435,7 +435,7 @@ class ContainerAnalysisAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_iam_policy(request=request)
+                response = await client.get_iam_policy(request=request)
 
                 # Handle the response
                 print(response)
@@ -592,9 +592,9 @@ class ContainerAnalysisAsyncClient:
             from google.cloud.devtools import containeranalysis_v1
             from google.iam.v1 import iam_policy_pb2  # type: ignore
 
-            def sample_test_iam_permissions():
+            async def sample_test_iam_permissions():
                 # Create a client
-                client = containeranalysis_v1.ContainerAnalysisClient()
+                client = containeranalysis_v1.ContainerAnalysisAsyncClient()
 
                 # Initialize request argument(s)
                 request = iam_policy_pb2.TestIamPermissionsRequest(
@@ -603,7 +603,7 @@ class ContainerAnalysisAsyncClient:
                 )
 
                 # Make the request
-                response = client.test_iam_permissions(request=request)
+                response = await client.test_iam_permissions(request=request)
 
                 # Handle the response
                 print(response)
@@ -704,9 +704,9 @@ class ContainerAnalysisAsyncClient:
 
             from google.cloud.devtools import containeranalysis_v1
 
-            def sample_get_vulnerability_occurrences_summary():
+            async def sample_get_vulnerability_occurrences_summary():
                 # Create a client
-                client = containeranalysis_v1.ContainerAnalysisClient()
+                client = containeranalysis_v1.ContainerAnalysisAsyncClient()
 
                 # Initialize request argument(s)
                 request = containeranalysis_v1.GetVulnerabilityOccurrencesSummaryRequest(
@@ -714,7 +714,7 @@ class ContainerAnalysisAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_vulnerability_occurrences_summary(request=request)
+                response = await client.get_vulnerability_occurrences_summary(request=request)
 
                 # Handle the response
                 print(response)
