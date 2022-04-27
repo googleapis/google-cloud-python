@@ -25,6 +25,7 @@
 
 # [START analyticshub_v1beta1_generated_AnalyticsHubService_GetIamPolicy_sync]
 from google.cloud import bigquery_data_exchange_v1beta1
+from google.iam.v1 import iam_policy_pb2  # type: ignore
 
 
 def sample_get_iam_policy():
@@ -32,7 +33,7 @@ def sample_get_iam_policy():
     client = bigquery_data_exchange_v1beta1.AnalyticsHubServiceClient()
 
     # Initialize request argument(s)
-    request = bigquery_data_exchange_v1beta1.GetIamPolicyRequest(
+    request = iam_policy_pb2.GetIamPolicyRequest(
         resource="resource_value",
     )
 

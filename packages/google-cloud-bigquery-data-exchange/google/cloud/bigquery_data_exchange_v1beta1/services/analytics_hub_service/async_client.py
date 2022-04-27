@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core.client_options import ClientOptions
@@ -236,9 +236,9 @@ class AnalyticsHubServiceAsyncClient:
 
             from google.cloud import bigquery_data_exchange_v1beta1
 
-            def sample_list_data_exchanges():
+            async def sample_list_data_exchanges():
                 # Create a client
-                client = bigquery_data_exchange_v1beta1.AnalyticsHubServiceClient()
+                client = bigquery_data_exchange_v1beta1.AnalyticsHubServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = bigquery_data_exchange_v1beta1.ListDataExchangesRequest(
@@ -249,7 +249,7 @@ class AnalyticsHubServiceAsyncClient:
                 page_result = client.list_data_exchanges(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -341,14 +341,13 @@ class AnalyticsHubServiceAsyncClient:
         r"""Lists DataExchanges from projects in a given
         organization and location.
 
-
         .. code-block:: python
 
             from google.cloud import bigquery_data_exchange_v1beta1
 
-            def sample_list_org_data_exchanges():
+            async def sample_list_org_data_exchanges():
                 # Create a client
-                client = bigquery_data_exchange_v1beta1.AnalyticsHubServiceClient()
+                client = bigquery_data_exchange_v1beta1.AnalyticsHubServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = bigquery_data_exchange_v1beta1.ListOrgDataExchangesRequest(
@@ -359,7 +358,7 @@ class AnalyticsHubServiceAsyncClient:
                 page_result = client.list_org_data_exchanges(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -459,9 +458,9 @@ class AnalyticsHubServiceAsyncClient:
 
             from google.cloud import bigquery_data_exchange_v1beta1
 
-            def sample_get_data_exchange():
+            async def sample_get_data_exchange():
                 # Create a client
-                client = bigquery_data_exchange_v1beta1.AnalyticsHubServiceClient()
+                client = bigquery_data_exchange_v1beta1.AnalyticsHubServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = bigquery_data_exchange_v1beta1.GetDataExchangeRequest(
@@ -469,7 +468,7 @@ class AnalyticsHubServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_data_exchange(request=request)
+                response = await client.get_data_exchange(request=request)
 
                 # Handle the response
                 print(response)
@@ -554,14 +553,13 @@ class AnalyticsHubServiceAsyncClient:
         r"""Creates a new DataExchange in a given project and
         location.
 
-
         .. code-block:: python
 
             from google.cloud import bigquery_data_exchange_v1beta1
 
-            def sample_create_data_exchange():
+            async def sample_create_data_exchange():
                 # Create a client
-                client = bigquery_data_exchange_v1beta1.AnalyticsHubServiceClient()
+                client = bigquery_data_exchange_v1beta1.AnalyticsHubServiceAsyncClient()
 
                 # Initialize request argument(s)
                 data_exchange = bigquery_data_exchange_v1beta1.DataExchange()
@@ -574,7 +572,7 @@ class AnalyticsHubServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.create_data_exchange(request=request)
+                response = await client.create_data_exchange(request=request)
 
                 # Handle the response
                 print(response)
@@ -669,9 +667,9 @@ class AnalyticsHubServiceAsyncClient:
 
             from google.cloud import bigquery_data_exchange_v1beta1
 
-            def sample_update_data_exchange():
+            async def sample_update_data_exchange():
                 # Create a client
-                client = bigquery_data_exchange_v1beta1.AnalyticsHubServiceClient()
+                client = bigquery_data_exchange_v1beta1.AnalyticsHubServiceAsyncClient()
 
                 # Initialize request argument(s)
                 data_exchange = bigquery_data_exchange_v1beta1.DataExchange()
@@ -682,7 +680,7 @@ class AnalyticsHubServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.update_data_exchange(request=request)
+                response = await client.update_data_exchange(request=request)
 
                 # Handle the response
                 print(response)
@@ -780,9 +778,9 @@ class AnalyticsHubServiceAsyncClient:
 
             from google.cloud import bigquery_data_exchange_v1beta1
 
-            def sample_delete_data_exchange():
+            async def sample_delete_data_exchange():
                 # Create a client
-                client = bigquery_data_exchange_v1beta1.AnalyticsHubServiceClient()
+                client = bigquery_data_exchange_v1beta1.AnalyticsHubServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = bigquery_data_exchange_v1beta1.DeleteDataExchangeRequest(
@@ -790,7 +788,7 @@ class AnalyticsHubServiceAsyncClient:
                 )
 
                 # Make the request
-                client.delete_data_exchange(request=request)
+                await client.delete_data_exchange(request=request)
 
         Args:
             request (Union[google.cloud.bigquery_data_exchange_v1beta1.types.DeleteDataExchangeRequest, dict]):
@@ -863,9 +861,9 @@ class AnalyticsHubServiceAsyncClient:
 
             from google.cloud import bigquery_data_exchange_v1beta1
 
-            def sample_list_listings():
+            async def sample_list_listings():
                 # Create a client
-                client = bigquery_data_exchange_v1beta1.AnalyticsHubServiceClient()
+                client = bigquery_data_exchange_v1beta1.AnalyticsHubServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = bigquery_data_exchange_v1beta1.ListListingsRequest(
@@ -876,7 +874,7 @@ class AnalyticsHubServiceAsyncClient:
                 page_result = client.list_listings(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -971,9 +969,9 @@ class AnalyticsHubServiceAsyncClient:
 
             from google.cloud import bigquery_data_exchange_v1beta1
 
-            def sample_get_listing():
+            async def sample_get_listing():
                 # Create a client
-                client = bigquery_data_exchange_v1beta1.AnalyticsHubServiceClient()
+                client = bigquery_data_exchange_v1beta1.AnalyticsHubServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = bigquery_data_exchange_v1beta1.GetListingRequest(
@@ -981,7 +979,7 @@ class AnalyticsHubServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_listing(request=request)
+                response = await client.get_listing(request=request)
 
                 # Handle the response
                 print(response)
@@ -1067,14 +1065,13 @@ class AnalyticsHubServiceAsyncClient:
         r"""Creates a new Listing in a given project and
         location.
 
-
         .. code-block:: python
 
             from google.cloud import bigquery_data_exchange_v1beta1
 
-            def sample_create_listing():
+            async def sample_create_listing():
                 # Create a client
-                client = bigquery_data_exchange_v1beta1.AnalyticsHubServiceClient()
+                client = bigquery_data_exchange_v1beta1.AnalyticsHubServiceAsyncClient()
 
                 # Initialize request argument(s)
                 listing = bigquery_data_exchange_v1beta1.Listing()
@@ -1087,7 +1084,7 @@ class AnalyticsHubServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.create_listing(request=request)
+                response = await client.create_listing(request=request)
 
                 # Handle the response
                 print(response)
@@ -1183,9 +1180,9 @@ class AnalyticsHubServiceAsyncClient:
 
             from google.cloud import bigquery_data_exchange_v1beta1
 
-            def sample_update_listing():
+            async def sample_update_listing():
                 # Create a client
-                client = bigquery_data_exchange_v1beta1.AnalyticsHubServiceClient()
+                client = bigquery_data_exchange_v1beta1.AnalyticsHubServiceAsyncClient()
 
                 # Initialize request argument(s)
                 listing = bigquery_data_exchange_v1beta1.Listing()
@@ -1196,7 +1193,7 @@ class AnalyticsHubServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.update_listing(request=request)
+                response = await client.update_listing(request=request)
 
                 # Handle the response
                 print(response)
@@ -1293,14 +1290,13 @@ class AnalyticsHubServiceAsyncClient:
         subscriptions associated with the source of this
         Listing.
 
-
         .. code-block:: python
 
             from google.cloud import bigquery_data_exchange_v1beta1
 
-            def sample_delete_listing():
+            async def sample_delete_listing():
                 # Create a client
-                client = bigquery_data_exchange_v1beta1.AnalyticsHubServiceClient()
+                client = bigquery_data_exchange_v1beta1.AnalyticsHubServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = bigquery_data_exchange_v1beta1.DeleteListingRequest(
@@ -1308,7 +1304,7 @@ class AnalyticsHubServiceAsyncClient:
                 )
 
                 # Make the request
-                client.delete_listing(request=request)
+                await client.delete_listing(request=request)
 
         Args:
             request (Union[google.cloud.bigquery_data_exchange_v1beta1.types.DeleteListingRequest, dict]):
@@ -1380,14 +1376,13 @@ class AnalyticsHubServiceAsyncClient:
         BigQuery dataset, Data Exchange creates a linked dataset
         in the subscriber's project.
 
-
         .. code-block:: python
 
             from google.cloud import bigquery_data_exchange_v1beta1
 
-            def sample_subscribe_listing():
+            async def sample_subscribe_listing():
                 # Create a client
-                client = bigquery_data_exchange_v1beta1.AnalyticsHubServiceClient()
+                client = bigquery_data_exchange_v1beta1.AnalyticsHubServiceAsyncClient()
 
                 # Initialize request argument(s)
                 destination_dataset = bigquery_data_exchange_v1beta1.DestinationDataset()
@@ -1401,7 +1396,7 @@ class AnalyticsHubServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.subscribe_listing(request=request)
+                response = await client.subscribe_listing(request=request)
 
                 # Handle the response
                 print(response)
@@ -1484,18 +1479,19 @@ class AnalyticsHubServiceAsyncClient:
         .. code-block:: python
 
             from google.cloud import bigquery_data_exchange_v1beta1
+            from google.iam.v1 import iam_policy_pb2  # type: ignore
 
-            def sample_get_iam_policy():
+            async def sample_get_iam_policy():
                 # Create a client
-                client = bigquery_data_exchange_v1beta1.AnalyticsHubServiceClient()
+                client = bigquery_data_exchange_v1beta1.AnalyticsHubServiceAsyncClient()
 
                 # Initialize request argument(s)
-                request = bigquery_data_exchange_v1beta1.GetIamPolicyRequest(
+                request = iam_policy_pb2.GetIamPolicyRequest(
                     resource="resource_value",
                 )
 
                 # Make the request
-                response = client.get_iam_policy(request=request)
+                response = await client.get_iam_policy(request=request)
 
                 # Handle the response
                 print(response)
@@ -1512,21 +1508,26 @@ class AnalyticsHubServiceAsyncClient:
 
         Returns:
             google.iam.v1.policy_pb2.Policy:
-                Defines an Identity and Access Management (IAM) policy. It is used to
-                   specify access control policies for Cloud Platform
-                   resources.
+                An Identity and Access Management (IAM) policy, which specifies access
+                   controls for Google Cloud resources.
 
                    A Policy is a collection of bindings. A binding binds
-                   one or more members to a single role. Members can be
-                   user accounts, service accounts, Google groups, and
-                   domains (such as G Suite). A role is a named list of
-                   permissions (defined by IAM or configured by users).
-                   A binding can optionally specify a condition, which
-                   is a logic expression that further constrains the
-                   role binding based on attributes about the request
-                   and/or target resource.
+                   one or more members, or principals, to a single role.
+                   Principals can be user accounts, service accounts,
+                   Google groups, and domains (such as G Suite). A role
+                   is a named list of permissions; each role can be an
+                   IAM predefined role or a user-created custom role.
 
-                   **JSON Example**
+                   For some types of Google Cloud resources, a binding
+                   can also specify a condition, which is a logical
+                   expression that allows access to a resource only if
+                   the expression evaluates to true. A condition can add
+                   constraints based on attributes of the request, the
+                   resource, or both. To learn which resources support
+                   conditions in their IAM policies, see the [IAM
+                   documentation](\ https://cloud.google.com/iam/help/conditions/resource-policies).
+
+                   **JSON example:**
 
                       {
                          "bindings": [
@@ -1541,17 +1542,17 @@ class AnalyticsHubServiceAsyncClient:
 
                             }, { "role":
                             "roles/resourcemanager.organizationViewer",
-                            "members": ["user:eve@example.com"],
+                            "members": [ "user:eve@example.com" ],
                             "condition": { "title": "expirable access",
                             "description": "Does not grant access after
                             Sep 2020", "expression": "request.time <
                             timestamp('2020-10-01T00:00:00.000Z')", } }
 
-                         ]
+                         ], "etag": "BwWWja0YfJA=", "version": 3
 
                       }
 
-                   **YAML Example**
+                   **YAML example:**
 
                       bindings: - members: - user:\ mike@example.com -
                       group:\ admins@example.com - domain:google.com -
@@ -1562,11 +1563,12 @@ class AnalyticsHubServiceAsyncClient:
                       condition: title: expirable access description:
                       Does not grant access after Sep 2020 expression:
                       request.time <
-                      timestamp('2020-10-01T00:00:00.000Z')
+                      timestamp('2020-10-01T00:00:00.000Z') etag:
+                      BwWWja0YfJA= version: 3
 
                    For a description of IAM and its features, see the
-                   [IAM developer's
-                   guide](\ https://cloud.google.com/iam/docs).
+                   [IAM
+                   documentation](\ https://cloud.google.com/iam/docs/).
 
         """
         # Create or coerce a protobuf request object.
@@ -1613,18 +1615,19 @@ class AnalyticsHubServiceAsyncClient:
         .. code-block:: python
 
             from google.cloud import bigquery_data_exchange_v1beta1
+            from google.iam.v1 import iam_policy_pb2  # type: ignore
 
-            def sample_set_iam_policy():
+            async def sample_set_iam_policy():
                 # Create a client
-                client = bigquery_data_exchange_v1beta1.AnalyticsHubServiceClient()
+                client = bigquery_data_exchange_v1beta1.AnalyticsHubServiceAsyncClient()
 
                 # Initialize request argument(s)
-                request = bigquery_data_exchange_v1beta1.SetIamPolicyRequest(
+                request = iam_policy_pb2.SetIamPolicyRequest(
                     resource="resource_value",
                 )
 
                 # Make the request
-                response = client.set_iam_policy(request=request)
+                response = await client.set_iam_policy(request=request)
 
                 # Handle the response
                 print(response)
@@ -1641,21 +1644,26 @@ class AnalyticsHubServiceAsyncClient:
 
         Returns:
             google.iam.v1.policy_pb2.Policy:
-                Defines an Identity and Access Management (IAM) policy. It is used to
-                   specify access control policies for Cloud Platform
-                   resources.
+                An Identity and Access Management (IAM) policy, which specifies access
+                   controls for Google Cloud resources.
 
                    A Policy is a collection of bindings. A binding binds
-                   one or more members to a single role. Members can be
-                   user accounts, service accounts, Google groups, and
-                   domains (such as G Suite). A role is a named list of
-                   permissions (defined by IAM or configured by users).
-                   A binding can optionally specify a condition, which
-                   is a logic expression that further constrains the
-                   role binding based on attributes about the request
-                   and/or target resource.
+                   one or more members, or principals, to a single role.
+                   Principals can be user accounts, service accounts,
+                   Google groups, and domains (such as G Suite). A role
+                   is a named list of permissions; each role can be an
+                   IAM predefined role or a user-created custom role.
 
-                   **JSON Example**
+                   For some types of Google Cloud resources, a binding
+                   can also specify a condition, which is a logical
+                   expression that allows access to a resource only if
+                   the expression evaluates to true. A condition can add
+                   constraints based on attributes of the request, the
+                   resource, or both. To learn which resources support
+                   conditions in their IAM policies, see the [IAM
+                   documentation](\ https://cloud.google.com/iam/help/conditions/resource-policies).
+
+                   **JSON example:**
 
                       {
                          "bindings": [
@@ -1670,17 +1678,17 @@ class AnalyticsHubServiceAsyncClient:
 
                             }, { "role":
                             "roles/resourcemanager.organizationViewer",
-                            "members": ["user:eve@example.com"],
+                            "members": [ "user:eve@example.com" ],
                             "condition": { "title": "expirable access",
                             "description": "Does not grant access after
                             Sep 2020", "expression": "request.time <
                             timestamp('2020-10-01T00:00:00.000Z')", } }
 
-                         ]
+                         ], "etag": "BwWWja0YfJA=", "version": 3
 
                       }
 
-                   **YAML Example**
+                   **YAML example:**
 
                       bindings: - members: - user:\ mike@example.com -
                       group:\ admins@example.com - domain:google.com -
@@ -1691,11 +1699,12 @@ class AnalyticsHubServiceAsyncClient:
                       condition: title: expirable access description:
                       Does not grant access after Sep 2020 expression:
                       request.time <
-                      timestamp('2020-10-01T00:00:00.000Z')
+                      timestamp('2020-10-01T00:00:00.000Z') etag:
+                      BwWWja0YfJA= version: 3
 
                    For a description of IAM and its features, see the
-                   [IAM developer's
-                   guide](\ https://cloud.google.com/iam/docs).
+                   [IAM
+                   documentation](\ https://cloud.google.com/iam/docs/).
 
         """
         # Create or coerce a protobuf request object.
@@ -1740,23 +1749,23 @@ class AnalyticsHubServiceAsyncClient:
         r"""Returns the permissions that a caller has on a
         specified dataExchange or listing.
 
-
         .. code-block:: python
 
             from google.cloud import bigquery_data_exchange_v1beta1
+            from google.iam.v1 import iam_policy_pb2  # type: ignore
 
-            def sample_test_iam_permissions():
+            async def sample_test_iam_permissions():
                 # Create a client
-                client = bigquery_data_exchange_v1beta1.AnalyticsHubServiceClient()
+                client = bigquery_data_exchange_v1beta1.AnalyticsHubServiceAsyncClient()
 
                 # Initialize request argument(s)
-                request = bigquery_data_exchange_v1beta1.TestIamPermissionsRequest(
+                request = iam_policy_pb2.TestIamPermissionsRequest(
                     resource="resource_value",
                     permissions=['permissions_value_1', 'permissions_value_2'],
                 )
 
                 # Make the request
-                response = client.test_iam_permissions(request=request)
+                response = await client.test_iam_permissions(request=request)
 
                 # Handle the response
                 print(response)

@@ -25,6 +25,7 @@
 
 # [START analyticshub_v1beta1_generated_AnalyticsHubService_TestIamPermissions_sync]
 from google.cloud import bigquery_data_exchange_v1beta1
+from google.iam.v1 import iam_policy_pb2  # type: ignore
 
 
 def sample_test_iam_permissions():
@@ -32,7 +33,7 @@ def sample_test_iam_permissions():
     client = bigquery_data_exchange_v1beta1.AnalyticsHubServiceClient()
 
     # Initialize request argument(s)
-    request = bigquery_data_exchange_v1beta1.TestIamPermissionsRequest(
+    request = iam_policy_pb2.TestIamPermissionsRequest(
         resource="resource_value",
         permissions=['permissions_value_1', 'permissions_value_2'],
     )

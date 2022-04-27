@@ -202,7 +202,7 @@ class DestinationDataset(proto.Message):
         description (google.protobuf.wrappers_pb2.StringValue):
             Optional. A user-friendly description of the
             dataset.
-        labels (Sequence[google.cloud.bigquery_data_exchange_v1beta1.types.DestinationDataset.LabelsEntry]):
+        labels (Mapping[str, str]):
             Optional. The labels associated with this
             dataset. You can use these to organize and group
             your datasets. You can set this property when

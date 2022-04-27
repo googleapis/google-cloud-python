@@ -49,7 +49,7 @@ class bigquery_data_exchangeCallTransformer(cst.CSTTransformer):
         'list_data_exchanges': ('parent', 'page_size', 'page_token', ),
         'list_listings': ('parent', 'page_size', 'page_token', ),
         'list_org_data_exchanges': ('organization', 'page_size', 'page_token', ),
-        'set_iam_policy': ('resource', 'policy', ),
+        'set_iam_policy': ('resource', 'policy', 'update_mask', ),
         'subscribe_listing': ('name', 'destination_dataset', ),
         'test_iam_permissions': ('resource', 'permissions', ),
         'update_data_exchange': ('update_mask', 'data_exchange', ),
