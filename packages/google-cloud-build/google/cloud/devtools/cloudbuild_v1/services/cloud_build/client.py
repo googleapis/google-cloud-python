@@ -711,6 +711,14 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.create_build]
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("project_id", request.project_id),)
+            ),
+        )
+
         # Send the request.
         response = rpc(
             request,
@@ -839,6 +847,17 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.get_build]
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project_id", request.project_id),
+                    ("id", request.id),
+                )
+            ),
+        )
+
         # Send the request.
         response = rpc(
             request,
@@ -939,6 +958,14 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.list_builds]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("project_id", request.project_id),)
+            ),
+        )
 
         # Send the request.
         response = rpc(
@@ -1064,6 +1091,17 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.cancel_build]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project_id", request.project_id),
+                    ("id", request.id),
+                )
+            ),
+        )
 
         # Send the request.
         response = rpc(
@@ -1219,6 +1257,17 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.retry_build]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project_id", request.project_id),
+                    ("id", request.id),
+                )
+            ),
+        )
 
         # Send the request.
         response = rpc(
@@ -1476,6 +1525,14 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.create_build_trigger]
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("project_id", request.project_id),)
+            ),
+        )
+
         # Send the request.
         response = rpc(
             request,
@@ -1579,6 +1636,17 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.get_build_trigger]
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project_id", request.project_id),
+                    ("trigger_id", request.trigger_id),
+                )
+            ),
+        )
+
         # Send the request.
         response = rpc(
             request,
@@ -1672,6 +1740,14 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.list_build_triggers]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("project_id", request.project_id),)
+            ),
+        )
 
         # Send the request.
         response = rpc(
@@ -1771,6 +1847,17 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.delete_build_trigger]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project_id", request.project_id),
+                    ("trigger_id", request.trigger_id),
+                )
+            ),
+        )
 
         # Send the request.
         rpc(
@@ -1881,6 +1968,17 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.update_build_trigger]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project_id", request.project_id),
+                    ("trigger_id", request.trigger_id),
+                )
+            ),
+        )
 
         # Send the request.
         response = rpc(
@@ -2015,6 +2113,17 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.run_build_trigger]
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project_id", request.project_id),
+                    ("trigger_id", request.trigger_id),
+                )
+            ),
+        )
+
         # Send the request.
         response = rpc(
             request,
@@ -2091,6 +2200,17 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.receive_trigger_webhook]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project_id", request.project_id),
+                    ("trigger", request.trigger),
+                )
+            ),
+        )
 
         # Send the request.
         response = rpc(

@@ -717,6 +717,67 @@ async def test_create_build_async_from_dict():
     await test_create_build_async(request_type=dict)
 
 
+def test_create_build_field_headers():
+    client = CloudBuildClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cloudbuild.CreateBuildRequest()
+
+    request.project_id = "project_id_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_build), "__call__") as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.create_build(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "project_id=project_id_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_create_build_field_headers_async():
+    client = CloudBuildAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cloudbuild.CreateBuildRequest()
+
+    request.project_id = "project_id_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_build), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/op")
+        )
+        await client.create_build(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "project_id=project_id_value",
+    ) in kw["metadata"]
+
+
 def test_create_build_flattened():
     client = CloudBuildClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -938,6 +999,67 @@ async def test_get_build_async_from_dict():
     await test_get_build_async(request_type=dict)
 
 
+def test_get_build_field_headers():
+    client = CloudBuildClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cloudbuild.GetBuildRequest()
+
+    request.project_id = "project_id_value"
+    request.id = "id_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_build), "__call__") as call:
+        call.return_value = cloudbuild.Build()
+        client.get_build(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "project_id=project_id_value&id=id_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_get_build_field_headers_async():
+    client = CloudBuildAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cloudbuild.GetBuildRequest()
+
+    request.project_id = "project_id_value"
+    request.id = "id_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_build), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(cloudbuild.Build())
+        await client.get_build(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "project_id=project_id_value&id=id_value",
+    ) in kw["metadata"]
+
+
 def test_get_build_flattened():
     client = CloudBuildClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -1117,6 +1239,67 @@ async def test_list_builds_async_from_dict():
     await test_list_builds_async(request_type=dict)
 
 
+def test_list_builds_field_headers():
+    client = CloudBuildClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cloudbuild.ListBuildsRequest()
+
+    request.project_id = "project_id_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_builds), "__call__") as call:
+        call.return_value = cloudbuild.ListBuildsResponse()
+        client.list_builds(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "project_id=project_id_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_list_builds_field_headers_async():
+    client = CloudBuildAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cloudbuild.ListBuildsRequest()
+
+    request.project_id = "project_id_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_builds), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cloudbuild.ListBuildsResponse()
+        )
+        await client.list_builds(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "project_id=project_id_value",
+    ) in kw["metadata"]
+
+
 def test_list_builds_flattened():
     client = CloudBuildClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -1247,11 +1430,14 @@ def test_list_builds_pager(transport_name: str = "grpc"):
         )
 
         metadata = ()
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("project_id", ""),)),
+        )
         pager = client.list_builds(request={})
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, cloudbuild.Build) for i in results)
 
@@ -1523,6 +1709,67 @@ async def test_cancel_build_async_from_dict():
     await test_cancel_build_async(request_type=dict)
 
 
+def test_cancel_build_field_headers():
+    client = CloudBuildClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cloudbuild.CancelBuildRequest()
+
+    request.project_id = "project_id_value"
+    request.id = "id_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.cancel_build), "__call__") as call:
+        call.return_value = cloudbuild.Build()
+        client.cancel_build(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "project_id=project_id_value&id=id_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_cancel_build_field_headers_async():
+    client = CloudBuildAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cloudbuild.CancelBuildRequest()
+
+    request.project_id = "project_id_value"
+    request.id = "id_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.cancel_build), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(cloudbuild.Build())
+        await client.cancel_build(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "project_id=project_id_value&id=id_value",
+    ) in kw["metadata"]
+
+
 def test_cancel_build_flattened():
     client = CloudBuildClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -1694,6 +1941,69 @@ async def test_retry_build_async(
 @pytest.mark.asyncio
 async def test_retry_build_async_from_dict():
     await test_retry_build_async(request_type=dict)
+
+
+def test_retry_build_field_headers():
+    client = CloudBuildClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cloudbuild.RetryBuildRequest()
+
+    request.project_id = "project_id_value"
+    request.id = "id_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.retry_build), "__call__") as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.retry_build(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "project_id=project_id_value&id=id_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_retry_build_field_headers_async():
+    client = CloudBuildAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cloudbuild.RetryBuildRequest()
+
+    request.project_id = "project_id_value"
+    request.id = "id_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.retry_build), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/op")
+        )
+        await client.retry_build(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "project_id=project_id_value&id=id_value",
+    ) in kw["metadata"]
 
 
 def test_retry_build_flattened():
@@ -1880,7 +2190,7 @@ def test_approve_build_field_headers():
     # a field header. Set these to a non-empty value.
     request = cloudbuild.ApproveBuildRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.approve_build), "__call__") as call:
@@ -1896,7 +2206,7 @@ def test_approve_build_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1910,7 +2220,7 @@ async def test_approve_build_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = cloudbuild.ApproveBuildRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.approve_build), "__call__") as call:
@@ -1928,7 +2238,7 @@ async def test_approve_build_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2164,6 +2474,71 @@ async def test_create_build_trigger_async_from_dict():
     await test_create_build_trigger_async(request_type=dict)
 
 
+def test_create_build_trigger_field_headers():
+    client = CloudBuildClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cloudbuild.CreateBuildTriggerRequest()
+
+    request.project_id = "project_id_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_build_trigger), "__call__"
+    ) as call:
+        call.return_value = cloudbuild.BuildTrigger()
+        client.create_build_trigger(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "project_id=project_id_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_create_build_trigger_field_headers_async():
+    client = CloudBuildAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cloudbuild.CreateBuildTriggerRequest()
+
+    request.project_id = "project_id_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_build_trigger), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cloudbuild.BuildTrigger()
+        )
+        await client.create_build_trigger(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "project_id=project_id_value",
+    ) in kw["metadata"]
+
+
 def test_create_build_trigger_flattened():
     client = CloudBuildClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -2392,6 +2767,73 @@ async def test_get_build_trigger_async_from_dict():
     await test_get_build_trigger_async(request_type=dict)
 
 
+def test_get_build_trigger_field_headers():
+    client = CloudBuildClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cloudbuild.GetBuildTriggerRequest()
+
+    request.project_id = "project_id_value"
+    request.trigger_id = "trigger_id_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_build_trigger), "__call__"
+    ) as call:
+        call.return_value = cloudbuild.BuildTrigger()
+        client.get_build_trigger(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "project_id=project_id_value&trigger_id=trigger_id_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_get_build_trigger_field_headers_async():
+    client = CloudBuildAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cloudbuild.GetBuildTriggerRequest()
+
+    request.project_id = "project_id_value"
+    request.trigger_id = "trigger_id_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_build_trigger), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cloudbuild.BuildTrigger()
+        )
+        await client.get_build_trigger(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "project_id=project_id_value&trigger_id=trigger_id_value",
+    ) in kw["metadata"]
+
+
 def test_get_build_trigger_flattened():
     client = CloudBuildClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -2583,6 +3025,71 @@ async def test_list_build_triggers_async_from_dict():
     await test_list_build_triggers_async(request_type=dict)
 
 
+def test_list_build_triggers_field_headers():
+    client = CloudBuildClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cloudbuild.ListBuildTriggersRequest()
+
+    request.project_id = "project_id_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_build_triggers), "__call__"
+    ) as call:
+        call.return_value = cloudbuild.ListBuildTriggersResponse()
+        client.list_build_triggers(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "project_id=project_id_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_list_build_triggers_field_headers_async():
+    client = CloudBuildAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cloudbuild.ListBuildTriggersRequest()
+
+    request.project_id = "project_id_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_build_triggers), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cloudbuild.ListBuildTriggersResponse()
+        )
+        await client.list_build_triggers(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "project_id=project_id_value",
+    ) in kw["metadata"]
+
+
 def test_list_build_triggers_flattened():
     client = CloudBuildClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -2709,11 +3216,14 @@ def test_list_build_triggers_pager(transport_name: str = "grpc"):
         )
 
         metadata = ()
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("project_id", ""),)),
+        )
         pager = client.list_build_triggers(request={})
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, cloudbuild.BuildTrigger) for i in results)
 
@@ -2949,6 +3459,71 @@ async def test_delete_build_trigger_async_from_dict():
     await test_delete_build_trigger_async(request_type=dict)
 
 
+def test_delete_build_trigger_field_headers():
+    client = CloudBuildClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cloudbuild.DeleteBuildTriggerRequest()
+
+    request.project_id = "project_id_value"
+    request.trigger_id = "trigger_id_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_build_trigger), "__call__"
+    ) as call:
+        call.return_value = None
+        client.delete_build_trigger(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "project_id=project_id_value&trigger_id=trigger_id_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_delete_build_trigger_field_headers_async():
+    client = CloudBuildAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cloudbuild.DeleteBuildTriggerRequest()
+
+    request.project_id = "project_id_value"
+    request.trigger_id = "trigger_id_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_build_trigger), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.delete_build_trigger(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "project_id=project_id_value&trigger_id=trigger_id_value",
+    ) in kw["metadata"]
+
+
 def test_delete_build_trigger_flattened():
     client = CloudBuildClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -3175,6 +3750,73 @@ async def test_update_build_trigger_async_from_dict():
     await test_update_build_trigger_async(request_type=dict)
 
 
+def test_update_build_trigger_field_headers():
+    client = CloudBuildClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cloudbuild.UpdateBuildTriggerRequest()
+
+    request.project_id = "project_id_value"
+    request.trigger_id = "trigger_id_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_build_trigger), "__call__"
+    ) as call:
+        call.return_value = cloudbuild.BuildTrigger()
+        client.update_build_trigger(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "project_id=project_id_value&trigger_id=trigger_id_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_update_build_trigger_field_headers_async():
+    client = CloudBuildAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cloudbuild.UpdateBuildTriggerRequest()
+
+    request.project_id = "project_id_value"
+    request.trigger_id = "trigger_id_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_build_trigger), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cloudbuild.BuildTrigger()
+        )
+        await client.update_build_trigger(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "project_id=project_id_value&trigger_id=trigger_id_value",
+    ) in kw["metadata"]
+
+
 def test_update_build_trigger_flattened():
     client = CloudBuildClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -3368,6 +4010,73 @@ async def test_run_build_trigger_async(
 @pytest.mark.asyncio
 async def test_run_build_trigger_async_from_dict():
     await test_run_build_trigger_async(request_type=dict)
+
+
+def test_run_build_trigger_field_headers():
+    client = CloudBuildClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cloudbuild.RunBuildTriggerRequest()
+
+    request.project_id = "project_id_value"
+    request.trigger_id = "trigger_id_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.run_build_trigger), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.run_build_trigger(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "project_id=project_id_value&trigger_id=trigger_id_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_run_build_trigger_field_headers_async():
+    client = CloudBuildAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cloudbuild.RunBuildTriggerRequest()
+
+    request.project_id = "project_id_value"
+    request.trigger_id = "trigger_id_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.run_build_trigger), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/op")
+        )
+        await client.run_build_trigger(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "project_id=project_id_value&trigger_id=trigger_id_value",
+    ) in kw["metadata"]
 
 
 def test_run_build_trigger_flattened():
@@ -3566,6 +4275,73 @@ async def test_receive_trigger_webhook_async_from_dict():
     await test_receive_trigger_webhook_async(request_type=dict)
 
 
+def test_receive_trigger_webhook_field_headers():
+    client = CloudBuildClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cloudbuild.ReceiveTriggerWebhookRequest()
+
+    request.project_id = "project_id_value"
+    request.trigger = "trigger_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.receive_trigger_webhook), "__call__"
+    ) as call:
+        call.return_value = cloudbuild.ReceiveTriggerWebhookResponse()
+        client.receive_trigger_webhook(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "project_id=project_id_value&trigger=trigger_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_receive_trigger_webhook_field_headers_async():
+    client = CloudBuildAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cloudbuild.ReceiveTriggerWebhookRequest()
+
+    request.project_id = "project_id_value"
+    request.trigger = "trigger_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.receive_trigger_webhook), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cloudbuild.ReceiveTriggerWebhookResponse()
+        )
+        await client.receive_trigger_webhook(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "project_id=project_id_value&trigger=trigger_value",
+    ) in kw["metadata"]
+
+
 @pytest.mark.parametrize(
     "request_type",
     [
@@ -3664,7 +4440,7 @@ def test_create_worker_pool_field_headers():
     # a field header. Set these to a non-empty value.
     request = cloudbuild.CreateWorkerPoolRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3682,7 +4458,7 @@ def test_create_worker_pool_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -3696,7 +4472,7 @@ async def test_create_worker_pool_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = cloudbuild.CreateWorkerPoolRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3716,7 +4492,7 @@ async def test_create_worker_pool_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -3945,7 +4721,7 @@ def test_get_worker_pool_field_headers():
     # a field header. Set these to a non-empty value.
     request = cloudbuild.GetWorkerPoolRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_worker_pool), "__call__") as call:
@@ -3961,7 +4737,7 @@ def test_get_worker_pool_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -3975,7 +4751,7 @@ async def test_get_worker_pool_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = cloudbuild.GetWorkerPoolRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_worker_pool), "__call__") as call:
@@ -3993,7 +4769,7 @@ async def test_get_worker_pool_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -4177,7 +4953,7 @@ def test_delete_worker_pool_field_headers():
     # a field header. Set these to a non-empty value.
     request = cloudbuild.DeleteWorkerPoolRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4195,7 +4971,7 @@ def test_delete_worker_pool_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -4209,7 +4985,7 @@ async def test_delete_worker_pool_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = cloudbuild.DeleteWorkerPoolRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4229,7 +5005,7 @@ async def test_delete_worker_pool_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -4417,7 +5193,7 @@ def test_update_worker_pool_field_headers():
     # a field header. Set these to a non-empty value.
     request = cloudbuild.UpdateWorkerPoolRequest()
 
-    request.worker_pool.name = "worker_pool.name/value"
+    request.worker_pool.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4435,7 +5211,7 @@ def test_update_worker_pool_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "worker_pool.name=worker_pool.name/value",
+        "worker_pool.name=name_value",
     ) in kw["metadata"]
 
 
@@ -4449,7 +5225,7 @@ async def test_update_worker_pool_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = cloudbuild.UpdateWorkerPoolRequest()
 
-    request.worker_pool.name = "worker_pool.name/value"
+    request.worker_pool.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4469,7 +5245,7 @@ async def test_update_worker_pool_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "worker_pool.name=worker_pool.name/value",
+        "worker_pool.name=name_value",
     ) in kw["metadata"]
 
 
@@ -4673,7 +5449,7 @@ def test_list_worker_pools_field_headers():
     # a field header. Set these to a non-empty value.
     request = cloudbuild.ListWorkerPoolsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4691,7 +5467,7 @@ def test_list_worker_pools_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -4705,7 +5481,7 @@ async def test_list_worker_pools_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = cloudbuild.ListWorkerPoolsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4725,7 +5501,7 @@ async def test_list_worker_pools_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -4862,7 +5638,7 @@ def test_list_worker_pools_pager(transport_name: str = "grpc"):
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, cloudbuild.WorkerPool) for i in results)
 

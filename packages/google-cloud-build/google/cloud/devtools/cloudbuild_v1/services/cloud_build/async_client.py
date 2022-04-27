@@ -248,9 +248,9 @@ class CloudBuildAsyncClient:
 
             from google.cloud.devtools import cloudbuild_v1
 
-            def sample_create_build():
+            async def sample_create_build():
                 # Create a client
-                client = cloudbuild_v1.CloudBuildClient()
+                client = cloudbuild_v1.CloudBuildAsyncClient()
 
                 # Initialize request argument(s)
                 request = cloudbuild_v1.CreateBuildRequest(
@@ -262,7 +262,7 @@ class CloudBuildAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -344,6 +344,14 @@ class CloudBuildAsyncClient:
             client_info=DEFAULT_CLIENT_INFO,
         )
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("project_id", request.project_id),)
+            ),
+        )
+
         # Send the request.
         response = await rpc(
             request,
@@ -383,9 +391,9 @@ class CloudBuildAsyncClient:
 
             from google.cloud.devtools import cloudbuild_v1
 
-            def sample_get_build():
+            async def sample_get_build():
                 # Create a client
-                client = cloudbuild_v1.CloudBuildClient()
+                client = cloudbuild_v1.CloudBuildAsyncClient()
 
                 # Initialize request argument(s)
                 request = cloudbuild_v1.GetBuildRequest(
@@ -394,7 +402,7 @@ class CloudBuildAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_build(request=request)
+                response = await client.get_build(request=request)
 
                 # Handle the response
                 print(response)
@@ -482,6 +490,17 @@ class CloudBuildAsyncClient:
             client_info=DEFAULT_CLIENT_INFO,
         )
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project_id", request.project_id),
+                    ("id", request.id),
+                )
+            ),
+        )
+
         # Send the request.
         response = await rpc(
             request,
@@ -511,9 +530,9 @@ class CloudBuildAsyncClient:
 
             from google.cloud.devtools import cloudbuild_v1
 
-            def sample_list_builds():
+            async def sample_list_builds():
                 # Create a client
-                client = cloudbuild_v1.CloudBuildClient()
+                client = cloudbuild_v1.CloudBuildAsyncClient()
 
                 # Initialize request argument(s)
                 request = cloudbuild_v1.ListBuildsRequest(
@@ -524,7 +543,7 @@ class CloudBuildAsyncClient:
                 page_result = client.list_builds(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -593,6 +612,14 @@ class CloudBuildAsyncClient:
             client_info=DEFAULT_CLIENT_INFO,
         )
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("project_id", request.project_id),)
+            ),
+        )
+
         # Send the request.
         response = await rpc(
             request,
@@ -629,9 +656,9 @@ class CloudBuildAsyncClient:
 
             from google.cloud.devtools import cloudbuild_v1
 
-            def sample_cancel_build():
+            async def sample_cancel_build():
                 # Create a client
-                client = cloudbuild_v1.CloudBuildClient()
+                client = cloudbuild_v1.CloudBuildAsyncClient()
 
                 # Initialize request argument(s)
                 request = cloudbuild_v1.CancelBuildRequest(
@@ -640,7 +667,7 @@ class CloudBuildAsyncClient:
                 )
 
                 # Make the request
-                response = client.cancel_build(request=request)
+                response = await client.cancel_build(request=request)
 
                 # Handle the response
                 print(response)
@@ -718,6 +745,17 @@ class CloudBuildAsyncClient:
             client_info=DEFAULT_CLIENT_INFO,
         )
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project_id", request.project_id),
+                    ("id", request.id),
+                )
+            ),
+        )
+
         # Send the request.
         response = await rpc(
             request,
@@ -774,9 +812,9 @@ class CloudBuildAsyncClient:
 
             from google.cloud.devtools import cloudbuild_v1
 
-            def sample_retry_build():
+            async def sample_retry_build():
                 # Create a client
-                client = cloudbuild_v1.CloudBuildClient()
+                client = cloudbuild_v1.CloudBuildAsyncClient()
 
                 # Initialize request argument(s)
                 request = cloudbuild_v1.RetryBuildRequest(
@@ -789,7 +827,7 @@ class CloudBuildAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -873,6 +911,17 @@ class CloudBuildAsyncClient:
             client_info=DEFAULT_CLIENT_INFO,
         )
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project_id", request.project_id),
+                    ("id", request.id),
+                )
+            ),
+        )
+
         # Send the request.
         response = await rpc(
             request,
@@ -912,9 +961,9 @@ class CloudBuildAsyncClient:
 
             from google.cloud.devtools import cloudbuild_v1
 
-            def sample_approve_build():
+            async def sample_approve_build():
                 # Create a client
-                client = cloudbuild_v1.CloudBuildClient()
+                client = cloudbuild_v1.CloudBuildAsyncClient()
 
                 # Initialize request argument(s)
                 request = cloudbuild_v1.ApproveBuildRequest(
@@ -926,7 +975,7 @@ class CloudBuildAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1054,9 +1103,9 @@ class CloudBuildAsyncClient:
 
             from google.cloud.devtools import cloudbuild_v1
 
-            def sample_create_build_trigger():
+            async def sample_create_build_trigger():
                 # Create a client
-                client = cloudbuild_v1.CloudBuildClient()
+                client = cloudbuild_v1.CloudBuildAsyncClient()
 
                 # Initialize request argument(s)
                 trigger = cloudbuild_v1.BuildTrigger()
@@ -1068,7 +1117,7 @@ class CloudBuildAsyncClient:
                 )
 
                 # Make the request
-                response = client.create_build_trigger(request=request)
+                response = await client.create_build_trigger(request=request)
 
                 # Handle the response
                 print(response)
@@ -1129,6 +1178,14 @@ class CloudBuildAsyncClient:
             client_info=DEFAULT_CLIENT_INFO,
         )
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("project_id", request.project_id),)
+            ),
+        )
+
         # Send the request.
         response = await rpc(
             request,
@@ -1158,9 +1215,9 @@ class CloudBuildAsyncClient:
 
             from google.cloud.devtools import cloudbuild_v1
 
-            def sample_get_build_trigger():
+            async def sample_get_build_trigger():
                 # Create a client
-                client = cloudbuild_v1.CloudBuildClient()
+                client = cloudbuild_v1.CloudBuildAsyncClient()
 
                 # Initialize request argument(s)
                 request = cloudbuild_v1.GetBuildTriggerRequest(
@@ -1169,7 +1226,7 @@ class CloudBuildAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_build_trigger(request=request)
+                response = await client.get_build_trigger(request=request)
 
                 # Handle the response
                 print(response)
@@ -1242,6 +1299,17 @@ class CloudBuildAsyncClient:
             client_info=DEFAULT_CLIENT_INFO,
         )
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project_id", request.project_id),
+                    ("trigger_id", request.trigger_id),
+                )
+            ),
+        )
+
         # Send the request.
         response = await rpc(
             request,
@@ -1270,9 +1338,9 @@ class CloudBuildAsyncClient:
 
             from google.cloud.devtools import cloudbuild_v1
 
-            def sample_list_build_triggers():
+            async def sample_list_build_triggers():
                 # Create a client
-                client = cloudbuild_v1.CloudBuildClient()
+                client = cloudbuild_v1.CloudBuildAsyncClient()
 
                 # Initialize request argument(s)
                 request = cloudbuild_v1.ListBuildTriggersRequest(
@@ -1283,7 +1351,7 @@ class CloudBuildAsyncClient:
                 page_result = client.list_build_triggers(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -1346,6 +1414,14 @@ class CloudBuildAsyncClient:
             client_info=DEFAULT_CLIENT_INFO,
         )
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("project_id", request.project_id),)
+            ),
+        )
+
         # Send the request.
         response = await rpc(
             request,
@@ -1384,9 +1460,9 @@ class CloudBuildAsyncClient:
 
             from google.cloud.devtools import cloudbuild_v1
 
-            def sample_delete_build_trigger():
+            async def sample_delete_build_trigger():
                 # Create a client
-                client = cloudbuild_v1.CloudBuildClient()
+                client = cloudbuild_v1.CloudBuildAsyncClient()
 
                 # Initialize request argument(s)
                 request = cloudbuild_v1.DeleteBuildTriggerRequest(
@@ -1395,7 +1471,7 @@ class CloudBuildAsyncClient:
                 )
 
                 # Make the request
-                client.delete_build_trigger(request=request)
+                await client.delete_build_trigger(request=request)
 
         Args:
             request (Union[google.cloud.devtools.cloudbuild_v1.types.DeleteBuildTriggerRequest, dict]):
@@ -1455,6 +1531,17 @@ class CloudBuildAsyncClient:
             client_info=DEFAULT_CLIENT_INFO,
         )
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project_id", request.project_id),
+                    ("trigger_id", request.trigger_id),
+                )
+            ),
+        )
+
         # Send the request.
         await rpc(
             request,
@@ -1482,9 +1569,9 @@ class CloudBuildAsyncClient:
 
             from google.cloud.devtools import cloudbuild_v1
 
-            def sample_update_build_trigger():
+            async def sample_update_build_trigger():
                 # Create a client
-                client = cloudbuild_v1.CloudBuildClient()
+                client = cloudbuild_v1.CloudBuildAsyncClient()
 
                 # Initialize request argument(s)
                 trigger = cloudbuild_v1.BuildTrigger()
@@ -1497,7 +1584,7 @@ class CloudBuildAsyncClient:
                 )
 
                 # Make the request
-                response = client.update_build_trigger(request=request)
+                response = await client.update_build_trigger(request=request)
 
                 # Handle the response
                 print(response)
@@ -1565,6 +1652,17 @@ class CloudBuildAsyncClient:
             client_info=DEFAULT_CLIENT_INFO,
         )
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project_id", request.project_id),
+                    ("trigger_id", request.trigger_id),
+                )
+            ),
+        )
+
         # Send the request.
         response = await rpc(
             request,
@@ -1593,9 +1691,9 @@ class CloudBuildAsyncClient:
 
             from google.cloud.devtools import cloudbuild_v1
 
-            def sample_run_build_trigger():
+            async def sample_run_build_trigger():
                 # Create a client
-                client = cloudbuild_v1.CloudBuildClient()
+                client = cloudbuild_v1.CloudBuildAsyncClient()
 
                 # Initialize request argument(s)
                 request = cloudbuild_v1.RunBuildTriggerRequest(
@@ -1608,7 +1706,7 @@ class CloudBuildAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1698,6 +1796,17 @@ class CloudBuildAsyncClient:
             client_info=DEFAULT_CLIENT_INFO,
         )
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project_id", request.project_id),
+                    ("trigger_id", request.trigger_id),
+                )
+            ),
+        )
+
         # Send the request.
         response = await rpc(
             request,
@@ -1732,16 +1841,16 @@ class CloudBuildAsyncClient:
 
             from google.cloud.devtools import cloudbuild_v1
 
-            def sample_receive_trigger_webhook():
+            async def sample_receive_trigger_webhook():
                 # Create a client
-                client = cloudbuild_v1.CloudBuildClient()
+                client = cloudbuild_v1.CloudBuildAsyncClient()
 
                 # Initialize request argument(s)
                 request = cloudbuild_v1.ReceiveTriggerWebhookRequest(
                 )
 
                 # Make the request
-                response = client.receive_trigger_webhook(request=request)
+                response = await client.receive_trigger_webhook(request=request)
 
                 # Handle the response
                 print(response)
@@ -1774,6 +1883,17 @@ class CloudBuildAsyncClient:
             client_info=DEFAULT_CLIENT_INFO,
         )
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project_id", request.project_id),
+                    ("trigger", request.trigger),
+                )
+            ),
+        )
+
         # Send the request.
         response = await rpc(
             request,
@@ -1802,9 +1922,9 @@ class CloudBuildAsyncClient:
 
             from google.cloud.devtools import cloudbuild_v1
 
-            def sample_create_worker_pool():
+            async def sample_create_worker_pool():
                 # Create a client
-                client = cloudbuild_v1.CloudBuildClient()
+                client = cloudbuild_v1.CloudBuildAsyncClient()
 
                 # Initialize request argument(s)
                 request = cloudbuild_v1.CreateWorkerPoolRequest(
@@ -1817,7 +1937,7 @@ class CloudBuildAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1948,9 +2068,9 @@ class CloudBuildAsyncClient:
 
             from google.cloud.devtools import cloudbuild_v1
 
-            def sample_get_worker_pool():
+            async def sample_get_worker_pool():
                 # Create a client
-                client = cloudbuild_v1.CloudBuildClient()
+                client = cloudbuild_v1.CloudBuildAsyncClient()
 
                 # Initialize request argument(s)
                 request = cloudbuild_v1.GetWorkerPoolRequest(
@@ -1958,7 +2078,7 @@ class CloudBuildAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_worker_pool(request=request)
+                response = await client.get_worker_pool(request=request)
 
                 # Handle the response
                 print(response)
@@ -2067,9 +2187,9 @@ class CloudBuildAsyncClient:
 
             from google.cloud.devtools import cloudbuild_v1
 
-            def sample_delete_worker_pool():
+            async def sample_delete_worker_pool():
                 # Create a client
-                client = cloudbuild_v1.CloudBuildClient()
+                client = cloudbuild_v1.CloudBuildAsyncClient()
 
                 # Initialize request argument(s)
                 request = cloudbuild_v1.DeleteWorkerPoolRequest(
@@ -2081,7 +2201,7 @@ class CloudBuildAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2188,9 +2308,9 @@ class CloudBuildAsyncClient:
 
             from google.cloud.devtools import cloudbuild_v1
 
-            def sample_update_worker_pool():
+            async def sample_update_worker_pool():
                 # Create a client
-                client = cloudbuild_v1.CloudBuildClient()
+                client = cloudbuild_v1.CloudBuildAsyncClient()
 
                 # Initialize request argument(s)
                 request = cloudbuild_v1.UpdateWorkerPoolRequest(
@@ -2201,7 +2321,7 @@ class CloudBuildAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2324,9 +2444,9 @@ class CloudBuildAsyncClient:
 
             from google.cloud.devtools import cloudbuild_v1
 
-            def sample_list_worker_pools():
+            async def sample_list_worker_pools():
                 # Create a client
-                client = cloudbuild_v1.CloudBuildClient()
+                client = cloudbuild_v1.CloudBuildAsyncClient()
 
                 # Initialize request argument(s)
                 request = cloudbuild_v1.ListWorkerPoolsRequest(
@@ -2337,7 +2457,7 @@ class CloudBuildAsyncClient:
                 page_result = client.list_worker_pools(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
