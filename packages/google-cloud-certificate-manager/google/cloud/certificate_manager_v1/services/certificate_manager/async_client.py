@@ -283,9 +283,9 @@ class CertificateManagerAsyncClient:
 
             from google.cloud import certificate_manager_v1
 
-            def sample_list_certificates():
+            async def sample_list_certificates():
                 # Create a client
-                client = certificate_manager_v1.CertificateManagerClient()
+                client = certificate_manager_v1.CertificateManagerAsyncClient()
 
                 # Initialize request argument(s)
                 request = certificate_manager_v1.ListCertificatesRequest(
@@ -296,7 +296,7 @@ class CertificateManagerAsyncClient:
                 page_result = client.list_certificates(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -400,9 +400,9 @@ class CertificateManagerAsyncClient:
 
             from google.cloud import certificate_manager_v1
 
-            def sample_get_certificate():
+            async def sample_get_certificate():
                 # Create a client
-                client = certificate_manager_v1.CertificateManagerClient()
+                client = certificate_manager_v1.CertificateManagerAsyncClient()
 
                 # Initialize request argument(s)
                 request = certificate_manager_v1.GetCertificateRequest(
@@ -410,7 +410,7 @@ class CertificateManagerAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_certificate(request=request)
+                response = await client.get_certificate(request=request)
 
                 # Handle the response
                 print(response)
@@ -505,9 +505,9 @@ class CertificateManagerAsyncClient:
 
             from google.cloud import certificate_manager_v1
 
-            def sample_create_certificate():
+            async def sample_create_certificate():
                 # Create a client
-                client = certificate_manager_v1.CertificateManagerClient()
+                client = certificate_manager_v1.CertificateManagerAsyncClient()
 
                 # Initialize request argument(s)
                 request = certificate_manager_v1.CreateCertificateRequest(
@@ -520,7 +520,7 @@ class CertificateManagerAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -644,9 +644,9 @@ class CertificateManagerAsyncClient:
 
             from google.cloud import certificate_manager_v1
 
-            def sample_update_certificate():
+            async def sample_update_certificate():
                 # Create a client
-                client = certificate_manager_v1.CertificateManagerClient()
+                client = certificate_manager_v1.CertificateManagerAsyncClient()
 
                 # Initialize request argument(s)
                 request = certificate_manager_v1.UpdateCertificateRequest(
@@ -657,7 +657,7 @@ class CertificateManagerAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -774,9 +774,9 @@ class CertificateManagerAsyncClient:
 
             from google.cloud import certificate_manager_v1
 
-            def sample_delete_certificate():
+            async def sample_delete_certificate():
                 # Create a client
-                client = certificate_manager_v1.CertificateManagerClient()
+                client = certificate_manager_v1.CertificateManagerAsyncClient()
 
                 # Initialize request argument(s)
                 request = certificate_manager_v1.DeleteCertificateRequest(
@@ -788,7 +788,7 @@ class CertificateManagerAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -904,9 +904,9 @@ class CertificateManagerAsyncClient:
 
             from google.cloud import certificate_manager_v1
 
-            def sample_list_certificate_maps():
+            async def sample_list_certificate_maps():
                 # Create a client
-                client = certificate_manager_v1.CertificateManagerClient()
+                client = certificate_manager_v1.CertificateManagerAsyncClient()
 
                 # Initialize request argument(s)
                 request = certificate_manager_v1.ListCertificateMapsRequest(
@@ -917,7 +917,7 @@ class CertificateManagerAsyncClient:
                 page_result = client.list_certificate_maps(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -1021,9 +1021,9 @@ class CertificateManagerAsyncClient:
 
             from google.cloud import certificate_manager_v1
 
-            def sample_get_certificate_map():
+            async def sample_get_certificate_map():
                 # Create a client
-                client = certificate_manager_v1.CertificateManagerClient()
+                client = certificate_manager_v1.CertificateManagerAsyncClient()
 
                 # Initialize request argument(s)
                 request = certificate_manager_v1.GetCertificateMapRequest(
@@ -1031,7 +1031,7 @@ class CertificateManagerAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_certificate_map(request=request)
+                response = await client.get_certificate_map(request=request)
 
                 # Handle the response
                 print(response)
@@ -1129,9 +1129,9 @@ class CertificateManagerAsyncClient:
 
             from google.cloud import certificate_manager_v1
 
-            def sample_create_certificate_map():
+            async def sample_create_certificate_map():
                 # Create a client
-                client = certificate_manager_v1.CertificateManagerClient()
+                client = certificate_manager_v1.CertificateManagerAsyncClient()
 
                 # Initialize request argument(s)
                 request = certificate_manager_v1.CreateCertificateMapRequest(
@@ -1144,7 +1144,7 @@ class CertificateManagerAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1268,9 +1268,9 @@ class CertificateManagerAsyncClient:
 
             from google.cloud import certificate_manager_v1
 
-            def sample_update_certificate_map():
+            async def sample_update_certificate_map():
                 # Create a client
-                client = certificate_manager_v1.CertificateManagerClient()
+                client = certificate_manager_v1.CertificateManagerAsyncClient()
 
                 # Initialize request argument(s)
                 request = certificate_manager_v1.UpdateCertificateMapRequest(
@@ -1281,7 +1281,7 @@ class CertificateManagerAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1401,9 +1401,9 @@ class CertificateManagerAsyncClient:
 
             from google.cloud import certificate_manager_v1
 
-            def sample_delete_certificate_map():
+            async def sample_delete_certificate_map():
                 # Create a client
-                client = certificate_manager_v1.CertificateManagerClient()
+                client = certificate_manager_v1.CertificateManagerAsyncClient()
 
                 # Initialize request argument(s)
                 request = certificate_manager_v1.DeleteCertificateMapRequest(
@@ -1415,7 +1415,7 @@ class CertificateManagerAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1534,9 +1534,9 @@ class CertificateManagerAsyncClient:
 
             from google.cloud import certificate_manager_v1
 
-            def sample_list_certificate_map_entries():
+            async def sample_list_certificate_map_entries():
                 # Create a client
-                client = certificate_manager_v1.CertificateManagerClient()
+                client = certificate_manager_v1.CertificateManagerAsyncClient()
 
                 # Initialize request argument(s)
                 request = certificate_manager_v1.ListCertificateMapEntriesRequest(
@@ -1547,7 +1547,7 @@ class CertificateManagerAsyncClient:
                 page_result = client.list_certificate_map_entries(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -1652,9 +1652,9 @@ class CertificateManagerAsyncClient:
 
             from google.cloud import certificate_manager_v1
 
-            def sample_get_certificate_map_entry():
+            async def sample_get_certificate_map_entry():
                 # Create a client
-                client = certificate_manager_v1.CertificateManagerClient()
+                client = certificate_manager_v1.CertificateManagerAsyncClient()
 
                 # Initialize request argument(s)
                 request = certificate_manager_v1.GetCertificateMapEntryRequest(
@@ -1662,7 +1662,7 @@ class CertificateManagerAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_certificate_map_entry(request=request)
+                response = await client.get_certificate_map_entry(request=request)
 
                 # Handle the response
                 print(response)
@@ -1760,9 +1760,9 @@ class CertificateManagerAsyncClient:
 
             from google.cloud import certificate_manager_v1
 
-            def sample_create_certificate_map_entry():
+            async def sample_create_certificate_map_entry():
                 # Create a client
-                client = certificate_manager_v1.CertificateManagerClient()
+                client = certificate_manager_v1.CertificateManagerAsyncClient()
 
                 # Initialize request argument(s)
                 certificate_map_entry = certificate_manager_v1.CertificateMapEntry()
@@ -1779,7 +1779,7 @@ class CertificateManagerAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1908,9 +1908,9 @@ class CertificateManagerAsyncClient:
 
             from google.cloud import certificate_manager_v1
 
-            def sample_update_certificate_map_entry():
+            async def sample_update_certificate_map_entry():
                 # Create a client
-                client = certificate_manager_v1.CertificateManagerClient()
+                client = certificate_manager_v1.CertificateManagerAsyncClient()
 
                 # Initialize request argument(s)
                 certificate_map_entry = certificate_manager_v1.CertificateMapEntry()
@@ -1925,7 +1925,7 @@ class CertificateManagerAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2045,9 +2045,9 @@ class CertificateManagerAsyncClient:
 
             from google.cloud import certificate_manager_v1
 
-            def sample_delete_certificate_map_entry():
+            async def sample_delete_certificate_map_entry():
                 # Create a client
-                client = certificate_manager_v1.CertificateManagerClient()
+                client = certificate_manager_v1.CertificateManagerAsyncClient()
 
                 # Initialize request argument(s)
                 request = certificate_manager_v1.DeleteCertificateMapEntryRequest(
@@ -2059,7 +2059,7 @@ class CertificateManagerAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2176,9 +2176,9 @@ class CertificateManagerAsyncClient:
 
             from google.cloud import certificate_manager_v1
 
-            def sample_list_dns_authorizations():
+            async def sample_list_dns_authorizations():
                 # Create a client
-                client = certificate_manager_v1.CertificateManagerClient()
+                client = certificate_manager_v1.CertificateManagerAsyncClient()
 
                 # Initialize request argument(s)
                 request = certificate_manager_v1.ListDnsAuthorizationsRequest(
@@ -2189,7 +2189,7 @@ class CertificateManagerAsyncClient:
                 page_result = client.list_dns_authorizations(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -2293,9 +2293,9 @@ class CertificateManagerAsyncClient:
 
             from google.cloud import certificate_manager_v1
 
-            def sample_get_dns_authorization():
+            async def sample_get_dns_authorization():
                 # Create a client
-                client = certificate_manager_v1.CertificateManagerClient()
+                client = certificate_manager_v1.CertificateManagerAsyncClient()
 
                 # Initialize request argument(s)
                 request = certificate_manager_v1.GetDnsAuthorizationRequest(
@@ -2303,7 +2303,7 @@ class CertificateManagerAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_dns_authorization(request=request)
+                response = await client.get_dns_authorization(request=request)
 
                 # Handle the response
                 print(response)
@@ -2402,9 +2402,9 @@ class CertificateManagerAsyncClient:
 
             from google.cloud import certificate_manager_v1
 
-            def sample_create_dns_authorization():
+            async def sample_create_dns_authorization():
                 # Create a client
-                client = certificate_manager_v1.CertificateManagerClient()
+                client = certificate_manager_v1.CertificateManagerAsyncClient()
 
                 # Initialize request argument(s)
                 dns_authorization = certificate_manager_v1.DnsAuthorization()
@@ -2421,7 +2421,7 @@ class CertificateManagerAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2544,9 +2544,9 @@ class CertificateManagerAsyncClient:
 
             from google.cloud import certificate_manager_v1
 
-            def sample_update_dns_authorization():
+            async def sample_update_dns_authorization():
                 # Create a client
-                client = certificate_manager_v1.CertificateManagerClient()
+                client = certificate_manager_v1.CertificateManagerAsyncClient()
 
                 # Initialize request argument(s)
                 dns_authorization = certificate_manager_v1.DnsAuthorization()
@@ -2561,7 +2561,7 @@ class CertificateManagerAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2677,9 +2677,9 @@ class CertificateManagerAsyncClient:
 
             from google.cloud import certificate_manager_v1
 
-            def sample_delete_dns_authorization():
+            async def sample_delete_dns_authorization():
                 # Create a client
-                client = certificate_manager_v1.CertificateManagerClient()
+                client = certificate_manager_v1.CertificateManagerAsyncClient()
 
                 # Initialize request argument(s)
                 request = certificate_manager_v1.DeleteDnsAuthorizationRequest(
@@ -2691,7 +2691,7 @@ class CertificateManagerAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
