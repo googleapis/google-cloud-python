@@ -296,9 +296,9 @@ class CloudChannelServiceAsyncClient:
 
             from google.cloud import channel_v1
 
-            def sample_list_customers():
+            async def sample_list_customers():
                 # Create a client
-                client = channel_v1.CloudChannelServiceClient()
+                client = channel_v1.CloudChannelServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = channel_v1.ListCustomersRequest(
@@ -309,7 +309,7 @@ class CloudChannelServiceAsyncClient:
                 page_result = client.list_customers(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -396,9 +396,9 @@ class CloudChannelServiceAsyncClient:
 
             from google.cloud import channel_v1
 
-            def sample_get_customer():
+            async def sample_get_customer():
                 # Create a client
-                client = channel_v1.CloudChannelServiceClient()
+                client = channel_v1.CloudChannelServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = channel_v1.GetCustomerRequest(
@@ -406,7 +406,7 @@ class CloudChannelServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_customer(request=request)
+                response = await client.get_customer(request=request)
 
                 # Handle the response
                 print(response)
@@ -510,9 +510,9 @@ class CloudChannelServiceAsyncClient:
 
             from google.cloud import channel_v1
 
-            def sample_check_cloud_identity_accounts_exist():
+            async def sample_check_cloud_identity_accounts_exist():
                 # Create a client
-                client = channel_v1.CloudChannelServiceClient()
+                client = channel_v1.CloudChannelServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = channel_v1.CheckCloudIdentityAccountsExistRequest(
@@ -521,7 +521,7 @@ class CloudChannelServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.check_cloud_identity_accounts_exist(request=request)
+                response = await client.check_cloud_identity_accounts_exist(request=request)
 
                 # Handle the response
                 print(response)
@@ -597,9 +597,9 @@ class CloudChannelServiceAsyncClient:
 
             from google.cloud import channel_v1
 
-            def sample_create_customer():
+            async def sample_create_customer():
                 # Create a client
-                client = channel_v1.CloudChannelServiceClient()
+                client = channel_v1.CloudChannelServiceAsyncClient()
 
                 # Initialize request argument(s)
                 customer = channel_v1.Customer()
@@ -612,7 +612,7 @@ class CloudChannelServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.create_customer(request=request)
+                response = await client.create_customer(request=request)
 
                 # Handle the response
                 print(response)
@@ -688,9 +688,9 @@ class CloudChannelServiceAsyncClient:
 
             from google.cloud import channel_v1
 
-            def sample_update_customer():
+            async def sample_update_customer():
                 # Create a client
-                client = channel_v1.CloudChannelServiceClient()
+                client = channel_v1.CloudChannelServiceAsyncClient()
 
                 # Initialize request argument(s)
                 customer = channel_v1.Customer()
@@ -702,7 +702,7 @@ class CloudChannelServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.update_customer(request=request)
+                response = await client.update_customer(request=request)
 
                 # Handle the response
                 print(response)
@@ -779,9 +779,9 @@ class CloudChannelServiceAsyncClient:
 
             from google.cloud import channel_v1
 
-            def sample_delete_customer():
+            async def sample_delete_customer():
                 # Create a client
-                client = channel_v1.CloudChannelServiceClient()
+                client = channel_v1.CloudChannelServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = channel_v1.DeleteCustomerRequest(
@@ -789,7 +789,7 @@ class CloudChannelServiceAsyncClient:
                 )
 
                 # Make the request
-                client.delete_customer(request=request)
+                await client.delete_customer(request=request)
 
         Args:
             request (Union[google.cloud.channel_v1.types.DeleteCustomerRequest, dict]):
@@ -877,9 +877,9 @@ class CloudChannelServiceAsyncClient:
 
             from google.cloud import channel_v1
 
-            def sample_import_customer():
+            async def sample_import_customer():
                 # Create a client
-                client = channel_v1.CloudChannelServiceClient()
+                client = channel_v1.CloudChannelServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = channel_v1.ImportCustomerRequest(
@@ -889,7 +889,7 @@ class CloudChannelServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.import_customer(request=request)
+                response = await client.import_customer(request=request)
 
                 # Handle the response
                 print(response)
@@ -974,9 +974,9 @@ class CloudChannelServiceAsyncClient:
 
             from google.cloud import channel_v1
 
-            def sample_provision_cloud_identity():
+            async def sample_provision_cloud_identity():
                 # Create a client
-                client = channel_v1.CloudChannelServiceClient()
+                client = channel_v1.CloudChannelServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = channel_v1.ProvisionCloudIdentityRequest(
@@ -988,7 +988,7 @@ class CloudChannelServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1073,9 +1073,9 @@ class CloudChannelServiceAsyncClient:
 
             from google.cloud import channel_v1
 
-            def sample_list_entitlements():
+            async def sample_list_entitlements():
                 # Create a client
-                client = channel_v1.CloudChannelServiceClient()
+                client = channel_v1.CloudChannelServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = channel_v1.ListEntitlementsRequest(
@@ -1086,7 +1086,7 @@ class CloudChannelServiceAsyncClient:
                 page_result = client.list_entitlements(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -1181,9 +1181,9 @@ class CloudChannelServiceAsyncClient:
 
             from google.cloud import channel_v1
 
-            def sample_list_transferable_skus():
+            async def sample_list_transferable_skus():
                 # Create a client
-                client = channel_v1.CloudChannelServiceClient()
+                client = channel_v1.CloudChannelServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = channel_v1.ListTransferableSkusRequest(
@@ -1195,7 +1195,7 @@ class CloudChannelServiceAsyncClient:
                 page_result = client.list_transferable_skus(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -1292,9 +1292,9 @@ class CloudChannelServiceAsyncClient:
 
             from google.cloud import channel_v1
 
-            def sample_list_transferable_offers():
+            async def sample_list_transferable_offers():
                 # Create a client
-                client = channel_v1.CloudChannelServiceClient()
+                client = channel_v1.CloudChannelServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = channel_v1.ListTransferableOffersRequest(
@@ -1307,7 +1307,7 @@ class CloudChannelServiceAsyncClient:
                 page_result = client.list_transferable_offers(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -1392,9 +1392,9 @@ class CloudChannelServiceAsyncClient:
 
             from google.cloud import channel_v1
 
-            def sample_get_entitlement():
+            async def sample_get_entitlement():
                 # Create a client
-                client = channel_v1.CloudChannelServiceClient()
+                client = channel_v1.CloudChannelServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = channel_v1.GetEntitlementRequest(
@@ -1402,7 +1402,7 @@ class CloudChannelServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_entitlement(request=request)
+                response = await client.get_entitlement(request=request)
 
                 # Handle the response
                 print(response)
@@ -1509,9 +1509,9 @@ class CloudChannelServiceAsyncClient:
 
             from google.cloud import channel_v1
 
-            def sample_create_entitlement():
+            async def sample_create_entitlement():
                 # Create a client
-                client = channel_v1.CloudChannelServiceClient()
+                client = channel_v1.CloudChannelServiceAsyncClient()
 
                 # Initialize request argument(s)
                 entitlement = channel_v1.Entitlement()
@@ -1527,7 +1527,7 @@ class CloudChannelServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1626,9 +1626,9 @@ class CloudChannelServiceAsyncClient:
 
             from google.cloud import channel_v1
 
-            def sample_change_parameters():
+            async def sample_change_parameters():
                 # Create a client
-                client = channel_v1.CloudChannelServiceClient()
+                client = channel_v1.CloudChannelServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = channel_v1.ChangeParametersRequest(
@@ -1640,7 +1640,7 @@ class CloudChannelServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1741,9 +1741,9 @@ class CloudChannelServiceAsyncClient:
 
             from google.cloud import channel_v1
 
-            def sample_change_renewal_settings():
+            async def sample_change_renewal_settings():
                 # Create a client
-                client = channel_v1.CloudChannelServiceClient()
+                client = channel_v1.CloudChannelServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = channel_v1.ChangeRenewalSettingsRequest(
@@ -1755,7 +1755,7 @@ class CloudChannelServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1852,9 +1852,9 @@ class CloudChannelServiceAsyncClient:
 
             from google.cloud import channel_v1
 
-            def sample_change_offer():
+            async def sample_change_offer():
                 # Create a client
-                client = channel_v1.CloudChannelServiceClient()
+                client = channel_v1.CloudChannelServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = channel_v1.ChangeOfferRequest(
@@ -1867,7 +1867,7 @@ class CloudChannelServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1967,9 +1967,9 @@ class CloudChannelServiceAsyncClient:
 
             from google.cloud import channel_v1
 
-            def sample_start_paid_service():
+            async def sample_start_paid_service():
                 # Create a client
-                client = channel_v1.CloudChannelServiceClient()
+                client = channel_v1.CloudChannelServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = channel_v1.StartPaidServiceRequest(
@@ -1981,7 +1981,7 @@ class CloudChannelServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2078,9 +2078,9 @@ class CloudChannelServiceAsyncClient:
 
             from google.cloud import channel_v1
 
-            def sample_suspend_entitlement():
+            async def sample_suspend_entitlement():
                 # Create a client
-                client = channel_v1.CloudChannelServiceClient()
+                client = channel_v1.CloudChannelServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = channel_v1.SuspendEntitlementRequest(
@@ -2092,7 +2092,7 @@ class CloudChannelServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2194,9 +2194,9 @@ class CloudChannelServiceAsyncClient:
 
             from google.cloud import channel_v1
 
-            def sample_cancel_entitlement():
+            async def sample_cancel_entitlement():
                 # Create a client
-                client = channel_v1.CloudChannelServiceClient()
+                client = channel_v1.CloudChannelServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = channel_v1.CancelEntitlementRequest(
@@ -2208,7 +2208,7 @@ class CloudChannelServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2321,9 +2321,9 @@ class CloudChannelServiceAsyncClient:
 
             from google.cloud import channel_v1
 
-            def sample_activate_entitlement():
+            async def sample_activate_entitlement():
                 # Create a client
-                client = channel_v1.CloudChannelServiceClient()
+                client = channel_v1.CloudChannelServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = channel_v1.ActivateEntitlementRequest(
@@ -2335,7 +2335,7 @@ class CloudChannelServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2445,9 +2445,9 @@ class CloudChannelServiceAsyncClient:
 
             from google.cloud import channel_v1
 
-            def sample_transfer_entitlements():
+            async def sample_transfer_entitlements():
                 # Create a client
-                client = channel_v1.CloudChannelServiceClient()
+                client = channel_v1.CloudChannelServiceAsyncClient()
 
                 # Initialize request argument(s)
                 entitlements = channel_v1.Entitlement()
@@ -2463,7 +2463,7 @@ class CloudChannelServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2572,9 +2572,9 @@ class CloudChannelServiceAsyncClient:
 
             from google.cloud import channel_v1
 
-            def sample_transfer_entitlements_to_google():
+            async def sample_transfer_entitlements_to_google():
                 # Create a client
-                client = channel_v1.CloudChannelServiceClient()
+                client = channel_v1.CloudChannelServiceAsyncClient()
 
                 # Initialize request argument(s)
                 entitlements = channel_v1.Entitlement()
@@ -2590,7 +2590,7 @@ class CloudChannelServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2688,9 +2688,9 @@ class CloudChannelServiceAsyncClient:
 
             from google.cloud import channel_v1
 
-            def sample_list_channel_partner_links():
+            async def sample_list_channel_partner_links():
                 # Create a client
-                client = channel_v1.CloudChannelServiceClient()
+                client = channel_v1.CloudChannelServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = channel_v1.ListChannelPartnerLinksRequest(
@@ -2701,7 +2701,7 @@ class CloudChannelServiceAsyncClient:
                 page_result = client.list_channel_partner_links(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -2789,9 +2789,9 @@ class CloudChannelServiceAsyncClient:
 
             from google.cloud import channel_v1
 
-            def sample_get_channel_partner_link():
+            async def sample_get_channel_partner_link():
                 # Create a client
-                client = channel_v1.CloudChannelServiceClient()
+                client = channel_v1.CloudChannelServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = channel_v1.GetChannelPartnerLinkRequest(
@@ -2799,7 +2799,7 @@ class CloudChannelServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_channel_partner_link(request=request)
+                response = await client.get_channel_partner_link(request=request)
 
                 # Handle the response
                 print(response)
@@ -2887,9 +2887,9 @@ class CloudChannelServiceAsyncClient:
 
             from google.cloud import channel_v1
 
-            def sample_create_channel_partner_link():
+            async def sample_create_channel_partner_link():
                 # Create a client
-                client = channel_v1.CloudChannelServiceClient()
+                client = channel_v1.CloudChannelServiceAsyncClient()
 
                 # Initialize request argument(s)
                 channel_partner_link = channel_v1.ChannelPartnerLink()
@@ -2902,7 +2902,7 @@ class CloudChannelServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.create_channel_partner_link(request=request)
+                response = await client.create_channel_partner_link(request=request)
 
                 # Handle the response
                 print(response)
@@ -2990,9 +2990,9 @@ class CloudChannelServiceAsyncClient:
 
             from google.cloud import channel_v1
 
-            def sample_update_channel_partner_link():
+            async def sample_update_channel_partner_link():
                 # Create a client
-                client = channel_v1.CloudChannelServiceClient()
+                client = channel_v1.CloudChannelServiceAsyncClient()
 
                 # Initialize request argument(s)
                 channel_partner_link = channel_v1.ChannelPartnerLink()
@@ -3005,7 +3005,7 @@ class CloudChannelServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.update_channel_partner_link(request=request)
+                response = await client.update_channel_partner_link(request=request)
 
                 # Handle the response
                 print(response)
@@ -3085,9 +3085,9 @@ class CloudChannelServiceAsyncClient:
 
             from google.cloud import channel_v1
 
-            def sample_get_customer_repricing_config():
+            async def sample_get_customer_repricing_config():
                 # Create a client
-                client = channel_v1.CloudChannelServiceClient()
+                client = channel_v1.CloudChannelServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = channel_v1.GetCustomerRepricingConfigRequest(
@@ -3095,7 +3095,7 @@ class CloudChannelServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_customer_repricing_config(request=request)
+                response = await client.get_customer_repricing_config(request=request)
 
                 # Handle the response
                 print(response)
@@ -3205,9 +3205,9 @@ class CloudChannelServiceAsyncClient:
 
             from google.cloud import channel_v1
 
-            def sample_list_customer_repricing_configs():
+            async def sample_list_customer_repricing_configs():
                 # Create a client
-                client = channel_v1.CloudChannelServiceClient()
+                client = channel_v1.CloudChannelServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = channel_v1.ListCustomerRepricingConfigsRequest(
@@ -3218,7 +3218,7 @@ class CloudChannelServiceAsyncClient:
                 page_result = client.list_customer_repricing_configs(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -3363,9 +3363,9 @@ class CloudChannelServiceAsyncClient:
 
             from google.cloud import channel_v1
 
-            def sample_create_customer_repricing_config():
+            async def sample_create_customer_repricing_config():
                 # Create a client
-                client = channel_v1.CloudChannelServiceClient()
+                client = channel_v1.CloudChannelServiceAsyncClient()
 
                 # Initialize request argument(s)
                 customer_repricing_config = channel_v1.CustomerRepricingConfig()
@@ -3377,7 +3377,7 @@ class CloudChannelServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.create_customer_repricing_config(request=request)
+                response = await client.create_customer_repricing_config(request=request)
 
                 # Handle the response
                 print(response)
@@ -3504,9 +3504,9 @@ class CloudChannelServiceAsyncClient:
 
             from google.cloud import channel_v1
 
-            def sample_update_customer_repricing_config():
+            async def sample_update_customer_repricing_config():
                 # Create a client
-                client = channel_v1.CloudChannelServiceClient()
+                client = channel_v1.CloudChannelServiceAsyncClient()
 
                 # Initialize request argument(s)
                 customer_repricing_config = channel_v1.CustomerRepricingConfig()
@@ -3517,7 +3517,7 @@ class CloudChannelServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.update_customer_repricing_config(request=request)
+                response = await client.update_customer_repricing_config(request=request)
 
                 # Handle the response
                 print(response)
@@ -3626,9 +3626,9 @@ class CloudChannelServiceAsyncClient:
 
             from google.cloud import channel_v1
 
-            def sample_delete_customer_repricing_config():
+            async def sample_delete_customer_repricing_config():
                 # Create a client
-                client = channel_v1.CloudChannelServiceClient()
+                client = channel_v1.CloudChannelServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = channel_v1.DeleteCustomerRepricingConfigRequest(
@@ -3636,7 +3636,7 @@ class CloudChannelServiceAsyncClient:
                 )
 
                 # Make the request
-                client.delete_customer_repricing_config(request=request)
+                await client.delete_customer_repricing_config(request=request)
 
         Args:
             request (Union[google.cloud.channel_v1.types.DeleteCustomerRepricingConfigRequest, dict]):
@@ -3725,9 +3725,9 @@ class CloudChannelServiceAsyncClient:
 
             from google.cloud import channel_v1
 
-            def sample_get_channel_partner_repricing_config():
+            async def sample_get_channel_partner_repricing_config():
                 # Create a client
-                client = channel_v1.CloudChannelServiceClient()
+                client = channel_v1.CloudChannelServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = channel_v1.GetChannelPartnerRepricingConfigRequest(
@@ -3735,7 +3735,7 @@ class CloudChannelServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_channel_partner_repricing_config(request=request)
+                response = await client.get_channel_partner_repricing_config(request=request)
 
                 # Handle the response
                 print(response)
@@ -3846,9 +3846,9 @@ class CloudChannelServiceAsyncClient:
 
             from google.cloud import channel_v1
 
-            def sample_list_channel_partner_repricing_configs():
+            async def sample_list_channel_partner_repricing_configs():
                 # Create a client
-                client = channel_v1.CloudChannelServiceClient()
+                client = channel_v1.CloudChannelServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = channel_v1.ListChannelPartnerRepricingConfigsRequest(
@@ -3859,7 +3859,7 @@ class CloudChannelServiceAsyncClient:
                 page_result = client.list_channel_partner_repricing_configs(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -4002,9 +4002,9 @@ class CloudChannelServiceAsyncClient:
 
             from google.cloud import channel_v1
 
-            def sample_create_channel_partner_repricing_config():
+            async def sample_create_channel_partner_repricing_config():
                 # Create a client
-                client = channel_v1.CloudChannelServiceClient()
+                client = channel_v1.CloudChannelServiceAsyncClient()
 
                 # Initialize request argument(s)
                 channel_partner_repricing_config = channel_v1.ChannelPartnerRepricingConfig()
@@ -4016,7 +4016,7 @@ class CloudChannelServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.create_channel_partner_repricing_config(request=request)
+                response = await client.create_channel_partner_repricing_config(request=request)
 
                 # Handle the response
                 print(response)
@@ -4147,9 +4147,9 @@ class CloudChannelServiceAsyncClient:
 
             from google.cloud import channel_v1
 
-            def sample_update_channel_partner_repricing_config():
+            async def sample_update_channel_partner_repricing_config():
                 # Create a client
-                client = channel_v1.CloudChannelServiceClient()
+                client = channel_v1.CloudChannelServiceAsyncClient()
 
                 # Initialize request argument(s)
                 channel_partner_repricing_config = channel_v1.ChannelPartnerRepricingConfig()
@@ -4160,7 +4160,7 @@ class CloudChannelServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.update_channel_partner_repricing_config(request=request)
+                response = await client.update_channel_partner_repricing_config(request=request)
 
                 # Handle the response
                 print(response)
@@ -4272,9 +4272,9 @@ class CloudChannelServiceAsyncClient:
 
             from google.cloud import channel_v1
 
-            def sample_delete_channel_partner_repricing_config():
+            async def sample_delete_channel_partner_repricing_config():
                 # Create a client
-                client = channel_v1.CloudChannelServiceClient()
+                client = channel_v1.CloudChannelServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = channel_v1.DeleteChannelPartnerRepricingConfigRequest(
@@ -4282,7 +4282,7 @@ class CloudChannelServiceAsyncClient:
                 )
 
                 # Make the request
-                client.delete_channel_partner_repricing_config(request=request)
+                await client.delete_channel_partner_repricing_config(request=request)
 
         Args:
             request (Union[google.cloud.channel_v1.types.DeleteChannelPartnerRepricingConfigRequest, dict]):
@@ -4367,9 +4367,9 @@ class CloudChannelServiceAsyncClient:
 
             from google.cloud import channel_v1
 
-            def sample_lookup_offer():
+            async def sample_lookup_offer():
                 # Create a client
-                client = channel_v1.CloudChannelServiceClient()
+                client = channel_v1.CloudChannelServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = channel_v1.LookupOfferRequest(
@@ -4377,7 +4377,7 @@ class CloudChannelServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.lookup_offer(request=request)
+                response = await client.lookup_offer(request=request)
 
                 # Handle the response
                 print(response)
@@ -4449,9 +4449,9 @@ class CloudChannelServiceAsyncClient:
 
             from google.cloud import channel_v1
 
-            def sample_list_products():
+            async def sample_list_products():
                 # Create a client
-                client = channel_v1.CloudChannelServiceClient()
+                client = channel_v1.CloudChannelServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = channel_v1.ListProductsRequest(
@@ -4462,7 +4462,7 @@ class CloudChannelServiceAsyncClient:
                 page_result = client.list_products(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -4532,9 +4532,9 @@ class CloudChannelServiceAsyncClient:
 
             from google.cloud import channel_v1
 
-            def sample_list_skus():
+            async def sample_list_skus():
                 # Create a client
-                client = channel_v1.CloudChannelServiceClient()
+                client = channel_v1.CloudChannelServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = channel_v1.ListSkusRequest(
@@ -4546,7 +4546,7 @@ class CloudChannelServiceAsyncClient:
                 page_result = client.list_skus(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -4622,9 +4622,9 @@ class CloudChannelServiceAsyncClient:
 
             from google.cloud import channel_v1
 
-            def sample_list_offers():
+            async def sample_list_offers():
                 # Create a client
-                client = channel_v1.CloudChannelServiceClient()
+                client = channel_v1.CloudChannelServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = channel_v1.ListOffersRequest(
@@ -4635,7 +4635,7 @@ class CloudChannelServiceAsyncClient:
                 page_result = client.list_offers(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -4716,9 +4716,9 @@ class CloudChannelServiceAsyncClient:
 
             from google.cloud import channel_v1
 
-            def sample_list_purchasable_skus():
+            async def sample_list_purchasable_skus():
                 # Create a client
-                client = channel_v1.CloudChannelServiceClient()
+                client = channel_v1.CloudChannelServiceAsyncClient()
 
                 # Initialize request argument(s)
                 create_entitlement_purchase = channel_v1.CreateEntitlementPurchase()
@@ -4733,7 +4733,7 @@ class CloudChannelServiceAsyncClient:
                 page_result = client.list_purchasable_skus(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -4816,9 +4816,9 @@ class CloudChannelServiceAsyncClient:
 
             from google.cloud import channel_v1
 
-            def sample_list_purchasable_offers():
+            async def sample_list_purchasable_offers():
                 # Create a client
-                client = channel_v1.CloudChannelServiceClient()
+                client = channel_v1.CloudChannelServiceAsyncClient()
 
                 # Initialize request argument(s)
                 create_entitlement_purchase = channel_v1.CreateEntitlementPurchase()
@@ -4833,7 +4833,7 @@ class CloudChannelServiceAsyncClient:
                 page_result = client.list_purchasable_offers(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -4924,9 +4924,9 @@ class CloudChannelServiceAsyncClient:
 
             from google.cloud import channel_v1
 
-            def sample_register_subscriber():
+            async def sample_register_subscriber():
                 # Create a client
-                client = channel_v1.CloudChannelServiceClient()
+                client = channel_v1.CloudChannelServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = channel_v1.RegisterSubscriberRequest(
@@ -4935,7 +4935,7 @@ class CloudChannelServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.register_subscriber(request=request)
+                response = await client.register_subscriber(request=request)
 
                 # Handle the response
                 print(response)
@@ -5019,9 +5019,9 @@ class CloudChannelServiceAsyncClient:
 
             from google.cloud import channel_v1
 
-            def sample_unregister_subscriber():
+            async def sample_unregister_subscriber():
                 # Create a client
-                client = channel_v1.CloudChannelServiceClient()
+                client = channel_v1.CloudChannelServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = channel_v1.UnregisterSubscriberRequest(
@@ -5030,7 +5030,7 @@ class CloudChannelServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.unregister_subscriber(request=request)
+                response = await client.unregister_subscriber(request=request)
 
                 # Handle the response
                 print(response)
@@ -5109,9 +5109,9 @@ class CloudChannelServiceAsyncClient:
 
             from google.cloud import channel_v1
 
-            def sample_list_subscribers():
+            async def sample_list_subscribers():
                 # Create a client
-                client = channel_v1.CloudChannelServiceClient()
+                client = channel_v1.CloudChannelServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = channel_v1.ListSubscribersRequest(
@@ -5122,7 +5122,7 @@ class CloudChannelServiceAsyncClient:
                 page_result = client.list_subscribers(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
