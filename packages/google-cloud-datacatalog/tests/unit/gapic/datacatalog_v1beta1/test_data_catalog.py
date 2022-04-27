@@ -870,7 +870,7 @@ def test_search_catalog_pager(transport_name: str = "grpc"):
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, search.SearchCatalogResult) for i in results)
 
@@ -1125,7 +1125,7 @@ def test_create_entry_group_field_headers():
     # a field header. Set these to a non-empty value.
     request = datacatalog.CreateEntryGroupRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1143,7 +1143,7 @@ def test_create_entry_group_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -1157,7 +1157,7 @@ async def test_create_entry_group_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = datacatalog.CreateEntryGroupRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1177,7 +1177,7 @@ async def test_create_entry_group_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -1399,7 +1399,7 @@ def test_update_entry_group_field_headers():
     # a field header. Set these to a non-empty value.
     request = datacatalog.UpdateEntryGroupRequest()
 
-    request.entry_group.name = "entry_group.name/value"
+    request.entry_group.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1417,7 +1417,7 @@ def test_update_entry_group_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "entry_group.name=entry_group.name/value",
+        "entry_group.name=name_value",
     ) in kw["metadata"]
 
 
@@ -1431,7 +1431,7 @@ async def test_update_entry_group_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = datacatalog.UpdateEntryGroupRequest()
 
-    request.entry_group.name = "entry_group.name/value"
+    request.entry_group.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1451,7 +1451,7 @@ async def test_update_entry_group_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "entry_group.name=entry_group.name/value",
+        "entry_group.name=name_value",
     ) in kw["metadata"]
 
 
@@ -1657,7 +1657,7 @@ def test_get_entry_group_field_headers():
     # a field header. Set these to a non-empty value.
     request = datacatalog.GetEntryGroupRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_entry_group), "__call__") as call:
@@ -1673,7 +1673,7 @@ def test_get_entry_group_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1687,7 +1687,7 @@ async def test_get_entry_group_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = datacatalog.GetEntryGroupRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_entry_group), "__call__") as call:
@@ -1705,7 +1705,7 @@ async def test_get_entry_group_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1897,7 +1897,7 @@ def test_delete_entry_group_field_headers():
     # a field header. Set these to a non-empty value.
     request = datacatalog.DeleteEntryGroupRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1915,7 +1915,7 @@ def test_delete_entry_group_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1929,7 +1929,7 @@ async def test_delete_entry_group_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = datacatalog.DeleteEntryGroupRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1947,7 +1947,7 @@ async def test_delete_entry_group_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2139,7 +2139,7 @@ def test_list_entry_groups_field_headers():
     # a field header. Set these to a non-empty value.
     request = datacatalog.ListEntryGroupsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2157,7 +2157,7 @@ def test_list_entry_groups_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -2171,7 +2171,7 @@ async def test_list_entry_groups_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = datacatalog.ListEntryGroupsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2191,7 +2191,7 @@ async def test_list_entry_groups_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -2328,7 +2328,7 @@ def test_list_entry_groups_pager(transport_name: str = "grpc"):
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, datacatalog.EntryGroup) for i in results)
 
@@ -2592,7 +2592,7 @@ def test_create_entry_field_headers():
     # a field header. Set these to a non-empty value.
     request = datacatalog.CreateEntryRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_entry), "__call__") as call:
@@ -2608,7 +2608,7 @@ def test_create_entry_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -2622,7 +2622,7 @@ async def test_create_entry_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = datacatalog.CreateEntryRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_entry), "__call__") as call:
@@ -2638,7 +2638,7 @@ async def test_create_entry_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -2857,7 +2857,7 @@ def test_update_entry_field_headers():
     # a field header. Set these to a non-empty value.
     request = datacatalog.UpdateEntryRequest()
 
-    request.entry.name = "entry.name/value"
+    request.entry.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_entry), "__call__") as call:
@@ -2873,7 +2873,7 @@ def test_update_entry_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "entry.name=entry.name/value",
+        "entry.name=name_value",
     ) in kw["metadata"]
 
 
@@ -2887,7 +2887,7 @@ async def test_update_entry_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = datacatalog.UpdateEntryRequest()
 
-    request.entry.name = "entry.name/value"
+    request.entry.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_entry), "__call__") as call:
@@ -2903,7 +2903,7 @@ async def test_update_entry_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "entry.name=entry.name/value",
+        "entry.name=name_value",
     ) in kw["metadata"]
 
 
@@ -3087,7 +3087,7 @@ def test_delete_entry_field_headers():
     # a field header. Set these to a non-empty value.
     request = datacatalog.DeleteEntryRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_entry), "__call__") as call:
@@ -3103,7 +3103,7 @@ def test_delete_entry_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -3117,7 +3117,7 @@ async def test_delete_entry_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = datacatalog.DeleteEntryRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_entry), "__call__") as call:
@@ -3133,7 +3133,7 @@ async def test_delete_entry_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -3332,7 +3332,7 @@ def test_get_entry_field_headers():
     # a field header. Set these to a non-empty value.
     request = datacatalog.GetEntryRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_entry), "__call__") as call:
@@ -3348,7 +3348,7 @@ def test_get_entry_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -3362,7 +3362,7 @@ async def test_get_entry_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = datacatalog.GetEntryRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_entry), "__call__") as call:
@@ -3378,7 +3378,7 @@ async def test_get_entry_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -3666,7 +3666,7 @@ def test_list_entries_field_headers():
     # a field header. Set these to a non-empty value.
     request = datacatalog.ListEntriesRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_entries), "__call__") as call:
@@ -3682,7 +3682,7 @@ def test_list_entries_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -3696,7 +3696,7 @@ async def test_list_entries_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = datacatalog.ListEntriesRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_entries), "__call__") as call:
@@ -3714,7 +3714,7 @@ async def test_list_entries_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -3845,7 +3845,7 @@ def test_list_entries_pager(transport_name: str = "grpc"):
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, datacatalog.Entry) for i in results)
 
@@ -4096,7 +4096,7 @@ def test_create_tag_template_field_headers():
     # a field header. Set these to a non-empty value.
     request = datacatalog.CreateTagTemplateRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4114,7 +4114,7 @@ def test_create_tag_template_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -4128,7 +4128,7 @@ async def test_create_tag_template_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = datacatalog.CreateTagTemplateRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4146,7 +4146,7 @@ async def test_create_tag_template_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -4356,7 +4356,7 @@ def test_get_tag_template_field_headers():
     # a field header. Set these to a non-empty value.
     request = datacatalog.GetTagTemplateRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_tag_template), "__call__") as call:
@@ -4372,7 +4372,7 @@ def test_get_tag_template_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -4386,7 +4386,7 @@ async def test_get_tag_template_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = datacatalog.GetTagTemplateRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_tag_template), "__call__") as call:
@@ -4402,7 +4402,7 @@ async def test_get_tag_template_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -4594,7 +4594,7 @@ def test_update_tag_template_field_headers():
     # a field header. Set these to a non-empty value.
     request = datacatalog.UpdateTagTemplateRequest()
 
-    request.tag_template.name = "tag_template.name/value"
+    request.tag_template.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4612,7 +4612,7 @@ def test_update_tag_template_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "tag_template.name=tag_template.name/value",
+        "tag_template.name=name_value",
     ) in kw["metadata"]
 
 
@@ -4626,7 +4626,7 @@ async def test_update_tag_template_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = datacatalog.UpdateTagTemplateRequest()
 
-    request.tag_template.name = "tag_template.name/value"
+    request.tag_template.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4644,7 +4644,7 @@ async def test_update_tag_template_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "tag_template.name=tag_template.name/value",
+        "tag_template.name=name_value",
     ) in kw["metadata"]
 
 
@@ -4838,7 +4838,7 @@ def test_delete_tag_template_field_headers():
     # a field header. Set these to a non-empty value.
     request = datacatalog.DeleteTagTemplateRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4856,7 +4856,7 @@ def test_delete_tag_template_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -4870,7 +4870,7 @@ async def test_delete_tag_template_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = datacatalog.DeleteTagTemplateRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4888,7 +4888,7 @@ async def test_delete_tag_template_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -5103,7 +5103,7 @@ def test_create_tag_template_field_field_headers():
     # a field header. Set these to a non-empty value.
     request = datacatalog.CreateTagTemplateFieldRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5121,7 +5121,7 @@ def test_create_tag_template_field_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -5135,7 +5135,7 @@ async def test_create_tag_template_field_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = datacatalog.CreateTagTemplateFieldRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5155,7 +5155,7 @@ async def test_create_tag_template_field_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -5382,7 +5382,7 @@ def test_update_tag_template_field_field_headers():
     # a field header. Set these to a non-empty value.
     request = datacatalog.UpdateTagTemplateFieldRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5400,7 +5400,7 @@ def test_update_tag_template_field_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -5414,7 +5414,7 @@ async def test_update_tag_template_field_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = datacatalog.UpdateTagTemplateFieldRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5434,7 +5434,7 @@ async def test_update_tag_template_field_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -5661,7 +5661,7 @@ def test_rename_tag_template_field_field_headers():
     # a field header. Set these to a non-empty value.
     request = datacatalog.RenameTagTemplateFieldRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5679,7 +5679,7 @@ def test_rename_tag_template_field_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -5693,7 +5693,7 @@ async def test_rename_tag_template_field_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = datacatalog.RenameTagTemplateFieldRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5713,7 +5713,7 @@ async def test_rename_tag_template_field_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -5910,7 +5910,7 @@ def test_delete_tag_template_field_field_headers():
     # a field header. Set these to a non-empty value.
     request = datacatalog.DeleteTagTemplateFieldRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5928,7 +5928,7 @@ def test_delete_tag_template_field_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -5942,7 +5942,7 @@ async def test_delete_tag_template_field_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = datacatalog.DeleteTagTemplateFieldRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5960,7 +5960,7 @@ async def test_delete_tag_template_field_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -6165,7 +6165,7 @@ def test_create_tag_field_headers():
     # a field header. Set these to a non-empty value.
     request = datacatalog.CreateTagRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_tag), "__call__") as call:
@@ -6181,7 +6181,7 @@ def test_create_tag_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -6195,7 +6195,7 @@ async def test_create_tag_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = datacatalog.CreateTagRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_tag), "__call__") as call:
@@ -6211,7 +6211,7 @@ async def test_create_tag_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -6412,7 +6412,7 @@ def test_update_tag_field_headers():
     # a field header. Set these to a non-empty value.
     request = datacatalog.UpdateTagRequest()
 
-    request.tag.name = "tag.name/value"
+    request.tag.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_tag), "__call__") as call:
@@ -6428,7 +6428,7 @@ def test_update_tag_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "tag.name=tag.name/value",
+        "tag.name=name_value",
     ) in kw["metadata"]
 
 
@@ -6442,7 +6442,7 @@ async def test_update_tag_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = datacatalog.UpdateTagRequest()
 
-    request.tag.name = "tag.name/value"
+    request.tag.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_tag), "__call__") as call:
@@ -6458,7 +6458,7 @@ async def test_update_tag_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "tag.name=tag.name/value",
+        "tag.name=name_value",
     ) in kw["metadata"]
 
 
@@ -6642,7 +6642,7 @@ def test_delete_tag_field_headers():
     # a field header. Set these to a non-empty value.
     request = datacatalog.DeleteTagRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_tag), "__call__") as call:
@@ -6658,7 +6658,7 @@ def test_delete_tag_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -6672,7 +6672,7 @@ async def test_delete_tag_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = datacatalog.DeleteTagRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_tag), "__call__") as call:
@@ -6688,7 +6688,7 @@ async def test_delete_tag_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -6870,7 +6870,7 @@ def test_list_tags_field_headers():
     # a field header. Set these to a non-empty value.
     request = datacatalog.ListTagsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_tags), "__call__") as call:
@@ -6886,7 +6886,7 @@ def test_list_tags_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -6900,7 +6900,7 @@ async def test_list_tags_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = datacatalog.ListTagsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_tags), "__call__") as call:
@@ -6918,7 +6918,7 @@ async def test_list_tags_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -7049,7 +7049,7 @@ def test_list_tags_pager(transport_name: str = "grpc"):
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, tags.Tag) for i in results)
 
@@ -7294,7 +7294,7 @@ def test_set_iam_policy_field_headers():
     # a field header. Set these to a non-empty value.
     request = iam_policy_pb2.SetIamPolicyRequest()
 
-    request.resource = "resource/value"
+    request.resource = "resource_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
@@ -7310,7 +7310,7 @@ def test_set_iam_policy_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "resource=resource/value",
+        "resource=resource_value",
     ) in kw["metadata"]
 
 
@@ -7324,7 +7324,7 @@ async def test_set_iam_policy_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = iam_policy_pb2.SetIamPolicyRequest()
 
-    request.resource = "resource/value"
+    request.resource = "resource_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
@@ -7340,7 +7340,7 @@ async def test_set_iam_policy_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "resource=resource/value",
+        "resource=resource_value",
     ) in kw["metadata"]
 
 
@@ -7544,7 +7544,7 @@ def test_get_iam_policy_field_headers():
     # a field header. Set these to a non-empty value.
     request = iam_policy_pb2.GetIamPolicyRequest()
 
-    request.resource = "resource/value"
+    request.resource = "resource_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
@@ -7560,7 +7560,7 @@ def test_get_iam_policy_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "resource=resource/value",
+        "resource=resource_value",
     ) in kw["metadata"]
 
 
@@ -7574,7 +7574,7 @@ async def test_get_iam_policy_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = iam_policy_pb2.GetIamPolicyRequest()
 
-    request.resource = "resource/value"
+    request.resource = "resource_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
@@ -7590,7 +7590,7 @@ async def test_get_iam_policy_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "resource=resource/value",
+        "resource=resource_value",
     ) in kw["metadata"]
 
 
@@ -7796,7 +7796,7 @@ def test_test_iam_permissions_field_headers():
     # a field header. Set these to a non-empty value.
     request = iam_policy_pb2.TestIamPermissionsRequest()
 
-    request.resource = "resource/value"
+    request.resource = "resource_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7814,7 +7814,7 @@ def test_test_iam_permissions_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "resource=resource/value",
+        "resource=resource_value",
     ) in kw["metadata"]
 
 
@@ -7828,7 +7828,7 @@ async def test_test_iam_permissions_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = iam_policy_pb2.TestIamPermissionsRequest()
 
-    request.resource = "resource/value"
+    request.resource = "resource_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7848,7 +7848,7 @@ async def test_test_iam_permissions_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "resource=resource/value",
+        "resource=resource_value",
     ) in kw["metadata"]
 
 

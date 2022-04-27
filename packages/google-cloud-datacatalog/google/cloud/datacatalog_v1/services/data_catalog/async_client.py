@@ -263,9 +263,9 @@ class DataCatalogAsyncClient:
 
             from google.cloud import datacatalog_v1
 
-            def sample_search_catalog():
+            async def sample_search_catalog():
                 # Create a client
-                client = datacatalog_v1.DataCatalogClient()
+                client = datacatalog_v1.DataCatalogAsyncClient()
 
                 # Initialize request argument(s)
                 request = datacatalog_v1.SearchCatalogRequest(
@@ -275,7 +275,7 @@ class DataCatalogAsyncClient:
                 page_result = client.search_catalog(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -429,9 +429,9 @@ class DataCatalogAsyncClient:
 
             from google.cloud import datacatalog_v1
 
-            def sample_create_entry_group():
+            async def sample_create_entry_group():
                 # Create a client
-                client = datacatalog_v1.DataCatalogClient()
+                client = datacatalog_v1.DataCatalogAsyncClient()
 
                 # Initialize request argument(s)
                 request = datacatalog_v1.CreateEntryGroupRequest(
@@ -440,7 +440,7 @@ class DataCatalogAsyncClient:
                 )
 
                 # Make the request
-                response = client.create_entry_group(request=request)
+                response = await client.create_entry_group(request=request)
 
                 # Handle the response
                 print(response)
@@ -555,9 +555,9 @@ class DataCatalogAsyncClient:
 
             from google.cloud import datacatalog_v1
 
-            def sample_get_entry_group():
+            async def sample_get_entry_group():
                 # Create a client
-                client = datacatalog_v1.DataCatalogClient()
+                client = datacatalog_v1.DataCatalogAsyncClient()
 
                 # Initialize request argument(s)
                 request = datacatalog_v1.GetEntryGroupRequest(
@@ -565,7 +565,7 @@ class DataCatalogAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_entry_group(request=request)
+                response = await client.get_entry_group(request=request)
 
                 # Handle the response
                 print(response)
@@ -677,16 +677,16 @@ class DataCatalogAsyncClient:
 
             from google.cloud import datacatalog_v1
 
-            def sample_update_entry_group():
+            async def sample_update_entry_group():
                 # Create a client
-                client = datacatalog_v1.DataCatalogClient()
+                client = datacatalog_v1.DataCatalogAsyncClient()
 
                 # Initialize request argument(s)
                 request = datacatalog_v1.UpdateEntryGroupRequest(
                 )
 
                 # Make the request
-                response = client.update_entry_group(request=request)
+                response = await client.update_entry_group(request=request)
 
                 # Handle the response
                 print(response)
@@ -795,9 +795,9 @@ class DataCatalogAsyncClient:
 
             from google.cloud import datacatalog_v1
 
-            def sample_delete_entry_group():
+            async def sample_delete_entry_group():
                 # Create a client
-                client = datacatalog_v1.DataCatalogClient()
+                client = datacatalog_v1.DataCatalogAsyncClient()
 
                 # Initialize request argument(s)
                 request = datacatalog_v1.DeleteEntryGroupRequest(
@@ -805,7 +805,7 @@ class DataCatalogAsyncClient:
                 )
 
                 # Make the request
-                client.delete_entry_group(request=request)
+                await client.delete_entry_group(request=request)
 
         Args:
             request (Union[google.cloud.datacatalog_v1.types.DeleteEntryGroupRequest, dict]):
@@ -878,9 +878,9 @@ class DataCatalogAsyncClient:
 
             from google.cloud import datacatalog_v1
 
-            def sample_list_entry_groups():
+            async def sample_list_entry_groups():
                 # Create a client
-                client = datacatalog_v1.DataCatalogClient()
+                client = datacatalog_v1.DataCatalogAsyncClient()
 
                 # Initialize request argument(s)
                 request = datacatalog_v1.ListEntryGroupsRequest(
@@ -891,7 +891,7 @@ class DataCatalogAsyncClient:
                 page_result = client.list_entry_groups(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -1010,9 +1010,9 @@ class DataCatalogAsyncClient:
 
             from google.cloud import datacatalog_v1
 
-            def sample_create_entry():
+            async def sample_create_entry():
                 # Create a client
-                client = datacatalog_v1.DataCatalogClient()
+                client = datacatalog_v1.DataCatalogAsyncClient()
 
                 # Initialize request argument(s)
                 entry = datacatalog_v1.Entry()
@@ -1027,7 +1027,7 @@ class DataCatalogAsyncClient:
                 )
 
                 # Make the request
-                response = client.create_entry(request=request)
+                response = await client.create_entry(request=request)
 
                 # Handle the response
                 print(response)
@@ -1149,9 +1149,9 @@ class DataCatalogAsyncClient:
 
             from google.cloud import datacatalog_v1
 
-            def sample_update_entry():
+            async def sample_update_entry():
                 # Create a client
-                client = datacatalog_v1.DataCatalogClient()
+                client = datacatalog_v1.DataCatalogAsyncClient()
 
                 # Initialize request argument(s)
                 entry = datacatalog_v1.Entry()
@@ -1164,7 +1164,7 @@ class DataCatalogAsyncClient:
                 )
 
                 # Make the request
-                response = client.update_entry(request=request)
+                response = await client.update_entry(request=request)
 
                 # Handle the response
                 print(response)
@@ -1306,9 +1306,9 @@ class DataCatalogAsyncClient:
 
             from google.cloud import datacatalog_v1
 
-            def sample_delete_entry():
+            async def sample_delete_entry():
                 # Create a client
-                client = datacatalog_v1.DataCatalogClient()
+                client = datacatalog_v1.DataCatalogAsyncClient()
 
                 # Initialize request argument(s)
                 request = datacatalog_v1.DeleteEntryRequest(
@@ -1316,7 +1316,7 @@ class DataCatalogAsyncClient:
                 )
 
                 # Make the request
-                client.delete_entry(request=request)
+                await client.delete_entry(request=request)
 
         Args:
             request (Union[google.cloud.datacatalog_v1.types.DeleteEntryRequest, dict]):
@@ -1389,9 +1389,9 @@ class DataCatalogAsyncClient:
 
             from google.cloud import datacatalog_v1
 
-            def sample_get_entry():
+            async def sample_get_entry():
                 # Create a client
-                client = datacatalog_v1.DataCatalogClient()
+                client = datacatalog_v1.DataCatalogAsyncClient()
 
                 # Initialize request argument(s)
                 request = datacatalog_v1.GetEntryRequest(
@@ -1399,7 +1399,7 @@ class DataCatalogAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_entry(request=request)
+                response = await client.get_entry(request=request)
 
                 # Handle the response
                 print(response)
@@ -1503,9 +1503,9 @@ class DataCatalogAsyncClient:
 
             from google.cloud import datacatalog_v1
 
-            def sample_lookup_entry():
+            async def sample_lookup_entry():
                 # Create a client
-                client = datacatalog_v1.DataCatalogClient()
+                client = datacatalog_v1.DataCatalogAsyncClient()
 
                 # Initialize request argument(s)
                 request = datacatalog_v1.LookupEntryRequest(
@@ -1513,7 +1513,7 @@ class DataCatalogAsyncClient:
                 )
 
                 # Make the request
-                response = client.lookup_entry(request=request)
+                response = await client.lookup_entry(request=request)
 
                 # Handle the response
                 print(response)
@@ -1593,9 +1593,9 @@ class DataCatalogAsyncClient:
 
             from google.cloud import datacatalog_v1
 
-            def sample_list_entries():
+            async def sample_list_entries():
                 # Create a client
-                client = datacatalog_v1.DataCatalogClient()
+                client = datacatalog_v1.DataCatalogAsyncClient()
 
                 # Initialize request argument(s)
                 request = datacatalog_v1.ListEntriesRequest(
@@ -1606,7 +1606,7 @@ class DataCatalogAsyncClient:
                 page_result = client.list_entries(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -1715,9 +1715,9 @@ class DataCatalogAsyncClient:
 
             from google.cloud import datacatalog_v1
 
-            def sample_modify_entry_overview():
+            async def sample_modify_entry_overview():
                 # Create a client
-                client = datacatalog_v1.DataCatalogClient()
+                client = datacatalog_v1.DataCatalogAsyncClient()
 
                 # Initialize request argument(s)
                 request = datacatalog_v1.ModifyEntryOverviewRequest(
@@ -1725,7 +1725,7 @@ class DataCatalogAsyncClient:
                 )
 
                 # Make the request
-                response = client.modify_entry_overview(request=request)
+                response = await client.modify_entry_overview(request=request)
 
                 # Handle the response
                 print(response)
@@ -1793,9 +1793,9 @@ class DataCatalogAsyncClient:
 
             from google.cloud import datacatalog_v1
 
-            def sample_modify_entry_contacts():
+            async def sample_modify_entry_contacts():
                 # Create a client
-                client = datacatalog_v1.DataCatalogClient()
+                client = datacatalog_v1.DataCatalogAsyncClient()
 
                 # Initialize request argument(s)
                 request = datacatalog_v1.ModifyEntryContactsRequest(
@@ -1803,7 +1803,7 @@ class DataCatalogAsyncClient:
                 )
 
                 # Make the request
-                response = client.modify_entry_contacts(request=request)
+                response = await client.modify_entry_contacts(request=request)
 
                 # Handle the response
                 print(response)
@@ -1872,9 +1872,9 @@ class DataCatalogAsyncClient:
 
             from google.cloud import datacatalog_v1
 
-            def sample_create_tag_template():
+            async def sample_create_tag_template():
                 # Create a client
-                client = datacatalog_v1.DataCatalogClient()
+                client = datacatalog_v1.DataCatalogAsyncClient()
 
                 # Initialize request argument(s)
                 request = datacatalog_v1.CreateTagTemplateRequest(
@@ -1883,7 +1883,7 @@ class DataCatalogAsyncClient:
                 )
 
                 # Make the request
-                response = client.create_tag_template(request=request)
+                response = await client.create_tag_template(request=request)
 
                 # Handle the response
                 print(response)
@@ -1998,9 +1998,9 @@ class DataCatalogAsyncClient:
 
             from google.cloud import datacatalog_v1
 
-            def sample_get_tag_template():
+            async def sample_get_tag_template():
                 # Create a client
-                client = datacatalog_v1.DataCatalogClient()
+                client = datacatalog_v1.DataCatalogAsyncClient()
 
                 # Initialize request argument(s)
                 request = datacatalog_v1.GetTagTemplateRequest(
@@ -2008,7 +2008,7 @@ class DataCatalogAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_tag_template(request=request)
+                response = await client.get_tag_template(request=request)
 
                 # Handle the response
                 print(response)
@@ -2112,16 +2112,16 @@ class DataCatalogAsyncClient:
 
             from google.cloud import datacatalog_v1
 
-            def sample_update_tag_template():
+            async def sample_update_tag_template():
                 # Create a client
-                client = datacatalog_v1.DataCatalogClient()
+                client = datacatalog_v1.DataCatalogAsyncClient()
 
                 # Initialize request argument(s)
                 request = datacatalog_v1.UpdateTagTemplateRequest(
                 )
 
                 # Make the request
-                response = client.update_tag_template(request=request)
+                response = await client.update_tag_template(request=request)
 
                 # Handle the response
                 print(response)
@@ -2241,9 +2241,9 @@ class DataCatalogAsyncClient:
 
             from google.cloud import datacatalog_v1
 
-            def sample_delete_tag_template():
+            async def sample_delete_tag_template():
                 # Create a client
-                client = datacatalog_v1.DataCatalogClient()
+                client = datacatalog_v1.DataCatalogAsyncClient()
 
                 # Initialize request argument(s)
                 request = datacatalog_v1.DeleteTagTemplateRequest(
@@ -2252,7 +2252,7 @@ class DataCatalogAsyncClient:
                 )
 
                 # Make the request
-                client.delete_tag_template(request=request)
+                await client.delete_tag_template(request=request)
 
         Args:
             request (Union[google.cloud.datacatalog_v1.types.DeleteTagTemplateRequest, dict]):
@@ -2343,9 +2343,9 @@ class DataCatalogAsyncClient:
 
             from google.cloud import datacatalog_v1
 
-            def sample_create_tag_template_field():
+            async def sample_create_tag_template_field():
                 # Create a client
-                client = datacatalog_v1.DataCatalogClient()
+                client = datacatalog_v1.DataCatalogAsyncClient()
 
                 # Initialize request argument(s)
                 tag_template_field = datacatalog_v1.TagTemplateField()
@@ -2358,7 +2358,7 @@ class DataCatalogAsyncClient:
                 )
 
                 # Make the request
-                response = client.create_tag_template_field(request=request)
+                response = await client.create_tag_template_field(request=request)
 
                 # Handle the response
                 print(response)
@@ -2479,9 +2479,9 @@ class DataCatalogAsyncClient:
 
             from google.cloud import datacatalog_v1
 
-            def sample_update_tag_template_field():
+            async def sample_update_tag_template_field():
                 # Create a client
-                client = datacatalog_v1.DataCatalogClient()
+                client = datacatalog_v1.DataCatalogAsyncClient()
 
                 # Initialize request argument(s)
                 tag_template_field = datacatalog_v1.TagTemplateField()
@@ -2493,7 +2493,7 @@ class DataCatalogAsyncClient:
                 )
 
                 # Make the request
-                response = client.update_tag_template_field(request=request)
+                response = await client.update_tag_template_field(request=request)
 
                 # Handle the response
                 print(response)
@@ -2616,9 +2616,9 @@ class DataCatalogAsyncClient:
 
             from google.cloud import datacatalog_v1
 
-            def sample_rename_tag_template_field():
+            async def sample_rename_tag_template_field():
                 # Create a client
-                client = datacatalog_v1.DataCatalogClient()
+                client = datacatalog_v1.DataCatalogAsyncClient()
 
                 # Initialize request argument(s)
                 request = datacatalog_v1.RenameTagTemplateFieldRequest(
@@ -2627,7 +2627,7 @@ class DataCatalogAsyncClient:
                 )
 
                 # Make the request
-                response = client.rename_tag_template_field(request=request)
+                response = await client.rename_tag_template_field(request=request)
 
                 # Handle the response
                 print(response)
@@ -2723,9 +2723,9 @@ class DataCatalogAsyncClient:
 
             from google.cloud import datacatalog_v1
 
-            def sample_rename_tag_template_field_enum_value():
+            async def sample_rename_tag_template_field_enum_value():
                 # Create a client
-                client = datacatalog_v1.DataCatalogClient()
+                client = datacatalog_v1.DataCatalogAsyncClient()
 
                 # Initialize request argument(s)
                 request = datacatalog_v1.RenameTagTemplateFieldEnumValueRequest(
@@ -2734,7 +2734,7 @@ class DataCatalogAsyncClient:
                 )
 
                 # Make the request
-                response = client.rename_tag_template_field_enum_value(request=request)
+                response = await client.rename_tag_template_field_enum_value(request=request)
 
                 # Handle the response
                 print(response)
@@ -2835,9 +2835,9 @@ class DataCatalogAsyncClient:
 
             from google.cloud import datacatalog_v1
 
-            def sample_delete_tag_template_field():
+            async def sample_delete_tag_template_field():
                 # Create a client
-                client = datacatalog_v1.DataCatalogClient()
+                client = datacatalog_v1.DataCatalogAsyncClient()
 
                 # Initialize request argument(s)
                 request = datacatalog_v1.DeleteTagTemplateFieldRequest(
@@ -2846,7 +2846,7 @@ class DataCatalogAsyncClient:
                 )
 
                 # Make the request
-                client.delete_tag_template_field(request=request)
+                await client.delete_tag_template_field(request=request)
 
         Args:
             request (Union[google.cloud.datacatalog_v1.types.DeleteTagTemplateFieldRequest, dict]):
@@ -2945,9 +2945,9 @@ class DataCatalogAsyncClient:
 
             from google.cloud import datacatalog_v1
 
-            def sample_create_tag():
+            async def sample_create_tag():
                 # Create a client
-                client = datacatalog_v1.DataCatalogClient()
+                client = datacatalog_v1.DataCatalogAsyncClient()
 
                 # Initialize request argument(s)
                 tag = datacatalog_v1.Tag()
@@ -2960,7 +2960,7 @@ class DataCatalogAsyncClient:
                 )
 
                 # Make the request
-                response = client.create_tag(request=request)
+                response = await client.create_tag(request=request)
 
                 # Handle the response
                 print(response)
@@ -3065,9 +3065,9 @@ class DataCatalogAsyncClient:
 
             from google.cloud import datacatalog_v1
 
-            def sample_update_tag():
+            async def sample_update_tag():
                 # Create a client
-                client = datacatalog_v1.DataCatalogClient()
+                client = datacatalog_v1.DataCatalogAsyncClient()
 
                 # Initialize request argument(s)
                 tag = datacatalog_v1.Tag()
@@ -3079,7 +3079,7 @@ class DataCatalogAsyncClient:
                 )
 
                 # Make the request
-                response = client.update_tag(request=request)
+                response = await client.update_tag(request=request)
 
                 # Handle the response
                 print(response)
@@ -3184,9 +3184,9 @@ class DataCatalogAsyncClient:
 
             from google.cloud import datacatalog_v1
 
-            def sample_delete_tag():
+            async def sample_delete_tag():
                 # Create a client
-                client = datacatalog_v1.DataCatalogClient()
+                client = datacatalog_v1.DataCatalogAsyncClient()
 
                 # Initialize request argument(s)
                 request = datacatalog_v1.DeleteTagRequest(
@@ -3194,7 +3194,7 @@ class DataCatalogAsyncClient:
                 )
 
                 # Make the request
-                client.delete_tag(request=request)
+                await client.delete_tag(request=request)
 
         Args:
             request (Union[google.cloud.datacatalog_v1.types.DeleteTagRequest, dict]):
@@ -3270,9 +3270,9 @@ class DataCatalogAsyncClient:
 
             from google.cloud import datacatalog_v1
 
-            def sample_list_tags():
+            async def sample_list_tags():
                 # Create a client
-                client = datacatalog_v1.DataCatalogClient()
+                client = datacatalog_v1.DataCatalogAsyncClient()
 
                 # Initialize request argument(s)
                 request = datacatalog_v1.ListTagsRequest(
@@ -3283,7 +3283,7 @@ class DataCatalogAsyncClient:
                 page_result = client.list_tags(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -3394,9 +3394,9 @@ class DataCatalogAsyncClient:
 
             from google.cloud import datacatalog_v1
 
-            def sample_star_entry():
+            async def sample_star_entry():
                 # Create a client
-                client = datacatalog_v1.DataCatalogClient()
+                client = datacatalog_v1.DataCatalogAsyncClient()
 
                 # Initialize request argument(s)
                 request = datacatalog_v1.StarEntryRequest(
@@ -3404,7 +3404,7 @@ class DataCatalogAsyncClient:
                 )
 
                 # Make the request
-                response = client.star_entry(request=request)
+                response = await client.star_entry(request=request)
 
                 # Handle the response
                 print(response)
@@ -3492,9 +3492,9 @@ class DataCatalogAsyncClient:
 
             from google.cloud import datacatalog_v1
 
-            def sample_unstar_entry():
+            async def sample_unstar_entry():
                 # Create a client
-                client = datacatalog_v1.DataCatalogClient()
+                client = datacatalog_v1.DataCatalogAsyncClient()
 
                 # Initialize request argument(s)
                 request = datacatalog_v1.UnstarEntryRequest(
@@ -3502,7 +3502,7 @@ class DataCatalogAsyncClient:
                 )
 
                 # Make the request
-                response = client.unstar_entry(request=request)
+                response = await client.unstar_entry(request=request)
 
                 # Handle the response
                 print(response)
@@ -3608,9 +3608,9 @@ class DataCatalogAsyncClient:
             from google.cloud import datacatalog_v1
             from google.iam.v1 import iam_policy_pb2  # type: ignore
 
-            def sample_set_iam_policy():
+            async def sample_set_iam_policy():
                 # Create a client
-                client = datacatalog_v1.DataCatalogClient()
+                client = datacatalog_v1.DataCatalogAsyncClient()
 
                 # Initialize request argument(s)
                 request = iam_policy_pb2.SetIamPolicyRequest(
@@ -3618,7 +3618,7 @@ class DataCatalogAsyncClient:
                 )
 
                 # Make the request
-                response = client.set_iam_policy(request=request)
+                response = await client.set_iam_policy(request=request)
 
                 # Handle the response
                 print(response)
@@ -3790,9 +3790,9 @@ class DataCatalogAsyncClient:
             from google.cloud import datacatalog_v1
             from google.iam.v1 import iam_policy_pb2  # type: ignore
 
-            def sample_get_iam_policy():
+            async def sample_get_iam_policy():
                 # Create a client
-                client = datacatalog_v1.DataCatalogClient()
+                client = datacatalog_v1.DataCatalogAsyncClient()
 
                 # Initialize request argument(s)
                 request = iam_policy_pb2.GetIamPolicyRequest(
@@ -3800,7 +3800,7 @@ class DataCatalogAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_iam_policy(request=request)
+                response = await client.get_iam_policy(request=request)
 
                 # Handle the response
                 print(response)
@@ -3970,9 +3970,9 @@ class DataCatalogAsyncClient:
             from google.cloud import datacatalog_v1
             from google.iam.v1 import iam_policy_pb2  # type: ignore
 
-            def sample_test_iam_permissions():
+            async def sample_test_iam_permissions():
                 # Create a client
-                client = datacatalog_v1.DataCatalogClient()
+                client = datacatalog_v1.DataCatalogAsyncClient()
 
                 # Initialize request argument(s)
                 request = iam_policy_pb2.TestIamPermissionsRequest(
@@ -3981,7 +3981,7 @@ class DataCatalogAsyncClient:
                 )
 
                 # Make the request
-                response = client.test_iam_permissions(request=request)
+                response = await client.test_iam_permissions(request=request)
 
                 # Handle the response
                 print(response)

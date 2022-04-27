@@ -232,9 +232,9 @@ class PolicyTagManagerAsyncClient:
 
             from google.cloud import datacatalog_v1
 
-            def sample_create_taxonomy():
+            async def sample_create_taxonomy():
                 # Create a client
-                client = datacatalog_v1.PolicyTagManagerClient()
+                client = datacatalog_v1.PolicyTagManagerAsyncClient()
 
                 # Initialize request argument(s)
                 request = datacatalog_v1.CreateTaxonomyRequest(
@@ -242,7 +242,7 @@ class PolicyTagManagerAsyncClient:
                 )
 
                 # Make the request
-                response = client.create_taxonomy(request=request)
+                response = await client.create_taxonomy(request=request)
 
                 # Handle the response
                 print(response)
@@ -347,9 +347,9 @@ class PolicyTagManagerAsyncClient:
 
             from google.cloud import datacatalog_v1
 
-            def sample_delete_taxonomy():
+            async def sample_delete_taxonomy():
                 # Create a client
-                client = datacatalog_v1.PolicyTagManagerClient()
+                client = datacatalog_v1.PolicyTagManagerAsyncClient()
 
                 # Initialize request argument(s)
                 request = datacatalog_v1.DeleteTaxonomyRequest(
@@ -357,7 +357,7 @@ class PolicyTagManagerAsyncClient:
                 )
 
                 # Make the request
-                client.delete_taxonomy(request=request)
+                await client.delete_taxonomy(request=request)
 
         Args:
             request (Union[google.cloud.datacatalog_v1.types.DeleteTaxonomyRequest, dict]):
@@ -433,16 +433,16 @@ class PolicyTagManagerAsyncClient:
 
             from google.cloud import datacatalog_v1
 
-            def sample_update_taxonomy():
+            async def sample_update_taxonomy():
                 # Create a client
-                client = datacatalog_v1.PolicyTagManagerClient()
+                client = datacatalog_v1.PolicyTagManagerAsyncClient()
 
                 # Initialize request argument(s)
                 request = datacatalog_v1.UpdateTaxonomyRequest(
                 )
 
                 # Make the request
-                response = client.update_taxonomy(request=request)
+                response = await client.update_taxonomy(request=request)
 
                 # Handle the response
                 print(response)
@@ -541,9 +541,9 @@ class PolicyTagManagerAsyncClient:
 
             from google.cloud import datacatalog_v1
 
-            def sample_list_taxonomies():
+            async def sample_list_taxonomies():
                 # Create a client
-                client = datacatalog_v1.PolicyTagManagerClient()
+                client = datacatalog_v1.PolicyTagManagerAsyncClient()
 
                 # Initialize request argument(s)
                 request = datacatalog_v1.ListTaxonomiesRequest(
@@ -554,7 +554,7 @@ class PolicyTagManagerAsyncClient:
                 page_result = client.list_taxonomies(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -649,9 +649,9 @@ class PolicyTagManagerAsyncClient:
 
             from google.cloud import datacatalog_v1
 
-            def sample_get_taxonomy():
+            async def sample_get_taxonomy():
                 # Create a client
-                client = datacatalog_v1.PolicyTagManagerClient()
+                client = datacatalog_v1.PolicyTagManagerAsyncClient()
 
                 # Initialize request argument(s)
                 request = datacatalog_v1.GetTaxonomyRequest(
@@ -659,7 +659,7 @@ class PolicyTagManagerAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_taxonomy(request=request)
+                response = await client.get_taxonomy(request=request)
 
                 # Handle the response
                 print(response)
@@ -755,9 +755,9 @@ class PolicyTagManagerAsyncClient:
 
             from google.cloud import datacatalog_v1
 
-            def sample_create_policy_tag():
+            async def sample_create_policy_tag():
                 # Create a client
-                client = datacatalog_v1.PolicyTagManagerClient()
+                client = datacatalog_v1.PolicyTagManagerAsyncClient()
 
                 # Initialize request argument(s)
                 request = datacatalog_v1.CreatePolicyTagRequest(
@@ -765,7 +765,7 @@ class PolicyTagManagerAsyncClient:
                 )
 
                 # Make the request
-                response = client.create_policy_tag(request=request)
+                response = await client.create_policy_tag(request=request)
 
                 # Handle the response
                 print(response)
@@ -870,9 +870,9 @@ class PolicyTagManagerAsyncClient:
 
             from google.cloud import datacatalog_v1
 
-            def sample_delete_policy_tag():
+            async def sample_delete_policy_tag():
                 # Create a client
-                client = datacatalog_v1.PolicyTagManagerClient()
+                client = datacatalog_v1.PolicyTagManagerAsyncClient()
 
                 # Initialize request argument(s)
                 request = datacatalog_v1.DeletePolicyTagRequest(
@@ -880,7 +880,7 @@ class PolicyTagManagerAsyncClient:
                 )
 
                 # Make the request
-                client.delete_policy_tag(request=request)
+                await client.delete_policy_tag(request=request)
 
         Args:
             request (Union[google.cloud.datacatalog_v1.types.DeletePolicyTagRequest, dict]):
@@ -956,16 +956,16 @@ class PolicyTagManagerAsyncClient:
 
             from google.cloud import datacatalog_v1
 
-            def sample_update_policy_tag():
+            async def sample_update_policy_tag():
                 # Create a client
-                client = datacatalog_v1.PolicyTagManagerClient()
+                client = datacatalog_v1.PolicyTagManagerAsyncClient()
 
                 # Initialize request argument(s)
                 request = datacatalog_v1.UpdatePolicyTagRequest(
                 )
 
                 # Make the request
-                response = client.update_policy_tag(request=request)
+                response = await client.update_policy_tag(request=request)
 
                 # Handle the response
                 print(response)
@@ -1060,9 +1060,9 @@ class PolicyTagManagerAsyncClient:
 
             from google.cloud import datacatalog_v1
 
-            def sample_list_policy_tags():
+            async def sample_list_policy_tags():
                 # Create a client
-                client = datacatalog_v1.PolicyTagManagerClient()
+                client = datacatalog_v1.PolicyTagManagerAsyncClient()
 
                 # Initialize request argument(s)
                 request = datacatalog_v1.ListPolicyTagsRequest(
@@ -1073,7 +1073,7 @@ class PolicyTagManagerAsyncClient:
                 page_result = client.list_policy_tags(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -1168,9 +1168,9 @@ class PolicyTagManagerAsyncClient:
 
             from google.cloud import datacatalog_v1
 
-            def sample_get_policy_tag():
+            async def sample_get_policy_tag():
                 # Create a client
-                client = datacatalog_v1.PolicyTagManagerClient()
+                client = datacatalog_v1.PolicyTagManagerAsyncClient()
 
                 # Initialize request argument(s)
                 request = datacatalog_v1.GetPolicyTagRequest(
@@ -1178,7 +1178,7 @@ class PolicyTagManagerAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_policy_tag(request=request)
+                response = await client.get_policy_tag(request=request)
 
                 # Handle the response
                 print(response)
@@ -1270,9 +1270,9 @@ class PolicyTagManagerAsyncClient:
             from google.cloud import datacatalog_v1
             from google.iam.v1 import iam_policy_pb2  # type: ignore
 
-            def sample_get_iam_policy():
+            async def sample_get_iam_policy():
                 # Create a client
-                client = datacatalog_v1.PolicyTagManagerClient()
+                client = datacatalog_v1.PolicyTagManagerAsyncClient()
 
                 # Initialize request argument(s)
                 request = iam_policy_pb2.GetIamPolicyRequest(
@@ -1280,7 +1280,7 @@ class PolicyTagManagerAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_iam_policy(request=request)
+                response = await client.get_iam_policy(request=request)
 
                 # Handle the response
                 print(response)
@@ -1406,9 +1406,9 @@ class PolicyTagManagerAsyncClient:
             from google.cloud import datacatalog_v1
             from google.iam.v1 import iam_policy_pb2  # type: ignore
 
-            def sample_set_iam_policy():
+            async def sample_set_iam_policy():
                 # Create a client
-                client = datacatalog_v1.PolicyTagManagerClient()
+                client = datacatalog_v1.PolicyTagManagerAsyncClient()
 
                 # Initialize request argument(s)
                 request = iam_policy_pb2.SetIamPolicyRequest(
@@ -1416,7 +1416,7 @@ class PolicyTagManagerAsyncClient:
                 )
 
                 # Make the request
-                response = client.set_iam_policy(request=request)
+                response = await client.set_iam_policy(request=request)
 
                 # Handle the response
                 print(response)
@@ -1543,9 +1543,9 @@ class PolicyTagManagerAsyncClient:
             from google.cloud import datacatalog_v1
             from google.iam.v1 import iam_policy_pb2  # type: ignore
 
-            def sample_test_iam_permissions():
+            async def sample_test_iam_permissions():
                 # Create a client
-                client = datacatalog_v1.PolicyTagManagerClient()
+                client = datacatalog_v1.PolicyTagManagerAsyncClient()
 
                 # Initialize request argument(s)
                 request = iam_policy_pb2.TestIamPermissionsRequest(
@@ -1554,7 +1554,7 @@ class PolicyTagManagerAsyncClient:
                 )
 
                 # Make the request
-                response = client.test_iam_permissions(request=request)
+                response = await client.test_iam_permissions(request=request)
 
                 # Handle the response
                 print(response)

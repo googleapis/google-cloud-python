@@ -247,9 +247,9 @@ class PolicyTagManagerSerializationAsyncClient:
 
             from google.cloud import datacatalog_v1
 
-            def sample_replace_taxonomy():
+            async def sample_replace_taxonomy():
                 # Create a client
-                client = datacatalog_v1.PolicyTagManagerSerializationClient()
+                client = datacatalog_v1.PolicyTagManagerSerializationAsyncClient()
 
                 # Initialize request argument(s)
                 serialized_taxonomy = datacatalog_v1.SerializedTaxonomy()
@@ -261,7 +261,7 @@ class PolicyTagManagerSerializationAsyncClient:
                 )
 
                 # Make the request
-                response = client.replace_taxonomy(request=request)
+                response = await client.replace_taxonomy(request=request)
 
                 # Handle the response
                 print(response)
@@ -343,9 +343,9 @@ class PolicyTagManagerSerializationAsyncClient:
 
             from google.cloud import datacatalog_v1
 
-            def sample_import_taxonomies():
+            async def sample_import_taxonomies():
                 # Create a client
-                client = datacatalog_v1.PolicyTagManagerSerializationClient()
+                client = datacatalog_v1.PolicyTagManagerSerializationAsyncClient()
 
                 # Initialize request argument(s)
                 inline_source = datacatalog_v1.InlineSource()
@@ -357,7 +357,7 @@ class PolicyTagManagerSerializationAsyncClient:
                 )
 
                 # Make the request
-                response = client.import_taxonomies(request=request)
+                response = await client.import_taxonomies(request=request)
 
                 # Handle the response
                 print(response)
@@ -428,9 +428,9 @@ class PolicyTagManagerSerializationAsyncClient:
 
             from google.cloud import datacatalog_v1
 
-            def sample_export_taxonomies():
+            async def sample_export_taxonomies():
                 # Create a client
-                client = datacatalog_v1.PolicyTagManagerSerializationClient()
+                client = datacatalog_v1.PolicyTagManagerSerializationAsyncClient()
 
                 # Initialize request argument(s)
                 request = datacatalog_v1.ExportTaxonomiesRequest(
@@ -440,7 +440,7 @@ class PolicyTagManagerSerializationAsyncClient:
                 )
 
                 # Make the request
-                response = client.export_taxonomies(request=request)
+                response = await client.export_taxonomies(request=request)
 
                 # Handle the response
                 print(response)
