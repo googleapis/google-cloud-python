@@ -246,9 +246,9 @@ class QuestionServiceAsyncClient:
 
             from google.cloud import dataqna_v1alpha
 
-            def sample_get_question():
+            async def sample_get_question():
                 # Create a client
-                client = dataqna_v1alpha.QuestionServiceClient()
+                client = dataqna_v1alpha.QuestionServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = dataqna_v1alpha.GetQuestionRequest(
@@ -256,7 +256,7 @@ class QuestionServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_question(request=request)
+                response = await client.get_question(request=request)
 
                 # Handle the response
                 print(response)
@@ -345,9 +345,9 @@ class QuestionServiceAsyncClient:
 
             from google.cloud import dataqna_v1alpha
 
-            def sample_create_question():
+            async def sample_create_question():
                 # Create a client
-                client = dataqna_v1alpha.QuestionServiceClient()
+                client = dataqna_v1alpha.QuestionServiceAsyncClient()
 
                 # Initialize request argument(s)
                 question = dataqna_v1alpha.Question()
@@ -360,7 +360,7 @@ class QuestionServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.create_question(request=request)
+                response = await client.create_question(request=request)
 
                 # Handle the response
                 print(response)
@@ -457,9 +457,9 @@ class QuestionServiceAsyncClient:
 
             from google.cloud import dataqna_v1alpha
 
-            def sample_execute_question():
+            async def sample_execute_question():
                 # Create a client
-                client = dataqna_v1alpha.QuestionServiceClient()
+                client = dataqna_v1alpha.QuestionServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = dataqna_v1alpha.ExecuteQuestionRequest(
@@ -468,7 +468,7 @@ class QuestionServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.execute_question(request=request)
+                response = await client.execute_question(request=request)
 
                 # Handle the response
                 print(response)
@@ -565,9 +565,9 @@ class QuestionServiceAsyncClient:
 
             from google.cloud import dataqna_v1alpha
 
-            def sample_get_user_feedback():
+            async def sample_get_user_feedback():
                 # Create a client
-                client = dataqna_v1alpha.QuestionServiceClient()
+                client = dataqna_v1alpha.QuestionServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = dataqna_v1alpha.GetUserFeedbackRequest(
@@ -575,7 +575,7 @@ class QuestionServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_user_feedback(request=request)
+                response = await client.get_user_feedback(request=request)
 
                 # Handle the response
                 print(response)
@@ -661,9 +661,9 @@ class QuestionServiceAsyncClient:
 
             from google.cloud import dataqna_v1alpha
 
-            def sample_update_user_feedback():
+            async def sample_update_user_feedback():
                 # Create a client
-                client = dataqna_v1alpha.QuestionServiceClient()
+                client = dataqna_v1alpha.QuestionServiceAsyncClient()
 
                 # Initialize request argument(s)
                 user_feedback = dataqna_v1alpha.UserFeedback()
@@ -674,7 +674,7 @@ class QuestionServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.update_user_feedback(request=request)
+                response = await client.update_user_feedback(request=request)
 
                 # Handle the response
                 print(response)

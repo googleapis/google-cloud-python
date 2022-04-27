@@ -779,7 +779,7 @@ def test_get_question_field_headers():
     # a field header. Set these to a non-empty value.
     request = question_service.GetQuestionRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_question), "__call__") as call:
@@ -795,7 +795,7 @@ def test_get_question_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -809,7 +809,7 @@ async def test_get_question_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = question_service.GetQuestionRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_question), "__call__") as call:
@@ -825,7 +825,7 @@ async def test_get_question_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1023,7 +1023,7 @@ def test_create_question_field_headers():
     # a field header. Set these to a non-empty value.
     request = question_service.CreateQuestionRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_question), "__call__") as call:
@@ -1039,7 +1039,7 @@ def test_create_question_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -1053,7 +1053,7 @@ async def test_create_question_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = question_service.CreateQuestionRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_question), "__call__") as call:
@@ -1071,7 +1071,7 @@ async def test_create_question_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -1282,7 +1282,7 @@ def test_execute_question_field_headers():
     # a field header. Set these to a non-empty value.
     request = question_service.ExecuteQuestionRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.execute_question), "__call__") as call:
@@ -1298,7 +1298,7 @@ def test_execute_question_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1312,7 +1312,7 @@ async def test_execute_question_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = question_service.ExecuteQuestionRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.execute_question), "__call__") as call:
@@ -1328,7 +1328,7 @@ async def test_execute_question_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1535,7 +1535,7 @@ def test_get_user_feedback_field_headers():
     # a field header. Set these to a non-empty value.
     request = question_service.GetUserFeedbackRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1553,7 +1553,7 @@ def test_get_user_feedback_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1567,7 +1567,7 @@ async def test_get_user_feedback_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = question_service.GetUserFeedbackRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1587,7 +1587,7 @@ async def test_get_user_feedback_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1790,7 +1790,7 @@ def test_update_user_feedback_field_headers():
     # a field header. Set these to a non-empty value.
     request = question_service.UpdateUserFeedbackRequest()
 
-    request.user_feedback.name = "user_feedback.name/value"
+    request.user_feedback.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1808,7 +1808,7 @@ def test_update_user_feedback_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "user_feedback.name=user_feedback.name/value",
+        "user_feedback.name=name_value",
     ) in kw["metadata"]
 
 
@@ -1822,7 +1822,7 @@ async def test_update_user_feedback_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = question_service.UpdateUserFeedbackRequest()
 
-    request.user_feedback.name = "user_feedback.name/value"
+    request.user_feedback.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1842,7 +1842,7 @@ async def test_update_user_feedback_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "user_feedback.name=user_feedback.name/value",
+        "user_feedback.name=name_value",
     ) in kw["metadata"]
 
 

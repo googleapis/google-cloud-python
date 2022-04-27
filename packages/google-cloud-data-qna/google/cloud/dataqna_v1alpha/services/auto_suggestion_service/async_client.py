@@ -289,9 +289,9 @@ class AutoSuggestionServiceAsyncClient:
 
             from google.cloud import dataqna_v1alpha
 
-            def sample_suggest_queries():
+            async def sample_suggest_queries():
                 # Create a client
-                client = dataqna_v1alpha.AutoSuggestionServiceClient()
+                client = dataqna_v1alpha.AutoSuggestionServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = dataqna_v1alpha.SuggestQueriesRequest(
@@ -299,7 +299,7 @@ class AutoSuggestionServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.suggest_queries(request=request)
+                response = await client.suggest_queries(request=request)
 
                 # Handle the response
                 print(response)
