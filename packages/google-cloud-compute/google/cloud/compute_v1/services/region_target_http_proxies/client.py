@@ -483,6 +483,18 @@ class RegionTargetHttpProxiesClient(metaclass=RegionTargetHttpProxiesClientMeta)
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.delete]
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project", request.project),
+                    ("region", request.region),
+                    ("target_http_proxy", request.target_http_proxy),
+                )
+            ),
+        )
+
         # Send the request.
         response = rpc(
             request,
@@ -571,6 +583,18 @@ class RegionTargetHttpProxiesClient(metaclass=RegionTargetHttpProxiesClientMeta)
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.delete]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project", request.project),
+                    ("region", request.region),
+                    ("target_http_proxy", request.target_http_proxy),
+                )
+            ),
+        )
 
         # Send the request.
         response = rpc(
@@ -699,6 +723,18 @@ class RegionTargetHttpProxiesClient(metaclass=RegionTargetHttpProxiesClientMeta)
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.get]
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project", request.project),
+                    ("region", request.region),
+                    ("target_http_proxy", request.target_http_proxy),
+                )
+            ),
+        )
+
         # Send the request.
         response = rpc(
             request,
@@ -788,6 +824,17 @@ class RegionTargetHttpProxiesClient(metaclass=RegionTargetHttpProxiesClientMeta)
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.insert]
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project", request.project),
+                    ("region", request.region),
+                )
+            ),
+        )
+
         # Send the request.
         response = rpc(
             request,
@@ -876,6 +923,17 @@ class RegionTargetHttpProxiesClient(metaclass=RegionTargetHttpProxiesClientMeta)
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.insert]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project", request.project),
+                    ("region", request.region),
+                )
+            ),
+        )
 
         # Send the request.
         response = rpc(
@@ -985,6 +1043,17 @@ class RegionTargetHttpProxiesClient(metaclass=RegionTargetHttpProxiesClientMeta)
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.list]
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project", request.project),
+                    ("region", request.region),
+                )
+            ),
+        )
+
         # Send the request.
         response = rpc(
             request,
@@ -1093,6 +1162,18 @@ class RegionTargetHttpProxiesClient(metaclass=RegionTargetHttpProxiesClientMeta)
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.set_url_map]
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project", request.project),
+                    ("region", request.region),
+                    ("target_http_proxy", request.target_http_proxy),
+                )
+            ),
+        )
+
         # Send the request.
         response = rpc(
             request,
@@ -1191,6 +1272,18 @@ class RegionTargetHttpProxiesClient(metaclass=RegionTargetHttpProxiesClientMeta)
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.set_url_map]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project", request.project),
+                    ("region", request.region),
+                    ("target_http_proxy", request.target_http_proxy),
+                )
+            ),
+        )
 
         # Send the request.
         response = rpc(

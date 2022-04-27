@@ -476,6 +476,17 @@ class InstanceTemplatesClient(metaclass=InstanceTemplatesClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.delete]
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project", request.project),
+                    ("instance_template", request.instance_template),
+                )
+            ),
+        )
+
         # Send the request.
         response = rpc(
             request,
@@ -557,6 +568,17 @@ class InstanceTemplatesClient(metaclass=InstanceTemplatesClientMeta):
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.delete]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project", request.project),
+                    ("instance_template", request.instance_template),
+                )
+            ),
+        )
 
         # Send the request.
         response = rpc(
@@ -663,6 +685,17 @@ class InstanceTemplatesClient(metaclass=InstanceTemplatesClientMeta):
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.get]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project", request.project),
+                    ("instance_template", request.instance_template),
+                )
+            ),
+        )
 
         # Send the request.
         response = rpc(
@@ -782,6 +815,17 @@ class InstanceTemplatesClient(metaclass=InstanceTemplatesClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.get_iam_policy]
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project", request.project),
+                    ("resource", request.resource),
+                )
+            ),
+        )
+
         # Send the request.
         response = rpc(
             request,
@@ -864,6 +908,12 @@ class InstanceTemplatesClient(metaclass=InstanceTemplatesClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.insert]
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("project", request.project),)),
+        )
+
         # Send the request.
         response = rpc(
             request,
@@ -945,6 +995,12 @@ class InstanceTemplatesClient(metaclass=InstanceTemplatesClientMeta):
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.insert]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("project", request.project),)),
+        )
 
         # Send the request.
         response = rpc(
@@ -1041,6 +1097,12 @@ class InstanceTemplatesClient(metaclass=InstanceTemplatesClientMeta):
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.list]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("project", request.project),)),
+        )
 
         # Send the request.
         response = rpc(
@@ -1181,6 +1243,17 @@ class InstanceTemplatesClient(metaclass=InstanceTemplatesClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.set_iam_policy]
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project", request.project),
+                    ("resource", request.resource),
+                )
+            ),
+        )
+
         # Send the request.
         response = rpc(
             request,
@@ -1270,6 +1343,17 @@ class InstanceTemplatesClient(metaclass=InstanceTemplatesClientMeta):
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.test_iam_permissions]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project", request.project),
+                    ("resource", request.resource),
+                )
+            ),
+        )
 
         # Send the request.
         response = rpc(

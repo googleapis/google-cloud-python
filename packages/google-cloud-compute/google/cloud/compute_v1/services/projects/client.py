@@ -461,6 +461,12 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.disable_xpn_host]
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("project", request.project),)),
+        )
+
         # Send the request.
         response = rpc(
             request,
@@ -529,6 +535,12 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.disable_xpn_host]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("project", request.project),)),
+        )
 
         # Send the request.
         response = rpc(
@@ -636,6 +648,12 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.disable_xpn_resource]
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("project", request.project),)),
+        )
+
         # Send the request.
         response = rpc(
             request,
@@ -717,6 +735,12 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.disable_xpn_resource]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("project", request.project),)),
+        )
 
         # Send the request.
         response = rpc(
@@ -811,6 +835,12 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.enable_xpn_host]
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("project", request.project),)),
+        )
+
         # Send the request.
         response = rpc(
             request,
@@ -879,6 +909,12 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.enable_xpn_host]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("project", request.project),)),
+        )
 
         # Send the request.
         response = rpc(
@@ -987,6 +1023,12 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.enable_xpn_resource]
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("project", request.project),)),
+        )
+
         # Send the request.
         response = rpc(
             request,
@@ -1069,6 +1111,12 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.enable_xpn_resource]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("project", request.project),)),
+        )
 
         # Send the request.
         response = rpc(
@@ -1173,6 +1221,12 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.get]
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("project", request.project),)),
+        )
+
         # Send the request.
         response = rpc(
             request,
@@ -1246,6 +1300,12 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.get_xpn_host]
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("project", request.project),)),
+        )
+
         # Send the request.
         response = rpc(
             request,
@@ -1316,6 +1376,12 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.get_xpn_resources]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("project", request.project),)),
+        )
 
         # Send the request.
         response = rpc(
@@ -1407,6 +1473,12 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.list_xpn_hosts]
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("project", request.project),)),
+        )
+
         # Send the request.
         response = rpc(
             request,
@@ -1493,6 +1565,12 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.move_disk]
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("project", request.project),)),
+        )
+
         # Send the request.
         response = rpc(
             request,
@@ -1569,6 +1647,12 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.move_disk]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("project", request.project),)),
+        )
 
         # Send the request.
         response = rpc(
@@ -1675,6 +1759,12 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.move_instance]
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("project", request.project),)),
+        )
+
         # Send the request.
         response = rpc(
             request,
@@ -1755,6 +1845,12 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.move_instance]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("project", request.project),)),
+        )
 
         # Send the request.
         response = rpc(
@@ -1861,6 +1957,12 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
             self._transport.set_common_instance_metadata
         ]
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("project", request.project),)),
+        )
+
         # Send the request.
         response = rpc(
             request,
@@ -1941,6 +2043,12 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
         rpc = self._transport._wrapped_methods[
             self._transport.set_common_instance_metadata
         ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("project", request.project),)),
+        )
 
         # Send the request.
         response = rpc(
@@ -2050,6 +2158,12 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.set_default_network_tier]
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("project", request.project),)),
+        )
+
         # Send the request.
         response = rpc(
             request,
@@ -2133,6 +2247,12 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.set_default_network_tier]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("project", request.project),)),
+        )
 
         # Send the request.
         response = rpc(
@@ -2238,6 +2358,12 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.set_usage_export_bucket]
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("project", request.project),)),
+        )
+
         # Send the request.
         response = rpc(
             request,
@@ -2317,6 +2443,12 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.set_usage_export_bucket]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("project", request.project),)),
+        )
 
         # Send the request.
         response = rpc(

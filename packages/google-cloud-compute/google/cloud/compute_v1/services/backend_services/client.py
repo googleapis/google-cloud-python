@@ -484,6 +484,17 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.add_signed_url_key]
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project", request.project),
+                    ("backend_service", request.backend_service),
+                )
+            ),
+        )
+
         # Send the request.
         response = rpc(
             request,
@@ -573,6 +584,17 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.add_signed_url_key]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project", request.project),
+                    ("backend_service", request.backend_service),
+                )
+            ),
+        )
 
         # Send the request.
         response = rpc(
@@ -673,6 +695,12 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.aggregated_list]
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("project", request.project),)),
+        )
+
         # Send the request.
         response = rpc(
             request,
@@ -761,6 +789,17 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.delete]
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project", request.project),
+                    ("backend_service", request.backend_service),
+                )
+            ),
+        )
+
         # Send the request.
         response = rpc(
             request,
@@ -839,6 +878,17 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.delete]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project", request.project),
+                    ("backend_service", request.backend_service),
+                )
+            ),
+        )
 
         # Send the request.
         response = rpc(
@@ -956,6 +1006,17 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.delete_signed_url_key]
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project", request.project),
+                    ("backend_service", request.backend_service),
+                )
+            ),
+        )
+
         # Send the request.
         response = rpc(
             request,
@@ -1047,6 +1108,17 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.delete_signed_url_key]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project", request.project),
+                    ("backend_service", request.backend_service),
+                )
+            ),
+        )
 
         # Send the request.
         response = rpc(
@@ -1165,6 +1237,17 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.get]
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project", request.project),
+                    ("backend_service", request.backend_service),
+                )
+            ),
+        )
+
         # Send the request.
         response = rpc(
             request,
@@ -1256,6 +1339,17 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.get_health]
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project", request.project),
+                    ("backend_service", request.backend_service),
+                )
+            ),
+        )
+
         # Send the request.
         response = rpc(
             request,
@@ -1335,6 +1429,12 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.insert]
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("project", request.project),)),
+        )
+
         # Send the request.
         response = rpc(
             request,
@@ -1413,6 +1513,12 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.insert]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("project", request.project),)),
+        )
 
         # Send the request.
         response = rpc(
@@ -1510,6 +1616,12 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.list]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("project", request.project),)),
+        )
 
         # Send the request.
         response = rpc(
@@ -1611,6 +1723,17 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.patch]
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project", request.project),
+                    ("backend_service", request.backend_service),
+                )
+            ),
+        )
+
         # Send the request.
         response = rpc(
             request,
@@ -1701,6 +1824,17 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.patch]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project", request.project),
+                    ("backend_service", request.backend_service),
+                )
+            ),
+        )
 
         # Send the request.
         response = rpc(
@@ -1820,6 +1954,17 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.set_edge_security_policy]
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project", request.project),
+                    ("backend_service", request.backend_service),
+                )
+            ),
+        )
+
         # Send the request.
         response = rpc(
             request,
@@ -1913,6 +2058,17 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.set_edge_security_policy]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project", request.project),
+                    ("backend_service", request.backend_service),
+                )
+            ),
+        )
 
         # Send the request.
         response = rpc(
@@ -2032,6 +2188,17 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.set_security_policy]
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project", request.project),
+                    ("backend_service", request.backend_service),
+                )
+            ),
+        )
+
         # Send the request.
         response = rpc(
             request,
@@ -2125,6 +2292,17 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.set_security_policy]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project", request.project),
+                    ("backend_service", request.backend_service),
+                )
+            ),
+        )
 
         # Send the request.
         response = rpc(
@@ -2239,6 +2417,17 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.update]
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project", request.project),
+                    ("backend_service", request.backend_service),
+                )
+            ),
+        )
+
         # Send the request.
         response = rpc(
             request,
@@ -2327,6 +2516,17 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.update]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project", request.project),
+                    ("backend_service", request.backend_service),
+                )
+            ),
+        )
 
         # Send the request.
         response = rpc(

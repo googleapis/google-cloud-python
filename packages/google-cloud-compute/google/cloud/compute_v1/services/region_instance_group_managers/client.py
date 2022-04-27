@@ -522,6 +522,18 @@ class RegionInstanceGroupManagersClient(
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.abandon_instances]
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project", request.project),
+                    ("region", request.region),
+                    ("instance_group_manager", request.instance_group_manager),
+                )
+            ),
+        )
+
         # Send the request.
         response = rpc(
             request,
@@ -647,6 +659,18 @@ class RegionInstanceGroupManagersClient(
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.abandon_instances]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project", request.project),
+                    ("region", request.region),
+                    ("instance_group_manager", request.instance_group_manager),
+                )
+            ),
+        )
 
         # Send the request.
         response = rpc(
@@ -791,6 +815,18 @@ class RegionInstanceGroupManagersClient(
             self._transport.apply_updates_to_instances
         ]
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project", request.project),
+                    ("region", request.region),
+                    ("instance_group_manager", request.instance_group_manager),
+                )
+            ),
+        )
+
         # Send the request.
         response = rpc(
             request,
@@ -908,6 +944,18 @@ class RegionInstanceGroupManagersClient(
         rpc = self._transport._wrapped_methods[
             self._transport.apply_updates_to_instances
         ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project", request.project),
+                    ("region", request.region),
+                    ("instance_group_manager", request.instance_group_manager),
+                )
+            ),
+        )
 
         # Send the request.
         response = rpc(
@@ -1055,6 +1103,18 @@ class RegionInstanceGroupManagersClient(
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.create_instances]
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project", request.project),
+                    ("region", request.region),
+                    ("instance_group_manager", request.instance_group_manager),
+                )
+            ),
+        )
+
         # Send the request.
         response = rpc(
             request,
@@ -1176,6 +1236,18 @@ class RegionInstanceGroupManagersClient(
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.create_instances]
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project", request.project),
+                    ("region", request.region),
+                    ("instance_group_manager", request.instance_group_manager),
+                )
+            ),
+        )
+
         # Send the request.
         response = rpc(
             request,
@@ -1291,6 +1363,18 @@ class RegionInstanceGroupManagersClient(
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.delete]
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project", request.project),
+                    ("region", request.region),
+                    ("instance_group_manager", request.instance_group_manager),
+                )
+            ),
+        )
+
         # Send the request.
         response = rpc(
             request,
@@ -1380,6 +1464,18 @@ class RegionInstanceGroupManagersClient(
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.delete]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project", request.project),
+                    ("region", request.region),
+                    ("instance_group_manager", request.instance_group_manager),
+                )
+            ),
+        )
 
         # Send the request.
         response = rpc(
@@ -1531,6 +1627,18 @@ class RegionInstanceGroupManagersClient(
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.delete_instances]
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project", request.project),
+                    ("region", request.region),
+                    ("instance_group_manager", request.instance_group_manager),
+                )
+            ),
+        )
+
         # Send the request.
         response = rpc(
             request,
@@ -1655,6 +1763,18 @@ class RegionInstanceGroupManagersClient(
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.delete_instances]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project", request.project),
+                    ("region", request.region),
+                    ("instance_group_manager", request.instance_group_manager),
+                )
+            ),
+        )
 
         # Send the request.
         response = rpc(
@@ -1799,6 +1919,18 @@ class RegionInstanceGroupManagersClient(
             self._transport.delete_per_instance_configs
         ]
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project", request.project),
+                    ("region", request.region),
+                    ("instance_group_manager", request.instance_group_manager),
+                )
+            ),
+        )
+
         # Send the request.
         response = rpc(
             request,
@@ -1916,6 +2048,18 @@ class RegionInstanceGroupManagersClient(
         rpc = self._transport._wrapped_methods[
             self._transport.delete_per_instance_configs
         ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project", request.project),
+                    ("region", request.region),
+                    ("instance_group_manager", request.instance_group_manager),
+                )
+            ),
+        )
 
         # Send the request.
         response = rpc(
@@ -2039,6 +2183,18 @@ class RegionInstanceGroupManagersClient(
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.get]
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project", request.project),
+                    ("region", request.region),
+                    ("instance_group_manager", request.instance_group_manager),
+                )
+            ),
+        )
+
         # Send the request.
         response = rpc(
             request,
@@ -2137,6 +2293,17 @@ class RegionInstanceGroupManagersClient(
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.insert]
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project", request.project),
+                    ("region", request.region),
+                )
+            ),
+        )
+
         # Send the request.
         response = rpc(
             request,
@@ -2234,6 +2401,17 @@ class RegionInstanceGroupManagersClient(
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.insert]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project", request.project),
+                    ("region", request.region),
+                )
+            ),
+        )
 
         # Send the request.
         response = rpc(
@@ -2343,6 +2521,17 @@ class RegionInstanceGroupManagersClient(
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.list]
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project", request.project),
+                    ("region", request.region),
+                )
+            ),
+        )
+
         # Send the request.
         response = rpc(
             request,
@@ -2449,6 +2638,18 @@ class RegionInstanceGroupManagersClient(
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.list_errors]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project", request.project),
+                    ("region", request.region),
+                    ("instance_group_manager", request.instance_group_manager),
+                )
+            ),
+        )
 
         # Send the request.
         response = rpc(
@@ -2559,6 +2760,18 @@ class RegionInstanceGroupManagersClient(
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.list_managed_instances]
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project", request.project),
+                    ("region", request.region),
+                    ("instance_group_manager", request.instance_group_manager),
+                )
+            ),
+        )
+
         # Send the request.
         response = rpc(
             request,
@@ -2667,6 +2880,18 @@ class RegionInstanceGroupManagersClient(
         rpc = self._transport._wrapped_methods[
             self._transport.list_per_instance_configs
         ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project", request.project),
+                    ("region", request.region),
+                    ("instance_group_manager", request.instance_group_manager),
+                )
+            ),
+        )
 
         # Send the request.
         response = rpc(
@@ -2791,6 +3016,18 @@ class RegionInstanceGroupManagersClient(
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.patch]
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project", request.project),
+                    ("region", request.region),
+                    ("instance_group_manager", request.instance_group_manager),
+                )
+            ),
+        )
+
         # Send the request.
         response = rpc(
             request,
@@ -2904,6 +3141,18 @@ class RegionInstanceGroupManagersClient(
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.patch]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project", request.project),
+                    ("region", request.region),
+                    ("instance_group_manager", request.instance_group_manager),
+                )
+            ),
+        )
 
         # Send the request.
         response = rpc(
@@ -3050,6 +3299,18 @@ class RegionInstanceGroupManagersClient(
             self._transport.patch_per_instance_configs
         ]
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project", request.project),
+                    ("region", request.region),
+                    ("instance_group_manager", request.instance_group_manager),
+                )
+            ),
+        )
+
         # Send the request.
         response = rpc(
             request,
@@ -3169,6 +3430,18 @@ class RegionInstanceGroupManagersClient(
         rpc = self._transport._wrapped_methods[
             self._transport.patch_per_instance_configs
         ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project", request.project),
+                    ("region", request.region),
+                    ("instance_group_manager", request.instance_group_manager),
+                )
+            ),
+        )
 
         # Send the request.
         response = rpc(
@@ -3318,6 +3591,18 @@ class RegionInstanceGroupManagersClient(
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.recreate_instances]
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project", request.project),
+                    ("region", request.region),
+                    ("instance_group_manager", request.instance_group_manager),
+                )
+            ),
+        )
+
         # Send the request.
         response = rpc(
             request,
@@ -3440,6 +3725,18 @@ class RegionInstanceGroupManagersClient(
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.recreate_instances]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project", request.project),
+                    ("region", request.region),
+                    ("instance_group_manager", request.instance_group_manager),
+                )
+            ),
+        )
 
         # Send the request.
         response = rpc(
@@ -3575,6 +3872,18 @@ class RegionInstanceGroupManagersClient(
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.resize]
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project", request.project),
+                    ("region", request.region),
+                    ("instance_group_manager", request.instance_group_manager),
+                )
+            ),
+        )
+
         # Send the request.
         response = rpc(
             request,
@@ -3683,6 +3992,18 @@ class RegionInstanceGroupManagersClient(
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.resize]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project", request.project),
+                    ("region", request.region),
+                    ("instance_group_manager", request.instance_group_manager),
+                )
+            ),
+        )
 
         # Send the request.
         response = rpc(
@@ -3823,6 +4144,18 @@ class RegionInstanceGroupManagersClient(
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.set_instance_template]
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project", request.project),
+                    ("region", request.region),
+                    ("instance_group_manager", request.instance_group_manager),
+                )
+            ),
+        )
+
         # Send the request.
         response = rpc(
             request,
@@ -3936,6 +4269,18 @@ class RegionInstanceGroupManagersClient(
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.set_instance_template]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project", request.project),
+                    ("region", request.region),
+                    ("instance_group_manager", request.instance_group_manager),
+                )
+            ),
+        )
 
         # Send the request.
         response = rpc(
@@ -4075,6 +4420,18 @@ class RegionInstanceGroupManagersClient(
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.set_target_pools]
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project", request.project),
+                    ("region", request.region),
+                    ("instance_group_manager", request.instance_group_manager),
+                )
+            ),
+        )
+
         # Send the request.
         response = rpc(
             request,
@@ -4187,6 +4544,18 @@ class RegionInstanceGroupManagersClient(
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.set_target_pools]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project", request.project),
+                    ("region", request.region),
+                    ("instance_group_manager", request.instance_group_manager),
+                )
+            ),
+        )
 
         # Send the request.
         response = rpc(
@@ -4333,6 +4702,18 @@ class RegionInstanceGroupManagersClient(
             self._transport.update_per_instance_configs
         ]
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project", request.project),
+                    ("region", request.region),
+                    ("instance_group_manager", request.instance_group_manager),
+                )
+            ),
+        )
+
         # Send the request.
         response = rpc(
             request,
@@ -4452,6 +4833,18 @@ class RegionInstanceGroupManagersClient(
         rpc = self._transport._wrapped_methods[
             self._transport.update_per_instance_configs
         ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project", request.project),
+                    ("region", request.region),
+                    ("instance_group_manager", request.instance_group_manager),
+                )
+            ),
+        )
 
         # Send the request.
         response = rpc(

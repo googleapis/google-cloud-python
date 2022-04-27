@@ -483,6 +483,17 @@ class NetworksClient(metaclass=NetworksClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.add_peering]
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project", request.project),
+                    ("network", request.network),
+                )
+            ),
+        )
+
         # Send the request.
         response = rpc(
             request,
@@ -573,6 +584,17 @@ class NetworksClient(metaclass=NetworksClientMeta):
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.add_peering]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project", request.project),
+                    ("network", request.network),
+                )
+            ),
+        )
 
         # Send the request.
         response = rpc(
@@ -674,6 +696,17 @@ class NetworksClient(metaclass=NetworksClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.delete]
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project", request.project),
+                    ("network", request.network),
+                )
+            ),
+        )
+
         # Send the request.
         response = rpc(
             request,
@@ -749,6 +782,17 @@ class NetworksClient(metaclass=NetworksClientMeta):
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.delete]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project", request.project),
+                    ("network", request.network),
+                )
+            ),
+        )
 
         # Send the request.
         response = rpc(
@@ -854,6 +898,17 @@ class NetworksClient(metaclass=NetworksClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.get]
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project", request.project),
+                    ("network", request.network),
+                )
+            ),
+        )
+
         # Send the request.
         response = rpc(
             request,
@@ -928,6 +983,17 @@ class NetworksClient(metaclass=NetworksClientMeta):
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.get_effective_firewalls]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project", request.project),
+                    ("network", request.network),
+                )
+            ),
+        )
 
         # Send the request.
         response = rpc(
@@ -1006,6 +1072,12 @@ class NetworksClient(metaclass=NetworksClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.insert]
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("project", request.project),)),
+        )
+
         # Send the request.
         response = rpc(
             request,
@@ -1082,6 +1154,12 @@ class NetworksClient(metaclass=NetworksClientMeta):
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.insert]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("project", request.project),)),
+        )
 
         # Send the request.
         response = rpc(
@@ -1178,6 +1256,12 @@ class NetworksClient(metaclass=NetworksClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.list]
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("project", request.project),)),
+        )
+
         # Send the request.
         response = rpc(
             request,
@@ -1265,6 +1349,17 @@ class NetworksClient(metaclass=NetworksClientMeta):
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.list_peering_routes]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project", request.project),
+                    ("network", request.network),
+                )
+            ),
+        )
 
         # Send the request.
         response = rpc(
@@ -1361,6 +1456,17 @@ class NetworksClient(metaclass=NetworksClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.patch]
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project", request.project),
+                    ("network", request.network),
+                )
+            ),
+        )
+
         # Send the request.
         response = rpc(
             request,
@@ -1446,6 +1552,17 @@ class NetworksClient(metaclass=NetworksClientMeta):
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.patch]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project", request.project),
+                    ("network", request.network),
+                )
+            ),
+        )
 
         # Send the request.
         response = rpc(
@@ -1562,6 +1679,17 @@ class NetworksClient(metaclass=NetworksClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.remove_peering]
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project", request.project),
+                    ("network", request.network),
+                )
+            ),
+        )
+
         # Send the request.
         response = rpc(
             request,
@@ -1652,6 +1780,17 @@ class NetworksClient(metaclass=NetworksClientMeta):
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.remove_peering]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project", request.project),
+                    ("network", request.network),
+                )
+            ),
+        )
 
         # Send the request.
         response = rpc(
@@ -1755,6 +1894,17 @@ class NetworksClient(metaclass=NetworksClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.switch_to_custom_mode]
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project", request.project),
+                    ("network", request.network),
+                )
+            ),
+        )
+
         # Send the request.
         response = rpc(
             request,
@@ -1832,6 +1982,17 @@ class NetworksClient(metaclass=NetworksClientMeta):
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.switch_to_custom_mode]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project", request.project),
+                    ("network", request.network),
+                )
+            ),
+        )
 
         # Send the request.
         response = rpc(
@@ -1951,6 +2112,17 @@ class NetworksClient(metaclass=NetworksClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.update_peering]
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project", request.project),
+                    ("network", request.network),
+                )
+            ),
+        )
+
         # Send the request.
         response = rpc(
             request,
@@ -2044,6 +2216,17 @@ class NetworksClient(metaclass=NetworksClientMeta):
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.update_peering]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project", request.project),
+                    ("network", request.network),
+                )
+            ),
+        )
 
         # Send the request.
         response = rpc(

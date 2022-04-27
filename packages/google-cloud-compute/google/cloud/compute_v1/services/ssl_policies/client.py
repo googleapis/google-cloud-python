@@ -474,6 +474,17 @@ class SslPoliciesClient(metaclass=SslPoliciesClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.delete]
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project", request.project),
+                    ("ssl_policy", request.ssl_policy),
+                )
+            ),
+        )
+
         # Send the request.
         response = rpc(
             request,
@@ -555,6 +566,17 @@ class SslPoliciesClient(metaclass=SslPoliciesClientMeta):
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.delete]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project", request.project),
+                    ("ssl_policy", request.ssl_policy),
+                )
+            ),
+        )
 
         # Send the request.
         response = rpc(
@@ -664,6 +686,17 @@ class SslPoliciesClient(metaclass=SslPoliciesClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.get]
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project", request.project),
+                    ("ssl_policy", request.ssl_policy),
+                )
+            ),
+        )
+
         # Send the request.
         response = rpc(
             request,
@@ -743,6 +776,12 @@ class SslPoliciesClient(metaclass=SslPoliciesClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.insert]
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("project", request.project),)),
+        )
+
         # Send the request.
         response = rpc(
             request,
@@ -821,6 +860,12 @@ class SslPoliciesClient(metaclass=SslPoliciesClientMeta):
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.insert]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("project", request.project),)),
+        )
 
         # Send the request.
         response = rpc(
@@ -917,6 +962,12 @@ class SslPoliciesClient(metaclass=SslPoliciesClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.list]
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("project", request.project),)),
+        )
+
         # Send the request.
         response = rpc(
             request,
@@ -993,6 +1044,12 @@ class SslPoliciesClient(metaclass=SslPoliciesClientMeta):
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.list_available_features]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("project", request.project),)),
+        )
 
         # Send the request.
         response = rpc(
@@ -1083,6 +1140,17 @@ class SslPoliciesClient(metaclass=SslPoliciesClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.patch]
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project", request.project),
+                    ("ssl_policy", request.ssl_policy),
+                )
+            ),
+        )
+
         # Send the request.
         response = rpc(
             request,
@@ -1171,6 +1239,17 @@ class SslPoliciesClient(metaclass=SslPoliciesClientMeta):
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.patch]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project", request.project),
+                    ("ssl_policy", request.ssl_policy),
+                )
+            ),
+        )
 
         # Send the request.
         response = rpc(

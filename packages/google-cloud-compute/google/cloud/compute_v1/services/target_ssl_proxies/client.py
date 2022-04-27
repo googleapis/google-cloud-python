@@ -473,6 +473,17 @@ class TargetSslProxiesClient(metaclass=TargetSslProxiesClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.delete]
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project", request.project),
+                    ("target_ssl_proxy", request.target_ssl_proxy),
+                )
+            ),
+        )
+
         # Send the request.
         response = rpc(
             request,
@@ -551,6 +562,17 @@ class TargetSslProxiesClient(metaclass=TargetSslProxiesClientMeta):
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.delete]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project", request.project),
+                    ("target_ssl_proxy", request.target_ssl_proxy),
+                )
+            ),
+        )
 
         # Send the request.
         response = rpc(
@@ -663,6 +685,17 @@ class TargetSslProxiesClient(metaclass=TargetSslProxiesClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.get]
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project", request.project),
+                    ("target_ssl_proxy", request.target_ssl_proxy),
+                )
+            ),
+        )
+
         # Send the request.
         response = rpc(
             request,
@@ -741,6 +774,12 @@ class TargetSslProxiesClient(metaclass=TargetSslProxiesClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.insert]
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("project", request.project),)),
+        )
+
         # Send the request.
         response = rpc(
             request,
@@ -818,6 +857,12 @@ class TargetSslProxiesClient(metaclass=TargetSslProxiesClientMeta):
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.insert]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("project", request.project),)),
+        )
 
         # Send the request.
         response = rpc(
@@ -915,6 +960,12 @@ class TargetSslProxiesClient(metaclass=TargetSslProxiesClientMeta):
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.list]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("project", request.project),)),
+        )
 
         # Send the request.
         response = rpc(
@@ -1021,6 +1072,17 @@ class TargetSslProxiesClient(metaclass=TargetSslProxiesClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.set_backend_service]
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project", request.project),
+                    ("target_ssl_proxy", request.target_ssl_proxy),
+                )
+            ),
+        )
+
         # Send the request.
         response = rpc(
             request,
@@ -1116,6 +1178,17 @@ class TargetSslProxiesClient(metaclass=TargetSslProxiesClientMeta):
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.set_backend_service]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project", request.project),
+                    ("target_ssl_proxy", request.target_ssl_proxy),
+                )
+            ),
+        )
 
         # Send the request.
         response = rpc(
@@ -1236,6 +1309,17 @@ class TargetSslProxiesClient(metaclass=TargetSslProxiesClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.set_proxy_header]
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project", request.project),
+                    ("target_ssl_proxy", request.target_ssl_proxy),
+                )
+            ),
+        )
+
         # Send the request.
         response = rpc(
             request,
@@ -1330,6 +1414,17 @@ class TargetSslProxiesClient(metaclass=TargetSslProxiesClientMeta):
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.set_proxy_header]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project", request.project),
+                    ("target_ssl_proxy", request.target_ssl_proxy),
+                )
+            ),
+        )
 
         # Send the request.
         response = rpc(
@@ -1451,6 +1546,17 @@ class TargetSslProxiesClient(metaclass=TargetSslProxiesClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.set_ssl_certificates]
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project", request.project),
+                    ("target_ssl_proxy", request.target_ssl_proxy),
+                )
+            ),
+        )
+
         # Send the request.
         response = rpc(
             request,
@@ -1546,6 +1652,17 @@ class TargetSslProxiesClient(metaclass=TargetSslProxiesClientMeta):
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.set_ssl_certificates]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project", request.project),
+                    ("target_ssl_proxy", request.target_ssl_proxy),
+                )
+            ),
+        )
 
         # Send the request.
         response = rpc(
@@ -1666,6 +1783,17 @@ class TargetSslProxiesClient(metaclass=TargetSslProxiesClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.set_ssl_policy]
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project", request.project),
+                    ("target_ssl_proxy", request.target_ssl_proxy),
+                )
+            ),
+        )
+
         # Send the request.
         response = rpc(
             request,
@@ -1760,6 +1888,17 @@ class TargetSslProxiesClient(metaclass=TargetSslProxiesClientMeta):
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.set_ssl_policy]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project", request.project),
+                    ("target_ssl_proxy", request.target_ssl_proxy),
+                )
+            ),
+        )
 
         # Send the request.
         response = rpc(

@@ -486,6 +486,17 @@ class NetworkFirewallPoliciesClient(metaclass=NetworkFirewallPoliciesClientMeta)
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.add_association]
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project", request.project),
+                    ("firewall_policy", request.firewall_policy),
+                )
+            ),
+        )
+
         # Send the request.
         response = rpc(
             request,
@@ -577,6 +588,17 @@ class NetworkFirewallPoliciesClient(metaclass=NetworkFirewallPoliciesClientMeta)
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.add_association]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project", request.project),
+                    ("firewall_policy", request.firewall_policy),
+                )
+            ),
+        )
 
         # Send the request.
         response = rpc(
@@ -691,6 +713,17 @@ class NetworkFirewallPoliciesClient(metaclass=NetworkFirewallPoliciesClientMeta)
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.add_rule]
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project", request.project),
+                    ("firewall_policy", request.firewall_policy),
+                )
+            ),
+        )
+
         # Send the request.
         response = rpc(
             request,
@@ -779,6 +812,17 @@ class NetworkFirewallPoliciesClient(metaclass=NetworkFirewallPoliciesClientMeta)
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.add_rule]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project", request.project),
+                    ("firewall_policy", request.firewall_policy),
+                )
+            ),
+        )
 
         # Send the request.
         response = rpc(
@@ -883,6 +927,17 @@ class NetworkFirewallPoliciesClient(metaclass=NetworkFirewallPoliciesClientMeta)
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.clone_rules]
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project", request.project),
+                    ("firewall_policy", request.firewall_policy),
+                )
+            ),
+        )
+
         # Send the request.
         response = rpc(
             request,
@@ -961,6 +1016,17 @@ class NetworkFirewallPoliciesClient(metaclass=NetworkFirewallPoliciesClientMeta)
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.clone_rules]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project", request.project),
+                    ("firewall_policy", request.firewall_policy),
+                )
+            ),
+        )
 
         # Send the request.
         response = rpc(
@@ -1065,6 +1131,17 @@ class NetworkFirewallPoliciesClient(metaclass=NetworkFirewallPoliciesClientMeta)
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.delete]
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project", request.project),
+                    ("firewall_policy", request.firewall_policy),
+                )
+            ),
+        )
+
         # Send the request.
         response = rpc(
             request,
@@ -1143,6 +1220,17 @@ class NetworkFirewallPoliciesClient(metaclass=NetworkFirewallPoliciesClientMeta)
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.delete]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project", request.project),
+                    ("firewall_policy", request.firewall_policy),
+                )
+            ),
+        )
 
         # Send the request.
         response = rpc(
@@ -1245,6 +1333,17 @@ class NetworkFirewallPoliciesClient(metaclass=NetworkFirewallPoliciesClientMeta)
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.get]
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project", request.project),
+                    ("firewall_policy", request.firewall_policy),
+                )
+            ),
+        )
+
         # Send the request.
         response = rpc(
             request,
@@ -1321,6 +1420,17 @@ class NetworkFirewallPoliciesClient(metaclass=NetworkFirewallPoliciesClientMeta)
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.get_association]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project", request.project),
+                    ("firewall_policy", request.firewall_policy),
+                )
+            ),
+        )
 
         # Send the request.
         response = rpc(
@@ -1440,6 +1550,17 @@ class NetworkFirewallPoliciesClient(metaclass=NetworkFirewallPoliciesClientMeta)
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.get_iam_policy]
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project", request.project),
+                    ("resource", request.resource),
+                )
+            ),
+        )
+
         # Send the request.
         response = rpc(
             request,
@@ -1521,6 +1642,17 @@ class NetworkFirewallPoliciesClient(metaclass=NetworkFirewallPoliciesClientMeta)
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.get_rule]
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project", request.project),
+                    ("firewall_policy", request.firewall_policy),
+                )
+            ),
+        )
+
         # Send the request.
         response = rpc(
             request,
@@ -1599,6 +1731,12 @@ class NetworkFirewallPoliciesClient(metaclass=NetworkFirewallPoliciesClientMeta)
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.insert]
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("project", request.project),)),
+        )
+
         # Send the request.
         response = rpc(
             request,
@@ -1676,6 +1814,12 @@ class NetworkFirewallPoliciesClient(metaclass=NetworkFirewallPoliciesClientMeta)
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.insert]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("project", request.project),)),
+        )
 
         # Send the request.
         response = rpc(
@@ -1771,6 +1915,12 @@ class NetworkFirewallPoliciesClient(metaclass=NetworkFirewallPoliciesClientMeta)
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.list]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("project", request.project),)),
+        )
 
         # Send the request.
         response = rpc(
@@ -1869,6 +2019,17 @@ class NetworkFirewallPoliciesClient(metaclass=NetworkFirewallPoliciesClientMeta)
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.patch]
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project", request.project),
+                    ("firewall_policy", request.firewall_policy),
+                )
+            ),
+        )
+
         # Send the request.
         response = rpc(
             request,
@@ -1956,6 +2117,17 @@ class NetworkFirewallPoliciesClient(metaclass=NetworkFirewallPoliciesClientMeta)
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.patch]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project", request.project),
+                    ("firewall_policy", request.firewall_policy),
+                )
+            ),
+        )
 
         # Send the request.
         response = rpc(
@@ -2070,6 +2242,17 @@ class NetworkFirewallPoliciesClient(metaclass=NetworkFirewallPoliciesClientMeta)
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.patch_rule]
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project", request.project),
+                    ("firewall_policy", request.firewall_policy),
+                )
+            ),
+        )
+
         # Send the request.
         response = rpc(
             request,
@@ -2158,6 +2341,17 @@ class NetworkFirewallPoliciesClient(metaclass=NetworkFirewallPoliciesClientMeta)
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.patch_rule]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project", request.project),
+                    ("firewall_policy", request.firewall_policy),
+                )
+            ),
+        )
 
         # Send the request.
         response = rpc(
@@ -2267,6 +2461,17 @@ class NetworkFirewallPoliciesClient(metaclass=NetworkFirewallPoliciesClientMeta)
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.remove_association]
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project", request.project),
+                    ("firewall_policy", request.firewall_policy),
+                )
+            ),
+        )
+
         # Send the request.
         response = rpc(
             request,
@@ -2350,6 +2555,17 @@ class NetworkFirewallPoliciesClient(metaclass=NetworkFirewallPoliciesClientMeta)
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.remove_association]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project", request.project),
+                    ("firewall_policy", request.firewall_policy),
+                )
+            ),
+        )
 
         # Send the request.
         response = rpc(
@@ -2454,6 +2670,17 @@ class NetworkFirewallPoliciesClient(metaclass=NetworkFirewallPoliciesClientMeta)
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.remove_rule]
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project", request.project),
+                    ("firewall_policy", request.firewall_policy),
+                )
+            ),
+        )
+
         # Send the request.
         response = rpc(
             request,
@@ -2532,6 +2759,17 @@ class NetworkFirewallPoliciesClient(metaclass=NetworkFirewallPoliciesClientMeta)
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.remove_rule]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project", request.project),
+                    ("firewall_policy", request.firewall_policy),
+                )
+            ),
+        )
 
         # Send the request.
         response = rpc(
@@ -2687,6 +2925,17 @@ class NetworkFirewallPoliciesClient(metaclass=NetworkFirewallPoliciesClientMeta)
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.set_iam_policy]
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project", request.project),
+                    ("resource", request.resource),
+                )
+            ),
+        )
+
         # Send the request.
         response = rpc(
             request,
@@ -2780,6 +3029,17 @@ class NetworkFirewallPoliciesClient(metaclass=NetworkFirewallPoliciesClientMeta)
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.test_iam_permissions]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project", request.project),
+                    ("resource", request.resource),
+                )
+            ),
+        )
 
         # Send the request.
         response = rpc(
