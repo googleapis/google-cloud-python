@@ -238,9 +238,9 @@ class TablesServiceAsyncClient:
 
             from google.area120 import tables_v1alpha1
 
-            def sample_get_table():
+            async def sample_get_table():
                 # Create a client
-                client = tables_v1alpha1.TablesServiceClient()
+                client = tables_v1alpha1.TablesServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = tables_v1alpha1.GetTableRequest(
@@ -248,7 +248,7 @@ class TablesServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_table(request=request)
+                response = await client.get_table(request=request)
 
                 # Handle the response
                 print(response)
@@ -330,9 +330,9 @@ class TablesServiceAsyncClient:
 
             from google.area120 import tables_v1alpha1
 
-            def sample_list_tables():
+            async def sample_list_tables():
                 # Create a client
-                client = tables_v1alpha1.TablesServiceClient()
+                client = tables_v1alpha1.TablesServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = tables_v1alpha1.ListTablesRequest(
@@ -342,7 +342,7 @@ class TablesServiceAsyncClient:
                 page_result = client.list_tables(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -411,9 +411,9 @@ class TablesServiceAsyncClient:
 
             from google.area120 import tables_v1alpha1
 
-            def sample_get_workspace():
+            async def sample_get_workspace():
                 # Create a client
-                client = tables_v1alpha1.TablesServiceClient()
+                client = tables_v1alpha1.TablesServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = tables_v1alpha1.GetWorkspaceRequest(
@@ -421,7 +421,7 @@ class TablesServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_workspace(request=request)
+                response = await client.get_workspace(request=request)
 
                 # Handle the response
                 print(response)
@@ -504,9 +504,9 @@ class TablesServiceAsyncClient:
 
             from google.area120 import tables_v1alpha1
 
-            def sample_list_workspaces():
+            async def sample_list_workspaces():
                 # Create a client
-                client = tables_v1alpha1.TablesServiceClient()
+                client = tables_v1alpha1.TablesServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = tables_v1alpha1.ListWorkspacesRequest(
@@ -516,7 +516,7 @@ class TablesServiceAsyncClient:
                 page_result = client.list_workspaces(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -585,9 +585,9 @@ class TablesServiceAsyncClient:
 
             from google.area120 import tables_v1alpha1
 
-            def sample_get_row():
+            async def sample_get_row():
                 # Create a client
-                client = tables_v1alpha1.TablesServiceClient()
+                client = tables_v1alpha1.TablesServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = tables_v1alpha1.GetRowRequest(
@@ -595,7 +595,7 @@ class TablesServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_row(request=request)
+                response = await client.get_row(request=request)
 
                 # Handle the response
                 print(response)
@@ -680,9 +680,9 @@ class TablesServiceAsyncClient:
 
             from google.area120 import tables_v1alpha1
 
-            def sample_list_rows():
+            async def sample_list_rows():
                 # Create a client
-                client = tables_v1alpha1.TablesServiceClient()
+                client = tables_v1alpha1.TablesServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = tables_v1alpha1.ListRowsRequest(
@@ -693,7 +693,7 @@ class TablesServiceAsyncClient:
                 page_result = client.list_rows(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -789,9 +789,9 @@ class TablesServiceAsyncClient:
 
             from google.area120 import tables_v1alpha1
 
-            def sample_create_row():
+            async def sample_create_row():
                 # Create a client
-                client = tables_v1alpha1.TablesServiceClient()
+                client = tables_v1alpha1.TablesServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = tables_v1alpha1.CreateRowRequest(
@@ -799,7 +799,7 @@ class TablesServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.create_row(request=request)
+                response = await client.create_row(request=request)
 
                 # Handle the response
                 print(response)
@@ -889,9 +889,9 @@ class TablesServiceAsyncClient:
 
             from google.area120 import tables_v1alpha1
 
-            def sample_batch_create_rows():
+            async def sample_batch_create_rows():
                 # Create a client
-                client = tables_v1alpha1.TablesServiceClient()
+                client = tables_v1alpha1.TablesServiceAsyncClient()
 
                 # Initialize request argument(s)
                 requests = tables_v1alpha1.CreateRowRequest()
@@ -903,7 +903,7 @@ class TablesServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.batch_create_rows(request=request)
+                response = await client.batch_create_rows(request=request)
 
                 # Handle the response
                 print(response)
@@ -968,16 +968,16 @@ class TablesServiceAsyncClient:
 
             from google.area120 import tables_v1alpha1
 
-            def sample_update_row():
+            async def sample_update_row():
                 # Create a client
-                client = tables_v1alpha1.TablesServiceClient()
+                client = tables_v1alpha1.TablesServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = tables_v1alpha1.UpdateRowRequest(
                 )
 
                 # Make the request
-                response = client.update_row(request=request)
+                response = await client.update_row(request=request)
 
                 # Handle the response
                 print(response)
@@ -1064,9 +1064,9 @@ class TablesServiceAsyncClient:
 
             from google.area120 import tables_v1alpha1
 
-            def sample_batch_update_rows():
+            async def sample_batch_update_rows():
                 # Create a client
-                client = tables_v1alpha1.TablesServiceClient()
+                client = tables_v1alpha1.TablesServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = tables_v1alpha1.BatchUpdateRowsRequest(
@@ -1074,7 +1074,7 @@ class TablesServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.batch_update_rows(request=request)
+                response = await client.batch_update_rows(request=request)
 
                 # Handle the response
                 print(response)
@@ -1138,9 +1138,9 @@ class TablesServiceAsyncClient:
 
             from google.area120 import tables_v1alpha1
 
-            def sample_delete_row():
+            async def sample_delete_row():
                 # Create a client
-                client = tables_v1alpha1.TablesServiceClient()
+                client = tables_v1alpha1.TablesServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = tables_v1alpha1.DeleteRowRequest(
@@ -1148,7 +1148,7 @@ class TablesServiceAsyncClient:
                 )
 
                 # Make the request
-                client.delete_row(request=request)
+                await client.delete_row(request=request)
 
         Args:
             request (Union[google.area120.tables_v1alpha1.types.DeleteRowRequest, dict]):
@@ -1221,9 +1221,9 @@ class TablesServiceAsyncClient:
 
             from google.area120 import tables_v1alpha1
 
-            def sample_batch_delete_rows():
+            async def sample_batch_delete_rows():
                 # Create a client
-                client = tables_v1alpha1.TablesServiceClient()
+                client = tables_v1alpha1.TablesServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = tables_v1alpha1.BatchDeleteRowsRequest(
@@ -1232,7 +1232,7 @@ class TablesServiceAsyncClient:
                 )
 
                 # Make the request
-                client.batch_delete_rows(request=request)
+                await client.batch_delete_rows(request=request)
 
         Args:
             request (Union[google.area120.tables_v1alpha1.types.BatchDeleteRowsRequest, dict]):
