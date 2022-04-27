@@ -267,9 +267,9 @@ class ArtifactRegistryAsyncClient:
 
             from google.cloud import artifactregistry_v1beta2
 
-            def sample_import_apt_artifacts():
+            async def sample_import_apt_artifacts():
                 # Create a client
-                client = artifactregistry_v1beta2.ArtifactRegistryClient()
+                client = artifactregistry_v1beta2.ArtifactRegistryAsyncClient()
 
                 # Initialize request argument(s)
                 request = artifactregistry_v1beta2.ImportAptArtifactsRequest(
@@ -280,7 +280,7 @@ class ArtifactRegistryAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -358,9 +358,9 @@ class ArtifactRegistryAsyncClient:
 
             from google.cloud import artifactregistry_v1beta2
 
-            def sample_import_yum_artifacts():
+            async def sample_import_yum_artifacts():
                 # Create a client
-                client = artifactregistry_v1beta2.ArtifactRegistryClient()
+                client = artifactregistry_v1beta2.ArtifactRegistryAsyncClient()
 
                 # Initialize request argument(s)
                 request = artifactregistry_v1beta2.ImportYumArtifactsRequest(
@@ -371,7 +371,7 @@ class ArtifactRegistryAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -446,9 +446,9 @@ class ArtifactRegistryAsyncClient:
 
             from google.cloud import artifactregistry_v1beta2
 
-            def sample_list_repositories():
+            async def sample_list_repositories():
                 # Create a client
-                client = artifactregistry_v1beta2.ArtifactRegistryClient()
+                client = artifactregistry_v1beta2.ArtifactRegistryAsyncClient()
 
                 # Initialize request argument(s)
                 request = artifactregistry_v1beta2.ListRepositoriesRequest(
@@ -459,7 +459,7 @@ class ArtifactRegistryAsyncClient:
                 page_result = client.list_repositories(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -563,9 +563,9 @@ class ArtifactRegistryAsyncClient:
 
             from google.cloud import artifactregistry_v1beta2
 
-            def sample_get_repository():
+            async def sample_get_repository():
                 # Create a client
-                client = artifactregistry_v1beta2.ArtifactRegistryClient()
+                client = artifactregistry_v1beta2.ArtifactRegistryAsyncClient()
 
                 # Initialize request argument(s)
                 request = artifactregistry_v1beta2.GetRepositoryRequest(
@@ -573,7 +573,7 @@ class ArtifactRegistryAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_repository(request=request)
+                response = await client.get_repository(request=request)
 
                 # Handle the response
                 print(response)
@@ -671,9 +671,9 @@ class ArtifactRegistryAsyncClient:
 
             from google.cloud import artifactregistry_v1beta2
 
-            def sample_create_repository():
+            async def sample_create_repository():
                 # Create a client
-                client = artifactregistry_v1beta2.ArtifactRegistryClient()
+                client = artifactregistry_v1beta2.ArtifactRegistryAsyncClient()
 
                 # Initialize request argument(s)
                 request = artifactregistry_v1beta2.CreateRepositoryRequest(
@@ -685,7 +685,7 @@ class ArtifactRegistryAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -800,16 +800,16 @@ class ArtifactRegistryAsyncClient:
 
             from google.cloud import artifactregistry_v1beta2
 
-            def sample_update_repository():
+            async def sample_update_repository():
                 # Create a client
-                client = artifactregistry_v1beta2.ArtifactRegistryClient()
+                client = artifactregistry_v1beta2.ArtifactRegistryAsyncClient()
 
                 # Initialize request argument(s)
                 request = artifactregistry_v1beta2.UpdateRepositoryRequest(
                 )
 
                 # Make the request
-                response = client.update_repository(request=request)
+                response = await client.update_repository(request=request)
 
                 # Handle the response
                 print(response)
@@ -908,9 +908,9 @@ class ArtifactRegistryAsyncClient:
 
             from google.cloud import artifactregistry_v1beta2
 
-            def sample_delete_repository():
+            async def sample_delete_repository():
                 # Create a client
-                client = artifactregistry_v1beta2.ArtifactRegistryClient()
+                client = artifactregistry_v1beta2.ArtifactRegistryAsyncClient()
 
                 # Initialize request argument(s)
                 request = artifactregistry_v1beta2.DeleteRepositoryRequest(
@@ -922,7 +922,7 @@ class ArtifactRegistryAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1036,9 +1036,9 @@ class ArtifactRegistryAsyncClient:
 
             from google.cloud import artifactregistry_v1beta2
 
-            def sample_list_packages():
+            async def sample_list_packages():
                 # Create a client
-                client = artifactregistry_v1beta2.ArtifactRegistryClient()
+                client = artifactregistry_v1beta2.ArtifactRegistryAsyncClient()
 
                 # Initialize request argument(s)
                 request = artifactregistry_v1beta2.ListPackagesRequest(
@@ -1048,7 +1048,7 @@ class ArtifactRegistryAsyncClient:
                 page_result = client.list_packages(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -1150,16 +1150,16 @@ class ArtifactRegistryAsyncClient:
 
             from google.cloud import artifactregistry_v1beta2
 
-            def sample_get_package():
+            async def sample_get_package():
                 # Create a client
-                client = artifactregistry_v1beta2.ArtifactRegistryClient()
+                client = artifactregistry_v1beta2.ArtifactRegistryAsyncClient()
 
                 # Initialize request argument(s)
                 request = artifactregistry_v1beta2.GetPackageRequest(
                 )
 
                 # Make the request
-                response = client.get_package(request=request)
+                response = await client.get_package(request=request)
 
                 # Handle the response
                 print(response)
@@ -1252,9 +1252,9 @@ class ArtifactRegistryAsyncClient:
 
             from google.cloud import artifactregistry_v1beta2
 
-            def sample_delete_package():
+            async def sample_delete_package():
                 # Create a client
-                client = artifactregistry_v1beta2.ArtifactRegistryClient()
+                client = artifactregistry_v1beta2.ArtifactRegistryAsyncClient()
 
                 # Initialize request argument(s)
                 request = artifactregistry_v1beta2.DeletePackageRequest(
@@ -1265,7 +1265,7 @@ class ArtifactRegistryAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1377,9 +1377,9 @@ class ArtifactRegistryAsyncClient:
 
             from google.cloud import artifactregistry_v1beta2
 
-            def sample_list_versions():
+            async def sample_list_versions():
                 # Create a client
-                client = artifactregistry_v1beta2.ArtifactRegistryClient()
+                client = artifactregistry_v1beta2.ArtifactRegistryAsyncClient()
 
                 # Initialize request argument(s)
                 request = artifactregistry_v1beta2.ListVersionsRequest(
@@ -1389,7 +1389,7 @@ class ArtifactRegistryAsyncClient:
                 page_result = client.list_versions(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -1491,16 +1491,16 @@ class ArtifactRegistryAsyncClient:
 
             from google.cloud import artifactregistry_v1beta2
 
-            def sample_get_version():
+            async def sample_get_version():
                 # Create a client
-                client = artifactregistry_v1beta2.ArtifactRegistryClient()
+                client = artifactregistry_v1beta2.ArtifactRegistryAsyncClient()
 
                 # Initialize request argument(s)
                 request = artifactregistry_v1beta2.GetVersionRequest(
                 )
 
                 # Make the request
-                response = client.get_version(request=request)
+                response = await client.get_version(request=request)
 
                 # Handle the response
                 print(response)
@@ -1596,9 +1596,9 @@ class ArtifactRegistryAsyncClient:
 
             from google.cloud import artifactregistry_v1beta2
 
-            def sample_delete_version():
+            async def sample_delete_version():
                 # Create a client
-                client = artifactregistry_v1beta2.ArtifactRegistryClient()
+                client = artifactregistry_v1beta2.ArtifactRegistryAsyncClient()
 
                 # Initialize request argument(s)
                 request = artifactregistry_v1beta2.DeleteVersionRequest(
@@ -1609,7 +1609,7 @@ class ArtifactRegistryAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1721,9 +1721,9 @@ class ArtifactRegistryAsyncClient:
 
             from google.cloud import artifactregistry_v1beta2
 
-            def sample_list_files():
+            async def sample_list_files():
                 # Create a client
-                client = artifactregistry_v1beta2.ArtifactRegistryClient()
+                client = artifactregistry_v1beta2.ArtifactRegistryAsyncClient()
 
                 # Initialize request argument(s)
                 request = artifactregistry_v1beta2.ListFilesRequest(
@@ -1733,7 +1733,7 @@ class ArtifactRegistryAsyncClient:
                 page_result = client.list_files(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -1836,16 +1836,16 @@ class ArtifactRegistryAsyncClient:
 
             from google.cloud import artifactregistry_v1beta2
 
-            def sample_get_file():
+            async def sample_get_file():
                 # Create a client
-                client = artifactregistry_v1beta2.ArtifactRegistryClient()
+                client = artifactregistry_v1beta2.ArtifactRegistryAsyncClient()
 
                 # Initialize request argument(s)
                 request = artifactregistry_v1beta2.GetFileRequest(
                 )
 
                 # Make the request
-                response = client.get_file(request=request)
+                response = await client.get_file(request=request)
 
                 # Handle the response
                 print(response)
@@ -1937,9 +1937,9 @@ class ArtifactRegistryAsyncClient:
 
             from google.cloud import artifactregistry_v1beta2
 
-            def sample_list_tags():
+            async def sample_list_tags():
                 # Create a client
-                client = artifactregistry_v1beta2.ArtifactRegistryClient()
+                client = artifactregistry_v1beta2.ArtifactRegistryAsyncClient()
 
                 # Initialize request argument(s)
                 request = artifactregistry_v1beta2.ListTagsRequest(
@@ -1949,7 +1949,7 @@ class ArtifactRegistryAsyncClient:
                 page_result = client.list_tags(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -2051,16 +2051,16 @@ class ArtifactRegistryAsyncClient:
 
             from google.cloud import artifactregistry_v1beta2
 
-            def sample_get_tag():
+            async def sample_get_tag():
                 # Create a client
-                client = artifactregistry_v1beta2.ArtifactRegistryClient()
+                client = artifactregistry_v1beta2.ArtifactRegistryAsyncClient()
 
                 # Initialize request argument(s)
                 request = artifactregistry_v1beta2.GetTagRequest(
                 )
 
                 # Make the request
-                response = client.get_tag(request=request)
+                response = await client.get_tag(request=request)
 
                 # Handle the response
                 print(response)
@@ -2154,16 +2154,16 @@ class ArtifactRegistryAsyncClient:
 
             from google.cloud import artifactregistry_v1beta2
 
-            def sample_create_tag():
+            async def sample_create_tag():
                 # Create a client
-                client = artifactregistry_v1beta2.ArtifactRegistryClient()
+                client = artifactregistry_v1beta2.ArtifactRegistryAsyncClient()
 
                 # Initialize request argument(s)
                 request = artifactregistry_v1beta2.CreateTagRequest(
                 )
 
                 # Make the request
-                response = client.create_tag(request=request)
+                response = await client.create_tag(request=request)
 
                 # Handle the response
                 print(response)
@@ -2265,16 +2265,16 @@ class ArtifactRegistryAsyncClient:
 
             from google.cloud import artifactregistry_v1beta2
 
-            def sample_update_tag():
+            async def sample_update_tag():
                 # Create a client
-                client = artifactregistry_v1beta2.ArtifactRegistryClient()
+                client = artifactregistry_v1beta2.ArtifactRegistryAsyncClient()
 
                 # Initialize request argument(s)
                 request = artifactregistry_v1beta2.UpdateTagRequest(
                 )
 
                 # Make the request
-                response = client.update_tag(request=request)
+                response = await client.update_tag(request=request)
 
                 # Handle the response
                 print(response)
@@ -2370,16 +2370,16 @@ class ArtifactRegistryAsyncClient:
 
             from google.cloud import artifactregistry_v1beta2
 
-            def sample_delete_tag():
+            async def sample_delete_tag():
                 # Create a client
-                client = artifactregistry_v1beta2.ArtifactRegistryClient()
+                client = artifactregistry_v1beta2.ArtifactRegistryAsyncClient()
 
                 # Initialize request argument(s)
                 request = artifactregistry_v1beta2.DeleteTagRequest(
                 )
 
                 # Make the request
-                client.delete_tag(request=request)
+                await client.delete_tag(request=request)
 
         Args:
             request (Union[google.cloud.artifactregistry_v1beta2.types.DeleteTagRequest, dict]):
@@ -2458,9 +2458,9 @@ class ArtifactRegistryAsyncClient:
             from google.cloud import artifactregistry_v1beta2
             from google.iam.v1 import iam_policy_pb2  # type: ignore
 
-            def sample_set_iam_policy():
+            async def sample_set_iam_policy():
                 # Create a client
-                client = artifactregistry_v1beta2.ArtifactRegistryClient()
+                client = artifactregistry_v1beta2.ArtifactRegistryAsyncClient()
 
                 # Initialize request argument(s)
                 request = iam_policy_pb2.SetIamPolicyRequest(
@@ -2468,7 +2468,7 @@ class ArtifactRegistryAsyncClient:
                 )
 
                 # Make the request
-                response = client.set_iam_policy(request=request)
+                response = await client.set_iam_policy(request=request)
 
                 # Handle the response
                 print(response)
@@ -2594,9 +2594,9 @@ class ArtifactRegistryAsyncClient:
             from google.cloud import artifactregistry_v1beta2
             from google.iam.v1 import iam_policy_pb2  # type: ignore
 
-            def sample_get_iam_policy():
+            async def sample_get_iam_policy():
                 # Create a client
-                client = artifactregistry_v1beta2.ArtifactRegistryClient()
+                client = artifactregistry_v1beta2.ArtifactRegistryAsyncClient()
 
                 # Initialize request argument(s)
                 request = iam_policy_pb2.GetIamPolicyRequest(
@@ -2604,7 +2604,7 @@ class ArtifactRegistryAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_iam_policy(request=request)
+                response = await client.get_iam_policy(request=request)
 
                 # Handle the response
                 print(response)
@@ -2740,9 +2740,9 @@ class ArtifactRegistryAsyncClient:
             from google.cloud import artifactregistry_v1beta2
             from google.iam.v1 import iam_policy_pb2  # type: ignore
 
-            def sample_test_iam_permissions():
+            async def sample_test_iam_permissions():
                 # Create a client
-                client = artifactregistry_v1beta2.ArtifactRegistryClient()
+                client = artifactregistry_v1beta2.ArtifactRegistryAsyncClient()
 
                 # Initialize request argument(s)
                 request = iam_policy_pb2.TestIamPermissionsRequest(
@@ -2751,7 +2751,7 @@ class ArtifactRegistryAsyncClient:
                 )
 
                 # Make the request
-                response = client.test_iam_permissions(request=request)
+                response = await client.test_iam_permissions(request=request)
 
                 # Handle the response
                 print(response)
@@ -2816,9 +2816,9 @@ class ArtifactRegistryAsyncClient:
 
             from google.cloud import artifactregistry_v1beta2
 
-            def sample_get_project_settings():
+            async def sample_get_project_settings():
                 # Create a client
-                client = artifactregistry_v1beta2.ArtifactRegistryClient()
+                client = artifactregistry_v1beta2.ArtifactRegistryAsyncClient()
 
                 # Initialize request argument(s)
                 request = artifactregistry_v1beta2.GetProjectSettingsRequest(
@@ -2826,7 +2826,7 @@ class ArtifactRegistryAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_project_settings(request=request)
+                response = await client.get_project_settings(request=request)
 
                 # Handle the response
                 print(response)
@@ -2912,16 +2912,16 @@ class ArtifactRegistryAsyncClient:
 
             from google.cloud import artifactregistry_v1beta2
 
-            def sample_update_project_settings():
+            async def sample_update_project_settings():
                 # Create a client
-                client = artifactregistry_v1beta2.ArtifactRegistryClient()
+                client = artifactregistry_v1beta2.ArtifactRegistryAsyncClient()
 
                 # Initialize request argument(s)
                 request = artifactregistry_v1beta2.UpdateProjectSettingsRequest(
                 )
 
                 # Make the request
-                response = client.update_project_settings(request=request)
+                response = await client.update_project_settings(request=request)
 
                 # Handle the response
                 print(response)
