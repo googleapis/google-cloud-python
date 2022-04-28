@@ -220,9 +220,9 @@ class WorkflowsAsyncClient:
 
             from google.cloud import workflows_v1beta
 
-            def sample_list_workflows():
+            async def sample_list_workflows():
                 # Create a client
-                client = workflows_v1beta.WorkflowsClient()
+                client = workflows_v1beta.WorkflowsAsyncClient()
 
                 # Initialize request argument(s)
                 request = workflows_v1beta.ListWorkflowsRequest(
@@ -233,7 +233,7 @@ class WorkflowsAsyncClient:
                 page_result = client.list_workflows(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -332,9 +332,9 @@ class WorkflowsAsyncClient:
 
             from google.cloud import workflows_v1beta
 
-            def sample_get_workflow():
+            async def sample_get_workflow():
                 # Create a client
-                client = workflows_v1beta.WorkflowsClient()
+                client = workflows_v1beta.WorkflowsAsyncClient()
 
                 # Initialize request argument(s)
                 request = workflows_v1beta.GetWorkflowRequest(
@@ -342,7 +342,7 @@ class WorkflowsAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_workflow(request=request)
+                response = await client.get_workflow(request=request)
 
                 # Handle the response
                 print(response)
@@ -434,9 +434,9 @@ class WorkflowsAsyncClient:
 
             from google.cloud import workflows_v1beta
 
-            def sample_create_workflow():
+            async def sample_create_workflow():
                 # Create a client
-                client = workflows_v1beta.WorkflowsClient()
+                client = workflows_v1beta.WorkflowsAsyncClient()
 
                 # Initialize request argument(s)
                 workflow = workflows_v1beta.Workflow()
@@ -453,7 +453,7 @@ class WorkflowsAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -578,9 +578,9 @@ class WorkflowsAsyncClient:
 
             from google.cloud import workflows_v1beta
 
-            def sample_delete_workflow():
+            async def sample_delete_workflow():
                 # Create a client
-                client = workflows_v1beta.WorkflowsClient()
+                client = workflows_v1beta.WorkflowsAsyncClient()
 
                 # Initialize request argument(s)
                 request = workflows_v1beta.DeleteWorkflowRequest(
@@ -592,7 +592,7 @@ class WorkflowsAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -706,9 +706,9 @@ class WorkflowsAsyncClient:
 
             from google.cloud import workflows_v1beta
 
-            def sample_update_workflow():
+            async def sample_update_workflow():
                 # Create a client
-                client = workflows_v1beta.WorkflowsClient()
+                client = workflows_v1beta.WorkflowsAsyncClient()
 
                 # Initialize request argument(s)
                 workflow = workflows_v1beta.Workflow()
@@ -723,7 +723,7 @@ class WorkflowsAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)

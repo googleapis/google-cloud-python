@@ -221,9 +221,9 @@ class ExecutionsAsyncClient:
 
             from google.cloud.workflows import executions_v1beta
 
-            def sample_list_executions():
+            async def sample_list_executions():
                 # Create a client
-                client = executions_v1beta.ExecutionsClient()
+                client = executions_v1beta.ExecutionsAsyncClient()
 
                 # Initialize request argument(s)
                 request = executions_v1beta.ListExecutionsRequest(
@@ -234,7 +234,7 @@ class ExecutionsAsyncClient:
                 page_result = client.list_executions(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -335,9 +335,9 @@ class ExecutionsAsyncClient:
 
             from google.cloud.workflows import executions_v1beta
 
-            def sample_create_execution():
+            async def sample_create_execution():
                 # Create a client
-                client = executions_v1beta.ExecutionsClient()
+                client = executions_v1beta.ExecutionsAsyncClient()
 
                 # Initialize request argument(s)
                 request = executions_v1beta.CreateExecutionRequest(
@@ -345,7 +345,7 @@ class ExecutionsAsyncClient:
                 )
 
                 # Make the request
-                response = client.create_execution(request=request)
+                response = await client.create_execution(request=request)
 
                 # Handle the response
                 print(response)
@@ -442,9 +442,9 @@ class ExecutionsAsyncClient:
 
             from google.cloud.workflows import executions_v1beta
 
-            def sample_get_execution():
+            async def sample_get_execution():
                 # Create a client
-                client = executions_v1beta.ExecutionsClient()
+                client = executions_v1beta.ExecutionsAsyncClient()
 
                 # Initialize request argument(s)
                 request = executions_v1beta.GetExecutionRequest(
@@ -452,7 +452,7 @@ class ExecutionsAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_execution(request=request)
+                response = await client.get_execution(request=request)
 
                 # Handle the response
                 print(response)
@@ -539,9 +539,9 @@ class ExecutionsAsyncClient:
 
             from google.cloud.workflows import executions_v1beta
 
-            def sample_cancel_execution():
+            async def sample_cancel_execution():
                 # Create a client
-                client = executions_v1beta.ExecutionsClient()
+                client = executions_v1beta.ExecutionsAsyncClient()
 
                 # Initialize request argument(s)
                 request = executions_v1beta.CancelExecutionRequest(
@@ -549,7 +549,7 @@ class ExecutionsAsyncClient:
                 )
 
                 # Make the request
-                response = client.cancel_execution(request=request)
+                response = await client.cancel_execution(request=request)
 
                 # Handle the response
                 print(response)

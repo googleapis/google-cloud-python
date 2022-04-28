@@ -727,7 +727,7 @@ def test_list_workflows_field_headers():
     # a field header. Set these to a non-empty value.
     request = workflows.ListWorkflowsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_workflows), "__call__") as call:
@@ -743,7 +743,7 @@ def test_list_workflows_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -757,7 +757,7 @@ async def test_list_workflows_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = workflows.ListWorkflowsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_workflows), "__call__") as call:
@@ -775,7 +775,7 @@ async def test_list_workflows_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -906,7 +906,7 @@ def test_list_workflows_pager(transport_name: str = "grpc"):
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, workflows.Workflow) for i in results)
 
@@ -1164,7 +1164,7 @@ def test_get_workflow_field_headers():
     # a field header. Set these to a non-empty value.
     request = workflows.GetWorkflowRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_workflow), "__call__") as call:
@@ -1180,7 +1180,7 @@ def test_get_workflow_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1194,7 +1194,7 @@ async def test_get_workflow_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = workflows.GetWorkflowRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_workflow), "__call__") as call:
@@ -1210,7 +1210,7 @@ async def test_get_workflow_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1386,7 +1386,7 @@ def test_create_workflow_field_headers():
     # a field header. Set these to a non-empty value.
     request = workflows.CreateWorkflowRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_workflow), "__call__") as call:
@@ -1402,7 +1402,7 @@ def test_create_workflow_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -1416,7 +1416,7 @@ async def test_create_workflow_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = workflows.CreateWorkflowRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_workflow), "__call__") as call:
@@ -1434,7 +1434,7 @@ async def test_create_workflow_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -1632,7 +1632,7 @@ def test_delete_workflow_field_headers():
     # a field header. Set these to a non-empty value.
     request = workflows.DeleteWorkflowRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_workflow), "__call__") as call:
@@ -1648,7 +1648,7 @@ def test_delete_workflow_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1662,7 +1662,7 @@ async def test_delete_workflow_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = workflows.DeleteWorkflowRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_workflow), "__call__") as call:
@@ -1680,7 +1680,7 @@ async def test_delete_workflow_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1858,7 +1858,7 @@ def test_update_workflow_field_headers():
     # a field header. Set these to a non-empty value.
     request = workflows.UpdateWorkflowRequest()
 
-    request.workflow.name = "workflow.name/value"
+    request.workflow.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_workflow), "__call__") as call:
@@ -1874,7 +1874,7 @@ def test_update_workflow_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "workflow.name=workflow.name/value",
+        "workflow.name=name_value",
     ) in kw["metadata"]
 
 
@@ -1888,7 +1888,7 @@ async def test_update_workflow_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = workflows.UpdateWorkflowRequest()
 
-    request.workflow.name = "workflow.name/value"
+    request.workflow.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_workflow), "__call__") as call:
@@ -1906,7 +1906,7 @@ async def test_update_workflow_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "workflow.name=workflow.name/value",
+        "workflow.name=name_value",
     ) in kw["metadata"]
 
 
