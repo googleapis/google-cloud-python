@@ -241,9 +241,9 @@ class CloudFunctionsServiceAsyncClient:
 
             from google.cloud import functions_v1
 
-            def sample_list_functions():
+            async def sample_list_functions():
                 # Create a client
-                client = functions_v1.CloudFunctionsServiceClient()
+                client = functions_v1.CloudFunctionsServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = functions_v1.ListFunctionsRequest(
@@ -253,7 +253,7 @@ class CloudFunctionsServiceAsyncClient:
                 page_result = client.list_functions(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -337,9 +337,9 @@ class CloudFunctionsServiceAsyncClient:
 
             from google.cloud import functions_v1
 
-            def sample_get_function():
+            async def sample_get_function():
                 # Create a client
-                client = functions_v1.CloudFunctionsServiceClient()
+                client = functions_v1.CloudFunctionsServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = functions_v1.GetFunctionRequest(
@@ -347,7 +347,7 @@ class CloudFunctionsServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_function(request=request)
+                response = await client.get_function(request=request)
 
                 # Handle the response
                 print(response)
@@ -448,9 +448,9 @@ class CloudFunctionsServiceAsyncClient:
 
             from google.cloud import functions_v1
 
-            def sample_create_function():
+            async def sample_create_function():
                 # Create a client
-                client = functions_v1.CloudFunctionsServiceClient()
+                client = functions_v1.CloudFunctionsServiceAsyncClient()
 
                 # Initialize request argument(s)
                 function = functions_v1.CloudFunction()
@@ -466,7 +466,7 @@ class CloudFunctionsServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -570,9 +570,9 @@ class CloudFunctionsServiceAsyncClient:
 
             from google.cloud import functions_v1
 
-            def sample_update_function():
+            async def sample_update_function():
                 # Create a client
-                client = functions_v1.CloudFunctionsServiceClient()
+                client = functions_v1.CloudFunctionsServiceAsyncClient()
 
                 # Initialize request argument(s)
                 function = functions_v1.CloudFunction()
@@ -587,7 +587,7 @@ class CloudFunctionsServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -698,9 +698,9 @@ class CloudFunctionsServiceAsyncClient:
 
             from google.cloud import functions_v1
 
-            def sample_delete_function():
+            async def sample_delete_function():
                 # Create a client
-                client = functions_v1.CloudFunctionsServiceClient()
+                client = functions_v1.CloudFunctionsServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = functions_v1.DeleteFunctionRequest(
@@ -712,7 +712,7 @@ class CloudFunctionsServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -832,9 +832,9 @@ class CloudFunctionsServiceAsyncClient:
 
             from google.cloud import functions_v1
 
-            def sample_call_function():
+            async def sample_call_function():
                 # Create a client
-                client = functions_v1.CloudFunctionsServiceClient()
+                client = functions_v1.CloudFunctionsServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = functions_v1.CallFunctionRequest(
@@ -843,7 +843,7 @@ class CloudFunctionsServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.call_function(request=request)
+                response = await client.call_function(request=request)
 
                 # Handle the response
                 print(response)
@@ -961,16 +961,16 @@ class CloudFunctionsServiceAsyncClient:
 
             from google.cloud import functions_v1
 
-            def sample_generate_upload_url():
+            async def sample_generate_upload_url():
                 # Create a client
-                client = functions_v1.CloudFunctionsServiceClient()
+                client = functions_v1.CloudFunctionsServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = functions_v1.GenerateUploadUrlRequest(
                 )
 
                 # Make the request
-                response = client.generate_upload_url(request=request)
+                response = await client.generate_upload_url(request=request)
 
                 # Handle the response
                 print(response)
@@ -1036,16 +1036,16 @@ class CloudFunctionsServiceAsyncClient:
 
             from google.cloud import functions_v1
 
-            def sample_generate_download_url():
+            async def sample_generate_download_url():
                 # Create a client
-                client = functions_v1.CloudFunctionsServiceClient()
+                client = functions_v1.CloudFunctionsServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = functions_v1.GenerateDownloadUrlRequest(
                 )
 
                 # Make the request
-                response = client.generate_download_url(request=request)
+                response = await client.generate_download_url(request=request)
 
                 # Handle the response
                 print(response)
@@ -1108,9 +1108,9 @@ class CloudFunctionsServiceAsyncClient:
             from google.cloud import functions_v1
             from google.iam.v1 import iam_policy_pb2  # type: ignore
 
-            def sample_set_iam_policy():
+            async def sample_set_iam_policy():
                 # Create a client
-                client = functions_v1.CloudFunctionsServiceClient()
+                client = functions_v1.CloudFunctionsServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = iam_policy_pb2.SetIamPolicyRequest(
@@ -1118,7 +1118,7 @@ class CloudFunctionsServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.set_iam_policy(request=request)
+                response = await client.set_iam_policy(request=request)
 
                 # Handle the response
                 print(response)
@@ -1246,9 +1246,9 @@ class CloudFunctionsServiceAsyncClient:
             from google.cloud import functions_v1
             from google.iam.v1 import iam_policy_pb2  # type: ignore
 
-            def sample_get_iam_policy():
+            async def sample_get_iam_policy():
                 # Create a client
-                client = functions_v1.CloudFunctionsServiceClient()
+                client = functions_v1.CloudFunctionsServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = iam_policy_pb2.GetIamPolicyRequest(
@@ -1256,7 +1256,7 @@ class CloudFunctionsServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_iam_policy(request=request)
+                response = await client.get_iam_policy(request=request)
 
                 # Handle the response
                 print(response)
@@ -1384,9 +1384,9 @@ class CloudFunctionsServiceAsyncClient:
             from google.cloud import functions_v1
             from google.iam.v1 import iam_policy_pb2  # type: ignore
 
-            def sample_test_iam_permissions():
+            async def sample_test_iam_permissions():
                 # Create a client
-                client = functions_v1.CloudFunctionsServiceClient()
+                client = functions_v1.CloudFunctionsServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = iam_policy_pb2.TestIamPermissionsRequest(
@@ -1395,7 +1395,7 @@ class CloudFunctionsServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.test_iam_permissions(request=request)
+                response = await client.test_iam_permissions(request=request)
 
                 # Handle the response
                 print(response)
