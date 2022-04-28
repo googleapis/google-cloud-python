@@ -229,9 +229,9 @@ class EssentialContactsServiceAsyncClient:
 
             from google.cloud import essential_contacts_v1
 
-            def sample_create_contact():
+            async def sample_create_contact():
                 # Create a client
-                client = essential_contacts_v1.EssentialContactsServiceClient()
+                client = essential_contacts_v1.EssentialContactsServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = essential_contacts_v1.CreateContactRequest(
@@ -239,7 +239,7 @@ class EssentialContactsServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.create_contact(request=request)
+                response = await client.create_contact(request=request)
 
                 # Handle the response
                 print(response)
@@ -337,16 +337,16 @@ class EssentialContactsServiceAsyncClient:
 
             from google.cloud import essential_contacts_v1
 
-            def sample_update_contact():
+            async def sample_update_contact():
                 # Create a client
-                client = essential_contacts_v1.EssentialContactsServiceClient()
+                client = essential_contacts_v1.EssentialContactsServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = essential_contacts_v1.UpdateContactRequest(
                 )
 
                 # Make the request
-                response = client.update_contact(request=request)
+                response = await client.update_contact(request=request)
 
                 # Handle the response
                 print(response)
@@ -445,9 +445,9 @@ class EssentialContactsServiceAsyncClient:
 
             from google.cloud import essential_contacts_v1
 
-            def sample_list_contacts():
+            async def sample_list_contacts():
                 # Create a client
-                client = essential_contacts_v1.EssentialContactsServiceClient()
+                client = essential_contacts_v1.EssentialContactsServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = essential_contacts_v1.ListContactsRequest(
@@ -458,7 +458,7 @@ class EssentialContactsServiceAsyncClient:
                 page_result = client.list_contacts(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -563,9 +563,9 @@ class EssentialContactsServiceAsyncClient:
 
             from google.cloud import essential_contacts_v1
 
-            def sample_get_contact():
+            async def sample_get_contact():
                 # Create a client
-                client = essential_contacts_v1.EssentialContactsServiceClient()
+                client = essential_contacts_v1.EssentialContactsServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = essential_contacts_v1.GetContactRequest(
@@ -573,7 +573,7 @@ class EssentialContactsServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_contact(request=request)
+                response = await client.get_contact(request=request)
 
                 # Handle the response
                 print(response)
@@ -669,9 +669,9 @@ class EssentialContactsServiceAsyncClient:
 
             from google.cloud import essential_contacts_v1
 
-            def sample_delete_contact():
+            async def sample_delete_contact():
                 # Create a client
-                client = essential_contacts_v1.EssentialContactsServiceClient()
+                client = essential_contacts_v1.EssentialContactsServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = essential_contacts_v1.DeleteContactRequest(
@@ -679,7 +679,7 @@ class EssentialContactsServiceAsyncClient:
                 )
 
                 # Make the request
-                client.delete_contact(request=request)
+                await client.delete_contact(request=request)
 
         Args:
             request (Union[google.cloud.essential_contacts_v1.types.DeleteContactRequest, dict]):
@@ -755,9 +755,9 @@ class EssentialContactsServiceAsyncClient:
 
             from google.cloud import essential_contacts_v1
 
-            def sample_compute_contacts():
+            async def sample_compute_contacts():
                 # Create a client
-                client = essential_contacts_v1.EssentialContactsServiceClient()
+                client = essential_contacts_v1.EssentialContactsServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = essential_contacts_v1.ComputeContactsRequest(
@@ -768,7 +768,7 @@ class EssentialContactsServiceAsyncClient:
                 page_result = client.compute_contacts(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -842,9 +842,9 @@ class EssentialContactsServiceAsyncClient:
 
             from google.cloud import essential_contacts_v1
 
-            def sample_send_test_message():
+            async def sample_send_test_message():
                 # Create a client
-                client = essential_contacts_v1.EssentialContactsServiceClient()
+                client = essential_contacts_v1.EssentialContactsServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = essential_contacts_v1.SendTestMessageRequest(
@@ -854,7 +854,7 @@ class EssentialContactsServiceAsyncClient:
                 )
 
                 # Make the request
-                client.send_test_message(request=request)
+                await client.send_test_message(request=request)
 
         Args:
             request (Union[google.cloud.essential_contacts_v1.types.SendTestMessageRequest, dict]):
