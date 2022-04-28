@@ -229,9 +229,9 @@ class ManagedNotebookServiceAsyncClient:
 
             from google.cloud import notebooks_v1
 
-            def sample_list_runtimes():
+            async def sample_list_runtimes():
                 # Create a client
-                client = notebooks_v1.ManagedNotebookServiceClient()
+                client = notebooks_v1.ManagedNotebookServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = notebooks_v1.ListRuntimesRequest(
@@ -242,7 +242,7 @@ class ManagedNotebookServiceAsyncClient:
                 page_result = client.list_runtimes(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -338,9 +338,9 @@ class ManagedNotebookServiceAsyncClient:
 
             from google.cloud import notebooks_v1
 
-            def sample_get_runtime():
+            async def sample_get_runtime():
                 # Create a client
-                client = notebooks_v1.ManagedNotebookServiceClient()
+                client = notebooks_v1.ManagedNotebookServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = notebooks_v1.GetRuntimeRequest(
@@ -348,7 +348,7 @@ class ManagedNotebookServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_runtime(request=request)
+                response = await client.get_runtime(request=request)
 
                 # Handle the response
                 print(response)
@@ -436,9 +436,9 @@ class ManagedNotebookServiceAsyncClient:
 
             from google.cloud import notebooks_v1
 
-            def sample_create_runtime():
+            async def sample_create_runtime():
                 # Create a client
-                client = notebooks_v1.ManagedNotebookServiceClient()
+                client = notebooks_v1.ManagedNotebookServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = notebooks_v1.CreateRuntimeRequest(
@@ -451,7 +451,7 @@ class ManagedNotebookServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -563,9 +563,9 @@ class ManagedNotebookServiceAsyncClient:
 
             from google.cloud import notebooks_v1
 
-            def sample_delete_runtime():
+            async def sample_delete_runtime():
                 # Create a client
-                client = notebooks_v1.ManagedNotebookServiceClient()
+                client = notebooks_v1.ManagedNotebookServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = notebooks_v1.DeleteRuntimeRequest(
@@ -577,7 +577,7 @@ class ManagedNotebookServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -687,9 +687,9 @@ class ManagedNotebookServiceAsyncClient:
 
             from google.cloud import notebooks_v1
 
-            def sample_start_runtime():
+            async def sample_start_runtime():
                 # Create a client
-                client = notebooks_v1.ManagedNotebookServiceClient()
+                client = notebooks_v1.ManagedNotebookServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = notebooks_v1.StartRuntimeRequest(
@@ -701,7 +701,7 @@ class ManagedNotebookServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -801,9 +801,9 @@ class ManagedNotebookServiceAsyncClient:
 
             from google.cloud import notebooks_v1
 
-            def sample_stop_runtime():
+            async def sample_stop_runtime():
                 # Create a client
-                client = notebooks_v1.ManagedNotebookServiceClient()
+                client = notebooks_v1.ManagedNotebookServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = notebooks_v1.StopRuntimeRequest(
@@ -815,7 +815,7 @@ class ManagedNotebookServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -911,9 +911,9 @@ class ManagedNotebookServiceAsyncClient:
 
             from google.cloud import notebooks_v1
 
-            def sample_switch_runtime():
+            async def sample_switch_runtime():
                 # Create a client
-                client = notebooks_v1.ManagedNotebookServiceClient()
+                client = notebooks_v1.ManagedNotebookServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = notebooks_v1.SwitchRuntimeRequest(
@@ -925,7 +925,7 @@ class ManagedNotebookServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1021,9 +1021,9 @@ class ManagedNotebookServiceAsyncClient:
 
             from google.cloud import notebooks_v1
 
-            def sample_reset_runtime():
+            async def sample_reset_runtime():
                 # Create a client
-                client = notebooks_v1.ManagedNotebookServiceClient()
+                client = notebooks_v1.ManagedNotebookServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = notebooks_v1.ResetRuntimeRequest(
@@ -1035,7 +1035,7 @@ class ManagedNotebookServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1131,9 +1131,9 @@ class ManagedNotebookServiceAsyncClient:
 
             from google.cloud import notebooks_v1
 
-            def sample_report_runtime_event():
+            async def sample_report_runtime_event():
                 # Create a client
-                client = notebooks_v1.ManagedNotebookServiceClient()
+                client = notebooks_v1.ManagedNotebookServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = notebooks_v1.ReportRuntimeEventRequest(
@@ -1146,7 +1146,7 @@ class ManagedNotebookServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1245,9 +1245,9 @@ class ManagedNotebookServiceAsyncClient:
 
             from google.cloud import notebooks_v1
 
-            def sample_refresh_runtime_token_internal():
+            async def sample_refresh_runtime_token_internal():
                 # Create a client
-                client = notebooks_v1.ManagedNotebookServiceClient()
+                client = notebooks_v1.ManagedNotebookServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = notebooks_v1.RefreshRuntimeTokenInternalRequest(
@@ -1256,7 +1256,7 @@ class ManagedNotebookServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.refresh_runtime_token_internal(request=request)
+                response = await client.refresh_runtime_token_internal(request=request)
 
                 # Handle the response
                 print(response)

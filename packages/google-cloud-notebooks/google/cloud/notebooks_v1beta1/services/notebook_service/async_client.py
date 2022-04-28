@@ -224,9 +224,9 @@ class NotebookServiceAsyncClient:
 
             from google.cloud import notebooks_v1beta1
 
-            def sample_list_instances():
+            async def sample_list_instances():
                 # Create a client
-                client = notebooks_v1beta1.NotebookServiceClient()
+                client = notebooks_v1beta1.NotebookServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = notebooks_v1beta1.ListInstancesRequest(
@@ -237,7 +237,7 @@ class NotebookServiceAsyncClient:
                 page_result = client.list_instances(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -310,9 +310,9 @@ class NotebookServiceAsyncClient:
 
             from google.cloud import notebooks_v1beta1
 
-            def sample_get_instance():
+            async def sample_get_instance():
                 # Create a client
-                client = notebooks_v1beta1.NotebookServiceClient()
+                client = notebooks_v1beta1.NotebookServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = notebooks_v1beta1.GetInstanceRequest(
@@ -320,7 +320,7 @@ class NotebookServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_instance(request=request)
+                response = await client.get_instance(request=request)
 
                 # Handle the response
                 print(response)
@@ -384,9 +384,9 @@ class NotebookServiceAsyncClient:
 
             from google.cloud import notebooks_v1beta1
 
-            def sample_create_instance():
+            async def sample_create_instance():
                 # Create a client
-                client = notebooks_v1beta1.NotebookServiceClient()
+                client = notebooks_v1beta1.NotebookServiceAsyncClient()
 
                 # Initialize request argument(s)
                 instance = notebooks_v1beta1.Instance()
@@ -405,7 +405,7 @@ class NotebookServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -484,9 +484,9 @@ class NotebookServiceAsyncClient:
 
             from google.cloud import notebooks_v1beta1
 
-            def sample_register_instance():
+            async def sample_register_instance():
                 # Create a client
-                client = notebooks_v1beta1.NotebookServiceClient()
+                client = notebooks_v1beta1.NotebookServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = notebooks_v1beta1.RegisterInstanceRequest(
@@ -499,7 +499,7 @@ class NotebookServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -573,9 +573,9 @@ class NotebookServiceAsyncClient:
 
             from google.cloud import notebooks_v1beta1
 
-            def sample_set_instance_accelerator():
+            async def sample_set_instance_accelerator():
                 # Create a client
-                client = notebooks_v1beta1.NotebookServiceClient()
+                client = notebooks_v1beta1.NotebookServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = notebooks_v1beta1.SetInstanceAcceleratorRequest(
@@ -589,7 +589,7 @@ class NotebookServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -663,9 +663,9 @@ class NotebookServiceAsyncClient:
 
             from google.cloud import notebooks_v1beta1
 
-            def sample_set_instance_machine_type():
+            async def sample_set_instance_machine_type():
                 # Create a client
-                client = notebooks_v1beta1.NotebookServiceClient()
+                client = notebooks_v1beta1.NotebookServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = notebooks_v1beta1.SetInstanceMachineTypeRequest(
@@ -678,7 +678,7 @@ class NotebookServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -752,9 +752,9 @@ class NotebookServiceAsyncClient:
 
             from google.cloud import notebooks_v1beta1
 
-            def sample_set_instance_labels():
+            async def sample_set_instance_labels():
                 # Create a client
-                client = notebooks_v1beta1.NotebookServiceClient()
+                client = notebooks_v1beta1.NotebookServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = notebooks_v1beta1.SetInstanceLabelsRequest(
@@ -766,7 +766,7 @@ class NotebookServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -839,9 +839,9 @@ class NotebookServiceAsyncClient:
 
             from google.cloud import notebooks_v1beta1
 
-            def sample_delete_instance():
+            async def sample_delete_instance():
                 # Create a client
-                client = notebooks_v1beta1.NotebookServiceClient()
+                client = notebooks_v1beta1.NotebookServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = notebooks_v1beta1.DeleteInstanceRequest(
@@ -853,7 +853,7 @@ class NotebookServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -937,9 +937,9 @@ class NotebookServiceAsyncClient:
 
             from google.cloud import notebooks_v1beta1
 
-            def sample_start_instance():
+            async def sample_start_instance():
                 # Create a client
-                client = notebooks_v1beta1.NotebookServiceClient()
+                client = notebooks_v1beta1.NotebookServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = notebooks_v1beta1.StartInstanceRequest(
@@ -951,7 +951,7 @@ class NotebookServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1025,9 +1025,9 @@ class NotebookServiceAsyncClient:
 
             from google.cloud import notebooks_v1beta1
 
-            def sample_stop_instance():
+            async def sample_stop_instance():
                 # Create a client
-                client = notebooks_v1beta1.NotebookServiceClient()
+                client = notebooks_v1beta1.NotebookServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = notebooks_v1beta1.StopInstanceRequest(
@@ -1039,7 +1039,7 @@ class NotebookServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1113,9 +1113,9 @@ class NotebookServiceAsyncClient:
 
             from google.cloud import notebooks_v1beta1
 
-            def sample_reset_instance():
+            async def sample_reset_instance():
                 # Create a client
-                client = notebooks_v1beta1.NotebookServiceClient()
+                client = notebooks_v1beta1.NotebookServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = notebooks_v1beta1.ResetInstanceRequest(
@@ -1127,7 +1127,7 @@ class NotebookServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1205,9 +1205,9 @@ class NotebookServiceAsyncClient:
 
             from google.cloud import notebooks_v1beta1
 
-            def sample_report_instance_info():
+            async def sample_report_instance_info():
                 # Create a client
-                client = notebooks_v1beta1.NotebookServiceClient()
+                client = notebooks_v1beta1.NotebookServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = notebooks_v1beta1.ReportInstanceInfoRequest(
@@ -1220,7 +1220,7 @@ class NotebookServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1294,9 +1294,9 @@ class NotebookServiceAsyncClient:
 
             from google.cloud import notebooks_v1beta1
 
-            def sample_is_instance_upgradeable():
+            async def sample_is_instance_upgradeable():
                 # Create a client
-                client = notebooks_v1beta1.NotebookServiceClient()
+                client = notebooks_v1beta1.NotebookServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = notebooks_v1beta1.IsInstanceUpgradeableRequest(
@@ -1304,7 +1304,7 @@ class NotebookServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.is_instance_upgradeable(request=request)
+                response = await client.is_instance_upgradeable(request=request)
 
                 # Handle the response
                 print(response)
@@ -1369,9 +1369,9 @@ class NotebookServiceAsyncClient:
 
             from google.cloud import notebooks_v1beta1
 
-            def sample_upgrade_instance():
+            async def sample_upgrade_instance():
                 # Create a client
-                client = notebooks_v1beta1.NotebookServiceClient()
+                client = notebooks_v1beta1.NotebookServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = notebooks_v1beta1.UpgradeInstanceRequest(
@@ -1383,7 +1383,7 @@ class NotebookServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1459,9 +1459,9 @@ class NotebookServiceAsyncClient:
 
             from google.cloud import notebooks_v1beta1
 
-            def sample_upgrade_instance_internal():
+            async def sample_upgrade_instance_internal():
                 # Create a client
-                client = notebooks_v1beta1.NotebookServiceClient()
+                client = notebooks_v1beta1.NotebookServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = notebooks_v1beta1.UpgradeInstanceInternalRequest(
@@ -1474,7 +1474,7 @@ class NotebookServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1548,9 +1548,9 @@ class NotebookServiceAsyncClient:
 
             from google.cloud import notebooks_v1beta1
 
-            def sample_list_environments():
+            async def sample_list_environments():
                 # Create a client
-                client = notebooks_v1beta1.NotebookServiceClient()
+                client = notebooks_v1beta1.NotebookServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = notebooks_v1beta1.ListEnvironmentsRequest(
@@ -1561,7 +1561,7 @@ class NotebookServiceAsyncClient:
                 page_result = client.list_environments(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -1632,9 +1632,9 @@ class NotebookServiceAsyncClient:
 
             from google.cloud import notebooks_v1beta1
 
-            def sample_get_environment():
+            async def sample_get_environment():
                 # Create a client
-                client = notebooks_v1beta1.NotebookServiceClient()
+                client = notebooks_v1beta1.NotebookServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = notebooks_v1beta1.GetEnvironmentRequest(
@@ -1642,7 +1642,7 @@ class NotebookServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_environment(request=request)
+                response = await client.get_environment(request=request)
 
                 # Handle the response
                 print(response)
@@ -1706,9 +1706,9 @@ class NotebookServiceAsyncClient:
 
             from google.cloud import notebooks_v1beta1
 
-            def sample_create_environment():
+            async def sample_create_environment():
                 # Create a client
-                client = notebooks_v1beta1.NotebookServiceClient()
+                client = notebooks_v1beta1.NotebookServiceAsyncClient()
 
                 # Initialize request argument(s)
                 environment = notebooks_v1beta1.Environment()
@@ -1726,7 +1726,7 @@ class NotebookServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1799,9 +1799,9 @@ class NotebookServiceAsyncClient:
 
             from google.cloud import notebooks_v1beta1
 
-            def sample_delete_environment():
+            async def sample_delete_environment():
                 # Create a client
-                client = notebooks_v1beta1.NotebookServiceClient()
+                client = notebooks_v1beta1.NotebookServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = notebooks_v1beta1.DeleteEnvironmentRequest(
@@ -1813,7 +1813,7 @@ class NotebookServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
