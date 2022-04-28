@@ -259,9 +259,9 @@ class KeyManagementServiceAsyncClient:
 
             from google.cloud import kms_v1
 
-            def sample_list_key_rings():
+            async def sample_list_key_rings():
                 # Create a client
-                client = kms_v1.KeyManagementServiceClient()
+                client = kms_v1.KeyManagementServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = kms_v1.ListKeyRingsRequest(
@@ -272,7 +272,7 @@ class KeyManagementServiceAsyncClient:
                 page_result = client.list_key_rings(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
 
@@ -379,9 +379,9 @@ class KeyManagementServiceAsyncClient:
 
             from google.cloud import kms_v1
 
-            def sample_list_crypto_keys():
+            async def sample_list_crypto_keys():
                 # Create a client
-                client = kms_v1.KeyManagementServiceClient()
+                client = kms_v1.KeyManagementServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = kms_v1.ListCryptoKeysRequest(
@@ -392,7 +392,7 @@ class KeyManagementServiceAsyncClient:
                 page_result = client.list_crypto_keys(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
 
@@ -499,9 +499,9 @@ class KeyManagementServiceAsyncClient:
 
             from google.cloud import kms_v1
 
-            def sample_list_crypto_key_versions():
+            async def sample_list_crypto_key_versions():
                 # Create a client
-                client = kms_v1.KeyManagementServiceClient()
+                client = kms_v1.KeyManagementServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = kms_v1.ListCryptoKeyVersionsRequest(
@@ -512,7 +512,7 @@ class KeyManagementServiceAsyncClient:
                 page_result = client.list_crypto_key_versions(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
 
@@ -620,9 +620,9 @@ class KeyManagementServiceAsyncClient:
 
             from google.cloud import kms_v1
 
-            def sample_list_import_jobs():
+            async def sample_list_import_jobs():
                 # Create a client
-                client = kms_v1.KeyManagementServiceClient()
+                client = kms_v1.KeyManagementServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = kms_v1.ListImportJobsRequest(
@@ -633,7 +633,7 @@ class KeyManagementServiceAsyncClient:
                 page_result = client.list_import_jobs(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
 
@@ -741,9 +741,9 @@ class KeyManagementServiceAsyncClient:
 
             from google.cloud import kms_v1
 
-            def sample_get_key_ring():
+            async def sample_get_key_ring():
                 # Create a client
-                client = kms_v1.KeyManagementServiceClient()
+                client = kms_v1.KeyManagementServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = kms_v1.GetKeyRingRequest(
@@ -751,7 +751,7 @@ class KeyManagementServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_key_ring(request=request)
+                response = await client.get_key_ring(request=request)
 
                 # Handle the response
                 print(response)
@@ -850,9 +850,9 @@ class KeyManagementServiceAsyncClient:
 
             from google.cloud import kms_v1
 
-            def sample_get_crypto_key():
+            async def sample_get_crypto_key():
                 # Create a client
-                client = kms_v1.KeyManagementServiceClient()
+                client = kms_v1.KeyManagementServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = kms_v1.GetCryptoKeyRequest(
@@ -860,7 +860,7 @@ class KeyManagementServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_crypto_key(request=request)
+                response = await client.get_crypto_key(request=request)
 
                 # Handle the response
                 print(response)
@@ -964,9 +964,9 @@ class KeyManagementServiceAsyncClient:
 
             from google.cloud import kms_v1
 
-            def sample_get_crypto_key_version():
+            async def sample_get_crypto_key_version():
                 # Create a client
-                client = kms_v1.KeyManagementServiceClient()
+                client = kms_v1.KeyManagementServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = kms_v1.GetCryptoKeyVersionRequest(
@@ -974,7 +974,7 @@ class KeyManagementServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_crypto_key_version(request=request)
+                response = await client.get_crypto_key_version(request=request)
 
                 # Handle the response
                 print(response)
@@ -1090,9 +1090,9 @@ class KeyManagementServiceAsyncClient:
 
             from google.cloud import kms_v1
 
-            def sample_get_public_key():
+            async def sample_get_public_key():
                 # Create a client
-                client = kms_v1.KeyManagementServiceClient()
+                client = kms_v1.KeyManagementServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = kms_v1.GetPublicKeyRequest(
@@ -1100,7 +1100,7 @@ class KeyManagementServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_public_key(request=request)
+                response = await client.get_public_key(request=request)
 
                 # Handle the response
                 print(response)
@@ -1201,9 +1201,9 @@ class KeyManagementServiceAsyncClient:
 
             from google.cloud import kms_v1
 
-            def sample_get_import_job():
+            async def sample_get_import_job():
                 # Create a client
-                client = kms_v1.KeyManagementServiceClient()
+                client = kms_v1.KeyManagementServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = kms_v1.GetImportJobRequest(
@@ -1211,7 +1211,7 @@ class KeyManagementServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_import_job(request=request)
+                response = await client.get_import_job(request=request)
 
                 # Handle the response
                 print(response)
@@ -1355,9 +1355,9 @@ class KeyManagementServiceAsyncClient:
 
             from google.cloud import kms_v1
 
-            def sample_create_key_ring():
+            async def sample_create_key_ring():
                 # Create a client
-                client = kms_v1.KeyManagementServiceClient()
+                client = kms_v1.KeyManagementServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = kms_v1.CreateKeyRingRequest(
@@ -1366,7 +1366,7 @@ class KeyManagementServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.create_key_ring(request=request)
+                response = await client.create_key_ring(request=request)
 
                 # Handle the response
                 print(response)
@@ -1488,9 +1488,9 @@ class KeyManagementServiceAsyncClient:
 
             from google.cloud import kms_v1
 
-            def sample_create_crypto_key():
+            async def sample_create_crypto_key():
                 # Create a client
-                client = kms_v1.KeyManagementServiceClient()
+                client = kms_v1.KeyManagementServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = kms_v1.CreateCryptoKeyRequest(
@@ -1499,7 +1499,7 @@ class KeyManagementServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.create_crypto_key(request=request)
+                response = await client.create_crypto_key(request=request)
 
                 # Handle the response
                 print(response)
@@ -1628,9 +1628,9 @@ class KeyManagementServiceAsyncClient:
 
             from google.cloud import kms_v1
 
-            def sample_create_crypto_key_version():
+            async def sample_create_crypto_key_version():
                 # Create a client
-                client = kms_v1.KeyManagementServiceClient()
+                client = kms_v1.KeyManagementServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = kms_v1.CreateCryptoKeyVersionRequest(
@@ -1638,7 +1638,7 @@ class KeyManagementServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.create_crypto_key_version(request=request)
+                response = await client.create_crypto_key_version(request=request)
 
                 # Handle the response
                 print(response)
@@ -1756,9 +1756,9 @@ class KeyManagementServiceAsyncClient:
 
             from google.cloud import kms_v1
 
-            def sample_import_crypto_key_version():
+            async def sample_import_crypto_key_version():
                 # Create a client
-                client = kms_v1.KeyManagementServiceClient()
+                client = kms_v1.KeyManagementServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = kms_v1.ImportCryptoKeyVersionRequest(
@@ -1769,7 +1769,7 @@ class KeyManagementServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.import_crypto_key_version(request=request)
+                response = await client.import_crypto_key_version(request=request)
 
                 # Handle the response
                 print(response)
@@ -1852,9 +1852,9 @@ class KeyManagementServiceAsyncClient:
 
             from google.cloud import kms_v1
 
-            def sample_create_import_job():
+            async def sample_create_import_job():
                 # Create a client
-                client = kms_v1.KeyManagementServiceClient()
+                client = kms_v1.KeyManagementServiceAsyncClient()
 
                 # Initialize request argument(s)
                 import_job = kms_v1.ImportJob()
@@ -1868,7 +1868,7 @@ class KeyManagementServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.create_import_job(request=request)
+                response = await client.create_import_job(request=request)
 
                 # Handle the response
                 print(response)
@@ -2028,16 +2028,16 @@ class KeyManagementServiceAsyncClient:
 
             from google.cloud import kms_v1
 
-            def sample_update_crypto_key():
+            async def sample_update_crypto_key():
                 # Create a client
-                client = kms_v1.KeyManagementServiceClient()
+                client = kms_v1.KeyManagementServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = kms_v1.UpdateCryptoKeyRequest(
                 )
 
                 # Make the request
-                response = client.update_crypto_key(request=request)
+                response = await client.update_crypto_key(request=request)
 
                 # Handle the response
                 print(response)
@@ -2164,16 +2164,16 @@ class KeyManagementServiceAsyncClient:
 
             from google.cloud import kms_v1
 
-            def sample_update_crypto_key_version():
+            async def sample_update_crypto_key_version():
                 # Create a client
-                client = kms_v1.KeyManagementServiceClient()
+                client = kms_v1.KeyManagementServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = kms_v1.UpdateCryptoKeyVersionRequest(
                 )
 
                 # Make the request
-                response = client.update_crypto_key_version(request=request)
+                response = await client.update_crypto_key_version(request=request)
 
                 # Handle the response
                 print(response)
@@ -2299,9 +2299,9 @@ class KeyManagementServiceAsyncClient:
 
             from google.cloud import kms_v1
 
-            def sample_update_crypto_key_primary_version():
+            async def sample_update_crypto_key_primary_version():
                 # Create a client
-                client = kms_v1.KeyManagementServiceClient()
+                client = kms_v1.KeyManagementServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = kms_v1.UpdateCryptoKeyPrimaryVersionRequest(
@@ -2310,7 +2310,7 @@ class KeyManagementServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.update_crypto_key_primary_version(request=request)
+                response = await client.update_crypto_key_primary_version(request=request)
 
                 # Handle the response
                 print(response)
@@ -2444,9 +2444,9 @@ class KeyManagementServiceAsyncClient:
 
             from google.cloud import kms_v1
 
-            def sample_destroy_crypto_key_version():
+            async def sample_destroy_crypto_key_version():
                 # Create a client
-                client = kms_v1.KeyManagementServiceClient()
+                client = kms_v1.KeyManagementServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = kms_v1.DestroyCryptoKeyVersionRequest(
@@ -2454,7 +2454,7 @@ class KeyManagementServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.destroy_crypto_key_version(request=request)
+                response = await client.destroy_crypto_key_version(request=request)
 
                 # Handle the response
                 print(response)
@@ -2574,9 +2574,9 @@ class KeyManagementServiceAsyncClient:
 
             from google.cloud import kms_v1
 
-            def sample_restore_crypto_key_version():
+            async def sample_restore_crypto_key_version():
                 # Create a client
-                client = kms_v1.KeyManagementServiceClient()
+                client = kms_v1.KeyManagementServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = kms_v1.RestoreCryptoKeyVersionRequest(
@@ -2584,7 +2584,7 @@ class KeyManagementServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.restore_crypto_key_version(request=request)
+                response = await client.restore_crypto_key_version(request=request)
 
                 # Handle the response
                 print(response)
@@ -2698,9 +2698,9 @@ class KeyManagementServiceAsyncClient:
 
             from google.cloud import kms_v1
 
-            def sample_encrypt():
+            async def sample_encrypt():
                 # Create a client
-                client = kms_v1.KeyManagementServiceClient()
+                client = kms_v1.KeyManagementServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = kms_v1.EncryptRequest(
@@ -2709,7 +2709,7 @@ class KeyManagementServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.encrypt(request=request)
+                response = await client.encrypt(request=request)
 
                 # Handle the response
                 print(response)
@@ -2835,9 +2835,9 @@ class KeyManagementServiceAsyncClient:
 
             from google.cloud import kms_v1
 
-            def sample_decrypt():
+            async def sample_decrypt():
                 # Create a client
-                client = kms_v1.KeyManagementServiceClient()
+                client = kms_v1.KeyManagementServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = kms_v1.DecryptRequest(
@@ -2846,7 +2846,7 @@ class KeyManagementServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.decrypt(request=request)
+                response = await client.decrypt(request=request)
 
                 # Handle the response
                 print(response)
@@ -2959,9 +2959,9 @@ class KeyManagementServiceAsyncClient:
 
             from google.cloud import kms_v1
 
-            def sample_asymmetric_sign():
+            async def sample_asymmetric_sign():
                 # Create a client
-                client = kms_v1.KeyManagementServiceClient()
+                client = kms_v1.KeyManagementServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = kms_v1.AsymmetricSignRequest(
@@ -2969,7 +2969,7 @@ class KeyManagementServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.asymmetric_sign(request=request)
+                response = await client.asymmetric_sign(request=request)
 
                 # Handle the response
                 print(response)
@@ -3088,9 +3088,9 @@ class KeyManagementServiceAsyncClient:
 
             from google.cloud import kms_v1
 
-            def sample_asymmetric_decrypt():
+            async def sample_asymmetric_decrypt():
                 # Create a client
-                client = kms_v1.KeyManagementServiceClient()
+                client = kms_v1.KeyManagementServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = kms_v1.AsymmetricDecryptRequest(
@@ -3099,7 +3099,7 @@ class KeyManagementServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.asymmetric_decrypt(request=request)
+                response = await client.asymmetric_decrypt(request=request)
 
                 # Handle the response
                 print(response)
@@ -3211,9 +3211,9 @@ class KeyManagementServiceAsyncClient:
 
             from google.cloud import kms_v1
 
-            def sample_mac_sign():
+            async def sample_mac_sign():
                 # Create a client
-                client = kms_v1.KeyManagementServiceClient()
+                client = kms_v1.KeyManagementServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = kms_v1.MacSignRequest(
@@ -3222,7 +3222,7 @@ class KeyManagementServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.mac_sign(request=request)
+                response = await client.mac_sign(request=request)
 
                 # Handle the response
                 print(response)
@@ -3335,9 +3335,9 @@ class KeyManagementServiceAsyncClient:
 
             from google.cloud import kms_v1
 
-            def sample_mac_verify():
+            async def sample_mac_verify():
                 # Create a client
-                client = kms_v1.KeyManagementServiceClient()
+                client = kms_v1.KeyManagementServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = kms_v1.MacVerifyRequest(
@@ -3347,7 +3347,7 @@ class KeyManagementServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.mac_verify(request=request)
+                response = await client.mac_verify(request=request)
 
                 # Handle the response
                 print(response)
@@ -3464,16 +3464,16 @@ class KeyManagementServiceAsyncClient:
 
             from google.cloud import kms_v1
 
-            def sample_generate_random_bytes():
+            async def sample_generate_random_bytes():
                 # Create a client
-                client = kms_v1.KeyManagementServiceClient()
+                client = kms_v1.KeyManagementServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = kms_v1.GenerateRandomBytesRequest(
                 )
 
                 # Make the request
-                response = client.generate_random_bytes(request=request)
+                response = await client.generate_random_bytes(request=request)
 
                 # Handle the response
                 print(response)

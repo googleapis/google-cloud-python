@@ -785,7 +785,7 @@ def test_list_key_rings_field_headers():
     # a field header. Set these to a non-empty value.
     request = service.ListKeyRingsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_key_rings), "__call__") as call:
@@ -801,7 +801,7 @@ def test_list_key_rings_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -815,7 +815,7 @@ async def test_list_key_rings_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = service.ListKeyRingsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_key_rings), "__call__") as call:
@@ -833,7 +833,7 @@ async def test_list_key_rings_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -964,7 +964,7 @@ def test_list_key_rings_pager(transport_name: str = "grpc"):
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, resources.KeyRing) for i in results)
 
@@ -1209,7 +1209,7 @@ def test_list_crypto_keys_field_headers():
     # a field header. Set these to a non-empty value.
     request = service.ListCryptoKeysRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_crypto_keys), "__call__") as call:
@@ -1225,7 +1225,7 @@ def test_list_crypto_keys_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -1239,7 +1239,7 @@ async def test_list_crypto_keys_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = service.ListCryptoKeysRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_crypto_keys), "__call__") as call:
@@ -1257,7 +1257,7 @@ async def test_list_crypto_keys_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -1388,7 +1388,7 @@ def test_list_crypto_keys_pager(transport_name: str = "grpc"):
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, resources.CryptoKey) for i in results)
 
@@ -1639,7 +1639,7 @@ def test_list_crypto_key_versions_field_headers():
     # a field header. Set these to a non-empty value.
     request = service.ListCryptoKeyVersionsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1657,7 +1657,7 @@ def test_list_crypto_key_versions_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -1671,7 +1671,7 @@ async def test_list_crypto_key_versions_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = service.ListCryptoKeyVersionsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1691,7 +1691,7 @@ async def test_list_crypto_key_versions_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -1828,7 +1828,7 @@ def test_list_crypto_key_versions_pager(transport_name: str = "grpc"):
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, resources.CryptoKeyVersion) for i in results)
 
@@ -2079,7 +2079,7 @@ def test_list_import_jobs_field_headers():
     # a field header. Set these to a non-empty value.
     request = service.ListImportJobsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_import_jobs), "__call__") as call:
@@ -2095,7 +2095,7 @@ def test_list_import_jobs_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -2109,7 +2109,7 @@ async def test_list_import_jobs_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = service.ListImportJobsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_import_jobs), "__call__") as call:
@@ -2127,7 +2127,7 @@ async def test_list_import_jobs_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -2258,7 +2258,7 @@ def test_list_import_jobs_pager(transport_name: str = "grpc"):
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, resources.ImportJob) for i in results)
 
@@ -2499,7 +2499,7 @@ def test_get_key_ring_field_headers():
     # a field header. Set these to a non-empty value.
     request = service.GetKeyRingRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_key_ring), "__call__") as call:
@@ -2515,7 +2515,7 @@ def test_get_key_ring_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2529,7 +2529,7 @@ async def test_get_key_ring_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = service.GetKeyRingRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_key_ring), "__call__") as call:
@@ -2545,7 +2545,7 @@ async def test_get_key_ring_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2740,7 +2740,7 @@ def test_get_crypto_key_field_headers():
     # a field header. Set these to a non-empty value.
     request = service.GetCryptoKeyRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_crypto_key), "__call__") as call:
@@ -2756,7 +2756,7 @@ def test_get_crypto_key_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2770,7 +2770,7 @@ async def test_get_crypto_key_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = service.GetCryptoKeyRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_crypto_key), "__call__") as call:
@@ -2786,7 +2786,7 @@ async def test_get_crypto_key_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -3010,7 +3010,7 @@ def test_get_crypto_key_version_field_headers():
     # a field header. Set these to a non-empty value.
     request = service.GetCryptoKeyVersionRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3028,7 +3028,7 @@ def test_get_crypto_key_version_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -3042,7 +3042,7 @@ async def test_get_crypto_key_version_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = service.GetCryptoKeyVersionRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3062,7 +3062,7 @@ async def test_get_crypto_key_version_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -3268,7 +3268,7 @@ def test_get_public_key_field_headers():
     # a field header. Set these to a non-empty value.
     request = service.GetPublicKeyRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_public_key), "__call__") as call:
@@ -3284,7 +3284,7 @@ def test_get_public_key_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -3298,7 +3298,7 @@ async def test_get_public_key_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = service.GetPublicKeyRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_public_key), "__call__") as call:
@@ -3314,7 +3314,7 @@ async def test_get_public_key_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -3514,7 +3514,7 @@ def test_get_import_job_field_headers():
     # a field header. Set these to a non-empty value.
     request = service.GetImportJobRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_import_job), "__call__") as call:
@@ -3530,7 +3530,7 @@ def test_get_import_job_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -3544,7 +3544,7 @@ async def test_get_import_job_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = service.GetImportJobRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_import_job), "__call__") as call:
@@ -3560,7 +3560,7 @@ async def test_get_import_job_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -3742,7 +3742,7 @@ def test_create_key_ring_field_headers():
     # a field header. Set these to a non-empty value.
     request = service.CreateKeyRingRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_key_ring), "__call__") as call:
@@ -3758,7 +3758,7 @@ def test_create_key_ring_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -3772,7 +3772,7 @@ async def test_create_key_ring_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = service.CreateKeyRingRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_key_ring), "__call__") as call:
@@ -3788,7 +3788,7 @@ async def test_create_key_ring_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -4009,7 +4009,7 @@ def test_create_crypto_key_field_headers():
     # a field header. Set these to a non-empty value.
     request = service.CreateCryptoKeyRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4027,7 +4027,7 @@ def test_create_crypto_key_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -4041,7 +4041,7 @@ async def test_create_crypto_key_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = service.CreateCryptoKeyRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4059,7 +4059,7 @@ async def test_create_crypto_key_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -4307,7 +4307,7 @@ def test_create_crypto_key_version_field_headers():
     # a field header. Set these to a non-empty value.
     request = service.CreateCryptoKeyVersionRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4325,7 +4325,7 @@ def test_create_crypto_key_version_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -4339,7 +4339,7 @@ async def test_create_crypto_key_version_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = service.CreateCryptoKeyVersionRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4359,7 +4359,7 @@ async def test_create_crypto_key_version_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -4599,7 +4599,7 @@ def test_import_crypto_key_version_field_headers():
     # a field header. Set these to a non-empty value.
     request = service.ImportCryptoKeyVersionRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4617,7 +4617,7 @@ def test_import_crypto_key_version_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -4631,7 +4631,7 @@ async def test_import_crypto_key_version_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = service.ImportCryptoKeyVersionRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4651,7 +4651,7 @@ async def test_import_crypto_key_version_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -4777,7 +4777,7 @@ def test_create_import_job_field_headers():
     # a field header. Set these to a non-empty value.
     request = service.CreateImportJobRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4795,7 +4795,7 @@ def test_create_import_job_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -4809,7 +4809,7 @@ async def test_create_import_job_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = service.CreateImportJobRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4827,7 +4827,7 @@ async def test_create_import_job_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -5052,7 +5052,7 @@ def test_update_crypto_key_field_headers():
     # a field header. Set these to a non-empty value.
     request = service.UpdateCryptoKeyRequest()
 
-    request.crypto_key.name = "crypto_key.name/value"
+    request.crypto_key.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5070,7 +5070,7 @@ def test_update_crypto_key_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "crypto_key.name=crypto_key.name/value",
+        "crypto_key.name=name_value",
     ) in kw["metadata"]
 
 
@@ -5084,7 +5084,7 @@ async def test_update_crypto_key_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = service.UpdateCryptoKeyRequest()
 
-    request.crypto_key.name = "crypto_key.name/value"
+    request.crypto_key.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5102,7 +5102,7 @@ async def test_update_crypto_key_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "crypto_key.name=crypto_key.name/value",
+        "crypto_key.name=name_value",
     ) in kw["metadata"]
 
 
@@ -5340,7 +5340,7 @@ def test_update_crypto_key_version_field_headers():
     # a field header. Set these to a non-empty value.
     request = service.UpdateCryptoKeyVersionRequest()
 
-    request.crypto_key_version.name = "crypto_key_version.name/value"
+    request.crypto_key_version.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5358,7 +5358,7 @@ def test_update_crypto_key_version_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "crypto_key_version.name=crypto_key_version.name/value",
+        "crypto_key_version.name=name_value",
     ) in kw["metadata"]
 
 
@@ -5372,7 +5372,7 @@ async def test_update_crypto_key_version_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = service.UpdateCryptoKeyVersionRequest()
 
-    request.crypto_key_version.name = "crypto_key_version.name/value"
+    request.crypto_key_version.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5392,7 +5392,7 @@ async def test_update_crypto_key_version_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "crypto_key_version.name=crypto_key_version.name/value",
+        "crypto_key_version.name=name_value",
     ) in kw["metadata"]
 
 
@@ -5610,7 +5610,7 @@ def test_update_crypto_key_primary_version_field_headers():
     # a field header. Set these to a non-empty value.
     request = service.UpdateCryptoKeyPrimaryVersionRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5628,7 +5628,7 @@ def test_update_crypto_key_primary_version_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -5642,7 +5642,7 @@ async def test_update_crypto_key_primary_version_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = service.UpdateCryptoKeyPrimaryVersionRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5660,7 +5660,7 @@ async def test_update_crypto_key_primary_version_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -5898,7 +5898,7 @@ def test_destroy_crypto_key_version_field_headers():
     # a field header. Set these to a non-empty value.
     request = service.DestroyCryptoKeyVersionRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5916,7 +5916,7 @@ def test_destroy_crypto_key_version_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -5930,7 +5930,7 @@ async def test_destroy_crypto_key_version_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = service.DestroyCryptoKeyVersionRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5950,7 +5950,7 @@ async def test_destroy_crypto_key_version_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -6180,7 +6180,7 @@ def test_restore_crypto_key_version_field_headers():
     # a field header. Set these to a non-empty value.
     request = service.RestoreCryptoKeyVersionRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6198,7 +6198,7 @@ def test_restore_crypto_key_version_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -6212,7 +6212,7 @@ async def test_restore_crypto_key_version_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = service.RestoreCryptoKeyVersionRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6232,7 +6232,7 @@ async def test_restore_crypto_key_version_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -6436,7 +6436,7 @@ def test_encrypt_field_headers():
     # a field header. Set these to a non-empty value.
     request = service.EncryptRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.encrypt), "__call__") as call:
@@ -6452,7 +6452,7 @@ def test_encrypt_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -6466,7 +6466,7 @@ async def test_encrypt_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = service.EncryptRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.encrypt), "__call__") as call:
@@ -6484,7 +6484,7 @@ async def test_encrypt_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -6686,7 +6686,7 @@ def test_decrypt_field_headers():
     # a field header. Set these to a non-empty value.
     request = service.DecryptRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.decrypt), "__call__") as call:
@@ -6702,7 +6702,7 @@ def test_decrypt_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -6716,7 +6716,7 @@ async def test_decrypt_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = service.DecryptRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.decrypt), "__call__") as call:
@@ -6734,7 +6734,7 @@ async def test_decrypt_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -6944,7 +6944,7 @@ def test_asymmetric_sign_field_headers():
     # a field header. Set these to a non-empty value.
     request = service.AsymmetricSignRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.asymmetric_sign), "__call__") as call:
@@ -6960,7 +6960,7 @@ def test_asymmetric_sign_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -6974,7 +6974,7 @@ async def test_asymmetric_sign_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = service.AsymmetricSignRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.asymmetric_sign), "__call__") as call:
@@ -6992,7 +6992,7 @@ async def test_asymmetric_sign_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -7200,7 +7200,7 @@ def test_asymmetric_decrypt_field_headers():
     # a field header. Set these to a non-empty value.
     request = service.AsymmetricDecryptRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7218,7 +7218,7 @@ def test_asymmetric_decrypt_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -7232,7 +7232,7 @@ async def test_asymmetric_decrypt_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = service.AsymmetricDecryptRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7252,7 +7252,7 @@ async def test_asymmetric_decrypt_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -7462,7 +7462,7 @@ def test_mac_sign_field_headers():
     # a field header. Set these to a non-empty value.
     request = service.MacSignRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.mac_sign), "__call__") as call:
@@ -7478,7 +7478,7 @@ def test_mac_sign_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -7492,7 +7492,7 @@ async def test_mac_sign_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = service.MacSignRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.mac_sign), "__call__") as call:
@@ -7510,7 +7510,7 @@ async def test_mac_sign_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -7724,7 +7724,7 @@ def test_mac_verify_field_headers():
     # a field header. Set these to a non-empty value.
     request = service.MacVerifyRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.mac_verify), "__call__") as call:
@@ -7740,7 +7740,7 @@ def test_mac_verify_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -7754,7 +7754,7 @@ async def test_mac_verify_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = service.MacVerifyRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.mac_verify), "__call__") as call:
@@ -7772,7 +7772,7 @@ async def test_mac_verify_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -7982,7 +7982,7 @@ def test_generate_random_bytes_field_headers():
     # a field header. Set these to a non-empty value.
     request = service.GenerateRandomBytesRequest()
 
-    request.location = "location/value"
+    request.location = "location_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8000,7 +8000,7 @@ def test_generate_random_bytes_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "location=location/value",
+        "location=location_value",
     ) in kw["metadata"]
 
 
@@ -8014,7 +8014,7 @@ async def test_generate_random_bytes_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = service.GenerateRandomBytesRequest()
 
-    request.location = "location/value"
+    request.location = "location_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8034,7 +8034,7 @@ async def test_generate_random_bytes_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "location=location/value",
+        "location=location_value",
     ) in kw["metadata"]
 
 

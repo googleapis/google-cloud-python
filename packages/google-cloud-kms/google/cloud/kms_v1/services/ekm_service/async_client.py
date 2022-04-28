@@ -227,9 +227,9 @@ class EkmServiceAsyncClient:
 
             from google.cloud import kms_v1
 
-            def sample_list_ekm_connections():
+            async def sample_list_ekm_connections():
                 # Create a client
-                client = kms_v1.EkmServiceClient()
+                client = kms_v1.EkmServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = kms_v1.ListEkmConnectionsRequest(
@@ -240,7 +240,7 @@ class EkmServiceAsyncClient:
                 page_result = client.list_ekm_connections(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
 
@@ -349,9 +349,9 @@ class EkmServiceAsyncClient:
 
             from google.cloud import kms_v1
 
-            def sample_get_ekm_connection():
+            async def sample_get_ekm_connection():
                 # Create a client
-                client = kms_v1.EkmServiceClient()
+                client = kms_v1.EkmServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = kms_v1.GetEkmConnectionRequest(
@@ -359,7 +359,7 @@ class EkmServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_ekm_connection(request=request)
+                response = await client.get_ekm_connection(request=request)
 
                 # Handle the response
                 print(response)
@@ -470,9 +470,9 @@ class EkmServiceAsyncClient:
 
             from google.cloud import kms_v1
 
-            def sample_create_ekm_connection():
+            async def sample_create_ekm_connection():
                 # Create a client
-                client = kms_v1.EkmServiceClient()
+                client = kms_v1.EkmServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = kms_v1.CreateEkmConnectionRequest(
@@ -481,7 +481,7 @@ class EkmServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.create_ekm_connection(request=request)
+                response = await client.create_ekm_connection(request=request)
 
                 # Handle the response
                 print(response)
@@ -610,16 +610,16 @@ class EkmServiceAsyncClient:
 
             from google.cloud import kms_v1
 
-            def sample_update_ekm_connection():
+            async def sample_update_ekm_connection():
                 # Create a client
-                client = kms_v1.EkmServiceClient()
+                client = kms_v1.EkmServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = kms_v1.UpdateEkmConnectionRequest(
                 )
 
                 # Make the request
-                response = client.update_ekm_connection(request=request)
+                response = await client.update_ekm_connection(request=request)
 
                 # Handle the response
                 print(response)
