@@ -220,9 +220,9 @@ class IntentsAsyncClient:
 
             from google.cloud import dialogflow_v2
 
-            def sample_list_intents():
+            async def sample_list_intents():
                 # Create a client
-                client = dialogflow_v2.IntentsClient()
+                client = dialogflow_v2.IntentsAsyncClient()
 
                 # Initialize request argument(s)
                 request = dialogflow_v2.ListIntentsRequest(
@@ -233,7 +233,7 @@ class IntentsAsyncClient:
                 page_result = client.list_intents(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -350,9 +350,9 @@ class IntentsAsyncClient:
 
             from google.cloud import dialogflow_v2
 
-            def sample_get_intent():
+            async def sample_get_intent():
                 # Create a client
-                client = dialogflow_v2.IntentsClient()
+                client = dialogflow_v2.IntentsAsyncClient()
 
                 # Initialize request argument(s)
                 request = dialogflow_v2.GetIntentRequest(
@@ -360,7 +360,7 @@ class IntentsAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_intent(request=request)
+                response = await client.get_intent(request=request)
 
                 # Handle the response
                 print(response)
@@ -472,9 +472,9 @@ class IntentsAsyncClient:
 
             from google.cloud import dialogflow_v2
 
-            def sample_create_intent():
+            async def sample_create_intent():
                 # Create a client
-                client = dialogflow_v2.IntentsClient()
+                client = dialogflow_v2.IntentsAsyncClient()
 
                 # Initialize request argument(s)
                 intent = dialogflow_v2.Intent()
@@ -486,7 +486,7 @@ class IntentsAsyncClient:
                 )
 
                 # Make the request
-                response = client.create_intent(request=request)
+                response = await client.create_intent(request=request)
 
                 # Handle the response
                 print(response)
@@ -605,9 +605,9 @@ class IntentsAsyncClient:
 
             from google.cloud import dialogflow_v2
 
-            def sample_update_intent():
+            async def sample_update_intent():
                 # Create a client
-                client = dialogflow_v2.IntentsClient()
+                client = dialogflow_v2.IntentsAsyncClient()
 
                 # Initialize request argument(s)
                 intent = dialogflow_v2.Intent()
@@ -618,7 +618,7 @@ class IntentsAsyncClient:
                 )
 
                 # Make the request
-                response = client.update_intent(request=request)
+                response = await client.update_intent(request=request)
 
                 # Handle the response
                 print(response)
@@ -738,9 +738,9 @@ class IntentsAsyncClient:
 
             from google.cloud import dialogflow_v2
 
-            def sample_delete_intent():
+            async def sample_delete_intent():
                 # Create a client
-                client = dialogflow_v2.IntentsClient()
+                client = dialogflow_v2.IntentsAsyncClient()
 
                 # Initialize request argument(s)
                 request = dialogflow_v2.DeleteIntentRequest(
@@ -748,7 +748,7 @@ class IntentsAsyncClient:
                 )
 
                 # Make the request
-                client.delete_intent(request=request)
+                await client.delete_intent(request=request)
 
         Args:
             request (Union[google.cloud.dialogflow_v2.types.DeleteIntentRequest, dict]):
@@ -839,9 +839,9 @@ class IntentsAsyncClient:
 
             from google.cloud import dialogflow_v2
 
-            def sample_batch_update_intents():
+            async def sample_batch_update_intents():
                 # Create a client
-                client = dialogflow_v2.IntentsClient()
+                client = dialogflow_v2.IntentsAsyncClient()
 
                 # Initialize request argument(s)
                 request = dialogflow_v2.BatchUpdateIntentsRequest(
@@ -854,7 +854,7 @@ class IntentsAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -987,9 +987,9 @@ class IntentsAsyncClient:
 
             from google.cloud import dialogflow_v2
 
-            def sample_batch_delete_intents():
+            async def sample_batch_delete_intents():
                 # Create a client
-                client = dialogflow_v2.IntentsClient()
+                client = dialogflow_v2.IntentsAsyncClient()
 
                 # Initialize request argument(s)
                 intents = dialogflow_v2.Intent()
@@ -1005,7 +1005,7 @@ class IntentsAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)

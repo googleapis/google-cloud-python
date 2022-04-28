@@ -213,9 +213,9 @@ class AgentsAsyncClient:
 
             from google.cloud import dialogflow_v2
 
-            def sample_get_agent():
+            async def sample_get_agent():
                 # Create a client
-                client = dialogflow_v2.AgentsClient()
+                client = dialogflow_v2.AgentsAsyncClient()
 
                 # Initialize request argument(s)
                 request = dialogflow_v2.GetAgentRequest(
@@ -223,7 +223,7 @@ class AgentsAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_agent(request=request)
+                response = await client.get_agent(request=request)
 
                 # Handle the response
                 print(response)
@@ -321,9 +321,9 @@ class AgentsAsyncClient:
 
             from google.cloud import dialogflow_v2
 
-            def sample_set_agent():
+            async def sample_set_agent():
                 # Create a client
-                client = dialogflow_v2.AgentsClient()
+                client = dialogflow_v2.AgentsAsyncClient()
 
                 # Initialize request argument(s)
                 agent = dialogflow_v2.Agent()
@@ -337,7 +337,7 @@ class AgentsAsyncClient:
                 )
 
                 # Make the request
-                response = client.set_agent(request=request)
+                response = await client.set_agent(request=request)
 
                 # Handle the response
                 print(response)
@@ -431,9 +431,9 @@ class AgentsAsyncClient:
 
             from google.cloud import dialogflow_v2
 
-            def sample_delete_agent():
+            async def sample_delete_agent():
                 # Create a client
-                client = dialogflow_v2.AgentsClient()
+                client = dialogflow_v2.AgentsAsyncClient()
 
                 # Initialize request argument(s)
                 request = dialogflow_v2.DeleteAgentRequest(
@@ -441,7 +441,7 @@ class AgentsAsyncClient:
                 )
 
                 # Make the request
-                client.delete_agent(request=request)
+                await client.delete_agent(request=request)
 
         Args:
             request (Union[google.cloud.dialogflow_v2.types.DeleteAgentRequest, dict]):
@@ -520,9 +520,9 @@ class AgentsAsyncClient:
 
             from google.cloud import dialogflow_v2
 
-            def sample_search_agents():
+            async def sample_search_agents():
                 # Create a client
-                client = dialogflow_v2.AgentsClient()
+                client = dialogflow_v2.AgentsAsyncClient()
 
                 # Initialize request argument(s)
                 request = dialogflow_v2.SearchAgentsRequest(
@@ -533,7 +533,7 @@ class AgentsAsyncClient:
                 page_result = client.search_agents(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -642,9 +642,9 @@ class AgentsAsyncClient:
 
             from google.cloud import dialogflow_v2
 
-            def sample_train_agent():
+            async def sample_train_agent():
                 # Create a client
-                client = dialogflow_v2.AgentsClient()
+                client = dialogflow_v2.AgentsAsyncClient()
 
                 # Initialize request argument(s)
                 request = dialogflow_v2.TrainAgentRequest(
@@ -656,7 +656,7 @@ class AgentsAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -772,9 +772,9 @@ class AgentsAsyncClient:
 
             from google.cloud import dialogflow_v2
 
-            def sample_export_agent():
+            async def sample_export_agent():
                 # Create a client
-                client = dialogflow_v2.AgentsClient()
+                client = dialogflow_v2.AgentsAsyncClient()
 
                 # Initialize request argument(s)
                 request = dialogflow_v2.ExportAgentRequest(
@@ -787,7 +787,7 @@ class AgentsAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -911,9 +911,9 @@ class AgentsAsyncClient:
 
             from google.cloud import dialogflow_v2
 
-            def sample_import_agent():
+            async def sample_import_agent():
                 # Create a client
-                client = dialogflow_v2.AgentsClient()
+                client = dialogflow_v2.AgentsAsyncClient()
 
                 # Initialize request argument(s)
                 request = dialogflow_v2.ImportAgentRequest(
@@ -926,7 +926,7 @@ class AgentsAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1036,9 +1036,9 @@ class AgentsAsyncClient:
 
             from google.cloud import dialogflow_v2
 
-            def sample_restore_agent():
+            async def sample_restore_agent():
                 # Create a client
-                client = dialogflow_v2.AgentsClient()
+                client = dialogflow_v2.AgentsAsyncClient()
 
                 # Initialize request argument(s)
                 request = dialogflow_v2.RestoreAgentRequest(
@@ -1051,7 +1051,7 @@ class AgentsAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1137,9 +1137,9 @@ class AgentsAsyncClient:
 
             from google.cloud import dialogflow_v2
 
-            def sample_get_validation_result():
+            async def sample_get_validation_result():
                 # Create a client
-                client = dialogflow_v2.AgentsClient()
+                client = dialogflow_v2.AgentsAsyncClient()
 
                 # Initialize request argument(s)
                 request = dialogflow_v2.GetValidationResultRequest(
@@ -1147,7 +1147,7 @@ class AgentsAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_validation_result(request=request)
+                response = await client.get_validation_result(request=request)
 
                 # Handle the response
                 print(response)

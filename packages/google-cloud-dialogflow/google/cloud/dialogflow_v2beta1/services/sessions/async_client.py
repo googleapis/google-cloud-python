@@ -251,9 +251,9 @@ class SessionsAsyncClient:
 
             from google.cloud import dialogflow_v2beta1
 
-            def sample_detect_intent():
+            async def sample_detect_intent():
                 # Create a client
-                client = dialogflow_v2beta1.SessionsClient()
+                client = dialogflow_v2beta1.SessionsAsyncClient()
 
                 # Initialize request argument(s)
                 request = dialogflow_v2beta1.DetectIntentRequest(
@@ -261,7 +261,7 @@ class SessionsAsyncClient:
                 )
 
                 # Make the request
-                response = client.detect_intent(request=request)
+                response = await client.detect_intent(request=request)
 
                 # Handle the response
                 print(response)
@@ -408,9 +408,9 @@ class SessionsAsyncClient:
 
             from google.cloud import dialogflow_v2beta1
 
-            def sample_streaming_detect_intent():
+            async def sample_streaming_detect_intent():
                 # Create a client
-                client = dialogflow_v2beta1.SessionsClient()
+                client = dialogflow_v2beta1.SessionsAsyncClient()
 
                 # Initialize request argument(s)
                 request = dialogflow_v2beta1.StreamingDetectIntentRequest(
@@ -428,10 +428,10 @@ class SessionsAsyncClient:
                         yield request
 
                 # Make the request
-                stream = client.streaming_detect_intent(requests=request_generator())
+                stream = await client.streaming_detect_intent(requests=request_generator())
 
                 # Handle the response
-                for response in stream:
+                async for response in stream:
                     print(response)
 
         Args:

@@ -255,9 +255,9 @@ class ConversationProfilesAsyncClient:
 
             from google.cloud import dialogflow_v2
 
-            def sample_list_conversation_profiles():
+            async def sample_list_conversation_profiles():
                 # Create a client
-                client = dialogflow_v2.ConversationProfilesClient()
+                client = dialogflow_v2.ConversationProfilesAsyncClient()
 
                 # Initialize request argument(s)
                 request = dialogflow_v2.ListConversationProfilesRequest(
@@ -268,7 +268,7 @@ class ConversationProfilesAsyncClient:
                 page_result = client.list_conversation_profiles(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -364,9 +364,9 @@ class ConversationProfilesAsyncClient:
 
             from google.cloud import dialogflow_v2
 
-            def sample_get_conversation_profile():
+            async def sample_get_conversation_profile():
                 # Create a client
-                client = dialogflow_v2.ConversationProfilesClient()
+                client = dialogflow_v2.ConversationProfilesAsyncClient()
 
                 # Initialize request argument(s)
                 request = dialogflow_v2.GetConversationProfileRequest(
@@ -374,7 +374,7 @@ class ConversationProfilesAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_conversation_profile(request=request)
+                response = await client.get_conversation_profile(request=request)
 
                 # Handle the response
                 print(response)
@@ -469,9 +469,9 @@ class ConversationProfilesAsyncClient:
 
             from google.cloud import dialogflow_v2
 
-            def sample_create_conversation_profile():
+            async def sample_create_conversation_profile():
                 # Create a client
-                client = dialogflow_v2.ConversationProfilesClient()
+                client = dialogflow_v2.ConversationProfilesAsyncClient()
 
                 # Initialize request argument(s)
                 conversation_profile = dialogflow_v2.ConversationProfile()
@@ -483,7 +483,7 @@ class ConversationProfilesAsyncClient:
                 )
 
                 # Make the request
-                response = client.create_conversation_profile(request=request)
+                response = await client.create_conversation_profile(request=request)
 
                 # Handle the response
                 print(response)
@@ -587,9 +587,9 @@ class ConversationProfilesAsyncClient:
 
             from google.cloud import dialogflow_v2
 
-            def sample_update_conversation_profile():
+            async def sample_update_conversation_profile():
                 # Create a client
-                client = dialogflow_v2.ConversationProfilesClient()
+                client = dialogflow_v2.ConversationProfilesAsyncClient()
 
                 # Initialize request argument(s)
                 conversation_profile = dialogflow_v2.ConversationProfile()
@@ -600,7 +600,7 @@ class ConversationProfilesAsyncClient:
                 )
 
                 # Make the request
-                response = client.update_conversation_profile(request=request)
+                response = await client.update_conversation_profile(request=request)
 
                 # Handle the response
                 print(response)
@@ -698,9 +698,9 @@ class ConversationProfilesAsyncClient:
 
             from google.cloud import dialogflow_v2
 
-            def sample_delete_conversation_profile():
+            async def sample_delete_conversation_profile():
                 # Create a client
-                client = dialogflow_v2.ConversationProfilesClient()
+                client = dialogflow_v2.ConversationProfilesAsyncClient()
 
                 # Initialize request argument(s)
                 request = dialogflow_v2.DeleteConversationProfileRequest(
@@ -708,7 +708,7 @@ class ConversationProfilesAsyncClient:
                 )
 
                 # Make the request
-                client.delete_conversation_profile(request=request)
+                await client.delete_conversation_profile(request=request)
 
         Args:
             request (Union[google.cloud.dialogflow_v2.types.DeleteConversationProfileRequest, dict]):
@@ -805,9 +805,9 @@ class ConversationProfilesAsyncClient:
 
             from google.cloud import dialogflow_v2
 
-            def sample_set_suggestion_feature_config():
+            async def sample_set_suggestion_feature_config():
                 # Create a client
-                client = dialogflow_v2.ConversationProfilesClient()
+                client = dialogflow_v2.ConversationProfilesAsyncClient()
 
                 # Initialize request argument(s)
                 request = dialogflow_v2.SetSuggestionFeatureConfigRequest(
@@ -820,7 +820,7 @@ class ConversationProfilesAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -933,9 +933,9 @@ class ConversationProfilesAsyncClient:
 
             from google.cloud import dialogflow_v2
 
-            def sample_clear_suggestion_feature_config():
+            async def sample_clear_suggestion_feature_config():
                 # Create a client
-                client = dialogflow_v2.ConversationProfilesClient()
+                client = dialogflow_v2.ConversationProfilesAsyncClient()
 
                 # Initialize request argument(s)
                 request = dialogflow_v2.ClearSuggestionFeatureConfigRequest(
@@ -949,7 +949,7 @@ class ConversationProfilesAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)

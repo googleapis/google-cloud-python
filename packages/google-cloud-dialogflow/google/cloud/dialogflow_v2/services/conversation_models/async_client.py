@@ -256,9 +256,9 @@ class ConversationModelsAsyncClient:
 
             from google.cloud import dialogflow_v2
 
-            def sample_create_conversation_model():
+            async def sample_create_conversation_model():
                 # Create a client
-                client = dialogflow_v2.ConversationModelsClient()
+                client = dialogflow_v2.ConversationModelsAsyncClient()
 
                 # Initialize request argument(s)
                 conversation_model = dialogflow_v2.ConversationModel()
@@ -274,7 +274,7 @@ class ConversationModelsAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -379,9 +379,9 @@ class ConversationModelsAsyncClient:
 
             from google.cloud import dialogflow_v2
 
-            def sample_get_conversation_model():
+            async def sample_get_conversation_model():
                 # Create a client
-                client = dialogflow_v2.ConversationModelsClient()
+                client = dialogflow_v2.ConversationModelsAsyncClient()
 
                 # Initialize request argument(s)
                 request = dialogflow_v2.GetConversationModelRequest(
@@ -389,7 +389,7 @@ class ConversationModelsAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_conversation_model(request=request)
+                response = await client.get_conversation_model(request=request)
 
                 # Handle the response
                 print(response)
@@ -472,9 +472,9 @@ class ConversationModelsAsyncClient:
 
             from google.cloud import dialogflow_v2
 
-            def sample_list_conversation_models():
+            async def sample_list_conversation_models():
                 # Create a client
-                client = dialogflow_v2.ConversationModelsClient()
+                client = dialogflow_v2.ConversationModelsAsyncClient()
 
                 # Initialize request argument(s)
                 request = dialogflow_v2.ListConversationModelsRequest(
@@ -485,7 +485,7 @@ class ConversationModelsAsyncClient:
                 page_result = client.list_conversation_models(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -590,9 +590,9 @@ class ConversationModelsAsyncClient:
 
             from google.cloud import dialogflow_v2
 
-            def sample_delete_conversation_model():
+            async def sample_delete_conversation_model():
                 # Create a client
-                client = dialogflow_v2.ConversationModelsClient()
+                client = dialogflow_v2.ConversationModelsAsyncClient()
 
                 # Initialize request argument(s)
                 request = dialogflow_v2.DeleteConversationModelRequest(
@@ -604,7 +604,7 @@ class ConversationModelsAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -722,9 +722,9 @@ class ConversationModelsAsyncClient:
 
             from google.cloud import dialogflow_v2
 
-            def sample_deploy_conversation_model():
+            async def sample_deploy_conversation_model():
                 # Create a client
-                client = dialogflow_v2.ConversationModelsClient()
+                client = dialogflow_v2.ConversationModelsAsyncClient()
 
                 # Initialize request argument(s)
                 request = dialogflow_v2.DeployConversationModelRequest(
@@ -736,7 +736,7 @@ class ConversationModelsAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -836,9 +836,9 @@ class ConversationModelsAsyncClient:
 
             from google.cloud import dialogflow_v2
 
-            def sample_undeploy_conversation_model():
+            async def sample_undeploy_conversation_model():
                 # Create a client
-                client = dialogflow_v2.ConversationModelsClient()
+                client = dialogflow_v2.ConversationModelsAsyncClient()
 
                 # Initialize request argument(s)
                 request = dialogflow_v2.UndeployConversationModelRequest(
@@ -850,7 +850,7 @@ class ConversationModelsAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -937,9 +937,9 @@ class ConversationModelsAsyncClient:
 
             from google.cloud import dialogflow_v2
 
-            def sample_get_conversation_model_evaluation():
+            async def sample_get_conversation_model_evaluation():
                 # Create a client
-                client = dialogflow_v2.ConversationModelsClient()
+                client = dialogflow_v2.ConversationModelsAsyncClient()
 
                 # Initialize request argument(s)
                 request = dialogflow_v2.GetConversationModelEvaluationRequest(
@@ -947,7 +947,7 @@ class ConversationModelsAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_conversation_model_evaluation(request=request)
+                response = await client.get_conversation_model_evaluation(request=request)
 
                 # Handle the response
                 print(response)
@@ -1035,9 +1035,9 @@ class ConversationModelsAsyncClient:
 
             from google.cloud import dialogflow_v2
 
-            def sample_list_conversation_model_evaluations():
+            async def sample_list_conversation_model_evaluations():
                 # Create a client
-                client = dialogflow_v2.ConversationModelsClient()
+                client = dialogflow_v2.ConversationModelsAsyncClient()
 
                 # Initialize request argument(s)
                 request = dialogflow_v2.ListConversationModelEvaluationsRequest(
@@ -1048,7 +1048,7 @@ class ConversationModelsAsyncClient:
                 page_result = client.list_conversation_model_evaluations(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -1146,9 +1146,9 @@ class ConversationModelsAsyncClient:
 
             from google.cloud import dialogflow_v2
 
-            def sample_create_conversation_model_evaluation():
+            async def sample_create_conversation_model_evaluation():
                 # Create a client
-                client = dialogflow_v2.ConversationModelsClient()
+                client = dialogflow_v2.ConversationModelsAsyncClient()
 
                 # Initialize request argument(s)
                 request = dialogflow_v2.CreateConversationModelEvaluationRequest(
@@ -1160,7 +1160,7 @@ class ConversationModelsAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)

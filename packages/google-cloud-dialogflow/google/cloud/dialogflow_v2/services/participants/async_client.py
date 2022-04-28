@@ -231,9 +231,9 @@ class ParticipantsAsyncClient:
 
             from google.cloud import dialogflow_v2
 
-            def sample_create_participant():
+            async def sample_create_participant():
                 # Create a client
-                client = dialogflow_v2.ParticipantsClient()
+                client = dialogflow_v2.ParticipantsAsyncClient()
 
                 # Initialize request argument(s)
                 request = dialogflow_v2.CreateParticipantRequest(
@@ -241,7 +241,7 @@ class ParticipantsAsyncClient:
                 )
 
                 # Make the request
-                response = client.create_participant(request=request)
+                response = await client.create_participant(request=request)
 
                 # Handle the response
                 print(response)
@@ -334,9 +334,9 @@ class ParticipantsAsyncClient:
 
             from google.cloud import dialogflow_v2
 
-            def sample_get_participant():
+            async def sample_get_participant():
                 # Create a client
-                client = dialogflow_v2.ParticipantsClient()
+                client = dialogflow_v2.ParticipantsAsyncClient()
 
                 # Initialize request argument(s)
                 request = dialogflow_v2.GetParticipantRequest(
@@ -344,7 +344,7 @@ class ParticipantsAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_participant(request=request)
+                response = await client.get_participant(request=request)
 
                 # Handle the response
                 print(response)
@@ -430,9 +430,9 @@ class ParticipantsAsyncClient:
 
             from google.cloud import dialogflow_v2
 
-            def sample_list_participants():
+            async def sample_list_participants():
                 # Create a client
-                client = dialogflow_v2.ParticipantsClient()
+                client = dialogflow_v2.ParticipantsAsyncClient()
 
                 # Initialize request argument(s)
                 request = dialogflow_v2.ListParticipantsRequest(
@@ -443,7 +443,7 @@ class ParticipantsAsyncClient:
                 page_result = client.list_participants(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -540,16 +540,16 @@ class ParticipantsAsyncClient:
 
             from google.cloud import dialogflow_v2
 
-            def sample_update_participant():
+            async def sample_update_participant():
                 # Create a client
-                client = dialogflow_v2.ParticipantsClient()
+                client = dialogflow_v2.ParticipantsAsyncClient()
 
                 # Initialize request argument(s)
                 request = dialogflow_v2.UpdateParticipantRequest(
                 )
 
                 # Make the request
-                response = client.update_participant(request=request)
+                response = await client.update_participant(request=request)
 
                 # Handle the response
                 print(response)
@@ -650,9 +650,9 @@ class ParticipantsAsyncClient:
 
             from google.cloud import dialogflow_v2
 
-            def sample_analyze_content():
+            async def sample_analyze_content():
                 # Create a client
-                client = dialogflow_v2.ParticipantsClient()
+                client = dialogflow_v2.ParticipantsAsyncClient()
 
                 # Initialize request argument(s)
                 text_input = dialogflow_v2.TextInput()
@@ -665,7 +665,7 @@ class ParticipantsAsyncClient:
                 )
 
                 # Make the request
-                response = client.analyze_content(request=request)
+                response = await client.analyze_content(request=request)
 
                 # Handle the response
                 print(response)
@@ -779,9 +779,9 @@ class ParticipantsAsyncClient:
 
             from google.cloud import dialogflow_v2
 
-            def sample_suggest_articles():
+            async def sample_suggest_articles():
                 # Create a client
-                client = dialogflow_v2.ParticipantsClient()
+                client = dialogflow_v2.ParticipantsAsyncClient()
 
                 # Initialize request argument(s)
                 request = dialogflow_v2.SuggestArticlesRequest(
@@ -789,7 +789,7 @@ class ParticipantsAsyncClient:
                 )
 
                 # Make the request
-                response = client.suggest_articles(request=request)
+                response = await client.suggest_articles(request=request)
 
                 # Handle the response
                 print(response)
@@ -876,9 +876,9 @@ class ParticipantsAsyncClient:
 
             from google.cloud import dialogflow_v2
 
-            def sample_suggest_faq_answers():
+            async def sample_suggest_faq_answers():
                 # Create a client
-                client = dialogflow_v2.ParticipantsClient()
+                client = dialogflow_v2.ParticipantsAsyncClient()
 
                 # Initialize request argument(s)
                 request = dialogflow_v2.SuggestFaqAnswersRequest(
@@ -886,7 +886,7 @@ class ParticipantsAsyncClient:
                 )
 
                 # Make the request
-                response = client.suggest_faq_answers(request=request)
+                response = await client.suggest_faq_answers(request=request)
 
                 # Handle the response
                 print(response)
@@ -973,9 +973,9 @@ class ParticipantsAsyncClient:
 
             from google.cloud import dialogflow_v2
 
-            def sample_suggest_smart_replies():
+            async def sample_suggest_smart_replies():
                 # Create a client
-                client = dialogflow_v2.ParticipantsClient()
+                client = dialogflow_v2.ParticipantsAsyncClient()
 
                 # Initialize request argument(s)
                 request = dialogflow_v2.SuggestSmartRepliesRequest(
@@ -983,7 +983,7 @@ class ParticipantsAsyncClient:
                 )
 
                 # Make the request
-                response = client.suggest_smart_replies(request=request)
+                response = await client.suggest_smart_replies(request=request)
 
                 # Handle the response
                 print(response)

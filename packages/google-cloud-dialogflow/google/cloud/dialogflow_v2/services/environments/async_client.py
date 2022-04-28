@@ -222,9 +222,9 @@ class EnvironmentsAsyncClient:
 
             from google.cloud import dialogflow_v2
 
-            def sample_list_environments():
+            async def sample_list_environments():
                 # Create a client
-                client = dialogflow_v2.EnvironmentsClient()
+                client = dialogflow_v2.EnvironmentsAsyncClient()
 
                 # Initialize request argument(s)
                 request = dialogflow_v2.ListEnvironmentsRequest(
@@ -235,7 +235,7 @@ class EnvironmentsAsyncClient:
                 page_result = client.list_environments(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -332,9 +332,9 @@ class EnvironmentsAsyncClient:
 
             from google.cloud import dialogflow_v2
 
-            def sample_get_environment():
+            async def sample_get_environment():
                 # Create a client
-                client = dialogflow_v2.EnvironmentsClient()
+                client = dialogflow_v2.EnvironmentsAsyncClient()
 
                 # Initialize request argument(s)
                 request = dialogflow_v2.GetEnvironmentRequest(
@@ -342,7 +342,7 @@ class EnvironmentsAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_environment(request=request)
+                response = await client.get_environment(request=request)
 
                 # Handle the response
                 print(response)
@@ -424,9 +424,9 @@ class EnvironmentsAsyncClient:
 
             from google.cloud import dialogflow_v2
 
-            def sample_create_environment():
+            async def sample_create_environment():
                 # Create a client
-                client = dialogflow_v2.EnvironmentsClient()
+                client = dialogflow_v2.EnvironmentsAsyncClient()
 
                 # Initialize request argument(s)
                 request = dialogflow_v2.CreateEnvironmentRequest(
@@ -435,7 +435,7 @@ class EnvironmentsAsyncClient:
                 )
 
                 # Make the request
-                response = client.create_environment(request=request)
+                response = await client.create_environment(request=request)
 
                 # Handle the response
                 print(response)
@@ -530,16 +530,16 @@ class EnvironmentsAsyncClient:
 
             from google.cloud import dialogflow_v2
 
-            def sample_update_environment():
+            async def sample_update_environment():
                 # Create a client
-                client = dialogflow_v2.EnvironmentsClient()
+                client = dialogflow_v2.EnvironmentsAsyncClient()
 
                 # Initialize request argument(s)
                 request = dialogflow_v2.UpdateEnvironmentRequest(
                 )
 
                 # Make the request
-                response = client.update_environment(request=request)
+                response = await client.update_environment(request=request)
 
                 # Handle the response
                 print(response)
@@ -623,9 +623,9 @@ class EnvironmentsAsyncClient:
 
             from google.cloud import dialogflow_v2
 
-            def sample_delete_environment():
+            async def sample_delete_environment():
                 # Create a client
-                client = dialogflow_v2.EnvironmentsClient()
+                client = dialogflow_v2.EnvironmentsAsyncClient()
 
                 # Initialize request argument(s)
                 request = dialogflow_v2.DeleteEnvironmentRequest(
@@ -633,7 +633,7 @@ class EnvironmentsAsyncClient:
                 )
 
                 # Make the request
-                client.delete_environment(request=request)
+                await client.delete_environment(request=request)
 
         Args:
             request (Union[google.cloud.dialogflow_v2.types.DeleteEnvironmentRequest, dict]):
@@ -684,9 +684,9 @@ class EnvironmentsAsyncClient:
 
             from google.cloud import dialogflow_v2
 
-            def sample_get_environment_history():
+            async def sample_get_environment_history():
                 # Create a client
-                client = dialogflow_v2.EnvironmentsClient()
+                client = dialogflow_v2.EnvironmentsAsyncClient()
 
                 # Initialize request argument(s)
                 request = dialogflow_v2.GetEnvironmentHistoryRequest(
@@ -697,7 +697,7 @@ class EnvironmentsAsyncClient:
                 page_result = client.get_environment_history(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:

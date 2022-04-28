@@ -792,7 +792,7 @@ def test_list_conversation_profiles_field_headers():
     # a field header. Set these to a non-empty value.
     request = conversation_profile.ListConversationProfilesRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -810,7 +810,7 @@ def test_list_conversation_profiles_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -824,7 +824,7 @@ async def test_list_conversation_profiles_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = conversation_profile.ListConversationProfilesRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -844,7 +844,7 @@ async def test_list_conversation_profiles_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -981,7 +981,7 @@ def test_list_conversation_profiles_pager(transport_name: str = "grpc"):
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(
             isinstance(i, conversation_profile.ConversationProfile) for i in results
@@ -1255,7 +1255,7 @@ def test_get_conversation_profile_field_headers():
     # a field header. Set these to a non-empty value.
     request = conversation_profile.GetConversationProfileRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1273,7 +1273,7 @@ def test_get_conversation_profile_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1287,7 +1287,7 @@ async def test_get_conversation_profile_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = conversation_profile.GetConversationProfileRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1307,7 +1307,7 @@ async def test_get_conversation_profile_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1518,7 +1518,7 @@ def test_create_conversation_profile_field_headers():
     # a field header. Set these to a non-empty value.
     request = gcd_conversation_profile.CreateConversationProfileRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1536,7 +1536,7 @@ def test_create_conversation_profile_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -1550,7 +1550,7 @@ async def test_create_conversation_profile_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = gcd_conversation_profile.CreateConversationProfileRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1570,7 +1570,7 @@ async def test_create_conversation_profile_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -1799,7 +1799,7 @@ def test_update_conversation_profile_field_headers():
     # a field header. Set these to a non-empty value.
     request = gcd_conversation_profile.UpdateConversationProfileRequest()
 
-    request.conversation_profile.name = "conversation_profile.name/value"
+    request.conversation_profile.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1817,7 +1817,7 @@ def test_update_conversation_profile_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "conversation_profile.name=conversation_profile.name/value",
+        "conversation_profile.name=name_value",
     ) in kw["metadata"]
 
 
@@ -1831,7 +1831,7 @@ async def test_update_conversation_profile_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = gcd_conversation_profile.UpdateConversationProfileRequest()
 
-    request.conversation_profile.name = "conversation_profile.name/value"
+    request.conversation_profile.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1851,7 +1851,7 @@ async def test_update_conversation_profile_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "conversation_profile.name=conversation_profile.name/value",
+        "conversation_profile.name=name_value",
     ) in kw["metadata"]
 
 
@@ -2056,7 +2056,7 @@ def test_delete_conversation_profile_field_headers():
     # a field header. Set these to a non-empty value.
     request = conversation_profile.DeleteConversationProfileRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2074,7 +2074,7 @@ def test_delete_conversation_profile_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2088,7 +2088,7 @@ async def test_delete_conversation_profile_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = conversation_profile.DeleteConversationProfileRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2106,7 +2106,7 @@ async def test_delete_conversation_profile_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2293,7 +2293,7 @@ def test_set_suggestion_feature_config_field_headers():
     # a field header. Set these to a non-empty value.
     request = gcd_conversation_profile.SetSuggestionFeatureConfigRequest()
 
-    request.conversation_profile = "conversation_profile/value"
+    request.conversation_profile = "conversation_profile_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2311,7 +2311,7 @@ def test_set_suggestion_feature_config_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "conversation_profile=conversation_profile/value",
+        "conversation_profile=conversation_profile_value",
     ) in kw["metadata"]
 
 
@@ -2325,7 +2325,7 @@ async def test_set_suggestion_feature_config_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = gcd_conversation_profile.SetSuggestionFeatureConfigRequest()
 
-    request.conversation_profile = "conversation_profile/value"
+    request.conversation_profile = "conversation_profile_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2345,7 +2345,7 @@ async def test_set_suggestion_feature_config_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "conversation_profile=conversation_profile/value",
+        "conversation_profile=conversation_profile_value",
     ) in kw["metadata"]
 
 
@@ -2534,7 +2534,7 @@ def test_clear_suggestion_feature_config_field_headers():
     # a field header. Set these to a non-empty value.
     request = gcd_conversation_profile.ClearSuggestionFeatureConfigRequest()
 
-    request.conversation_profile = "conversation_profile/value"
+    request.conversation_profile = "conversation_profile_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2552,7 +2552,7 @@ def test_clear_suggestion_feature_config_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "conversation_profile=conversation_profile/value",
+        "conversation_profile=conversation_profile_value",
     ) in kw["metadata"]
 
 
@@ -2566,7 +2566,7 @@ async def test_clear_suggestion_feature_config_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = gcd_conversation_profile.ClearSuggestionFeatureConfigRequest()
 
-    request.conversation_profile = "conversation_profile/value"
+    request.conversation_profile = "conversation_profile_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2586,7 +2586,7 @@ async def test_clear_suggestion_feature_config_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "conversation_profile=conversation_profile/value",
+        "conversation_profile=conversation_profile_value",
     ) in kw["metadata"]
 
 

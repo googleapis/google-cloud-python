@@ -784,7 +784,7 @@ def test_create_conversation_dataset_field_headers():
     # a field header. Set these to a non-empty value.
     request = gcd_conversation_dataset.CreateConversationDatasetRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -802,7 +802,7 @@ def test_create_conversation_dataset_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -816,7 +816,7 @@ async def test_create_conversation_dataset_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = gcd_conversation_dataset.CreateConversationDatasetRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -836,7 +836,7 @@ async def test_create_conversation_dataset_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -1061,7 +1061,7 @@ def test_get_conversation_dataset_field_headers():
     # a field header. Set these to a non-empty value.
     request = conversation_dataset.GetConversationDatasetRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1079,7 +1079,7 @@ def test_get_conversation_dataset_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1093,7 +1093,7 @@ async def test_get_conversation_dataset_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = conversation_dataset.GetConversationDatasetRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1113,7 +1113,7 @@ async def test_get_conversation_dataset_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1308,7 +1308,7 @@ def test_list_conversation_datasets_field_headers():
     # a field header. Set these to a non-empty value.
     request = conversation_dataset.ListConversationDatasetsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1326,7 +1326,7 @@ def test_list_conversation_datasets_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -1340,7 +1340,7 @@ async def test_list_conversation_datasets_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = conversation_dataset.ListConversationDatasetsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1360,7 +1360,7 @@ async def test_list_conversation_datasets_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -1497,7 +1497,7 @@ def test_list_conversation_datasets_pager(transport_name: str = "grpc"):
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(
             isinstance(i, conversation_dataset.ConversationDataset) for i in results
@@ -1749,7 +1749,7 @@ def test_delete_conversation_dataset_field_headers():
     # a field header. Set these to a non-empty value.
     request = conversation_dataset.DeleteConversationDatasetRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1767,7 +1767,7 @@ def test_delete_conversation_dataset_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1781,7 +1781,7 @@ async def test_delete_conversation_dataset_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = conversation_dataset.DeleteConversationDatasetRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1801,7 +1801,7 @@ async def test_delete_conversation_dataset_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1990,7 +1990,7 @@ def test_import_conversation_data_field_headers():
     # a field header. Set these to a non-empty value.
     request = conversation_dataset.ImportConversationDataRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2008,7 +2008,7 @@ def test_import_conversation_data_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2022,7 +2022,7 @@ async def test_import_conversation_data_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = conversation_dataset.ImportConversationDataRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2042,7 +2042,7 @@ async def test_import_conversation_data_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 

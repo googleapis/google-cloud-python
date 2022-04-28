@@ -224,9 +224,9 @@ class AnswerRecordsAsyncClient:
 
             from google.cloud import dialogflow_v2
 
-            def sample_list_answer_records():
+            async def sample_list_answer_records():
                 # Create a client
-                client = dialogflow_v2.AnswerRecordsClient()
+                client = dialogflow_v2.AnswerRecordsAsyncClient()
 
                 # Initialize request argument(s)
                 request = dialogflow_v2.ListAnswerRecordsRequest(
@@ -238,7 +238,7 @@ class AnswerRecordsAsyncClient:
                 page_result = client.list_answer_records(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -335,16 +335,16 @@ class AnswerRecordsAsyncClient:
 
             from google.cloud import dialogflow_v2
 
-            def sample_update_answer_record():
+            async def sample_update_answer_record():
                 # Create a client
-                client = dialogflow_v2.AnswerRecordsClient()
+                client = dialogflow_v2.AnswerRecordsAsyncClient()
 
                 # Initialize request argument(s)
                 request = dialogflow_v2.UpdateAnswerRecordRequest(
                 )
 
                 # Make the request
-                response = client.update_answer_record(request=request)
+                response = await client.update_answer_record(request=request)
 
                 # Handle the response
                 print(response)

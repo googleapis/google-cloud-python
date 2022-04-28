@@ -216,9 +216,9 @@ class FulfillmentsAsyncClient:
 
             from google.cloud import dialogflow_v2
 
-            def sample_get_fulfillment():
+            async def sample_get_fulfillment():
                 # Create a client
-                client = dialogflow_v2.FulfillmentsClient()
+                client = dialogflow_v2.FulfillmentsAsyncClient()
 
                 # Initialize request argument(s)
                 request = dialogflow_v2.GetFulfillmentRequest(
@@ -226,7 +226,7 @@ class FulfillmentsAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_fulfillment(request=request)
+                response = await client.get_fulfillment(request=request)
 
                 # Handle the response
                 print(response)
@@ -322,9 +322,9 @@ class FulfillmentsAsyncClient:
 
             from google.cloud import dialogflow_v2
 
-            def sample_update_fulfillment():
+            async def sample_update_fulfillment():
                 # Create a client
-                client = dialogflow_v2.FulfillmentsClient()
+                client = dialogflow_v2.FulfillmentsAsyncClient()
 
                 # Initialize request argument(s)
                 fulfillment = dialogflow_v2.Fulfillment()
@@ -336,7 +336,7 @@ class FulfillmentsAsyncClient:
                 )
 
                 # Make the request
-                response = client.update_fulfillment(request=request)
+                response = await client.update_fulfillment(request=request)
 
                 # Handle the response
                 print(response)

@@ -215,9 +215,9 @@ class VersionsAsyncClient:
 
             from google.cloud import dialogflow_v2beta1
 
-            def sample_list_versions():
+            async def sample_list_versions():
                 # Create a client
-                client = dialogflow_v2beta1.VersionsClient()
+                client = dialogflow_v2beta1.VersionsAsyncClient()
 
                 # Initialize request argument(s)
                 request = dialogflow_v2beta1.ListVersionsRequest(
@@ -228,7 +228,7 @@ class VersionsAsyncClient:
                 page_result = client.list_versions(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -326,9 +326,9 @@ class VersionsAsyncClient:
 
             from google.cloud import dialogflow_v2beta1
 
-            def sample_get_version():
+            async def sample_get_version():
                 # Create a client
-                client = dialogflow_v2beta1.VersionsClient()
+                client = dialogflow_v2beta1.VersionsAsyncClient()
 
                 # Initialize request argument(s)
                 request = dialogflow_v2beta1.GetVersionRequest(
@@ -336,7 +336,7 @@ class VersionsAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_version(request=request)
+                response = await client.get_version(request=request)
 
                 # Handle the response
                 print(response)
@@ -445,9 +445,9 @@ class VersionsAsyncClient:
 
             from google.cloud import dialogflow_v2beta1
 
-            def sample_create_version():
+            async def sample_create_version():
                 # Create a client
-                client = dialogflow_v2beta1.VersionsClient()
+                client = dialogflow_v2beta1.VersionsAsyncClient()
 
                 # Initialize request argument(s)
                 request = dialogflow_v2beta1.CreateVersionRequest(
@@ -455,7 +455,7 @@ class VersionsAsyncClient:
                 )
 
                 # Make the request
-                response = client.create_version(request=request)
+                response = await client.create_version(request=request)
 
                 # Handle the response
                 print(response)
@@ -574,16 +574,16 @@ class VersionsAsyncClient:
 
             from google.cloud import dialogflow_v2beta1
 
-            def sample_update_version():
+            async def sample_update_version():
                 # Create a client
-                client = dialogflow_v2beta1.VersionsClient()
+                client = dialogflow_v2beta1.VersionsAsyncClient()
 
                 # Initialize request argument(s)
                 request = dialogflow_v2beta1.UpdateVersionRequest(
                 )
 
                 # Make the request
-                response = client.update_version(request=request)
+                response = await client.update_version(request=request)
 
                 # Handle the response
                 print(response)
@@ -700,9 +700,9 @@ class VersionsAsyncClient:
 
             from google.cloud import dialogflow_v2beta1
 
-            def sample_delete_version():
+            async def sample_delete_version():
                 # Create a client
-                client = dialogflow_v2beta1.VersionsClient()
+                client = dialogflow_v2beta1.VersionsAsyncClient()
 
                 # Initialize request argument(s)
                 request = dialogflow_v2beta1.DeleteVersionRequest(
@@ -710,7 +710,7 @@ class VersionsAsyncClient:
                 )
 
                 # Make the request
-                client.delete_version(request=request)
+                await client.delete_version(request=request)
 
         Args:
             request (Union[google.cloud.dialogflow_v2beta1.types.DeleteVersionRequest, dict]):

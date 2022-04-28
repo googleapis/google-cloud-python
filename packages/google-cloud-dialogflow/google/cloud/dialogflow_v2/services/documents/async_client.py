@@ -219,9 +219,9 @@ class DocumentsAsyncClient:
 
             from google.cloud import dialogflow_v2
 
-            def sample_list_documents():
+            async def sample_list_documents():
                 # Create a client
-                client = dialogflow_v2.DocumentsClient()
+                client = dialogflow_v2.DocumentsAsyncClient()
 
                 # Initialize request argument(s)
                 request = dialogflow_v2.ListDocumentsRequest(
@@ -232,7 +232,7 @@ class DocumentsAsyncClient:
                 page_result = client.list_documents(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -328,9 +328,9 @@ class DocumentsAsyncClient:
 
             from google.cloud import dialogflow_v2
 
-            def sample_get_document():
+            async def sample_get_document():
                 # Create a client
-                client = dialogflow_v2.DocumentsClient()
+                client = dialogflow_v2.DocumentsAsyncClient()
 
                 # Initialize request argument(s)
                 request = dialogflow_v2.GetDocumentRequest(
@@ -338,7 +338,7 @@ class DocumentsAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_document(request=request)
+                response = await client.get_document(request=request)
 
                 # Handle the response
                 print(response)
@@ -440,9 +440,9 @@ class DocumentsAsyncClient:
 
             from google.cloud import dialogflow_v2
 
-            def sample_create_document():
+            async def sample_create_document():
                 # Create a client
-                client = dialogflow_v2.DocumentsClient()
+                client = dialogflow_v2.DocumentsAsyncClient()
 
                 # Initialize request argument(s)
                 document = dialogflow_v2.Document()
@@ -461,7 +461,7 @@ class DocumentsAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -584,9 +584,9 @@ class DocumentsAsyncClient:
 
             from google.cloud import dialogflow_v2
 
-            def sample_import_documents():
+            async def sample_import_documents():
                 # Create a client
-                client = dialogflow_v2.DocumentsClient()
+                client = dialogflow_v2.DocumentsAsyncClient()
 
                 # Initialize request argument(s)
                 gcs_source = dialogflow_v2.GcsSources()
@@ -607,7 +607,7 @@ class DocumentsAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -693,9 +693,9 @@ class DocumentsAsyncClient:
 
             from google.cloud import dialogflow_v2
 
-            def sample_delete_document():
+            async def sample_delete_document():
                 # Create a client
-                client = dialogflow_v2.DocumentsClient()
+                client = dialogflow_v2.DocumentsAsyncClient()
 
                 # Initialize request argument(s)
                 request = dialogflow_v2.DeleteDocumentRequest(
@@ -707,7 +707,7 @@ class DocumentsAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -823,9 +823,9 @@ class DocumentsAsyncClient:
 
             from google.cloud import dialogflow_v2
 
-            def sample_update_document():
+            async def sample_update_document():
                 # Create a client
-                client = dialogflow_v2.DocumentsClient()
+                client = dialogflow_v2.DocumentsAsyncClient()
 
                 # Initialize request argument(s)
                 document = dialogflow_v2.Document()
@@ -843,7 +843,7 @@ class DocumentsAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -974,9 +974,9 @@ class DocumentsAsyncClient:
 
             from google.cloud import dialogflow_v2
 
-            def sample_reload_document():
+            async def sample_reload_document():
                 # Create a client
-                client = dialogflow_v2.DocumentsClient()
+                client = dialogflow_v2.DocumentsAsyncClient()
 
                 # Initialize request argument(s)
                 request = dialogflow_v2.ReloadDocumentRequest(
@@ -989,7 +989,7 @@ class DocumentsAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1114,9 +1114,9 @@ class DocumentsAsyncClient:
 
             from google.cloud import dialogflow_v2
 
-            def sample_export_document():
+            async def sample_export_document():
                 # Create a client
-                client = dialogflow_v2.DocumentsClient()
+                client = dialogflow_v2.DocumentsAsyncClient()
 
                 # Initialize request argument(s)
                 request = dialogflow_v2.ExportDocumentRequest(
@@ -1128,7 +1128,7 @@ class DocumentsAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)

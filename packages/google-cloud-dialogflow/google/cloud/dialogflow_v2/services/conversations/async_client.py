@@ -251,9 +251,9 @@ class ConversationsAsyncClient:
 
             from google.cloud import dialogflow_v2
 
-            def sample_create_conversation():
+            async def sample_create_conversation():
                 # Create a client
-                client = dialogflow_v2.ConversationsClient()
+                client = dialogflow_v2.ConversationsAsyncClient()
 
                 # Initialize request argument(s)
                 conversation = dialogflow_v2.Conversation()
@@ -265,7 +265,7 @@ class ConversationsAsyncClient:
                 )
 
                 # Make the request
-                response = client.create_conversation(request=request)
+                response = await client.create_conversation(request=request)
 
                 # Handle the response
                 print(response)
@@ -364,9 +364,9 @@ class ConversationsAsyncClient:
 
             from google.cloud import dialogflow_v2
 
-            def sample_list_conversations():
+            async def sample_list_conversations():
                 # Create a client
-                client = dialogflow_v2.ConversationsClient()
+                client = dialogflow_v2.ConversationsAsyncClient()
 
                 # Initialize request argument(s)
                 request = dialogflow_v2.ListConversationsRequest(
@@ -377,7 +377,7 @@ class ConversationsAsyncClient:
                 page_result = client.list_conversations(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -473,9 +473,9 @@ class ConversationsAsyncClient:
 
             from google.cloud import dialogflow_v2
 
-            def sample_get_conversation():
+            async def sample_get_conversation():
                 # Create a client
-                client = dialogflow_v2.ConversationsClient()
+                client = dialogflow_v2.ConversationsAsyncClient()
 
                 # Initialize request argument(s)
                 request = dialogflow_v2.GetConversationRequest(
@@ -483,7 +483,7 @@ class ConversationsAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_conversation(request=request)
+                response = await client.get_conversation(request=request)
 
                 # Handle the response
                 print(response)
@@ -575,9 +575,9 @@ class ConversationsAsyncClient:
 
             from google.cloud import dialogflow_v2
 
-            def sample_complete_conversation():
+            async def sample_complete_conversation():
                 # Create a client
-                client = dialogflow_v2.ConversationsClient()
+                client = dialogflow_v2.ConversationsAsyncClient()
 
                 # Initialize request argument(s)
                 request = dialogflow_v2.CompleteConversationRequest(
@@ -585,7 +585,7 @@ class ConversationsAsyncClient:
                 )
 
                 # Make the request
-                response = client.complete_conversation(request=request)
+                response = await client.complete_conversation(request=request)
 
                 # Handle the response
                 print(response)
@@ -680,9 +680,9 @@ class ConversationsAsyncClient:
 
             from google.cloud import dialogflow_v2
 
-            def sample_list_messages():
+            async def sample_list_messages():
                 # Create a client
-                client = dialogflow_v2.ConversationsClient()
+                client = dialogflow_v2.ConversationsAsyncClient()
 
                 # Initialize request argument(s)
                 request = dialogflow_v2.ListMessagesRequest(
@@ -693,7 +693,7 @@ class ConversationsAsyncClient:
                 page_result = client.list_messages(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:

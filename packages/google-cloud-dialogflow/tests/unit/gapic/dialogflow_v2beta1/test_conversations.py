@@ -784,7 +784,7 @@ def test_create_conversation_field_headers():
     # a field header. Set these to a non-empty value.
     request = gcd_conversation.CreateConversationRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -802,7 +802,7 @@ def test_create_conversation_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -816,7 +816,7 @@ async def test_create_conversation_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = gcd_conversation.CreateConversationRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -836,7 +836,7 @@ async def test_create_conversation_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -1040,7 +1040,7 @@ def test_list_conversations_field_headers():
     # a field header. Set these to a non-empty value.
     request = conversation.ListConversationsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1058,7 +1058,7 @@ def test_list_conversations_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -1072,7 +1072,7 @@ async def test_list_conversations_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = conversation.ListConversationsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1092,7 +1092,7 @@ async def test_list_conversations_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -1229,7 +1229,7 @@ def test_list_conversations_pager(transport_name: str = "grpc"):
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, conversation.Conversation) for i in results)
 
@@ -1498,7 +1498,7 @@ def test_get_conversation_field_headers():
     # a field header. Set these to a non-empty value.
     request = conversation.GetConversationRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_conversation), "__call__") as call:
@@ -1514,7 +1514,7 @@ def test_get_conversation_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1528,7 +1528,7 @@ async def test_get_conversation_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = conversation.GetConversationRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_conversation), "__call__") as call:
@@ -1546,7 +1546,7 @@ async def test_get_conversation_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1759,7 +1759,7 @@ def test_complete_conversation_field_headers():
     # a field header. Set these to a non-empty value.
     request = conversation.CompleteConversationRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1777,7 +1777,7 @@ def test_complete_conversation_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1791,7 +1791,7 @@ async def test_complete_conversation_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = conversation.CompleteConversationRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1811,7 +1811,7 @@ async def test_complete_conversation_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2000,7 +2000,7 @@ def test_batch_create_messages_field_headers():
     # a field header. Set these to a non-empty value.
     request = conversation.BatchCreateMessagesRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2018,7 +2018,7 @@ def test_batch_create_messages_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -2032,7 +2032,7 @@ async def test_batch_create_messages_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = conversation.BatchCreateMessagesRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2052,7 +2052,7 @@ async def test_batch_create_messages_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -2240,7 +2240,7 @@ def test_list_messages_field_headers():
     # a field header. Set these to a non-empty value.
     request = conversation.ListMessagesRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_messages), "__call__") as call:
@@ -2256,7 +2256,7 @@ def test_list_messages_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -2270,7 +2270,7 @@ async def test_list_messages_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = conversation.ListMessagesRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_messages), "__call__") as call:
@@ -2288,7 +2288,7 @@ async def test_list_messages_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -2419,7 +2419,7 @@ def test_list_messages_pager(transport_name: str = "grpc"):
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, participant.Message) for i in results)
 

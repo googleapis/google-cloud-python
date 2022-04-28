@@ -224,9 +224,9 @@ class KnowledgeBasesAsyncClient:
 
             from google.cloud import dialogflow_v2
 
-            def sample_list_knowledge_bases():
+            async def sample_list_knowledge_bases():
                 # Create a client
-                client = dialogflow_v2.KnowledgeBasesClient()
+                client = dialogflow_v2.KnowledgeBasesAsyncClient()
 
                 # Initialize request argument(s)
                 request = dialogflow_v2.ListKnowledgeBasesRequest(
@@ -237,7 +237,7 @@ class KnowledgeBasesAsyncClient:
                 page_result = client.list_knowledge_bases(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -333,9 +333,9 @@ class KnowledgeBasesAsyncClient:
 
             from google.cloud import dialogflow_v2
 
-            def sample_get_knowledge_base():
+            async def sample_get_knowledge_base():
                 # Create a client
-                client = dialogflow_v2.KnowledgeBasesClient()
+                client = dialogflow_v2.KnowledgeBasesAsyncClient()
 
                 # Initialize request argument(s)
                 request = dialogflow_v2.GetKnowledgeBaseRequest(
@@ -343,7 +343,7 @@ class KnowledgeBasesAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_knowledge_base(request=request)
+                response = await client.get_knowledge_base(request=request)
 
                 # Handle the response
                 print(response)
@@ -440,9 +440,9 @@ class KnowledgeBasesAsyncClient:
 
             from google.cloud import dialogflow_v2
 
-            def sample_create_knowledge_base():
+            async def sample_create_knowledge_base():
                 # Create a client
-                client = dialogflow_v2.KnowledgeBasesClient()
+                client = dialogflow_v2.KnowledgeBasesAsyncClient()
 
                 # Initialize request argument(s)
                 knowledge_base = dialogflow_v2.KnowledgeBase()
@@ -454,7 +454,7 @@ class KnowledgeBasesAsyncClient:
                 )
 
                 # Make the request
-                response = client.create_knowledge_base(request=request)
+                response = await client.create_knowledge_base(request=request)
 
                 # Handle the response
                 print(response)
@@ -559,9 +559,9 @@ class KnowledgeBasesAsyncClient:
 
             from google.cloud import dialogflow_v2
 
-            def sample_delete_knowledge_base():
+            async def sample_delete_knowledge_base():
                 # Create a client
-                client = dialogflow_v2.KnowledgeBasesClient()
+                client = dialogflow_v2.KnowledgeBasesAsyncClient()
 
                 # Initialize request argument(s)
                 request = dialogflow_v2.DeleteKnowledgeBaseRequest(
@@ -569,7 +569,7 @@ class KnowledgeBasesAsyncClient:
                 )
 
                 # Make the request
-                client.delete_knowledge_base(request=request)
+                await client.delete_knowledge_base(request=request)
 
         Args:
             request (Union[google.cloud.dialogflow_v2.types.DeleteKnowledgeBaseRequest, dict]):
@@ -644,9 +644,9 @@ class KnowledgeBasesAsyncClient:
 
             from google.cloud import dialogflow_v2
 
-            def sample_update_knowledge_base():
+            async def sample_update_knowledge_base():
                 # Create a client
-                client = dialogflow_v2.KnowledgeBasesClient()
+                client = dialogflow_v2.KnowledgeBasesAsyncClient()
 
                 # Initialize request argument(s)
                 knowledge_base = dialogflow_v2.KnowledgeBase()
@@ -657,7 +657,7 @@ class KnowledgeBasesAsyncClient:
                 )
 
                 # Make the request
-                response = client.update_knowledge_base(request=request)
+                response = await client.update_knowledge_base(request=request)
 
                 # Handle the response
                 print(response)

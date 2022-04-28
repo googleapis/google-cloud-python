@@ -245,9 +245,9 @@ class ConversationDatasetsAsyncClient:
 
             from google.cloud import dialogflow_v2
 
-            def sample_create_conversation_dataset():
+            async def sample_create_conversation_dataset():
                 # Create a client
-                client = dialogflow_v2.ConversationDatasetsClient()
+                client = dialogflow_v2.ConversationDatasetsAsyncClient()
 
                 # Initialize request argument(s)
                 conversation_dataset = dialogflow_v2.ConversationDataset()
@@ -263,7 +263,7 @@ class ConversationDatasetsAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -371,9 +371,9 @@ class ConversationDatasetsAsyncClient:
 
             from google.cloud import dialogflow_v2
 
-            def sample_get_conversation_dataset():
+            async def sample_get_conversation_dataset():
                 # Create a client
-                client = dialogflow_v2.ConversationDatasetsClient()
+                client = dialogflow_v2.ConversationDatasetsAsyncClient()
 
                 # Initialize request argument(s)
                 request = dialogflow_v2.GetConversationDatasetRequest(
@@ -381,7 +381,7 @@ class ConversationDatasetsAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_conversation_dataset(request=request)
+                response = await client.get_conversation_dataset(request=request)
 
                 # Handle the response
                 print(response)
@@ -474,9 +474,9 @@ class ConversationDatasetsAsyncClient:
 
             from google.cloud import dialogflow_v2
 
-            def sample_list_conversation_datasets():
+            async def sample_list_conversation_datasets():
                 # Create a client
-                client = dialogflow_v2.ConversationDatasetsClient()
+                client = dialogflow_v2.ConversationDatasetsAsyncClient()
 
                 # Initialize request argument(s)
                 request = dialogflow_v2.ListConversationDatasetsRequest(
@@ -487,7 +487,7 @@ class ConversationDatasetsAsyncClient:
                 page_result = client.list_conversation_datasets(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -595,9 +595,9 @@ class ConversationDatasetsAsyncClient:
 
             from google.cloud import dialogflow_v2
 
-            def sample_delete_conversation_dataset():
+            async def sample_delete_conversation_dataset():
                 # Create a client
-                client = dialogflow_v2.ConversationDatasetsClient()
+                client = dialogflow_v2.ConversationDatasetsAsyncClient()
 
                 # Initialize request argument(s)
                 request = dialogflow_v2.DeleteConversationDatasetRequest(
@@ -609,7 +609,7 @@ class ConversationDatasetsAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -726,9 +726,9 @@ class ConversationDatasetsAsyncClient:
 
             from google.cloud import dialogflow_v2
 
-            def sample_import_conversation_data():
+            async def sample_import_conversation_data():
                 # Create a client
-                client = dialogflow_v2.ConversationDatasetsClient()
+                client = dialogflow_v2.ConversationDatasetsAsyncClient()
 
                 # Initialize request argument(s)
                 input_config = dialogflow_v2.InputConfig()
@@ -744,7 +744,7 @@ class ConversationDatasetsAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)

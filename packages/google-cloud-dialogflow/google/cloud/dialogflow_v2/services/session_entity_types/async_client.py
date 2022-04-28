@@ -233,9 +233,9 @@ class SessionEntityTypesAsyncClient:
 
             from google.cloud import dialogflow_v2
 
-            def sample_list_session_entity_types():
+            async def sample_list_session_entity_types():
                 # Create a client
-                client = dialogflow_v2.SessionEntityTypesClient()
+                client = dialogflow_v2.SessionEntityTypesAsyncClient()
 
                 # Initialize request argument(s)
                 request = dialogflow_v2.ListSessionEntityTypesRequest(
@@ -246,7 +246,7 @@ class SessionEntityTypesAsyncClient:
                 page_result = client.list_session_entity_types(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -349,9 +349,9 @@ class SessionEntityTypesAsyncClient:
 
             from google.cloud import dialogflow_v2
 
-            def sample_get_session_entity_type():
+            async def sample_get_session_entity_type():
                 # Create a client
-                client = dialogflow_v2.SessionEntityTypesClient()
+                client = dialogflow_v2.SessionEntityTypesAsyncClient()
 
                 # Initialize request argument(s)
                 request = dialogflow_v2.GetSessionEntityTypeRequest(
@@ -359,7 +359,7 @@ class SessionEntityTypesAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_session_entity_type(request=request)
+                response = await client.get_session_entity_type(request=request)
 
                 # Handle the response
                 print(response)
@@ -466,9 +466,9 @@ class SessionEntityTypesAsyncClient:
 
             from google.cloud import dialogflow_v2
 
-            def sample_create_session_entity_type():
+            async def sample_create_session_entity_type():
                 # Create a client
-                client = dialogflow_v2.SessionEntityTypesClient()
+                client = dialogflow_v2.SessionEntityTypesAsyncClient()
 
                 # Initialize request argument(s)
                 session_entity_type = dialogflow_v2.SessionEntityType()
@@ -483,7 +483,7 @@ class SessionEntityTypesAsyncClient:
                 )
 
                 # Make the request
-                response = client.create_session_entity_type(request=request)
+                response = await client.create_session_entity_type(request=request)
 
                 # Handle the response
                 print(response)
@@ -596,9 +596,9 @@ class SessionEntityTypesAsyncClient:
 
             from google.cloud import dialogflow_v2
 
-            def sample_update_session_entity_type():
+            async def sample_update_session_entity_type():
                 # Create a client
-                client = dialogflow_v2.SessionEntityTypesClient()
+                client = dialogflow_v2.SessionEntityTypesAsyncClient()
 
                 # Initialize request argument(s)
                 session_entity_type = dialogflow_v2.SessionEntityType()
@@ -612,7 +612,7 @@ class SessionEntityTypesAsyncClient:
                 )
 
                 # Make the request
-                response = client.update_session_entity_type(request=request)
+                response = await client.update_session_entity_type(request=request)
 
                 # Handle the response
                 print(response)
@@ -719,9 +719,9 @@ class SessionEntityTypesAsyncClient:
 
             from google.cloud import dialogflow_v2
 
-            def sample_delete_session_entity_type():
+            async def sample_delete_session_entity_type():
                 # Create a client
-                client = dialogflow_v2.SessionEntityTypesClient()
+                client = dialogflow_v2.SessionEntityTypesAsyncClient()
 
                 # Initialize request argument(s)
                 request = dialogflow_v2.DeleteSessionEntityTypeRequest(
@@ -729,7 +729,7 @@ class SessionEntityTypesAsyncClient:
                 )
 
                 # Make the request
-                client.delete_session_entity_type(request=request)
+                await client.delete_session_entity_type(request=request)
 
         Args:
             request (Union[google.cloud.dialogflow_v2.types.DeleteSessionEntityTypeRequest, dict]):

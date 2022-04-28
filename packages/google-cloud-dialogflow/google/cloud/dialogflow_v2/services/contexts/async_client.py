@@ -213,9 +213,9 @@ class ContextsAsyncClient:
 
             from google.cloud import dialogflow_v2
 
-            def sample_list_contexts():
+            async def sample_list_contexts():
                 # Create a client
-                client = dialogflow_v2.ContextsClient()
+                client = dialogflow_v2.ContextsAsyncClient()
 
                 # Initialize request argument(s)
                 request = dialogflow_v2.ListContextsRequest(
@@ -226,7 +226,7 @@ class ContextsAsyncClient:
                 page_result = client.list_contexts(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -325,9 +325,9 @@ class ContextsAsyncClient:
 
             from google.cloud import dialogflow_v2
 
-            def sample_get_context():
+            async def sample_get_context():
                 # Create a client
-                client = dialogflow_v2.ContextsClient()
+                client = dialogflow_v2.ContextsAsyncClient()
 
                 # Initialize request argument(s)
                 request = dialogflow_v2.GetContextRequest(
@@ -335,7 +335,7 @@ class ContextsAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_context(request=request)
+                response = await client.get_context(request=request)
 
                 # Handle the response
                 print(response)
@@ -445,9 +445,9 @@ class ContextsAsyncClient:
 
             from google.cloud import dialogflow_v2
 
-            def sample_create_context():
+            async def sample_create_context():
                 # Create a client
-                client = dialogflow_v2.ContextsClient()
+                client = dialogflow_v2.ContextsAsyncClient()
 
                 # Initialize request argument(s)
                 context = dialogflow_v2.Context()
@@ -459,7 +459,7 @@ class ContextsAsyncClient:
                 )
 
                 # Make the request
-                response = client.create_context(request=request)
+                response = await client.create_context(request=request)
 
                 # Handle the response
                 print(response)
@@ -573,9 +573,9 @@ class ContextsAsyncClient:
 
             from google.cloud import dialogflow_v2
 
-            def sample_update_context():
+            async def sample_update_context():
                 # Create a client
-                client = dialogflow_v2.ContextsClient()
+                client = dialogflow_v2.ContextsAsyncClient()
 
                 # Initialize request argument(s)
                 context = dialogflow_v2.Context()
@@ -586,7 +586,7 @@ class ContextsAsyncClient:
                 )
 
                 # Make the request
-                response = client.update_context(request=request)
+                response = await client.update_context(request=request)
 
                 # Handle the response
                 print(response)
@@ -697,9 +697,9 @@ class ContextsAsyncClient:
 
             from google.cloud import dialogflow_v2
 
-            def sample_delete_context():
+            async def sample_delete_context():
                 # Create a client
-                client = dialogflow_v2.ContextsClient()
+                client = dialogflow_v2.ContextsAsyncClient()
 
                 # Initialize request argument(s)
                 request = dialogflow_v2.DeleteContextRequest(
@@ -707,7 +707,7 @@ class ContextsAsyncClient:
                 )
 
                 # Make the request
-                client.delete_context(request=request)
+                await client.delete_context(request=request)
 
         Args:
             request (Union[google.cloud.dialogflow_v2.types.DeleteContextRequest, dict]):
@@ -785,9 +785,9 @@ class ContextsAsyncClient:
 
             from google.cloud import dialogflow_v2
 
-            def sample_delete_all_contexts():
+            async def sample_delete_all_contexts():
                 # Create a client
-                client = dialogflow_v2.ContextsClient()
+                client = dialogflow_v2.ContextsAsyncClient()
 
                 # Initialize request argument(s)
                 request = dialogflow_v2.DeleteAllContextsRequest(
@@ -795,7 +795,7 @@ class ContextsAsyncClient:
                 )
 
                 # Make the request
-                client.delete_all_contexts(request=request)
+                await client.delete_all_contexts(request=request)
 
         Args:
             request (Union[google.cloud.dialogflow_v2.types.DeleteAllContextsRequest, dict]):

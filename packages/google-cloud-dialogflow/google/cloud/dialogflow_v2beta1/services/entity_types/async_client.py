@@ -223,9 +223,9 @@ class EntityTypesAsyncClient:
 
             from google.cloud import dialogflow_v2beta1
 
-            def sample_list_entity_types():
+            async def sample_list_entity_types():
                 # Create a client
-                client = dialogflow_v2beta1.EntityTypesClient()
+                client = dialogflow_v2beta1.EntityTypesAsyncClient()
 
                 # Initialize request argument(s)
                 request = dialogflow_v2beta1.ListEntityTypesRequest(
@@ -236,7 +236,7 @@ class EntityTypesAsyncClient:
                 page_result = client.list_entity_types(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -347,9 +347,9 @@ class EntityTypesAsyncClient:
 
             from google.cloud import dialogflow_v2beta1
 
-            def sample_get_entity_type():
+            async def sample_get_entity_type():
                 # Create a client
-                client = dialogflow_v2beta1.EntityTypesClient()
+                client = dialogflow_v2beta1.EntityTypesAsyncClient()
 
                 # Initialize request argument(s)
                 request = dialogflow_v2beta1.GetEntityTypeRequest(
@@ -357,7 +357,7 @@ class EntityTypesAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_entity_type(request=request)
+                response = await client.get_entity_type(request=request)
 
                 # Handle the response
                 print(response)
@@ -476,9 +476,9 @@ class EntityTypesAsyncClient:
 
             from google.cloud import dialogflow_v2beta1
 
-            def sample_create_entity_type():
+            async def sample_create_entity_type():
                 # Create a client
-                client = dialogflow_v2beta1.EntityTypesClient()
+                client = dialogflow_v2beta1.EntityTypesAsyncClient()
 
                 # Initialize request argument(s)
                 entity_type = dialogflow_v2beta1.EntityType()
@@ -491,7 +491,7 @@ class EntityTypesAsyncClient:
                 )
 
                 # Make the request
-                response = client.create_entity_type(request=request)
+                response = await client.create_entity_type(request=request)
 
                 # Handle the response
                 print(response)
@@ -617,9 +617,9 @@ class EntityTypesAsyncClient:
 
             from google.cloud import dialogflow_v2beta1
 
-            def sample_update_entity_type():
+            async def sample_update_entity_type():
                 # Create a client
-                client = dialogflow_v2beta1.EntityTypesClient()
+                client = dialogflow_v2beta1.EntityTypesAsyncClient()
 
                 # Initialize request argument(s)
                 entity_type = dialogflow_v2beta1.EntityType()
@@ -631,7 +631,7 @@ class EntityTypesAsyncClient:
                 )
 
                 # Make the request
-                response = client.update_entity_type(request=request)
+                response = await client.update_entity_type(request=request)
 
                 # Handle the response
                 print(response)
@@ -754,9 +754,9 @@ class EntityTypesAsyncClient:
 
             from google.cloud import dialogflow_v2beta1
 
-            def sample_delete_entity_type():
+            async def sample_delete_entity_type():
                 # Create a client
-                client = dialogflow_v2beta1.EntityTypesClient()
+                client = dialogflow_v2beta1.EntityTypesAsyncClient()
 
                 # Initialize request argument(s)
                 request = dialogflow_v2beta1.DeleteEntityTypeRequest(
@@ -764,7 +764,7 @@ class EntityTypesAsyncClient:
                 )
 
                 # Make the request
-                client.delete_entity_type(request=request)
+                await client.delete_entity_type(request=request)
 
         Args:
             request (Union[google.cloud.dialogflow_v2beta1.types.DeleteEntityTypeRequest, dict]):
@@ -853,9 +853,9 @@ class EntityTypesAsyncClient:
 
             from google.cloud import dialogflow_v2beta1
 
-            def sample_batch_update_entity_types():
+            async def sample_batch_update_entity_types():
                 # Create a client
-                client = dialogflow_v2beta1.EntityTypesClient()
+                client = dialogflow_v2beta1.EntityTypesAsyncClient()
 
                 # Initialize request argument(s)
                 request = dialogflow_v2beta1.BatchUpdateEntityTypesRequest(
@@ -868,7 +868,7 @@ class EntityTypesAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -959,9 +959,9 @@ class EntityTypesAsyncClient:
 
             from google.cloud import dialogflow_v2beta1
 
-            def sample_batch_delete_entity_types():
+            async def sample_batch_delete_entity_types():
                 # Create a client
-                client = dialogflow_v2beta1.EntityTypesClient()
+                client = dialogflow_v2beta1.EntityTypesAsyncClient()
 
                 # Initialize request argument(s)
                 request = dialogflow_v2beta1.BatchDeleteEntityTypesRequest(
@@ -974,7 +974,7 @@ class EntityTypesAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1108,9 +1108,9 @@ class EntityTypesAsyncClient:
 
             from google.cloud import dialogflow_v2beta1
 
-            def sample_batch_create_entities():
+            async def sample_batch_create_entities():
                 # Create a client
-                client = dialogflow_v2beta1.EntityTypesClient()
+                client = dialogflow_v2beta1.EntityTypesAsyncClient()
 
                 # Initialize request argument(s)
                 entities = dialogflow_v2beta1.Entity()
@@ -1126,7 +1126,7 @@ class EntityTypesAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1272,9 +1272,9 @@ class EntityTypesAsyncClient:
 
             from google.cloud import dialogflow_v2beta1
 
-            def sample_batch_update_entities():
+            async def sample_batch_update_entities():
                 # Create a client
-                client = dialogflow_v2beta1.EntityTypesClient()
+                client = dialogflow_v2beta1.EntityTypesAsyncClient()
 
                 # Initialize request argument(s)
                 entities = dialogflow_v2beta1.Entity()
@@ -1290,7 +1290,7 @@ class EntityTypesAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1436,9 +1436,9 @@ class EntityTypesAsyncClient:
 
             from google.cloud import dialogflow_v2beta1
 
-            def sample_batch_delete_entities():
+            async def sample_batch_delete_entities():
                 # Create a client
-                client = dialogflow_v2beta1.EntityTypesClient()
+                client = dialogflow_v2beta1.EntityTypesAsyncClient()
 
                 # Initialize request argument(s)
                 request = dialogflow_v2beta1.BatchDeleteEntitiesRequest(
@@ -1451,7 +1451,7 @@ class EntityTypesAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
