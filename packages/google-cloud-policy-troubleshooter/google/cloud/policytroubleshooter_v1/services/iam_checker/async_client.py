@@ -213,16 +213,16 @@ class IamCheckerAsyncClient:
 
             from google.cloud import policytroubleshooter_v1
 
-            def sample_troubleshoot_iam_policy():
+            async def sample_troubleshoot_iam_policy():
                 # Create a client
-                client = policytroubleshooter_v1.IamCheckerClient()
+                client = policytroubleshooter_v1.IamCheckerAsyncClient()
 
                 # Initialize request argument(s)
                 request = policytroubleshooter_v1.TroubleshootIamPolicyRequest(
                 )
 
                 # Make the request
-                response = client.troubleshoot_iam_policy(request=request)
+                response = await client.troubleshoot_iam_policy(request=request)
 
                 # Handle the response
                 print(response)
