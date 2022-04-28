@@ -784,7 +784,7 @@ def test_list_instances_field_headers():
     # a field header. Set these to a non-empty value.
     request = cloud_filestore_service.ListInstancesRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_instances), "__call__") as call:
@@ -800,7 +800,7 @@ def test_list_instances_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -814,7 +814,7 @@ async def test_list_instances_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = cloud_filestore_service.ListInstancesRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_instances), "__call__") as call:
@@ -832,7 +832,7 @@ async def test_list_instances_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -963,7 +963,7 @@ def test_list_instances_pager(transport_name: str = "grpc"):
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, cloud_filestore_service.Instance) for i in results)
 
@@ -1225,7 +1225,7 @@ def test_get_instance_field_headers():
     # a field header. Set these to a non-empty value.
     request = cloud_filestore_service.GetInstanceRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_instance), "__call__") as call:
@@ -1241,7 +1241,7 @@ def test_get_instance_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1255,7 +1255,7 @@ async def test_get_instance_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = cloud_filestore_service.GetInstanceRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_instance), "__call__") as call:
@@ -1273,7 +1273,7 @@ async def test_get_instance_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1452,7 +1452,7 @@ def test_create_instance_field_headers():
     # a field header. Set these to a non-empty value.
     request = cloud_filestore_service.CreateInstanceRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_instance), "__call__") as call:
@@ -1468,7 +1468,7 @@ def test_create_instance_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -1482,7 +1482,7 @@ async def test_create_instance_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = cloud_filestore_service.CreateInstanceRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_instance), "__call__") as call:
@@ -1500,7 +1500,7 @@ async def test_create_instance_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -1699,7 +1699,7 @@ def test_update_instance_field_headers():
     # a field header. Set these to a non-empty value.
     request = cloud_filestore_service.UpdateInstanceRequest()
 
-    request.instance.name = "instance.name/value"
+    request.instance.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_instance), "__call__") as call:
@@ -1715,7 +1715,7 @@ def test_update_instance_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "instance.name=instance.name/value",
+        "instance.name=name_value",
     ) in kw["metadata"]
 
 
@@ -1729,7 +1729,7 @@ async def test_update_instance_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = cloud_filestore_service.UpdateInstanceRequest()
 
-    request.instance.name = "instance.name/value"
+    request.instance.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_instance), "__call__") as call:
@@ -1747,7 +1747,7 @@ async def test_update_instance_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "instance.name=instance.name/value",
+        "instance.name=name_value",
     ) in kw["metadata"]
 
 
@@ -1936,7 +1936,7 @@ def test_restore_instance_field_headers():
     # a field header. Set these to a non-empty value.
     request = cloud_filestore_service.RestoreInstanceRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.restore_instance), "__call__") as call:
@@ -1952,7 +1952,7 @@ def test_restore_instance_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1966,7 +1966,7 @@ async def test_restore_instance_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = cloud_filestore_service.RestoreInstanceRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.restore_instance), "__call__") as call:
@@ -1984,7 +1984,7 @@ async def test_restore_instance_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2081,7 +2081,7 @@ def test_delete_instance_field_headers():
     # a field header. Set these to a non-empty value.
     request = cloud_filestore_service.DeleteInstanceRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_instance), "__call__") as call:
@@ -2097,7 +2097,7 @@ def test_delete_instance_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2111,7 +2111,7 @@ async def test_delete_instance_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = cloud_filestore_service.DeleteInstanceRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_instance), "__call__") as call:
@@ -2129,7 +2129,7 @@ async def test_delete_instance_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2318,7 +2318,7 @@ def test_list_backups_field_headers():
     # a field header. Set these to a non-empty value.
     request = cloud_filestore_service.ListBackupsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_backups), "__call__") as call:
@@ -2334,7 +2334,7 @@ def test_list_backups_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -2348,7 +2348,7 @@ async def test_list_backups_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = cloud_filestore_service.ListBackupsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_backups), "__call__") as call:
@@ -2366,7 +2366,7 @@ async def test_list_backups_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -2497,7 +2497,7 @@ def test_list_backups_pager(transport_name: str = "grpc"):
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, cloud_filestore_service.Backup) for i in results)
 
@@ -2775,7 +2775,7 @@ def test_get_backup_field_headers():
     # a field header. Set these to a non-empty value.
     request = cloud_filestore_service.GetBackupRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_backup), "__call__") as call:
@@ -2791,7 +2791,7 @@ def test_get_backup_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2805,7 +2805,7 @@ async def test_get_backup_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = cloud_filestore_service.GetBackupRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_backup), "__call__") as call:
@@ -2823,7 +2823,7 @@ async def test_get_backup_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -3002,7 +3002,7 @@ def test_create_backup_field_headers():
     # a field header. Set these to a non-empty value.
     request = cloud_filestore_service.CreateBackupRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_backup), "__call__") as call:
@@ -3018,7 +3018,7 @@ def test_create_backup_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -3032,7 +3032,7 @@ async def test_create_backup_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = cloud_filestore_service.CreateBackupRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_backup), "__call__") as call:
@@ -3050,7 +3050,7 @@ async def test_create_backup_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -3249,7 +3249,7 @@ def test_delete_backup_field_headers():
     # a field header. Set these to a non-empty value.
     request = cloud_filestore_service.DeleteBackupRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_backup), "__call__") as call:
@@ -3265,7 +3265,7 @@ def test_delete_backup_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -3279,7 +3279,7 @@ async def test_delete_backup_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = cloud_filestore_service.DeleteBackupRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_backup), "__call__") as call:
@@ -3297,7 +3297,7 @@ async def test_delete_backup_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -3476,7 +3476,7 @@ def test_update_backup_field_headers():
     # a field header. Set these to a non-empty value.
     request = cloud_filestore_service.UpdateBackupRequest()
 
-    request.backup.name = "backup.name/value"
+    request.backup.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_backup), "__call__") as call:
@@ -3492,7 +3492,7 @@ def test_update_backup_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "backup.name=backup.name/value",
+        "backup.name=name_value",
     ) in kw["metadata"]
 
 
@@ -3506,7 +3506,7 @@ async def test_update_backup_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = cloud_filestore_service.UpdateBackupRequest()
 
-    request.backup.name = "backup.name/value"
+    request.backup.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_backup), "__call__") as call:
@@ -3524,7 +3524,7 @@ async def test_update_backup_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "backup.name=backup.name/value",
+        "backup.name=name_value",
     ) in kw["metadata"]
 
 

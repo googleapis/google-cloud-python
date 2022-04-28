@@ -253,9 +253,9 @@ class CloudFilestoreManagerAsyncClient:
 
             from google.cloud import filestore_v1
 
-            def sample_list_instances():
+            async def sample_list_instances():
                 # Create a client
-                client = filestore_v1.CloudFilestoreManagerClient()
+                client = filestore_v1.CloudFilestoreManagerAsyncClient()
 
                 # Initialize request argument(s)
                 request = filestore_v1.ListInstancesRequest(
@@ -266,7 +266,7 @@ class CloudFilestoreManagerAsyncClient:
                 page_result = client.list_instances(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -374,9 +374,9 @@ class CloudFilestoreManagerAsyncClient:
 
             from google.cloud import filestore_v1
 
-            def sample_get_instance():
+            async def sample_get_instance():
                 # Create a client
-                client = filestore_v1.CloudFilestoreManagerClient()
+                client = filestore_v1.CloudFilestoreManagerAsyncClient()
 
                 # Initialize request argument(s)
                 request = filestore_v1.GetInstanceRequest(
@@ -384,7 +384,7 @@ class CloudFilestoreManagerAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_instance(request=request)
+                response = await client.get_instance(request=request)
 
                 # Handle the response
                 print(response)
@@ -482,9 +482,9 @@ class CloudFilestoreManagerAsyncClient:
 
             from google.cloud import filestore_v1
 
-            def sample_create_instance():
+            async def sample_create_instance():
                 # Create a client
-                client = filestore_v1.CloudFilestoreManagerClient()
+                client = filestore_v1.CloudFilestoreManagerAsyncClient()
 
                 # Initialize request argument(s)
                 request = filestore_v1.CreateInstanceRequest(
@@ -497,7 +497,7 @@ class CloudFilestoreManagerAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -615,9 +615,9 @@ class CloudFilestoreManagerAsyncClient:
 
             from google.cloud import filestore_v1
 
-            def sample_update_instance():
+            async def sample_update_instance():
                 # Create a client
-                client = filestore_v1.CloudFilestoreManagerClient()
+                client = filestore_v1.CloudFilestoreManagerAsyncClient()
 
                 # Initialize request argument(s)
                 request = filestore_v1.UpdateInstanceRequest(
@@ -628,7 +628,7 @@ class CloudFilestoreManagerAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -741,9 +741,9 @@ class CloudFilestoreManagerAsyncClient:
 
             from google.cloud import filestore_v1
 
-            def sample_restore_instance():
+            async def sample_restore_instance():
                 # Create a client
-                client = filestore_v1.CloudFilestoreManagerClient()
+                client = filestore_v1.CloudFilestoreManagerAsyncClient()
 
                 # Initialize request argument(s)
                 request = filestore_v1.RestoreInstanceRequest(
@@ -757,7 +757,7 @@ class CloudFilestoreManagerAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -832,9 +832,9 @@ class CloudFilestoreManagerAsyncClient:
 
             from google.cloud import filestore_v1
 
-            def sample_delete_instance():
+            async def sample_delete_instance():
                 # Create a client
-                client = filestore_v1.CloudFilestoreManagerClient()
+                client = filestore_v1.CloudFilestoreManagerAsyncClient()
 
                 # Initialize request argument(s)
                 request = filestore_v1.DeleteInstanceRequest(
@@ -846,7 +846,7 @@ class CloudFilestoreManagerAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -953,9 +953,9 @@ class CloudFilestoreManagerAsyncClient:
 
             from google.cloud import filestore_v1
 
-            def sample_list_backups():
+            async def sample_list_backups():
                 # Create a client
-                client = filestore_v1.CloudFilestoreManagerClient()
+                client = filestore_v1.CloudFilestoreManagerAsyncClient()
 
                 # Initialize request argument(s)
                 request = filestore_v1.ListBackupsRequest(
@@ -966,7 +966,7 @@ class CloudFilestoreManagerAsyncClient:
                 page_result = client.list_backups(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -1073,9 +1073,9 @@ class CloudFilestoreManagerAsyncClient:
 
             from google.cloud import filestore_v1
 
-            def sample_get_backup():
+            async def sample_get_backup():
                 # Create a client
-                client = filestore_v1.CloudFilestoreManagerClient()
+                client = filestore_v1.CloudFilestoreManagerAsyncClient()
 
                 # Initialize request argument(s)
                 request = filestore_v1.GetBackupRequest(
@@ -1083,7 +1083,7 @@ class CloudFilestoreManagerAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_backup(request=request)
+                response = await client.get_backup(request=request)
 
                 # Handle the response
                 print(response)
@@ -1177,9 +1177,9 @@ class CloudFilestoreManagerAsyncClient:
 
             from google.cloud import filestore_v1
 
-            def sample_create_backup():
+            async def sample_create_backup():
                 # Create a client
-                client = filestore_v1.CloudFilestoreManagerClient()
+                client = filestore_v1.CloudFilestoreManagerAsyncClient()
 
                 # Initialize request argument(s)
                 request = filestore_v1.CreateBackupRequest(
@@ -1192,7 +1192,7 @@ class CloudFilestoreManagerAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1314,9 +1314,9 @@ class CloudFilestoreManagerAsyncClient:
 
             from google.cloud import filestore_v1
 
-            def sample_delete_backup():
+            async def sample_delete_backup():
                 # Create a client
-                client = filestore_v1.CloudFilestoreManagerClient()
+                client = filestore_v1.CloudFilestoreManagerAsyncClient()
 
                 # Initialize request argument(s)
                 request = filestore_v1.DeleteBackupRequest(
@@ -1328,7 +1328,7 @@ class CloudFilestoreManagerAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1435,9 +1435,9 @@ class CloudFilestoreManagerAsyncClient:
 
             from google.cloud import filestore_v1
 
-            def sample_update_backup():
+            async def sample_update_backup():
                 # Create a client
-                client = filestore_v1.CloudFilestoreManagerClient()
+                client = filestore_v1.CloudFilestoreManagerAsyncClient()
 
                 # Initialize request argument(s)
                 request = filestore_v1.UpdateBackupRequest(
@@ -1448,7 +1448,7 @@ class CloudFilestoreManagerAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
