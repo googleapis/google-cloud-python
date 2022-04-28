@@ -232,16 +232,16 @@ class PublisherAsyncClient:
 
             from google.cloud import eventarc_publishing_v1
 
-            def sample_publish_channel_connection_events():
+            async def sample_publish_channel_connection_events():
                 # Create a client
-                client = eventarc_publishing_v1.PublisherClient()
+                client = eventarc_publishing_v1.PublisherAsyncClient()
 
                 # Initialize request argument(s)
                 request = eventarc_publishing_v1.PublishChannelConnectionEventsRequest(
                 )
 
                 # Make the request
-                response = client.publish_channel_connection_events(request=request)
+                response = await client.publish_channel_connection_events(request=request)
 
                 # Handle the response
                 print(response)
@@ -306,16 +306,16 @@ class PublisherAsyncClient:
 
             from google.cloud import eventarc_publishing_v1
 
-            def sample_publish_events():
+            async def sample_publish_events():
                 # Create a client
-                client = eventarc_publishing_v1.PublisherClient()
+                client = eventarc_publishing_v1.PublisherAsyncClient()
 
                 # Initialize request argument(s)
                 request = eventarc_publishing_v1.PublishEventsRequest(
                 )
 
                 # Make the request
-                response = client.publish_events(request=request)
+                response = await client.publish_events(request=request)
 
                 # Handle the response
                 print(response)

@@ -717,7 +717,7 @@ def test_publish_channel_connection_events_field_headers():
     # a field header. Set these to a non-empty value.
     request = publisher.PublishChannelConnectionEventsRequest()
 
-    request.channel_connection = "channel_connection/value"
+    request.channel_connection = "channel_connection_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -735,7 +735,7 @@ def test_publish_channel_connection_events_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "channel_connection=channel_connection/value",
+        "channel_connection=channel_connection_value",
     ) in kw["metadata"]
 
 
@@ -749,7 +749,7 @@ async def test_publish_channel_connection_events_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = publisher.PublishChannelConnectionEventsRequest()
 
-    request.channel_connection = "channel_connection/value"
+    request.channel_connection = "channel_connection_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -769,7 +769,7 @@ async def test_publish_channel_connection_events_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "channel_connection=channel_connection/value",
+        "channel_connection=channel_connection_value",
     ) in kw["metadata"]
 
 
@@ -865,7 +865,7 @@ def test_publish_events_field_headers():
     # a field header. Set these to a non-empty value.
     request = publisher.PublishEventsRequest()
 
-    request.channel = "channel/value"
+    request.channel = "channel_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.publish_events), "__call__") as call:
@@ -881,7 +881,7 @@ def test_publish_events_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "channel=channel/value",
+        "channel=channel_value",
     ) in kw["metadata"]
 
 
@@ -895,7 +895,7 @@ async def test_publish_events_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = publisher.PublishEventsRequest()
 
-    request.channel = "channel/value"
+    request.channel = "channel_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.publish_events), "__call__") as call:
@@ -913,7 +913,7 @@ async def test_publish_events_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "channel=channel/value",
+        "channel=channel_value",
     ) in kw["metadata"]
 
 
