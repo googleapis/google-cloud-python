@@ -908,7 +908,7 @@ def test_list_services_pager(transport_name: str = "grpc"):
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, resources.ManagedService) for i in results)
 
@@ -1142,6 +1142,67 @@ async def test_get_service_async(
 @pytest.mark.asyncio
 async def test_get_service_async_from_dict():
     await test_get_service_async(request_type=dict)
+
+
+def test_get_service_field_headers():
+    client = ServiceManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = servicemanager.GetServiceRequest()
+
+    request.service_name = "service_name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_service), "__call__") as call:
+        call.return_value = resources.ManagedService()
+        client.get_service(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "service_name=service_name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_get_service_field_headers_async():
+    client = ServiceManagerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = servicemanager.GetServiceRequest()
+
+    request.service_name = "service_name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_service), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.ManagedService()
+        )
+        await client.get_service(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "service_name=service_name_value",
+    ) in kw["metadata"]
 
 
 def test_get_service_flattened():
@@ -1474,6 +1535,67 @@ async def test_delete_service_async_from_dict():
     await test_delete_service_async(request_type=dict)
 
 
+def test_delete_service_field_headers():
+    client = ServiceManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = servicemanager.DeleteServiceRequest()
+
+    request.service_name = "service_name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_service), "__call__") as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.delete_service(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "service_name=service_name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_delete_service_field_headers_async():
+    client = ServiceManagerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = servicemanager.DeleteServiceRequest()
+
+    request.service_name = "service_name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_service), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/op")
+        )
+        await client.delete_service(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "service_name=service_name_value",
+    ) in kw["metadata"]
+
+
 def test_delete_service_flattened():
     client = ServiceManagerClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -1637,6 +1759,67 @@ async def test_undelete_service_async(
 @pytest.mark.asyncio
 async def test_undelete_service_async_from_dict():
     await test_undelete_service_async(request_type=dict)
+
+
+def test_undelete_service_field_headers():
+    client = ServiceManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = servicemanager.UndeleteServiceRequest()
+
+    request.service_name = "service_name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.undelete_service), "__call__") as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.undelete_service(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "service_name=service_name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_undelete_service_field_headers_async():
+    client = ServiceManagerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = servicemanager.UndeleteServiceRequest()
+
+    request.service_name = "service_name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.undelete_service), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/op")
+        )
+        await client.undelete_service(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "service_name=service_name_value",
+    ) in kw["metadata"]
 
 
 def test_undelete_service_flattened():
@@ -1817,6 +2000,71 @@ async def test_list_service_configs_async_from_dict():
     await test_list_service_configs_async(request_type=dict)
 
 
+def test_list_service_configs_field_headers():
+    client = ServiceManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = servicemanager.ListServiceConfigsRequest()
+
+    request.service_name = "service_name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_service_configs), "__call__"
+    ) as call:
+        call.return_value = servicemanager.ListServiceConfigsResponse()
+        client.list_service_configs(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "service_name=service_name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_list_service_configs_field_headers_async():
+    client = ServiceManagerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = servicemanager.ListServiceConfigsRequest()
+
+    request.service_name = "service_name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_service_configs), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            servicemanager.ListServiceConfigsResponse()
+        )
+        await client.list_service_configs(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "service_name=service_name_value",
+    ) in kw["metadata"]
+
+
 def test_list_service_configs_flattened():
     client = ServiceManagerClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -1943,11 +2191,14 @@ def test_list_service_configs_pager(transport_name: str = "grpc"):
         )
 
         metadata = ()
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("service_name", ""),)),
+        )
         pager = client.list_service_configs(request={})
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, service_pb2.Service) for i in results)
 
@@ -2203,6 +2454,71 @@ async def test_get_service_config_async_from_dict():
     await test_get_service_config_async(request_type=dict)
 
 
+def test_get_service_config_field_headers():
+    client = ServiceManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = servicemanager.GetServiceConfigRequest()
+
+    request.service_name = "service_name_value"
+    request.config_id = "config_id_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_service_config), "__call__"
+    ) as call:
+        call.return_value = service_pb2.Service()
+        client.get_service_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "service_name=service_name_value&config_id=config_id_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_get_service_config_field_headers_async():
+    client = ServiceManagerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = servicemanager.GetServiceConfigRequest()
+
+    request.service_name = "service_name_value"
+    request.config_id = "config_id_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_service_config), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(service_pb2.Service())
+        await client.get_service_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "service_name=service_name_value&config_id=config_id_value",
+    ) in kw["metadata"]
+
+
 def test_get_service_config_flattened():
     client = ServiceManagerClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -2415,6 +2731,69 @@ async def test_create_service_config_async_from_dict():
     await test_create_service_config_async(request_type=dict)
 
 
+def test_create_service_config_field_headers():
+    client = ServiceManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = servicemanager.CreateServiceConfigRequest()
+
+    request.service_name = "service_name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_service_config), "__call__"
+    ) as call:
+        call.return_value = service_pb2.Service()
+        client.create_service_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "service_name=service_name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_create_service_config_field_headers_async():
+    client = ServiceManagerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = servicemanager.CreateServiceConfigRequest()
+
+    request.service_name = "service_name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_service_config), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(service_pb2.Service())
+        await client.create_service_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "service_name=service_name_value",
+    ) in kw["metadata"]
+
+
 def test_create_service_config_flattened():
     client = ServiceManagerClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -2597,6 +2976,71 @@ async def test_submit_config_source_async(
 @pytest.mark.asyncio
 async def test_submit_config_source_async_from_dict():
     await test_submit_config_source_async(request_type=dict)
+
+
+def test_submit_config_source_field_headers():
+    client = ServiceManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = servicemanager.SubmitConfigSourceRequest()
+
+    request.service_name = "service_name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.submit_config_source), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.submit_config_source(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "service_name=service_name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_submit_config_source_field_headers_async():
+    client = ServiceManagerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = servicemanager.SubmitConfigSourceRequest()
+
+    request.service_name = "service_name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.submit_config_source), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/op")
+        )
+        await client.submit_config_source(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "service_name=service_name_value",
+    ) in kw["metadata"]
 
 
 def test_submit_config_source_flattened():
@@ -2801,6 +3245,71 @@ async def test_list_service_rollouts_async_from_dict():
     await test_list_service_rollouts_async(request_type=dict)
 
 
+def test_list_service_rollouts_field_headers():
+    client = ServiceManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = servicemanager.ListServiceRolloutsRequest()
+
+    request.service_name = "service_name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_service_rollouts), "__call__"
+    ) as call:
+        call.return_value = servicemanager.ListServiceRolloutsResponse()
+        client.list_service_rollouts(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "service_name=service_name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_list_service_rollouts_field_headers_async():
+    client = ServiceManagerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = servicemanager.ListServiceRolloutsRequest()
+
+    request.service_name = "service_name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_service_rollouts), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            servicemanager.ListServiceRolloutsResponse()
+        )
+        await client.list_service_rollouts(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "service_name=service_name_value",
+    ) in kw["metadata"]
+
+
 def test_list_service_rollouts_flattened():
     client = ServiceManagerClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -2937,11 +3446,14 @@ def test_list_service_rollouts_pager(transport_name: str = "grpc"):
         )
 
         metadata = ()
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("service_name", ""),)),
+        )
         pager = client.list_service_rollouts(request={})
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, resources.Rollout) for i in results)
 
@@ -3201,6 +3713,71 @@ async def test_get_service_rollout_async_from_dict():
     await test_get_service_rollout_async(request_type=dict)
 
 
+def test_get_service_rollout_field_headers():
+    client = ServiceManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = servicemanager.GetServiceRolloutRequest()
+
+    request.service_name = "service_name_value"
+    request.rollout_id = "rollout_id_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_service_rollout), "__call__"
+    ) as call:
+        call.return_value = resources.Rollout()
+        client.get_service_rollout(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "service_name=service_name_value&rollout_id=rollout_id_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_get_service_rollout_field_headers_async():
+    client = ServiceManagerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = servicemanager.GetServiceRolloutRequest()
+
+    request.service_name = "service_name_value"
+    request.rollout_id = "rollout_id_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_service_rollout), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(resources.Rollout())
+        await client.get_service_rollout(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "service_name=service_name_value&rollout_id=rollout_id_value",
+    ) in kw["metadata"]
+
+
 def test_get_service_rollout_flattened():
     client = ServiceManagerClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -3383,6 +3960,71 @@ async def test_create_service_rollout_async(
 @pytest.mark.asyncio
 async def test_create_service_rollout_async_from_dict():
     await test_create_service_rollout_async(request_type=dict)
+
+
+def test_create_service_rollout_field_headers():
+    client = ServiceManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = servicemanager.CreateServiceRolloutRequest()
+
+    request.service_name = "service_name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_service_rollout), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.create_service_rollout(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "service_name=service_name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_create_service_rollout_field_headers_async():
+    client = ServiceManagerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = servicemanager.CreateServiceRolloutRequest()
+
+    request.service_name = "service_name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_service_rollout), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/op")
+        )
+        await client.create_service_rollout(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "service_name=service_name_value",
+    ) in kw["metadata"]
 
 
 def test_create_service_rollout_flattened():

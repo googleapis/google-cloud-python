@@ -249,9 +249,9 @@ class ServiceManagerAsyncClient:
 
             from google.cloud import servicemanagement_v1
 
-            def sample_list_services():
+            async def sample_list_services():
                 # Create a client
-                client = servicemanagement_v1.ServiceManagerClient()
+                client = servicemanagement_v1.ServiceManagerAsyncClient()
 
                 # Initialize request argument(s)
                 request = servicemanagement_v1.ListServicesRequest(
@@ -261,7 +261,7 @@ class ServiceManagerAsyncClient:
                 page_result = client.list_services(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -363,9 +363,9 @@ class ServiceManagerAsyncClient:
 
             from google.cloud import servicemanagement_v1
 
-            def sample_get_service():
+            async def sample_get_service():
                 # Create a client
-                client = servicemanagement_v1.ServiceManagerClient()
+                client = servicemanagement_v1.ServiceManagerAsyncClient()
 
                 # Initialize request argument(s)
                 request = servicemanagement_v1.GetServiceRequest(
@@ -373,7 +373,7 @@ class ServiceManagerAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_service(request=request)
+                response = await client.get_service(request=request)
 
                 # Handle the response
                 print(response)
@@ -428,6 +428,14 @@ class ServiceManagerAsyncClient:
             client_info=DEFAULT_CLIENT_INFO,
         )
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("service_name", request.service_name),)
+            ),
+        )
+
         # Send the request.
         response = await rpc(
             request,
@@ -464,9 +472,9 @@ class ServiceManagerAsyncClient:
 
             from google.cloud import servicemanagement_v1
 
-            def sample_create_service():
+            async def sample_create_service():
                 # Create a client
-                client = servicemanagement_v1.ServiceManagerClient()
+                client = servicemanagement_v1.ServiceManagerAsyncClient()
 
                 # Initialize request argument(s)
                 request = servicemanagement_v1.CreateServiceRequest(
@@ -477,7 +485,7 @@ class ServiceManagerAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -573,9 +581,9 @@ class ServiceManagerAsyncClient:
 
             from google.cloud import servicemanagement_v1
 
-            def sample_delete_service():
+            async def sample_delete_service():
                 # Create a client
-                client = servicemanagement_v1.ServiceManagerClient()
+                client = servicemanagement_v1.ServiceManagerAsyncClient()
 
                 # Initialize request argument(s)
                 request = servicemanagement_v1.DeleteServiceRequest(
@@ -587,7 +595,7 @@ class ServiceManagerAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -655,6 +663,14 @@ class ServiceManagerAsyncClient:
             client_info=DEFAULT_CLIENT_INFO,
         )
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("service_name", request.service_name),)
+            ),
+        )
+
         # Send the request.
         response = await rpc(
             request,
@@ -695,9 +711,9 @@ class ServiceManagerAsyncClient:
 
             from google.cloud import servicemanagement_v1
 
-            def sample_undelete_service():
+            async def sample_undelete_service():
                 # Create a client
-                client = servicemanagement_v1.ServiceManagerClient()
+                client = servicemanagement_v1.ServiceManagerAsyncClient()
 
                 # Initialize request argument(s)
                 request = servicemanagement_v1.UndeleteServiceRequest(
@@ -709,7 +725,7 @@ class ServiceManagerAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -767,6 +783,14 @@ class ServiceManagerAsyncClient:
             client_info=DEFAULT_CLIENT_INFO,
         )
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("service_name", request.service_name),)
+            ),
+        )
+
         # Send the request.
         response = await rpc(
             request,
@@ -802,9 +826,9 @@ class ServiceManagerAsyncClient:
 
             from google.cloud import servicemanagement_v1
 
-            def sample_list_service_configs():
+            async def sample_list_service_configs():
                 # Create a client
-                client = servicemanagement_v1.ServiceManagerClient()
+                client = servicemanagement_v1.ServiceManagerAsyncClient()
 
                 # Initialize request argument(s)
                 request = servicemanagement_v1.ListServiceConfigsRequest(
@@ -815,7 +839,7 @@ class ServiceManagerAsyncClient:
                 page_result = client.list_service_configs(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -871,6 +895,14 @@ class ServiceManagerAsyncClient:
             client_info=DEFAULT_CLIENT_INFO,
         )
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("service_name", request.service_name),)
+            ),
+        )
+
         # Send the request.
         response = await rpc(
             request,
@@ -909,9 +941,9 @@ class ServiceManagerAsyncClient:
 
             from google.cloud import servicemanagement_v1
 
-            def sample_get_service_config():
+            async def sample_get_service_config():
                 # Create a client
-                client = servicemanagement_v1.ServiceManagerClient()
+                client = servicemanagement_v1.ServiceManagerAsyncClient()
 
                 # Initialize request argument(s)
                 request = servicemanagement_v1.GetServiceConfigRequest(
@@ -920,7 +952,7 @@ class ServiceManagerAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_service_config(request=request)
+                response = await client.get_service_config(request=request)
 
                 # Handle the response
                 print(response)
@@ -1013,6 +1045,17 @@ class ServiceManagerAsyncClient:
             client_info=DEFAULT_CLIENT_INFO,
         )
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("service_name", request.service_name),
+                    ("config_id", request.config_id),
+                )
+            ),
+        )
+
         # Send the request.
         response = await rpc(
             request,
@@ -1048,9 +1091,9 @@ class ServiceManagerAsyncClient:
 
             from google.cloud import servicemanagement_v1
 
-            def sample_create_service_config():
+            async def sample_create_service_config():
                 # Create a client
-                client = servicemanagement_v1.ServiceManagerClient()
+                client = servicemanagement_v1.ServiceManagerAsyncClient()
 
                 # Initialize request argument(s)
                 request = servicemanagement_v1.CreateServiceConfigRequest(
@@ -1058,7 +1101,7 @@ class ServiceManagerAsyncClient:
                 )
 
                 # Make the request
-                response = client.create_service_config(request=request)
+                response = await client.create_service_config(request=request)
 
                 # Handle the response
                 print(response)
@@ -1139,6 +1182,14 @@ class ServiceManagerAsyncClient:
             client_info=DEFAULT_CLIENT_INFO,
         )
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("service_name", request.service_name),)
+            ),
+        )
+
         # Send the request.
         response = await rpc(
             request,
@@ -1179,9 +1230,9 @@ class ServiceManagerAsyncClient:
 
             from google.cloud import servicemanagement_v1
 
-            def sample_submit_config_source():
+            async def sample_submit_config_source():
                 # Create a client
-                client = servicemanagement_v1.ServiceManagerClient()
+                client = servicemanagement_v1.ServiceManagerAsyncClient()
 
                 # Initialize request argument(s)
                 request = servicemanagement_v1.SubmitConfigSourceRequest(
@@ -1193,7 +1244,7 @@ class ServiceManagerAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1271,6 +1322,14 @@ class ServiceManagerAsyncClient:
             client_info=DEFAULT_CLIENT_INFO,
         )
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("service_name", request.service_name),)
+            ),
+        )
+
         # Send the request.
         response = await rpc(
             request,
@@ -1308,9 +1367,9 @@ class ServiceManagerAsyncClient:
 
             from google.cloud import servicemanagement_v1
 
-            def sample_list_service_rollouts():
+            async def sample_list_service_rollouts():
                 # Create a client
-                client = servicemanagement_v1.ServiceManagerClient()
+                client = servicemanagement_v1.ServiceManagerAsyncClient()
 
                 # Initialize request argument(s)
                 request = servicemanagement_v1.ListServiceRolloutsRequest(
@@ -1322,7 +1381,7 @@ class ServiceManagerAsyncClient:
                 page_result = client.list_service_rollouts(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -1394,6 +1453,14 @@ class ServiceManagerAsyncClient:
             client_info=DEFAULT_CLIENT_INFO,
         )
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("service_name", request.service_name),)
+            ),
+        )
+
         # Send the request.
         response = await rpc(
             request,
@@ -1431,9 +1498,9 @@ class ServiceManagerAsyncClient:
 
             from google.cloud import servicemanagement_v1
 
-            def sample_get_service_rollout():
+            async def sample_get_service_rollout():
                 # Create a client
-                client = servicemanagement_v1.ServiceManagerClient()
+                client = servicemanagement_v1.ServiceManagerAsyncClient()
 
                 # Initialize request argument(s)
                 request = servicemanagement_v1.GetServiceRolloutRequest(
@@ -1442,7 +1509,7 @@ class ServiceManagerAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_service_rollout(request=request)
+                response = await client.get_service_rollout(request=request)
 
                 # Handle the response
                 print(response)
@@ -1510,6 +1577,17 @@ class ServiceManagerAsyncClient:
             client_info=DEFAULT_CLIENT_INFO,
         )
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("service_name", request.service_name),
+                    ("rollout_id", request.rollout_id),
+                )
+            ),
+        )
+
         # Send the request.
         response = await rpc(
             request,
@@ -1553,9 +1631,9 @@ class ServiceManagerAsyncClient:
 
             from google.cloud import servicemanagement_v1
 
-            def sample_create_service_rollout():
+            async def sample_create_service_rollout():
                 # Create a client
-                client = servicemanagement_v1.ServiceManagerClient()
+                client = servicemanagement_v1.ServiceManagerAsyncClient()
 
                 # Initialize request argument(s)
                 request = servicemanagement_v1.CreateServiceRolloutRequest(
@@ -1567,7 +1645,7 @@ class ServiceManagerAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1635,6 +1713,14 @@ class ServiceManagerAsyncClient:
             client_info=DEFAULT_CLIENT_INFO,
         )
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("service_name", request.service_name),)
+            ),
+        )
+
         # Send the request.
         response = await rpc(
             request,
@@ -1681,16 +1767,16 @@ class ServiceManagerAsyncClient:
 
             from google.cloud import servicemanagement_v1
 
-            def sample_generate_config_report():
+            async def sample_generate_config_report():
                 # Create a client
-                client = servicemanagement_v1.ServiceManagerClient()
+                client = servicemanagement_v1.ServiceManagerAsyncClient()
 
                 # Initialize request argument(s)
                 request = servicemanagement_v1.GenerateConfigReportRequest(
                 )
 
                 # Make the request
-                response = client.generate_config_report(request=request)
+                response = await client.generate_config_report(request=request)
 
                 # Handle the response
                 print(response)

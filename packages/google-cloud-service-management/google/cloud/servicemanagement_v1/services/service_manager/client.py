@@ -632,6 +632,14 @@ class ServiceManagerClient(metaclass=ServiceManagerClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.get_service]
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("service_name", request.service_name),)
+            ),
+        )
+
         # Send the request.
         response = rpc(
             request,
@@ -859,6 +867,14 @@ class ServiceManagerClient(metaclass=ServiceManagerClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.delete_service]
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("service_name", request.service_name),)
+            ),
+        )
+
         # Send the request.
         response = rpc(
             request,
@@ -971,6 +987,14 @@ class ServiceManagerClient(metaclass=ServiceManagerClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.undelete_service]
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("service_name", request.service_name),)
+            ),
+        )
+
         # Send the request.
         response = rpc(
             request,
@@ -1074,6 +1098,14 @@ class ServiceManagerClient(metaclass=ServiceManagerClientMeta):
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.list_service_configs]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("service_name", request.service_name),)
+            ),
+        )
 
         # Send the request.
         response = rpc(
@@ -1217,6 +1249,17 @@ class ServiceManagerClient(metaclass=ServiceManagerClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.get_service_config]
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("service_name", request.service_name),
+                    ("config_id", request.config_id),
+                )
+            ),
+        )
+
         # Send the request.
         response = rpc(
             request,
@@ -1342,6 +1385,14 @@ class ServiceManagerClient(metaclass=ServiceManagerClientMeta):
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.create_service_config]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("service_name", request.service_name),)
+            ),
+        )
 
         # Send the request.
         response = rpc(
@@ -1475,6 +1526,14 @@ class ServiceManagerClient(metaclass=ServiceManagerClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.submit_config_source]
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("service_name", request.service_name),)
+            ),
+        )
+
         # Send the request.
         response = rpc(
             request,
@@ -1598,6 +1657,14 @@ class ServiceManagerClient(metaclass=ServiceManagerClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.list_service_rollouts]
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("service_name", request.service_name),)
+            ),
+        )
+
         # Send the request.
         response = rpc(
             request,
@@ -1713,6 +1780,17 @@ class ServiceManagerClient(metaclass=ServiceManagerClientMeta):
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.get_service_rollout]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("service_name", request.service_name),
+                    ("rollout_id", request.rollout_id),
+                )
+            ),
+        )
 
         # Send the request.
         response = rpc(
@@ -1838,6 +1916,14 @@ class ServiceManagerClient(metaclass=ServiceManagerClientMeta):
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.create_service_rollout]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("service_name", request.service_name),)
+            ),
+        )
 
         # Send the request.
         response = rpc(
