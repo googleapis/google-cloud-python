@@ -251,16 +251,16 @@ class DlpServiceAsyncClient:
 
             from google.cloud import dlp_v2
 
-            def sample_inspect_content():
+            async def sample_inspect_content():
                 # Create a client
-                client = dlp_v2.DlpServiceClient()
+                client = dlp_v2.DlpServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = dlp_v2.InspectContentRequest(
                 )
 
                 # Make the request
-                response = client.inspect_content(request=request)
+                response = await client.inspect_content(request=request)
 
                 # Handle the response
                 print(response)
@@ -340,16 +340,16 @@ class DlpServiceAsyncClient:
 
             from google.cloud import dlp_v2
 
-            def sample_redact_image():
+            async def sample_redact_image():
                 # Create a client
-                client = dlp_v2.DlpServiceClient()
+                client = dlp_v2.DlpServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = dlp_v2.RedactImageRequest(
                 )
 
                 # Make the request
-                response = client.redact_image(request=request)
+                response = await client.redact_image(request=request)
 
                 # Handle the response
                 print(response)
@@ -430,16 +430,16 @@ class DlpServiceAsyncClient:
 
             from google.cloud import dlp_v2
 
-            def sample_deidentify_content():
+            async def sample_deidentify_content():
                 # Create a client
-                client = dlp_v2.DlpServiceClient()
+                client = dlp_v2.DlpServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = dlp_v2.DeidentifyContentRequest(
                 )
 
                 # Make the request
-                response = client.deidentify_content(request=request)
+                response = await client.deidentify_content(request=request)
 
                 # Handle the response
                 print(response)
@@ -514,9 +514,9 @@ class DlpServiceAsyncClient:
 
             from google.cloud import dlp_v2
 
-            def sample_reidentify_content():
+            async def sample_reidentify_content():
                 # Create a client
-                client = dlp_v2.DlpServiceClient()
+                client = dlp_v2.DlpServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = dlp_v2.ReidentifyContentRequest(
@@ -524,7 +524,7 @@ class DlpServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.reidentify_content(request=request)
+                response = await client.reidentify_content(request=request)
 
                 # Handle the response
                 print(response)
@@ -598,16 +598,16 @@ class DlpServiceAsyncClient:
 
             from google.cloud import dlp_v2
 
-            def sample_list_info_types():
+            async def sample_list_info_types():
                 # Create a client
-                client = dlp_v2.DlpServiceClient()
+                client = dlp_v2.DlpServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = dlp_v2.ListInfoTypesRequest(
                 )
 
                 # Make the request
-                response = client.list_info_types(request=request)
+                response = await client.list_info_types(request=request)
 
                 # Handle the response
                 print(response)
@@ -705,9 +705,9 @@ class DlpServiceAsyncClient:
 
             from google.cloud import dlp_v2
 
-            def sample_create_inspect_template():
+            async def sample_create_inspect_template():
                 # Create a client
-                client = dlp_v2.DlpServiceClient()
+                client = dlp_v2.DlpServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = dlp_v2.CreateInspectTemplateRequest(
@@ -715,7 +715,7 @@ class DlpServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.create_inspect_template(request=request)
+                response = await client.create_inspect_template(request=request)
 
                 # Handle the response
                 print(response)
@@ -840,9 +840,9 @@ class DlpServiceAsyncClient:
 
             from google.cloud import dlp_v2
 
-            def sample_update_inspect_template():
+            async def sample_update_inspect_template():
                 # Create a client
-                client = dlp_v2.DlpServiceClient()
+                client = dlp_v2.DlpServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = dlp_v2.UpdateInspectTemplateRequest(
@@ -850,7 +850,7 @@ class DlpServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.update_inspect_template(request=request)
+                response = await client.update_inspect_template(request=request)
 
                 # Handle the response
                 print(response)
@@ -960,9 +960,9 @@ class DlpServiceAsyncClient:
 
             from google.cloud import dlp_v2
 
-            def sample_get_inspect_template():
+            async def sample_get_inspect_template():
                 # Create a client
-                client = dlp_v2.DlpServiceClient()
+                client = dlp_v2.DlpServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = dlp_v2.GetInspectTemplateRequest(
@@ -970,7 +970,7 @@ class DlpServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_inspect_template(request=request)
+                response = await client.get_inspect_template(request=request)
 
                 # Handle the response
                 print(response)
@@ -1074,9 +1074,9 @@ class DlpServiceAsyncClient:
 
             from google.cloud import dlp_v2
 
-            def sample_list_inspect_templates():
+            async def sample_list_inspect_templates():
                 # Create a client
-                client = dlp_v2.DlpServiceClient()
+                client = dlp_v2.DlpServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = dlp_v2.ListInspectTemplatesRequest(
@@ -1087,7 +1087,7 @@ class DlpServiceAsyncClient:
                 page_result = client.list_inspect_templates(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -1216,9 +1216,9 @@ class DlpServiceAsyncClient:
 
             from google.cloud import dlp_v2
 
-            def sample_delete_inspect_template():
+            async def sample_delete_inspect_template():
                 # Create a client
-                client = dlp_v2.DlpServiceClient()
+                client = dlp_v2.DlpServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = dlp_v2.DeleteInspectTemplateRequest(
@@ -1226,7 +1226,7 @@ class DlpServiceAsyncClient:
                 )
 
                 # Make the request
-                client.delete_inspect_template(request=request)
+                await client.delete_inspect_template(request=request)
 
         Args:
             request (Union[google.cloud.dlp_v2.types.DeleteInspectTemplateRequest, dict]):
@@ -1316,9 +1316,9 @@ class DlpServiceAsyncClient:
 
             from google.cloud import dlp_v2
 
-            def sample_create_deidentify_template():
+            async def sample_create_deidentify_template():
                 # Create a client
-                client = dlp_v2.DlpServiceClient()
+                client = dlp_v2.DlpServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = dlp_v2.CreateDeidentifyTemplateRequest(
@@ -1326,7 +1326,7 @@ class DlpServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.create_deidentify_template(request=request)
+                response = await client.create_deidentify_template(request=request)
 
                 # Handle the response
                 print(response)
@@ -1450,9 +1450,9 @@ class DlpServiceAsyncClient:
 
             from google.cloud import dlp_v2
 
-            def sample_update_deidentify_template():
+            async def sample_update_deidentify_template():
                 # Create a client
-                client = dlp_v2.DlpServiceClient()
+                client = dlp_v2.DlpServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = dlp_v2.UpdateDeidentifyTemplateRequest(
@@ -1460,7 +1460,7 @@ class DlpServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.update_deidentify_template(request=request)
+                response = await client.update_deidentify_template(request=request)
 
                 # Handle the response
                 print(response)
@@ -1569,9 +1569,9 @@ class DlpServiceAsyncClient:
 
             from google.cloud import dlp_v2
 
-            def sample_get_deidentify_template():
+            async def sample_get_deidentify_template():
                 # Create a client
-                client = dlp_v2.DlpServiceClient()
+                client = dlp_v2.DlpServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = dlp_v2.GetDeidentifyTemplateRequest(
@@ -1579,7 +1579,7 @@ class DlpServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_deidentify_template(request=request)
+                response = await client.get_deidentify_template(request=request)
 
                 # Handle the response
                 print(response)
@@ -1682,9 +1682,9 @@ class DlpServiceAsyncClient:
 
             from google.cloud import dlp_v2
 
-            def sample_list_deidentify_templates():
+            async def sample_list_deidentify_templates():
                 # Create a client
-                client = dlp_v2.DlpServiceClient()
+                client = dlp_v2.DlpServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = dlp_v2.ListDeidentifyTemplatesRequest(
@@ -1695,7 +1695,7 @@ class DlpServiceAsyncClient:
                 page_result = client.list_deidentify_templates(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -1825,9 +1825,9 @@ class DlpServiceAsyncClient:
 
             from google.cloud import dlp_v2
 
-            def sample_delete_deidentify_template():
+            async def sample_delete_deidentify_template():
                 # Create a client
-                client = dlp_v2.DlpServiceClient()
+                client = dlp_v2.DlpServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = dlp_v2.DeleteDeidentifyTemplateRequest(
@@ -1835,7 +1835,7 @@ class DlpServiceAsyncClient:
                 )
 
                 # Make the request
-                client.delete_deidentify_template(request=request)
+                await client.delete_deidentify_template(request=request)
 
         Args:
             request (Union[google.cloud.dlp_v2.types.DeleteDeidentifyTemplateRequest, dict]):
@@ -1925,9 +1925,9 @@ class DlpServiceAsyncClient:
 
             from google.cloud import dlp_v2
 
-            def sample_create_job_trigger():
+            async def sample_create_job_trigger():
                 # Create a client
-                client = dlp_v2.DlpServiceClient()
+                client = dlp_v2.DlpServiceAsyncClient()
 
                 # Initialize request argument(s)
                 job_trigger = dlp_v2.JobTrigger()
@@ -1939,7 +1939,7 @@ class DlpServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.create_job_trigger(request=request)
+                response = await client.create_job_trigger(request=request)
 
                 # Handle the response
                 print(response)
@@ -2055,9 +2055,9 @@ class DlpServiceAsyncClient:
 
             from google.cloud import dlp_v2
 
-            def sample_update_job_trigger():
+            async def sample_update_job_trigger():
                 # Create a client
-                client = dlp_v2.DlpServiceClient()
+                client = dlp_v2.DlpServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = dlp_v2.UpdateJobTriggerRequest(
@@ -2065,7 +2065,7 @@ class DlpServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.update_job_trigger(request=request)
+                response = await client.update_job_trigger(request=request)
 
                 # Handle the response
                 print(response)
@@ -2172,9 +2172,9 @@ class DlpServiceAsyncClient:
 
             from google.cloud import dlp_v2
 
-            def sample_hybrid_inspect_job_trigger():
+            async def sample_hybrid_inspect_job_trigger():
                 # Create a client
-                client = dlp_v2.DlpServiceClient()
+                client = dlp_v2.DlpServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = dlp_v2.HybridInspectJobTriggerRequest(
@@ -2182,7 +2182,7 @@ class DlpServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.hybrid_inspect_job_trigger(request=request)
+                response = await client.hybrid_inspect_job_trigger(request=request)
 
                 # Handle the response
                 print(response)
@@ -2271,9 +2271,9 @@ class DlpServiceAsyncClient:
 
             from google.cloud import dlp_v2
 
-            def sample_get_job_trigger():
+            async def sample_get_job_trigger():
                 # Create a client
-                client = dlp_v2.DlpServiceClient()
+                client = dlp_v2.DlpServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = dlp_v2.GetJobTriggerRequest(
@@ -2281,7 +2281,7 @@ class DlpServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_job_trigger(request=request)
+                response = await client.get_job_trigger(request=request)
 
                 # Handle the response
                 print(response)
@@ -2381,9 +2381,9 @@ class DlpServiceAsyncClient:
 
             from google.cloud import dlp_v2
 
-            def sample_list_job_triggers():
+            async def sample_list_job_triggers():
                 # Create a client
-                client = dlp_v2.DlpServiceClient()
+                client = dlp_v2.DlpServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = dlp_v2.ListJobTriggersRequest(
@@ -2394,7 +2394,7 @@ class DlpServiceAsyncClient:
                 page_result = client.list_job_triggers(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -2517,9 +2517,9 @@ class DlpServiceAsyncClient:
 
             from google.cloud import dlp_v2
 
-            def sample_delete_job_trigger():
+            async def sample_delete_job_trigger():
                 # Create a client
-                client = dlp_v2.DlpServiceClient()
+                client = dlp_v2.DlpServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = dlp_v2.DeleteJobTriggerRequest(
@@ -2527,7 +2527,7 @@ class DlpServiceAsyncClient:
                 )
 
                 # Make the request
-                client.delete_job_trigger(request=request)
+                await client.delete_job_trigger(request=request)
 
         Args:
             request (Union[google.cloud.dlp_v2.types.DeleteJobTriggerRequest, dict]):
@@ -2612,9 +2612,9 @@ class DlpServiceAsyncClient:
 
             from google.cloud import dlp_v2
 
-            def sample_activate_job_trigger():
+            async def sample_activate_job_trigger():
                 # Create a client
-                client = dlp_v2.DlpServiceClient()
+                client = dlp_v2.DlpServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = dlp_v2.ActivateJobTriggerRequest(
@@ -2622,7 +2622,7 @@ class DlpServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.activate_job_trigger(request=request)
+                response = await client.activate_job_trigger(request=request)
 
                 # Handle the response
                 print(response)
@@ -2696,9 +2696,9 @@ class DlpServiceAsyncClient:
 
             from google.cloud import dlp_v2
 
-            def sample_create_dlp_job():
+            async def sample_create_dlp_job():
                 # Create a client
-                client = dlp_v2.DlpServiceClient()
+                client = dlp_v2.DlpServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = dlp_v2.CreateDlpJobRequest(
@@ -2706,7 +2706,7 @@ class DlpServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.create_dlp_job(request=request)
+                response = await client.create_dlp_job(request=request)
 
                 # Handle the response
                 print(response)
@@ -2833,9 +2833,9 @@ class DlpServiceAsyncClient:
 
             from google.cloud import dlp_v2
 
-            def sample_list_dlp_jobs():
+            async def sample_list_dlp_jobs():
                 # Create a client
-                client = dlp_v2.DlpServiceClient()
+                client = dlp_v2.DlpServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = dlp_v2.ListDlpJobsRequest(
@@ -2846,7 +2846,7 @@ class DlpServiceAsyncClient:
                 page_result = client.list_dlp_jobs(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -2972,9 +2972,9 @@ class DlpServiceAsyncClient:
 
             from google.cloud import dlp_v2
 
-            def sample_get_dlp_job():
+            async def sample_get_dlp_job():
                 # Create a client
-                client = dlp_v2.DlpServiceClient()
+                client = dlp_v2.DlpServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = dlp_v2.GetDlpJobRequest(
@@ -2982,7 +2982,7 @@ class DlpServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_dlp_job(request=request)
+                response = await client.get_dlp_job(request=request)
 
                 # Handle the response
                 print(response)
@@ -3083,9 +3083,9 @@ class DlpServiceAsyncClient:
 
             from google.cloud import dlp_v2
 
-            def sample_delete_dlp_job():
+            async def sample_delete_dlp_job():
                 # Create a client
-                client = dlp_v2.DlpServiceClient()
+                client = dlp_v2.DlpServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = dlp_v2.DeleteDlpJobRequest(
@@ -3093,7 +3093,7 @@ class DlpServiceAsyncClient:
                 )
 
                 # Make the request
-                client.delete_dlp_job(request=request)
+                await client.delete_dlp_job(request=request)
 
         Args:
             request (Union[google.cloud.dlp_v2.types.DeleteDlpJobRequest, dict]):
@@ -3181,9 +3181,9 @@ class DlpServiceAsyncClient:
 
             from google.cloud import dlp_v2
 
-            def sample_cancel_dlp_job():
+            async def sample_cancel_dlp_job():
                 # Create a client
-                client = dlp_v2.DlpServiceClient()
+                client = dlp_v2.DlpServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = dlp_v2.CancelDlpJobRequest(
@@ -3191,7 +3191,7 @@ class DlpServiceAsyncClient:
                 )
 
                 # Make the request
-                client.cancel_dlp_job(request=request)
+                await client.cancel_dlp_job(request=request)
 
         Args:
             request (Union[google.cloud.dlp_v2.types.CancelDlpJobRequest, dict]):
@@ -3247,9 +3247,9 @@ class DlpServiceAsyncClient:
 
             from google.cloud import dlp_v2
 
-            def sample_create_stored_info_type():
+            async def sample_create_stored_info_type():
                 # Create a client
-                client = dlp_v2.DlpServiceClient()
+                client = dlp_v2.DlpServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = dlp_v2.CreateStoredInfoTypeRequest(
@@ -3257,7 +3257,7 @@ class DlpServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.create_stored_info_type(request=request)
+                response = await client.create_stored_info_type(request=request)
 
                 # Handle the response
                 print(response)
@@ -3380,9 +3380,9 @@ class DlpServiceAsyncClient:
 
             from google.cloud import dlp_v2
 
-            def sample_update_stored_info_type():
+            async def sample_update_stored_info_type():
                 # Create a client
-                client = dlp_v2.DlpServiceClient()
+                client = dlp_v2.DlpServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = dlp_v2.UpdateStoredInfoTypeRequest(
@@ -3390,7 +3390,7 @@ class DlpServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.update_stored_info_type(request=request)
+                response = await client.update_stored_info_type(request=request)
 
                 # Handle the response
                 print(response)
@@ -3501,9 +3501,9 @@ class DlpServiceAsyncClient:
 
             from google.cloud import dlp_v2
 
-            def sample_get_stored_info_type():
+            async def sample_get_stored_info_type():
                 # Create a client
-                client = dlp_v2.DlpServiceClient()
+                client = dlp_v2.DlpServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = dlp_v2.GetStoredInfoTypeRequest(
@@ -3511,7 +3511,7 @@ class DlpServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_stored_info_type(request=request)
+                response = await client.get_stored_info_type(request=request)
 
                 # Handle the response
                 print(response)
@@ -3612,9 +3612,9 @@ class DlpServiceAsyncClient:
 
             from google.cloud import dlp_v2
 
-            def sample_list_stored_info_types():
+            async def sample_list_stored_info_types():
                 # Create a client
-                client = dlp_v2.DlpServiceClient()
+                client = dlp_v2.DlpServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = dlp_v2.ListStoredInfoTypesRequest(
@@ -3625,7 +3625,7 @@ class DlpServiceAsyncClient:
                 page_result = client.list_stored_info_types(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -3755,9 +3755,9 @@ class DlpServiceAsyncClient:
 
             from google.cloud import dlp_v2
 
-            def sample_delete_stored_info_type():
+            async def sample_delete_stored_info_type():
                 # Create a client
-                client = dlp_v2.DlpServiceClient()
+                client = dlp_v2.DlpServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = dlp_v2.DeleteStoredInfoTypeRequest(
@@ -3765,7 +3765,7 @@ class DlpServiceAsyncClient:
                 )
 
                 # Make the request
-                client.delete_stored_info_type(request=request)
+                await client.delete_stored_info_type(request=request)
 
         Args:
             request (Union[google.cloud.dlp_v2.types.DeleteStoredInfoTypeRequest, dict]):
@@ -3852,9 +3852,9 @@ class DlpServiceAsyncClient:
 
             from google.cloud import dlp_v2
 
-            def sample_hybrid_inspect_dlp_job():
+            async def sample_hybrid_inspect_dlp_job():
                 # Create a client
-                client = dlp_v2.DlpServiceClient()
+                client = dlp_v2.DlpServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = dlp_v2.HybridInspectDlpJobRequest(
@@ -3862,7 +3862,7 @@ class DlpServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.hybrid_inspect_dlp_job(request=request)
+                response = await client.hybrid_inspect_dlp_job(request=request)
 
                 # Handle the response
                 print(response)
@@ -3949,9 +3949,9 @@ class DlpServiceAsyncClient:
 
             from google.cloud import dlp_v2
 
-            def sample_finish_dlp_job():
+            async def sample_finish_dlp_job():
                 # Create a client
-                client = dlp_v2.DlpServiceClient()
+                client = dlp_v2.DlpServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = dlp_v2.FinishDlpJobRequest(
@@ -3959,7 +3959,7 @@ class DlpServiceAsyncClient:
                 )
 
                 # Make the request
-                client.finish_dlp_job(request=request)
+                await client.finish_dlp_job(request=request)
 
         Args:
             request (Union[google.cloud.dlp_v2.types.FinishDlpJobRequest, dict]):
