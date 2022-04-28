@@ -220,9 +220,9 @@ class TpuAsyncClient:
 
             from google.cloud import tpu_v1
 
-            def sample_list_nodes():
+            async def sample_list_nodes():
                 # Create a client
-                client = tpu_v1.TpuClient()
+                client = tpu_v1.TpuAsyncClient()
 
                 # Initialize request argument(s)
                 request = tpu_v1.ListNodesRequest(
@@ -233,7 +233,7 @@ class TpuAsyncClient:
                 page_result = client.list_nodes(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -326,9 +326,9 @@ class TpuAsyncClient:
 
             from google.cloud import tpu_v1
 
-            def sample_get_node():
+            async def sample_get_node():
                 # Create a client
-                client = tpu_v1.TpuClient()
+                client = tpu_v1.TpuAsyncClient()
 
                 # Initialize request argument(s)
                 request = tpu_v1.GetNodeRequest(
@@ -336,7 +336,7 @@ class TpuAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_node(request=request)
+                response = await client.get_node(request=request)
 
                 # Handle the response
                 print(response)
@@ -419,9 +419,9 @@ class TpuAsyncClient:
 
             from google.cloud import tpu_v1
 
-            def sample_create_node():
+            async def sample_create_node():
                 # Create a client
-                client = tpu_v1.TpuClient()
+                client = tpu_v1.TpuAsyncClient()
 
                 # Initialize request argument(s)
                 node = tpu_v1.Node()
@@ -438,7 +438,7 @@ class TpuAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -545,9 +545,9 @@ class TpuAsyncClient:
 
             from google.cloud import tpu_v1
 
-            def sample_delete_node():
+            async def sample_delete_node():
                 # Create a client
-                client = tpu_v1.TpuClient()
+                client = tpu_v1.TpuAsyncClient()
 
                 # Initialize request argument(s)
                 request = tpu_v1.DeleteNodeRequest(
@@ -559,7 +559,7 @@ class TpuAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -651,9 +651,9 @@ class TpuAsyncClient:
 
             from google.cloud import tpu_v1
 
-            def sample_reimage_node():
+            async def sample_reimage_node():
                 # Create a client
-                client = tpu_v1.TpuClient()
+                client = tpu_v1.TpuAsyncClient()
 
                 # Initialize request argument(s)
                 request = tpu_v1.ReimageNodeRequest(
@@ -664,7 +664,7 @@ class TpuAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -737,9 +737,9 @@ class TpuAsyncClient:
 
             from google.cloud import tpu_v1
 
-            def sample_stop_node():
+            async def sample_stop_node():
                 # Create a client
-                client = tpu_v1.TpuClient()
+                client = tpu_v1.TpuAsyncClient()
 
                 # Initialize request argument(s)
                 request = tpu_v1.StopNodeRequest(
@@ -750,7 +750,7 @@ class TpuAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -823,9 +823,9 @@ class TpuAsyncClient:
 
             from google.cloud import tpu_v1
 
-            def sample_start_node():
+            async def sample_start_node():
                 # Create a client
-                client = tpu_v1.TpuClient()
+                client = tpu_v1.TpuAsyncClient()
 
                 # Initialize request argument(s)
                 request = tpu_v1.StartNodeRequest(
@@ -836,7 +836,7 @@ class TpuAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -910,9 +910,9 @@ class TpuAsyncClient:
 
             from google.cloud import tpu_v1
 
-            def sample_list_tensor_flow_versions():
+            async def sample_list_tensor_flow_versions():
                 # Create a client
-                client = tpu_v1.TpuClient()
+                client = tpu_v1.TpuAsyncClient()
 
                 # Initialize request argument(s)
                 request = tpu_v1.ListTensorFlowVersionsRequest(
@@ -923,7 +923,7 @@ class TpuAsyncClient:
                 page_result = client.list_tensor_flow_versions(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -1016,9 +1016,9 @@ class TpuAsyncClient:
 
             from google.cloud import tpu_v1
 
-            def sample_get_tensor_flow_version():
+            async def sample_get_tensor_flow_version():
                 # Create a client
-                client = tpu_v1.TpuClient()
+                client = tpu_v1.TpuAsyncClient()
 
                 # Initialize request argument(s)
                 request = tpu_v1.GetTensorFlowVersionRequest(
@@ -1026,7 +1026,7 @@ class TpuAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_tensor_flow_version(request=request)
+                response = await client.get_tensor_flow_version(request=request)
 
                 # Handle the response
                 print(response)
@@ -1109,9 +1109,9 @@ class TpuAsyncClient:
 
             from google.cloud import tpu_v1
 
-            def sample_list_accelerator_types():
+            async def sample_list_accelerator_types():
                 # Create a client
-                client = tpu_v1.TpuClient()
+                client = tpu_v1.TpuAsyncClient()
 
                 # Initialize request argument(s)
                 request = tpu_v1.ListAcceleratorTypesRequest(
@@ -1122,7 +1122,7 @@ class TpuAsyncClient:
                 page_result = client.list_accelerator_types(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -1215,9 +1215,9 @@ class TpuAsyncClient:
 
             from google.cloud import tpu_v1
 
-            def sample_get_accelerator_type():
+            async def sample_get_accelerator_type():
                 # Create a client
-                client = tpu_v1.TpuClient()
+                client = tpu_v1.TpuAsyncClient()
 
                 # Initialize request argument(s)
                 request = tpu_v1.GetAcceleratorTypeRequest(
@@ -1225,7 +1225,7 @@ class TpuAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_accelerator_type(request=request)
+                response = await client.get_accelerator_type(request=request)
 
                 # Handle the response
                 print(response)
