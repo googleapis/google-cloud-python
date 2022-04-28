@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.8.0](https://github.com/googleapis/python-channel/compare/v1.7.1...v1.8.0) (2022-04-27)
+
+
+### Features
+
+* Add API definitions for Cloud Channel Repricing APIs ([#169](https://github.com/googleapis/python-channel/issues/169)) ([18db43c](https://github.com/googleapis/python-channel/commit/18db43c21a935ab9bc52539edf8f97556aa05819))
+* Add filter in ListCustomersRequest ([#167](https://github.com/googleapis/python-channel/issues/167)) ([2a88151](https://github.com/googleapis/python-channel/commit/2a881514bb8ecfbcbdec9dac15663f4caa00bd00))
+
 ### [1.7.1](https://github.com/googleapis/python-channel/compare/v1.7.0...v1.7.1) (2022-03-05)
 
 
