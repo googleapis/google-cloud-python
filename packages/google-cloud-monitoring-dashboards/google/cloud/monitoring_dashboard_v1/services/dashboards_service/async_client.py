@@ -231,9 +231,9 @@ class DashboardsServiceAsyncClient:
 
             from google.monitoring import dashboard_v1
 
-            def sample_create_dashboard():
+            async def sample_create_dashboard():
                 # Create a client
-                client = dashboard_v1.DashboardsServiceClient()
+                client = dashboard_v1.DashboardsServiceAsyncClient()
 
                 # Initialize request argument(s)
                 dashboard = dashboard_v1.Dashboard()
@@ -245,7 +245,7 @@ class DashboardsServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.create_dashboard(request=request)
+                response = await client.create_dashboard(request=request)
 
                 # Handle the response
                 print(response)
@@ -314,9 +314,9 @@ class DashboardsServiceAsyncClient:
 
             from google.monitoring import dashboard_v1
 
-            def sample_list_dashboards():
+            async def sample_list_dashboards():
                 # Create a client
-                client = dashboard_v1.DashboardsServiceClient()
+                client = dashboard_v1.DashboardsServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = dashboard_v1.ListDashboardsRequest(
@@ -327,7 +327,7 @@ class DashboardsServiceAsyncClient:
                 page_result = client.list_dashboards(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -403,9 +403,9 @@ class DashboardsServiceAsyncClient:
 
             from google.monitoring import dashboard_v1
 
-            def sample_get_dashboard():
+            async def sample_get_dashboard():
                 # Create a client
-                client = dashboard_v1.DashboardsServiceClient()
+                client = dashboard_v1.DashboardsServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = dashboard_v1.GetDashboardRequest(
@@ -413,7 +413,7 @@ class DashboardsServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_dashboard(request=request)
+                response = await client.get_dashboard(request=request)
 
                 # Handle the response
                 print(response)
@@ -482,9 +482,9 @@ class DashboardsServiceAsyncClient:
 
             from google.monitoring import dashboard_v1
 
-            def sample_delete_dashboard():
+            async def sample_delete_dashboard():
                 # Create a client
-                client = dashboard_v1.DashboardsServiceClient()
+                client = dashboard_v1.DashboardsServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = dashboard_v1.DeleteDashboardRequest(
@@ -492,7 +492,7 @@ class DashboardsServiceAsyncClient:
                 )
 
                 # Make the request
-                client.delete_dashboard(request=request)
+                await client.delete_dashboard(request=request)
 
         Args:
             request (Union[google.cloud.monitoring_dashboard_v1.types.DeleteDashboardRequest, dict]):
@@ -547,9 +547,9 @@ class DashboardsServiceAsyncClient:
 
             from google.monitoring import dashboard_v1
 
-            def sample_update_dashboard():
+            async def sample_update_dashboard():
                 # Create a client
-                client = dashboard_v1.DashboardsServiceClient()
+                client = dashboard_v1.DashboardsServiceAsyncClient()
 
                 # Initialize request argument(s)
                 dashboard = dashboard_v1.Dashboard()
@@ -560,7 +560,7 @@ class DashboardsServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.update_dashboard(request=request)
+                response = await client.update_dashboard(request=request)
 
                 # Handle the response
                 print(response)
