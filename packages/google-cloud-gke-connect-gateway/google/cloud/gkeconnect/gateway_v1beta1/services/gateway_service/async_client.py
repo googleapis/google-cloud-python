@@ -223,16 +223,16 @@ class GatewayServiceAsyncClient:
             from google.api import httpbody_pb2  # type: ignore
             from google.cloud.gkeconnect import gateway_v1beta1
 
-            def sample_get_resource():
+            async def sample_get_resource():
                 # Create a client
-                client = gateway_v1beta1.GatewayServiceClient()
+                client = gateway_v1beta1.GatewayServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = httpbody_pb2.HttpBody(
                 )
 
                 # Make the request
-                response = client.get_resource(request=request)
+                response = await client.get_resource(request=request)
 
                 # Handle the response
                 print(response)
@@ -381,16 +381,16 @@ class GatewayServiceAsyncClient:
             from google.api import httpbody_pb2  # type: ignore
             from google.cloud.gkeconnect import gateway_v1beta1
 
-            def sample_post_resource():
+            async def sample_post_resource():
                 # Create a client
-                client = gateway_v1beta1.GatewayServiceClient()
+                client = gateway_v1beta1.GatewayServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = httpbody_pb2.HttpBody(
                 )
 
                 # Make the request
-                response = client.post_resource(request=request)
+                response = await client.post_resource(request=request)
 
                 # Handle the response
                 print(response)
@@ -539,16 +539,16 @@ class GatewayServiceAsyncClient:
             from google.api import httpbody_pb2  # type: ignore
             from google.cloud.gkeconnect import gateway_v1beta1
 
-            def sample_delete_resource():
+            async def sample_delete_resource():
                 # Create a client
-                client = gateway_v1beta1.GatewayServiceClient()
+                client = gateway_v1beta1.GatewayServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = httpbody_pb2.HttpBody(
                 )
 
                 # Make the request
-                response = client.delete_resource(request=request)
+                response = await client.delete_resource(request=request)
 
                 # Handle the response
                 print(response)
@@ -697,16 +697,16 @@ class GatewayServiceAsyncClient:
             from google.api import httpbody_pb2  # type: ignore
             from google.cloud.gkeconnect import gateway_v1beta1
 
-            def sample_put_resource():
+            async def sample_put_resource():
                 # Create a client
-                client = gateway_v1beta1.GatewayServiceClient()
+                client = gateway_v1beta1.GatewayServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = httpbody_pb2.HttpBody(
                 )
 
                 # Make the request
-                response = client.put_resource(request=request)
+                response = await client.put_resource(request=request)
 
                 # Handle the response
                 print(response)
@@ -855,16 +855,16 @@ class GatewayServiceAsyncClient:
             from google.api import httpbody_pb2  # type: ignore
             from google.cloud.gkeconnect import gateway_v1beta1
 
-            def sample_patch_resource():
+            async def sample_patch_resource():
                 # Create a client
-                client = gateway_v1beta1.GatewayServiceClient()
+                client = gateway_v1beta1.GatewayServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = httpbody_pb2.HttpBody(
                 )
 
                 # Make the request
-                response = client.patch_resource(request=request)
+                response = await client.patch_resource(request=request)
 
                 # Handle the response
                 print(response)
