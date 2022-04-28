@@ -218,9 +218,9 @@ class LanguageServiceAsyncClient:
 
             from google.cloud import language_v1
 
-            def sample_analyze_sentiment():
+            async def sample_analyze_sentiment():
                 # Create a client
-                client = language_v1.LanguageServiceClient()
+                client = language_v1.LanguageServiceAsyncClient()
 
                 # Initialize request argument(s)
                 document = language_v1.Document()
@@ -231,7 +231,7 @@ class LanguageServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.analyze_sentiment(request=request)
+                response = await client.analyze_sentiment(request=request)
 
                 # Handle the response
                 print(response)
@@ -331,9 +331,9 @@ class LanguageServiceAsyncClient:
 
             from google.cloud import language_v1
 
-            def sample_analyze_entities():
+            async def sample_analyze_entities():
                 # Create a client
-                client = language_v1.LanguageServiceClient()
+                client = language_v1.LanguageServiceAsyncClient()
 
                 # Initialize request argument(s)
                 document = language_v1.Document()
@@ -344,7 +344,7 @@ class LanguageServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.analyze_entities(request=request)
+                response = await client.analyze_entities(request=request)
 
                 # Handle the response
                 print(response)
@@ -441,9 +441,9 @@ class LanguageServiceAsyncClient:
 
             from google.cloud import language_v1
 
-            def sample_analyze_entity_sentiment():
+            async def sample_analyze_entity_sentiment():
                 # Create a client
-                client = language_v1.LanguageServiceClient()
+                client = language_v1.LanguageServiceAsyncClient()
 
                 # Initialize request argument(s)
                 document = language_v1.Document()
@@ -454,7 +454,7 @@ class LanguageServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.analyze_entity_sentiment(request=request)
+                response = await client.analyze_entity_sentiment(request=request)
 
                 # Handle the response
                 print(response)
@@ -553,9 +553,9 @@ class LanguageServiceAsyncClient:
 
             from google.cloud import language_v1
 
-            def sample_analyze_syntax():
+            async def sample_analyze_syntax():
                 # Create a client
-                client = language_v1.LanguageServiceClient()
+                client = language_v1.LanguageServiceAsyncClient()
 
                 # Initialize request argument(s)
                 document = language_v1.Document()
@@ -566,7 +566,7 @@ class LanguageServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.analyze_syntax(request=request)
+                response = await client.analyze_syntax(request=request)
 
                 # Handle the response
                 print(response)
@@ -659,9 +659,9 @@ class LanguageServiceAsyncClient:
 
             from google.cloud import language_v1
 
-            def sample_classify_text():
+            async def sample_classify_text():
                 # Create a client
-                client = language_v1.LanguageServiceClient()
+                client = language_v1.LanguageServiceAsyncClient()
 
                 # Initialize request argument(s)
                 document = language_v1.Document()
@@ -672,7 +672,7 @@ class LanguageServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.classify_text(request=request)
+                response = await client.classify_text(request=request)
 
                 # Handle the response
                 print(response)
@@ -763,9 +763,9 @@ class LanguageServiceAsyncClient:
 
             from google.cloud import language_v1
 
-            def sample_annotate_text():
+            async def sample_annotate_text():
                 # Create a client
-                client = language_v1.LanguageServiceClient()
+                client = language_v1.LanguageServiceAsyncClient()
 
                 # Initialize request argument(s)
                 document = language_v1.Document()
@@ -776,7 +776,7 @@ class LanguageServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.annotate_text(request=request)
+                response = await client.annotate_text(request=request)
 
                 # Handle the response
                 print(response)
