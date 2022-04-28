@@ -513,10 +513,9 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
         r"""Lists EndpointPolicies in a given project and
         location.
 
-
         .. code-block:: python
 
-                    from google.cloud import network_services_v1
+            from google.cloud import network_services_v1
 
             def sample_list_endpoint_policies():
                 # Create a client
@@ -625,7 +624,7 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
 
         .. code-block:: python
 
-                    from google.cloud import network_services_v1
+            from google.cloud import network_services_v1
 
             def sample_get_endpoint_policy():
                 # Create a client
@@ -726,10 +725,9 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
         r"""Creates a new EndpointPolicy in a given project and
         location.
 
-
         .. code-block:: python
 
-                    from google.cloud import network_services_v1
+            from google.cloud import network_services_v1
 
             def sample_create_endpoint_policy():
                 # Create a client
@@ -867,7 +865,7 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
 
         .. code-block:: python
 
-                    from google.cloud import network_services_v1
+            from google.cloud import network_services_v1
 
             def sample_update_endpoint_policy():
                 # Create a client
@@ -999,7 +997,7 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
 
         .. code-block:: python
 
-                    from google.cloud import network_services_v1
+            from google.cloud import network_services_v1
 
             def sample_delete_endpoint_policy():
                 # Create a client

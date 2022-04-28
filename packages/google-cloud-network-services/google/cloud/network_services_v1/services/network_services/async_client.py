@@ -239,14 +239,13 @@ class NetworkServicesAsyncClient:
         r"""Lists EndpointPolicies in a given project and
         location.
 
-
         .. code-block:: python
 
             from google.cloud import network_services_v1
 
-            def sample_list_endpoint_policies():
+            async def sample_list_endpoint_policies():
                 # Create a client
-                client = network_services_v1.NetworkServicesClient()
+                client = network_services_v1.NetworkServicesAsyncClient()
 
                 # Initialize request argument(s)
                 request = network_services_v1.ListEndpointPoliciesRequest(
@@ -257,7 +256,7 @@ class NetworkServicesAsyncClient:
                 page_result = client.list_endpoint_policies(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -353,9 +352,9 @@ class NetworkServicesAsyncClient:
 
             from google.cloud import network_services_v1
 
-            def sample_get_endpoint_policy():
+            async def sample_get_endpoint_policy():
                 # Create a client
-                client = network_services_v1.NetworkServicesClient()
+                client = network_services_v1.NetworkServicesAsyncClient()
 
                 # Initialize request argument(s)
                 request = network_services_v1.GetEndpointPolicyRequest(
@@ -363,7 +362,7 @@ class NetworkServicesAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_endpoint_policy(request=request)
+                response = await client.get_endpoint_policy(request=request)
 
                 # Handle the response
                 print(response)
@@ -452,14 +451,13 @@ class NetworkServicesAsyncClient:
         r"""Creates a new EndpointPolicy in a given project and
         location.
 
-
         .. code-block:: python
 
             from google.cloud import network_services_v1
 
-            def sample_create_endpoint_policy():
+            async def sample_create_endpoint_policy():
                 # Create a client
-                client = network_services_v1.NetworkServicesClient()
+                client = network_services_v1.NetworkServicesAsyncClient()
 
                 # Initialize request argument(s)
                 endpoint_policy = network_services_v1.EndpointPolicy()
@@ -477,7 +475,7 @@ class NetworkServicesAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -595,9 +593,9 @@ class NetworkServicesAsyncClient:
 
             from google.cloud import network_services_v1
 
-            def sample_update_endpoint_policy():
+            async def sample_update_endpoint_policy():
                 # Create a client
-                client = network_services_v1.NetworkServicesClient()
+                client = network_services_v1.NetworkServicesAsyncClient()
 
                 # Initialize request argument(s)
                 endpoint_policy = network_services_v1.EndpointPolicy()
@@ -613,7 +611,7 @@ class NetworkServicesAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -727,9 +725,9 @@ class NetworkServicesAsyncClient:
 
             from google.cloud import network_services_v1
 
-            def sample_delete_endpoint_policy():
+            async def sample_delete_endpoint_policy():
                 # Create a client
-                client = network_services_v1.NetworkServicesClient()
+                client = network_services_v1.NetworkServicesAsyncClient()
 
                 # Initialize request argument(s)
                 request = network_services_v1.DeleteEndpointPolicyRequest(
@@ -741,7 +739,7 @@ class NetworkServicesAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
