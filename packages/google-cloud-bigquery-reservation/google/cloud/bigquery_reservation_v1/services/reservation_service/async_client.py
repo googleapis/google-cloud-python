@@ -258,9 +258,9 @@ class ReservationServiceAsyncClient:
 
             from google.cloud import bigquery_reservation_v1
 
-            def sample_create_reservation():
+            async def sample_create_reservation():
                 # Create a client
-                client = bigquery_reservation_v1.ReservationServiceClient()
+                client = bigquery_reservation_v1.ReservationServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = bigquery_reservation_v1.CreateReservationRequest(
@@ -268,7 +268,7 @@ class ReservationServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.create_reservation(request=request)
+                response = await client.create_reservation(request=request)
 
                 # Handle the response
                 print(response)
@@ -375,9 +375,9 @@ class ReservationServiceAsyncClient:
 
             from google.cloud import bigquery_reservation_v1
 
-            def sample_list_reservations():
+            async def sample_list_reservations():
                 # Create a client
-                client = bigquery_reservation_v1.ReservationServiceClient()
+                client = bigquery_reservation_v1.ReservationServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = bigquery_reservation_v1.ListReservationsRequest(
@@ -388,7 +388,7 @@ class ReservationServiceAsyncClient:
                 page_result = client.list_reservations(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -493,9 +493,9 @@ class ReservationServiceAsyncClient:
 
             from google.cloud import bigquery_reservation_v1
 
-            def sample_get_reservation():
+            async def sample_get_reservation():
                 # Create a client
-                client = bigquery_reservation_v1.ReservationServiceClient()
+                client = bigquery_reservation_v1.ReservationServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = bigquery_reservation_v1.GetReservationRequest(
@@ -503,7 +503,7 @@ class ReservationServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_reservation(request=request)
+                response = await client.get_reservation(request=request)
 
                 # Handle the response
                 print(response)
@@ -601,9 +601,9 @@ class ReservationServiceAsyncClient:
 
             from google.cloud import bigquery_reservation_v1
 
-            def sample_delete_reservation():
+            async def sample_delete_reservation():
                 # Create a client
-                client = bigquery_reservation_v1.ReservationServiceClient()
+                client = bigquery_reservation_v1.ReservationServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = bigquery_reservation_v1.DeleteReservationRequest(
@@ -611,7 +611,7 @@ class ReservationServiceAsyncClient:
                 )
 
                 # Make the request
-                client.delete_reservation(request=request)
+                await client.delete_reservation(request=request)
 
         Args:
             request (Union[google.cloud.bigquery_reservation_v1.types.DeleteReservationRequest, dict]):
@@ -696,16 +696,16 @@ class ReservationServiceAsyncClient:
 
             from google.cloud import bigquery_reservation_v1
 
-            def sample_update_reservation():
+            async def sample_update_reservation():
                 # Create a client
-                client = bigquery_reservation_v1.ReservationServiceClient()
+                client = bigquery_reservation_v1.ReservationServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = bigquery_reservation_v1.UpdateReservationRequest(
                 )
 
                 # Make the request
-                response = client.update_reservation(request=request)
+                response = await client.update_reservation(request=request)
 
                 # Handle the response
                 print(response)
@@ -800,9 +800,9 @@ class ReservationServiceAsyncClient:
 
             from google.cloud import bigquery_reservation_v1
 
-            def sample_create_capacity_commitment():
+            async def sample_create_capacity_commitment():
                 # Create a client
-                client = bigquery_reservation_v1.ReservationServiceClient()
+                client = bigquery_reservation_v1.ReservationServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = bigquery_reservation_v1.CreateCapacityCommitmentRequest(
@@ -810,7 +810,7 @@ class ReservationServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.create_capacity_commitment(request=request)
+                response = await client.create_capacity_commitment(request=request)
 
                 # Handle the response
                 print(response)
@@ -917,9 +917,9 @@ class ReservationServiceAsyncClient:
 
             from google.cloud import bigquery_reservation_v1
 
-            def sample_list_capacity_commitments():
+            async def sample_list_capacity_commitments():
                 # Create a client
-                client = bigquery_reservation_v1.ReservationServiceClient()
+                client = bigquery_reservation_v1.ReservationServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = bigquery_reservation_v1.ListCapacityCommitmentsRequest(
@@ -930,7 +930,7 @@ class ReservationServiceAsyncClient:
                 page_result = client.list_capacity_commitments(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -1035,9 +1035,9 @@ class ReservationServiceAsyncClient:
 
             from google.cloud import bigquery_reservation_v1
 
-            def sample_get_capacity_commitment():
+            async def sample_get_capacity_commitment():
                 # Create a client
-                client = bigquery_reservation_v1.ReservationServiceClient()
+                client = bigquery_reservation_v1.ReservationServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = bigquery_reservation_v1.GetCapacityCommitmentRequest(
@@ -1045,7 +1045,7 @@ class ReservationServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_capacity_commitment(request=request)
+                response = await client.get_capacity_commitment(request=request)
 
                 # Handle the response
                 print(response)
@@ -1155,9 +1155,9 @@ class ReservationServiceAsyncClient:
 
             from google.cloud import bigquery_reservation_v1
 
-            def sample_delete_capacity_commitment():
+            async def sample_delete_capacity_commitment():
                 # Create a client
-                client = bigquery_reservation_v1.ReservationServiceClient()
+                client = bigquery_reservation_v1.ReservationServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = bigquery_reservation_v1.DeleteCapacityCommitmentRequest(
@@ -1165,7 +1165,7 @@ class ReservationServiceAsyncClient:
                 )
 
                 # Make the request
-                client.delete_capacity_commitment(request=request)
+                await client.delete_capacity_commitment(request=request)
 
         Args:
             request (Union[google.cloud.bigquery_reservation_v1.types.DeleteCapacityCommitmentRequest, dict]):
@@ -1257,16 +1257,16 @@ class ReservationServiceAsyncClient:
 
             from google.cloud import bigquery_reservation_v1
 
-            def sample_update_capacity_commitment():
+            async def sample_update_capacity_commitment():
                 # Create a client
-                client = bigquery_reservation_v1.ReservationServiceClient()
+                client = bigquery_reservation_v1.ReservationServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = bigquery_reservation_v1.UpdateCapacityCommitmentRequest(
                 )
 
                 # Make the request
-                response = client.update_capacity_commitment(request=request)
+                response = await client.update_capacity_commitment(request=request)
 
                 # Handle the response
                 print(response)
@@ -1383,9 +1383,9 @@ class ReservationServiceAsyncClient:
 
             from google.cloud import bigquery_reservation_v1
 
-            def sample_split_capacity_commitment():
+            async def sample_split_capacity_commitment():
                 # Create a client
-                client = bigquery_reservation_v1.ReservationServiceClient()
+                client = bigquery_reservation_v1.ReservationServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = bigquery_reservation_v1.SplitCapacityCommitmentRequest(
@@ -1393,7 +1393,7 @@ class ReservationServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.split_capacity_commitment(request=request)
+                response = await client.split_capacity_commitment(request=request)
 
                 # Handle the response
                 print(response)
@@ -1497,16 +1497,16 @@ class ReservationServiceAsyncClient:
 
             from google.cloud import bigquery_reservation_v1
 
-            def sample_merge_capacity_commitments():
+            async def sample_merge_capacity_commitments():
                 # Create a client
-                client = bigquery_reservation_v1.ReservationServiceClient()
+                client = bigquery_reservation_v1.ReservationServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = bigquery_reservation_v1.MergeCapacityCommitmentsRequest(
                 )
 
                 # Make the request
-                response = client.merge_capacity_commitments(request=request)
+                response = await client.merge_capacity_commitments(request=request)
 
                 # Handle the response
                 print(response)
@@ -1655,9 +1655,9 @@ class ReservationServiceAsyncClient:
 
             from google.cloud import bigquery_reservation_v1
 
-            def sample_create_assignment():
+            async def sample_create_assignment():
                 # Create a client
-                client = bigquery_reservation_v1.ReservationServiceClient()
+                client = bigquery_reservation_v1.ReservationServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = bigquery_reservation_v1.CreateAssignmentRequest(
@@ -1665,7 +1665,7 @@ class ReservationServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.create_assignment(request=request)
+                response = await client.create_assignment(request=request)
 
                 # Handle the response
                 print(response)
@@ -1782,9 +1782,9 @@ class ReservationServiceAsyncClient:
 
             from google.cloud import bigquery_reservation_v1
 
-            def sample_list_assignments():
+            async def sample_list_assignments():
                 # Create a client
-                client = bigquery_reservation_v1.ReservationServiceClient()
+                client = bigquery_reservation_v1.ReservationServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = bigquery_reservation_v1.ListAssignmentsRequest(
@@ -1795,7 +1795,7 @@ class ReservationServiceAsyncClient:
                 page_result = client.list_assignments(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -1920,9 +1920,9 @@ class ReservationServiceAsyncClient:
 
             from google.cloud import bigquery_reservation_v1
 
-            def sample_delete_assignment():
+            async def sample_delete_assignment():
                 # Create a client
-                client = bigquery_reservation_v1.ReservationServiceClient()
+                client = bigquery_reservation_v1.ReservationServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = bigquery_reservation_v1.DeleteAssignmentRequest(
@@ -1930,7 +1930,7 @@ class ReservationServiceAsyncClient:
                 )
 
                 # Make the request
-                client.delete_assignment(request=request)
+                await client.delete_assignment(request=request)
 
         Args:
             request (Union[google.cloud.bigquery_reservation_v1.types.DeleteAssignmentRequest, dict]):
@@ -2040,9 +2040,9 @@ class ReservationServiceAsyncClient:
 
             from google.cloud import bigquery_reservation_v1
 
-            def sample_search_assignments():
+            async def sample_search_assignments():
                 # Create a client
-                client = bigquery_reservation_v1.ReservationServiceClient()
+                client = bigquery_reservation_v1.ReservationServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = bigquery_reservation_v1.SearchAssignmentsRequest(
@@ -2053,7 +2053,7 @@ class ReservationServiceAsyncClient:
                 page_result = client.search_assignments(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -2203,9 +2203,9 @@ class ReservationServiceAsyncClient:
 
             from google.cloud import bigquery_reservation_v1
 
-            def sample_search_all_assignments():
+            async def sample_search_all_assignments():
                 # Create a client
-                client = bigquery_reservation_v1.ReservationServiceClient()
+                client = bigquery_reservation_v1.ReservationServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = bigquery_reservation_v1.SearchAllAssignmentsRequest(
@@ -2216,7 +2216,7 @@ class ReservationServiceAsyncClient:
                 page_result = client.search_all_assignments(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -2333,9 +2333,9 @@ class ReservationServiceAsyncClient:
 
             from google.cloud import bigquery_reservation_v1
 
-            def sample_move_assignment():
+            async def sample_move_assignment():
                 # Create a client
-                client = bigquery_reservation_v1.ReservationServiceClient()
+                client = bigquery_reservation_v1.ReservationServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = bigquery_reservation_v1.MoveAssignmentRequest(
@@ -2343,7 +2343,7 @@ class ReservationServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.move_assignment(request=request)
+                response = await client.move_assignment(request=request)
 
                 # Handle the response
                 print(response)
@@ -2447,16 +2447,16 @@ class ReservationServiceAsyncClient:
 
             from google.cloud import bigquery_reservation_v1
 
-            def sample_update_assignment():
+            async def sample_update_assignment():
                 # Create a client
-                client = bigquery_reservation_v1.ReservationServiceClient()
+                client = bigquery_reservation_v1.ReservationServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = bigquery_reservation_v1.UpdateAssignmentRequest(
                 )
 
                 # Make the request
-                response = client.update_assignment(request=request)
+                response = await client.update_assignment(request=request)
 
                 # Handle the response
                 print(response)
@@ -2551,9 +2551,9 @@ class ReservationServiceAsyncClient:
 
             from google.cloud import bigquery_reservation_v1
 
-            def sample_get_bi_reservation():
+            async def sample_get_bi_reservation():
                 # Create a client
-                client = bigquery_reservation_v1.ReservationServiceClient()
+                client = bigquery_reservation_v1.ReservationServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = bigquery_reservation_v1.GetBiReservationRequest(
@@ -2561,7 +2561,7 @@ class ReservationServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_bi_reservation(request=request)
+                response = await client.get_bi_reservation(request=request)
 
                 # Handle the response
                 print(response)
@@ -2663,16 +2663,16 @@ class ReservationServiceAsyncClient:
 
             from google.cloud import bigquery_reservation_v1
 
-            def sample_update_bi_reservation():
+            async def sample_update_bi_reservation():
                 # Create a client
-                client = bigquery_reservation_v1.ReservationServiceClient()
+                client = bigquery_reservation_v1.ReservationServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = bigquery_reservation_v1.UpdateBiReservationRequest(
                 )
 
                 # Make the request
-                response = client.update_bi_reservation(request=request)
+                response = await client.update_bi_reservation(request=request)
 
                 # Handle the response
                 print(response)
