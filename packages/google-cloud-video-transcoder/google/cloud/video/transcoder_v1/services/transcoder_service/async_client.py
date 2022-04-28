@@ -233,9 +233,9 @@ class TranscoderServiceAsyncClient:
 
             from google.cloud.video import transcoder_v1
 
-            def sample_create_job():
+            async def sample_create_job():
                 # Create a client
-                client = transcoder_v1.TranscoderServiceClient()
+                client = transcoder_v1.TranscoderServiceAsyncClient()
 
                 # Initialize request argument(s)
                 job = transcoder_v1.Job()
@@ -247,7 +247,7 @@ class TranscoderServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.create_job(request=request)
+                response = await client.create_job(request=request)
 
                 # Handle the response
                 print(response)
@@ -339,9 +339,9 @@ class TranscoderServiceAsyncClient:
 
             from google.cloud.video import transcoder_v1
 
-            def sample_list_jobs():
+            async def sample_list_jobs():
                 # Create a client
-                client = transcoder_v1.TranscoderServiceClient()
+                client = transcoder_v1.TranscoderServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = transcoder_v1.ListJobsRequest(
@@ -352,7 +352,7 @@ class TranscoderServiceAsyncClient:
                 page_result = client.list_jobs(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -447,9 +447,9 @@ class TranscoderServiceAsyncClient:
 
             from google.cloud.video import transcoder_v1
 
-            def sample_get_job():
+            async def sample_get_job():
                 # Create a client
-                client = transcoder_v1.TranscoderServiceClient()
+                client = transcoder_v1.TranscoderServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = transcoder_v1.GetJobRequest(
@@ -457,7 +457,7 @@ class TranscoderServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_job(request=request)
+                response = await client.get_job(request=request)
 
                 # Handle the response
                 print(response)
@@ -540,9 +540,9 @@ class TranscoderServiceAsyncClient:
 
             from google.cloud.video import transcoder_v1
 
-            def sample_delete_job():
+            async def sample_delete_job():
                 # Create a client
-                client = transcoder_v1.TranscoderServiceClient()
+                client = transcoder_v1.TranscoderServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = transcoder_v1.DeleteJobRequest(
@@ -550,7 +550,7 @@ class TranscoderServiceAsyncClient:
                 )
 
                 # Make the request
-                client.delete_job(request=request)
+                await client.delete_job(request=request)
 
         Args:
             request (Union[google.cloud.video.transcoder_v1.types.DeleteJobRequest, dict]):
@@ -625,9 +625,9 @@ class TranscoderServiceAsyncClient:
 
             from google.cloud.video import transcoder_v1
 
-            def sample_create_job_template():
+            async def sample_create_job_template():
                 # Create a client
-                client = transcoder_v1.TranscoderServiceClient()
+                client = transcoder_v1.TranscoderServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = transcoder_v1.CreateJobTemplateRequest(
@@ -636,7 +636,7 @@ class TranscoderServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.create_job_template(request=request)
+                response = await client.create_job_template(request=request)
 
                 # Handle the response
                 print(response)
@@ -743,9 +743,9 @@ class TranscoderServiceAsyncClient:
 
             from google.cloud.video import transcoder_v1
 
-            def sample_list_job_templates():
+            async def sample_list_job_templates():
                 # Create a client
-                client = transcoder_v1.TranscoderServiceClient()
+                client = transcoder_v1.TranscoderServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = transcoder_v1.ListJobTemplatesRequest(
@@ -756,7 +756,7 @@ class TranscoderServiceAsyncClient:
                 page_result = client.list_job_templates(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -851,9 +851,9 @@ class TranscoderServiceAsyncClient:
 
             from google.cloud.video import transcoder_v1
 
-            def sample_get_job_template():
+            async def sample_get_job_template():
                 # Create a client
-                client = transcoder_v1.TranscoderServiceClient()
+                client = transcoder_v1.TranscoderServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = transcoder_v1.GetJobTemplateRequest(
@@ -861,7 +861,7 @@ class TranscoderServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_job_template(request=request)
+                response = await client.get_job_template(request=request)
 
                 # Handle the response
                 print(response)
@@ -945,9 +945,9 @@ class TranscoderServiceAsyncClient:
 
             from google.cloud.video import transcoder_v1
 
-            def sample_delete_job_template():
+            async def sample_delete_job_template():
                 # Create a client
-                client = transcoder_v1.TranscoderServiceClient()
+                client = transcoder_v1.TranscoderServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = transcoder_v1.DeleteJobTemplateRequest(
@@ -955,7 +955,7 @@ class TranscoderServiceAsyncClient:
                 )
 
                 # Make the request
-                client.delete_job_template(request=request)
+                await client.delete_job_template(request=request)
 
         Args:
             request (Union[google.cloud.video.transcoder_v1.types.DeleteJobTemplateRequest, dict]):
