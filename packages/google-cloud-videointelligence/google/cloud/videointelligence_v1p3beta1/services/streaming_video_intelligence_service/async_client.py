@@ -248,9 +248,9 @@ class StreamingVideoIntelligenceServiceAsyncClient:
 
             from google.cloud import videointelligence_v1p3beta1
 
-            def sample_streaming_annotate_video():
+            async def sample_streaming_annotate_video():
                 # Create a client
-                client = videointelligence_v1p3beta1.StreamingVideoIntelligenceServiceClient()
+                client = videointelligence_v1p3beta1.StreamingVideoIntelligenceServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = videointelligence_v1p3beta1.StreamingAnnotateVideoRequest(
@@ -267,10 +267,10 @@ class StreamingVideoIntelligenceServiceAsyncClient:
                         yield request
 
                 # Make the request
-                stream = client.streaming_annotate_video(requests=request_generator())
+                stream = await client.streaming_annotate_video(requests=request_generator())
 
                 # Handle the response
-                for response in stream:
+                async for response in stream:
                     print(response)
 
         Args:

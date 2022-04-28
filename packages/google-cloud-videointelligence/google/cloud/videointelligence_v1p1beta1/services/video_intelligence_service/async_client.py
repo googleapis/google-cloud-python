@@ -228,9 +228,9 @@ class VideoIntelligenceServiceAsyncClient:
 
             from google.cloud import videointelligence_v1p1beta1
 
-            def sample_annotate_video():
+            async def sample_annotate_video():
                 # Create a client
-                client = videointelligence_v1p1beta1.VideoIntelligenceServiceClient()
+                client = videointelligence_v1p1beta1.VideoIntelligenceServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = videointelligence_v1p1beta1.AnnotateVideoRequest(
@@ -242,7 +242,7 @@ class VideoIntelligenceServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)

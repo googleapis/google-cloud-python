@@ -812,7 +812,29 @@ class ObjectTrackingFrame(proto.Message):
 class ObjectTrackingAnnotation(proto.Message):
     r"""Annotations corresponding to one tracked object.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
+        segment (google.cloud.videointelligence_v1p2beta1.types.VideoSegment):
+            Non-streaming batch mode ONLY.
+            Each object track corresponds to one video
+            segment where it appears.
+
+            This field is a member of `oneof`_ ``track_info``.
+        track_id (int):
+            Streaming mode ONLY. In streaming mode, we do not know the
+            end time of a tracked object before it is completed. Hence,
+            there is no VideoSegment info returned. Instead, we provide
+            a unique identifiable integer track_id so that the customers
+            can correlate the results of the ongoing
+            ObjectTrackAnnotation of the same track_id over time.
+
+            This field is a member of `oneof`_ ``track_info``.
         entity (google.cloud.videointelligence_v1p2beta1.types.Entity):
             Entity to specify the object category that
             this track is labeled as.
@@ -822,11 +844,19 @@ class ObjectTrackingAnnotation(proto.Message):
         frames (Sequence[google.cloud.videointelligence_v1p2beta1.types.ObjectTrackingFrame]):
             Information corresponding to all frames where
             this object track appears.
-        segment (google.cloud.videointelligence_v1p2beta1.types.VideoSegment):
-            Each object track corresponds to one video
-            segment where it appears.
     """
 
+    segment = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        oneof="track_info",
+        message="VideoSegment",
+    )
+    track_id = proto.Field(
+        proto.INT64,
+        number=5,
+        oneof="track_info",
+    )
     entity = proto.Field(
         proto.MESSAGE,
         number=1,
@@ -840,11 +870,6 @@ class ObjectTrackingAnnotation(proto.Message):
         proto.MESSAGE,
         number=2,
         message="ObjectTrackingFrame",
-    )
-    segment = proto.Field(
-        proto.MESSAGE,
-        number=3,
-        message="VideoSegment",
     )
 
 
