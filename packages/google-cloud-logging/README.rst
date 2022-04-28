@@ -34,6 +34,14 @@ In order to use this library, you first need to go through the following steps:
 .. _Enable the Cloud Logging API.:  https://cloud.google.com/logging
 .. _Setup Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
+For an interactive walkthrough on how to use this library in a python application, click the Guide Me button below:
+
+.. raw:: html
+   
+   <a href ="https://console.cloud.google.com/?walkthrough_id=logging__logging-python">
+      <img src="docs/_static/guide-me.svg">
+   </a>
+
 Installation
 ~~~~~~~~~~~~
 
