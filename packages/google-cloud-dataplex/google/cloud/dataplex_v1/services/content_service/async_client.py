@@ -226,9 +226,9 @@ class ContentServiceAsyncClient:
 
             from google.cloud import dataplex_v1
 
-            def sample_create_content():
+            async def sample_create_content():
                 # Create a client
-                client = dataplex_v1.ContentServiceClient()
+                client = dataplex_v1.ContentServiceAsyncClient()
 
                 # Initialize request argument(s)
                 content = dataplex_v1.Content()
@@ -242,7 +242,7 @@ class ContentServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.create_content(request=request)
+                response = await client.create_content(request=request)
 
                 # Handle the response
                 print(response)
@@ -334,9 +334,9 @@ class ContentServiceAsyncClient:
 
             from google.cloud import dataplex_v1
 
-            def sample_update_content():
+            async def sample_update_content():
                 # Create a client
-                client = dataplex_v1.ContentServiceClient()
+                client = dataplex_v1.ContentServiceAsyncClient()
 
                 # Initialize request argument(s)
                 content = dataplex_v1.Content()
@@ -349,7 +349,7 @@ class ContentServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.update_content(request=request)
+                response = await client.update_content(request=request)
 
                 # Handle the response
                 print(response)
@@ -442,9 +442,9 @@ class ContentServiceAsyncClient:
 
             from google.cloud import dataplex_v1
 
-            def sample_delete_content():
+            async def sample_delete_content():
                 # Create a client
-                client = dataplex_v1.ContentServiceClient()
+                client = dataplex_v1.ContentServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = dataplex_v1.DeleteContentRequest(
@@ -452,7 +452,7 @@ class ContentServiceAsyncClient:
                 )
 
                 # Make the request
-                client.delete_content(request=request)
+                await client.delete_content(request=request)
 
         Args:
             request (Union[google.cloud.dataplex_v1.types.DeleteContentRequest, dict]):
@@ -524,9 +524,9 @@ class ContentServiceAsyncClient:
 
             from google.cloud import dataplex_v1
 
-            def sample_get_content():
+            async def sample_get_content():
                 # Create a client
-                client = dataplex_v1.ContentServiceClient()
+                client = dataplex_v1.ContentServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = dataplex_v1.GetContentRequest(
@@ -534,7 +534,7 @@ class ContentServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_content(request=request)
+                response = await client.get_content(request=request)
 
                 # Handle the response
                 print(response)
@@ -618,9 +618,9 @@ class ContentServiceAsyncClient:
 
             from google.cloud import dataplex_v1
 
-            def sample_list_content():
+            async def sample_list_content():
                 # Create a client
-                client = dataplex_v1.ContentServiceClient()
+                client = dataplex_v1.ContentServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = dataplex_v1.ListContentRequest(
@@ -631,7 +631,7 @@ class ContentServiceAsyncClient:
                 page_result = client.list_content(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:

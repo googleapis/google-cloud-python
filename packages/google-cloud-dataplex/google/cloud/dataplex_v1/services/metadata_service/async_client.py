@@ -227,9 +227,9 @@ class MetadataServiceAsyncClient:
 
             from google.cloud import dataplex_v1
 
-            def sample_create_entity():
+            async def sample_create_entity():
                 # Create a client
-                client = dataplex_v1.MetadataServiceClient()
+                client = dataplex_v1.MetadataServiceAsyncClient()
 
                 # Initialize request argument(s)
                 entity = dataplex_v1.Entity()
@@ -247,7 +247,7 @@ class MetadataServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.create_entity(request=request)
+                response = await client.create_entity(request=request)
 
                 # Handle the response
                 print(response)
@@ -338,9 +338,9 @@ class MetadataServiceAsyncClient:
 
             from google.cloud import dataplex_v1
 
-            def sample_update_entity():
+            async def sample_update_entity():
                 # Create a client
-                client = dataplex_v1.MetadataServiceClient()
+                client = dataplex_v1.MetadataServiceAsyncClient()
 
                 # Initialize request argument(s)
                 entity = dataplex_v1.Entity()
@@ -357,7 +357,7 @@ class MetadataServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.update_entity(request=request)
+                response = await client.update_entity(request=request)
 
                 # Handle the response
                 print(response)
@@ -426,9 +426,9 @@ class MetadataServiceAsyncClient:
 
             from google.cloud import dataplex_v1
 
-            def sample_delete_entity():
+            async def sample_delete_entity():
                 # Create a client
-                client = dataplex_v1.MetadataServiceClient()
+                client = dataplex_v1.MetadataServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = dataplex_v1.DeleteEntityRequest(
@@ -437,7 +437,7 @@ class MetadataServiceAsyncClient:
                 )
 
                 # Make the request
-                client.delete_entity(request=request)
+                await client.delete_entity(request=request)
 
         Args:
             request (Union[google.cloud.dataplex_v1.types.DeleteEntityRequest, dict]):
@@ -509,9 +509,9 @@ class MetadataServiceAsyncClient:
 
             from google.cloud import dataplex_v1
 
-            def sample_get_entity():
+            async def sample_get_entity():
                 # Create a client
-                client = dataplex_v1.MetadataServiceClient()
+                client = dataplex_v1.MetadataServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = dataplex_v1.GetEntityRequest(
@@ -519,7 +519,7 @@ class MetadataServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_entity(request=request)
+                response = await client.get_entity(request=request)
 
                 # Handle the response
                 print(response)
@@ -612,9 +612,9 @@ class MetadataServiceAsyncClient:
 
             from google.cloud import dataplex_v1
 
-            def sample_list_entities():
+            async def sample_list_entities():
                 # Create a client
-                client = dataplex_v1.MetadataServiceClient()
+                client = dataplex_v1.MetadataServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = dataplex_v1.ListEntitiesRequest(
@@ -626,7 +626,7 @@ class MetadataServiceAsyncClient:
                 page_result = client.list_entities(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -729,9 +729,9 @@ class MetadataServiceAsyncClient:
 
             from google.cloud import dataplex_v1
 
-            def sample_create_partition():
+            async def sample_create_partition():
                 # Create a client
-                client = dataplex_v1.MetadataServiceClient()
+                client = dataplex_v1.MetadataServiceAsyncClient()
 
                 # Initialize request argument(s)
                 partition = dataplex_v1.Partition()
@@ -744,7 +744,7 @@ class MetadataServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.create_partition(request=request)
+                response = await client.create_partition(request=request)
 
                 # Handle the response
                 print(response)
@@ -835,9 +835,9 @@ class MetadataServiceAsyncClient:
 
             from google.cloud import dataplex_v1
 
-            def sample_delete_partition():
+            async def sample_delete_partition():
                 # Create a client
-                client = dataplex_v1.MetadataServiceClient()
+                client = dataplex_v1.MetadataServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = dataplex_v1.DeletePartitionRequest(
@@ -845,7 +845,7 @@ class MetadataServiceAsyncClient:
                 )
 
                 # Make the request
-                client.delete_partition(request=request)
+                await client.delete_partition(request=request)
 
         Args:
             request (Union[google.cloud.dataplex_v1.types.DeletePartitionRequest, dict]):
@@ -920,9 +920,9 @@ class MetadataServiceAsyncClient:
 
             from google.cloud import dataplex_v1
 
-            def sample_get_partition():
+            async def sample_get_partition():
                 # Create a client
-                client = dataplex_v1.MetadataServiceClient()
+                client = dataplex_v1.MetadataServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = dataplex_v1.GetPartitionRequest(
@@ -930,7 +930,7 @@ class MetadataServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_partition(request=request)
+                response = await client.get_partition(request=request)
 
                 # Handle the response
                 print(response)
@@ -1026,9 +1026,9 @@ class MetadataServiceAsyncClient:
 
             from google.cloud import dataplex_v1
 
-            def sample_list_partitions():
+            async def sample_list_partitions():
                 # Create a client
-                client = dataplex_v1.MetadataServiceClient()
+                client = dataplex_v1.MetadataServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = dataplex_v1.ListPartitionsRequest(
@@ -1039,7 +1039,7 @@ class MetadataServiceAsyncClient:
                 page_result = client.list_partitions(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:

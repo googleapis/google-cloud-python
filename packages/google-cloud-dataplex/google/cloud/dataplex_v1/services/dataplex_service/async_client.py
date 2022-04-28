@@ -246,9 +246,9 @@ class DataplexServiceAsyncClient:
 
             from google.cloud import dataplex_v1
 
-            def sample_create_lake():
+            async def sample_create_lake():
                 # Create a client
-                client = dataplex_v1.DataplexServiceClient()
+                client = dataplex_v1.DataplexServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = dataplex_v1.CreateLakeRequest(
@@ -261,7 +261,7 @@ class DataplexServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -392,9 +392,9 @@ class DataplexServiceAsyncClient:
 
             from google.cloud import dataplex_v1
 
-            def sample_update_lake():
+            async def sample_update_lake():
                 # Create a client
-                client = dataplex_v1.DataplexServiceClient()
+                client = dataplex_v1.DataplexServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = dataplex_v1.UpdateLakeRequest(
@@ -405,7 +405,7 @@ class DataplexServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -519,9 +519,9 @@ class DataplexServiceAsyncClient:
 
             from google.cloud import dataplex_v1
 
-            def sample_delete_lake():
+            async def sample_delete_lake():
                 # Create a client
-                client = dataplex_v1.DataplexServiceClient()
+                client = dataplex_v1.DataplexServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = dataplex_v1.DeleteLakeRequest(
@@ -533,7 +533,7 @@ class DataplexServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -638,9 +638,9 @@ class DataplexServiceAsyncClient:
 
             from google.cloud import dataplex_v1
 
-            def sample_list_lakes():
+            async def sample_list_lakes():
                 # Create a client
-                client = dataplex_v1.DataplexServiceClient()
+                client = dataplex_v1.DataplexServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = dataplex_v1.ListLakesRequest(
@@ -651,7 +651,7 @@ class DataplexServiceAsyncClient:
                 page_result = client.list_lakes(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -755,9 +755,9 @@ class DataplexServiceAsyncClient:
 
             from google.cloud import dataplex_v1
 
-            def sample_get_lake():
+            async def sample_get_lake():
                 # Create a client
-                client = dataplex_v1.DataplexServiceClient()
+                client = dataplex_v1.DataplexServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = dataplex_v1.GetLakeRequest(
@@ -765,7 +765,7 @@ class DataplexServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_lake(request=request)
+                response = await client.get_lake(request=request)
 
                 # Handle the response
                 print(response)
@@ -872,9 +872,9 @@ class DataplexServiceAsyncClient:
 
             from google.cloud import dataplex_v1
 
-            def sample_list_lake_actions():
+            async def sample_list_lake_actions():
                 # Create a client
-                client = dataplex_v1.DataplexServiceClient()
+                client = dataplex_v1.DataplexServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = dataplex_v1.ListLakeActionsRequest(
@@ -885,7 +885,7 @@ class DataplexServiceAsyncClient:
                 page_result = client.list_lake_actions(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -989,9 +989,9 @@ class DataplexServiceAsyncClient:
 
             from google.cloud import dataplex_v1
 
-            def sample_create_zone():
+            async def sample_create_zone():
                 # Create a client
-                client = dataplex_v1.DataplexServiceClient()
+                client = dataplex_v1.DataplexServiceAsyncClient()
 
                 # Initialize request argument(s)
                 zone = dataplex_v1.Zone()
@@ -1009,7 +1009,7 @@ class DataplexServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1134,9 +1134,9 @@ class DataplexServiceAsyncClient:
 
             from google.cloud import dataplex_v1
 
-            def sample_update_zone():
+            async def sample_update_zone():
                 # Create a client
-                client = dataplex_v1.DataplexServiceClient()
+                client = dataplex_v1.DataplexServiceAsyncClient()
 
                 # Initialize request argument(s)
                 zone = dataplex_v1.Zone()
@@ -1152,7 +1152,7 @@ class DataplexServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1259,9 +1259,9 @@ class DataplexServiceAsyncClient:
 
             from google.cloud import dataplex_v1
 
-            def sample_delete_zone():
+            async def sample_delete_zone():
                 # Create a client
-                client = dataplex_v1.DataplexServiceClient()
+                client = dataplex_v1.DataplexServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = dataplex_v1.DeleteZoneRequest(
@@ -1273,7 +1273,7 @@ class DataplexServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1378,9 +1378,9 @@ class DataplexServiceAsyncClient:
 
             from google.cloud import dataplex_v1
 
-            def sample_list_zones():
+            async def sample_list_zones():
                 # Create a client
-                client = dataplex_v1.DataplexServiceClient()
+                client = dataplex_v1.DataplexServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = dataplex_v1.ListZonesRequest(
@@ -1391,7 +1391,7 @@ class DataplexServiceAsyncClient:
                 page_result = client.list_zones(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -1493,9 +1493,9 @@ class DataplexServiceAsyncClient:
 
             from google.cloud import dataplex_v1
 
-            def sample_get_zone():
+            async def sample_get_zone():
                 # Create a client
-                client = dataplex_v1.DataplexServiceClient()
+                client = dataplex_v1.DataplexServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = dataplex_v1.GetZoneRequest(
@@ -1503,7 +1503,7 @@ class DataplexServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_zone(request=request)
+                response = await client.get_zone(request=request)
 
                 # Handle the response
                 print(response)
@@ -1602,9 +1602,9 @@ class DataplexServiceAsyncClient:
 
             from google.cloud import dataplex_v1
 
-            def sample_list_zone_actions():
+            async def sample_list_zone_actions():
                 # Create a client
-                client = dataplex_v1.DataplexServiceClient()
+                client = dataplex_v1.DataplexServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = dataplex_v1.ListZoneActionsRequest(
@@ -1615,7 +1615,7 @@ class DataplexServiceAsyncClient:
                 page_result = client.list_zone_actions(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -1719,9 +1719,9 @@ class DataplexServiceAsyncClient:
 
             from google.cloud import dataplex_v1
 
-            def sample_create_asset():
+            async def sample_create_asset():
                 # Create a client
-                client = dataplex_v1.DataplexServiceClient()
+                client = dataplex_v1.DataplexServiceAsyncClient()
 
                 # Initialize request argument(s)
                 asset = dataplex_v1.Asset()
@@ -1738,7 +1738,7 @@ class DataplexServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1857,9 +1857,9 @@ class DataplexServiceAsyncClient:
 
             from google.cloud import dataplex_v1
 
-            def sample_update_asset():
+            async def sample_update_asset():
                 # Create a client
-                client = dataplex_v1.DataplexServiceClient()
+                client = dataplex_v1.DataplexServiceAsyncClient()
 
                 # Initialize request argument(s)
                 asset = dataplex_v1.Asset()
@@ -1874,7 +1874,7 @@ class DataplexServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1979,9 +1979,9 @@ class DataplexServiceAsyncClient:
 
             from google.cloud import dataplex_v1
 
-            def sample_delete_asset():
+            async def sample_delete_asset():
                 # Create a client
-                client = dataplex_v1.DataplexServiceClient()
+                client = dataplex_v1.DataplexServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = dataplex_v1.DeleteAssetRequest(
@@ -1993,7 +1993,7 @@ class DataplexServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2098,9 +2098,9 @@ class DataplexServiceAsyncClient:
 
             from google.cloud import dataplex_v1
 
-            def sample_list_assets():
+            async def sample_list_assets():
                 # Create a client
-                client = dataplex_v1.DataplexServiceClient()
+                client = dataplex_v1.DataplexServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = dataplex_v1.ListAssetsRequest(
@@ -2111,7 +2111,7 @@ class DataplexServiceAsyncClient:
                 page_result = client.list_assets(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -2213,9 +2213,9 @@ class DataplexServiceAsyncClient:
 
             from google.cloud import dataplex_v1
 
-            def sample_get_asset():
+            async def sample_get_asset():
                 # Create a client
-                client = dataplex_v1.DataplexServiceClient()
+                client = dataplex_v1.DataplexServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = dataplex_v1.GetAssetRequest(
@@ -2223,7 +2223,7 @@ class DataplexServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_asset(request=request)
+                response = await client.get_asset(request=request)
 
                 # Handle the response
                 print(response)
@@ -2317,9 +2317,9 @@ class DataplexServiceAsyncClient:
 
             from google.cloud import dataplex_v1
 
-            def sample_list_asset_actions():
+            async def sample_list_asset_actions():
                 # Create a client
-                client = dataplex_v1.DataplexServiceClient()
+                client = dataplex_v1.DataplexServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = dataplex_v1.ListAssetActionsRequest(
@@ -2330,7 +2330,7 @@ class DataplexServiceAsyncClient:
                 page_result = client.list_asset_actions(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -2434,9 +2434,9 @@ class DataplexServiceAsyncClient:
 
             from google.cloud import dataplex_v1
 
-            def sample_create_task():
+            async def sample_create_task():
                 # Create a client
-                client = dataplex_v1.DataplexServiceClient()
+                client = dataplex_v1.DataplexServiceAsyncClient()
 
                 # Initialize request argument(s)
                 task = dataplex_v1.Task()
@@ -2456,7 +2456,7 @@ class DataplexServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2566,9 +2566,9 @@ class DataplexServiceAsyncClient:
 
             from google.cloud import dataplex_v1
 
-            def sample_update_task():
+            async def sample_update_task():
                 # Create a client
-                client = dataplex_v1.DataplexServiceClient()
+                client = dataplex_v1.DataplexServiceAsyncClient()
 
                 # Initialize request argument(s)
                 task = dataplex_v1.Task()
@@ -2586,7 +2586,7 @@ class DataplexServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2690,9 +2690,9 @@ class DataplexServiceAsyncClient:
 
             from google.cloud import dataplex_v1
 
-            def sample_delete_task():
+            async def sample_delete_task():
                 # Create a client
-                client = dataplex_v1.DataplexServiceClient()
+                client = dataplex_v1.DataplexServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = dataplex_v1.DeleteTaskRequest(
@@ -2704,7 +2704,7 @@ class DataplexServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2809,9 +2809,9 @@ class DataplexServiceAsyncClient:
 
             from google.cloud import dataplex_v1
 
-            def sample_list_tasks():
+            async def sample_list_tasks():
                 # Create a client
-                client = dataplex_v1.DataplexServiceClient()
+                client = dataplex_v1.DataplexServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = dataplex_v1.ListTasksRequest(
@@ -2822,7 +2822,7 @@ class DataplexServiceAsyncClient:
                 page_result = client.list_tasks(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -2924,9 +2924,9 @@ class DataplexServiceAsyncClient:
 
             from google.cloud import dataplex_v1
 
-            def sample_get_task():
+            async def sample_get_task():
                 # Create a client
-                client = dataplex_v1.DataplexServiceClient()
+                client = dataplex_v1.DataplexServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = dataplex_v1.GetTaskRequest(
@@ -2934,7 +2934,7 @@ class DataplexServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_task(request=request)
+                response = await client.get_task(request=request)
 
                 # Handle the response
                 print(response)
@@ -3025,9 +3025,9 @@ class DataplexServiceAsyncClient:
 
             from google.cloud import dataplex_v1
 
-            def sample_list_jobs():
+            async def sample_list_jobs():
                 # Create a client
-                client = dataplex_v1.DataplexServiceClient()
+                client = dataplex_v1.DataplexServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = dataplex_v1.ListJobsRequest(
@@ -3038,7 +3038,7 @@ class DataplexServiceAsyncClient:
                 page_result = client.list_jobs(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -3140,9 +3140,9 @@ class DataplexServiceAsyncClient:
 
             from google.cloud import dataplex_v1
 
-            def sample_get_job():
+            async def sample_get_job():
                 # Create a client
-                client = dataplex_v1.DataplexServiceClient()
+                client = dataplex_v1.DataplexServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = dataplex_v1.GetJobRequest(
@@ -3150,7 +3150,7 @@ class DataplexServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_job(request=request)
+                response = await client.get_job(request=request)
 
                 # Handle the response
                 print(response)
@@ -3243,9 +3243,9 @@ class DataplexServiceAsyncClient:
 
             from google.cloud import dataplex_v1
 
-            def sample_cancel_job():
+            async def sample_cancel_job():
                 # Create a client
-                client = dataplex_v1.DataplexServiceClient()
+                client = dataplex_v1.DataplexServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = dataplex_v1.CancelJobRequest(
@@ -3253,7 +3253,7 @@ class DataplexServiceAsyncClient:
                 )
 
                 # Make the request
-                client.cancel_job(request=request)
+                await client.cancel_job(request=request)
 
         Args:
             request (Union[google.cloud.dataplex_v1.types.CancelJobRequest, dict]):
@@ -3327,9 +3327,9 @@ class DataplexServiceAsyncClient:
 
             from google.cloud import dataplex_v1
 
-            def sample_create_environment():
+            async def sample_create_environment():
                 # Create a client
-                client = dataplex_v1.DataplexServiceClient()
+                client = dataplex_v1.DataplexServiceAsyncClient()
 
                 # Initialize request argument(s)
                 environment = dataplex_v1.Environment()
@@ -3346,7 +3346,7 @@ class DataplexServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -3463,9 +3463,9 @@ class DataplexServiceAsyncClient:
 
             from google.cloud import dataplex_v1
 
-            def sample_update_environment():
+            async def sample_update_environment():
                 # Create a client
-                client = dataplex_v1.DataplexServiceClient()
+                client = dataplex_v1.DataplexServiceAsyncClient()
 
                 # Initialize request argument(s)
                 environment = dataplex_v1.Environment()
@@ -3480,7 +3480,7 @@ class DataplexServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -3585,9 +3585,9 @@ class DataplexServiceAsyncClient:
 
             from google.cloud import dataplex_v1
 
-            def sample_delete_environment():
+            async def sample_delete_environment():
                 # Create a client
-                client = dataplex_v1.DataplexServiceClient()
+                client = dataplex_v1.DataplexServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = dataplex_v1.DeleteEnvironmentRequest(
@@ -3599,7 +3599,7 @@ class DataplexServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -3704,9 +3704,9 @@ class DataplexServiceAsyncClient:
 
             from google.cloud import dataplex_v1
 
-            def sample_list_environments():
+            async def sample_list_environments():
                 # Create a client
-                client = dataplex_v1.DataplexServiceClient()
+                client = dataplex_v1.DataplexServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = dataplex_v1.ListEnvironmentsRequest(
@@ -3717,7 +3717,7 @@ class DataplexServiceAsyncClient:
                 page_result = client.list_environments(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -3810,9 +3810,9 @@ class DataplexServiceAsyncClient:
 
             from google.cloud import dataplex_v1
 
-            def sample_get_environment():
+            async def sample_get_environment():
                 # Create a client
-                client = dataplex_v1.DataplexServiceClient()
+                client = dataplex_v1.DataplexServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = dataplex_v1.GetEnvironmentRequest(
@@ -3820,7 +3820,7 @@ class DataplexServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_environment(request=request)
+                response = await client.get_environment(request=request)
 
                 # Handle the response
                 print(response)
@@ -3905,9 +3905,9 @@ class DataplexServiceAsyncClient:
 
             from google.cloud import dataplex_v1
 
-            def sample_list_sessions():
+            async def sample_list_sessions():
                 # Create a client
-                client = dataplex_v1.DataplexServiceClient()
+                client = dataplex_v1.DataplexServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = dataplex_v1.ListSessionsRequest(
@@ -3918,7 +3918,7 @@ class DataplexServiceAsyncClient:
                 page_result = client.list_sessions(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
