@@ -76,6 +76,7 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
+-  See the `Samples`_.
 -  Read the `Client Library Documentation`_ for Live Stream
    API to see other available methods on the client.
 -  Read the `Live Stream API Product documentation`_ to learn
@@ -83,5 +84,6 @@ Next Steps
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
+.. _Samples: https://github.com/googleapis/python-video-live-stream/blob/main/samples/snippets/README.md
 .. _Live Stream API Product documentation:  https://cloud.google.com/python/docs/reference/livestream/latest
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
