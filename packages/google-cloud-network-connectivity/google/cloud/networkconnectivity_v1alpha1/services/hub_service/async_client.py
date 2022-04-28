@@ -236,9 +236,9 @@ class HubServiceAsyncClient:
 
             from google.cloud import networkconnectivity_v1alpha1
 
-            def sample_list_hubs():
+            async def sample_list_hubs():
                 # Create a client
-                client = networkconnectivity_v1alpha1.HubServiceClient()
+                client = networkconnectivity_v1alpha1.HubServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = networkconnectivity_v1alpha1.ListHubsRequest(
@@ -249,7 +249,7 @@ class HubServiceAsyncClient:
                 page_result = client.list_hubs(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -344,9 +344,9 @@ class HubServiceAsyncClient:
 
             from google.cloud import networkconnectivity_v1alpha1
 
-            def sample_get_hub():
+            async def sample_get_hub():
                 # Create a client
-                client = networkconnectivity_v1alpha1.HubServiceClient()
+                client = networkconnectivity_v1alpha1.HubServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = networkconnectivity_v1alpha1.GetHubRequest(
@@ -354,7 +354,7 @@ class HubServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_hub(request=request)
+                response = await client.get_hub(request=request)
 
                 # Handle the response
                 print(response)
@@ -447,9 +447,9 @@ class HubServiceAsyncClient:
 
             from google.cloud import networkconnectivity_v1alpha1
 
-            def sample_create_hub():
+            async def sample_create_hub():
                 # Create a client
-                client = networkconnectivity_v1alpha1.HubServiceClient()
+                client = networkconnectivity_v1alpha1.HubServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = networkconnectivity_v1alpha1.CreateHubRequest(
@@ -461,7 +461,7 @@ class HubServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -579,9 +579,9 @@ class HubServiceAsyncClient:
 
             from google.cloud import networkconnectivity_v1alpha1
 
-            def sample_update_hub():
+            async def sample_update_hub():
                 # Create a client
-                client = networkconnectivity_v1alpha1.HubServiceClient()
+                client = networkconnectivity_v1alpha1.HubServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = networkconnectivity_v1alpha1.UpdateHubRequest(
@@ -592,7 +592,7 @@ class HubServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -704,9 +704,9 @@ class HubServiceAsyncClient:
 
             from google.cloud import networkconnectivity_v1alpha1
 
-            def sample_delete_hub():
+            async def sample_delete_hub():
                 # Create a client
-                client = networkconnectivity_v1alpha1.HubServiceClient()
+                client = networkconnectivity_v1alpha1.HubServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = networkconnectivity_v1alpha1.DeleteHubRequest(
@@ -718,7 +718,7 @@ class HubServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -824,9 +824,9 @@ class HubServiceAsyncClient:
 
             from google.cloud import networkconnectivity_v1alpha1
 
-            def sample_list_spokes():
+            async def sample_list_spokes():
                 # Create a client
-                client = networkconnectivity_v1alpha1.HubServiceClient()
+                client = networkconnectivity_v1alpha1.HubServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = networkconnectivity_v1alpha1.ListSpokesRequest(
@@ -837,7 +837,7 @@ class HubServiceAsyncClient:
                 page_result = client.list_spokes(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -930,9 +930,9 @@ class HubServiceAsyncClient:
 
             from google.cloud import networkconnectivity_v1alpha1
 
-            def sample_get_spoke():
+            async def sample_get_spoke():
                 # Create a client
-                client = networkconnectivity_v1alpha1.HubServiceClient()
+                client = networkconnectivity_v1alpha1.HubServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = networkconnectivity_v1alpha1.GetSpokeRequest(
@@ -940,7 +940,7 @@ class HubServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_spoke(request=request)
+                response = await client.get_spoke(request=request)
 
                 # Handle the response
                 print(response)
@@ -1028,9 +1028,9 @@ class HubServiceAsyncClient:
 
             from google.cloud import networkconnectivity_v1alpha1
 
-            def sample_create_spoke():
+            async def sample_create_spoke():
                 # Create a client
-                client = networkconnectivity_v1alpha1.HubServiceClient()
+                client = networkconnectivity_v1alpha1.HubServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = networkconnectivity_v1alpha1.CreateSpokeRequest(
@@ -1042,7 +1042,7 @@ class HubServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1158,9 +1158,9 @@ class HubServiceAsyncClient:
 
             from google.cloud import networkconnectivity_v1alpha1
 
-            def sample_update_spoke():
+            async def sample_update_spoke():
                 # Create a client
-                client = networkconnectivity_v1alpha1.HubServiceClient()
+                client = networkconnectivity_v1alpha1.HubServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = networkconnectivity_v1alpha1.UpdateSpokeRequest(
@@ -1171,7 +1171,7 @@ class HubServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1284,9 +1284,9 @@ class HubServiceAsyncClient:
 
             from google.cloud import networkconnectivity_v1alpha1
 
-            def sample_delete_spoke():
+            async def sample_delete_spoke():
                 # Create a client
-                client = networkconnectivity_v1alpha1.HubServiceClient()
+                client = networkconnectivity_v1alpha1.HubServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = networkconnectivity_v1alpha1.DeleteSpokeRequest(
@@ -1298,7 +1298,7 @@ class HubServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
