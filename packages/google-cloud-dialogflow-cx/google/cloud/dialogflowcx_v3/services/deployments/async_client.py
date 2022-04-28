@@ -225,9 +225,9 @@ class DeploymentsAsyncClient:
 
             from google.cloud import dialogflowcx_v3
 
-            def sample_list_deployments():
+            async def sample_list_deployments():
                 # Create a client
-                client = dialogflowcx_v3.DeploymentsClient()
+                client = dialogflowcx_v3.DeploymentsAsyncClient()
 
                 # Initialize request argument(s)
                 request = dialogflowcx_v3.ListDeploymentsRequest(
@@ -238,7 +238,7 @@ class DeploymentsAsyncClient:
                 page_result = client.list_deployments(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -336,9 +336,9 @@ class DeploymentsAsyncClient:
 
             from google.cloud import dialogflowcx_v3
 
-            def sample_get_deployment():
+            async def sample_get_deployment():
                 # Create a client
-                client = dialogflowcx_v3.DeploymentsClient()
+                client = dialogflowcx_v3.DeploymentsAsyncClient()
 
                 # Initialize request argument(s)
                 request = dialogflowcx_v3.GetDeploymentRequest(
@@ -346,7 +346,7 @@ class DeploymentsAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_deployment(request=request)
+                response = await client.get_deployment(request=request)
 
                 # Handle the response
                 print(response)

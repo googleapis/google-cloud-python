@@ -245,9 +245,9 @@ class SecuritySettingsServiceAsyncClient:
 
             from google.cloud import dialogflowcx_v3
 
-            def sample_create_security_settings():
+            async def sample_create_security_settings():
                 # Create a client
-                client = dialogflowcx_v3.SecuritySettingsServiceClient()
+                client = dialogflowcx_v3.SecuritySettingsServiceAsyncClient()
 
                 # Initialize request argument(s)
                 security_settings = dialogflowcx_v3.SecuritySettings()
@@ -260,7 +260,7 @@ class SecuritySettingsServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.create_security_settings(request=request)
+                response = await client.create_security_settings(request=request)
 
                 # Handle the response
                 print(response)
@@ -362,9 +362,9 @@ class SecuritySettingsServiceAsyncClient:
 
             from google.cloud import dialogflowcx_v3
 
-            def sample_get_security_settings():
+            async def sample_get_security_settings():
                 # Create a client
-                client = dialogflowcx_v3.SecuritySettingsServiceClient()
+                client = dialogflowcx_v3.SecuritySettingsServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = dialogflowcx_v3.GetSecuritySettingsRequest(
@@ -372,7 +372,7 @@ class SecuritySettingsServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_security_settings(request=request)
+                response = await client.get_security_settings(request=request)
 
                 # Handle the response
                 print(response)
@@ -465,9 +465,9 @@ class SecuritySettingsServiceAsyncClient:
 
             from google.cloud import dialogflowcx_v3
 
-            def sample_update_security_settings():
+            async def sample_update_security_settings():
                 # Create a client
-                client = dialogflowcx_v3.SecuritySettingsServiceClient()
+                client = dialogflowcx_v3.SecuritySettingsServiceAsyncClient()
 
                 # Initialize request argument(s)
                 security_settings = dialogflowcx_v3.SecuritySettings()
@@ -479,7 +479,7 @@ class SecuritySettingsServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.update_security_settings(request=request)
+                response = await client.update_security_settings(request=request)
 
                 # Handle the response
                 print(response)
@@ -581,9 +581,9 @@ class SecuritySettingsServiceAsyncClient:
 
             from google.cloud import dialogflowcx_v3
 
-            def sample_list_security_settings():
+            async def sample_list_security_settings():
                 # Create a client
-                client = dialogflowcx_v3.SecuritySettingsServiceClient()
+                client = dialogflowcx_v3.SecuritySettingsServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = dialogflowcx_v3.ListSecuritySettingsRequest(
@@ -594,7 +594,7 @@ class SecuritySettingsServiceAsyncClient:
                 page_result = client.list_security_settings(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -691,9 +691,9 @@ class SecuritySettingsServiceAsyncClient:
 
             from google.cloud import dialogflowcx_v3
 
-            def sample_delete_security_settings():
+            async def sample_delete_security_settings():
                 # Create a client
-                client = dialogflowcx_v3.SecuritySettingsServiceClient()
+                client = dialogflowcx_v3.SecuritySettingsServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = dialogflowcx_v3.DeleteSecuritySettingsRequest(
@@ -701,7 +701,7 @@ class SecuritySettingsServiceAsyncClient:
                 )
 
                 # Make the request
-                client.delete_security_settings(request=request)
+                await client.delete_security_settings(request=request)
 
         Args:
             request (Union[google.cloud.dialogflowcx_v3.types.DeleteSecuritySettingsRequest, dict]):

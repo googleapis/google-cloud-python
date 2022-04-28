@@ -242,9 +242,9 @@ class TransitionRouteGroupsAsyncClient:
 
             from google.cloud import dialogflowcx_v3
 
-            def sample_list_transition_route_groups():
+            async def sample_list_transition_route_groups():
                 # Create a client
-                client = dialogflowcx_v3.TransitionRouteGroupsClient()
+                client = dialogflowcx_v3.TransitionRouteGroupsAsyncClient()
 
                 # Initialize request argument(s)
                 request = dialogflowcx_v3.ListTransitionRouteGroupsRequest(
@@ -255,7 +255,7 @@ class TransitionRouteGroupsAsyncClient:
                 page_result = client.list_transition_route_groups(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -354,9 +354,9 @@ class TransitionRouteGroupsAsyncClient:
 
             from google.cloud import dialogflowcx_v3
 
-            def sample_get_transition_route_group():
+            async def sample_get_transition_route_group():
                 # Create a client
-                client = dialogflowcx_v3.TransitionRouteGroupsClient()
+                client = dialogflowcx_v3.TransitionRouteGroupsAsyncClient()
 
                 # Initialize request argument(s)
                 request = dialogflowcx_v3.GetTransitionRouteGroupRequest(
@@ -364,7 +364,7 @@ class TransitionRouteGroupsAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_transition_route_group(request=request)
+                response = await client.get_transition_route_group(request=request)
 
                 # Handle the response
                 print(response)
@@ -462,9 +462,9 @@ class TransitionRouteGroupsAsyncClient:
 
             from google.cloud import dialogflowcx_v3
 
-            def sample_create_transition_route_group():
+            async def sample_create_transition_route_group():
                 # Create a client
-                client = dialogflowcx_v3.TransitionRouteGroupsClient()
+                client = dialogflowcx_v3.TransitionRouteGroupsAsyncClient()
 
                 # Initialize request argument(s)
                 transition_route_group = dialogflowcx_v3.TransitionRouteGroup()
@@ -476,7 +476,7 @@ class TransitionRouteGroupsAsyncClient:
                 )
 
                 # Make the request
-                response = client.create_transition_route_group(request=request)
+                response = await client.create_transition_route_group(request=request)
 
                 # Handle the response
                 print(response)
@@ -582,9 +582,9 @@ class TransitionRouteGroupsAsyncClient:
 
             from google.cloud import dialogflowcx_v3
 
-            def sample_update_transition_route_group():
+            async def sample_update_transition_route_group():
                 # Create a client
-                client = dialogflowcx_v3.TransitionRouteGroupsClient()
+                client = dialogflowcx_v3.TransitionRouteGroupsAsyncClient()
 
                 # Initialize request argument(s)
                 transition_route_group = dialogflowcx_v3.TransitionRouteGroup()
@@ -595,7 +595,7 @@ class TransitionRouteGroupsAsyncClient:
                 )
 
                 # Make the request
-                response = client.update_transition_route_group(request=request)
+                response = await client.update_transition_route_group(request=request)
 
                 # Handle the response
                 print(response)
@@ -700,9 +700,9 @@ class TransitionRouteGroupsAsyncClient:
 
             from google.cloud import dialogflowcx_v3
 
-            def sample_delete_transition_route_group():
+            async def sample_delete_transition_route_group():
                 # Create a client
-                client = dialogflowcx_v3.TransitionRouteGroupsClient()
+                client = dialogflowcx_v3.TransitionRouteGroupsAsyncClient()
 
                 # Initialize request argument(s)
                 request = dialogflowcx_v3.DeleteTransitionRouteGroupRequest(
@@ -710,7 +710,7 @@ class TransitionRouteGroupsAsyncClient:
                 )
 
                 # Make the request
-                client.delete_transition_route_group(request=request)
+                await client.delete_transition_route_group(request=request)
 
         Args:
             request (Union[google.cloud.dialogflowcx_v3.types.DeleteTransitionRouteGroupRequest, dict]):

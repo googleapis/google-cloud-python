@@ -727,7 +727,7 @@ def test_create_flow_field_headers():
     # a field header. Set these to a non-empty value.
     request = gcdc_flow.CreateFlowRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_flow), "__call__") as call:
@@ -743,7 +743,7 @@ def test_create_flow_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -757,7 +757,7 @@ async def test_create_flow_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = gcdc_flow.CreateFlowRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_flow), "__call__") as call:
@@ -773,7 +773,7 @@ async def test_create_flow_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -957,7 +957,7 @@ def test_delete_flow_field_headers():
     # a field header. Set these to a non-empty value.
     request = flow.DeleteFlowRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_flow), "__call__") as call:
@@ -973,7 +973,7 @@ def test_delete_flow_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -987,7 +987,7 @@ async def test_delete_flow_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = flow.DeleteFlowRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_flow), "__call__") as call:
@@ -1003,7 +1003,7 @@ async def test_delete_flow_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1185,7 +1185,7 @@ def test_list_flows_field_headers():
     # a field header. Set these to a non-empty value.
     request = flow.ListFlowsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_flows), "__call__") as call:
@@ -1201,7 +1201,7 @@ def test_list_flows_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -1215,7 +1215,7 @@ async def test_list_flows_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = flow.ListFlowsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_flows), "__call__") as call:
@@ -1233,7 +1233,7 @@ async def test_list_flows_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -1364,7 +1364,7 @@ def test_list_flows_pager(transport_name: str = "grpc"):
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, flow.Flow) for i in results)
 
@@ -1617,7 +1617,7 @@ def test_get_flow_field_headers():
     # a field header. Set these to a non-empty value.
     request = flow.GetFlowRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_flow), "__call__") as call:
@@ -1633,7 +1633,7 @@ def test_get_flow_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1647,7 +1647,7 @@ async def test_get_flow_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = flow.GetFlowRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_flow), "__call__") as call:
@@ -1663,7 +1663,7 @@ async def test_get_flow_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1857,7 +1857,7 @@ def test_update_flow_field_headers():
     # a field header. Set these to a non-empty value.
     request = gcdc_flow.UpdateFlowRequest()
 
-    request.flow.name = "flow.name/value"
+    request.flow.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_flow), "__call__") as call:
@@ -1873,7 +1873,7 @@ def test_update_flow_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "flow.name=flow.name/value",
+        "flow.name=name_value",
     ) in kw["metadata"]
 
 
@@ -1887,7 +1887,7 @@ async def test_update_flow_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = gcdc_flow.UpdateFlowRequest()
 
-    request.flow.name = "flow.name/value"
+    request.flow.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_flow), "__call__") as call:
@@ -1903,7 +1903,7 @@ async def test_update_flow_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "flow.name=flow.name/value",
+        "flow.name=name_value",
     ) in kw["metadata"]
 
 
@@ -2089,7 +2089,7 @@ def test_train_flow_field_headers():
     # a field header. Set these to a non-empty value.
     request = flow.TrainFlowRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.train_flow), "__call__") as call:
@@ -2105,7 +2105,7 @@ def test_train_flow_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2119,7 +2119,7 @@ async def test_train_flow_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = flow.TrainFlowRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.train_flow), "__call__") as call:
@@ -2137,7 +2137,7 @@ async def test_train_flow_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2321,7 +2321,7 @@ def test_validate_flow_field_headers():
     # a field header. Set these to a non-empty value.
     request = flow.ValidateFlowRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.validate_flow), "__call__") as call:
@@ -2337,7 +2337,7 @@ def test_validate_flow_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2351,7 +2351,7 @@ async def test_validate_flow_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = flow.ValidateFlowRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.validate_flow), "__call__") as call:
@@ -2369,7 +2369,7 @@ async def test_validate_flow_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2477,7 +2477,7 @@ def test_get_flow_validation_result_field_headers():
     # a field header. Set these to a non-empty value.
     request = flow.GetFlowValidationResultRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2495,7 +2495,7 @@ def test_get_flow_validation_result_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2509,7 +2509,7 @@ async def test_get_flow_validation_result_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = flow.GetFlowValidationResultRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2529,7 +2529,7 @@ async def test_get_flow_validation_result_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2711,7 +2711,7 @@ def test_import_flow_field_headers():
     # a field header. Set these to a non-empty value.
     request = flow.ImportFlowRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.import_flow), "__call__") as call:
@@ -2727,7 +2727,7 @@ def test_import_flow_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -2741,7 +2741,7 @@ async def test_import_flow_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = flow.ImportFlowRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.import_flow), "__call__") as call:
@@ -2759,7 +2759,7 @@ async def test_import_flow_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -2855,7 +2855,7 @@ def test_export_flow_field_headers():
     # a field header. Set these to a non-empty value.
     request = flow.ExportFlowRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.export_flow), "__call__") as call:
@@ -2871,7 +2871,7 @@ def test_export_flow_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2885,7 +2885,7 @@ async def test_export_flow_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = flow.ExportFlowRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.export_flow), "__call__") as call:
@@ -2903,7 +2903,7 @@ async def test_export_flow_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 

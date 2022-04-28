@@ -218,9 +218,9 @@ class EntityTypesAsyncClient:
 
             from google.cloud import dialogflowcx_v3
 
-            def sample_list_entity_types():
+            async def sample_list_entity_types():
                 # Create a client
-                client = dialogflowcx_v3.EntityTypesClient()
+                client = dialogflowcx_v3.EntityTypesAsyncClient()
 
                 # Initialize request argument(s)
                 request = dialogflowcx_v3.ListEntityTypesRequest(
@@ -231,7 +231,7 @@ class EntityTypesAsyncClient:
                 page_result = client.list_entity_types(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -327,9 +327,9 @@ class EntityTypesAsyncClient:
 
             from google.cloud import dialogflowcx_v3
 
-            def sample_get_entity_type():
+            async def sample_get_entity_type():
                 # Create a client
-                client = dialogflowcx_v3.EntityTypesClient()
+                client = dialogflowcx_v3.EntityTypesAsyncClient()
 
                 # Initialize request argument(s)
                 request = dialogflowcx_v3.GetEntityTypeRequest(
@@ -337,7 +337,7 @@ class EntityTypesAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_entity_type(request=request)
+                response = await client.get_entity_type(request=request)
 
                 # Handle the response
                 print(response)
@@ -459,9 +459,9 @@ class EntityTypesAsyncClient:
 
             from google.cloud import dialogflowcx_v3
 
-            def sample_create_entity_type():
+            async def sample_create_entity_type():
                 # Create a client
-                client = dialogflowcx_v3.EntityTypesClient()
+                client = dialogflowcx_v3.EntityTypesAsyncClient()
 
                 # Initialize request argument(s)
                 entity_type = dialogflowcx_v3.EntityType()
@@ -474,7 +474,7 @@ class EntityTypesAsyncClient:
                 )
 
                 # Make the request
-                response = client.create_entity_type(request=request)
+                response = await client.create_entity_type(request=request)
 
                 # Handle the response
                 print(response)
@@ -603,9 +603,9 @@ class EntityTypesAsyncClient:
 
             from google.cloud import dialogflowcx_v3
 
-            def sample_update_entity_type():
+            async def sample_update_entity_type():
                 # Create a client
-                client = dialogflowcx_v3.EntityTypesClient()
+                client = dialogflowcx_v3.EntityTypesAsyncClient()
 
                 # Initialize request argument(s)
                 entity_type = dialogflowcx_v3.EntityType()
@@ -617,7 +617,7 @@ class EntityTypesAsyncClient:
                 )
 
                 # Make the request
-                response = client.update_entity_type(request=request)
+                response = await client.update_entity_type(request=request)
 
                 # Handle the response
                 print(response)
@@ -747,9 +747,9 @@ class EntityTypesAsyncClient:
 
             from google.cloud import dialogflowcx_v3
 
-            def sample_delete_entity_type():
+            async def sample_delete_entity_type():
                 # Create a client
-                client = dialogflowcx_v3.EntityTypesClient()
+                client = dialogflowcx_v3.EntityTypesAsyncClient()
 
                 # Initialize request argument(s)
                 request = dialogflowcx_v3.DeleteEntityTypeRequest(
@@ -757,7 +757,7 @@ class EntityTypesAsyncClient:
                 )
 
                 # Make the request
-                client.delete_entity_type(request=request)
+                await client.delete_entity_type(request=request)
 
         Args:
             request (Union[google.cloud.dialogflowcx_v3.types.DeleteEntityTypeRequest, dict]):

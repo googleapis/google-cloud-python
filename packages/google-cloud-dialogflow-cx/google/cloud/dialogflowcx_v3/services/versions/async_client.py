@@ -220,9 +220,9 @@ class VersionsAsyncClient:
 
             from google.cloud import dialogflowcx_v3
 
-            def sample_list_versions():
+            async def sample_list_versions():
                 # Create a client
-                client = dialogflowcx_v3.VersionsClient()
+                client = dialogflowcx_v3.VersionsAsyncClient()
 
                 # Initialize request argument(s)
                 request = dialogflowcx_v3.ListVersionsRequest(
@@ -233,7 +233,7 @@ class VersionsAsyncClient:
                 page_result = client.list_versions(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -330,9 +330,9 @@ class VersionsAsyncClient:
 
             from google.cloud import dialogflowcx_v3
 
-            def sample_get_version():
+            async def sample_get_version():
                 # Create a client
-                client = dialogflowcx_v3.VersionsClient()
+                client = dialogflowcx_v3.VersionsAsyncClient()
 
                 # Initialize request argument(s)
                 request = dialogflowcx_v3.GetVersionRequest(
@@ -340,7 +340,7 @@ class VersionsAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_version(request=request)
+                response = await client.get_version(request=request)
 
                 # Handle the response
                 print(response)
@@ -437,9 +437,9 @@ class VersionsAsyncClient:
 
             from google.cloud import dialogflowcx_v3
 
-            def sample_create_version():
+            async def sample_create_version():
                 # Create a client
-                client = dialogflowcx_v3.VersionsClient()
+                client = dialogflowcx_v3.VersionsAsyncClient()
 
                 # Initialize request argument(s)
                 version = dialogflowcx_v3.Version()
@@ -455,7 +455,7 @@ class VersionsAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -563,9 +563,9 @@ class VersionsAsyncClient:
 
             from google.cloud import dialogflowcx_v3
 
-            def sample_update_version():
+            async def sample_update_version():
                 # Create a client
-                client = dialogflowcx_v3.VersionsClient()
+                client = dialogflowcx_v3.VersionsAsyncClient()
 
                 # Initialize request argument(s)
                 version = dialogflowcx_v3.Version()
@@ -576,7 +576,7 @@ class VersionsAsyncClient:
                 )
 
                 # Make the request
-                response = client.update_version(request=request)
+                response = await client.update_version(request=request)
 
                 # Handle the response
                 print(response)
@@ -670,9 +670,9 @@ class VersionsAsyncClient:
 
             from google.cloud import dialogflowcx_v3
 
-            def sample_delete_version():
+            async def sample_delete_version():
                 # Create a client
-                client = dialogflowcx_v3.VersionsClient()
+                client = dialogflowcx_v3.VersionsAsyncClient()
 
                 # Initialize request argument(s)
                 request = dialogflowcx_v3.DeleteVersionRequest(
@@ -680,7 +680,7 @@ class VersionsAsyncClient:
                 )
 
                 # Make the request
-                client.delete_version(request=request)
+                await client.delete_version(request=request)
 
         Args:
             request (Union[google.cloud.dialogflowcx_v3.types.DeleteVersionRequest, dict]):
@@ -765,9 +765,9 @@ class VersionsAsyncClient:
 
             from google.cloud import dialogflowcx_v3
 
-            def sample_load_version():
+            async def sample_load_version():
                 # Create a client
-                client = dialogflowcx_v3.VersionsClient()
+                client = dialogflowcx_v3.VersionsAsyncClient()
 
                 # Initialize request argument(s)
                 request = dialogflowcx_v3.LoadVersionRequest(
@@ -779,7 +779,7 @@ class VersionsAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -888,9 +888,9 @@ class VersionsAsyncClient:
 
             from google.cloud import dialogflowcx_v3
 
-            def sample_compare_versions():
+            async def sample_compare_versions():
                 # Create a client
-                client = dialogflowcx_v3.VersionsClient()
+                client = dialogflowcx_v3.VersionsAsyncClient()
 
                 # Initialize request argument(s)
                 request = dialogflowcx_v3.CompareVersionsRequest(
@@ -899,7 +899,7 @@ class VersionsAsyncClient:
                 )
 
                 # Make the request
-                response = client.compare_versions(request=request)
+                response = await client.compare_versions(request=request)
 
                 # Handle the response
                 print(response)

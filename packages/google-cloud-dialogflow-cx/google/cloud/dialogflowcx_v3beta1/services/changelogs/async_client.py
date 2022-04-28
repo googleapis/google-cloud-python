@@ -214,9 +214,9 @@ class ChangelogsAsyncClient:
 
             from google.cloud import dialogflowcx_v3beta1
 
-            def sample_list_changelogs():
+            async def sample_list_changelogs():
                 # Create a client
-                client = dialogflowcx_v3beta1.ChangelogsClient()
+                client = dialogflowcx_v3beta1.ChangelogsAsyncClient()
 
                 # Initialize request argument(s)
                 request = dialogflowcx_v3beta1.ListChangelogsRequest(
@@ -227,7 +227,7 @@ class ChangelogsAsyncClient:
                 page_result = client.list_changelogs(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -322,9 +322,9 @@ class ChangelogsAsyncClient:
 
             from google.cloud import dialogflowcx_v3beta1
 
-            def sample_get_changelog():
+            async def sample_get_changelog():
                 # Create a client
-                client = dialogflowcx_v3beta1.ChangelogsClient()
+                client = dialogflowcx_v3beta1.ChangelogsAsyncClient()
 
                 # Initialize request argument(s)
                 request = dialogflowcx_v3beta1.GetChangelogRequest(
@@ -332,7 +332,7 @@ class ChangelogsAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_changelog(request=request)
+                response = await client.get_changelog(request=request)
 
                 # Handle the response
                 print(response)

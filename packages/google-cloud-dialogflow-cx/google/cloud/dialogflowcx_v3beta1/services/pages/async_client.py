@@ -224,9 +224,9 @@ class PagesAsyncClient:
 
             from google.cloud import dialogflowcx_v3beta1
 
-            def sample_list_pages():
+            async def sample_list_pages():
                 # Create a client
-                client = dialogflowcx_v3beta1.PagesClient()
+                client = dialogflowcx_v3beta1.PagesAsyncClient()
 
                 # Initialize request argument(s)
                 request = dialogflowcx_v3beta1.ListPagesRequest(
@@ -237,7 +237,7 @@ class PagesAsyncClient:
                 page_result = client.list_pages(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -332,9 +332,9 @@ class PagesAsyncClient:
 
             from google.cloud import dialogflowcx_v3beta1
 
-            def sample_get_page():
+            async def sample_get_page():
                 # Create a client
-                client = dialogflowcx_v3beta1.PagesClient()
+                client = dialogflowcx_v3beta1.PagesAsyncClient()
 
                 # Initialize request argument(s)
                 request = dialogflowcx_v3beta1.GetPageRequest(
@@ -342,7 +342,7 @@ class PagesAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_page(request=request)
+                response = await client.get_page(request=request)
 
                 # Handle the response
                 print(response)
@@ -448,9 +448,9 @@ class PagesAsyncClient:
 
             from google.cloud import dialogflowcx_v3beta1
 
-            def sample_create_page():
+            async def sample_create_page():
                 # Create a client
-                client = dialogflowcx_v3beta1.PagesClient()
+                client = dialogflowcx_v3beta1.PagesAsyncClient()
 
                 # Initialize request argument(s)
                 page = dialogflowcx_v3beta1.Page()
@@ -462,7 +462,7 @@ class PagesAsyncClient:
                 )
 
                 # Make the request
-                response = client.create_page(request=request)
+                response = await client.create_page(request=request)
 
                 # Handle the response
                 print(response)
@@ -575,9 +575,9 @@ class PagesAsyncClient:
 
             from google.cloud import dialogflowcx_v3beta1
 
-            def sample_update_page():
+            async def sample_update_page():
                 # Create a client
-                client = dialogflowcx_v3beta1.PagesClient()
+                client = dialogflowcx_v3beta1.PagesAsyncClient()
 
                 # Initialize request argument(s)
                 page = dialogflowcx_v3beta1.Page()
@@ -588,7 +588,7 @@ class PagesAsyncClient:
                 )
 
                 # Make the request
-                response = client.update_page(request=request)
+                response = await client.update_page(request=request)
 
                 # Handle the response
                 print(response)
@@ -703,9 +703,9 @@ class PagesAsyncClient:
 
             from google.cloud import dialogflowcx_v3beta1
 
-            def sample_delete_page():
+            async def sample_delete_page():
                 # Create a client
-                client = dialogflowcx_v3beta1.PagesClient()
+                client = dialogflowcx_v3beta1.PagesAsyncClient()
 
                 # Initialize request argument(s)
                 request = dialogflowcx_v3beta1.DeletePageRequest(
@@ -713,7 +713,7 @@ class PagesAsyncClient:
                 )
 
                 # Make the request
-                client.delete_page(request=request)
+                await client.delete_page(request=request)
 
         Args:
             request (Union[google.cloud.dialogflowcx_v3beta1.types.DeletePageRequest, dict]):

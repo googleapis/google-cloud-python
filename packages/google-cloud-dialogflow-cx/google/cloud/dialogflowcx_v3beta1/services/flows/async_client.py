@@ -237,9 +237,9 @@ class FlowsAsyncClient:
 
             from google.cloud import dialogflowcx_v3beta1
 
-            def sample_create_flow():
+            async def sample_create_flow():
                 # Create a client
-                client = dialogflowcx_v3beta1.FlowsClient()
+                client = dialogflowcx_v3beta1.FlowsAsyncClient()
 
                 # Initialize request argument(s)
                 flow = dialogflowcx_v3beta1.Flow()
@@ -251,7 +251,7 @@ class FlowsAsyncClient:
                 )
 
                 # Make the request
-                response = client.create_flow(request=request)
+                response = await client.create_flow(request=request)
 
                 # Handle the response
                 print(response)
@@ -364,9 +364,9 @@ class FlowsAsyncClient:
 
             from google.cloud import dialogflowcx_v3beta1
 
-            def sample_delete_flow():
+            async def sample_delete_flow():
                 # Create a client
-                client = dialogflowcx_v3beta1.FlowsClient()
+                client = dialogflowcx_v3beta1.FlowsAsyncClient()
 
                 # Initialize request argument(s)
                 request = dialogflowcx_v3beta1.DeleteFlowRequest(
@@ -374,7 +374,7 @@ class FlowsAsyncClient:
                 )
 
                 # Make the request
-                client.delete_flow(request=request)
+                await client.delete_flow(request=request)
 
         Args:
             request (Union[google.cloud.dialogflowcx_v3beta1.types.DeleteFlowRequest, dict]):
@@ -447,9 +447,9 @@ class FlowsAsyncClient:
 
             from google.cloud import dialogflowcx_v3beta1
 
-            def sample_list_flows():
+            async def sample_list_flows():
                 # Create a client
-                client = dialogflowcx_v3beta1.FlowsClient()
+                client = dialogflowcx_v3beta1.FlowsAsyncClient()
 
                 # Initialize request argument(s)
                 request = dialogflowcx_v3beta1.ListFlowsRequest(
@@ -460,7 +460,7 @@ class FlowsAsyncClient:
                 page_result = client.list_flows(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -555,9 +555,9 @@ class FlowsAsyncClient:
 
             from google.cloud import dialogflowcx_v3beta1
 
-            def sample_get_flow():
+            async def sample_get_flow():
                 # Create a client
-                client = dialogflowcx_v3beta1.FlowsClient()
+                client = dialogflowcx_v3beta1.FlowsAsyncClient()
 
                 # Initialize request argument(s)
                 request = dialogflowcx_v3beta1.GetFlowRequest(
@@ -565,7 +565,7 @@ class FlowsAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_flow(request=request)
+                response = await client.get_flow(request=request)
 
                 # Handle the response
                 print(response)
@@ -676,9 +676,9 @@ class FlowsAsyncClient:
 
             from google.cloud import dialogflowcx_v3beta1
 
-            def sample_update_flow():
+            async def sample_update_flow():
                 # Create a client
-                client = dialogflowcx_v3beta1.FlowsClient()
+                client = dialogflowcx_v3beta1.FlowsAsyncClient()
 
                 # Initialize request argument(s)
                 flow = dialogflowcx_v3beta1.Flow()
@@ -689,7 +689,7 @@ class FlowsAsyncClient:
                 )
 
                 # Make the request
-                response = client.update_flow(request=request)
+                response = await client.update_flow(request=request)
 
                 # Handle the response
                 print(response)
@@ -820,9 +820,9 @@ class FlowsAsyncClient:
 
             from google.cloud import dialogflowcx_v3beta1
 
-            def sample_train_flow():
+            async def sample_train_flow():
                 # Create a client
-                client = dialogflowcx_v3beta1.FlowsClient()
+                client = dialogflowcx_v3beta1.FlowsAsyncClient()
 
                 # Initialize request argument(s)
                 request = dialogflowcx_v3beta1.TrainFlowRequest(
@@ -834,7 +834,7 @@ class FlowsAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -942,9 +942,9 @@ class FlowsAsyncClient:
 
             from google.cloud import dialogflowcx_v3beta1
 
-            def sample_validate_flow():
+            async def sample_validate_flow():
                 # Create a client
-                client = dialogflowcx_v3beta1.FlowsClient()
+                client = dialogflowcx_v3beta1.FlowsAsyncClient()
 
                 # Initialize request argument(s)
                 request = dialogflowcx_v3beta1.ValidateFlowRequest(
@@ -952,7 +952,7 @@ class FlowsAsyncClient:
                 )
 
                 # Make the request
-                response = client.validate_flow(request=request)
+                response = await client.validate_flow(request=request)
 
                 # Handle the response
                 print(response)
@@ -1017,9 +1017,9 @@ class FlowsAsyncClient:
 
             from google.cloud import dialogflowcx_v3beta1
 
-            def sample_get_flow_validation_result():
+            async def sample_get_flow_validation_result():
                 # Create a client
-                client = dialogflowcx_v3beta1.FlowsClient()
+                client = dialogflowcx_v3beta1.FlowsAsyncClient()
 
                 # Initialize request argument(s)
                 request = dialogflowcx_v3beta1.GetFlowValidationResultRequest(
@@ -1027,7 +1027,7 @@ class FlowsAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_flow_validation_result(request=request)
+                response = await client.get_flow_validation_result(request=request)
 
                 # Handle the response
                 print(response)
@@ -1126,9 +1126,9 @@ class FlowsAsyncClient:
 
             from google.cloud import dialogflowcx_v3beta1
 
-            def sample_import_flow():
+            async def sample_import_flow():
                 # Create a client
-                client = dialogflowcx_v3beta1.FlowsClient()
+                client = dialogflowcx_v3beta1.FlowsAsyncClient()
 
                 # Initialize request argument(s)
                 request = dialogflowcx_v3beta1.ImportFlowRequest(
@@ -1141,7 +1141,7 @@ class FlowsAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1229,9 +1229,9 @@ class FlowsAsyncClient:
 
             from google.cloud import dialogflowcx_v3beta1
 
-            def sample_export_flow():
+            async def sample_export_flow():
                 # Create a client
-                client = dialogflowcx_v3beta1.FlowsClient()
+                client = dialogflowcx_v3beta1.FlowsAsyncClient()
 
                 # Initialize request argument(s)
                 request = dialogflowcx_v3beta1.ExportFlowRequest(
@@ -1243,7 +1243,7 @@ class FlowsAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)

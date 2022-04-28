@@ -729,7 +729,7 @@ def test_detect_intent_field_headers():
     # a field header. Set these to a non-empty value.
     request = session.DetectIntentRequest()
 
-    request.session = "session/value"
+    request.session = "session_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.detect_intent), "__call__") as call:
@@ -745,7 +745,7 @@ def test_detect_intent_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "session=session/value",
+        "session=session_value",
     ) in kw["metadata"]
 
 
@@ -759,7 +759,7 @@ async def test_detect_intent_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = session.DetectIntentRequest()
 
-    request.session = "session/value"
+    request.session = "session_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.detect_intent), "__call__") as call:
@@ -777,7 +777,7 @@ async def test_detect_intent_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "session=session/value",
+        "session=session_value",
     ) in kw["metadata"]
 
 
@@ -951,7 +951,7 @@ def test_match_intent_field_headers():
     # a field header. Set these to a non-empty value.
     request = session.MatchIntentRequest()
 
-    request.session = "session/value"
+    request.session = "session_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.match_intent), "__call__") as call:
@@ -967,7 +967,7 @@ def test_match_intent_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "session=session/value",
+        "session=session_value",
     ) in kw["metadata"]
 
 
@@ -981,7 +981,7 @@ async def test_match_intent_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = session.MatchIntentRequest()
 
-    request.session = "session/value"
+    request.session = "session_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.match_intent), "__call__") as call:
@@ -999,7 +999,7 @@ async def test_match_intent_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "session=session/value",
+        "session=session_value",
     ) in kw["metadata"]
 
 
@@ -1105,7 +1105,7 @@ def test_fulfill_intent_field_headers():
     # a field header. Set these to a non-empty value.
     request = session.FulfillIntentRequest()
 
-    request.match_intent_request.session = "match_intent_request.session/value"
+    request.match_intent_request.session = "session_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.fulfill_intent), "__call__") as call:
@@ -1121,7 +1121,7 @@ def test_fulfill_intent_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "match_intent_request.session=match_intent_request.session/value",
+        "match_intent_request.session=session_value",
     ) in kw["metadata"]
 
 
@@ -1135,7 +1135,7 @@ async def test_fulfill_intent_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = session.FulfillIntentRequest()
 
-    request.match_intent_request.session = "match_intent_request.session/value"
+    request.match_intent_request.session = "session_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.fulfill_intent), "__call__") as call:
@@ -1153,7 +1153,7 @@ async def test_fulfill_intent_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "match_intent_request.session=match_intent_request.session/value",
+        "match_intent_request.session=session_value",
     ) in kw["metadata"]
 
 

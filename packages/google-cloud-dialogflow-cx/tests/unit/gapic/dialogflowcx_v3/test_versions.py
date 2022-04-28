@@ -721,7 +721,7 @@ def test_list_versions_field_headers():
     # a field header. Set these to a non-empty value.
     request = version.ListVersionsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_versions), "__call__") as call:
@@ -737,7 +737,7 @@ def test_list_versions_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -751,7 +751,7 @@ async def test_list_versions_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = version.ListVersionsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_versions), "__call__") as call:
@@ -769,7 +769,7 @@ async def test_list_versions_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -900,7 +900,7 @@ def test_list_versions_pager(transport_name: str = "grpc"):
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, version.Version) for i in results)
 
@@ -1153,7 +1153,7 @@ def test_get_version_field_headers():
     # a field header. Set these to a non-empty value.
     request = version.GetVersionRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_version), "__call__") as call:
@@ -1169,7 +1169,7 @@ def test_get_version_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1183,7 +1183,7 @@ async def test_get_version_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = version.GetVersionRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_version), "__call__") as call:
@@ -1199,7 +1199,7 @@ async def test_get_version_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1375,7 +1375,7 @@ def test_create_version_field_headers():
     # a field header. Set these to a non-empty value.
     request = gcdc_version.CreateVersionRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_version), "__call__") as call:
@@ -1391,7 +1391,7 @@ def test_create_version_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -1405,7 +1405,7 @@ async def test_create_version_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = gcdc_version.CreateVersionRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_version), "__call__") as call:
@@ -1423,7 +1423,7 @@ async def test_create_version_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -1629,7 +1629,7 @@ def test_update_version_field_headers():
     # a field header. Set these to a non-empty value.
     request = gcdc_version.UpdateVersionRequest()
 
-    request.version.name = "version.name/value"
+    request.version.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_version), "__call__") as call:
@@ -1645,7 +1645,7 @@ def test_update_version_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "version.name=version.name/value",
+        "version.name=name_value",
     ) in kw["metadata"]
 
 
@@ -1659,7 +1659,7 @@ async def test_update_version_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = gcdc_version.UpdateVersionRequest()
 
-    request.version.name = "version.name/value"
+    request.version.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_version), "__call__") as call:
@@ -1677,7 +1677,7 @@ async def test_update_version_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "version.name=version.name/value",
+        "version.name=name_value",
     ) in kw["metadata"]
 
 
@@ -1863,7 +1863,7 @@ def test_delete_version_field_headers():
     # a field header. Set these to a non-empty value.
     request = version.DeleteVersionRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_version), "__call__") as call:
@@ -1879,7 +1879,7 @@ def test_delete_version_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1893,7 +1893,7 @@ async def test_delete_version_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = version.DeleteVersionRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_version), "__call__") as call:
@@ -1909,7 +1909,7 @@ async def test_delete_version_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2085,7 +2085,7 @@ def test_load_version_field_headers():
     # a field header. Set these to a non-empty value.
     request = version.LoadVersionRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.load_version), "__call__") as call:
@@ -2101,7 +2101,7 @@ def test_load_version_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2115,7 +2115,7 @@ async def test_load_version_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = version.LoadVersionRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.load_version), "__call__") as call:
@@ -2133,7 +2133,7 @@ async def test_load_version_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2321,7 +2321,7 @@ def test_compare_versions_field_headers():
     # a field header. Set these to a non-empty value.
     request = version.CompareVersionsRequest()
 
-    request.base_version = "base_version/value"
+    request.base_version = "base_version_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.compare_versions), "__call__") as call:
@@ -2337,7 +2337,7 @@ def test_compare_versions_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "base_version=base_version/value",
+        "base_version=base_version_value",
     ) in kw["metadata"]
 
 
@@ -2351,7 +2351,7 @@ async def test_compare_versions_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = version.CompareVersionsRequest()
 
-    request.base_version = "base_version/value"
+    request.base_version = "base_version_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.compare_versions), "__call__") as call:
@@ -2369,7 +2369,7 @@ async def test_compare_versions_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "base_version=base_version/value",
+        "base_version=base_version_value",
     ) in kw["metadata"]
 
 

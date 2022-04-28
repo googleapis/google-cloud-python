@@ -750,7 +750,7 @@ def test_list_environments_field_headers():
     # a field header. Set these to a non-empty value.
     request = environment.ListEnvironmentsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -768,7 +768,7 @@ def test_list_environments_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -782,7 +782,7 @@ async def test_list_environments_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = environment.ListEnvironmentsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -802,7 +802,7 @@ async def test_list_environments_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -939,7 +939,7 @@ def test_list_environments_pager(transport_name: str = "grpc"):
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, environment.Environment) for i in results)
 
@@ -1194,7 +1194,7 @@ def test_get_environment_field_headers():
     # a field header. Set these to a non-empty value.
     request = environment.GetEnvironmentRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_environment), "__call__") as call:
@@ -1210,7 +1210,7 @@ def test_get_environment_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1224,7 +1224,7 @@ async def test_get_environment_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = environment.GetEnvironmentRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_environment), "__call__") as call:
@@ -1242,7 +1242,7 @@ async def test_get_environment_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1427,7 +1427,7 @@ def test_create_environment_field_headers():
     # a field header. Set these to a non-empty value.
     request = gcdc_environment.CreateEnvironmentRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1445,7 +1445,7 @@ def test_create_environment_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -1459,7 +1459,7 @@ async def test_create_environment_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = gcdc_environment.CreateEnvironmentRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1479,7 +1479,7 @@ async def test_create_environment_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -1678,7 +1678,7 @@ def test_update_environment_field_headers():
     # a field header. Set these to a non-empty value.
     request = gcdc_environment.UpdateEnvironmentRequest()
 
-    request.environment.name = "environment.name/value"
+    request.environment.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1696,7 +1696,7 @@ def test_update_environment_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "environment.name=environment.name/value",
+        "environment.name=name_value",
     ) in kw["metadata"]
 
 
@@ -1710,7 +1710,7 @@ async def test_update_environment_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = gcdc_environment.UpdateEnvironmentRequest()
 
-    request.environment.name = "environment.name/value"
+    request.environment.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1730,7 +1730,7 @@ async def test_update_environment_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "environment.name=environment.name/value",
+        "environment.name=name_value",
     ) in kw["metadata"]
 
 
@@ -1926,7 +1926,7 @@ def test_delete_environment_field_headers():
     # a field header. Set these to a non-empty value.
     request = environment.DeleteEnvironmentRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1944,7 +1944,7 @@ def test_delete_environment_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1958,7 +1958,7 @@ async def test_delete_environment_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = environment.DeleteEnvironmentRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1976,7 +1976,7 @@ async def test_delete_environment_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2169,7 +2169,7 @@ def test_lookup_environment_history_field_headers():
     # a field header. Set these to a non-empty value.
     request = environment.LookupEnvironmentHistoryRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2187,7 +2187,7 @@ def test_lookup_environment_history_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2201,7 +2201,7 @@ async def test_lookup_environment_history_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = environment.LookupEnvironmentHistoryRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2221,7 +2221,7 @@ async def test_lookup_environment_history_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2358,7 +2358,7 @@ def test_lookup_environment_history_pager(transport_name: str = "grpc"):
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, environment.Environment) for i in results)
 
@@ -2605,7 +2605,7 @@ def test_run_continuous_test_field_headers():
     # a field header. Set these to a non-empty value.
     request = environment.RunContinuousTestRequest()
 
-    request.environment = "environment/value"
+    request.environment = "environment_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2623,7 +2623,7 @@ def test_run_continuous_test_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "environment=environment/value",
+        "environment=environment_value",
     ) in kw["metadata"]
 
 
@@ -2637,7 +2637,7 @@ async def test_run_continuous_test_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = environment.RunContinuousTestRequest()
 
-    request.environment = "environment/value"
+    request.environment = "environment_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2657,7 +2657,7 @@ async def test_run_continuous_test_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "environment=environment/value",
+        "environment=environment_value",
     ) in kw["metadata"]
 
 
@@ -2766,7 +2766,7 @@ def test_list_continuous_test_results_field_headers():
     # a field header. Set these to a non-empty value.
     request = environment.ListContinuousTestResultsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2784,7 +2784,7 @@ def test_list_continuous_test_results_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -2798,7 +2798,7 @@ async def test_list_continuous_test_results_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = environment.ListContinuousTestResultsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2818,7 +2818,7 @@ async def test_list_continuous_test_results_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -2955,7 +2955,7 @@ def test_list_continuous_test_results_pager(transport_name: str = "grpc"):
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, environment.ContinuousTestResult) for i in results)
 
@@ -3196,7 +3196,7 @@ def test_deploy_flow_field_headers():
     # a field header. Set these to a non-empty value.
     request = environment.DeployFlowRequest()
 
-    request.environment = "environment/value"
+    request.environment = "environment_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.deploy_flow), "__call__") as call:
@@ -3212,7 +3212,7 @@ def test_deploy_flow_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "environment=environment/value",
+        "environment=environment_value",
     ) in kw["metadata"]
 
 
@@ -3226,7 +3226,7 @@ async def test_deploy_flow_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = environment.DeployFlowRequest()
 
-    request.environment = "environment/value"
+    request.environment = "environment_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.deploy_flow), "__call__") as call:
@@ -3244,7 +3244,7 @@ async def test_deploy_flow_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "environment=environment/value",
+        "environment=environment_value",
     ) in kw["metadata"]
 
 

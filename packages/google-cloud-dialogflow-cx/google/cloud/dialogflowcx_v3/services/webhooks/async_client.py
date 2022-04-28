@@ -217,9 +217,9 @@ class WebhooksAsyncClient:
 
             from google.cloud import dialogflowcx_v3
 
-            def sample_list_webhooks():
+            async def sample_list_webhooks():
                 # Create a client
-                client = dialogflowcx_v3.WebhooksClient()
+                client = dialogflowcx_v3.WebhooksAsyncClient()
 
                 # Initialize request argument(s)
                 request = dialogflowcx_v3.ListWebhooksRequest(
@@ -230,7 +230,7 @@ class WebhooksAsyncClient:
                 page_result = client.list_webhooks(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -325,9 +325,9 @@ class WebhooksAsyncClient:
 
             from google.cloud import dialogflowcx_v3
 
-            def sample_get_webhook():
+            async def sample_get_webhook():
                 # Create a client
-                client = dialogflowcx_v3.WebhooksClient()
+                client = dialogflowcx_v3.WebhooksAsyncClient()
 
                 # Initialize request argument(s)
                 request = dialogflowcx_v3.GetWebhookRequest(
@@ -335,7 +335,7 @@ class WebhooksAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_webhook(request=request)
+                response = await client.get_webhook(request=request)
 
                 # Handle the response
                 print(response)
@@ -426,9 +426,9 @@ class WebhooksAsyncClient:
 
             from google.cloud import dialogflowcx_v3
 
-            def sample_create_webhook():
+            async def sample_create_webhook():
                 # Create a client
-                client = dialogflowcx_v3.WebhooksClient()
+                client = dialogflowcx_v3.WebhooksAsyncClient()
 
                 # Initialize request argument(s)
                 webhook = dialogflowcx_v3.Webhook()
@@ -441,7 +441,7 @@ class WebhooksAsyncClient:
                 )
 
                 # Make the request
-                response = client.create_webhook(request=request)
+                response = await client.create_webhook(request=request)
 
                 # Handle the response
                 print(response)
@@ -539,9 +539,9 @@ class WebhooksAsyncClient:
 
             from google.cloud import dialogflowcx_v3
 
-            def sample_update_webhook():
+            async def sample_update_webhook():
                 # Create a client
-                client = dialogflowcx_v3.WebhooksClient()
+                client = dialogflowcx_v3.WebhooksAsyncClient()
 
                 # Initialize request argument(s)
                 webhook = dialogflowcx_v3.Webhook()
@@ -553,7 +553,7 @@ class WebhooksAsyncClient:
                 )
 
                 # Make the request
-                response = client.update_webhook(request=request)
+                response = await client.update_webhook(request=request)
 
                 # Handle the response
                 print(response)
@@ -653,9 +653,9 @@ class WebhooksAsyncClient:
 
             from google.cloud import dialogflowcx_v3
 
-            def sample_delete_webhook():
+            async def sample_delete_webhook():
                 # Create a client
-                client = dialogflowcx_v3.WebhooksClient()
+                client = dialogflowcx_v3.WebhooksAsyncClient()
 
                 # Initialize request argument(s)
                 request = dialogflowcx_v3.DeleteWebhookRequest(
@@ -663,7 +663,7 @@ class WebhooksAsyncClient:
                 )
 
                 # Make the request
-                client.delete_webhook(request=request)
+                await client.delete_webhook(request=request)
 
         Args:
             request (Union[google.cloud.dialogflowcx_v3.types.DeleteWebhookRequest, dict]):

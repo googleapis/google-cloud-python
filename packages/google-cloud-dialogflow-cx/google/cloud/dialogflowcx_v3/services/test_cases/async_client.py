@@ -243,9 +243,9 @@ class TestCasesAsyncClient:
 
             from google.cloud import dialogflowcx_v3
 
-            def sample_list_test_cases():
+            async def sample_list_test_cases():
                 # Create a client
-                client = dialogflowcx_v3.TestCasesClient()
+                client = dialogflowcx_v3.TestCasesAsyncClient()
 
                 # Initialize request argument(s)
                 request = dialogflowcx_v3.ListTestCasesRequest(
@@ -256,7 +256,7 @@ class TestCasesAsyncClient:
                 page_result = client.list_test_cases(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -351,9 +351,9 @@ class TestCasesAsyncClient:
 
             from google.cloud import dialogflowcx_v3
 
-            def sample_batch_delete_test_cases():
+            async def sample_batch_delete_test_cases():
                 # Create a client
-                client = dialogflowcx_v3.TestCasesClient()
+                client = dialogflowcx_v3.TestCasesAsyncClient()
 
                 # Initialize request argument(s)
                 request = dialogflowcx_v3.BatchDeleteTestCasesRequest(
@@ -362,7 +362,7 @@ class TestCasesAsyncClient:
                 )
 
                 # Make the request
-                client.batch_delete_test_cases(request=request)
+                await client.batch_delete_test_cases(request=request)
 
         Args:
             request (Union[google.cloud.dialogflowcx_v3.types.BatchDeleteTestCasesRequest, dict]):
@@ -435,9 +435,9 @@ class TestCasesAsyncClient:
 
             from google.cloud import dialogflowcx_v3
 
-            def sample_get_test_case():
+            async def sample_get_test_case():
                 # Create a client
-                client = dialogflowcx_v3.TestCasesClient()
+                client = dialogflowcx_v3.TestCasesAsyncClient()
 
                 # Initialize request argument(s)
                 request = dialogflowcx_v3.GetTestCaseRequest(
@@ -445,7 +445,7 @@ class TestCasesAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_test_case(request=request)
+                response = await client.get_test_case(request=request)
 
                 # Handle the response
                 print(response)
@@ -529,9 +529,9 @@ class TestCasesAsyncClient:
 
             from google.cloud import dialogflowcx_v3
 
-            def sample_create_test_case():
+            async def sample_create_test_case():
                 # Create a client
-                client = dialogflowcx_v3.TestCasesClient()
+                client = dialogflowcx_v3.TestCasesAsyncClient()
 
                 # Initialize request argument(s)
                 test_case = dialogflowcx_v3.TestCase()
@@ -543,7 +543,7 @@ class TestCasesAsyncClient:
                 )
 
                 # Make the request
-                response = client.create_test_case(request=request)
+                response = await client.create_test_case(request=request)
 
                 # Handle the response
                 print(response)
@@ -634,9 +634,9 @@ class TestCasesAsyncClient:
 
             from google.cloud import dialogflowcx_v3
 
-            def sample_update_test_case():
+            async def sample_update_test_case():
                 # Create a client
-                client = dialogflowcx_v3.TestCasesClient()
+                client = dialogflowcx_v3.TestCasesAsyncClient()
 
                 # Initialize request argument(s)
                 test_case = dialogflowcx_v3.TestCase()
@@ -647,7 +647,7 @@ class TestCasesAsyncClient:
                 )
 
                 # Make the request
-                response = client.update_test_case(request=request)
+                response = await client.update_test_case(request=request)
 
                 # Handle the response
                 print(response)
@@ -752,9 +752,9 @@ class TestCasesAsyncClient:
 
             from google.cloud import dialogflowcx_v3
 
-            def sample_run_test_case():
+            async def sample_run_test_case():
                 # Create a client
-                client = dialogflowcx_v3.TestCasesClient()
+                client = dialogflowcx_v3.TestCasesAsyncClient()
 
                 # Initialize request argument(s)
                 request = dialogflowcx_v3.RunTestCaseRequest(
@@ -766,7 +766,7 @@ class TestCasesAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -851,9 +851,9 @@ class TestCasesAsyncClient:
 
             from google.cloud import dialogflowcx_v3
 
-            def sample_batch_run_test_cases():
+            async def sample_batch_run_test_cases():
                 # Create a client
-                client = dialogflowcx_v3.TestCasesClient()
+                client = dialogflowcx_v3.TestCasesAsyncClient()
 
                 # Initialize request argument(s)
                 request = dialogflowcx_v3.BatchRunTestCasesRequest(
@@ -866,7 +866,7 @@ class TestCasesAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -941,9 +941,9 @@ class TestCasesAsyncClient:
 
             from google.cloud import dialogflowcx_v3
 
-            def sample_calculate_coverage():
+            async def sample_calculate_coverage():
                 # Create a client
-                client = dialogflowcx_v3.TestCasesClient()
+                client = dialogflowcx_v3.TestCasesAsyncClient()
 
                 # Initialize request argument(s)
                 request = dialogflowcx_v3.CalculateCoverageRequest(
@@ -952,7 +952,7 @@ class TestCasesAsyncClient:
                 )
 
                 # Make the request
-                response = client.calculate_coverage(request=request)
+                response = await client.calculate_coverage(request=request)
 
                 # Handle the response
                 print(response)
@@ -1028,9 +1028,9 @@ class TestCasesAsyncClient:
 
             from google.cloud import dialogflowcx_v3
 
-            def sample_import_test_cases():
+            async def sample_import_test_cases():
                 # Create a client
-                client = dialogflowcx_v3.TestCasesClient()
+                client = dialogflowcx_v3.TestCasesAsyncClient()
 
                 # Initialize request argument(s)
                 request = dialogflowcx_v3.ImportTestCasesRequest(
@@ -1043,7 +1043,7 @@ class TestCasesAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1130,9 +1130,9 @@ class TestCasesAsyncClient:
 
             from google.cloud import dialogflowcx_v3
 
-            def sample_export_test_cases():
+            async def sample_export_test_cases():
                 # Create a client
-                client = dialogflowcx_v3.TestCasesClient()
+                client = dialogflowcx_v3.TestCasesAsyncClient()
 
                 # Initialize request argument(s)
                 request = dialogflowcx_v3.ExportTestCasesRequest(
@@ -1145,7 +1145,7 @@ class TestCasesAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1221,9 +1221,9 @@ class TestCasesAsyncClient:
 
             from google.cloud import dialogflowcx_v3
 
-            def sample_list_test_case_results():
+            async def sample_list_test_case_results():
                 # Create a client
-                client = dialogflowcx_v3.TestCasesClient()
+                client = dialogflowcx_v3.TestCasesAsyncClient()
 
                 # Initialize request argument(s)
                 request = dialogflowcx_v3.ListTestCaseResultsRequest(
@@ -1234,7 +1234,7 @@ class TestCasesAsyncClient:
                 page_result = client.list_test_case_results(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -1331,9 +1331,9 @@ class TestCasesAsyncClient:
 
             from google.cloud import dialogflowcx_v3
 
-            def sample_get_test_case_result():
+            async def sample_get_test_case_result():
                 # Create a client
-                client = dialogflowcx_v3.TestCasesClient()
+                client = dialogflowcx_v3.TestCasesAsyncClient()
 
                 # Initialize request argument(s)
                 request = dialogflowcx_v3.GetTestCaseResultRequest(
@@ -1341,7 +1341,7 @@ class TestCasesAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_test_case_result(request=request)
+                response = await client.get_test_case_result(request=request)
 
                 # Handle the response
                 print(response)
