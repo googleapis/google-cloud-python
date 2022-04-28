@@ -712,7 +712,7 @@ def test_create_session_field_headers():
     # a field header. Set these to a non-empty value.
     request = spanner.CreateSessionRequest()
 
-    request.database = "database/value"
+    request.database = "database_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_session), "__call__") as call:
@@ -728,7 +728,7 @@ def test_create_session_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "database=database/value",
+        "database=database_value",
     ) in kw["metadata"]
 
 
@@ -742,7 +742,7 @@ async def test_create_session_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = spanner.CreateSessionRequest()
 
-    request.database = "database/value"
+    request.database = "database_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_session), "__call__") as call:
@@ -758,7 +758,7 @@ async def test_create_session_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "database=database/value",
+        "database=database_value",
     ) in kw["metadata"]
 
 
@@ -940,7 +940,7 @@ def test_batch_create_sessions_field_headers():
     # a field header. Set these to a non-empty value.
     request = spanner.BatchCreateSessionsRequest()
 
-    request.database = "database/value"
+    request.database = "database_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -958,7 +958,7 @@ def test_batch_create_sessions_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "database=database/value",
+        "database=database_value",
     ) in kw["metadata"]
 
 
@@ -972,7 +972,7 @@ async def test_batch_create_sessions_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = spanner.BatchCreateSessionsRequest()
 
-    request.database = "database/value"
+    request.database = "database_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -992,7 +992,7 @@ async def test_batch_create_sessions_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "database=database/value",
+        "database=database_value",
     ) in kw["metadata"]
 
 
@@ -1190,7 +1190,7 @@ def test_get_session_field_headers():
     # a field header. Set these to a non-empty value.
     request = spanner.GetSessionRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_session), "__call__") as call:
@@ -1206,7 +1206,7 @@ def test_get_session_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1220,7 +1220,7 @@ async def test_get_session_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = spanner.GetSessionRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_session), "__call__") as call:
@@ -1236,7 +1236,7 @@ async def test_get_session_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1418,7 +1418,7 @@ def test_list_sessions_field_headers():
     # a field header. Set these to a non-empty value.
     request = spanner.ListSessionsRequest()
 
-    request.database = "database/value"
+    request.database = "database_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_sessions), "__call__") as call:
@@ -1434,7 +1434,7 @@ def test_list_sessions_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "database=database/value",
+        "database=database_value",
     ) in kw["metadata"]
 
 
@@ -1448,7 +1448,7 @@ async def test_list_sessions_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = spanner.ListSessionsRequest()
 
-    request.database = "database/value"
+    request.database = "database_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_sessions), "__call__") as call:
@@ -1466,7 +1466,7 @@ async def test_list_sessions_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "database=database/value",
+        "database=database_value",
     ) in kw["metadata"]
 
 
@@ -1597,7 +1597,7 @@ def test_list_sessions_pager(transport_name: str = "grpc"):
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, spanner.Session) for i in results)
 
@@ -1830,7 +1830,7 @@ def test_delete_session_field_headers():
     # a field header. Set these to a non-empty value.
     request = spanner.DeleteSessionRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_session), "__call__") as call:
@@ -1846,7 +1846,7 @@ def test_delete_session_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1860,7 +1860,7 @@ async def test_delete_session_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = spanner.DeleteSessionRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_session), "__call__") as call:
@@ -1876,7 +1876,7 @@ async def test_delete_session_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2052,7 +2052,7 @@ def test_execute_sql_field_headers():
     # a field header. Set these to a non-empty value.
     request = spanner.ExecuteSqlRequest()
 
-    request.session = "session/value"
+    request.session = "session_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.execute_sql), "__call__") as call:
@@ -2068,7 +2068,7 @@ def test_execute_sql_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "session=session/value",
+        "session=session_value",
     ) in kw["metadata"]
 
 
@@ -2082,7 +2082,7 @@ async def test_execute_sql_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = spanner.ExecuteSqlRequest()
 
-    request.session = "session/value"
+    request.session = "session_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.execute_sql), "__call__") as call:
@@ -2100,7 +2100,7 @@ async def test_execute_sql_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "session=session/value",
+        "session=session_value",
     ) in kw["metadata"]
 
 
@@ -2205,7 +2205,7 @@ def test_execute_streaming_sql_field_headers():
     # a field header. Set these to a non-empty value.
     request = spanner.ExecuteSqlRequest()
 
-    request.session = "session/value"
+    request.session = "session_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2223,7 +2223,7 @@ def test_execute_streaming_sql_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "session=session/value",
+        "session=session_value",
     ) in kw["metadata"]
 
 
@@ -2237,7 +2237,7 @@ async def test_execute_streaming_sql_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = spanner.ExecuteSqlRequest()
 
-    request.session = "session/value"
+    request.session = "session_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2258,7 +2258,7 @@ async def test_execute_streaming_sql_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "session=session/value",
+        "session=session_value",
     ) in kw["metadata"]
 
 
@@ -2360,7 +2360,7 @@ def test_execute_batch_dml_field_headers():
     # a field header. Set these to a non-empty value.
     request = spanner.ExecuteBatchDmlRequest()
 
-    request.session = "session/value"
+    request.session = "session_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2378,7 +2378,7 @@ def test_execute_batch_dml_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "session=session/value",
+        "session=session_value",
     ) in kw["metadata"]
 
 
@@ -2392,7 +2392,7 @@ async def test_execute_batch_dml_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = spanner.ExecuteBatchDmlRequest()
 
-    request.session = "session/value"
+    request.session = "session_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2412,7 +2412,7 @@ async def test_execute_batch_dml_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "session=session/value",
+        "session=session_value",
     ) in kw["metadata"]
 
 
@@ -2508,7 +2508,7 @@ def test_read_field_headers():
     # a field header. Set these to a non-empty value.
     request = spanner.ReadRequest()
 
-    request.session = "session/value"
+    request.session = "session_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.read), "__call__") as call:
@@ -2524,7 +2524,7 @@ def test_read_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "session=session/value",
+        "session=session_value",
     ) in kw["metadata"]
 
 
@@ -2538,7 +2538,7 @@ async def test_read_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = spanner.ReadRequest()
 
-    request.session = "session/value"
+    request.session = "session_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.read), "__call__") as call:
@@ -2556,7 +2556,7 @@ async def test_read_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "session=session/value",
+        "session=session_value",
     ) in kw["metadata"]
 
 
@@ -2655,7 +2655,7 @@ def test_streaming_read_field_headers():
     # a field header. Set these to a non-empty value.
     request = spanner.ReadRequest()
 
-    request.session = "session/value"
+    request.session = "session_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.streaming_read), "__call__") as call:
@@ -2671,7 +2671,7 @@ def test_streaming_read_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "session=session/value",
+        "session=session_value",
     ) in kw["metadata"]
 
 
@@ -2685,7 +2685,7 @@ async def test_streaming_read_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = spanner.ReadRequest()
 
-    request.session = "session/value"
+    request.session = "session_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.streaming_read), "__call__") as call:
@@ -2704,7 +2704,7 @@ async def test_streaming_read_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "session=session/value",
+        "session=session_value",
     ) in kw["metadata"]
 
 
@@ -2812,7 +2812,7 @@ def test_begin_transaction_field_headers():
     # a field header. Set these to a non-empty value.
     request = spanner.BeginTransactionRequest()
 
-    request.session = "session/value"
+    request.session = "session_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2830,7 +2830,7 @@ def test_begin_transaction_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "session=session/value",
+        "session=session_value",
     ) in kw["metadata"]
 
 
@@ -2844,7 +2844,7 @@ async def test_begin_transaction_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = spanner.BeginTransactionRequest()
 
-    request.session = "session/value"
+    request.session = "session_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2864,7 +2864,7 @@ async def test_begin_transaction_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "session=session/value",
+        "session=session_value",
     ) in kw["metadata"]
 
 
@@ -3056,7 +3056,7 @@ def test_commit_field_headers():
     # a field header. Set these to a non-empty value.
     request = spanner.CommitRequest()
 
-    request.session = "session/value"
+    request.session = "session_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.commit), "__call__") as call:
@@ -3072,7 +3072,7 @@ def test_commit_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "session=session/value",
+        "session=session_value",
     ) in kw["metadata"]
 
 
@@ -3086,7 +3086,7 @@ async def test_commit_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = spanner.CommitRequest()
 
-    request.session = "session/value"
+    request.session = "session_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.commit), "__call__") as call:
@@ -3104,7 +3104,7 @@ async def test_commit_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "session=session/value",
+        "session=session_value",
     ) in kw["metadata"]
 
 
@@ -3316,7 +3316,7 @@ def test_rollback_field_headers():
     # a field header. Set these to a non-empty value.
     request = spanner.RollbackRequest()
 
-    request.session = "session/value"
+    request.session = "session_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.rollback), "__call__") as call:
@@ -3332,7 +3332,7 @@ def test_rollback_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "session=session/value",
+        "session=session_value",
     ) in kw["metadata"]
 
 
@@ -3346,7 +3346,7 @@ async def test_rollback_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = spanner.RollbackRequest()
 
-    request.session = "session/value"
+    request.session = "session_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.rollback), "__call__") as call:
@@ -3362,7 +3362,7 @@ async def test_rollback_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "session=session/value",
+        "session=session_value",
     ) in kw["metadata"]
 
 
@@ -3548,7 +3548,7 @@ def test_partition_query_field_headers():
     # a field header. Set these to a non-empty value.
     request = spanner.PartitionQueryRequest()
 
-    request.session = "session/value"
+    request.session = "session_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.partition_query), "__call__") as call:
@@ -3564,7 +3564,7 @@ def test_partition_query_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "session=session/value",
+        "session=session_value",
     ) in kw["metadata"]
 
 
@@ -3578,7 +3578,7 @@ async def test_partition_query_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = spanner.PartitionQueryRequest()
 
-    request.session = "session/value"
+    request.session = "session_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.partition_query), "__call__") as call:
@@ -3596,7 +3596,7 @@ async def test_partition_query_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "session=session/value",
+        "session=session_value",
     ) in kw["metadata"]
 
 
@@ -3692,7 +3692,7 @@ def test_partition_read_field_headers():
     # a field header. Set these to a non-empty value.
     request = spanner.PartitionReadRequest()
 
-    request.session = "session/value"
+    request.session = "session_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.partition_read), "__call__") as call:
@@ -3708,7 +3708,7 @@ def test_partition_read_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "session=session/value",
+        "session=session_value",
     ) in kw["metadata"]
 
 
@@ -3722,7 +3722,7 @@ async def test_partition_read_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = spanner.PartitionReadRequest()
 
-    request.session = "session/value"
+    request.session = "session_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.partition_read), "__call__") as call:
@@ -3740,7 +3740,7 @@ async def test_partition_read_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "session=session/value",
+        "session=session_value",
     ) in kw["metadata"]
 
 

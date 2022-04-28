@@ -246,9 +246,9 @@ class DatabaseAdminAsyncClient:
 
             from google.cloud import spanner_admin_database_v1
 
-            def sample_list_databases():
+            async def sample_list_databases():
                 # Create a client
-                client = spanner_admin_database_v1.DatabaseAdminClient()
+                client = spanner_admin_database_v1.DatabaseAdminAsyncClient()
 
                 # Initialize request argument(s)
                 request = spanner_admin_database_v1.ListDatabasesRequest(
@@ -259,7 +259,7 @@ class DatabaseAdminAsyncClient:
                 page_result = client.list_databases(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -375,9 +375,9 @@ class DatabaseAdminAsyncClient:
 
             from google.cloud import spanner_admin_database_v1
 
-            def sample_create_database():
+            async def sample_create_database():
                 # Create a client
-                client = spanner_admin_database_v1.DatabaseAdminClient()
+                client = spanner_admin_database_v1.DatabaseAdminAsyncClient()
 
                 # Initialize request argument(s)
                 request = spanner_admin_database_v1.CreateDatabaseRequest(
@@ -390,7 +390,7 @@ class DatabaseAdminAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -501,9 +501,9 @@ class DatabaseAdminAsyncClient:
 
             from google.cloud import spanner_admin_database_v1
 
-            def sample_get_database():
+            async def sample_get_database():
                 # Create a client
-                client = spanner_admin_database_v1.DatabaseAdminClient()
+                client = spanner_admin_database_v1.DatabaseAdminAsyncClient()
 
                 # Initialize request argument(s)
                 request = spanner_admin_database_v1.GetDatabaseRequest(
@@ -511,7 +511,7 @@ class DatabaseAdminAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_database(request=request)
+                response = await client.get_database(request=request)
 
                 # Handle the response
                 print(response)
@@ -614,9 +614,9 @@ class DatabaseAdminAsyncClient:
 
             from google.cloud import spanner_admin_database_v1
 
-            def sample_update_database_ddl():
+            async def sample_update_database_ddl():
                 # Create a client
-                client = spanner_admin_database_v1.DatabaseAdminClient()
+                client = spanner_admin_database_v1.DatabaseAdminAsyncClient()
 
                 # Initialize request argument(s)
                 request = spanner_admin_database_v1.UpdateDatabaseDdlRequest(
@@ -629,7 +629,7 @@ class DatabaseAdminAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -772,9 +772,9 @@ class DatabaseAdminAsyncClient:
 
             from google.cloud import spanner_admin_database_v1
 
-            def sample_drop_database():
+            async def sample_drop_database():
                 # Create a client
-                client = spanner_admin_database_v1.DatabaseAdminClient()
+                client = spanner_admin_database_v1.DatabaseAdminAsyncClient()
 
                 # Initialize request argument(s)
                 request = spanner_admin_database_v1.DropDatabaseRequest(
@@ -782,7 +782,7 @@ class DatabaseAdminAsyncClient:
                 )
 
                 # Make the request
-                client.drop_database(request=request)
+                await client.drop_database(request=request)
 
         Args:
             request (Union[google.cloud.spanner_admin_database_v1.types.DropDatabaseRequest, dict]):
@@ -866,9 +866,9 @@ class DatabaseAdminAsyncClient:
 
             from google.cloud import spanner_admin_database_v1
 
-            def sample_get_database_ddl():
+            async def sample_get_database_ddl():
                 # Create a client
-                client = spanner_admin_database_v1.DatabaseAdminClient()
+                client = spanner_admin_database_v1.DatabaseAdminAsyncClient()
 
                 # Initialize request argument(s)
                 request = spanner_admin_database_v1.GetDatabaseDdlRequest(
@@ -876,7 +876,7 @@ class DatabaseAdminAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_database_ddl(request=request)
+                response = await client.get_database_ddl(request=request)
 
                 # Handle the response
                 print(response)
@@ -981,9 +981,9 @@ class DatabaseAdminAsyncClient:
             from google.cloud import spanner_admin_database_v1
             from google.iam.v1 import iam_policy_pb2  # type: ignore
 
-            def sample_set_iam_policy():
+            async def sample_set_iam_policy():
                 # Create a client
-                client = spanner_admin_database_v1.DatabaseAdminClient()
+                client = spanner_admin_database_v1.DatabaseAdminAsyncClient()
 
                 # Initialize request argument(s)
                 request = iam_policy_pb2.SetIamPolicyRequest(
@@ -991,7 +991,7 @@ class DatabaseAdminAsyncClient:
                 )
 
                 # Make the request
-                response = client.set_iam_policy(request=request)
+                response = await client.set_iam_policy(request=request)
 
                 # Handle the response
                 print(response)
@@ -1149,9 +1149,9 @@ class DatabaseAdminAsyncClient:
             from google.cloud import spanner_admin_database_v1
             from google.iam.v1 import iam_policy_pb2  # type: ignore
 
-            def sample_get_iam_policy():
+            async def sample_get_iam_policy():
                 # Create a client
-                client = spanner_admin_database_v1.DatabaseAdminClient()
+                client = spanner_admin_database_v1.DatabaseAdminAsyncClient()
 
                 # Initialize request argument(s)
                 request = iam_policy_pb2.GetIamPolicyRequest(
@@ -1159,7 +1159,7 @@ class DatabaseAdminAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_iam_policy(request=request)
+                response = await client.get_iam_policy(request=request)
 
                 # Handle the response
                 print(response)
@@ -1328,9 +1328,9 @@ class DatabaseAdminAsyncClient:
             from google.cloud import spanner_admin_database_v1
             from google.iam.v1 import iam_policy_pb2  # type: ignore
 
-            def sample_test_iam_permissions():
+            async def sample_test_iam_permissions():
                 # Create a client
-                client = spanner_admin_database_v1.DatabaseAdminClient()
+                client = spanner_admin_database_v1.DatabaseAdminAsyncClient()
 
                 # Initialize request argument(s)
                 request = iam_policy_pb2.TestIamPermissionsRequest(
@@ -1339,7 +1339,7 @@ class DatabaseAdminAsyncClient:
                 )
 
                 # Make the request
-                response = client.test_iam_permissions(request=request)
+                response = await client.test_iam_permissions(request=request)
 
                 # Handle the response
                 print(response)
@@ -1450,9 +1450,9 @@ class DatabaseAdminAsyncClient:
 
             from google.cloud import spanner_admin_database_v1
 
-            def sample_create_backup():
+            async def sample_create_backup():
                 # Create a client
-                client = spanner_admin_database_v1.DatabaseAdminClient()
+                client = spanner_admin_database_v1.DatabaseAdminAsyncClient()
 
                 # Initialize request argument(s)
                 request = spanner_admin_database_v1.CreateBackupRequest(
@@ -1465,7 +1465,7 @@ class DatabaseAdminAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1599,9 +1599,9 @@ class DatabaseAdminAsyncClient:
 
             from google.cloud import spanner_admin_database_v1
 
-            def sample_copy_backup():
+            async def sample_copy_backup():
                 # Create a client
-                client = spanner_admin_database_v1.DatabaseAdminClient()
+                client = spanner_admin_database_v1.DatabaseAdminAsyncClient()
 
                 # Initialize request argument(s)
                 request = spanner_admin_database_v1.CopyBackupRequest(
@@ -1615,7 +1615,7 @@ class DatabaseAdminAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1751,9 +1751,9 @@ class DatabaseAdminAsyncClient:
 
             from google.cloud import spanner_admin_database_v1
 
-            def sample_get_backup():
+            async def sample_get_backup():
                 # Create a client
-                client = spanner_admin_database_v1.DatabaseAdminClient()
+                client = spanner_admin_database_v1.DatabaseAdminAsyncClient()
 
                 # Initialize request argument(s)
                 request = spanner_admin_database_v1.GetBackupRequest(
@@ -1761,7 +1761,7 @@ class DatabaseAdminAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_backup(request=request)
+                response = await client.get_backup(request=request)
 
                 # Handle the response
                 print(response)
@@ -1856,16 +1856,16 @@ class DatabaseAdminAsyncClient:
 
             from google.cloud import spanner_admin_database_v1
 
-            def sample_update_backup():
+            async def sample_update_backup():
                 # Create a client
-                client = spanner_admin_database_v1.DatabaseAdminClient()
+                client = spanner_admin_database_v1.DatabaseAdminAsyncClient()
 
                 # Initialize request argument(s)
                 request = spanner_admin_database_v1.UpdateBackupRequest(
                 )
 
                 # Make the request
-                response = client.update_backup(request=request)
+                response = await client.update_backup(request=request)
 
                 # Handle the response
                 print(response)
@@ -1979,9 +1979,9 @@ class DatabaseAdminAsyncClient:
 
             from google.cloud import spanner_admin_database_v1
 
-            def sample_delete_backup():
+            async def sample_delete_backup():
                 # Create a client
-                client = spanner_admin_database_v1.DatabaseAdminClient()
+                client = spanner_admin_database_v1.DatabaseAdminAsyncClient()
 
                 # Initialize request argument(s)
                 request = spanner_admin_database_v1.DeleteBackupRequest(
@@ -1989,7 +1989,7 @@ class DatabaseAdminAsyncClient:
                 )
 
                 # Make the request
-                client.delete_backup(request=request)
+                await client.delete_backup(request=request)
 
         Args:
             request (Union[google.cloud.spanner_admin_database_v1.types.DeleteBackupRequest, dict]):
@@ -2075,9 +2075,9 @@ class DatabaseAdminAsyncClient:
 
             from google.cloud import spanner_admin_database_v1
 
-            def sample_list_backups():
+            async def sample_list_backups():
                 # Create a client
-                client = spanner_admin_database_v1.DatabaseAdminClient()
+                client = spanner_admin_database_v1.DatabaseAdminAsyncClient()
 
                 # Initialize request argument(s)
                 request = spanner_admin_database_v1.ListBackupsRequest(
@@ -2088,7 +2088,7 @@ class DatabaseAdminAsyncClient:
                 page_result = client.list_backups(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -2213,9 +2213,9 @@ class DatabaseAdminAsyncClient:
 
             from google.cloud import spanner_admin_database_v1
 
-            def sample_restore_database():
+            async def sample_restore_database():
                 # Create a client
-                client = spanner_admin_database_v1.DatabaseAdminClient()
+                client = spanner_admin_database_v1.DatabaseAdminAsyncClient()
 
                 # Initialize request argument(s)
                 request = spanner_admin_database_v1.RestoreDatabaseRequest(
@@ -2229,7 +2229,7 @@ class DatabaseAdminAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2361,9 +2361,9 @@ class DatabaseAdminAsyncClient:
 
             from google.cloud import spanner_admin_database_v1
 
-            def sample_list_database_operations():
+            async def sample_list_database_operations():
                 # Create a client
-                client = spanner_admin_database_v1.DatabaseAdminClient()
+                client = spanner_admin_database_v1.DatabaseAdminAsyncClient()
 
                 # Initialize request argument(s)
                 request = spanner_admin_database_v1.ListDatabaseOperationsRequest(
@@ -2374,7 +2374,7 @@ class DatabaseAdminAsyncClient:
                 page_result = client.list_database_operations(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -2491,9 +2491,9 @@ class DatabaseAdminAsyncClient:
 
             from google.cloud import spanner_admin_database_v1
 
-            def sample_list_backup_operations():
+            async def sample_list_backup_operations():
                 # Create a client
-                client = spanner_admin_database_v1.DatabaseAdminClient()
+                client = spanner_admin_database_v1.DatabaseAdminAsyncClient()
 
                 # Initialize request argument(s)
                 request = spanner_admin_database_v1.ListBackupOperationsRequest(
@@ -2504,7 +2504,7 @@ class DatabaseAdminAsyncClient:
                 page_result = client.list_backup_operations(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:

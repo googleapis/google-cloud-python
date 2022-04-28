@@ -249,9 +249,9 @@ class SpannerAsyncClient:
 
             from google.cloud import spanner_v1
 
-            def sample_create_session():
+            async def sample_create_session():
                 # Create a client
-                client = spanner_v1.SpannerClient()
+                client = spanner_v1.SpannerAsyncClient()
 
                 # Initialize request argument(s)
                 request = spanner_v1.CreateSessionRequest(
@@ -259,7 +259,7 @@ class SpannerAsyncClient:
                 )
 
                 # Make the request
-                response = client.create_session(request=request)
+                response = await client.create_session(request=request)
 
                 # Handle the response
                 print(response)
@@ -355,9 +355,9 @@ class SpannerAsyncClient:
 
             from google.cloud import spanner_v1
 
-            def sample_batch_create_sessions():
+            async def sample_batch_create_sessions():
                 # Create a client
-                client = spanner_v1.SpannerClient()
+                client = spanner_v1.SpannerAsyncClient()
 
                 # Initialize request argument(s)
                 request = spanner_v1.BatchCreateSessionsRequest(
@@ -366,7 +366,7 @@ class SpannerAsyncClient:
                 )
 
                 # Make the request
-                response = client.batch_create_sessions(request=request)
+                response = await client.batch_create_sessions(request=request)
 
                 # Handle the response
                 print(response)
@@ -476,9 +476,9 @@ class SpannerAsyncClient:
 
             from google.cloud import spanner_v1
 
-            def sample_get_session():
+            async def sample_get_session():
                 # Create a client
-                client = spanner_v1.SpannerClient()
+                client = spanner_v1.SpannerAsyncClient()
 
                 # Initialize request argument(s)
                 request = spanner_v1.GetSessionRequest(
@@ -486,7 +486,7 @@ class SpannerAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_session(request=request)
+                response = await client.get_session(request=request)
 
                 # Handle the response
                 print(response)
@@ -578,9 +578,9 @@ class SpannerAsyncClient:
 
             from google.cloud import spanner_v1
 
-            def sample_list_sessions():
+            async def sample_list_sessions():
                 # Create a client
-                client = spanner_v1.SpannerClient()
+                client = spanner_v1.SpannerAsyncClient()
 
                 # Initialize request argument(s)
                 request = spanner_v1.ListSessionsRequest(
@@ -591,7 +591,7 @@ class SpannerAsyncClient:
                 page_result = client.list_sessions(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -697,9 +697,9 @@ class SpannerAsyncClient:
 
             from google.cloud import spanner_v1
 
-            def sample_delete_session():
+            async def sample_delete_session():
                 # Create a client
-                client = spanner_v1.SpannerClient()
+                client = spanner_v1.SpannerAsyncClient()
 
                 # Initialize request argument(s)
                 request = spanner_v1.DeleteSessionRequest(
@@ -707,7 +707,7 @@ class SpannerAsyncClient:
                 )
 
                 # Make the request
-                client.delete_session(request=request)
+                await client.delete_session(request=request)
 
         Args:
             request (Union[google.cloud.spanner_v1.types.DeleteSessionRequest, dict]):
@@ -801,9 +801,9 @@ class SpannerAsyncClient:
 
             from google.cloud import spanner_v1
 
-            def sample_execute_sql():
+            async def sample_execute_sql():
                 # Create a client
-                client = spanner_v1.SpannerClient()
+                client = spanner_v1.SpannerAsyncClient()
 
                 # Initialize request argument(s)
                 request = spanner_v1.ExecuteSqlRequest(
@@ -812,7 +812,7 @@ class SpannerAsyncClient:
                 )
 
                 # Make the request
-                response = client.execute_sql(request=request)
+                response = await client.execute_sql(request=request)
 
                 # Handle the response
                 print(response)
@@ -890,9 +890,9 @@ class SpannerAsyncClient:
 
             from google.cloud import spanner_v1
 
-            def sample_execute_streaming_sql():
+            async def sample_execute_streaming_sql():
                 # Create a client
-                client = spanner_v1.SpannerClient()
+                client = spanner_v1.SpannerAsyncClient()
 
                 # Initialize request argument(s)
                 request = spanner_v1.ExecuteSqlRequest(
@@ -901,10 +901,10 @@ class SpannerAsyncClient:
                 )
 
                 # Make the request
-                stream = client.execute_streaming_sql(request=request)
+                stream = await client.execute_streaming_sql(request=request)
 
                 # Handle the response
-                for response in stream:
+                async for response in stream:
                     print(response)
 
         Args:
@@ -982,9 +982,9 @@ class SpannerAsyncClient:
 
             from google.cloud import spanner_v1
 
-            def sample_execute_batch_dml():
+            async def sample_execute_batch_dml():
                 # Create a client
-                client = spanner_v1.SpannerClient()
+                client = spanner_v1.SpannerAsyncClient()
 
                 # Initialize request argument(s)
                 statements = spanner_v1.Statement()
@@ -997,7 +997,7 @@ class SpannerAsyncClient:
                 )
 
                 # Make the request
-                response = client.execute_batch_dml(request=request)
+                response = await client.execute_batch_dml(request=request)
 
                 # Handle the response
                 print(response)
@@ -1120,9 +1120,9 @@ class SpannerAsyncClient:
 
             from google.cloud import spanner_v1
 
-            def sample_read():
+            async def sample_read():
                 # Create a client
-                client = spanner_v1.SpannerClient()
+                client = spanner_v1.SpannerAsyncClient()
 
                 # Initialize request argument(s)
                 request = spanner_v1.ReadRequest(
@@ -1132,7 +1132,7 @@ class SpannerAsyncClient:
                 )
 
                 # Make the request
-                response = client.read(request=request)
+                response = await client.read(request=request)
 
                 # Handle the response
                 print(response)
@@ -1210,9 +1210,9 @@ class SpannerAsyncClient:
 
             from google.cloud import spanner_v1
 
-            def sample_streaming_read():
+            async def sample_streaming_read():
                 # Create a client
-                client = spanner_v1.SpannerClient()
+                client = spanner_v1.SpannerAsyncClient()
 
                 # Initialize request argument(s)
                 request = spanner_v1.ReadRequest(
@@ -1222,10 +1222,10 @@ class SpannerAsyncClient:
                 )
 
                 # Make the request
-                stream = client.streaming_read(request=request)
+                stream = await client.streaming_read(request=request)
 
                 # Handle the response
-                for response in stream:
+                async for response in stream:
                     print(response)
 
         Args:
@@ -1296,9 +1296,9 @@ class SpannerAsyncClient:
 
             from google.cloud import spanner_v1
 
-            def sample_begin_transaction():
+            async def sample_begin_transaction():
                 # Create a client
-                client = spanner_v1.SpannerClient()
+                client = spanner_v1.SpannerAsyncClient()
 
                 # Initialize request argument(s)
                 request = spanner_v1.BeginTransactionRequest(
@@ -1306,7 +1306,7 @@ class SpannerAsyncClient:
                 )
 
                 # Make the request
-                response = client.begin_transaction(request=request)
+                response = await client.begin_transaction(request=request)
 
                 # Handle the response
                 print(response)
@@ -1425,9 +1425,9 @@ class SpannerAsyncClient:
 
             from google.cloud import spanner_v1
 
-            def sample_commit():
+            async def sample_commit():
                 # Create a client
-                client = spanner_v1.SpannerClient()
+                client = spanner_v1.SpannerAsyncClient()
 
                 # Initialize request argument(s)
                 request = spanner_v1.CommitRequest(
@@ -1436,7 +1436,7 @@ class SpannerAsyncClient:
                 )
 
                 # Make the request
-                response = client.commit(request=request)
+                response = await client.commit(request=request)
 
                 # Handle the response
                 print(response)
@@ -1579,9 +1579,9 @@ class SpannerAsyncClient:
 
             from google.cloud import spanner_v1
 
-            def sample_rollback():
+            async def sample_rollback():
                 # Create a client
-                client = spanner_v1.SpannerClient()
+                client = spanner_v1.SpannerAsyncClient()
 
                 # Initialize request argument(s)
                 request = spanner_v1.RollbackRequest(
@@ -1590,7 +1590,7 @@ class SpannerAsyncClient:
                 )
 
                 # Make the request
-                client.rollback(request=request)
+                await client.rollback(request=request)
 
         Args:
             request (Union[google.cloud.spanner_v1.types.RollbackRequest, dict]):
@@ -1693,9 +1693,9 @@ class SpannerAsyncClient:
 
             from google.cloud import spanner_v1
 
-            def sample_partition_query():
+            async def sample_partition_query():
                 # Create a client
-                client = spanner_v1.SpannerClient()
+                client = spanner_v1.SpannerAsyncClient()
 
                 # Initialize request argument(s)
                 request = spanner_v1.PartitionQueryRequest(
@@ -1704,7 +1704,7 @@ class SpannerAsyncClient:
                 )
 
                 # Make the request
-                response = client.partition_query(request=request)
+                response = await client.partition_query(request=request)
 
                 # Handle the response
                 print(response)
@@ -1793,9 +1793,9 @@ class SpannerAsyncClient:
 
             from google.cloud import spanner_v1
 
-            def sample_partition_read():
+            async def sample_partition_read():
                 # Create a client
-                client = spanner_v1.SpannerClient()
+                client = spanner_v1.SpannerAsyncClient()
 
                 # Initialize request argument(s)
                 request = spanner_v1.PartitionReadRequest(
@@ -1804,7 +1804,7 @@ class SpannerAsyncClient:
                 )
 
                 # Make the request
-                response = client.partition_read(request=request)
+                response = await client.partition_read(request=request)
 
                 # Handle the response
                 print(response)

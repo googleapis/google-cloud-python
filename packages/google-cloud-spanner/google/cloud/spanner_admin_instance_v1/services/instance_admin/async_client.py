@@ -248,9 +248,9 @@ class InstanceAdminAsyncClient:
 
             from google.cloud import spanner_admin_instance_v1
 
-            def sample_list_instance_configs():
+            async def sample_list_instance_configs():
                 # Create a client
-                client = spanner_admin_instance_v1.InstanceAdminClient()
+                client = spanner_admin_instance_v1.InstanceAdminAsyncClient()
 
                 # Initialize request argument(s)
                 request = spanner_admin_instance_v1.ListInstanceConfigsRequest(
@@ -261,7 +261,7 @@ class InstanceAdminAsyncClient:
                 page_result = client.list_instance_configs(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -368,9 +368,9 @@ class InstanceAdminAsyncClient:
 
             from google.cloud import spanner_admin_instance_v1
 
-            def sample_get_instance_config():
+            async def sample_get_instance_config():
                 # Create a client
-                client = spanner_admin_instance_v1.InstanceAdminClient()
+                client = spanner_admin_instance_v1.InstanceAdminAsyncClient()
 
                 # Initialize request argument(s)
                 request = spanner_admin_instance_v1.GetInstanceConfigRequest(
@@ -378,7 +378,7 @@ class InstanceAdminAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_instance_config(request=request)
+                response = await client.get_instance_config(request=request)
 
                 # Handle the response
                 print(response)
@@ -476,9 +476,9 @@ class InstanceAdminAsyncClient:
 
             from google.cloud import spanner_admin_instance_v1
 
-            def sample_list_instances():
+            async def sample_list_instances():
                 # Create a client
-                client = spanner_admin_instance_v1.InstanceAdminClient()
+                client = spanner_admin_instance_v1.InstanceAdminAsyncClient()
 
                 # Initialize request argument(s)
                 request = spanner_admin_instance_v1.ListInstancesRequest(
@@ -489,7 +489,7 @@ class InstanceAdminAsyncClient:
                 page_result = client.list_instances(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -595,9 +595,9 @@ class InstanceAdminAsyncClient:
 
             from google.cloud import spanner_admin_instance_v1
 
-            def sample_get_instance():
+            async def sample_get_instance():
                 # Create a client
-                client = spanner_admin_instance_v1.InstanceAdminClient()
+                client = spanner_admin_instance_v1.InstanceAdminAsyncClient()
 
                 # Initialize request argument(s)
                 request = spanner_admin_instance_v1.GetInstanceRequest(
@@ -605,7 +605,7 @@ class InstanceAdminAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_instance(request=request)
+                response = await client.get_instance(request=request)
 
                 # Handle the response
                 print(response)
@@ -740,9 +740,9 @@ class InstanceAdminAsyncClient:
 
             from google.cloud import spanner_admin_instance_v1
 
-            def sample_create_instance():
+            async def sample_create_instance():
                 # Create a client
-                client = spanner_admin_instance_v1.InstanceAdminClient()
+                client = spanner_admin_instance_v1.InstanceAdminAsyncClient()
 
                 # Initialize request argument(s)
                 instance = spanner_admin_instance_v1.Instance()
@@ -761,7 +761,7 @@ class InstanceAdminAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -923,9 +923,9 @@ class InstanceAdminAsyncClient:
 
             from google.cloud import spanner_admin_instance_v1
 
-            def sample_update_instance():
+            async def sample_update_instance():
                 # Create a client
-                client = spanner_admin_instance_v1.InstanceAdminClient()
+                client = spanner_admin_instance_v1.InstanceAdminAsyncClient()
 
                 # Initialize request argument(s)
                 instance = spanner_admin_instance_v1.Instance()
@@ -942,7 +942,7 @@ class InstanceAdminAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1068,9 +1068,9 @@ class InstanceAdminAsyncClient:
 
             from google.cloud import spanner_admin_instance_v1
 
-            def sample_delete_instance():
+            async def sample_delete_instance():
                 # Create a client
-                client = spanner_admin_instance_v1.InstanceAdminClient()
+                client = spanner_admin_instance_v1.InstanceAdminAsyncClient()
 
                 # Initialize request argument(s)
                 request = spanner_admin_instance_v1.DeleteInstanceRequest(
@@ -1078,7 +1078,7 @@ class InstanceAdminAsyncClient:
                 )
 
                 # Make the request
-                client.delete_instance(request=request)
+                await client.delete_instance(request=request)
 
         Args:
             request (Union[google.cloud.spanner_admin_instance_v1.types.DeleteInstanceRequest, dict]):
@@ -1167,9 +1167,9 @@ class InstanceAdminAsyncClient:
             from google.cloud import spanner_admin_instance_v1
             from google.iam.v1 import iam_policy_pb2  # type: ignore
 
-            def sample_set_iam_policy():
+            async def sample_set_iam_policy():
                 # Create a client
-                client = spanner_admin_instance_v1.InstanceAdminClient()
+                client = spanner_admin_instance_v1.InstanceAdminAsyncClient()
 
                 # Initialize request argument(s)
                 request = iam_policy_pb2.SetIamPolicyRequest(
@@ -1177,7 +1177,7 @@ class InstanceAdminAsyncClient:
                 )
 
                 # Make the request
-                response = client.set_iam_policy(request=request)
+                response = await client.set_iam_policy(request=request)
 
                 # Handle the response
                 print(response)
@@ -1331,9 +1331,9 @@ class InstanceAdminAsyncClient:
             from google.cloud import spanner_admin_instance_v1
             from google.iam.v1 import iam_policy_pb2  # type: ignore
 
-            def sample_get_iam_policy():
+            async def sample_get_iam_policy():
                 # Create a client
-                client = spanner_admin_instance_v1.InstanceAdminClient()
+                client = spanner_admin_instance_v1.InstanceAdminAsyncClient()
 
                 # Initialize request argument(s)
                 request = iam_policy_pb2.GetIamPolicyRequest(
@@ -1341,7 +1341,7 @@ class InstanceAdminAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_iam_policy(request=request)
+                response = await client.get_iam_policy(request=request)
 
                 # Handle the response
                 print(response)
@@ -1507,9 +1507,9 @@ class InstanceAdminAsyncClient:
             from google.cloud import spanner_admin_instance_v1
             from google.iam.v1 import iam_policy_pb2  # type: ignore
 
-            def sample_test_iam_permissions():
+            async def sample_test_iam_permissions():
                 # Create a client
-                client = spanner_admin_instance_v1.InstanceAdminClient()
+                client = spanner_admin_instance_v1.InstanceAdminAsyncClient()
 
                 # Initialize request argument(s)
                 request = iam_policy_pb2.TestIamPermissionsRequest(
@@ -1518,7 +1518,7 @@ class InstanceAdminAsyncClient:
                 )
 
                 # Make the request
-                response = client.test_iam_permissions(request=request)
+                response = await client.test_iam_permissions(request=request)
 
                 # Handle the response
                 print(response)
