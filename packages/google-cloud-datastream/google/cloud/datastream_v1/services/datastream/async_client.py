@@ -233,9 +233,9 @@ class DatastreamAsyncClient:
 
             from google.cloud import datastream_v1
 
-            def sample_list_connection_profiles():
+            async def sample_list_connection_profiles():
                 # Create a client
-                client = datastream_v1.DatastreamClient()
+                client = datastream_v1.DatastreamAsyncClient()
 
                 # Initialize request argument(s)
                 request = datastream_v1.ListConnectionProfilesRequest(
@@ -246,7 +246,7 @@ class DatastreamAsyncClient:
                 page_result = client.list_connection_profiles(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -342,9 +342,9 @@ class DatastreamAsyncClient:
 
             from google.cloud import datastream_v1
 
-            def sample_get_connection_profile():
+            async def sample_get_connection_profile():
                 # Create a client
-                client = datastream_v1.DatastreamClient()
+                client = datastream_v1.DatastreamAsyncClient()
 
                 # Initialize request argument(s)
                 request = datastream_v1.GetConnectionProfileRequest(
@@ -352,7 +352,7 @@ class DatastreamAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_connection_profile(request=request)
+                response = await client.get_connection_profile(request=request)
 
                 # Handle the response
                 print(response)
@@ -441,9 +441,9 @@ class DatastreamAsyncClient:
 
             from google.cloud import datastream_v1
 
-            def sample_create_connection_profile():
+            async def sample_create_connection_profile():
                 # Create a client
-                client = datastream_v1.DatastreamClient()
+                client = datastream_v1.DatastreamAsyncClient()
 
                 # Initialize request argument(s)
                 connection_profile = datastream_v1.ConnectionProfile()
@@ -464,7 +464,7 @@ class DatastreamAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -579,9 +579,9 @@ class DatastreamAsyncClient:
 
             from google.cloud import datastream_v1
 
-            def sample_update_connection_profile():
+            async def sample_update_connection_profile():
                 # Create a client
-                client = datastream_v1.DatastreamClient()
+                client = datastream_v1.DatastreamAsyncClient()
 
                 # Initialize request argument(s)
                 connection_profile = datastream_v1.ConnectionProfile()
@@ -600,7 +600,7 @@ class DatastreamAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -710,9 +710,9 @@ class DatastreamAsyncClient:
 
             from google.cloud import datastream_v1
 
-            def sample_delete_connection_profile():
+            async def sample_delete_connection_profile():
                 # Create a client
-                client = datastream_v1.DatastreamClient()
+                client = datastream_v1.DatastreamAsyncClient()
 
                 # Initialize request argument(s)
                 request = datastream_v1.DeleteConnectionProfileRequest(
@@ -724,7 +724,7 @@ class DatastreamAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -833,9 +833,9 @@ class DatastreamAsyncClient:
 
             from google.cloud import datastream_v1
 
-            def sample_discover_connection_profile():
+            async def sample_discover_connection_profile():
                 # Create a client
-                client = datastream_v1.DatastreamClient()
+                client = datastream_v1.DatastreamAsyncClient()
 
                 # Initialize request argument(s)
                 connection_profile = datastream_v1.ConnectionProfile()
@@ -852,7 +852,7 @@ class DatastreamAsyncClient:
                 )
 
                 # Make the request
-                response = client.discover_connection_profile(request=request)
+                response = await client.discover_connection_profile(request=request)
 
                 # Handle the response
                 print(response)
@@ -915,9 +915,9 @@ class DatastreamAsyncClient:
 
             from google.cloud import datastream_v1
 
-            def sample_list_streams():
+            async def sample_list_streams():
                 # Create a client
-                client = datastream_v1.DatastreamClient()
+                client = datastream_v1.DatastreamAsyncClient()
 
                 # Initialize request argument(s)
                 request = datastream_v1.ListStreamsRequest(
@@ -928,7 +928,7 @@ class DatastreamAsyncClient:
                 page_result = client.list_streams(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -1021,9 +1021,9 @@ class DatastreamAsyncClient:
 
             from google.cloud import datastream_v1
 
-            def sample_get_stream():
+            async def sample_get_stream():
                 # Create a client
-                client = datastream_v1.DatastreamClient()
+                client = datastream_v1.DatastreamAsyncClient()
 
                 # Initialize request argument(s)
                 request = datastream_v1.GetStreamRequest(
@@ -1031,7 +1031,7 @@ class DatastreamAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_stream(request=request)
+                response = await client.get_stream(request=request)
 
                 # Handle the response
                 print(response)
@@ -1118,9 +1118,9 @@ class DatastreamAsyncClient:
 
             from google.cloud import datastream_v1
 
-            def sample_create_stream():
+            async def sample_create_stream():
                 # Create a client
-                client = datastream_v1.DatastreamClient()
+                client = datastream_v1.DatastreamAsyncClient()
 
                 # Initialize request argument(s)
                 stream = datastream_v1.Stream()
@@ -1139,7 +1139,7 @@ class DatastreamAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1254,9 +1254,9 @@ class DatastreamAsyncClient:
 
             from google.cloud import datastream_v1
 
-            def sample_update_stream():
+            async def sample_update_stream():
                 # Create a client
-                client = datastream_v1.DatastreamClient()
+                client = datastream_v1.DatastreamAsyncClient()
 
                 # Initialize request argument(s)
                 stream = datastream_v1.Stream()
@@ -1273,7 +1273,7 @@ class DatastreamAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1385,9 +1385,9 @@ class DatastreamAsyncClient:
 
             from google.cloud import datastream_v1
 
-            def sample_delete_stream():
+            async def sample_delete_stream():
                 # Create a client
-                client = datastream_v1.DatastreamClient()
+                client = datastream_v1.DatastreamAsyncClient()
 
                 # Initialize request argument(s)
                 request = datastream_v1.DeleteStreamRequest(
@@ -1399,7 +1399,7 @@ class DatastreamAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1505,9 +1505,9 @@ class DatastreamAsyncClient:
 
             from google.cloud import datastream_v1
 
-            def sample_get_stream_object():
+            async def sample_get_stream_object():
                 # Create a client
-                client = datastream_v1.DatastreamClient()
+                client = datastream_v1.DatastreamAsyncClient()
 
                 # Initialize request argument(s)
                 request = datastream_v1.GetStreamObjectRequest(
@@ -1515,7 +1515,7 @@ class DatastreamAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_stream_object(request=request)
+                response = await client.get_stream_object(request=request)
 
                 # Handle the response
                 print(response)
@@ -1600,9 +1600,9 @@ class DatastreamAsyncClient:
 
             from google.cloud import datastream_v1
 
-            def sample_lookup_stream_object():
+            async def sample_lookup_stream_object():
                 # Create a client
-                client = datastream_v1.DatastreamClient()
+                client = datastream_v1.DatastreamAsyncClient()
 
                 # Initialize request argument(s)
                 source_object_identifier = datastream_v1.SourceObjectIdentifier()
@@ -1615,7 +1615,7 @@ class DatastreamAsyncClient:
                 )
 
                 # Make the request
-                response = client.lookup_stream_object(request=request)
+                response = await client.lookup_stream_object(request=request)
 
                 # Handle the response
                 print(response)
@@ -1680,9 +1680,9 @@ class DatastreamAsyncClient:
 
             from google.cloud import datastream_v1
 
-            def sample_list_stream_objects():
+            async def sample_list_stream_objects():
                 # Create a client
-                client = datastream_v1.DatastreamClient()
+                client = datastream_v1.DatastreamAsyncClient()
 
                 # Initialize request argument(s)
                 request = datastream_v1.ListStreamObjectsRequest(
@@ -1693,7 +1693,7 @@ class DatastreamAsyncClient:
                 page_result = client.list_stream_objects(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -1789,9 +1789,9 @@ class DatastreamAsyncClient:
 
             from google.cloud import datastream_v1
 
-            def sample_start_backfill_job():
+            async def sample_start_backfill_job():
                 # Create a client
-                client = datastream_v1.DatastreamClient()
+                client = datastream_v1.DatastreamAsyncClient()
 
                 # Initialize request argument(s)
                 request = datastream_v1.StartBackfillJobRequest(
@@ -1799,7 +1799,7 @@ class DatastreamAsyncClient:
                 )
 
                 # Make the request
-                response = client.start_backfill_job(request=request)
+                response = await client.start_backfill_job(request=request)
 
                 # Handle the response
                 print(response)
@@ -1887,9 +1887,9 @@ class DatastreamAsyncClient:
 
             from google.cloud import datastream_v1
 
-            def sample_stop_backfill_job():
+            async def sample_stop_backfill_job():
                 # Create a client
-                client = datastream_v1.DatastreamClient()
+                client = datastream_v1.DatastreamAsyncClient()
 
                 # Initialize request argument(s)
                 request = datastream_v1.StopBackfillJobRequest(
@@ -1897,7 +1897,7 @@ class DatastreamAsyncClient:
                 )
 
                 # Make the request
-                response = client.stop_backfill_job(request=request)
+                response = await client.stop_backfill_job(request=request)
 
                 # Handle the response
                 print(response)
@@ -1984,9 +1984,9 @@ class DatastreamAsyncClient:
 
             from google.cloud import datastream_v1
 
-            def sample_fetch_static_ips():
+            async def sample_fetch_static_ips():
                 # Create a client
-                client = datastream_v1.DatastreamClient()
+                client = datastream_v1.DatastreamAsyncClient()
 
                 # Initialize request argument(s)
                 request = datastream_v1.FetchStaticIpsRequest(
@@ -1997,7 +1997,7 @@ class DatastreamAsyncClient:
                 page_result = client.fetch_static_ips(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -2096,9 +2096,9 @@ class DatastreamAsyncClient:
 
             from google.cloud import datastream_v1
 
-            def sample_create_private_connection():
+            async def sample_create_private_connection():
                 # Create a client
-                client = datastream_v1.DatastreamClient()
+                client = datastream_v1.DatastreamAsyncClient()
 
                 # Initialize request argument(s)
                 private_connection = datastream_v1.PrivateConnection()
@@ -2115,7 +2115,7 @@ class DatastreamAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2229,9 +2229,9 @@ class DatastreamAsyncClient:
 
             from google.cloud import datastream_v1
 
-            def sample_get_private_connection():
+            async def sample_get_private_connection():
                 # Create a client
-                client = datastream_v1.DatastreamClient()
+                client = datastream_v1.DatastreamAsyncClient()
 
                 # Initialize request argument(s)
                 request = datastream_v1.GetPrivateConnectionRequest(
@@ -2239,7 +2239,7 @@ class DatastreamAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_private_connection(request=request)
+                response = await client.get_private_connection(request=request)
 
                 # Handle the response
                 print(response)
@@ -2327,9 +2327,9 @@ class DatastreamAsyncClient:
 
             from google.cloud import datastream_v1
 
-            def sample_list_private_connections():
+            async def sample_list_private_connections():
                 # Create a client
-                client = datastream_v1.DatastreamClient()
+                client = datastream_v1.DatastreamAsyncClient()
 
                 # Initialize request argument(s)
                 request = datastream_v1.ListPrivateConnectionsRequest(
@@ -2340,7 +2340,7 @@ class DatastreamAsyncClient:
                 page_result = client.list_private_connections(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -2437,9 +2437,9 @@ class DatastreamAsyncClient:
 
             from google.cloud import datastream_v1
 
-            def sample_delete_private_connection():
+            async def sample_delete_private_connection():
                 # Create a client
-                client = datastream_v1.DatastreamClient()
+                client = datastream_v1.DatastreamAsyncClient()
 
                 # Initialize request argument(s)
                 request = datastream_v1.DeletePrivateConnectionRequest(
@@ -2451,7 +2451,7 @@ class DatastreamAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2560,9 +2560,9 @@ class DatastreamAsyncClient:
 
             from google.cloud import datastream_v1
 
-            def sample_create_route():
+            async def sample_create_route():
                 # Create a client
-                client = datastream_v1.DatastreamClient()
+                client = datastream_v1.DatastreamAsyncClient()
 
                 # Initialize request argument(s)
                 route = datastream_v1.Route()
@@ -2580,7 +2580,7 @@ class DatastreamAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2690,9 +2690,9 @@ class DatastreamAsyncClient:
 
             from google.cloud import datastream_v1
 
-            def sample_get_route():
+            async def sample_get_route():
                 # Create a client
-                client = datastream_v1.DatastreamClient()
+                client = datastream_v1.DatastreamAsyncClient()
 
                 # Initialize request argument(s)
                 request = datastream_v1.GetRouteRequest(
@@ -2700,7 +2700,7 @@ class DatastreamAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_route(request=request)
+                response = await client.get_route(request=request)
 
                 # Handle the response
                 print(response)
@@ -2787,9 +2787,9 @@ class DatastreamAsyncClient:
 
             from google.cloud import datastream_v1
 
-            def sample_list_routes():
+            async def sample_list_routes():
                 # Create a client
-                client = datastream_v1.DatastreamClient()
+                client = datastream_v1.DatastreamAsyncClient()
 
                 # Initialize request argument(s)
                 request = datastream_v1.ListRoutesRequest(
@@ -2800,7 +2800,7 @@ class DatastreamAsyncClient:
                 page_result = client.list_routes(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -2893,9 +2893,9 @@ class DatastreamAsyncClient:
 
             from google.cloud import datastream_v1
 
-            def sample_delete_route():
+            async def sample_delete_route():
                 # Create a client
-                client = datastream_v1.DatastreamClient()
+                client = datastream_v1.DatastreamAsyncClient()
 
                 # Initialize request argument(s)
                 request = datastream_v1.DeleteRouteRequest(
@@ -2907,7 +2907,7 @@ class DatastreamAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)

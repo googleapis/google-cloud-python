@@ -742,7 +742,7 @@ def test_list_connection_profiles_field_headers():
     # a field header. Set these to a non-empty value.
     request = datastream.ListConnectionProfilesRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -760,7 +760,7 @@ def test_list_connection_profiles_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -774,7 +774,7 @@ async def test_list_connection_profiles_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = datastream.ListConnectionProfilesRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -794,7 +794,7 @@ async def test_list_connection_profiles_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -931,7 +931,7 @@ def test_list_connection_profiles_pager(transport_name: str = "grpc"):
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(
             isinstance(i, datastream_resources.ConnectionProfile) for i in results
@@ -1196,7 +1196,7 @@ def test_get_connection_profile_field_headers():
     # a field header. Set these to a non-empty value.
     request = datastream.GetConnectionProfileRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1214,7 +1214,7 @@ def test_get_connection_profile_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1228,7 +1228,7 @@ async def test_get_connection_profile_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = datastream.GetConnectionProfileRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1248,7 +1248,7 @@ async def test_get_connection_profile_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1437,7 +1437,7 @@ def test_create_connection_profile_field_headers():
     # a field header. Set these to a non-empty value.
     request = datastream.CreateConnectionProfileRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1455,7 +1455,7 @@ def test_create_connection_profile_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -1469,7 +1469,7 @@ async def test_create_connection_profile_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = datastream.CreateConnectionProfileRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1489,7 +1489,7 @@ async def test_create_connection_profile_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -1706,7 +1706,7 @@ def test_update_connection_profile_field_headers():
     # a field header. Set these to a non-empty value.
     request = datastream.UpdateConnectionProfileRequest()
 
-    request.connection_profile.name = "connection_profile.name/value"
+    request.connection_profile.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1724,7 +1724,7 @@ def test_update_connection_profile_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "connection_profile.name=connection_profile.name/value",
+        "connection_profile.name=name_value",
     ) in kw["metadata"]
 
 
@@ -1738,7 +1738,7 @@ async def test_update_connection_profile_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = datastream.UpdateConnectionProfileRequest()
 
-    request.connection_profile.name = "connection_profile.name/value"
+    request.connection_profile.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1758,7 +1758,7 @@ async def test_update_connection_profile_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "connection_profile.name=connection_profile.name/value",
+        "connection_profile.name=name_value",
     ) in kw["metadata"]
 
 
@@ -1965,7 +1965,7 @@ def test_delete_connection_profile_field_headers():
     # a field header. Set these to a non-empty value.
     request = datastream.DeleteConnectionProfileRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1983,7 +1983,7 @@ def test_delete_connection_profile_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1997,7 +1997,7 @@ async def test_delete_connection_profile_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = datastream.DeleteConnectionProfileRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2017,7 +2017,7 @@ async def test_delete_connection_profile_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2212,7 +2212,7 @@ def test_discover_connection_profile_field_headers():
     # a field header. Set these to a non-empty value.
     request = datastream.DiscoverConnectionProfileRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2230,7 +2230,7 @@ def test_discover_connection_profile_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -2244,7 +2244,7 @@ async def test_discover_connection_profile_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = datastream.DiscoverConnectionProfileRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2264,7 +2264,7 @@ async def test_discover_connection_profile_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -2370,7 +2370,7 @@ def test_list_streams_field_headers():
     # a field header. Set these to a non-empty value.
     request = datastream.ListStreamsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_streams), "__call__") as call:
@@ -2386,7 +2386,7 @@ def test_list_streams_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -2400,7 +2400,7 @@ async def test_list_streams_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = datastream.ListStreamsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_streams), "__call__") as call:
@@ -2418,7 +2418,7 @@ async def test_list_streams_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -2549,7 +2549,7 @@ def test_list_streams_pager(transport_name: str = "grpc"):
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, datastream_resources.Stream) for i in results)
 
@@ -2807,7 +2807,7 @@ def test_get_stream_field_headers():
     # a field header. Set these to a non-empty value.
     request = datastream.GetStreamRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_stream), "__call__") as call:
@@ -2823,7 +2823,7 @@ def test_get_stream_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2837,7 +2837,7 @@ async def test_get_stream_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = datastream.GetStreamRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_stream), "__call__") as call:
@@ -2855,7 +2855,7 @@ async def test_get_stream_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -3033,7 +3033,7 @@ def test_create_stream_field_headers():
     # a field header. Set these to a non-empty value.
     request = datastream.CreateStreamRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_stream), "__call__") as call:
@@ -3049,7 +3049,7 @@ def test_create_stream_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -3063,7 +3063,7 @@ async def test_create_stream_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = datastream.CreateStreamRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_stream), "__call__") as call:
@@ -3081,7 +3081,7 @@ async def test_create_stream_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -3279,7 +3279,7 @@ def test_update_stream_field_headers():
     # a field header. Set these to a non-empty value.
     request = datastream.UpdateStreamRequest()
 
-    request.stream.name = "stream.name/value"
+    request.stream.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_stream), "__call__") as call:
@@ -3295,7 +3295,7 @@ def test_update_stream_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "stream.name=stream.name/value",
+        "stream.name=name_value",
     ) in kw["metadata"]
 
 
@@ -3309,7 +3309,7 @@ async def test_update_stream_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = datastream.UpdateStreamRequest()
 
-    request.stream.name = "stream.name/value"
+    request.stream.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_stream), "__call__") as call:
@@ -3327,7 +3327,7 @@ async def test_update_stream_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "stream.name=stream.name/value",
+        "stream.name=name_value",
     ) in kw["metadata"]
 
 
@@ -3515,7 +3515,7 @@ def test_delete_stream_field_headers():
     # a field header. Set these to a non-empty value.
     request = datastream.DeleteStreamRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_stream), "__call__") as call:
@@ -3531,7 +3531,7 @@ def test_delete_stream_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -3545,7 +3545,7 @@ async def test_delete_stream_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = datastream.DeleteStreamRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_stream), "__call__") as call:
@@ -3563,7 +3563,7 @@ async def test_delete_stream_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -3741,7 +3741,7 @@ def test_fetch_errors_field_headers():
     # a field header. Set these to a non-empty value.
     request = datastream.FetchErrorsRequest()
 
-    request.stream = "stream/value"
+    request.stream = "stream_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.fetch_errors), "__call__") as call:
@@ -3757,7 +3757,7 @@ def test_fetch_errors_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "stream=stream/value",
+        "stream=stream_value",
     ) in kw["metadata"]
 
 
@@ -3771,7 +3771,7 @@ async def test_fetch_errors_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = datastream.FetchErrorsRequest()
 
-    request.stream = "stream/value"
+    request.stream = "stream_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.fetch_errors), "__call__") as call:
@@ -3789,7 +3789,7 @@ async def test_fetch_errors_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "stream=stream/value",
+        "stream=stream_value",
     ) in kw["metadata"]
 
 
@@ -3895,7 +3895,7 @@ def test_fetch_static_ips_field_headers():
     # a field header. Set these to a non-empty value.
     request = datastream.FetchStaticIpsRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.fetch_static_ips), "__call__") as call:
@@ -3911,7 +3911,7 @@ def test_fetch_static_ips_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -3925,7 +3925,7 @@ async def test_fetch_static_ips_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = datastream.FetchStaticIpsRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.fetch_static_ips), "__call__") as call:
@@ -3943,7 +3943,7 @@ async def test_fetch_static_ips_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -4074,7 +4074,7 @@ def test_fetch_static_ips_pager(transport_name: str = "grpc"):
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, str) for i in results)
 
@@ -4316,7 +4316,7 @@ def test_create_private_connection_field_headers():
     # a field header. Set these to a non-empty value.
     request = datastream.CreatePrivateConnectionRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4334,7 +4334,7 @@ def test_create_private_connection_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -4348,7 +4348,7 @@ async def test_create_private_connection_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = datastream.CreatePrivateConnectionRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4368,7 +4368,7 @@ async def test_create_private_connection_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -4598,7 +4598,7 @@ def test_get_private_connection_field_headers():
     # a field header. Set these to a non-empty value.
     request = datastream.GetPrivateConnectionRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4616,7 +4616,7 @@ def test_get_private_connection_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -4630,7 +4630,7 @@ async def test_get_private_connection_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = datastream.GetPrivateConnectionRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4650,7 +4650,7 @@ async def test_get_private_connection_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -4849,7 +4849,7 @@ def test_list_private_connections_field_headers():
     # a field header. Set these to a non-empty value.
     request = datastream.ListPrivateConnectionsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4867,7 +4867,7 @@ def test_list_private_connections_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -4881,7 +4881,7 @@ async def test_list_private_connections_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = datastream.ListPrivateConnectionsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4901,7 +4901,7 @@ async def test_list_private_connections_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -5038,7 +5038,7 @@ def test_list_private_connections_pager(transport_name: str = "grpc"):
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(
             isinstance(i, datastream_resources.PrivateConnection) for i in results
@@ -5290,7 +5290,7 @@ def test_delete_private_connection_field_headers():
     # a field header. Set these to a non-empty value.
     request = datastream.DeletePrivateConnectionRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5308,7 +5308,7 @@ def test_delete_private_connection_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -5322,7 +5322,7 @@ async def test_delete_private_connection_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = datastream.DeletePrivateConnectionRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5342,7 +5342,7 @@ async def test_delete_private_connection_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -5524,7 +5524,7 @@ def test_create_route_field_headers():
     # a field header. Set these to a non-empty value.
     request = datastream.CreateRouteRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_route), "__call__") as call:
@@ -5540,7 +5540,7 @@ def test_create_route_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -5554,7 +5554,7 @@ async def test_create_route_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = datastream.CreateRouteRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_route), "__call__") as call:
@@ -5572,7 +5572,7 @@ async def test_create_route_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -5788,7 +5788,7 @@ def test_get_route_field_headers():
     # a field header. Set these to a non-empty value.
     request = datastream.GetRouteRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_route), "__call__") as call:
@@ -5804,7 +5804,7 @@ def test_get_route_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -5818,7 +5818,7 @@ async def test_get_route_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = datastream.GetRouteRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_route), "__call__") as call:
@@ -5836,7 +5836,7 @@ async def test_get_route_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -6024,7 +6024,7 @@ def test_list_routes_field_headers():
     # a field header. Set these to a non-empty value.
     request = datastream.ListRoutesRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_routes), "__call__") as call:
@@ -6040,7 +6040,7 @@ def test_list_routes_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -6054,7 +6054,7 @@ async def test_list_routes_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = datastream.ListRoutesRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_routes), "__call__") as call:
@@ -6072,7 +6072,7 @@ async def test_list_routes_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -6203,7 +6203,7 @@ def test_list_routes_pager(transport_name: str = "grpc"):
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, datastream_resources.Route) for i in results)
 
@@ -6438,7 +6438,7 @@ def test_delete_route_field_headers():
     # a field header. Set these to a non-empty value.
     request = datastream.DeleteRouteRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_route), "__call__") as call:
@@ -6454,7 +6454,7 @@ def test_delete_route_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -6468,7 +6468,7 @@ async def test_delete_route_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = datastream.DeleteRouteRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_route), "__call__") as call:
@@ -6486,7 +6486,7 @@ async def test_delete_route_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
