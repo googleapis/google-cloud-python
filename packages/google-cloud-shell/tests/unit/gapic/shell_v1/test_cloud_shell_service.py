@@ -798,7 +798,7 @@ def test_get_environment_field_headers():
     # a field header. Set these to a non-empty value.
     request = cloudshell.GetEnvironmentRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_environment), "__call__") as call:
@@ -814,7 +814,7 @@ def test_get_environment_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -828,7 +828,7 @@ async def test_get_environment_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = cloudshell.GetEnvironmentRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_environment), "__call__") as call:
@@ -846,7 +846,7 @@ async def test_get_environment_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1030,7 +1030,7 @@ def test_start_environment_field_headers():
     # a field header. Set these to a non-empty value.
     request = cloudshell.StartEnvironmentRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1048,7 +1048,7 @@ def test_start_environment_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1062,7 +1062,7 @@ async def test_start_environment_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = cloudshell.StartEnvironmentRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1082,7 +1082,7 @@ async def test_start_environment_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1184,7 +1184,7 @@ def test_authorize_environment_field_headers():
     # a field header. Set these to a non-empty value.
     request = cloudshell.AuthorizeEnvironmentRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1202,7 +1202,7 @@ def test_authorize_environment_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1216,7 +1216,7 @@ async def test_authorize_environment_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = cloudshell.AuthorizeEnvironmentRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1236,7 +1236,7 @@ async def test_authorize_environment_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1332,7 +1332,7 @@ def test_add_public_key_field_headers():
     # a field header. Set these to a non-empty value.
     request = cloudshell.AddPublicKeyRequest()
 
-    request.environment = "environment/value"
+    request.environment = "environment_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.add_public_key), "__call__") as call:
@@ -1348,7 +1348,7 @@ def test_add_public_key_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "environment=environment/value",
+        "environment=environment_value",
     ) in kw["metadata"]
 
 
@@ -1362,7 +1362,7 @@ async def test_add_public_key_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = cloudshell.AddPublicKeyRequest()
 
-    request.environment = "environment/value"
+    request.environment = "environment_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.add_public_key), "__call__") as call:
@@ -1380,7 +1380,7 @@ async def test_add_public_key_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "environment=environment/value",
+        "environment=environment_value",
     ) in kw["metadata"]
 
 
@@ -1482,7 +1482,7 @@ def test_remove_public_key_field_headers():
     # a field header. Set these to a non-empty value.
     request = cloudshell.RemovePublicKeyRequest()
 
-    request.environment = "environment/value"
+    request.environment = "environment_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1500,7 +1500,7 @@ def test_remove_public_key_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "environment=environment/value",
+        "environment=environment_value",
     ) in kw["metadata"]
 
 
@@ -1514,7 +1514,7 @@ async def test_remove_public_key_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = cloudshell.RemovePublicKeyRequest()
 
-    request.environment = "environment/value"
+    request.environment = "environment_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1534,7 +1534,7 @@ async def test_remove_public_key_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "environment=environment/value",
+        "environment=environment_value",
     ) in kw["metadata"]
 
 

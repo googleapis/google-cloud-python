@@ -231,9 +231,9 @@ class CloudShellServiceAsyncClient:
 
             from google.cloud import shell_v1
 
-            def sample_get_environment():
+            async def sample_get_environment():
                 # Create a client
-                client = shell_v1.CloudShellServiceClient()
+                client = shell_v1.CloudShellServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = shell_v1.GetEnvironmentRequest(
@@ -241,7 +241,7 @@ class CloudShellServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_environment(request=request)
+                response = await client.get_environment(request=request)
 
                 # Handle the response
                 print(response)
@@ -349,9 +349,9 @@ class CloudShellServiceAsyncClient:
 
             from google.cloud import shell_v1
 
-            def sample_start_environment():
+            async def sample_start_environment():
                 # Create a client
-                client = shell_v1.CloudShellServiceClient()
+                client = shell_v1.CloudShellServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = shell_v1.StartEnvironmentRequest(
@@ -362,7 +362,7 @@ class CloudShellServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -440,9 +440,9 @@ class CloudShellServiceAsyncClient:
 
             from google.cloud import shell_v1
 
-            def sample_authorize_environment():
+            async def sample_authorize_environment():
                 # Create a client
-                client = shell_v1.CloudShellServiceClient()
+                client = shell_v1.CloudShellServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = shell_v1.AuthorizeEnvironmentRequest(
@@ -453,7 +453,7 @@ class CloudShellServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -529,9 +529,9 @@ class CloudShellServiceAsyncClient:
 
             from google.cloud import shell_v1
 
-            def sample_add_public_key():
+            async def sample_add_public_key():
                 # Create a client
-                client = shell_v1.CloudShellServiceClient()
+                client = shell_v1.CloudShellServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = shell_v1.AddPublicKeyRequest(
@@ -542,7 +542,7 @@ class CloudShellServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -620,9 +620,9 @@ class CloudShellServiceAsyncClient:
 
             from google.cloud import shell_v1
 
-            def sample_remove_public_key():
+            async def sample_remove_public_key():
                 # Create a client
-                client = shell_v1.CloudShellServiceClient()
+                client = shell_v1.CloudShellServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = shell_v1.RemovePublicKeyRequest(
@@ -633,7 +633,7 @@ class CloudShellServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
