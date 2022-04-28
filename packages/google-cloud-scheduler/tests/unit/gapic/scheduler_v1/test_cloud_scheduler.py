@@ -749,7 +749,7 @@ def test_list_jobs_field_headers():
     # a field header. Set these to a non-empty value.
     request = cloudscheduler.ListJobsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_jobs), "__call__") as call:
@@ -765,7 +765,7 @@ def test_list_jobs_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -779,7 +779,7 @@ async def test_list_jobs_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = cloudscheduler.ListJobsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_jobs), "__call__") as call:
@@ -797,7 +797,7 @@ async def test_list_jobs_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -928,7 +928,7 @@ def test_list_jobs_pager(transport_name: str = "grpc"):
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, job.Job) for i in results)
 
@@ -1186,7 +1186,7 @@ def test_get_job_field_headers():
     # a field header. Set these to a non-empty value.
     request = cloudscheduler.GetJobRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_job), "__call__") as call:
@@ -1202,7 +1202,7 @@ def test_get_job_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1216,7 +1216,7 @@ async def test_get_job_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = cloudscheduler.GetJobRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_job), "__call__") as call:
@@ -1232,7 +1232,7 @@ async def test_get_job_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1431,7 +1431,7 @@ def test_create_job_field_headers():
     # a field header. Set these to a non-empty value.
     request = cloudscheduler.CreateJobRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_job), "__call__") as call:
@@ -1447,7 +1447,7 @@ def test_create_job_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -1461,7 +1461,7 @@ async def test_create_job_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = cloudscheduler.CreateJobRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_job), "__call__") as call:
@@ -1477,7 +1477,7 @@ async def test_create_job_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -1686,7 +1686,7 @@ def test_update_job_field_headers():
     # a field header. Set these to a non-empty value.
     request = cloudscheduler.UpdateJobRequest()
 
-    request.job.name = "job.name/value"
+    request.job.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_job), "__call__") as call:
@@ -1702,7 +1702,7 @@ def test_update_job_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "job.name=job.name/value",
+        "job.name=name_value",
     ) in kw["metadata"]
 
 
@@ -1716,7 +1716,7 @@ async def test_update_job_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = cloudscheduler.UpdateJobRequest()
 
-    request.job.name = "job.name/value"
+    request.job.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_job), "__call__") as call:
@@ -1732,7 +1732,7 @@ async def test_update_job_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "job.name=job.name/value",
+        "job.name=name_value",
     ) in kw["metadata"]
 
 
@@ -1916,7 +1916,7 @@ def test_delete_job_field_headers():
     # a field header. Set these to a non-empty value.
     request = cloudscheduler.DeleteJobRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_job), "__call__") as call:
@@ -1932,7 +1932,7 @@ def test_delete_job_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1946,7 +1946,7 @@ async def test_delete_job_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = cloudscheduler.DeleteJobRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_job), "__call__") as call:
@@ -1962,7 +1962,7 @@ async def test_delete_job_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2161,7 +2161,7 @@ def test_pause_job_field_headers():
     # a field header. Set these to a non-empty value.
     request = cloudscheduler.PauseJobRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.pause_job), "__call__") as call:
@@ -2177,7 +2177,7 @@ def test_pause_job_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2191,7 +2191,7 @@ async def test_pause_job_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = cloudscheduler.PauseJobRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.pause_job), "__call__") as call:
@@ -2207,7 +2207,7 @@ async def test_pause_job_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2406,7 +2406,7 @@ def test_resume_job_field_headers():
     # a field header. Set these to a non-empty value.
     request = cloudscheduler.ResumeJobRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.resume_job), "__call__") as call:
@@ -2422,7 +2422,7 @@ def test_resume_job_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2436,7 +2436,7 @@ async def test_resume_job_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = cloudscheduler.ResumeJobRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.resume_job), "__call__") as call:
@@ -2452,7 +2452,7 @@ async def test_resume_job_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2651,7 +2651,7 @@ def test_run_job_field_headers():
     # a field header. Set these to a non-empty value.
     request = cloudscheduler.RunJobRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.run_job), "__call__") as call:
@@ -2667,7 +2667,7 @@ def test_run_job_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2681,7 +2681,7 @@ async def test_run_job_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = cloudscheduler.RunJobRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.run_job), "__call__") as call:
@@ -2697,7 +2697,7 @@ async def test_run_job_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 

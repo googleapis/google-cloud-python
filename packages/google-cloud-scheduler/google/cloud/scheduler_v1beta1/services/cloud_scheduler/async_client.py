@@ -230,9 +230,9 @@ class CloudSchedulerAsyncClient:
 
             from google.cloud import scheduler_v1beta1
 
-            def sample_list_jobs():
+            async def sample_list_jobs():
                 # Create a client
-                client = scheduler_v1beta1.CloudSchedulerClient()
+                client = scheduler_v1beta1.CloudSchedulerAsyncClient()
 
                 # Initialize request argument(s)
                 request = scheduler_v1beta1.ListJobsRequest(
@@ -243,7 +243,7 @@ class CloudSchedulerAsyncClient:
                 page_result = client.list_jobs(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -349,9 +349,9 @@ class CloudSchedulerAsyncClient:
 
             from google.cloud import scheduler_v1beta1
 
-            def sample_get_job():
+            async def sample_get_job():
                 # Create a client
-                client = scheduler_v1beta1.CloudSchedulerClient()
+                client = scheduler_v1beta1.CloudSchedulerAsyncClient()
 
                 # Initialize request argument(s)
                 request = scheduler_v1beta1.GetJobRequest(
@@ -359,7 +359,7 @@ class CloudSchedulerAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_job(request=request)
+                response = await client.get_job(request=request)
 
                 # Handle the response
                 print(response)
@@ -456,9 +456,9 @@ class CloudSchedulerAsyncClient:
 
             from google.cloud import scheduler_v1beta1
 
-            def sample_create_job():
+            async def sample_create_job():
                 # Create a client
-                client = scheduler_v1beta1.CloudSchedulerClient()
+                client = scheduler_v1beta1.CloudSchedulerAsyncClient()
 
                 # Initialize request argument(s)
                 request = scheduler_v1beta1.CreateJobRequest(
@@ -466,7 +466,7 @@ class CloudSchedulerAsyncClient:
                 )
 
                 # Make the request
-                response = client.create_job(request=request)
+                response = await client.create_job(request=request)
 
                 # Handle the response
                 print(response)
@@ -580,16 +580,16 @@ class CloudSchedulerAsyncClient:
 
             from google.cloud import scheduler_v1beta1
 
-            def sample_update_job():
+            async def sample_update_job():
                 # Create a client
-                client = scheduler_v1beta1.CloudSchedulerClient()
+                client = scheduler_v1beta1.CloudSchedulerAsyncClient()
 
                 # Initialize request argument(s)
                 request = scheduler_v1beta1.UpdateJobRequest(
                 )
 
                 # Make the request
-                response = client.update_job(request=request)
+                response = await client.update_job(request=request)
 
                 # Handle the response
                 print(response)
@@ -689,9 +689,9 @@ class CloudSchedulerAsyncClient:
 
             from google.cloud import scheduler_v1beta1
 
-            def sample_delete_job():
+            async def sample_delete_job():
                 # Create a client
-                client = scheduler_v1beta1.CloudSchedulerClient()
+                client = scheduler_v1beta1.CloudSchedulerAsyncClient()
 
                 # Initialize request argument(s)
                 request = scheduler_v1beta1.DeleteJobRequest(
@@ -699,7 +699,7 @@ class CloudSchedulerAsyncClient:
                 )
 
                 # Make the request
-                client.delete_job(request=request)
+                await client.delete_job(request=request)
 
         Args:
             request (Union[google.cloud.scheduler_v1beta1.types.DeleteJobRequest, dict]):
@@ -794,9 +794,9 @@ class CloudSchedulerAsyncClient:
 
             from google.cloud import scheduler_v1beta1
 
-            def sample_pause_job():
+            async def sample_pause_job():
                 # Create a client
-                client = scheduler_v1beta1.CloudSchedulerClient()
+                client = scheduler_v1beta1.CloudSchedulerAsyncClient()
 
                 # Initialize request argument(s)
                 request = scheduler_v1beta1.PauseJobRequest(
@@ -804,7 +804,7 @@ class CloudSchedulerAsyncClient:
                 )
 
                 # Make the request
-                response = client.pause_job(request=request)
+                response = await client.pause_job(request=request)
 
                 # Handle the response
                 print(response)
@@ -910,9 +910,9 @@ class CloudSchedulerAsyncClient:
 
             from google.cloud import scheduler_v1beta1
 
-            def sample_resume_job():
+            async def sample_resume_job():
                 # Create a client
-                client = scheduler_v1beta1.CloudSchedulerClient()
+                client = scheduler_v1beta1.CloudSchedulerAsyncClient()
 
                 # Initialize request argument(s)
                 request = scheduler_v1beta1.ResumeJobRequest(
@@ -920,7 +920,7 @@ class CloudSchedulerAsyncClient:
                 )
 
                 # Make the request
-                response = client.resume_job(request=request)
+                response = await client.resume_job(request=request)
 
                 # Handle the response
                 print(response)
@@ -1018,9 +1018,9 @@ class CloudSchedulerAsyncClient:
 
             from google.cloud import scheduler_v1beta1
 
-            def sample_run_job():
+            async def sample_run_job():
                 # Create a client
-                client = scheduler_v1beta1.CloudSchedulerClient()
+                client = scheduler_v1beta1.CloudSchedulerAsyncClient()
 
                 # Initialize request argument(s)
                 request = scheduler_v1beta1.RunJobRequest(
@@ -1028,7 +1028,7 @@ class CloudSchedulerAsyncClient:
                 )
 
                 # Make the request
-                response = client.run_job(request=request)
+                response = await client.run_job(request=request)
 
                 # Handle the response
                 print(response)
