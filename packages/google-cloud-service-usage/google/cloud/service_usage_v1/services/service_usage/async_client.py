@@ -221,9 +221,9 @@ class ServiceUsageAsyncClient:
 
             from google.cloud import service_usage_v1
 
-            def sample_enable_service():
+            async def sample_enable_service():
                 # Create a client
-                client = service_usage_v1.ServiceUsageClient()
+                client = service_usage_v1.ServiceUsageAsyncClient()
 
                 # Initialize request argument(s)
                 request = service_usage_v1.EnableServiceRequest(
@@ -234,7 +234,7 @@ class ServiceUsageAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -316,9 +316,9 @@ class ServiceUsageAsyncClient:
 
             from google.cloud import service_usage_v1
 
-            def sample_disable_service():
+            async def sample_disable_service():
                 # Create a client
-                client = service_usage_v1.ServiceUsageClient()
+                client = service_usage_v1.ServiceUsageAsyncClient()
 
                 # Initialize request argument(s)
                 request = service_usage_v1.DisableServiceRequest(
@@ -329,7 +329,7 @@ class ServiceUsageAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -405,16 +405,16 @@ class ServiceUsageAsyncClient:
 
             from google.cloud import service_usage_v1
 
-            def sample_get_service():
+            async def sample_get_service():
                 # Create a client
-                client = service_usage_v1.ServiceUsageClient()
+                client = service_usage_v1.ServiceUsageAsyncClient()
 
                 # Initialize request argument(s)
                 request = service_usage_v1.GetServiceRequest(
                 )
 
                 # Make the request
-                response = client.get_service(request=request)
+                response = await client.get_service(request=request)
 
                 # Handle the response
                 print(response)
@@ -490,9 +490,9 @@ class ServiceUsageAsyncClient:
 
             from google.cloud import service_usage_v1
 
-            def sample_list_services():
+            async def sample_list_services():
                 # Create a client
-                client = service_usage_v1.ServiceUsageClient()
+                client = service_usage_v1.ServiceUsageAsyncClient()
 
                 # Initialize request argument(s)
                 request = service_usage_v1.ListServicesRequest(
@@ -502,7 +502,7 @@ class ServiceUsageAsyncClient:
                 page_result = client.list_services(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -577,9 +577,9 @@ class ServiceUsageAsyncClient:
 
             from google.cloud import service_usage_v1
 
-            def sample_batch_enable_services():
+            async def sample_batch_enable_services():
                 # Create a client
-                client = service_usage_v1.ServiceUsageClient()
+                client = service_usage_v1.ServiceUsageAsyncClient()
 
                 # Initialize request argument(s)
                 request = service_usage_v1.BatchEnableServicesRequest(
@@ -590,7 +590,7 @@ class ServiceUsageAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -666,16 +666,16 @@ class ServiceUsageAsyncClient:
 
             from google.cloud import service_usage_v1
 
-            def sample_batch_get_services():
+            async def sample_batch_get_services():
                 # Create a client
-                client = service_usage_v1.ServiceUsageClient()
+                client = service_usage_v1.ServiceUsageAsyncClient()
 
                 # Initialize request argument(s)
                 request = service_usage_v1.BatchGetServicesRequest(
                 )
 
                 # Make the request
-                response = client.batch_get_services(request=request)
+                response = await client.batch_get_services(request=request)
 
                 # Handle the response
                 print(response)
