@@ -229,9 +229,9 @@ class RevisionsAsyncClient:
 
             from google.cloud import run_v2
 
-            def sample_get_revision():
+            async def sample_get_revision():
                 # Create a client
-                client = run_v2.RevisionsClient()
+                client = run_v2.RevisionsAsyncClient()
 
                 # Initialize request argument(s)
                 request = run_v2.GetRevisionRequest(
@@ -239,7 +239,7 @@ class RevisionsAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_revision(request=request)
+                response = await client.get_revision(request=request)
 
                 # Handle the response
                 print(response)
@@ -329,9 +329,9 @@ class RevisionsAsyncClient:
 
             from google.cloud import run_v2
 
-            def sample_list_revisions():
+            async def sample_list_revisions():
                 # Create a client
-                client = run_v2.RevisionsClient()
+                client = run_v2.RevisionsAsyncClient()
 
                 # Initialize request argument(s)
                 request = run_v2.ListRevisionsRequest(
@@ -342,7 +342,7 @@ class RevisionsAsyncClient:
                 page_result = client.list_revisions(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -440,9 +440,9 @@ class RevisionsAsyncClient:
 
             from google.cloud import run_v2
 
-            def sample_delete_revision():
+            async def sample_delete_revision():
                 # Create a client
-                client = run_v2.RevisionsClient()
+                client = run_v2.RevisionsAsyncClient()
 
                 # Initialize request argument(s)
                 request = run_v2.DeleteRevisionRequest(
@@ -454,7 +454,7 @@ class RevisionsAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)

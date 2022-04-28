@@ -234,9 +234,9 @@ class ServicesAsyncClient:
 
             from google.cloud import run_v2
 
-            def sample_create_service():
+            async def sample_create_service():
                 # Create a client
-                client = run_v2.ServicesClient()
+                client = run_v2.ServicesAsyncClient()
 
                 # Initialize request argument(s)
                 request = run_v2.CreateServiceRequest(
@@ -249,7 +249,7 @@ class ServicesAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -370,9 +370,9 @@ class ServicesAsyncClient:
 
             from google.cloud import run_v2
 
-            def sample_get_service():
+            async def sample_get_service():
                 # Create a client
-                client = run_v2.ServicesClient()
+                client = run_v2.ServicesAsyncClient()
 
                 # Initialize request argument(s)
                 request = run_v2.GetServiceRequest(
@@ -380,7 +380,7 @@ class ServicesAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_service(request=request)
+                response = await client.get_service(request=request)
 
                 # Handle the response
                 print(response)
@@ -482,9 +482,9 @@ class ServicesAsyncClient:
 
             from google.cloud import run_v2
 
-            def sample_list_services():
+            async def sample_list_services():
                 # Create a client
-                client = run_v2.ServicesClient()
+                client = run_v2.ServicesAsyncClient()
 
                 # Initialize request argument(s)
                 request = run_v2.ListServicesRequest(
@@ -495,7 +495,7 @@ class ServicesAsyncClient:
                 page_result = client.list_services(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -603,9 +603,9 @@ class ServicesAsyncClient:
 
             from google.cloud import run_v2
 
-            def sample_update_service():
+            async def sample_update_service():
                 # Create a client
-                client = run_v2.ServicesClient()
+                client = run_v2.ServicesAsyncClient()
 
                 # Initialize request argument(s)
                 request = run_v2.UpdateServiceRequest(
@@ -616,7 +616,7 @@ class ServicesAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -725,9 +725,9 @@ class ServicesAsyncClient:
 
             from google.cloud import run_v2
 
-            def sample_delete_service():
+            async def sample_delete_service():
                 # Create a client
-                client = run_v2.ServicesClient()
+                client = run_v2.ServicesAsyncClient()
 
                 # Initialize request argument(s)
                 request = run_v2.DeleteServiceRequest(
@@ -739,7 +739,7 @@ class ServicesAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -842,9 +842,9 @@ class ServicesAsyncClient:
             from google.cloud import run_v2
             from google.iam.v1 import iam_policy_pb2  # type: ignore
 
-            def sample_get_iam_policy():
+            async def sample_get_iam_policy():
                 # Create a client
-                client = run_v2.ServicesClient()
+                client = run_v2.ServicesAsyncClient()
 
                 # Initialize request argument(s)
                 request = iam_policy_pb2.GetIamPolicyRequest(
@@ -852,7 +852,7 @@ class ServicesAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_iam_policy(request=request)
+                response = await client.get_iam_policy(request=request)
 
                 # Handle the response
                 print(response)
@@ -979,9 +979,9 @@ class ServicesAsyncClient:
             from google.cloud import run_v2
             from google.iam.v1 import iam_policy_pb2  # type: ignore
 
-            def sample_set_iam_policy():
+            async def sample_set_iam_policy():
                 # Create a client
-                client = run_v2.ServicesClient()
+                client = run_v2.ServicesAsyncClient()
 
                 # Initialize request argument(s)
                 request = iam_policy_pb2.SetIamPolicyRequest(
@@ -989,7 +989,7 @@ class ServicesAsyncClient:
                 )
 
                 # Make the request
-                response = client.set_iam_policy(request=request)
+                response = await client.set_iam_policy(request=request)
 
                 # Handle the response
                 print(response)
@@ -1118,9 +1118,9 @@ class ServicesAsyncClient:
             from google.cloud import run_v2
             from google.iam.v1 import iam_policy_pb2  # type: ignore
 
-            def sample_test_iam_permissions():
+            async def sample_test_iam_permissions():
                 # Create a client
-                client = run_v2.ServicesClient()
+                client = run_v2.ServicesAsyncClient()
 
                 # Initialize request argument(s)
                 request = iam_policy_pb2.TestIamPermissionsRequest(
@@ -1129,7 +1129,7 @@ class ServicesAsyncClient:
                 )
 
                 # Make the request
-                response = client.test_iam_permissions(request=request)
+                response = await client.test_iam_permissions(request=request)
 
                 # Handle the response
                 print(response)
