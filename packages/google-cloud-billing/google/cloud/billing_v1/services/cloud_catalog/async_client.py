@@ -218,9 +218,9 @@ class CloudCatalogAsyncClient:
 
             from google.cloud import billing_v1
 
-            def sample_list_services():
+            async def sample_list_services():
                 # Create a client
-                client = billing_v1.CloudCatalogClient()
+                client = billing_v1.CloudCatalogAsyncClient()
 
                 # Initialize request argument(s)
                 request = billing_v1.ListServicesRequest(
@@ -230,7 +230,7 @@ class CloudCatalogAsyncClient:
                 page_result = client.list_services(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -297,9 +297,9 @@ class CloudCatalogAsyncClient:
 
             from google.cloud import billing_v1
 
-            def sample_list_skus():
+            async def sample_list_skus():
                 # Create a client
-                client = billing_v1.CloudCatalogClient()
+                client = billing_v1.CloudCatalogAsyncClient()
 
                 # Initialize request argument(s)
                 request = billing_v1.ListSkusRequest(
@@ -310,7 +310,7 @@ class CloudCatalogAsyncClient:
                 page_result = client.list_skus(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:

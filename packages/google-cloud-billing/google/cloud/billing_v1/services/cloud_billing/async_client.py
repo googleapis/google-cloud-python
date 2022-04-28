@@ -219,9 +219,9 @@ class CloudBillingAsyncClient:
 
             from google.cloud import billing_v1
 
-            def sample_get_billing_account():
+            async def sample_get_billing_account():
                 # Create a client
-                client = billing_v1.CloudBillingClient()
+                client = billing_v1.CloudBillingAsyncClient()
 
                 # Initialize request argument(s)
                 request = billing_v1.GetBillingAccountRequest(
@@ -229,7 +229,7 @@ class CloudBillingAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_billing_account(request=request)
+                response = await client.get_billing_account(request=request)
 
                 # Handle the response
                 print(response)
@@ -327,9 +327,9 @@ class CloudBillingAsyncClient:
 
             from google.cloud import billing_v1
 
-            def sample_list_billing_accounts():
+            async def sample_list_billing_accounts():
                 # Create a client
-                client = billing_v1.CloudBillingClient()
+                client = billing_v1.CloudBillingAsyncClient()
 
                 # Initialize request argument(s)
                 request = billing_v1.ListBillingAccountsRequest(
@@ -339,7 +339,7 @@ class CloudBillingAsyncClient:
                 page_result = client.list_billing_accounts(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -422,9 +422,9 @@ class CloudBillingAsyncClient:
 
             from google.cloud import billing_v1
 
-            def sample_update_billing_account():
+            async def sample_update_billing_account():
                 # Create a client
-                client = billing_v1.CloudBillingClient()
+                client = billing_v1.CloudBillingAsyncClient()
 
                 # Initialize request argument(s)
                 request = billing_v1.UpdateBillingAccountRequest(
@@ -432,7 +432,7 @@ class CloudBillingAsyncClient:
                 )
 
                 # Make the request
-                response = client.update_billing_account(request=request)
+                response = await client.update_billing_account(request=request)
 
                 # Handle the response
                 print(response)
@@ -547,16 +547,16 @@ class CloudBillingAsyncClient:
 
             from google.cloud import billing_v1
 
-            def sample_create_billing_account():
+            async def sample_create_billing_account():
                 # Create a client
-                client = billing_v1.CloudBillingClient()
+                client = billing_v1.CloudBillingAsyncClient()
 
                 # Initialize request argument(s)
                 request = billing_v1.CreateBillingAccountRequest(
                 )
 
                 # Make the request
-                response = client.create_billing_account(request=request)
+                response = await client.create_billing_account(request=request)
 
                 # Handle the response
                 print(response)
@@ -644,9 +644,9 @@ class CloudBillingAsyncClient:
 
             from google.cloud import billing_v1
 
-            def sample_list_project_billing_info():
+            async def sample_list_project_billing_info():
                 # Create a client
-                client = billing_v1.CloudBillingClient()
+                client = billing_v1.CloudBillingAsyncClient()
 
                 # Initialize request argument(s)
                 request = billing_v1.ListProjectBillingInfoRequest(
@@ -657,7 +657,7 @@ class CloudBillingAsyncClient:
                 page_result = client.list_project_billing_info(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -764,9 +764,9 @@ class CloudBillingAsyncClient:
 
             from google.cloud import billing_v1
 
-            def sample_get_project_billing_info():
+            async def sample_get_project_billing_info():
                 # Create a client
-                client = billing_v1.CloudBillingClient()
+                client = billing_v1.CloudBillingAsyncClient()
 
                 # Initialize request argument(s)
                 request = billing_v1.GetProjectBillingInfoRequest(
@@ -774,7 +774,7 @@ class CloudBillingAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_project_billing_info(request=request)
+                response = await client.get_project_billing_info(request=request)
 
                 # Handle the response
                 print(response)
@@ -909,9 +909,9 @@ class CloudBillingAsyncClient:
 
             from google.cloud import billing_v1
 
-            def sample_update_project_billing_info():
+            async def sample_update_project_billing_info():
                 # Create a client
-                client = billing_v1.CloudBillingClient()
+                client = billing_v1.CloudBillingAsyncClient()
 
                 # Initialize request argument(s)
                 request = billing_v1.UpdateProjectBillingInfoRequest(
@@ -919,7 +919,7 @@ class CloudBillingAsyncClient:
                 )
 
                 # Make the request
-                response = client.update_project_billing_info(request=request)
+                response = await client.update_project_billing_info(request=request)
 
                 # Handle the response
                 print(response)
@@ -1032,9 +1032,9 @@ class CloudBillingAsyncClient:
             from google.cloud import billing_v1
             from google.iam.v1 import iam_policy_pb2  # type: ignore
 
-            def sample_get_iam_policy():
+            async def sample_get_iam_policy():
                 # Create a client
-                client = billing_v1.CloudBillingClient()
+                client = billing_v1.CloudBillingAsyncClient()
 
                 # Initialize request argument(s)
                 request = iam_policy_pb2.GetIamPolicyRequest(
@@ -1042,7 +1042,7 @@ class CloudBillingAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_iam_policy(request=request)
+                response = await client.get_iam_policy(request=request)
 
                 # Handle the response
                 print(response)
@@ -1205,9 +1205,9 @@ class CloudBillingAsyncClient:
             from google.cloud import billing_v1
             from google.iam.v1 import iam_policy_pb2  # type: ignore
 
-            def sample_set_iam_policy():
+            async def sample_set_iam_policy():
                 # Create a client
-                client = billing_v1.CloudBillingClient()
+                client = billing_v1.CloudBillingAsyncClient()
 
                 # Initialize request argument(s)
                 request = iam_policy_pb2.SetIamPolicyRequest(
@@ -1215,7 +1215,7 @@ class CloudBillingAsyncClient:
                 )
 
                 # Make the request
-                response = client.set_iam_policy(request=request)
+                response = await client.set_iam_policy(request=request)
 
                 # Handle the response
                 print(response)
@@ -1379,9 +1379,9 @@ class CloudBillingAsyncClient:
             from google.cloud import billing_v1
             from google.iam.v1 import iam_policy_pb2  # type: ignore
 
-            def sample_test_iam_permissions():
+            async def sample_test_iam_permissions():
                 # Create a client
-                client = billing_v1.CloudBillingClient()
+                client = billing_v1.CloudBillingAsyncClient()
 
                 # Initialize request argument(s)
                 request = iam_policy_pb2.TestIamPermissionsRequest(
@@ -1390,7 +1390,7 @@ class CloudBillingAsyncClient:
                 )
 
                 # Make the request
-                response = client.test_iam_permissions(request=request)
+                response = await client.test_iam_permissions(request=request)
 
                 # Handle the response
                 print(response)
