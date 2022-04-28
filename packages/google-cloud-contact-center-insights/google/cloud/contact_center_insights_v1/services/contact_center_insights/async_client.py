@@ -259,9 +259,9 @@ class ContactCenterInsightsAsyncClient:
 
             from google.cloud import contact_center_insights_v1
 
-            def sample_create_conversation():
+            async def sample_create_conversation():
                 # Create a client
-                client = contact_center_insights_v1.ContactCenterInsightsClient()
+                client = contact_center_insights_v1.ContactCenterInsightsAsyncClient()
 
                 # Initialize request argument(s)
                 request = contact_center_insights_v1.CreateConversationRequest(
@@ -269,7 +269,7 @@ class ContactCenterInsightsAsyncClient:
                 )
 
                 # Make the request
-                response = client.create_conversation(request=request)
+                response = await client.create_conversation(request=request)
 
                 # Handle the response
                 print(response)
@@ -376,16 +376,16 @@ class ContactCenterInsightsAsyncClient:
 
             from google.cloud import contact_center_insights_v1
 
-            def sample_update_conversation():
+            async def sample_update_conversation():
                 # Create a client
-                client = contact_center_insights_v1.ContactCenterInsightsClient()
+                client = contact_center_insights_v1.ContactCenterInsightsAsyncClient()
 
                 # Initialize request argument(s)
                 request = contact_center_insights_v1.UpdateConversationRequest(
                 )
 
                 # Make the request
-                response = client.update_conversation(request=request)
+                response = await client.update_conversation(request=request)
 
                 # Handle the response
                 print(response)
@@ -477,9 +477,9 @@ class ContactCenterInsightsAsyncClient:
 
             from google.cloud import contact_center_insights_v1
 
-            def sample_get_conversation():
+            async def sample_get_conversation():
                 # Create a client
-                client = contact_center_insights_v1.ContactCenterInsightsClient()
+                client = contact_center_insights_v1.ContactCenterInsightsAsyncClient()
 
                 # Initialize request argument(s)
                 request = contact_center_insights_v1.GetConversationRequest(
@@ -487,7 +487,7 @@ class ContactCenterInsightsAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_conversation(request=request)
+                response = await client.get_conversation(request=request)
 
                 # Handle the response
                 print(response)
@@ -569,9 +569,9 @@ class ContactCenterInsightsAsyncClient:
 
             from google.cloud import contact_center_insights_v1
 
-            def sample_list_conversations():
+            async def sample_list_conversations():
                 # Create a client
-                client = contact_center_insights_v1.ContactCenterInsightsClient()
+                client = contact_center_insights_v1.ContactCenterInsightsAsyncClient()
 
                 # Initialize request argument(s)
                 request = contact_center_insights_v1.ListConversationsRequest(
@@ -582,7 +582,7 @@ class ContactCenterInsightsAsyncClient:
                 page_result = client.list_conversations(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -676,9 +676,9 @@ class ContactCenterInsightsAsyncClient:
 
             from google.cloud import contact_center_insights_v1
 
-            def sample_delete_conversation():
+            async def sample_delete_conversation():
                 # Create a client
-                client = contact_center_insights_v1.ContactCenterInsightsClient()
+                client = contact_center_insights_v1.ContactCenterInsightsAsyncClient()
 
                 # Initialize request argument(s)
                 request = contact_center_insights_v1.DeleteConversationRequest(
@@ -686,7 +686,7 @@ class ContactCenterInsightsAsyncClient:
                 )
 
                 # Make the request
-                client.delete_conversation(request=request)
+                await client.delete_conversation(request=request)
 
         Args:
             request (Union[google.cloud.contact_center_insights_v1.types.DeleteConversationRequest, dict]):
@@ -761,9 +761,9 @@ class ContactCenterInsightsAsyncClient:
 
             from google.cloud import contact_center_insights_v1
 
-            def sample_create_analysis():
+            async def sample_create_analysis():
                 # Create a client
-                client = contact_center_insights_v1.ContactCenterInsightsClient()
+                client = contact_center_insights_v1.ContactCenterInsightsAsyncClient()
 
                 # Initialize request argument(s)
                 request = contact_center_insights_v1.CreateAnalysisRequest(
@@ -775,7 +775,7 @@ class ContactCenterInsightsAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -877,9 +877,9 @@ class ContactCenterInsightsAsyncClient:
 
             from google.cloud import contact_center_insights_v1
 
-            def sample_get_analysis():
+            async def sample_get_analysis():
                 # Create a client
-                client = contact_center_insights_v1.ContactCenterInsightsClient()
+                client = contact_center_insights_v1.ContactCenterInsightsAsyncClient()
 
                 # Initialize request argument(s)
                 request = contact_center_insights_v1.GetAnalysisRequest(
@@ -887,7 +887,7 @@ class ContactCenterInsightsAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_analysis(request=request)
+                response = await client.get_analysis(request=request)
 
                 # Handle the response
                 print(response)
@@ -969,9 +969,9 @@ class ContactCenterInsightsAsyncClient:
 
             from google.cloud import contact_center_insights_v1
 
-            def sample_list_analyses():
+            async def sample_list_analyses():
                 # Create a client
-                client = contact_center_insights_v1.ContactCenterInsightsClient()
+                client = contact_center_insights_v1.ContactCenterInsightsAsyncClient()
 
                 # Initialize request argument(s)
                 request = contact_center_insights_v1.ListAnalysesRequest(
@@ -982,7 +982,7 @@ class ContactCenterInsightsAsyncClient:
                 page_result = client.list_analyses(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -1075,9 +1075,9 @@ class ContactCenterInsightsAsyncClient:
 
             from google.cloud import contact_center_insights_v1
 
-            def sample_delete_analysis():
+            async def sample_delete_analysis():
                 # Create a client
-                client = contact_center_insights_v1.ContactCenterInsightsClient()
+                client = contact_center_insights_v1.ContactCenterInsightsAsyncClient()
 
                 # Initialize request argument(s)
                 request = contact_center_insights_v1.DeleteAnalysisRequest(
@@ -1085,7 +1085,7 @@ class ContactCenterInsightsAsyncClient:
                 )
 
                 # Make the request
-                client.delete_analysis(request=request)
+                await client.delete_analysis(request=request)
 
         Args:
             request (Union[google.cloud.contact_center_insights_v1.types.DeleteAnalysisRequest, dict]):
@@ -1158,9 +1158,9 @@ class ContactCenterInsightsAsyncClient:
 
             from google.cloud import contact_center_insights_v1
 
-            def sample_export_insights_data():
+            async def sample_export_insights_data():
                 # Create a client
-                client = contact_center_insights_v1.ContactCenterInsightsClient()
+                client = contact_center_insights_v1.ContactCenterInsightsAsyncClient()
 
                 # Initialize request argument(s)
                 big_query_destination = contact_center_insights_v1.BigQueryDestination()
@@ -1176,7 +1176,7 @@ class ContactCenterInsightsAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1272,9 +1272,9 @@ class ContactCenterInsightsAsyncClient:
 
             from google.cloud import contact_center_insights_v1
 
-            def sample_create_issue_model():
+            async def sample_create_issue_model():
                 # Create a client
-                client = contact_center_insights_v1.ContactCenterInsightsClient()
+                client = contact_center_insights_v1.ContactCenterInsightsAsyncClient()
 
                 # Initialize request argument(s)
                 request = contact_center_insights_v1.CreateIssueModelRequest(
@@ -1286,7 +1286,7 @@ class ContactCenterInsightsAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1390,16 +1390,16 @@ class ContactCenterInsightsAsyncClient:
 
             from google.cloud import contact_center_insights_v1
 
-            def sample_update_issue_model():
+            async def sample_update_issue_model():
                 # Create a client
-                client = contact_center_insights_v1.ContactCenterInsightsClient()
+                client = contact_center_insights_v1.ContactCenterInsightsAsyncClient()
 
                 # Initialize request argument(s)
                 request = contact_center_insights_v1.UpdateIssueModelRequest(
                 )
 
                 # Make the request
-                response = client.update_issue_model(request=request)
+                response = await client.update_issue_model(request=request)
 
                 # Handle the response
                 print(response)
@@ -1491,9 +1491,9 @@ class ContactCenterInsightsAsyncClient:
 
             from google.cloud import contact_center_insights_v1
 
-            def sample_get_issue_model():
+            async def sample_get_issue_model():
                 # Create a client
-                client = contact_center_insights_v1.ContactCenterInsightsClient()
+                client = contact_center_insights_v1.ContactCenterInsightsAsyncClient()
 
                 # Initialize request argument(s)
                 request = contact_center_insights_v1.GetIssueModelRequest(
@@ -1501,7 +1501,7 @@ class ContactCenterInsightsAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_issue_model(request=request)
+                response = await client.get_issue_model(request=request)
 
                 # Handle the response
                 print(response)
@@ -1583,9 +1583,9 @@ class ContactCenterInsightsAsyncClient:
 
             from google.cloud import contact_center_insights_v1
 
-            def sample_list_issue_models():
+            async def sample_list_issue_models():
                 # Create a client
-                client = contact_center_insights_v1.ContactCenterInsightsClient()
+                client = contact_center_insights_v1.ContactCenterInsightsAsyncClient()
 
                 # Initialize request argument(s)
                 request = contact_center_insights_v1.ListIssueModelsRequest(
@@ -1593,7 +1593,7 @@ class ContactCenterInsightsAsyncClient:
                 )
 
                 # Make the request
-                response = client.list_issue_models(request=request)
+                response = await client.list_issue_models(request=request)
 
                 # Handle the response
                 print(response)
@@ -1675,9 +1675,9 @@ class ContactCenterInsightsAsyncClient:
 
             from google.cloud import contact_center_insights_v1
 
-            def sample_delete_issue_model():
+            async def sample_delete_issue_model():
                 # Create a client
-                client = contact_center_insights_v1.ContactCenterInsightsClient()
+                client = contact_center_insights_v1.ContactCenterInsightsAsyncClient()
 
                 # Initialize request argument(s)
                 request = contact_center_insights_v1.DeleteIssueModelRequest(
@@ -1689,7 +1689,7 @@ class ContactCenterInsightsAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1797,9 +1797,9 @@ class ContactCenterInsightsAsyncClient:
 
             from google.cloud import contact_center_insights_v1
 
-            def sample_deploy_issue_model():
+            async def sample_deploy_issue_model():
                 # Create a client
-                client = contact_center_insights_v1.ContactCenterInsightsClient()
+                client = contact_center_insights_v1.ContactCenterInsightsAsyncClient()
 
                 # Initialize request argument(s)
                 request = contact_center_insights_v1.DeployIssueModelRequest(
@@ -1811,7 +1811,7 @@ class ContactCenterInsightsAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1907,9 +1907,9 @@ class ContactCenterInsightsAsyncClient:
 
             from google.cloud import contact_center_insights_v1
 
-            def sample_undeploy_issue_model():
+            async def sample_undeploy_issue_model():
                 # Create a client
-                client = contact_center_insights_v1.ContactCenterInsightsClient()
+                client = contact_center_insights_v1.ContactCenterInsightsAsyncClient()
 
                 # Initialize request argument(s)
                 request = contact_center_insights_v1.UndeployIssueModelRequest(
@@ -1921,7 +1921,7 @@ class ContactCenterInsightsAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2017,9 +2017,9 @@ class ContactCenterInsightsAsyncClient:
 
             from google.cloud import contact_center_insights_v1
 
-            def sample_get_issue():
+            async def sample_get_issue():
                 # Create a client
-                client = contact_center_insights_v1.ContactCenterInsightsClient()
+                client = contact_center_insights_v1.ContactCenterInsightsAsyncClient()
 
                 # Initialize request argument(s)
                 request = contact_center_insights_v1.GetIssueRequest(
@@ -2027,7 +2027,7 @@ class ContactCenterInsightsAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_issue(request=request)
+                response = await client.get_issue(request=request)
 
                 # Handle the response
                 print(response)
@@ -2109,9 +2109,9 @@ class ContactCenterInsightsAsyncClient:
 
             from google.cloud import contact_center_insights_v1
 
-            def sample_list_issues():
+            async def sample_list_issues():
                 # Create a client
-                client = contact_center_insights_v1.ContactCenterInsightsClient()
+                client = contact_center_insights_v1.ContactCenterInsightsAsyncClient()
 
                 # Initialize request argument(s)
                 request = contact_center_insights_v1.ListIssuesRequest(
@@ -2119,7 +2119,7 @@ class ContactCenterInsightsAsyncClient:
                 )
 
                 # Make the request
-                response = client.list_issues(request=request)
+                response = await client.list_issues(request=request)
 
                 # Handle the response
                 print(response)
@@ -2202,16 +2202,16 @@ class ContactCenterInsightsAsyncClient:
 
             from google.cloud import contact_center_insights_v1
 
-            def sample_update_issue():
+            async def sample_update_issue():
                 # Create a client
-                client = contact_center_insights_v1.ContactCenterInsightsClient()
+                client = contact_center_insights_v1.ContactCenterInsightsAsyncClient()
 
                 # Initialize request argument(s)
                 request = contact_center_insights_v1.UpdateIssueRequest(
                 )
 
                 # Make the request
-                response = client.update_issue(request=request)
+                response = await client.update_issue(request=request)
 
                 # Handle the response
                 print(response)
@@ -2304,9 +2304,9 @@ class ContactCenterInsightsAsyncClient:
 
             from google.cloud import contact_center_insights_v1
 
-            def sample_calculate_issue_model_stats():
+            async def sample_calculate_issue_model_stats():
                 # Create a client
-                client = contact_center_insights_v1.ContactCenterInsightsClient()
+                client = contact_center_insights_v1.ContactCenterInsightsAsyncClient()
 
                 # Initialize request argument(s)
                 request = contact_center_insights_v1.CalculateIssueModelStatsRequest(
@@ -2314,7 +2314,7 @@ class ContactCenterInsightsAsyncClient:
                 )
 
                 # Make the request
-                response = client.calculate_issue_model_stats(request=request)
+                response = await client.calculate_issue_model_stats(request=request)
 
                 # Handle the response
                 print(response)
@@ -2402,9 +2402,9 @@ class ContactCenterInsightsAsyncClient:
 
             from google.cloud import contact_center_insights_v1
 
-            def sample_create_phrase_matcher():
+            async def sample_create_phrase_matcher():
                 # Create a client
-                client = contact_center_insights_v1.ContactCenterInsightsClient()
+                client = contact_center_insights_v1.ContactCenterInsightsAsyncClient()
 
                 # Initialize request argument(s)
                 phrase_matcher = contact_center_insights_v1.PhraseMatcher()
@@ -2416,7 +2416,7 @@ class ContactCenterInsightsAsyncClient:
                 )
 
                 # Make the request
-                response = client.create_phrase_matcher(request=request)
+                response = await client.create_phrase_matcher(request=request)
 
                 # Handle the response
                 print(response)
@@ -2510,9 +2510,9 @@ class ContactCenterInsightsAsyncClient:
 
             from google.cloud import contact_center_insights_v1
 
-            def sample_get_phrase_matcher():
+            async def sample_get_phrase_matcher():
                 # Create a client
-                client = contact_center_insights_v1.ContactCenterInsightsClient()
+                client = contact_center_insights_v1.ContactCenterInsightsAsyncClient()
 
                 # Initialize request argument(s)
                 request = contact_center_insights_v1.GetPhraseMatcherRequest(
@@ -2520,7 +2520,7 @@ class ContactCenterInsightsAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_phrase_matcher(request=request)
+                response = await client.get_phrase_matcher(request=request)
 
                 # Handle the response
                 print(response)
@@ -2603,9 +2603,9 @@ class ContactCenterInsightsAsyncClient:
 
             from google.cloud import contact_center_insights_v1
 
-            def sample_list_phrase_matchers():
+            async def sample_list_phrase_matchers():
                 # Create a client
-                client = contact_center_insights_v1.ContactCenterInsightsClient()
+                client = contact_center_insights_v1.ContactCenterInsightsAsyncClient()
 
                 # Initialize request argument(s)
                 request = contact_center_insights_v1.ListPhraseMatchersRequest(
@@ -2616,7 +2616,7 @@ class ContactCenterInsightsAsyncClient:
                 page_result = client.list_phrase_matchers(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -2710,9 +2710,9 @@ class ContactCenterInsightsAsyncClient:
 
             from google.cloud import contact_center_insights_v1
 
-            def sample_delete_phrase_matcher():
+            async def sample_delete_phrase_matcher():
                 # Create a client
-                client = contact_center_insights_v1.ContactCenterInsightsClient()
+                client = contact_center_insights_v1.ContactCenterInsightsAsyncClient()
 
                 # Initialize request argument(s)
                 request = contact_center_insights_v1.DeletePhraseMatcherRequest(
@@ -2720,7 +2720,7 @@ class ContactCenterInsightsAsyncClient:
                 )
 
                 # Make the request
-                client.delete_phrase_matcher(request=request)
+                await client.delete_phrase_matcher(request=request)
 
         Args:
             request (Union[google.cloud.contact_center_insights_v1.types.DeletePhraseMatcherRequest, dict]):
@@ -2794,9 +2794,9 @@ class ContactCenterInsightsAsyncClient:
 
             from google.cloud import contact_center_insights_v1
 
-            def sample_update_phrase_matcher():
+            async def sample_update_phrase_matcher():
                 # Create a client
-                client = contact_center_insights_v1.ContactCenterInsightsClient()
+                client = contact_center_insights_v1.ContactCenterInsightsAsyncClient()
 
                 # Initialize request argument(s)
                 phrase_matcher = contact_center_insights_v1.PhraseMatcher()
@@ -2807,7 +2807,7 @@ class ContactCenterInsightsAsyncClient:
                 )
 
                 # Make the request
-                response = client.update_phrase_matcher(request=request)
+                response = await client.update_phrase_matcher(request=request)
 
                 # Handle the response
                 print(response)
@@ -2899,9 +2899,9 @@ class ContactCenterInsightsAsyncClient:
 
             from google.cloud import contact_center_insights_v1
 
-            def sample_calculate_stats():
+            async def sample_calculate_stats():
                 # Create a client
-                client = contact_center_insights_v1.ContactCenterInsightsClient()
+                client = contact_center_insights_v1.ContactCenterInsightsAsyncClient()
 
                 # Initialize request argument(s)
                 request = contact_center_insights_v1.CalculateStatsRequest(
@@ -2909,7 +2909,7 @@ class ContactCenterInsightsAsyncClient:
                 )
 
                 # Make the request
-                response = client.calculate_stats(request=request)
+                response = await client.calculate_stats(request=request)
 
                 # Handle the response
                 print(response)
@@ -2994,9 +2994,9 @@ class ContactCenterInsightsAsyncClient:
 
             from google.cloud import contact_center_insights_v1
 
-            def sample_get_settings():
+            async def sample_get_settings():
                 # Create a client
-                client = contact_center_insights_v1.ContactCenterInsightsClient()
+                client = contact_center_insights_v1.ContactCenterInsightsAsyncClient()
 
                 # Initialize request argument(s)
                 request = contact_center_insights_v1.GetSettingsRequest(
@@ -3004,7 +3004,7 @@ class ContactCenterInsightsAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_settings(request=request)
+                response = await client.get_settings(request=request)
 
                 # Handle the response
                 print(response)
@@ -3088,16 +3088,16 @@ class ContactCenterInsightsAsyncClient:
 
             from google.cloud import contact_center_insights_v1
 
-            def sample_update_settings():
+            async def sample_update_settings():
                 # Create a client
-                client = contact_center_insights_v1.ContactCenterInsightsClient()
+                client = contact_center_insights_v1.ContactCenterInsightsAsyncClient()
 
                 # Initialize request argument(s)
                 request = contact_center_insights_v1.UpdateSettingsRequest(
                 )
 
                 # Make the request
-                response = client.update_settings(request=request)
+                response = await client.update_settings(request=request)
 
                 # Handle the response
                 print(response)
@@ -3190,9 +3190,9 @@ class ContactCenterInsightsAsyncClient:
 
             from google.cloud import contact_center_insights_v1
 
-            def sample_create_view():
+            async def sample_create_view():
                 # Create a client
-                client = contact_center_insights_v1.ContactCenterInsightsClient()
+                client = contact_center_insights_v1.ContactCenterInsightsAsyncClient()
 
                 # Initialize request argument(s)
                 request = contact_center_insights_v1.CreateViewRequest(
@@ -3200,7 +3200,7 @@ class ContactCenterInsightsAsyncClient:
                 )
 
                 # Make the request
-                response = client.create_view(request=request)
+                response = await client.create_view(request=request)
 
                 # Handle the response
                 print(response)
@@ -3293,9 +3293,9 @@ class ContactCenterInsightsAsyncClient:
 
             from google.cloud import contact_center_insights_v1
 
-            def sample_get_view():
+            async def sample_get_view():
                 # Create a client
-                client = contact_center_insights_v1.ContactCenterInsightsClient()
+                client = contact_center_insights_v1.ContactCenterInsightsAsyncClient()
 
                 # Initialize request argument(s)
                 request = contact_center_insights_v1.GetViewRequest(
@@ -3303,7 +3303,7 @@ class ContactCenterInsightsAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_view(request=request)
+                response = await client.get_view(request=request)
 
                 # Handle the response
                 print(response)
@@ -3385,9 +3385,9 @@ class ContactCenterInsightsAsyncClient:
 
             from google.cloud import contact_center_insights_v1
 
-            def sample_list_views():
+            async def sample_list_views():
                 # Create a client
-                client = contact_center_insights_v1.ContactCenterInsightsClient()
+                client = contact_center_insights_v1.ContactCenterInsightsAsyncClient()
 
                 # Initialize request argument(s)
                 request = contact_center_insights_v1.ListViewsRequest(
@@ -3398,7 +3398,7 @@ class ContactCenterInsightsAsyncClient:
                 page_result = client.list_views(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -3492,16 +3492,16 @@ class ContactCenterInsightsAsyncClient:
 
             from google.cloud import contact_center_insights_v1
 
-            def sample_update_view():
+            async def sample_update_view():
                 # Create a client
-                client = contact_center_insights_v1.ContactCenterInsightsClient()
+                client = contact_center_insights_v1.ContactCenterInsightsAsyncClient()
 
                 # Initialize request argument(s)
                 request = contact_center_insights_v1.UpdateViewRequest(
                 )
 
                 # Make the request
-                response = client.update_view(request=request)
+                response = await client.update_view(request=request)
 
                 # Handle the response
                 print(response)
@@ -3590,9 +3590,9 @@ class ContactCenterInsightsAsyncClient:
 
             from google.cloud import contact_center_insights_v1
 
-            def sample_delete_view():
+            async def sample_delete_view():
                 # Create a client
-                client = contact_center_insights_v1.ContactCenterInsightsClient()
+                client = contact_center_insights_v1.ContactCenterInsightsAsyncClient()
 
                 # Initialize request argument(s)
                 request = contact_center_insights_v1.DeleteViewRequest(
@@ -3600,7 +3600,7 @@ class ContactCenterInsightsAsyncClient:
                 )
 
                 # Make the request
-                client.delete_view(request=request)
+                await client.delete_view(request=request)
 
         Args:
             request (Union[google.cloud.contact_center_insights_v1.types.DeleteViewRequest, dict]):
