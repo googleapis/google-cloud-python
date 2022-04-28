@@ -732,7 +732,7 @@ def test_list_queues_field_headers():
     # a field header. Set these to a non-empty value.
     request = cloudtasks.ListQueuesRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_queues), "__call__") as call:
@@ -748,7 +748,7 @@ def test_list_queues_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -762,7 +762,7 @@ async def test_list_queues_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = cloudtasks.ListQueuesRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_queues), "__call__") as call:
@@ -780,7 +780,7 @@ async def test_list_queues_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -911,7 +911,7 @@ def test_list_queues_pager(transport_name: str = "grpc"):
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, queue.Queue) for i in results)
 
@@ -1156,7 +1156,7 @@ def test_get_queue_field_headers():
     # a field header. Set these to a non-empty value.
     request = cloudtasks.GetQueueRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_queue), "__call__") as call:
@@ -1172,7 +1172,7 @@ def test_get_queue_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1186,7 +1186,7 @@ async def test_get_queue_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = cloudtasks.GetQueueRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_queue), "__call__") as call:
@@ -1202,7 +1202,7 @@ async def test_get_queue_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1388,7 +1388,7 @@ def test_create_queue_field_headers():
     # a field header. Set these to a non-empty value.
     request = cloudtasks.CreateQueueRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_queue), "__call__") as call:
@@ -1404,7 +1404,7 @@ def test_create_queue_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -1418,7 +1418,7 @@ async def test_create_queue_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = cloudtasks.CreateQueueRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_queue), "__call__") as call:
@@ -1434,7 +1434,7 @@ async def test_create_queue_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -1630,7 +1630,7 @@ def test_update_queue_field_headers():
     # a field header. Set these to a non-empty value.
     request = cloudtasks.UpdateQueueRequest()
 
-    request.queue.name = "queue.name/value"
+    request.queue.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_queue), "__call__") as call:
@@ -1646,7 +1646,7 @@ def test_update_queue_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "queue.name=queue.name/value",
+        "queue.name=name_value",
     ) in kw["metadata"]
 
 
@@ -1660,7 +1660,7 @@ async def test_update_queue_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = cloudtasks.UpdateQueueRequest()
 
-    request.queue.name = "queue.name/value"
+    request.queue.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_queue), "__call__") as call:
@@ -1676,7 +1676,7 @@ async def test_update_queue_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "queue.name=queue.name/value",
+        "queue.name=name_value",
     ) in kw["metadata"]
 
 
@@ -1860,7 +1860,7 @@ def test_delete_queue_field_headers():
     # a field header. Set these to a non-empty value.
     request = cloudtasks.DeleteQueueRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_queue), "__call__") as call:
@@ -1876,7 +1876,7 @@ def test_delete_queue_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1890,7 +1890,7 @@ async def test_delete_queue_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = cloudtasks.DeleteQueueRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_queue), "__call__") as call:
@@ -1906,7 +1906,7 @@ async def test_delete_queue_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2092,7 +2092,7 @@ def test_purge_queue_field_headers():
     # a field header. Set these to a non-empty value.
     request = cloudtasks.PurgeQueueRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.purge_queue), "__call__") as call:
@@ -2108,7 +2108,7 @@ def test_purge_queue_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2122,7 +2122,7 @@ async def test_purge_queue_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = cloudtasks.PurgeQueueRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.purge_queue), "__call__") as call:
@@ -2138,7 +2138,7 @@ async def test_purge_queue_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2324,7 +2324,7 @@ def test_pause_queue_field_headers():
     # a field header. Set these to a non-empty value.
     request = cloudtasks.PauseQueueRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.pause_queue), "__call__") as call:
@@ -2340,7 +2340,7 @@ def test_pause_queue_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2354,7 +2354,7 @@ async def test_pause_queue_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = cloudtasks.PauseQueueRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.pause_queue), "__call__") as call:
@@ -2370,7 +2370,7 @@ async def test_pause_queue_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2556,7 +2556,7 @@ def test_resume_queue_field_headers():
     # a field header. Set these to a non-empty value.
     request = cloudtasks.ResumeQueueRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.resume_queue), "__call__") as call:
@@ -2572,7 +2572,7 @@ def test_resume_queue_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2586,7 +2586,7 @@ async def test_resume_queue_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = cloudtasks.ResumeQueueRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.resume_queue), "__call__") as call:
@@ -2602,7 +2602,7 @@ async def test_resume_queue_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2788,7 +2788,7 @@ def test_get_iam_policy_field_headers():
     # a field header. Set these to a non-empty value.
     request = iam_policy_pb2.GetIamPolicyRequest()
 
-    request.resource = "resource/value"
+    request.resource = "resource_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
@@ -2804,7 +2804,7 @@ def test_get_iam_policy_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "resource=resource/value",
+        "resource=resource_value",
     ) in kw["metadata"]
 
 
@@ -2818,7 +2818,7 @@ async def test_get_iam_policy_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = iam_policy_pb2.GetIamPolicyRequest()
 
-    request.resource = "resource/value"
+    request.resource = "resource_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
@@ -2834,7 +2834,7 @@ async def test_get_iam_policy_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "resource=resource/value",
+        "resource=resource_value",
     ) in kw["metadata"]
 
 
@@ -3037,7 +3037,7 @@ def test_set_iam_policy_field_headers():
     # a field header. Set these to a non-empty value.
     request = iam_policy_pb2.SetIamPolicyRequest()
 
-    request.resource = "resource/value"
+    request.resource = "resource_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
@@ -3053,7 +3053,7 @@ def test_set_iam_policy_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "resource=resource/value",
+        "resource=resource_value",
     ) in kw["metadata"]
 
 
@@ -3067,7 +3067,7 @@ async def test_set_iam_policy_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = iam_policy_pb2.SetIamPolicyRequest()
 
-    request.resource = "resource/value"
+    request.resource = "resource_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
@@ -3083,7 +3083,7 @@ async def test_set_iam_policy_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "resource=resource/value",
+        "resource=resource_value",
     ) in kw["metadata"]
 
 
@@ -3290,7 +3290,7 @@ def test_test_iam_permissions_field_headers():
     # a field header. Set these to a non-empty value.
     request = iam_policy_pb2.TestIamPermissionsRequest()
 
-    request.resource = "resource/value"
+    request.resource = "resource_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3308,7 +3308,7 @@ def test_test_iam_permissions_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "resource=resource/value",
+        "resource=resource_value",
     ) in kw["metadata"]
 
 
@@ -3322,7 +3322,7 @@ async def test_test_iam_permissions_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = iam_policy_pb2.TestIamPermissionsRequest()
 
-    request.resource = "resource/value"
+    request.resource = "resource_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3342,7 +3342,7 @@ async def test_test_iam_permissions_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "resource=resource/value",
+        "resource=resource_value",
     ) in kw["metadata"]
 
 
@@ -3559,7 +3559,7 @@ def test_list_tasks_field_headers():
     # a field header. Set these to a non-empty value.
     request = cloudtasks.ListTasksRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_tasks), "__call__") as call:
@@ -3575,7 +3575,7 @@ def test_list_tasks_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -3589,7 +3589,7 @@ async def test_list_tasks_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = cloudtasks.ListTasksRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_tasks), "__call__") as call:
@@ -3607,7 +3607,7 @@ async def test_list_tasks_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -3738,7 +3738,7 @@ def test_list_tasks_pager(transport_name: str = "grpc"):
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, task.Task) for i in results)
 
@@ -3994,7 +3994,7 @@ def test_get_task_field_headers():
     # a field header. Set these to a non-empty value.
     request = cloudtasks.GetTaskRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_task), "__call__") as call:
@@ -4010,7 +4010,7 @@ def test_get_task_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -4024,7 +4024,7 @@ async def test_get_task_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = cloudtasks.GetTaskRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_task), "__call__") as call:
@@ -4040,7 +4040,7 @@ async def test_get_task_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -4237,7 +4237,7 @@ def test_create_task_field_headers():
     # a field header. Set these to a non-empty value.
     request = cloudtasks.CreateTaskRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_task), "__call__") as call:
@@ -4253,7 +4253,7 @@ def test_create_task_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -4267,7 +4267,7 @@ async def test_create_task_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = cloudtasks.CreateTaskRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_task), "__call__") as call:
@@ -4283,7 +4283,7 @@ async def test_create_task_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -4467,7 +4467,7 @@ def test_delete_task_field_headers():
     # a field header. Set these to a non-empty value.
     request = cloudtasks.DeleteTaskRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_task), "__call__") as call:
@@ -4483,7 +4483,7 @@ def test_delete_task_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -4497,7 +4497,7 @@ async def test_delete_task_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = cloudtasks.DeleteTaskRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_task), "__call__") as call:
@@ -4513,7 +4513,7 @@ async def test_delete_task_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -4710,7 +4710,7 @@ def test_run_task_field_headers():
     # a field header. Set these to a non-empty value.
     request = cloudtasks.RunTaskRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.run_task), "__call__") as call:
@@ -4726,7 +4726,7 @@ def test_run_task_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -4740,7 +4740,7 @@ async def test_run_task_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = cloudtasks.RunTaskRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.run_task), "__call__") as call:
@@ -4756,7 +4756,7 @@ async def test_run_task_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 

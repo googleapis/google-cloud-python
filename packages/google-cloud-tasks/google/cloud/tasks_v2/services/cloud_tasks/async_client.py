@@ -228,9 +228,9 @@ class CloudTasksAsyncClient:
 
             from google.cloud import tasks_v2
 
-            def sample_list_queues():
+            async def sample_list_queues():
                 # Create a client
-                client = tasks_v2.CloudTasksClient()
+                client = tasks_v2.CloudTasksAsyncClient()
 
                 # Initialize request argument(s)
                 request = tasks_v2.ListQueuesRequest(
@@ -241,7 +241,7 @@ class CloudTasksAsyncClient:
                 page_result = client.list_queues(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -346,9 +346,9 @@ class CloudTasksAsyncClient:
 
             from google.cloud import tasks_v2
 
-            def sample_get_queue():
+            async def sample_get_queue():
                 # Create a client
-                client = tasks_v2.CloudTasksClient()
+                client = tasks_v2.CloudTasksAsyncClient()
 
                 # Initialize request argument(s)
                 request = tasks_v2.GetQueueRequest(
@@ -356,7 +356,7 @@ class CloudTasksAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_queue(request=request)
+                response = await client.get_queue(request=request)
 
                 # Handle the response
                 print(response)
@@ -466,9 +466,9 @@ class CloudTasksAsyncClient:
 
             from google.cloud import tasks_v2
 
-            def sample_create_queue():
+            async def sample_create_queue():
                 # Create a client
-                client = tasks_v2.CloudTasksClient()
+                client = tasks_v2.CloudTasksAsyncClient()
 
                 # Initialize request argument(s)
                 request = tasks_v2.CreateQueueRequest(
@@ -476,7 +476,7 @@ class CloudTasksAsyncClient:
                 )
 
                 # Make the request
-                response = client.create_queue(request=request)
+                response = await client.create_queue(request=request)
 
                 # Handle the response
                 print(response)
@@ -595,16 +595,16 @@ class CloudTasksAsyncClient:
 
             from google.cloud import tasks_v2
 
-            def sample_update_queue():
+            async def sample_update_queue():
                 # Create a client
-                client = tasks_v2.CloudTasksClient()
+                client = tasks_v2.CloudTasksAsyncClient()
 
                 # Initialize request argument(s)
                 request = tasks_v2.UpdateQueueRequest(
                 )
 
                 # Make the request
-                response = client.update_queue(request=request)
+                response = await client.update_queue(request=request)
 
                 # Handle the response
                 print(response)
@@ -725,9 +725,9 @@ class CloudTasksAsyncClient:
 
             from google.cloud import tasks_v2
 
-            def sample_delete_queue():
+            async def sample_delete_queue():
                 # Create a client
-                client = tasks_v2.CloudTasksClient()
+                client = tasks_v2.CloudTasksAsyncClient()
 
                 # Initialize request argument(s)
                 request = tasks_v2.DeleteQueueRequest(
@@ -735,7 +735,7 @@ class CloudTasksAsyncClient:
                 )
 
                 # Make the request
-                client.delete_queue(request=request)
+                await client.delete_queue(request=request)
 
         Args:
             request (Union[google.cloud.tasks_v2.types.DeleteQueueRequest, dict]):
@@ -823,9 +823,9 @@ class CloudTasksAsyncClient:
 
             from google.cloud import tasks_v2
 
-            def sample_purge_queue():
+            async def sample_purge_queue():
                 # Create a client
-                client = tasks_v2.CloudTasksClient()
+                client = tasks_v2.CloudTasksAsyncClient()
 
                 # Initialize request argument(s)
                 request = tasks_v2.PurgeQueueRequest(
@@ -833,7 +833,7 @@ class CloudTasksAsyncClient:
                 )
 
                 # Make the request
-                response = client.purge_queue(request=request)
+                response = await client.purge_queue(request=request)
 
                 # Handle the response
                 print(response)
@@ -929,9 +929,9 @@ class CloudTasksAsyncClient:
 
             from google.cloud import tasks_v2
 
-            def sample_pause_queue():
+            async def sample_pause_queue():
                 # Create a client
-                client = tasks_v2.CloudTasksClient()
+                client = tasks_v2.CloudTasksAsyncClient()
 
                 # Initialize request argument(s)
                 request = tasks_v2.PauseQueueRequest(
@@ -939,7 +939,7 @@ class CloudTasksAsyncClient:
                 )
 
                 # Make the request
-                response = client.pause_queue(request=request)
+                response = await client.pause_queue(request=request)
 
                 # Handle the response
                 print(response)
@@ -1042,9 +1042,9 @@ class CloudTasksAsyncClient:
 
             from google.cloud import tasks_v2
 
-            def sample_resume_queue():
+            async def sample_resume_queue():
                 # Create a client
-                client = tasks_v2.CloudTasksClient()
+                client = tasks_v2.CloudTasksAsyncClient()
 
                 # Initialize request argument(s)
                 request = tasks_v2.ResumeQueueRequest(
@@ -1052,7 +1052,7 @@ class CloudTasksAsyncClient:
                 )
 
                 # Make the request
-                response = client.resume_queue(request=request)
+                response = await client.resume_queue(request=request)
 
                 # Handle the response
                 print(response)
@@ -1150,9 +1150,9 @@ class CloudTasksAsyncClient:
             from google.cloud import tasks_v2
             from google.iam.v1 import iam_policy_pb2  # type: ignore
 
-            def sample_get_iam_policy():
+            async def sample_get_iam_policy():
                 # Create a client
-                client = tasks_v2.CloudTasksClient()
+                client = tasks_v2.CloudTasksAsyncClient()
 
                 # Initialize request argument(s)
                 request = iam_policy_pb2.GetIamPolicyRequest(
@@ -1160,7 +1160,7 @@ class CloudTasksAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_iam_policy(request=request)
+                response = await client.get_iam_policy(request=request)
 
                 # Handle the response
                 print(response)
@@ -1331,9 +1331,9 @@ class CloudTasksAsyncClient:
             from google.cloud import tasks_v2
             from google.iam.v1 import iam_policy_pb2  # type: ignore
 
-            def sample_set_iam_policy():
+            async def sample_set_iam_policy():
                 # Create a client
-                client = tasks_v2.CloudTasksClient()
+                client = tasks_v2.CloudTasksAsyncClient()
 
                 # Initialize request argument(s)
                 request = iam_policy_pb2.SetIamPolicyRequest(
@@ -1341,7 +1341,7 @@ class CloudTasksAsyncClient:
                 )
 
                 # Make the request
-                response = client.set_iam_policy(request=request)
+                response = await client.set_iam_policy(request=request)
 
                 # Handle the response
                 print(response)
@@ -1499,9 +1499,9 @@ class CloudTasksAsyncClient:
             from google.cloud import tasks_v2
             from google.iam.v1 import iam_policy_pb2  # type: ignore
 
-            def sample_test_iam_permissions():
+            async def sample_test_iam_permissions():
                 # Create a client
-                client = tasks_v2.CloudTasksClient()
+                client = tasks_v2.CloudTasksAsyncClient()
 
                 # Initialize request argument(s)
                 request = iam_policy_pb2.TestIamPermissionsRequest(
@@ -1510,7 +1510,7 @@ class CloudTasksAsyncClient:
                 )
 
                 # Make the request
-                response = client.test_iam_permissions(request=request)
+                response = await client.test_iam_permissions(request=request)
 
                 # Handle the response
                 print(response)
@@ -1626,9 +1626,9 @@ class CloudTasksAsyncClient:
 
             from google.cloud import tasks_v2
 
-            def sample_list_tasks():
+            async def sample_list_tasks():
                 # Create a client
-                client = tasks_v2.CloudTasksClient()
+                client = tasks_v2.CloudTasksAsyncClient()
 
                 # Initialize request argument(s)
                 request = tasks_v2.ListTasksRequest(
@@ -1639,7 +1639,7 @@ class CloudTasksAsyncClient:
                 page_result = client.list_tasks(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -1745,9 +1745,9 @@ class CloudTasksAsyncClient:
 
             from google.cloud import tasks_v2
 
-            def sample_get_task():
+            async def sample_get_task():
                 # Create a client
-                client = tasks_v2.CloudTasksClient()
+                client = tasks_v2.CloudTasksAsyncClient()
 
                 # Initialize request argument(s)
                 request = tasks_v2.GetTaskRequest(
@@ -1755,7 +1755,7 @@ class CloudTasksAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_task(request=request)
+                response = await client.get_task(request=request)
 
                 # Handle the response
                 print(response)
@@ -1855,9 +1855,9 @@ class CloudTasksAsyncClient:
 
             from google.cloud import tasks_v2
 
-            def sample_create_task():
+            async def sample_create_task():
                 # Create a client
-                client = tasks_v2.CloudTasksClient()
+                client = tasks_v2.CloudTasksAsyncClient()
 
                 # Initialize request argument(s)
                 request = tasks_v2.CreateTaskRequest(
@@ -1865,7 +1865,7 @@ class CloudTasksAsyncClient:
                 )
 
                 # Make the request
-                response = client.create_task(request=request)
+                response = await client.create_task(request=request)
 
                 # Handle the response
                 print(response)
@@ -2001,9 +2001,9 @@ class CloudTasksAsyncClient:
 
             from google.cloud import tasks_v2
 
-            def sample_delete_task():
+            async def sample_delete_task():
                 # Create a client
-                client = tasks_v2.CloudTasksClient()
+                client = tasks_v2.CloudTasksAsyncClient()
 
                 # Initialize request argument(s)
                 request = tasks_v2.DeleteTaskRequest(
@@ -2011,7 +2011,7 @@ class CloudTasksAsyncClient:
                 )
 
                 # Make the request
-                client.delete_task(request=request)
+                await client.delete_task(request=request)
 
         Args:
             request (Union[google.cloud.tasks_v2.types.DeleteTaskRequest, dict]):
@@ -2121,9 +2121,9 @@ class CloudTasksAsyncClient:
 
             from google.cloud import tasks_v2
 
-            def sample_run_task():
+            async def sample_run_task():
                 # Create a client
-                client = tasks_v2.CloudTasksClient()
+                client = tasks_v2.CloudTasksAsyncClient()
 
                 # Initialize request argument(s)
                 request = tasks_v2.RunTaskRequest(
@@ -2131,7 +2131,7 @@ class CloudTasksAsyncClient:
                 )
 
                 # Make the request
-                response = client.run_task(request=request)
+                response = await client.run_task(request=request)
 
                 # Handle the response
                 print(response)
