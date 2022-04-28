@@ -757,7 +757,7 @@ def test_create_index_field_headers():
     # a field header. Set these to a non-empty value.
     request = firestore_admin.CreateIndexRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_index), "__call__") as call:
@@ -773,7 +773,7 @@ def test_create_index_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -787,7 +787,7 @@ async def test_create_index_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = firestore_admin.CreateIndexRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_index), "__call__") as call:
@@ -805,7 +805,7 @@ async def test_create_index_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -999,7 +999,7 @@ def test_list_indexes_field_headers():
     # a field header. Set these to a non-empty value.
     request = firestore_admin.ListIndexesRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_indexes), "__call__") as call:
@@ -1015,7 +1015,7 @@ def test_list_indexes_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -1029,7 +1029,7 @@ async def test_list_indexes_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = firestore_admin.ListIndexesRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_indexes), "__call__") as call:
@@ -1047,7 +1047,7 @@ async def test_list_indexes_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -1178,7 +1178,7 @@ def test_list_indexes_pager(transport_name: str = "grpc"):
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, index.Index) for i in results)
 
@@ -1427,7 +1427,7 @@ def test_get_index_field_headers():
     # a field header. Set these to a non-empty value.
     request = firestore_admin.GetIndexRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_index), "__call__") as call:
@@ -1443,7 +1443,7 @@ def test_get_index_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1457,7 +1457,7 @@ async def test_get_index_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = firestore_admin.GetIndexRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_index), "__call__") as call:
@@ -1473,7 +1473,7 @@ async def test_get_index_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1647,7 +1647,7 @@ def test_delete_index_field_headers():
     # a field header. Set these to a non-empty value.
     request = firestore_admin.DeleteIndexRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_index), "__call__") as call:
@@ -1663,7 +1663,7 @@ def test_delete_index_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1677,7 +1677,7 @@ async def test_delete_index_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = firestore_admin.DeleteIndexRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_index), "__call__") as call:
@@ -1693,7 +1693,7 @@ async def test_delete_index_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1875,7 +1875,7 @@ def test_get_field_field_headers():
     # a field header. Set these to a non-empty value.
     request = firestore_admin.GetFieldRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_field), "__call__") as call:
@@ -1891,7 +1891,7 @@ def test_get_field_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1905,7 +1905,7 @@ async def test_get_field_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = firestore_admin.GetFieldRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_field), "__call__") as call:
@@ -1921,7 +1921,7 @@ async def test_get_field_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2097,7 +2097,7 @@ def test_update_field_field_headers():
     # a field header. Set these to a non-empty value.
     request = firestore_admin.UpdateFieldRequest()
 
-    request.field.name = "field.name/value"
+    request.field.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_field), "__call__") as call:
@@ -2113,7 +2113,7 @@ def test_update_field_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "field.name=field.name/value",
+        "field.name=name_value",
     ) in kw["metadata"]
 
 
@@ -2127,7 +2127,7 @@ async def test_update_field_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = firestore_admin.UpdateFieldRequest()
 
-    request.field.name = "field.name/value"
+    request.field.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_field), "__call__") as call:
@@ -2145,7 +2145,7 @@ async def test_update_field_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "field.name=field.name/value",
+        "field.name=name_value",
     ) in kw["metadata"]
 
 
@@ -2329,7 +2329,7 @@ def test_list_fields_field_headers():
     # a field header. Set these to a non-empty value.
     request = firestore_admin.ListFieldsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_fields), "__call__") as call:
@@ -2345,7 +2345,7 @@ def test_list_fields_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -2359,7 +2359,7 @@ async def test_list_fields_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = firestore_admin.ListFieldsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_fields), "__call__") as call:
@@ -2377,7 +2377,7 @@ async def test_list_fields_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -2508,7 +2508,7 @@ def test_list_fields_pager(transport_name: str = "grpc"):
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, field.Field) for i in results)
 
@@ -2743,7 +2743,7 @@ def test_export_documents_field_headers():
     # a field header. Set these to a non-empty value.
     request = firestore_admin.ExportDocumentsRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.export_documents), "__call__") as call:
@@ -2759,7 +2759,7 @@ def test_export_documents_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2773,7 +2773,7 @@ async def test_export_documents_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = firestore_admin.ExportDocumentsRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.export_documents), "__call__") as call:
@@ -2791,7 +2791,7 @@ async def test_export_documents_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2969,7 +2969,7 @@ def test_import_documents_field_headers():
     # a field header. Set these to a non-empty value.
     request = firestore_admin.ImportDocumentsRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.import_documents), "__call__") as call:
@@ -2985,7 +2985,7 @@ def test_import_documents_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2999,7 +2999,7 @@ async def test_import_documents_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = firestore_admin.ImportDocumentsRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.import_documents), "__call__") as call:
@@ -3017,7 +3017,7 @@ async def test_import_documents_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -3217,7 +3217,7 @@ def test_get_database_field_headers():
     # a field header. Set these to a non-empty value.
     request = firestore_admin.GetDatabaseRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_database), "__call__") as call:
@@ -3233,7 +3233,7 @@ def test_get_database_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -3247,7 +3247,7 @@ async def test_get_database_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = firestore_admin.GetDatabaseRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_database), "__call__") as call:
@@ -3263,7 +3263,7 @@ async def test_get_database_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -3439,7 +3439,7 @@ def test_list_databases_field_headers():
     # a field header. Set these to a non-empty value.
     request = firestore_admin.ListDatabasesRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_databases), "__call__") as call:
@@ -3455,7 +3455,7 @@ def test_list_databases_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -3469,7 +3469,7 @@ async def test_list_databases_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = firestore_admin.ListDatabasesRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_databases), "__call__") as call:
@@ -3487,7 +3487,7 @@ async def test_list_databases_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -3665,7 +3665,7 @@ def test_update_database_field_headers():
     # a field header. Set these to a non-empty value.
     request = firestore_admin.UpdateDatabaseRequest()
 
-    request.database.name = "database.name/value"
+    request.database.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_database), "__call__") as call:
@@ -3681,7 +3681,7 @@ def test_update_database_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "database.name=database.name/value",
+        "database.name=name_value",
     ) in kw["metadata"]
 
 
@@ -3695,7 +3695,7 @@ async def test_update_database_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = firestore_admin.UpdateDatabaseRequest()
 
-    request.database.name = "database.name/value"
+    request.database.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_database), "__call__") as call:
@@ -3713,7 +3713,7 @@ async def test_update_database_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "database.name=database.name/value",
+        "database.name=name_value",
     ) in kw["metadata"]
 
 

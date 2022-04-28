@@ -234,9 +234,9 @@ class FirestoreAsyncClient:
 
             from google.cloud import firestore_v1
 
-            def sample_get_document():
+            async def sample_get_document():
                 # Create a client
-                client = firestore_v1.FirestoreClient()
+                client = firestore_v1.FirestoreAsyncClient()
 
                 # Initialize request argument(s)
                 request = firestore_v1.GetDocumentRequest(
@@ -245,7 +245,7 @@ class FirestoreAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_document(request=request)
+                response = await client.get_document(request=request)
 
                 # Handle the response
                 print(response)
@@ -320,9 +320,9 @@ class FirestoreAsyncClient:
 
             from google.cloud import firestore_v1
 
-            def sample_list_documents():
+            async def sample_list_documents():
                 # Create a client
-                client = firestore_v1.FirestoreClient()
+                client = firestore_v1.FirestoreAsyncClient()
 
                 # Initialize request argument(s)
                 request = firestore_v1.ListDocumentsRequest(
@@ -335,7 +335,7 @@ class FirestoreAsyncClient:
                 page_result = client.list_documents(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -383,7 +383,12 @@ class FirestoreAsyncClient:
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("parent", request.parent),
+                    ("collection_id", request.collection_id),
+                )
+            ),
         )
 
         # Send the request.
@@ -422,16 +427,16 @@ class FirestoreAsyncClient:
 
             from google.cloud import firestore_v1
 
-            def sample_update_document():
+            async def sample_update_document():
                 # Create a client
-                client = firestore_v1.FirestoreClient()
+                client = firestore_v1.FirestoreAsyncClient()
 
                 # Initialize request argument(s)
                 request = firestore_v1.UpdateDocumentRequest(
                 )
 
                 # Make the request
-                response = client.update_document(request=request)
+                response = await client.update_document(request=request)
 
                 # Handle the response
                 print(response)
@@ -545,9 +550,9 @@ class FirestoreAsyncClient:
 
             from google.cloud import firestore_v1
 
-            def sample_delete_document():
+            async def sample_delete_document():
                 # Create a client
-                client = firestore_v1.FirestoreClient()
+                client = firestore_v1.FirestoreAsyncClient()
 
                 # Initialize request argument(s)
                 request = firestore_v1.DeleteDocumentRequest(
@@ -555,7 +560,7 @@ class FirestoreAsyncClient:
                 )
 
                 # Make the request
-                client.delete_document(request=request)
+                await client.delete_document(request=request)
 
         Args:
             request (Union[google.cloud.firestore_v1.types.DeleteDocumentRequest, dict]):
@@ -642,9 +647,9 @@ class FirestoreAsyncClient:
 
             from google.cloud import firestore_v1
 
-            def sample_batch_get_documents():
+            async def sample_batch_get_documents():
                 # Create a client
-                client = firestore_v1.FirestoreClient()
+                client = firestore_v1.FirestoreAsyncClient()
 
                 # Initialize request argument(s)
                 request = firestore_v1.BatchGetDocumentsRequest(
@@ -653,10 +658,10 @@ class FirestoreAsyncClient:
                 )
 
                 # Make the request
-                stream = client.batch_get_documents(request=request)
+                stream = await client.batch_get_documents(request=request)
 
                 # Handle the response
-                for response in stream:
+                async for response in stream:
                     print(response)
 
         Args:
@@ -730,9 +735,9 @@ class FirestoreAsyncClient:
 
             from google.cloud import firestore_v1
 
-            def sample_begin_transaction():
+            async def sample_begin_transaction():
                 # Create a client
-                client = firestore_v1.FirestoreClient()
+                client = firestore_v1.FirestoreAsyncClient()
 
                 # Initialize request argument(s)
                 request = firestore_v1.BeginTransactionRequest(
@@ -740,7 +745,7 @@ class FirestoreAsyncClient:
                 )
 
                 # Make the request
-                response = client.begin_transaction(request=request)
+                response = await client.begin_transaction(request=request)
 
                 # Handle the response
                 print(response)
@@ -839,9 +844,9 @@ class FirestoreAsyncClient:
 
             from google.cloud import firestore_v1
 
-            def sample_commit():
+            async def sample_commit():
                 # Create a client
-                client = firestore_v1.FirestoreClient()
+                client = firestore_v1.FirestoreAsyncClient()
 
                 # Initialize request argument(s)
                 request = firestore_v1.CommitRequest(
@@ -849,7 +854,7 @@ class FirestoreAsyncClient:
                 )
 
                 # Make the request
-                response = client.commit(request=request)
+                response = await client.commit(request=request)
 
                 # Handle the response
                 print(response)
@@ -954,9 +959,9 @@ class FirestoreAsyncClient:
 
             from google.cloud import firestore_v1
 
-            def sample_rollback():
+            async def sample_rollback():
                 # Create a client
-                client = firestore_v1.FirestoreClient()
+                client = firestore_v1.FirestoreAsyncClient()
 
                 # Initialize request argument(s)
                 request = firestore_v1.RollbackRequest(
@@ -965,7 +970,7 @@ class FirestoreAsyncClient:
                 )
 
                 # Make the request
-                client.rollback(request=request)
+                await client.rollback(request=request)
 
         Args:
             request (Union[google.cloud.firestore_v1.types.RollbackRequest, dict]):
@@ -1058,9 +1063,9 @@ class FirestoreAsyncClient:
 
             from google.cloud import firestore_v1
 
-            def sample_run_query():
+            async def sample_run_query():
                 # Create a client
-                client = firestore_v1.FirestoreClient()
+                client = firestore_v1.FirestoreAsyncClient()
 
                 # Initialize request argument(s)
                 request = firestore_v1.RunQueryRequest(
@@ -1069,10 +1074,10 @@ class FirestoreAsyncClient:
                 )
 
                 # Make the request
-                stream = client.run_query(request=request)
+                stream = await client.run_query(request=request)
 
                 # Handle the response
-                for response in stream:
+                async for response in stream:
                     print(response)
 
         Args:
@@ -1149,9 +1154,9 @@ class FirestoreAsyncClient:
 
             from google.cloud import firestore_v1
 
-            def sample_partition_query():
+            async def sample_partition_query():
                 # Create a client
-                client = firestore_v1.FirestoreClient()
+                client = firestore_v1.FirestoreAsyncClient()
 
                 # Initialize request argument(s)
                 request = firestore_v1.PartitionQueryRequest(
@@ -1162,7 +1167,7 @@ class FirestoreAsyncClient:
                 page_result = client.partition_query(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -1248,9 +1253,9 @@ class FirestoreAsyncClient:
 
             from google.cloud import firestore_v1
 
-            def sample_write():
+            async def sample_write():
                 # Create a client
-                client = firestore_v1.FirestoreClient()
+                client = firestore_v1.FirestoreAsyncClient()
 
                 # Initialize request argument(s)
                 request = firestore_v1.WriteRequest(
@@ -1268,10 +1273,10 @@ class FirestoreAsyncClient:
                         yield request
 
                 # Make the request
-                stream = client.write(requests=request_generator())
+                stream = await client.write(requests=request_generator())
 
                 # Handle the response
-                for response in stream:
+                async for response in stream:
                     print(response)
 
         Args:
@@ -1338,9 +1343,9 @@ class FirestoreAsyncClient:
 
             from google.cloud import firestore_v1
 
-            def sample_listen():
+            async def sample_listen():
                 # Create a client
-                client = firestore_v1.FirestoreClient()
+                client = firestore_v1.FirestoreAsyncClient()
 
                 # Initialize request argument(s)
                 add_target = firestore_v1.Target()
@@ -1362,10 +1367,10 @@ class FirestoreAsyncClient:
                         yield request
 
                 # Make the request
-                stream = client.listen(requests=request_generator())
+                stream = await client.listen(requests=request_generator())
 
                 # Handle the response
-                for response in stream:
+                async for response in stream:
                     print(response)
 
         Args:
@@ -1435,9 +1440,9 @@ class FirestoreAsyncClient:
 
             from google.cloud import firestore_v1
 
-            def sample_list_collection_ids():
+            async def sample_list_collection_ids():
                 # Create a client
-                client = firestore_v1.FirestoreClient()
+                client = firestore_v1.FirestoreAsyncClient()
 
                 # Initialize request argument(s)
                 request = firestore_v1.ListCollectionIdsRequest(
@@ -1448,7 +1453,7 @@ class FirestoreAsyncClient:
                 page_result = client.list_collection_ids(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -1566,9 +1571,9 @@ class FirestoreAsyncClient:
 
             from google.cloud import firestore_v1
 
-            def sample_batch_write():
+            async def sample_batch_write():
                 # Create a client
-                client = firestore_v1.FirestoreClient()
+                client = firestore_v1.FirestoreAsyncClient()
 
                 # Initialize request argument(s)
                 request = firestore_v1.BatchWriteRequest(
@@ -1576,7 +1581,7 @@ class FirestoreAsyncClient:
                 )
 
                 # Make the request
-                response = client.batch_write(request=request)
+                response = await client.batch_write(request=request)
 
                 # Handle the response
                 print(response)
@@ -1650,9 +1655,9 @@ class FirestoreAsyncClient:
 
             from google.cloud import firestore_v1
 
-            def sample_create_document():
+            async def sample_create_document():
                 # Create a client
-                client = firestore_v1.FirestoreClient()
+                client = firestore_v1.FirestoreAsyncClient()
 
                 # Initialize request argument(s)
                 request = firestore_v1.CreateDocumentRequest(
@@ -1661,7 +1666,7 @@ class FirestoreAsyncClient:
                 )
 
                 # Make the request
-                response = client.create_document(request=request)
+                response = await client.create_document(request=request)
 
                 # Handle the response
                 print(response)
@@ -1706,7 +1711,12 @@ class FirestoreAsyncClient:
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("parent", request.parent),
+                    ("collection_id", request.collection_id),
+                )
+            ),
         )
 
         # Send the request.

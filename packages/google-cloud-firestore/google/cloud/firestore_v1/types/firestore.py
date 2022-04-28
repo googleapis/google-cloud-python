@@ -702,6 +702,9 @@ class RunQueryResponse(proto.Message):
     r"""The response for
     [Firestore.RunQuery][google.firestore.v1.Firestore.RunQuery].
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         transaction (bytes):
             The transaction that was started as part of this request.
@@ -725,6 +728,12 @@ class RunQueryResponse(proto.Message):
             The number of results that have been skipped
             due to an offset between the last response and
             the current response.
+        done (bool):
+            If present, Firestore has completely finished
+            the request and no more documents will be
+            returned.
+
+            This field is a member of `oneof`_ ``continuation_selector``.
     """
 
     transaction = proto.Field(
@@ -744,6 +753,11 @@ class RunQueryResponse(proto.Message):
     skipped_results = proto.Field(
         proto.INT32,
         number=4,
+    )
+    done = proto.Field(
+        proto.BOOL,
+        number=6,
+        oneof="continuation_selector",
     )
 
 

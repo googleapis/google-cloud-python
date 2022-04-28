@@ -272,9 +272,9 @@ class FirestoreAdminAsyncClient:
 
             from google.cloud import firestore_admin_v1
 
-            def sample_create_index():
+            async def sample_create_index():
                 # Create a client
-                client = firestore_admin_v1.FirestoreAdminClient()
+                client = firestore_admin_v1.FirestoreAdminAsyncClient()
 
                 # Initialize request argument(s)
                 request = firestore_admin_v1.CreateIndexRequest(
@@ -286,7 +286,7 @@ class FirestoreAdminAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -390,9 +390,9 @@ class FirestoreAdminAsyncClient:
 
             from google.cloud import firestore_admin_v1
 
-            def sample_list_indexes():
+            async def sample_list_indexes():
                 # Create a client
-                client = firestore_admin_v1.FirestoreAdminClient()
+                client = firestore_admin_v1.FirestoreAdminAsyncClient()
 
                 # Initialize request argument(s)
                 request = firestore_admin_v1.ListIndexesRequest(
@@ -403,7 +403,7 @@ class FirestoreAdminAsyncClient:
                 page_result = client.list_indexes(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -509,9 +509,9 @@ class FirestoreAdminAsyncClient:
 
             from google.cloud import firestore_admin_v1
 
-            def sample_get_index():
+            async def sample_get_index():
                 # Create a client
-                client = firestore_admin_v1.FirestoreAdminClient()
+                client = firestore_admin_v1.FirestoreAdminAsyncClient()
 
                 # Initialize request argument(s)
                 request = firestore_admin_v1.GetIndexRequest(
@@ -519,7 +519,7 @@ class FirestoreAdminAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_index(request=request)
+                response = await client.get_index(request=request)
 
                 # Handle the response
                 print(response)
@@ -616,9 +616,9 @@ class FirestoreAdminAsyncClient:
 
             from google.cloud import firestore_admin_v1
 
-            def sample_delete_index():
+            async def sample_delete_index():
                 # Create a client
-                client = firestore_admin_v1.FirestoreAdminClient()
+                client = firestore_admin_v1.FirestoreAdminAsyncClient()
 
                 # Initialize request argument(s)
                 request = firestore_admin_v1.DeleteIndexRequest(
@@ -626,7 +626,7 @@ class FirestoreAdminAsyncClient:
                 )
 
                 # Make the request
-                client.delete_index(request=request)
+                await client.delete_index(request=request)
 
         Args:
             request (Union[google.cloud.firestore_admin_v1.types.DeleteIndexRequest, dict]):
@@ -710,9 +710,9 @@ class FirestoreAdminAsyncClient:
 
             from google.cloud import firestore_admin_v1
 
-            def sample_get_field():
+            async def sample_get_field():
                 # Create a client
-                client = firestore_admin_v1.FirestoreAdminClient()
+                client = firestore_admin_v1.FirestoreAdminAsyncClient()
 
                 # Initialize request argument(s)
                 request = firestore_admin_v1.GetFieldRequest(
@@ -720,7 +720,7 @@ class FirestoreAdminAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_field(request=request)
+                response = await client.get_field(request=request)
 
                 # Handle the response
                 print(response)
@@ -834,9 +834,9 @@ class FirestoreAdminAsyncClient:
 
             from google.cloud import firestore_admin_v1
 
-            def sample_update_field():
+            async def sample_update_field():
                 # Create a client
-                client = firestore_admin_v1.FirestoreAdminClient()
+                client = firestore_admin_v1.FirestoreAdminAsyncClient()
 
                 # Initialize request argument(s)
                 field = firestore_admin_v1.Field()
@@ -851,7 +851,7 @@ class FirestoreAdminAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -959,9 +959,9 @@ class FirestoreAdminAsyncClient:
 
             from google.cloud import firestore_admin_v1
 
-            def sample_list_fields():
+            async def sample_list_fields():
                 # Create a client
-                client = firestore_admin_v1.FirestoreAdminClient()
+                client = firestore_admin_v1.FirestoreAdminAsyncClient()
 
                 # Initialize request argument(s)
                 request = firestore_admin_v1.ListFieldsRequest(
@@ -972,7 +972,7 @@ class FirestoreAdminAsyncClient:
                 page_result = client.list_fields(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -1091,9 +1091,9 @@ class FirestoreAdminAsyncClient:
 
             from google.cloud import firestore_admin_v1
 
-            def sample_export_documents():
+            async def sample_export_documents():
                 # Create a client
-                client = firestore_admin_v1.FirestoreAdminClient()
+                client = firestore_admin_v1.FirestoreAdminAsyncClient()
 
                 # Initialize request argument(s)
                 request = firestore_admin_v1.ExportDocumentsRequest(
@@ -1105,7 +1105,7 @@ class FirestoreAdminAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1209,9 +1209,9 @@ class FirestoreAdminAsyncClient:
 
             from google.cloud import firestore_admin_v1
 
-            def sample_import_documents():
+            async def sample_import_documents():
                 # Create a client
-                client = firestore_admin_v1.FirestoreAdminClient()
+                client = firestore_admin_v1.FirestoreAdminAsyncClient()
 
                 # Initialize request argument(s)
                 request = firestore_admin_v1.ImportDocumentsRequest(
@@ -1223,7 +1223,7 @@ class FirestoreAdminAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1329,9 +1329,9 @@ class FirestoreAdminAsyncClient:
 
             from google.cloud import firestore_admin_v1
 
-            def sample_get_database():
+            async def sample_get_database():
                 # Create a client
-                client = firestore_admin_v1.FirestoreAdminClient()
+                client = firestore_admin_v1.FirestoreAdminAsyncClient()
 
                 # Initialize request argument(s)
                 request = firestore_admin_v1.GetDatabaseRequest(
@@ -1339,7 +1339,7 @@ class FirestoreAdminAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_database(request=request)
+                response = await client.get_database(request=request)
 
                 # Handle the response
                 print(response)
@@ -1426,9 +1426,9 @@ class FirestoreAdminAsyncClient:
 
             from google.cloud import firestore_admin_v1
 
-            def sample_list_databases():
+            async def sample_list_databases():
                 # Create a client
-                client = firestore_admin_v1.FirestoreAdminClient()
+                client = firestore_admin_v1.FirestoreAdminAsyncClient()
 
                 # Initialize request argument(s)
                 request = firestore_admin_v1.ListDatabasesRequest(
@@ -1436,7 +1436,7 @@ class FirestoreAdminAsyncClient:
                 )
 
                 # Make the request
-                response = client.list_databases(request=request)
+                response = await client.list_databases(request=request)
 
                 # Handle the response
                 print(response)
@@ -1520,9 +1520,9 @@ class FirestoreAdminAsyncClient:
 
             from google.cloud import firestore_admin_v1
 
-            def sample_update_database():
+            async def sample_update_database():
                 # Create a client
-                client = firestore_admin_v1.FirestoreAdminClient()
+                client = firestore_admin_v1.FirestoreAdminAsyncClient()
 
                 # Initialize request argument(s)
                 request = firestore_admin_v1.UpdateDatabaseRequest(
@@ -1533,7 +1533,7 @@ class FirestoreAdminAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)

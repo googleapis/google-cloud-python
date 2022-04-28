@@ -568,7 +568,12 @@ class FirestoreClient(metaclass=FirestoreClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("parent", request.parent),
+                    ("collection_id", request.collection_id),
+                )
+            ),
         )
 
         # Send the request.
@@ -1751,7 +1756,12 @@ class FirestoreClient(metaclass=FirestoreClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("parent", request.parent),
+                    ("collection_id", request.collection_id),
+                )
+            ),
         )
 
         # Send the request.
