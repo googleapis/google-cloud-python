@@ -268,9 +268,9 @@ class ManagedIdentitiesServiceAsyncClient:
 
             from google.cloud import managedidentities_v1
 
-            def sample_create_microsoft_ad_domain():
+            async def sample_create_microsoft_ad_domain():
                 # Create a client
-                client = managedidentities_v1.ManagedIdentitiesServiceClient()
+                client = managedidentities_v1.ManagedIdentitiesServiceAsyncClient()
 
                 # Initialize request argument(s)
                 domain = managedidentities_v1.Domain()
@@ -289,7 +289,7 @@ class ManagedIdentitiesServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -417,9 +417,9 @@ class ManagedIdentitiesServiceAsyncClient:
 
             from google.cloud import managedidentities_v1
 
-            def sample_reset_admin_password():
+            async def sample_reset_admin_password():
                 # Create a client
-                client = managedidentities_v1.ManagedIdentitiesServiceClient()
+                client = managedidentities_v1.ManagedIdentitiesServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = managedidentities_v1.ResetAdminPasswordRequest(
@@ -427,7 +427,7 @@ class ManagedIdentitiesServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.reset_admin_password(request=request)
+                response = await client.reset_admin_password(request=request)
 
                 # Handle the response
                 print(response)
@@ -512,9 +512,9 @@ class ManagedIdentitiesServiceAsyncClient:
 
             from google.cloud import managedidentities_v1
 
-            def sample_list_domains():
+            async def sample_list_domains():
                 # Create a client
-                client = managedidentities_v1.ManagedIdentitiesServiceClient()
+                client = managedidentities_v1.ManagedIdentitiesServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = managedidentities_v1.ListDomainsRequest(
@@ -525,7 +525,7 @@ class ManagedIdentitiesServiceAsyncClient:
                 page_result = client.list_domains(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -620,9 +620,9 @@ class ManagedIdentitiesServiceAsyncClient:
 
             from google.cloud import managedidentities_v1
 
-            def sample_get_domain():
+            async def sample_get_domain():
                 # Create a client
-                client = managedidentities_v1.ManagedIdentitiesServiceClient()
+                client = managedidentities_v1.ManagedIdentitiesServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = managedidentities_v1.GetDomainRequest(
@@ -630,7 +630,7 @@ class ManagedIdentitiesServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_domain(request=request)
+                response = await client.get_domain(request=request)
 
                 # Handle the response
                 print(response)
@@ -716,9 +716,9 @@ class ManagedIdentitiesServiceAsyncClient:
 
             from google.cloud import managedidentities_v1
 
-            def sample_update_domain():
+            async def sample_update_domain():
                 # Create a client
-                client = managedidentities_v1.ManagedIdentitiesServiceClient()
+                client = managedidentities_v1.ManagedIdentitiesServiceAsyncClient()
 
                 # Initialize request argument(s)
                 domain = managedidentities_v1.Domain()
@@ -735,7 +735,7 @@ class ManagedIdentitiesServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -848,9 +848,9 @@ class ManagedIdentitiesServiceAsyncClient:
 
             from google.cloud import managedidentities_v1
 
-            def sample_delete_domain():
+            async def sample_delete_domain():
                 # Create a client
-                client = managedidentities_v1.ManagedIdentitiesServiceClient()
+                client = managedidentities_v1.ManagedIdentitiesServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = managedidentities_v1.DeleteDomainRequest(
@@ -862,7 +862,7 @@ class ManagedIdentitiesServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -969,9 +969,9 @@ class ManagedIdentitiesServiceAsyncClient:
 
             from google.cloud import managedidentities_v1
 
-            def sample_attach_trust():
+            async def sample_attach_trust():
                 # Create a client
-                client = managedidentities_v1.ManagedIdentitiesServiceClient()
+                client = managedidentities_v1.ManagedIdentitiesServiceAsyncClient()
 
                 # Initialize request argument(s)
                 trust = managedidentities_v1.Trust()
@@ -991,7 +991,7 @@ class ManagedIdentitiesServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1097,9 +1097,9 @@ class ManagedIdentitiesServiceAsyncClient:
 
             from google.cloud import managedidentities_v1
 
-            def sample_reconfigure_trust():
+            async def sample_reconfigure_trust():
                 # Create a client
-                client = managedidentities_v1.ManagedIdentitiesServiceClient()
+                client = managedidentities_v1.ManagedIdentitiesServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = managedidentities_v1.ReconfigureTrustRequest(
@@ -1113,7 +1113,7 @@ class ManagedIdentitiesServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1231,9 +1231,9 @@ class ManagedIdentitiesServiceAsyncClient:
 
             from google.cloud import managedidentities_v1
 
-            def sample_detach_trust():
+            async def sample_detach_trust():
                 # Create a client
-                client = managedidentities_v1.ManagedIdentitiesServiceClient()
+                client = managedidentities_v1.ManagedIdentitiesServiceAsyncClient()
 
                 # Initialize request argument(s)
                 trust = managedidentities_v1.Trust()
@@ -1253,7 +1253,7 @@ class ManagedIdentitiesServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1362,9 +1362,9 @@ class ManagedIdentitiesServiceAsyncClient:
 
             from google.cloud import managedidentities_v1
 
-            def sample_validate_trust():
+            async def sample_validate_trust():
                 # Create a client
-                client = managedidentities_v1.ManagedIdentitiesServiceClient()
+                client = managedidentities_v1.ManagedIdentitiesServiceAsyncClient()
 
                 # Initialize request argument(s)
                 trust = managedidentities_v1.Trust()
@@ -1384,7 +1384,7 @@ class ManagedIdentitiesServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
