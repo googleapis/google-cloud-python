@@ -1,5 +1,13 @@
 # Changelog
 
+### [1.4.1](https://github.com/googleapis/python-documentai/compare/v1.4.0...v1.4.1) (2022-04-28)
+
+
+### Bug Fixes
+
+* mark Document.Entity.type as REQUIRED in all versions ([#317](https://github.com/googleapis/python-documentai/issues/317)) ([2d82c64](https://github.com/googleapis/python-documentai/commit/2d82c64b5034bb6315031c31a11198a6f3b7f393))
+* remove Document.Entity.bounding_poly_for_demo_frontend from v1beta2 ([2d82c64](https://github.com/googleapis/python-documentai/commit/2d82c64b5034bb6315031c31a11198a6f3b7f393))
+
 ## [1.4.0](https://github.com/googleapis/python-documentai/compare/v1.3.0...v1.4.0) (2022-03-19)
 
 
