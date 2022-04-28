@@ -256,9 +256,9 @@ class ProductSearchAsyncClient:
 
             from google.cloud import vision_v1p3beta1
 
-            def sample_create_product_set():
+            async def sample_create_product_set():
                 # Create a client
-                client = vision_v1p3beta1.ProductSearchClient()
+                client = vision_v1p3beta1.ProductSearchAsyncClient()
 
                 # Initialize request argument(s)
                 request = vision_v1p3beta1.CreateProductSetRequest(
@@ -266,7 +266,7 @@ class ProductSearchAsyncClient:
                 )
 
                 # Make the request
-                response = client.create_product_set(request=request)
+                response = await client.create_product_set(request=request)
 
                 # Handle the response
                 print(response)
@@ -387,9 +387,9 @@ class ProductSearchAsyncClient:
 
             from google.cloud import vision_v1p3beta1
 
-            def sample_list_product_sets():
+            async def sample_list_product_sets():
                 # Create a client
-                client = vision_v1p3beta1.ProductSearchClient()
+                client = vision_v1p3beta1.ProductSearchAsyncClient()
 
                 # Initialize request argument(s)
                 request = vision_v1p3beta1.ListProductSetsRequest(
@@ -400,7 +400,7 @@ class ProductSearchAsyncClient:
                 page_result = client.list_product_sets(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -510,9 +510,9 @@ class ProductSearchAsyncClient:
 
             from google.cloud import vision_v1p3beta1
 
-            def sample_get_product_set():
+            async def sample_get_product_set():
                 # Create a client
-                client = vision_v1p3beta1.ProductSearchClient()
+                client = vision_v1p3beta1.ProductSearchAsyncClient()
 
                 # Initialize request argument(s)
                 request = vision_v1p3beta1.GetProductSetRequest(
@@ -520,7 +520,7 @@ class ProductSearchAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_product_set(request=request)
+                response = await client.get_product_set(request=request)
 
                 # Handle the response
                 print(response)
@@ -629,16 +629,16 @@ class ProductSearchAsyncClient:
 
             from google.cloud import vision_v1p3beta1
 
-            def sample_update_product_set():
+            async def sample_update_product_set():
                 # Create a client
-                client = vision_v1p3beta1.ProductSearchClient()
+                client = vision_v1p3beta1.ProductSearchAsyncClient()
 
                 # Initialize request argument(s)
                 request = vision_v1p3beta1.UpdateProductSetRequest(
                 )
 
                 # Make the request
-                response = client.update_product_set(request=request)
+                response = await client.update_product_set(request=request)
 
                 # Handle the response
                 print(response)
@@ -754,9 +754,9 @@ class ProductSearchAsyncClient:
 
             from google.cloud import vision_v1p3beta1
 
-            def sample_delete_product_set():
+            async def sample_delete_product_set():
                 # Create a client
-                client = vision_v1p3beta1.ProductSearchClient()
+                client = vision_v1p3beta1.ProductSearchAsyncClient()
 
                 # Initialize request argument(s)
                 request = vision_v1p3beta1.DeleteProductSetRequest(
@@ -764,7 +764,7 @@ class ProductSearchAsyncClient:
                 )
 
                 # Make the request
-                client.delete_product_set(request=request)
+                await client.delete_product_set(request=request)
 
         Args:
             request (Union[google.cloud.vision_v1p3beta1.types.DeleteProductSetRequest, dict]):
@@ -860,9 +860,9 @@ class ProductSearchAsyncClient:
 
             from google.cloud import vision_v1p3beta1
 
-            def sample_create_product():
+            async def sample_create_product():
                 # Create a client
-                client = vision_v1p3beta1.ProductSearchClient()
+                client = vision_v1p3beta1.ProductSearchAsyncClient()
 
                 # Initialize request argument(s)
                 request = vision_v1p3beta1.CreateProductRequest(
@@ -870,7 +870,7 @@ class ProductSearchAsyncClient:
                 )
 
                 # Make the request
-                response = client.create_product(request=request)
+                response = await client.create_product(request=request)
 
                 # Handle the response
                 print(response)
@@ -986,9 +986,9 @@ class ProductSearchAsyncClient:
 
             from google.cloud import vision_v1p3beta1
 
-            def sample_list_products():
+            async def sample_list_products():
                 # Create a client
-                client = vision_v1p3beta1.ProductSearchClient()
+                client = vision_v1p3beta1.ProductSearchAsyncClient()
 
                 # Initialize request argument(s)
                 request = vision_v1p3beta1.ListProductsRequest(
@@ -999,7 +999,7 @@ class ProductSearchAsyncClient:
                 page_result = client.list_products(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -1109,9 +1109,9 @@ class ProductSearchAsyncClient:
 
             from google.cloud import vision_v1p3beta1
 
-            def sample_get_product():
+            async def sample_get_product():
                 # Create a client
-                client = vision_v1p3beta1.ProductSearchClient()
+                client = vision_v1p3beta1.ProductSearchAsyncClient()
 
                 # Initialize request argument(s)
                 request = vision_v1p3beta1.GetProductRequest(
@@ -1119,7 +1119,7 @@ class ProductSearchAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_product(request=request)
+                response = await client.get_product(request=request)
 
                 # Handle the response
                 print(response)
@@ -1230,16 +1230,16 @@ class ProductSearchAsyncClient:
 
             from google.cloud import vision_v1p3beta1
 
-            def sample_update_product():
+            async def sample_update_product():
                 # Create a client
-                client = vision_v1p3beta1.ProductSearchClient()
+                client = vision_v1p3beta1.ProductSearchAsyncClient()
 
                 # Initialize request argument(s)
                 request = vision_v1p3beta1.UpdateProductRequest(
                 )
 
                 # Make the request
-                response = client.update_product(request=request)
+                response = await client.update_product(request=request)
 
                 # Handle the response
                 print(response)
@@ -1352,9 +1352,9 @@ class ProductSearchAsyncClient:
 
             from google.cloud import vision_v1p3beta1
 
-            def sample_delete_product():
+            async def sample_delete_product():
                 # Create a client
-                client = vision_v1p3beta1.ProductSearchClient()
+                client = vision_v1p3beta1.ProductSearchAsyncClient()
 
                 # Initialize request argument(s)
                 request = vision_v1p3beta1.DeleteProductRequest(
@@ -1362,7 +1362,7 @@ class ProductSearchAsyncClient:
                 )
 
                 # Make the request
-                client.delete_product(request=request)
+                await client.delete_product(request=request)
 
         Args:
             request (Union[google.cloud.vision_v1p3beta1.types.DeleteProductRequest, dict]):
@@ -1470,9 +1470,9 @@ class ProductSearchAsyncClient:
 
             from google.cloud import vision_v1p3beta1
 
-            def sample_create_reference_image():
+            async def sample_create_reference_image():
                 # Create a client
-                client = vision_v1p3beta1.ProductSearchClient()
+                client = vision_v1p3beta1.ProductSearchAsyncClient()
 
                 # Initialize request argument(s)
                 reference_image = vision_v1p3beta1.ReferenceImage()
@@ -1484,7 +1484,7 @@ class ProductSearchAsyncClient:
                 )
 
                 # Make the request
-                response = client.create_reference_image(request=request)
+                response = await client.create_reference_image(request=request)
 
                 # Handle the response
                 print(response)
@@ -1612,9 +1612,9 @@ class ProductSearchAsyncClient:
 
             from google.cloud import vision_v1p3beta1
 
-            def sample_delete_reference_image():
+            async def sample_delete_reference_image():
                 # Create a client
-                client = vision_v1p3beta1.ProductSearchClient()
+                client = vision_v1p3beta1.ProductSearchAsyncClient()
 
                 # Initialize request argument(s)
                 request = vision_v1p3beta1.DeleteReferenceImageRequest(
@@ -1622,7 +1622,7 @@ class ProductSearchAsyncClient:
                 )
 
                 # Make the request
-                client.delete_reference_image(request=request)
+                await client.delete_reference_image(request=request)
 
         Args:
             request (Union[google.cloud.vision_v1p3beta1.types.DeleteReferenceImageRequest, dict]):
@@ -1715,9 +1715,9 @@ class ProductSearchAsyncClient:
 
             from google.cloud import vision_v1p3beta1
 
-            def sample_list_reference_images():
+            async def sample_list_reference_images():
                 # Create a client
-                client = vision_v1p3beta1.ProductSearchClient()
+                client = vision_v1p3beta1.ProductSearchAsyncClient()
 
                 # Initialize request argument(s)
                 request = vision_v1p3beta1.ListReferenceImagesRequest(
@@ -1728,7 +1728,7 @@ class ProductSearchAsyncClient:
                 page_result = client.list_reference_images(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -1839,9 +1839,9 @@ class ProductSearchAsyncClient:
 
             from google.cloud import vision_v1p3beta1
 
-            def sample_get_reference_image():
+            async def sample_get_reference_image():
                 # Create a client
-                client = vision_v1p3beta1.ProductSearchClient()
+                client = vision_v1p3beta1.ProductSearchAsyncClient()
 
                 # Initialize request argument(s)
                 request = vision_v1p3beta1.GetReferenceImageRequest(
@@ -1849,7 +1849,7 @@ class ProductSearchAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_reference_image(request=request)
+                response = await client.get_reference_image(request=request)
 
                 # Handle the response
                 print(response)
@@ -1959,9 +1959,9 @@ class ProductSearchAsyncClient:
 
             from google.cloud import vision_v1p3beta1
 
-            def sample_add_product_to_product_set():
+            async def sample_add_product_to_product_set():
                 # Create a client
-                client = vision_v1p3beta1.ProductSearchClient()
+                client = vision_v1p3beta1.ProductSearchAsyncClient()
 
                 # Initialize request argument(s)
                 request = vision_v1p3beta1.AddProductToProductSetRequest(
@@ -1970,7 +1970,7 @@ class ProductSearchAsyncClient:
                 )
 
                 # Make the request
-                client.add_product_to_product_set(request=request)
+                await client.add_product_to_product_set(request=request)
 
         Args:
             request (Union[google.cloud.vision_v1p3beta1.types.AddProductToProductSetRequest, dict]):
@@ -2073,9 +2073,9 @@ class ProductSearchAsyncClient:
 
             from google.cloud import vision_v1p3beta1
 
-            def sample_remove_product_from_product_set():
+            async def sample_remove_product_from_product_set():
                 # Create a client
-                client = vision_v1p3beta1.ProductSearchClient()
+                client = vision_v1p3beta1.ProductSearchAsyncClient()
 
                 # Initialize request argument(s)
                 request = vision_v1p3beta1.RemoveProductFromProductSetRequest(
@@ -2084,7 +2084,7 @@ class ProductSearchAsyncClient:
                 )
 
                 # Make the request
-                client.remove_product_from_product_set(request=request)
+                await client.remove_product_from_product_set(request=request)
 
         Args:
             request (Union[google.cloud.vision_v1p3beta1.types.RemoveProductFromProductSetRequest, dict]):
@@ -2188,9 +2188,9 @@ class ProductSearchAsyncClient:
 
             from google.cloud import vision_v1p3beta1
 
-            def sample_list_products_in_product_set():
+            async def sample_list_products_in_product_set():
                 # Create a client
-                client = vision_v1p3beta1.ProductSearchClient()
+                client = vision_v1p3beta1.ProductSearchAsyncClient()
 
                 # Initialize request argument(s)
                 request = vision_v1p3beta1.ListProductsInProductSetRequest(
@@ -2201,7 +2201,7 @@ class ProductSearchAsyncClient:
                 page_result = client.list_products_in_product_set(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -2321,9 +2321,9 @@ class ProductSearchAsyncClient:
 
             from google.cloud import vision_v1p3beta1
 
-            def sample_import_product_sets():
+            async def sample_import_product_sets():
                 # Create a client
-                client = vision_v1p3beta1.ProductSearchClient()
+                client = vision_v1p3beta1.ProductSearchAsyncClient()
 
                 # Initialize request argument(s)
                 request = vision_v1p3beta1.ImportProductSetsRequest(
@@ -2335,7 +2335,7 @@ class ProductSearchAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)

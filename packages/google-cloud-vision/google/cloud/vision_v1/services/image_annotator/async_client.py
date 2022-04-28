@@ -225,16 +225,16 @@ class ImageAnnotatorAsyncClient:
 
             from google.cloud import vision_v1
 
-            def sample_batch_annotate_images():
+            async def sample_batch_annotate_images():
                 # Create a client
-                client = vision_v1.ImageAnnotatorClient()
+                client = vision_v1.ImageAnnotatorAsyncClient()
 
                 # Initialize request argument(s)
                 request = vision_v1.BatchAnnotateImagesRequest(
                 )
 
                 # Make the request
-                response = client.batch_annotate_images(request=request)
+                response = await client.batch_annotate_images(request=request)
 
                 # Handle the response
                 print(response)
@@ -330,16 +330,16 @@ class ImageAnnotatorAsyncClient:
 
             from google.cloud import vision_v1
 
-            def sample_batch_annotate_files():
+            async def sample_batch_annotate_files():
                 # Create a client
-                client = vision_v1.ImageAnnotatorClient()
+                client = vision_v1.ImageAnnotatorAsyncClient()
 
                 # Initialize request argument(s)
                 request = vision_v1.BatchAnnotateFilesRequest(
                 )
 
                 # Make the request
-                response = client.batch_annotate_files(request=request)
+                response = await client.batch_annotate_files(request=request)
 
                 # Handle the response
                 print(response)
@@ -440,9 +440,9 @@ class ImageAnnotatorAsyncClient:
 
             from google.cloud import vision_v1
 
-            def sample_async_batch_annotate_images():
+            async def sample_async_batch_annotate_images():
                 # Create a client
-                client = vision_v1.ImageAnnotatorClient()
+                client = vision_v1.ImageAnnotatorAsyncClient()
 
                 # Initialize request argument(s)
                 request = vision_v1.AsyncBatchAnnotateImagesRequest(
@@ -453,7 +453,7 @@ class ImageAnnotatorAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -568,9 +568,9 @@ class ImageAnnotatorAsyncClient:
 
             from google.cloud import vision_v1
 
-            def sample_async_batch_annotate_files():
+            async def sample_async_batch_annotate_files():
                 # Create a client
-                client = vision_v1.ImageAnnotatorClient()
+                client = vision_v1.ImageAnnotatorAsyncClient()
 
                 # Initialize request argument(s)
                 request = vision_v1.AsyncBatchAnnotateFilesRequest(
@@ -581,7 +581,7 @@ class ImageAnnotatorAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
