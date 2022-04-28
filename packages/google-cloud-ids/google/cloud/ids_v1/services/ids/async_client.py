@@ -213,9 +213,9 @@ class IDSAsyncClient:
 
             from google.cloud import ids_v1
 
-            def sample_list_endpoints():
+            async def sample_list_endpoints():
                 # Create a client
-                client = ids_v1.IDSClient()
+                client = ids_v1.IDSAsyncClient()
 
                 # Initialize request argument(s)
                 request = ids_v1.ListEndpointsRequest(
@@ -226,7 +226,7 @@ class IDSAsyncClient:
                 page_result = client.list_endpoints(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -327,9 +327,9 @@ class IDSAsyncClient:
 
             from google.cloud import ids_v1
 
-            def sample_get_endpoint():
+            async def sample_get_endpoint():
                 # Create a client
-                client = ids_v1.IDSClient()
+                client = ids_v1.IDSAsyncClient()
 
                 # Initialize request argument(s)
                 request = ids_v1.GetEndpointRequest(
@@ -337,7 +337,7 @@ class IDSAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_endpoint(request=request)
+                response = await client.get_endpoint(request=request)
 
                 # Handle the response
                 print(response)
@@ -435,9 +435,9 @@ class IDSAsyncClient:
 
             from google.cloud import ids_v1
 
-            def sample_create_endpoint():
+            async def sample_create_endpoint():
                 # Create a client
-                client = ids_v1.IDSClient()
+                client = ids_v1.IDSAsyncClient()
 
                 # Initialize request argument(s)
                 endpoint = ids_v1.Endpoint()
@@ -455,7 +455,7 @@ class IDSAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -567,9 +567,9 @@ class IDSAsyncClient:
 
             from google.cloud import ids_v1
 
-            def sample_delete_endpoint():
+            async def sample_delete_endpoint():
                 # Create a client
-                client = ids_v1.IDSClient()
+                client = ids_v1.IDSAsyncClient()
 
                 # Initialize request argument(s)
                 request = ids_v1.DeleteEndpointRequest(
@@ -581,7 +581,7 @@ class IDSAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
