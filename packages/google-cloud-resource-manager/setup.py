@@ -61,7 +61,7 @@ setuptools.setup(
     author_email="googleapis-packages@google.com",
     license="Apache 2.0",
     url=url,
-    packages=setuptools.PEP420PackageFinder.find(),
+    packages=packages,
     namespace_packages=("google", "google.cloud"),
     platforms="Posix; MacOS X; Windows",
     include_package_data=True,
