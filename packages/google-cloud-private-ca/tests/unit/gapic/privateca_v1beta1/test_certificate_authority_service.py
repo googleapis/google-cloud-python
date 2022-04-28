@@ -802,7 +802,7 @@ def test_create_certificate_field_headers():
     # a field header. Set these to a non-empty value.
     request = service.CreateCertificateRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -820,7 +820,7 @@ def test_create_certificate_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -834,7 +834,7 @@ async def test_create_certificate_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = service.CreateCertificateRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -854,7 +854,7 @@ async def test_create_certificate_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -1071,7 +1071,7 @@ def test_get_certificate_field_headers():
     # a field header. Set these to a non-empty value.
     request = service.GetCertificateRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_certificate), "__call__") as call:
@@ -1087,7 +1087,7 @@ def test_get_certificate_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1101,7 +1101,7 @@ async def test_get_certificate_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = service.GetCertificateRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_certificate), "__call__") as call:
@@ -1119,7 +1119,7 @@ async def test_get_certificate_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1313,7 +1313,7 @@ def test_list_certificates_field_headers():
     # a field header. Set these to a non-empty value.
     request = service.ListCertificatesRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1331,7 +1331,7 @@ def test_list_certificates_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -1345,7 +1345,7 @@ async def test_list_certificates_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = service.ListCertificatesRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1365,7 +1365,7 @@ async def test_list_certificates_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -1502,7 +1502,7 @@ def test_list_certificates_pager(transport_name: str = "grpc"):
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, resources.Certificate) for i in results)
 
@@ -1764,7 +1764,7 @@ def test_revoke_certificate_field_headers():
     # a field header. Set these to a non-empty value.
     request = service.RevokeCertificateRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1782,7 +1782,7 @@ def test_revoke_certificate_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1796,7 +1796,7 @@ async def test_revoke_certificate_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = service.RevokeCertificateRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1816,7 +1816,7 @@ async def test_revoke_certificate_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2019,7 +2019,7 @@ def test_update_certificate_field_headers():
     # a field header. Set these to a non-empty value.
     request = service.UpdateCertificateRequest()
 
-    request.certificate.name = "certificate.name/value"
+    request.certificate.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2037,7 +2037,7 @@ def test_update_certificate_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "certificate.name=certificate.name/value",
+        "certificate.name=name_value",
     ) in kw["metadata"]
 
 
@@ -2051,7 +2051,7 @@ async def test_update_certificate_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = service.UpdateCertificateRequest()
 
-    request.certificate.name = "certificate.name/value"
+    request.certificate.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2071,7 +2071,7 @@ async def test_update_certificate_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "certificate.name=certificate.name/value",
+        "certificate.name=name_value",
     ) in kw["metadata"]
 
 
@@ -2270,7 +2270,7 @@ def test_activate_certificate_authority_field_headers():
     # a field header. Set these to a non-empty value.
     request = service.ActivateCertificateAuthorityRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2288,7 +2288,7 @@ def test_activate_certificate_authority_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2302,7 +2302,7 @@ async def test_activate_certificate_authority_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = service.ActivateCertificateAuthorityRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2322,7 +2322,7 @@ async def test_activate_certificate_authority_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2511,7 +2511,7 @@ def test_create_certificate_authority_field_headers():
     # a field header. Set these to a non-empty value.
     request = service.CreateCertificateAuthorityRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2529,7 +2529,7 @@ def test_create_certificate_authority_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -2543,7 +2543,7 @@ async def test_create_certificate_authority_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = service.CreateCertificateAuthorityRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2563,7 +2563,7 @@ async def test_create_certificate_authority_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -2772,7 +2772,7 @@ def test_disable_certificate_authority_field_headers():
     # a field header. Set these to a non-empty value.
     request = service.DisableCertificateAuthorityRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2790,7 +2790,7 @@ def test_disable_certificate_authority_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2804,7 +2804,7 @@ async def test_disable_certificate_authority_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = service.DisableCertificateAuthorityRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2824,7 +2824,7 @@ async def test_disable_certificate_authority_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -3013,7 +3013,7 @@ def test_enable_certificate_authority_field_headers():
     # a field header. Set these to a non-empty value.
     request = service.EnableCertificateAuthorityRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3031,7 +3031,7 @@ def test_enable_certificate_authority_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -3045,7 +3045,7 @@ async def test_enable_certificate_authority_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = service.EnableCertificateAuthorityRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3065,7 +3065,7 @@ async def test_enable_certificate_authority_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -3260,7 +3260,7 @@ def test_fetch_certificate_authority_csr_field_headers():
     # a field header. Set these to a non-empty value.
     request = service.FetchCertificateAuthorityCsrRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3278,7 +3278,7 @@ def test_fetch_certificate_authority_csr_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -3292,7 +3292,7 @@ async def test_fetch_certificate_authority_csr_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = service.FetchCertificateAuthorityCsrRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3312,7 +3312,7 @@ async def test_fetch_certificate_authority_csr_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -3526,7 +3526,7 @@ def test_get_certificate_authority_field_headers():
     # a field header. Set these to a non-empty value.
     request = service.GetCertificateAuthorityRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3544,7 +3544,7 @@ def test_get_certificate_authority_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -3558,7 +3558,7 @@ async def test_get_certificate_authority_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = service.GetCertificateAuthorityRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3578,7 +3578,7 @@ async def test_get_certificate_authority_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -3777,7 +3777,7 @@ def test_list_certificate_authorities_field_headers():
     # a field header. Set these to a non-empty value.
     request = service.ListCertificateAuthoritiesRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3795,7 +3795,7 @@ def test_list_certificate_authorities_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -3809,7 +3809,7 @@ async def test_list_certificate_authorities_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = service.ListCertificateAuthoritiesRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3829,7 +3829,7 @@ async def test_list_certificate_authorities_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -3966,7 +3966,7 @@ def test_list_certificate_authorities_pager(transport_name: str = "grpc"):
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, resources.CertificateAuthority) for i in results)
 
@@ -4214,7 +4214,7 @@ def test_restore_certificate_authority_field_headers():
     # a field header. Set these to a non-empty value.
     request = service.RestoreCertificateAuthorityRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4232,7 +4232,7 @@ def test_restore_certificate_authority_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -4246,7 +4246,7 @@ async def test_restore_certificate_authority_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = service.RestoreCertificateAuthorityRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4266,7 +4266,7 @@ async def test_restore_certificate_authority_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -4455,7 +4455,7 @@ def test_schedule_delete_certificate_authority_field_headers():
     # a field header. Set these to a non-empty value.
     request = service.ScheduleDeleteCertificateAuthorityRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4473,7 +4473,7 @@ def test_schedule_delete_certificate_authority_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -4487,7 +4487,7 @@ async def test_schedule_delete_certificate_authority_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = service.ScheduleDeleteCertificateAuthorityRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4507,7 +4507,7 @@ async def test_schedule_delete_certificate_authority_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -4696,7 +4696,7 @@ def test_update_certificate_authority_field_headers():
     # a field header. Set these to a non-empty value.
     request = service.UpdateCertificateAuthorityRequest()
 
-    request.certificate_authority.name = "certificate_authority.name/value"
+    request.certificate_authority.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4714,7 +4714,7 @@ def test_update_certificate_authority_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "certificate_authority.name=certificate_authority.name/value",
+        "certificate_authority.name=name_value",
     ) in kw["metadata"]
 
 
@@ -4728,7 +4728,7 @@ async def test_update_certificate_authority_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = service.UpdateCertificateAuthorityRequest()
 
-    request.certificate_authority.name = "certificate_authority.name/value"
+    request.certificate_authority.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4748,7 +4748,7 @@ async def test_update_certificate_authority_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "certificate_authority.name=certificate_authority.name/value",
+        "certificate_authority.name=name_value",
     ) in kw["metadata"]
 
 
@@ -4969,7 +4969,7 @@ def test_get_certificate_revocation_list_field_headers():
     # a field header. Set these to a non-empty value.
     request = service.GetCertificateRevocationListRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4987,7 +4987,7 @@ def test_get_certificate_revocation_list_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -5001,7 +5001,7 @@ async def test_get_certificate_revocation_list_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = service.GetCertificateRevocationListRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5021,7 +5021,7 @@ async def test_get_certificate_revocation_list_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -5220,7 +5220,7 @@ def test_list_certificate_revocation_lists_field_headers():
     # a field header. Set these to a non-empty value.
     request = service.ListCertificateRevocationListsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5238,7 +5238,7 @@ def test_list_certificate_revocation_lists_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -5252,7 +5252,7 @@ async def test_list_certificate_revocation_lists_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = service.ListCertificateRevocationListsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5272,7 +5272,7 @@ async def test_list_certificate_revocation_lists_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -5409,7 +5409,7 @@ def test_list_certificate_revocation_lists_pager(transport_name: str = "grpc"):
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, resources.CertificateRevocationList) for i in results)
 
@@ -5659,7 +5659,7 @@ def test_update_certificate_revocation_list_field_headers():
     # a field header. Set these to a non-empty value.
     request = service.UpdateCertificateRevocationListRequest()
 
-    request.certificate_revocation_list.name = "certificate_revocation_list.name/value"
+    request.certificate_revocation_list.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5677,7 +5677,7 @@ def test_update_certificate_revocation_list_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "certificate_revocation_list.name=certificate_revocation_list.name/value",
+        "certificate_revocation_list.name=name_value",
     ) in kw["metadata"]
 
 
@@ -5691,7 +5691,7 @@ async def test_update_certificate_revocation_list_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = service.UpdateCertificateRevocationListRequest()
 
-    request.certificate_revocation_list.name = "certificate_revocation_list.name/value"
+    request.certificate_revocation_list.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5711,7 +5711,7 @@ async def test_update_certificate_revocation_list_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "certificate_revocation_list.name=certificate_revocation_list.name/value",
+        "certificate_revocation_list.name=name_value",
     ) in kw["metadata"]
 
 
@@ -5927,7 +5927,7 @@ def test_get_reusable_config_field_headers():
     # a field header. Set these to a non-empty value.
     request = service.GetReusableConfigRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5945,7 +5945,7 @@ def test_get_reusable_config_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -5959,7 +5959,7 @@ async def test_get_reusable_config_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = service.GetReusableConfigRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5979,7 +5979,7 @@ async def test_get_reusable_config_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -6177,7 +6177,7 @@ def test_list_reusable_configs_field_headers():
     # a field header. Set these to a non-empty value.
     request = service.ListReusableConfigsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6195,7 +6195,7 @@ def test_list_reusable_configs_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -6209,7 +6209,7 @@ async def test_list_reusable_configs_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = service.ListReusableConfigsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6229,7 +6229,7 @@ async def test_list_reusable_configs_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -6366,7 +6366,7 @@ def test_list_reusable_configs_pager(transport_name: str = "grpc"):
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, resources.ReusableConfig) for i in results)
 
