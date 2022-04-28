@@ -766,7 +766,7 @@ def test_translate_text_field_headers():
     # a field header. Set these to a non-empty value.
     request = translation_service.TranslateTextRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.translate_text), "__call__") as call:
@@ -782,7 +782,7 @@ def test_translate_text_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -796,7 +796,7 @@ async def test_translate_text_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = translation_service.TranslateTextRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.translate_text), "__call__") as call:
@@ -814,7 +814,7 @@ async def test_translate_text_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -1043,7 +1043,7 @@ def test_detect_language_field_headers():
     # a field header. Set these to a non-empty value.
     request = translation_service.DetectLanguageRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.detect_language), "__call__") as call:
@@ -1059,7 +1059,7 @@ def test_detect_language_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -1073,7 +1073,7 @@ async def test_detect_language_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = translation_service.DetectLanguageRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.detect_language), "__call__") as call:
@@ -1091,7 +1091,7 @@ async def test_detect_language_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -1302,7 +1302,7 @@ def test_get_supported_languages_field_headers():
     # a field header. Set these to a non-empty value.
     request = translation_service.GetSupportedLanguagesRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1320,7 +1320,7 @@ def test_get_supported_languages_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -1334,7 +1334,7 @@ async def test_get_supported_languages_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = translation_service.GetSupportedLanguagesRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1354,7 +1354,7 @@ async def test_get_supported_languages_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -1569,7 +1569,7 @@ def test_translate_document_field_headers():
     # a field header. Set these to a non-empty value.
     request = translation_service.TranslateDocumentRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1587,7 +1587,7 @@ def test_translate_document_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -1601,7 +1601,7 @@ async def test_translate_document_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = translation_service.TranslateDocumentRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1621,7 +1621,7 @@ async def test_translate_document_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -1724,7 +1724,7 @@ def test_batch_translate_text_field_headers():
     # a field header. Set these to a non-empty value.
     request = translation_service.BatchTranslateTextRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1742,7 +1742,7 @@ def test_batch_translate_text_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -1756,7 +1756,7 @@ async def test_batch_translate_text_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = translation_service.BatchTranslateTextRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1776,7 +1776,7 @@ async def test_batch_translate_text_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -1879,7 +1879,7 @@ def test_batch_translate_document_field_headers():
     # a field header. Set these to a non-empty value.
     request = translation_service.BatchTranslateDocumentRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1897,7 +1897,7 @@ def test_batch_translate_document_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -1911,7 +1911,7 @@ async def test_batch_translate_document_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = translation_service.BatchTranslateDocumentRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1931,7 +1931,7 @@ async def test_batch_translate_document_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -2210,7 +2210,7 @@ def test_create_glossary_field_headers():
     # a field header. Set these to a non-empty value.
     request = translation_service.CreateGlossaryRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_glossary), "__call__") as call:
@@ -2226,7 +2226,7 @@ def test_create_glossary_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -2240,7 +2240,7 @@ async def test_create_glossary_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = translation_service.CreateGlossaryRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_glossary), "__call__") as call:
@@ -2258,7 +2258,7 @@ async def test_create_glossary_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -2453,7 +2453,7 @@ def test_list_glossaries_field_headers():
     # a field header. Set these to a non-empty value.
     request = translation_service.ListGlossariesRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_glossaries), "__call__") as call:
@@ -2469,7 +2469,7 @@ def test_list_glossaries_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -2483,7 +2483,7 @@ async def test_list_glossaries_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = translation_service.ListGlossariesRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_glossaries), "__call__") as call:
@@ -2501,7 +2501,7 @@ async def test_list_glossaries_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -2632,7 +2632,7 @@ def test_list_glossaries_pager(transport_name: str = "grpc"):
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, translation_service.Glossary) for i in results)
 
@@ -2880,7 +2880,7 @@ def test_get_glossary_field_headers():
     # a field header. Set these to a non-empty value.
     request = translation_service.GetGlossaryRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_glossary), "__call__") as call:
@@ -2896,7 +2896,7 @@ def test_get_glossary_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2910,7 +2910,7 @@ async def test_get_glossary_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = translation_service.GetGlossaryRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_glossary), "__call__") as call:
@@ -2928,7 +2928,7 @@ async def test_get_glossary_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -3107,7 +3107,7 @@ def test_delete_glossary_field_headers():
     # a field header. Set these to a non-empty value.
     request = translation_service.DeleteGlossaryRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_glossary), "__call__") as call:
@@ -3123,7 +3123,7 @@ def test_delete_glossary_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -3137,7 +3137,7 @@ async def test_delete_glossary_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = translation_service.DeleteGlossaryRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_glossary), "__call__") as call:
@@ -3155,7 +3155,7 @@ async def test_delete_glossary_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 

@@ -220,9 +220,9 @@ class TranslationServiceAsyncClient:
 
             from google.cloud import translate_v3beta1
 
-            def sample_translate_text():
+            async def sample_translate_text():
                 # Create a client
-                client = translate_v3beta1.TranslationServiceClient()
+                client = translate_v3beta1.TranslationServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = translate_v3beta1.TranslateTextRequest(
@@ -232,7 +232,7 @@ class TranslationServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.translate_text(request=request)
+                response = await client.translate_text(request=request)
 
                 # Handle the response
                 print(response)
@@ -296,9 +296,9 @@ class TranslationServiceAsyncClient:
 
             from google.cloud import translate_v3beta1
 
-            def sample_detect_language():
+            async def sample_detect_language():
                 # Create a client
-                client = translate_v3beta1.TranslationServiceClient()
+                client = translate_v3beta1.TranslationServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = translate_v3beta1.DetectLanguageRequest(
@@ -307,7 +307,7 @@ class TranslationServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.detect_language(request=request)
+                response = await client.detect_language(request=request)
 
                 # Handle the response
                 print(response)
@@ -435,9 +435,9 @@ class TranslationServiceAsyncClient:
 
             from google.cloud import translate_v3beta1
 
-            def sample_get_supported_languages():
+            async def sample_get_supported_languages():
                 # Create a client
-                client = translate_v3beta1.TranslationServiceClient()
+                client = translate_v3beta1.TranslationServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = translate_v3beta1.GetSupportedLanguagesRequest(
@@ -445,7 +445,7 @@ class TranslationServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_supported_languages(request=request)
+                response = await client.get_supported_languages(request=request)
 
                 # Handle the response
                 print(response)
@@ -584,9 +584,9 @@ class TranslationServiceAsyncClient:
 
             from google.cloud import translate_v3beta1
 
-            def sample_translate_document():
+            async def sample_translate_document():
                 # Create a client
-                client = translate_v3beta1.TranslationServiceClient()
+                client = translate_v3beta1.TranslationServiceAsyncClient()
 
                 # Initialize request argument(s)
                 document_input_config = translate_v3beta1.DocumentInputConfig()
@@ -599,7 +599,7 @@ class TranslationServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.translate_document(request=request)
+                response = await client.translate_document(request=request)
 
                 # Handle the response
                 print(response)
@@ -669,9 +669,9 @@ class TranslationServiceAsyncClient:
 
             from google.cloud import translate_v3beta1
 
-            def sample_batch_translate_text():
+            async def sample_batch_translate_text():
                 # Create a client
-                client = translate_v3beta1.TranslationServiceClient()
+                client = translate_v3beta1.TranslationServiceAsyncClient()
 
                 # Initialize request argument(s)
                 input_configs = translate_v3beta1.InputConfig()
@@ -693,7 +693,7 @@ class TranslationServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -780,9 +780,9 @@ class TranslationServiceAsyncClient:
 
             from google.cloud import translate_v3beta1
 
-            def sample_batch_translate_document():
+            async def sample_batch_translate_document():
                 # Create a client
-                client = translate_v3beta1.TranslationServiceClient()
+                client = translate_v3beta1.TranslationServiceAsyncClient()
 
                 # Initialize request argument(s)
                 input_configs = translate_v3beta1.BatchDocumentInputConfig()
@@ -804,7 +804,7 @@ class TranslationServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -968,9 +968,9 @@ class TranslationServiceAsyncClient:
 
             from google.cloud import translate_v3beta1
 
-            def sample_create_glossary():
+            async def sample_create_glossary():
                 # Create a client
-                client = translate_v3beta1.TranslationServiceClient()
+                client = translate_v3beta1.TranslationServiceAsyncClient()
 
                 # Initialize request argument(s)
                 glossary = translate_v3beta1.Glossary()
@@ -986,7 +986,7 @@ class TranslationServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1088,9 +1088,9 @@ class TranslationServiceAsyncClient:
 
             from google.cloud import translate_v3beta1
 
-            def sample_list_glossaries():
+            async def sample_list_glossaries():
                 # Create a client
-                client = translate_v3beta1.TranslationServiceClient()
+                client = translate_v3beta1.TranslationServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = translate_v3beta1.ListGlossariesRequest(
@@ -1101,7 +1101,7 @@ class TranslationServiceAsyncClient:
                 page_result = client.list_glossaries(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -1242,9 +1242,9 @@ class TranslationServiceAsyncClient:
 
             from google.cloud import translate_v3beta1
 
-            def sample_get_glossary():
+            async def sample_get_glossary():
                 # Create a client
-                client = translate_v3beta1.TranslationServiceClient()
+                client = translate_v3beta1.TranslationServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = translate_v3beta1.GetGlossaryRequest(
@@ -1252,7 +1252,7 @@ class TranslationServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_glossary(request=request)
+                response = await client.get_glossary(request=request)
 
                 # Handle the response
                 print(response)
@@ -1348,9 +1348,9 @@ class TranslationServiceAsyncClient:
 
             from google.cloud import translate_v3beta1
 
-            def sample_delete_glossary():
+            async def sample_delete_glossary():
                 # Create a client
-                client = translate_v3beta1.TranslationServiceClient()
+                client = translate_v3beta1.TranslationServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = translate_v3beta1.DeleteGlossaryRequest(
@@ -1362,7 +1362,7 @@ class TranslationServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
