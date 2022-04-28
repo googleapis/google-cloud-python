@@ -220,9 +220,9 @@ class AdaptationAsyncClient:
 
             from google.cloud import speech_v1p1beta1
 
-            def sample_create_phrase_set():
+            async def sample_create_phrase_set():
                 # Create a client
-                client = speech_v1p1beta1.AdaptationClient()
+                client = speech_v1p1beta1.AdaptationAsyncClient()
 
                 # Initialize request argument(s)
                 request = speech_v1p1beta1.CreatePhraseSetRequest(
@@ -231,7 +231,7 @@ class AdaptationAsyncClient:
                 )
 
                 # Make the request
-                response = client.create_phrase_set(request=request)
+                response = await client.create_phrase_set(request=request)
 
                 # Handle the response
                 print(response)
@@ -347,9 +347,9 @@ class AdaptationAsyncClient:
 
             from google.cloud import speech_v1p1beta1
 
-            def sample_get_phrase_set():
+            async def sample_get_phrase_set():
                 # Create a client
-                client = speech_v1p1beta1.AdaptationClient()
+                client = speech_v1p1beta1.AdaptationAsyncClient()
 
                 # Initialize request argument(s)
                 request = speech_v1p1beta1.GetPhraseSetRequest(
@@ -357,7 +357,7 @@ class AdaptationAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_phrase_set(request=request)
+                response = await client.get_phrase_set(request=request)
 
                 # Handle the response
                 print(response)
@@ -453,9 +453,9 @@ class AdaptationAsyncClient:
 
             from google.cloud import speech_v1p1beta1
 
-            def sample_list_phrase_set():
+            async def sample_list_phrase_set():
                 # Create a client
-                client = speech_v1p1beta1.AdaptationClient()
+                client = speech_v1p1beta1.AdaptationAsyncClient()
 
                 # Initialize request argument(s)
                 request = speech_v1p1beta1.ListPhraseSetRequest(
@@ -466,7 +466,7 @@ class AdaptationAsyncClient:
                 page_result = client.list_phrase_set(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -572,16 +572,16 @@ class AdaptationAsyncClient:
 
             from google.cloud import speech_v1p1beta1
 
-            def sample_update_phrase_set():
+            async def sample_update_phrase_set():
                 # Create a client
-                client = speech_v1p1beta1.AdaptationClient()
+                client = speech_v1p1beta1.AdaptationAsyncClient()
 
                 # Initialize request argument(s)
                 request = speech_v1p1beta1.UpdatePhraseSetRequest(
                 )
 
                 # Make the request
-                response = client.update_phrase_set(request=request)
+                response = await client.update_phrase_set(request=request)
 
                 # Handle the response
                 print(response)
@@ -688,9 +688,9 @@ class AdaptationAsyncClient:
 
             from google.cloud import speech_v1p1beta1
 
-            def sample_delete_phrase_set():
+            async def sample_delete_phrase_set():
                 # Create a client
-                client = speech_v1p1beta1.AdaptationClient()
+                client = speech_v1p1beta1.AdaptationAsyncClient()
 
                 # Initialize request argument(s)
                 request = speech_v1p1beta1.DeletePhraseSetRequest(
@@ -698,7 +698,7 @@ class AdaptationAsyncClient:
                 )
 
                 # Make the request
-                client.delete_phrase_set(request=request)
+                await client.delete_phrase_set(request=request)
 
         Args:
             request (Union[google.cloud.speech_v1p1beta1.types.DeletePhraseSetRequest, dict]):
@@ -774,9 +774,9 @@ class AdaptationAsyncClient:
 
             from google.cloud import speech_v1p1beta1
 
-            def sample_create_custom_class():
+            async def sample_create_custom_class():
                 # Create a client
-                client = speech_v1p1beta1.AdaptationClient()
+                client = speech_v1p1beta1.AdaptationAsyncClient()
 
                 # Initialize request argument(s)
                 request = speech_v1p1beta1.CreateCustomClassRequest(
@@ -785,7 +785,7 @@ class AdaptationAsyncClient:
                 )
 
                 # Make the request
-                response = client.create_custom_class(request=request)
+                response = await client.create_custom_class(request=request)
 
                 # Handle the response
                 print(response)
@@ -905,9 +905,9 @@ class AdaptationAsyncClient:
 
             from google.cloud import speech_v1p1beta1
 
-            def sample_get_custom_class():
+            async def sample_get_custom_class():
                 # Create a client
-                client = speech_v1p1beta1.AdaptationClient()
+                client = speech_v1p1beta1.AdaptationAsyncClient()
 
                 # Initialize request argument(s)
                 request = speech_v1p1beta1.GetCustomClassRequest(
@@ -915,7 +915,7 @@ class AdaptationAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_custom_class(request=request)
+                response = await client.get_custom_class(request=request)
 
                 # Handle the response
                 print(response)
@@ -1007,9 +1007,9 @@ class AdaptationAsyncClient:
 
             from google.cloud import speech_v1p1beta1
 
-            def sample_list_custom_classes():
+            async def sample_list_custom_classes():
                 # Create a client
-                client = speech_v1p1beta1.AdaptationClient()
+                client = speech_v1p1beta1.AdaptationAsyncClient()
 
                 # Initialize request argument(s)
                 request = speech_v1p1beta1.ListCustomClassesRequest(
@@ -1020,7 +1020,7 @@ class AdaptationAsyncClient:
                 page_result = client.list_custom_classes(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -1126,16 +1126,16 @@ class AdaptationAsyncClient:
 
             from google.cloud import speech_v1p1beta1
 
-            def sample_update_custom_class():
+            async def sample_update_custom_class():
                 # Create a client
-                client = speech_v1p1beta1.AdaptationClient()
+                client = speech_v1p1beta1.AdaptationAsyncClient()
 
                 # Initialize request argument(s)
                 request = speech_v1p1beta1.UpdateCustomClassRequest(
                 )
 
                 # Make the request
-                response = client.update_custom_class(request=request)
+                response = await client.update_custom_class(request=request)
 
                 # Handle the response
                 print(response)
@@ -1246,9 +1246,9 @@ class AdaptationAsyncClient:
 
             from google.cloud import speech_v1p1beta1
 
-            def sample_delete_custom_class():
+            async def sample_delete_custom_class():
                 # Create a client
-                client = speech_v1p1beta1.AdaptationClient()
+                client = speech_v1p1beta1.AdaptationAsyncClient()
 
                 # Initialize request argument(s)
                 request = speech_v1p1beta1.DeleteCustomClassRequest(
@@ -1256,7 +1256,7 @@ class AdaptationAsyncClient:
                 )
 
                 # Make the request
-                client.delete_custom_class(request=request)
+                await client.delete_custom_class(request=request)
 
         Args:
             request (Union[google.cloud.speech_v1p1beta1.types.DeleteCustomClassRequest, dict]):
