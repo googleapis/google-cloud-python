@@ -235,9 +235,9 @@ class MigrationServiceAsyncClient:
 
             from google.cloud import bigquery_migration_v2
 
-            def sample_create_migration_workflow():
+            async def sample_create_migration_workflow():
                 # Create a client
-                client = bigquery_migration_v2.MigrationServiceClient()
+                client = bigquery_migration_v2.MigrationServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = bigquery_migration_v2.CreateMigrationWorkflowRequest(
@@ -245,7 +245,7 @@ class MigrationServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.create_migration_workflow(request=request)
+                response = await client.create_migration_workflow(request=request)
 
                 # Handle the response
                 print(response)
@@ -341,9 +341,9 @@ class MigrationServiceAsyncClient:
 
             from google.cloud import bigquery_migration_v2
 
-            def sample_get_migration_workflow():
+            async def sample_get_migration_workflow():
                 # Create a client
-                client = bigquery_migration_v2.MigrationServiceClient()
+                client = bigquery_migration_v2.MigrationServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = bigquery_migration_v2.GetMigrationWorkflowRequest(
@@ -351,7 +351,7 @@ class MigrationServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_migration_workflow(request=request)
+                response = await client.get_migration_workflow(request=request)
 
                 # Handle the response
                 print(response)
@@ -447,9 +447,9 @@ class MigrationServiceAsyncClient:
 
             from google.cloud import bigquery_migration_v2
 
-            def sample_list_migration_workflows():
+            async def sample_list_migration_workflows():
                 # Create a client
-                client = bigquery_migration_v2.MigrationServiceClient()
+                client = bigquery_migration_v2.MigrationServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = bigquery_migration_v2.ListMigrationWorkflowsRequest(
@@ -460,7 +460,7 @@ class MigrationServiceAsyncClient:
                 page_result = client.list_migration_workflows(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -564,9 +564,9 @@ class MigrationServiceAsyncClient:
 
             from google.cloud import bigquery_migration_v2
 
-            def sample_delete_migration_workflow():
+            async def sample_delete_migration_workflow():
                 # Create a client
-                client = bigquery_migration_v2.MigrationServiceClient()
+                client = bigquery_migration_v2.MigrationServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = bigquery_migration_v2.DeleteMigrationWorkflowRequest(
@@ -574,7 +574,7 @@ class MigrationServiceAsyncClient:
                 )
 
                 # Make the request
-                client.delete_migration_workflow(request=request)
+                await client.delete_migration_workflow(request=request)
 
         Args:
             request (Union[google.cloud.bigquery_migration_v2.types.DeleteMigrationWorkflowRequest, dict]):
@@ -652,9 +652,9 @@ class MigrationServiceAsyncClient:
 
             from google.cloud import bigquery_migration_v2
 
-            def sample_start_migration_workflow():
+            async def sample_start_migration_workflow():
                 # Create a client
-                client = bigquery_migration_v2.MigrationServiceClient()
+                client = bigquery_migration_v2.MigrationServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = bigquery_migration_v2.StartMigrationWorkflowRequest(
@@ -662,7 +662,7 @@ class MigrationServiceAsyncClient:
                 )
 
                 # Make the request
-                client.start_migration_workflow(request=request)
+                await client.start_migration_workflow(request=request)
 
         Args:
             request (Union[google.cloud.bigquery_migration_v2.types.StartMigrationWorkflowRequest, dict]):
@@ -745,9 +745,9 @@ class MigrationServiceAsyncClient:
 
             from google.cloud import bigquery_migration_v2
 
-            def sample_get_migration_subtask():
+            async def sample_get_migration_subtask():
                 # Create a client
-                client = bigquery_migration_v2.MigrationServiceClient()
+                client = bigquery_migration_v2.MigrationServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = bigquery_migration_v2.GetMigrationSubtaskRequest(
@@ -755,7 +755,7 @@ class MigrationServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_migration_subtask(request=request)
+                response = await client.get_migration_subtask(request=request)
 
                 # Handle the response
                 print(response)
@@ -845,9 +845,9 @@ class MigrationServiceAsyncClient:
 
             from google.cloud import bigquery_migration_v2
 
-            def sample_list_migration_subtasks():
+            async def sample_list_migration_subtasks():
                 # Create a client
-                client = bigquery_migration_v2.MigrationServiceClient()
+                client = bigquery_migration_v2.MigrationServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = bigquery_migration_v2.ListMigrationSubtasksRequest(
@@ -858,7 +858,7 @@ class MigrationServiceAsyncClient:
                 page_result = client.list_migration_subtasks(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
