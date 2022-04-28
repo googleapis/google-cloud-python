@@ -248,9 +248,9 @@ class CloudRedisAsyncClient:
 
             from google.cloud import redis_v1
 
-            def sample_list_instances():
+            async def sample_list_instances():
                 # Create a client
-                client = redis_v1.CloudRedisClient()
+                client = redis_v1.CloudRedisAsyncClient()
 
                 # Initialize request argument(s)
                 request = redis_v1.ListInstancesRequest(
@@ -261,7 +261,7 @@ class CloudRedisAsyncClient:
                 page_result = client.list_instances(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -358,9 +358,9 @@ class CloudRedisAsyncClient:
 
             from google.cloud import redis_v1
 
-            def sample_get_instance():
+            async def sample_get_instance():
                 # Create a client
-                client = redis_v1.CloudRedisClient()
+                client = redis_v1.CloudRedisAsyncClient()
 
                 # Initialize request argument(s)
                 request = redis_v1.GetInstanceRequest(
@@ -368,7 +368,7 @@ class CloudRedisAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_instance(request=request)
+                response = await client.get_instance(request=request)
 
                 # Handle the response
                 print(response)
@@ -455,9 +455,9 @@ class CloudRedisAsyncClient:
 
             from google.cloud import redis_v1
 
-            def sample_get_instance_auth_string():
+            async def sample_get_instance_auth_string():
                 # Create a client
-                client = redis_v1.CloudRedisClient()
+                client = redis_v1.CloudRedisAsyncClient()
 
                 # Initialize request argument(s)
                 request = redis_v1.GetInstanceAuthStringRequest(
@@ -465,7 +465,7 @@ class CloudRedisAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_instance_auth_string(request=request)
+                response = await client.get_instance_auth_string(request=request)
 
                 # Handle the response
                 print(response)
@@ -564,9 +564,9 @@ class CloudRedisAsyncClient:
 
             from google.cloud import redis_v1
 
-            def sample_create_instance():
+            async def sample_create_instance():
                 # Create a client
-                client = redis_v1.CloudRedisClient()
+                client = redis_v1.CloudRedisAsyncClient()
 
                 # Initialize request argument(s)
                 instance = redis_v1.Instance()
@@ -585,7 +585,7 @@ class CloudRedisAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -712,9 +712,9 @@ class CloudRedisAsyncClient:
 
             from google.cloud import redis_v1
 
-            def sample_update_instance():
+            async def sample_update_instance():
                 # Create a client
-                client = redis_v1.CloudRedisClient()
+                client = redis_v1.CloudRedisAsyncClient()
 
                 # Initialize request argument(s)
                 instance = redis_v1.Instance()
@@ -731,7 +731,7 @@ class CloudRedisAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -848,9 +848,9 @@ class CloudRedisAsyncClient:
 
             from google.cloud import redis_v1
 
-            def sample_upgrade_instance():
+            async def sample_upgrade_instance():
                 # Create a client
-                client = redis_v1.CloudRedisClient()
+                client = redis_v1.CloudRedisAsyncClient()
 
                 # Initialize request argument(s)
                 request = redis_v1.UpgradeInstanceRequest(
@@ -863,7 +863,7 @@ class CloudRedisAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -978,9 +978,9 @@ class CloudRedisAsyncClient:
 
             from google.cloud import redis_v1
 
-            def sample_import_instance():
+            async def sample_import_instance():
                 # Create a client
-                client = redis_v1.CloudRedisClient()
+                client = redis_v1.CloudRedisAsyncClient()
 
                 # Initialize request argument(s)
                 input_config = redis_v1.InputConfig()
@@ -996,7 +996,7 @@ class CloudRedisAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1107,9 +1107,9 @@ class CloudRedisAsyncClient:
 
             from google.cloud import redis_v1
 
-            def sample_export_instance():
+            async def sample_export_instance():
                 # Create a client
-                client = redis_v1.CloudRedisClient()
+                client = redis_v1.CloudRedisAsyncClient()
 
                 # Initialize request argument(s)
                 output_config = redis_v1.OutputConfig()
@@ -1125,7 +1125,7 @@ class CloudRedisAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1234,9 +1234,9 @@ class CloudRedisAsyncClient:
 
             from google.cloud import redis_v1
 
-            def sample_failover_instance():
+            async def sample_failover_instance():
                 # Create a client
-                client = redis_v1.CloudRedisClient()
+                client = redis_v1.CloudRedisAsyncClient()
 
                 # Initialize request argument(s)
                 request = redis_v1.FailoverInstanceRequest(
@@ -1248,7 +1248,7 @@ class CloudRedisAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1356,9 +1356,9 @@ class CloudRedisAsyncClient:
 
             from google.cloud import redis_v1
 
-            def sample_delete_instance():
+            async def sample_delete_instance():
                 # Create a client
-                client = redis_v1.CloudRedisClient()
+                client = redis_v1.CloudRedisAsyncClient()
 
                 # Initialize request argument(s)
                 request = redis_v1.DeleteInstanceRequest(
@@ -1370,7 +1370,7 @@ class CloudRedisAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1480,9 +1480,9 @@ class CloudRedisAsyncClient:
 
             from google.cloud import redis_v1
 
-            def sample_reschedule_maintenance():
+            async def sample_reschedule_maintenance():
                 # Create a client
-                client = redis_v1.CloudRedisClient()
+                client = redis_v1.CloudRedisAsyncClient()
 
                 # Initialize request argument(s)
                 request = redis_v1.RescheduleMaintenanceRequest(
@@ -1495,7 +1495,7 @@ class CloudRedisAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)

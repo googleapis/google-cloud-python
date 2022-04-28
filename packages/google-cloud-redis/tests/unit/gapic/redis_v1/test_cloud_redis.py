@@ -737,7 +737,7 @@ def test_list_instances_field_headers():
     # a field header. Set these to a non-empty value.
     request = cloud_redis.ListInstancesRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_instances), "__call__") as call:
@@ -753,7 +753,7 @@ def test_list_instances_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -767,7 +767,7 @@ async def test_list_instances_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = cloud_redis.ListInstancesRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_instances), "__call__") as call:
@@ -785,7 +785,7 @@ async def test_list_instances_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -916,7 +916,7 @@ def test_list_instances_pager(transport_name: str = "grpc"):
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, cloud_redis.Instance) for i in results)
 
@@ -1257,7 +1257,7 @@ def test_get_instance_field_headers():
     # a field header. Set these to a non-empty value.
     request = cloud_redis.GetInstanceRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_instance), "__call__") as call:
@@ -1273,7 +1273,7 @@ def test_get_instance_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1287,7 +1287,7 @@ async def test_get_instance_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = cloud_redis.GetInstanceRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_instance), "__call__") as call:
@@ -1305,7 +1305,7 @@ async def test_get_instance_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1496,7 +1496,7 @@ def test_get_instance_auth_string_field_headers():
     # a field header. Set these to a non-empty value.
     request = cloud_redis.GetInstanceAuthStringRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1514,7 +1514,7 @@ def test_get_instance_auth_string_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1528,7 +1528,7 @@ async def test_get_instance_auth_string_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = cloud_redis.GetInstanceAuthStringRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1548,7 +1548,7 @@ async def test_get_instance_auth_string_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1730,7 +1730,7 @@ def test_create_instance_field_headers():
     # a field header. Set these to a non-empty value.
     request = cloud_redis.CreateInstanceRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_instance), "__call__") as call:
@@ -1746,7 +1746,7 @@ def test_create_instance_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -1760,7 +1760,7 @@ async def test_create_instance_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = cloud_redis.CreateInstanceRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_instance), "__call__") as call:
@@ -1778,7 +1778,7 @@ async def test_create_instance_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -1976,7 +1976,7 @@ def test_update_instance_field_headers():
     # a field header. Set these to a non-empty value.
     request = cloud_redis.UpdateInstanceRequest()
 
-    request.instance.name = "instance.name/value"
+    request.instance.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_instance), "__call__") as call:
@@ -1992,7 +1992,7 @@ def test_update_instance_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "instance.name=instance.name/value",
+        "instance.name=name_value",
     ) in kw["metadata"]
 
 
@@ -2006,7 +2006,7 @@ async def test_update_instance_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = cloud_redis.UpdateInstanceRequest()
 
-    request.instance.name = "instance.name/value"
+    request.instance.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_instance), "__call__") as call:
@@ -2024,7 +2024,7 @@ async def test_update_instance_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "instance.name=instance.name/value",
+        "instance.name=name_value",
     ) in kw["metadata"]
 
 
@@ -2212,7 +2212,7 @@ def test_upgrade_instance_field_headers():
     # a field header. Set these to a non-empty value.
     request = cloud_redis.UpgradeInstanceRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.upgrade_instance), "__call__") as call:
@@ -2228,7 +2228,7 @@ def test_upgrade_instance_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2242,7 +2242,7 @@ async def test_upgrade_instance_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = cloud_redis.UpgradeInstanceRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.upgrade_instance), "__call__") as call:
@@ -2260,7 +2260,7 @@ async def test_upgrade_instance_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2448,7 +2448,7 @@ def test_import_instance_field_headers():
     # a field header. Set these to a non-empty value.
     request = cloud_redis.ImportInstanceRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.import_instance), "__call__") as call:
@@ -2464,7 +2464,7 @@ def test_import_instance_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2478,7 +2478,7 @@ async def test_import_instance_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = cloud_redis.ImportInstanceRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.import_instance), "__call__") as call:
@@ -2496,7 +2496,7 @@ async def test_import_instance_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2696,7 +2696,7 @@ def test_export_instance_field_headers():
     # a field header. Set these to a non-empty value.
     request = cloud_redis.ExportInstanceRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.export_instance), "__call__") as call:
@@ -2712,7 +2712,7 @@ def test_export_instance_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2726,7 +2726,7 @@ async def test_export_instance_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = cloud_redis.ExportInstanceRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.export_instance), "__call__") as call:
@@ -2744,7 +2744,7 @@ async def test_export_instance_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2950,7 +2950,7 @@ def test_failover_instance_field_headers():
     # a field header. Set these to a non-empty value.
     request = cloud_redis.FailoverInstanceRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2968,7 +2968,7 @@ def test_failover_instance_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2982,7 +2982,7 @@ async def test_failover_instance_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = cloud_redis.FailoverInstanceRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3002,7 +3002,7 @@ async def test_failover_instance_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -3198,7 +3198,7 @@ def test_delete_instance_field_headers():
     # a field header. Set these to a non-empty value.
     request = cloud_redis.DeleteInstanceRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_instance), "__call__") as call:
@@ -3214,7 +3214,7 @@ def test_delete_instance_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -3228,7 +3228,7 @@ async def test_delete_instance_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = cloud_redis.DeleteInstanceRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_instance), "__call__") as call:
@@ -3246,7 +3246,7 @@ async def test_delete_instance_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -3431,7 +3431,7 @@ def test_reschedule_maintenance_field_headers():
     # a field header. Set these to a non-empty value.
     request = cloud_redis.RescheduleMaintenanceRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3449,7 +3449,7 @@ def test_reschedule_maintenance_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -3463,7 +3463,7 @@ async def test_reschedule_maintenance_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = cloud_redis.RescheduleMaintenanceRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3483,7 +3483,7 @@ async def test_reschedule_maintenance_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
