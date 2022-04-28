@@ -773,7 +773,7 @@ class Document(proto.Message):
                 Provenance of the entity. Text anchor indexing into the
                 [Document.text][google.cloud.documentai.v1beta2.Document.text].
             type_ (str):
-                Entity type from a schema e.g. ``Address``.
+                Required. Entity type from a schema e.g. ``Address``.
             mention_text (str):
                 Text value in the document e.g. ``1600 Amphitheatre Pkwy``.
             mention_id (str):
@@ -788,11 +788,6 @@ class Document(proto.Message):
             id (str):
                 Optional. Canonical id. This will be a unique
                 value in the entity list for this document.
-            bounding_poly_for_demo_frontend (google.cloud.documentai_v1beta2.types.BoundingPoly):
-                Optional. Temporary field to store the
-                bounding poly for short-term POCs. Used by the
-                frontend only. Do not use before you talk to
-                ybo@ and lukasr@.
         """
 
         text_anchor = proto.Field(
@@ -824,11 +819,6 @@ class Document(proto.Message):
         id = proto.Field(
             proto.STRING,
             number=7,
-        )
-        bounding_poly_for_demo_frontend = proto.Field(
-            proto.MESSAGE,
-            number=8,
-            message=geometry.BoundingPoly,
         )
 
     class EntityRelation(proto.Message):

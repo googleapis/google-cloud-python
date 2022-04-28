@@ -232,9 +232,9 @@ class DocumentUnderstandingServiceAsyncClient:
 
             from google.cloud import documentai_v1beta2
 
-            def sample_batch_process_documents():
+            async def sample_batch_process_documents():
                 # Create a client
-                client = documentai_v1beta2.DocumentUnderstandingServiceClient()
+                client = documentai_v1beta2.DocumentUnderstandingServiceAsyncClient()
 
                 # Initialize request argument(s)
                 requests = documentai_v1beta2.ProcessDocumentRequest()
@@ -250,7 +250,7 @@ class DocumentUnderstandingServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -355,9 +355,9 @@ class DocumentUnderstandingServiceAsyncClient:
 
             from google.cloud import documentai_v1beta2
 
-            def sample_process_document():
+            async def sample_process_document():
                 # Create a client
-                client = documentai_v1beta2.DocumentUnderstandingServiceClient()
+                client = documentai_v1beta2.DocumentUnderstandingServiceAsyncClient()
 
                 # Initialize request argument(s)
                 input_config = documentai_v1beta2.InputConfig()
@@ -369,7 +369,7 @@ class DocumentUnderstandingServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.process_document(request=request)
+                response = await client.process_document(request=request)
 
                 # Handle the response
                 print(response)

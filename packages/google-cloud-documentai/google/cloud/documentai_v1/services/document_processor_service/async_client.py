@@ -238,9 +238,9 @@ class DocumentProcessorServiceAsyncClient:
 
             from google.cloud import documentai_v1
 
-            def sample_process_document():
+            async def sample_process_document():
                 # Create a client
-                client = documentai_v1.DocumentProcessorServiceClient()
+                client = documentai_v1.DocumentProcessorServiceAsyncClient()
 
                 # Initialize request argument(s)
                 inline_document = documentai_v1.Document()
@@ -252,7 +252,7 @@ class DocumentProcessorServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.process_document(request=request)
+                response = await client.process_document(request=request)
 
                 # Handle the response
                 print(response)
@@ -348,9 +348,9 @@ class DocumentProcessorServiceAsyncClient:
 
             from google.cloud import documentai_v1
 
-            def sample_batch_process_documents():
+            async def sample_batch_process_documents():
                 # Create a client
-                client = documentai_v1.DocumentProcessorServiceClient()
+                client = documentai_v1.DocumentProcessorServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = documentai_v1.BatchProcessRequest(
@@ -362,7 +362,7 @@ class DocumentProcessorServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -469,9 +469,9 @@ class DocumentProcessorServiceAsyncClient:
 
             from google.cloud import documentai_v1
 
-            def sample_review_document():
+            async def sample_review_document():
                 # Create a client
-                client = documentai_v1.DocumentProcessorServiceClient()
+                client = documentai_v1.DocumentProcessorServiceAsyncClient()
 
                 # Initialize request argument(s)
                 inline_document = documentai_v1.Document()
@@ -487,7 +487,7 @@ class DocumentProcessorServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)

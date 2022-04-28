@@ -875,7 +875,7 @@ class Document(proto.Message):
                 into the
                 [Document.text][google.cloud.documentai.v1.Document.text].
             type_ (str):
-                Entity type from a schema e.g. ``Address``.
+                Required. Entity type from a schema e.g. ``Address``.
             mention_text (str):
                 Optional. Text value in the document e.g.
                 ``1600 Amphitheatre Pkwy``. If the entity is not present in

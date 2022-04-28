@@ -800,7 +800,7 @@ def test_process_document_field_headers():
     # a field header. Set these to a non-empty value.
     request = document_processor_service.ProcessRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.process_document), "__call__") as call:
@@ -816,7 +816,7 @@ def test_process_document_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -830,7 +830,7 @@ async def test_process_document_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = document_processor_service.ProcessRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.process_document), "__call__") as call:
@@ -848,7 +848,7 @@ async def test_process_document_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1033,7 +1033,7 @@ def test_batch_process_documents_field_headers():
     # a field header. Set these to a non-empty value.
     request = document_processor_service.BatchProcessRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1051,7 +1051,7 @@ def test_batch_process_documents_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1065,7 +1065,7 @@ async def test_batch_process_documents_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = document_processor_service.BatchProcessRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1085,7 +1085,7 @@ async def test_batch_process_documents_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1274,7 +1274,7 @@ def test_fetch_processor_types_field_headers():
     # a field header. Set these to a non-empty value.
     request = document_processor_service.FetchProcessorTypesRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1292,7 +1292,7 @@ def test_fetch_processor_types_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -1306,7 +1306,7 @@ async def test_fetch_processor_types_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = document_processor_service.FetchProcessorTypesRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1326,7 +1326,7 @@ async def test_fetch_processor_types_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -1515,7 +1515,7 @@ def test_list_processors_field_headers():
     # a field header. Set these to a non-empty value.
     request = document_processor_service.ListProcessorsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_processors), "__call__") as call:
@@ -1531,7 +1531,7 @@ def test_list_processors_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -1545,7 +1545,7 @@ async def test_list_processors_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = document_processor_service.ListProcessorsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_processors), "__call__") as call:
@@ -1563,7 +1563,7 @@ async def test_list_processors_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -1694,7 +1694,7 @@ def test_list_processors_pager(transport_name: str = "grpc"):
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, processor.Processor) for i in results)
 
@@ -1960,7 +1960,7 @@ def test_create_processor_field_headers():
     # a field header. Set these to a non-empty value.
     request = document_processor_service.CreateProcessorRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_processor), "__call__") as call:
@@ -1976,7 +1976,7 @@ def test_create_processor_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -1990,7 +1990,7 @@ async def test_create_processor_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = document_processor_service.CreateProcessorRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_processor), "__call__") as call:
@@ -2008,7 +2008,7 @@ async def test_create_processor_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -2197,7 +2197,7 @@ def test_delete_processor_field_headers():
     # a field header. Set these to a non-empty value.
     request = document_processor_service.DeleteProcessorRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_processor), "__call__") as call:
@@ -2213,7 +2213,7 @@ def test_delete_processor_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2227,7 +2227,7 @@ async def test_delete_processor_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = document_processor_service.DeleteProcessorRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_processor), "__call__") as call:
@@ -2245,7 +2245,7 @@ async def test_delete_processor_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2424,7 +2424,7 @@ def test_enable_processor_field_headers():
     # a field header. Set these to a non-empty value.
     request = document_processor_service.EnableProcessorRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.enable_processor), "__call__") as call:
@@ -2440,7 +2440,7 @@ def test_enable_processor_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2454,7 +2454,7 @@ async def test_enable_processor_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = document_processor_service.EnableProcessorRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.enable_processor), "__call__") as call:
@@ -2472,7 +2472,7 @@ async def test_enable_processor_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2575,7 +2575,7 @@ def test_disable_processor_field_headers():
     # a field header. Set these to a non-empty value.
     request = document_processor_service.DisableProcessorRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2593,7 +2593,7 @@ def test_disable_processor_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2607,7 +2607,7 @@ async def test_disable_processor_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = document_processor_service.DisableProcessorRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2627,7 +2627,7 @@ async def test_disable_processor_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2724,7 +2724,7 @@ def test_review_document_field_headers():
     # a field header. Set these to a non-empty value.
     request = document_processor_service.ReviewDocumentRequest()
 
-    request.human_review_config = "human_review_config/value"
+    request.human_review_config = "human_review_config_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.review_document), "__call__") as call:
@@ -2740,7 +2740,7 @@ def test_review_document_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "human_review_config=human_review_config/value",
+        "human_review_config=human_review_config_value",
     ) in kw["metadata"]
 
 
@@ -2754,7 +2754,7 @@ async def test_review_document_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = document_processor_service.ReviewDocumentRequest()
 
-    request.human_review_config = "human_review_config/value"
+    request.human_review_config = "human_review_config_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.review_document), "__call__") as call:
@@ -2772,7 +2772,7 @@ async def test_review_document_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "human_review_config=human_review_config/value",
+        "human_review_config=human_review_config_value",
     ) in kw["metadata"]
 
 
