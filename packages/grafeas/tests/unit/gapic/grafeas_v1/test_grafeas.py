@@ -175,7 +175,7 @@ def test_get_occurrence_field_headers():
     # a field header. Set these to a non-empty value.
     request = grafeas.GetOccurrenceRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_occurrence), "__call__") as call:
@@ -191,7 +191,7 @@ def test_get_occurrence_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -203,7 +203,7 @@ async def test_get_occurrence_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = grafeas.GetOccurrenceRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_occurrence), "__call__") as call:
@@ -219,7 +219,7 @@ async def test_get_occurrence_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -388,7 +388,7 @@ def test_list_occurrences_field_headers():
     # a field header. Set these to a non-empty value.
     request = grafeas.ListOccurrencesRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_occurrences), "__call__") as call:
@@ -404,7 +404,7 @@ def test_list_occurrences_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -416,7 +416,7 @@ async def test_list_occurrences_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = grafeas.ListOccurrencesRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_occurrences), "__call__") as call:
@@ -434,7 +434,7 @@ async def test_list_occurrences_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -566,7 +566,7 @@ def test_list_occurrences_pager(transport_name: str = "grpc"):
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, grafeas.Occurrence) for i in results)
 
@@ -795,7 +795,7 @@ def test_delete_occurrence_field_headers():
     # a field header. Set these to a non-empty value.
     request = grafeas.DeleteOccurrenceRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -813,7 +813,7 @@ def test_delete_occurrence_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -825,7 +825,7 @@ async def test_delete_occurrence_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = grafeas.DeleteOccurrenceRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -843,7 +843,7 @@ async def test_delete_occurrence_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1039,7 +1039,7 @@ def test_create_occurrence_field_headers():
     # a field header. Set these to a non-empty value.
     request = grafeas.CreateOccurrenceRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1057,7 +1057,7 @@ def test_create_occurrence_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -1069,7 +1069,7 @@ async def test_create_occurrence_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = grafeas.CreateOccurrenceRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1087,7 +1087,7 @@ async def test_create_occurrence_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -1270,7 +1270,7 @@ def test_batch_create_occurrences_field_headers():
     # a field header. Set these to a non-empty value.
     request = grafeas.BatchCreateOccurrencesRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1288,7 +1288,7 @@ def test_batch_create_occurrences_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -1300,7 +1300,7 @@ async def test_batch_create_occurrences_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = grafeas.BatchCreateOccurrencesRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1320,7 +1320,7 @@ async def test_batch_create_occurrences_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -1528,7 +1528,7 @@ def test_update_occurrence_field_headers():
     # a field header. Set these to a non-empty value.
     request = grafeas.UpdateOccurrenceRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1546,7 +1546,7 @@ def test_update_occurrence_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1558,7 +1558,7 @@ async def test_update_occurrence_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = grafeas.UpdateOccurrenceRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1576,7 +1576,7 @@ async def test_update_occurrence_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1792,7 +1792,7 @@ def test_get_occurrence_note_field_headers():
     # a field header. Set these to a non-empty value.
     request = grafeas.GetOccurrenceNoteRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1810,7 +1810,7 @@ def test_get_occurrence_note_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1822,7 +1822,7 @@ async def test_get_occurrence_note_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = grafeas.GetOccurrenceNoteRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1840,7 +1840,7 @@ async def test_get_occurrence_note_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2030,7 +2030,7 @@ def test_get_note_field_headers():
     # a field header. Set these to a non-empty value.
     request = grafeas.GetNoteRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_note), "__call__") as call:
@@ -2046,7 +2046,7 @@ def test_get_note_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2058,7 +2058,7 @@ async def test_get_note_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = grafeas.GetNoteRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_note), "__call__") as call:
@@ -2074,7 +2074,7 @@ async def test_get_note_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2243,7 +2243,7 @@ def test_list_notes_field_headers():
     # a field header. Set these to a non-empty value.
     request = grafeas.ListNotesRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_notes), "__call__") as call:
@@ -2259,7 +2259,7 @@ def test_list_notes_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -2271,7 +2271,7 @@ async def test_list_notes_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = grafeas.ListNotesRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_notes), "__call__") as call:
@@ -2289,7 +2289,7 @@ async def test_list_notes_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -2421,7 +2421,7 @@ def test_list_notes_pager(transport_name: str = "grpc"):
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, grafeas.Note) for i in results)
 
@@ -2644,7 +2644,7 @@ def test_delete_note_field_headers():
     # a field header. Set these to a non-empty value.
     request = grafeas.DeleteNoteRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_note), "__call__") as call:
@@ -2660,7 +2660,7 @@ def test_delete_note_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2672,7 +2672,7 @@ async def test_delete_note_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = grafeas.DeleteNoteRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_note), "__call__") as call:
@@ -2688,7 +2688,7 @@ async def test_delete_note_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2874,7 +2874,7 @@ def test_create_note_field_headers():
     # a field header. Set these to a non-empty value.
     request = grafeas.CreateNoteRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_note), "__call__") as call:
@@ -2890,7 +2890,7 @@ def test_create_note_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -2902,7 +2902,7 @@ async def test_create_note_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = grafeas.CreateNoteRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_note), "__call__") as call:
@@ -2918,7 +2918,7 @@ async def test_create_note_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -3107,7 +3107,7 @@ def test_batch_create_notes_field_headers():
     # a field header. Set these to a non-empty value.
     request = grafeas.BatchCreateNotesRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3125,7 +3125,7 @@ def test_batch_create_notes_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -3137,7 +3137,7 @@ async def test_batch_create_notes_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = grafeas.BatchCreateNotesRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3157,7 +3157,7 @@ async def test_batch_create_notes_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -3359,7 +3359,7 @@ def test_update_note_field_headers():
     # a field header. Set these to a non-empty value.
     request = grafeas.UpdateNoteRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_note), "__call__") as call:
@@ -3375,7 +3375,7 @@ def test_update_note_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -3387,7 +3387,7 @@ async def test_update_note_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = grafeas.UpdateNoteRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_note), "__call__") as call:
@@ -3403,7 +3403,7 @@ async def test_update_note_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -3598,7 +3598,7 @@ def test_list_note_occurrences_field_headers():
     # a field header. Set these to a non-empty value.
     request = grafeas.ListNoteOccurrencesRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3616,7 +3616,7 @@ def test_list_note_occurrences_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -3628,7 +3628,7 @@ async def test_list_note_occurrences_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = grafeas.ListNoteOccurrencesRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3648,7 +3648,7 @@ async def test_list_note_occurrences_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -3786,7 +3786,7 @@ def test_list_note_occurrences_pager(transport_name: str = "grpc"):
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, grafeas.Occurrence) for i in results)
 

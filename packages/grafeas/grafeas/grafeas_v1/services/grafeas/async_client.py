@@ -158,9 +158,9 @@ class GrafeasAsyncClient:
 
             from grafeas import grafeas_v1
 
-            def sample_get_occurrence():
+            async def sample_get_occurrence():
                 # Create a client
-                client = grafeas_v1.GrafeasClient()
+                client = grafeas_v1.GrafeasAsyncClient()
 
                 # Initialize request argument(s)
                 request = grafeas_v1.GetOccurrenceRequest(
@@ -168,7 +168,7 @@ class GrafeasAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_occurrence(request=request)
+                response = await client.get_occurrence(request=request)
 
                 # Handle the response
                 print(response)
@@ -263,9 +263,9 @@ class GrafeasAsyncClient:
 
             from grafeas import grafeas_v1
 
-            def sample_list_occurrences():
+            async def sample_list_occurrences():
                 # Create a client
-                client = grafeas_v1.GrafeasClient()
+                client = grafeas_v1.GrafeasAsyncClient()
 
                 # Initialize request argument(s)
                 request = grafeas_v1.ListOccurrencesRequest(
@@ -276,7 +276,7 @@ class GrafeasAsyncClient:
                 page_result = client.list_occurrences(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -388,9 +388,9 @@ class GrafeasAsyncClient:
 
             from grafeas import grafeas_v1
 
-            def sample_delete_occurrence():
+            async def sample_delete_occurrence():
                 # Create a client
-                client = grafeas_v1.GrafeasClient()
+                client = grafeas_v1.GrafeasAsyncClient()
 
                 # Initialize request argument(s)
                 request = grafeas_v1.DeleteOccurrenceRequest(
@@ -398,7 +398,7 @@ class GrafeasAsyncClient:
                 )
 
                 # Make the request
-                client.delete_occurrence(request=request)
+                await client.delete_occurrence(request=request)
 
         Args:
             request (Union[grafeas.grafeas_v1.types.DeleteOccurrenceRequest, dict]):
@@ -481,9 +481,9 @@ class GrafeasAsyncClient:
 
             from grafeas import grafeas_v1
 
-            def sample_create_occurrence():
+            async def sample_create_occurrence():
                 # Create a client
-                client = grafeas_v1.GrafeasClient()
+                client = grafeas_v1.GrafeasAsyncClient()
 
                 # Initialize request argument(s)
                 request = grafeas_v1.CreateOccurrenceRequest(
@@ -491,7 +491,7 @@ class GrafeasAsyncClient:
                 )
 
                 # Make the request
-                response = client.create_occurrence(request=request)
+                response = await client.create_occurrence(request=request)
 
                 # Handle the response
                 print(response)
@@ -584,9 +584,9 @@ class GrafeasAsyncClient:
 
             from grafeas import grafeas_v1
 
-            def sample_batch_create_occurrences():
+            async def sample_batch_create_occurrences():
                 # Create a client
-                client = grafeas_v1.GrafeasClient()
+                client = grafeas_v1.GrafeasAsyncClient()
 
                 # Initialize request argument(s)
                 request = grafeas_v1.BatchCreateOccurrencesRequest(
@@ -594,7 +594,7 @@ class GrafeasAsyncClient:
                 )
 
                 # Make the request
-                response = client.batch_create_occurrences(request=request)
+                response = await client.batch_create_occurrences(request=request)
 
                 # Handle the response
                 print(response)
@@ -691,9 +691,9 @@ class GrafeasAsyncClient:
 
             from grafeas import grafeas_v1
 
-            def sample_update_occurrence():
+            async def sample_update_occurrence():
                 # Create a client
-                client = grafeas_v1.GrafeasClient()
+                client = grafeas_v1.GrafeasAsyncClient()
 
                 # Initialize request argument(s)
                 request = grafeas_v1.UpdateOccurrenceRequest(
@@ -701,7 +701,7 @@ class GrafeasAsyncClient:
                 )
 
                 # Make the request
-                response = client.update_occurrence(request=request)
+                response = await client.update_occurrence(request=request)
 
                 # Handle the response
                 print(response)
@@ -801,9 +801,9 @@ class GrafeasAsyncClient:
 
             from grafeas import grafeas_v1
 
-            def sample_get_occurrence_note():
+            async def sample_get_occurrence_note():
                 # Create a client
-                client = grafeas_v1.GrafeasClient()
+                client = grafeas_v1.GrafeasAsyncClient()
 
                 # Initialize request argument(s)
                 request = grafeas_v1.GetOccurrenceNoteRequest(
@@ -811,7 +811,7 @@ class GrafeasAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_occurrence_note(request=request)
+                response = await client.get_occurrence_note(request=request)
 
                 # Handle the response
                 print(response)
@@ -906,9 +906,9 @@ class GrafeasAsyncClient:
 
             from grafeas import grafeas_v1
 
-            def sample_get_note():
+            async def sample_get_note():
                 # Create a client
-                client = grafeas_v1.GrafeasClient()
+                client = grafeas_v1.GrafeasAsyncClient()
 
                 # Initialize request argument(s)
                 request = grafeas_v1.GetNoteRequest(
@@ -916,7 +916,7 @@ class GrafeasAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_note(request=request)
+                response = await client.get_note(request=request)
 
                 # Handle the response
                 print(response)
@@ -1011,9 +1011,9 @@ class GrafeasAsyncClient:
 
             from grafeas import grafeas_v1
 
-            def sample_list_notes():
+            async def sample_list_notes():
                 # Create a client
-                client = grafeas_v1.GrafeasClient()
+                client = grafeas_v1.GrafeasAsyncClient()
 
                 # Initialize request argument(s)
                 request = grafeas_v1.ListNotesRequest(
@@ -1024,7 +1024,7 @@ class GrafeasAsyncClient:
                 page_result = client.list_notes(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -1134,9 +1134,9 @@ class GrafeasAsyncClient:
 
             from grafeas import grafeas_v1
 
-            def sample_delete_note():
+            async def sample_delete_note():
                 # Create a client
-                client = grafeas_v1.GrafeasClient()
+                client = grafeas_v1.GrafeasAsyncClient()
 
                 # Initialize request argument(s)
                 request = grafeas_v1.DeleteNoteRequest(
@@ -1144,7 +1144,7 @@ class GrafeasAsyncClient:
                 )
 
                 # Make the request
-                client.delete_note(request=request)
+                await client.delete_note(request=request)
 
         Args:
             request (Union[grafeas.grafeas_v1.types.DeleteNoteRequest, dict]):
@@ -1228,9 +1228,9 @@ class GrafeasAsyncClient:
 
             from grafeas import grafeas_v1
 
-            def sample_create_note():
+            async def sample_create_note():
                 # Create a client
-                client = grafeas_v1.GrafeasClient()
+                client = grafeas_v1.GrafeasAsyncClient()
 
                 # Initialize request argument(s)
                 request = grafeas_v1.CreateNoteRequest(
@@ -1239,7 +1239,7 @@ class GrafeasAsyncClient:
                 )
 
                 # Make the request
-                response = client.create_note(request=request)
+                response = await client.create_note(request=request)
 
                 # Handle the response
                 print(response)
@@ -1339,9 +1339,9 @@ class GrafeasAsyncClient:
 
             from grafeas import grafeas_v1
 
-            def sample_batch_create_notes():
+            async def sample_batch_create_notes():
                 # Create a client
-                client = grafeas_v1.GrafeasClient()
+                client = grafeas_v1.GrafeasAsyncClient()
 
                 # Initialize request argument(s)
                 request = grafeas_v1.BatchCreateNotesRequest(
@@ -1349,7 +1349,7 @@ class GrafeasAsyncClient:
                 )
 
                 # Make the request
-                response = client.batch_create_notes(request=request)
+                response = await client.batch_create_notes(request=request)
 
                 # Handle the response
                 print(response)
@@ -1444,9 +1444,9 @@ class GrafeasAsyncClient:
 
             from grafeas import grafeas_v1
 
-            def sample_update_note():
+            async def sample_update_note():
                 # Create a client
-                client = grafeas_v1.GrafeasClient()
+                client = grafeas_v1.GrafeasAsyncClient()
 
                 # Initialize request argument(s)
                 request = grafeas_v1.UpdateNoteRequest(
@@ -1454,7 +1454,7 @@ class GrafeasAsyncClient:
                 )
 
                 # Make the request
-                response = client.update_note(request=request)
+                response = await client.update_note(request=request)
 
                 # Handle the response
                 print(response)
@@ -1556,9 +1556,9 @@ class GrafeasAsyncClient:
 
             from grafeas import grafeas_v1
 
-            def sample_list_note_occurrences():
+            async def sample_list_note_occurrences():
                 # Create a client
-                client = grafeas_v1.GrafeasClient()
+                client = grafeas_v1.GrafeasAsyncClient()
 
                 # Initialize request argument(s)
                 request = grafeas_v1.ListNoteOccurrencesRequest(
@@ -1569,7 +1569,7 @@ class GrafeasAsyncClient:
                 page_result = client.list_note_occurrences(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
