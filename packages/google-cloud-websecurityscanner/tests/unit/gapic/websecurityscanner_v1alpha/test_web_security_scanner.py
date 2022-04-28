@@ -801,7 +801,7 @@ def test_create_scan_config_field_headers():
     # a field header. Set these to a non-empty value.
     request = web_security_scanner.CreateScanConfigRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -819,7 +819,7 @@ def test_create_scan_config_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -833,7 +833,7 @@ async def test_create_scan_config_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = web_security_scanner.CreateScanConfigRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -853,7 +853,7 @@ async def test_create_scan_config_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -1050,7 +1050,7 @@ def test_delete_scan_config_field_headers():
     # a field header. Set these to a non-empty value.
     request = web_security_scanner.DeleteScanConfigRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1068,7 +1068,7 @@ def test_delete_scan_config_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1082,7 +1082,7 @@ async def test_delete_scan_config_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = web_security_scanner.DeleteScanConfigRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1100,7 +1100,7 @@ async def test_delete_scan_config_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1315,7 +1315,7 @@ def test_get_scan_config_field_headers():
     # a field header. Set these to a non-empty value.
     request = web_security_scanner.GetScanConfigRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_scan_config), "__call__") as call:
@@ -1331,7 +1331,7 @@ def test_get_scan_config_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1345,7 +1345,7 @@ async def test_get_scan_config_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = web_security_scanner.GetScanConfigRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_scan_config), "__call__") as call:
@@ -1363,7 +1363,7 @@ async def test_get_scan_config_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1554,7 +1554,7 @@ def test_list_scan_configs_field_headers():
     # a field header. Set these to a non-empty value.
     request = web_security_scanner.ListScanConfigsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1572,7 +1572,7 @@ def test_list_scan_configs_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -1586,7 +1586,7 @@ async def test_list_scan_configs_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = web_security_scanner.ListScanConfigsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1606,7 +1606,7 @@ async def test_list_scan_configs_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -1743,7 +1743,7 @@ def test_list_scan_configs_pager(transport_name: str = "grpc"):
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, scan_config.ScanConfig) for i in results)
 
@@ -2025,7 +2025,7 @@ def test_update_scan_config_field_headers():
     # a field header. Set these to a non-empty value.
     request = web_security_scanner.UpdateScanConfigRequest()
 
-    request.scan_config.name = "scan_config.name/value"
+    request.scan_config.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2043,7 +2043,7 @@ def test_update_scan_config_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "scan_config.name=scan_config.name/value",
+        "scan_config.name=name_value",
     ) in kw["metadata"]
 
 
@@ -2057,7 +2057,7 @@ async def test_update_scan_config_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = web_security_scanner.UpdateScanConfigRequest()
 
-    request.scan_config.name = "scan_config.name/value"
+    request.scan_config.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2077,7 +2077,7 @@ async def test_update_scan_config_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "scan_config.name=scan_config.name/value",
+        "scan_config.name=name_value",
     ) in kw["metadata"]
 
 
@@ -2300,7 +2300,7 @@ def test_start_scan_run_field_headers():
     # a field header. Set these to a non-empty value.
     request = web_security_scanner.StartScanRunRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.start_scan_run), "__call__") as call:
@@ -2316,7 +2316,7 @@ def test_start_scan_run_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2330,7 +2330,7 @@ async def test_start_scan_run_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = web_security_scanner.StartScanRunRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.start_scan_run), "__call__") as call:
@@ -2346,7 +2346,7 @@ async def test_start_scan_run_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2552,7 +2552,7 @@ def test_get_scan_run_field_headers():
     # a field header. Set these to a non-empty value.
     request = web_security_scanner.GetScanRunRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_scan_run), "__call__") as call:
@@ -2568,7 +2568,7 @@ def test_get_scan_run_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2582,7 +2582,7 @@ async def test_get_scan_run_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = web_security_scanner.GetScanRunRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_scan_run), "__call__") as call:
@@ -2598,7 +2598,7 @@ async def test_get_scan_run_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2781,7 +2781,7 @@ def test_list_scan_runs_field_headers():
     # a field header. Set these to a non-empty value.
     request = web_security_scanner.ListScanRunsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_scan_runs), "__call__") as call:
@@ -2797,7 +2797,7 @@ def test_list_scan_runs_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -2811,7 +2811,7 @@ async def test_list_scan_runs_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = web_security_scanner.ListScanRunsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_scan_runs), "__call__") as call:
@@ -2829,7 +2829,7 @@ async def test_list_scan_runs_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -2960,7 +2960,7 @@ def test_list_scan_runs_pager(transport_name: str = "grpc"):
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, scan_run.ScanRun) for i in results)
 
@@ -3226,7 +3226,7 @@ def test_stop_scan_run_field_headers():
     # a field header. Set these to a non-empty value.
     request = web_security_scanner.StopScanRunRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.stop_scan_run), "__call__") as call:
@@ -3242,7 +3242,7 @@ def test_stop_scan_run_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -3256,7 +3256,7 @@ async def test_stop_scan_run_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = web_security_scanner.StopScanRunRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.stop_scan_run), "__call__") as call:
@@ -3272,7 +3272,7 @@ async def test_stop_scan_run_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -3461,7 +3461,7 @@ def test_list_crawled_urls_field_headers():
     # a field header. Set these to a non-empty value.
     request = web_security_scanner.ListCrawledUrlsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3479,7 +3479,7 @@ def test_list_crawled_urls_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -3493,7 +3493,7 @@ async def test_list_crawled_urls_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = web_security_scanner.ListCrawledUrlsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3513,7 +3513,7 @@ async def test_list_crawled_urls_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -3650,7 +3650,7 @@ def test_list_crawled_urls_pager(transport_name: str = "grpc"):
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, crawled_url.CrawledUrl) for i in results)
 
@@ -3933,7 +3933,7 @@ def test_get_finding_field_headers():
     # a field header. Set these to a non-empty value.
     request = web_security_scanner.GetFindingRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_finding), "__call__") as call:
@@ -3949,7 +3949,7 @@ def test_get_finding_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -3963,7 +3963,7 @@ async def test_get_finding_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = web_security_scanner.GetFindingRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_finding), "__call__") as call:
@@ -3979,7 +3979,7 @@ async def test_get_finding_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -4162,7 +4162,7 @@ def test_list_findings_field_headers():
     # a field header. Set these to a non-empty value.
     request = web_security_scanner.ListFindingsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_findings), "__call__") as call:
@@ -4178,7 +4178,7 @@ def test_list_findings_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -4192,7 +4192,7 @@ async def test_list_findings_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = web_security_scanner.ListFindingsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_findings), "__call__") as call:
@@ -4210,7 +4210,7 @@ async def test_list_findings_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -4351,7 +4351,7 @@ def test_list_findings_pager(transport_name: str = "grpc"):
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, finding.Finding) for i in results)
 
@@ -4593,7 +4593,7 @@ def test_list_finding_type_stats_field_headers():
     # a field header. Set these to a non-empty value.
     request = web_security_scanner.ListFindingTypeStatsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4611,7 +4611,7 @@ def test_list_finding_type_stats_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -4625,7 +4625,7 @@ async def test_list_finding_type_stats_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = web_security_scanner.ListFindingTypeStatsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4645,7 +4645,7 @@ async def test_list_finding_type_stats_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
