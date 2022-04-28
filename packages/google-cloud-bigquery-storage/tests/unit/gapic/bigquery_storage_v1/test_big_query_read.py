@@ -761,7 +761,7 @@ def test_create_read_session_field_headers():
     # a field header. Set these to a non-empty value.
     request = storage.CreateReadSessionRequest()
 
-    request.read_session.table = "read_session.table/value"
+    request.read_session.table = "table_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -779,7 +779,7 @@ def test_create_read_session_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "read_session.table=read_session.table/value",
+        "read_session.table=table_value",
     ) in kw["metadata"]
 
 
@@ -793,7 +793,7 @@ async def test_create_read_session_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = storage.CreateReadSessionRequest()
 
-    request.read_session.table = "read_session.table/value"
+    request.read_session.table = "table_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -811,7 +811,7 @@ async def test_create_read_session_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "read_session.table=read_session.table/value",
+        "read_session.table=table_value",
     ) in kw["metadata"]
 
 
@@ -1014,7 +1014,7 @@ def test_read_rows_field_headers():
     # a field header. Set these to a non-empty value.
     request = storage.ReadRowsRequest()
 
-    request.read_stream = "read_stream/value"
+    request.read_stream = "read_stream_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.read_rows), "__call__") as call:
@@ -1030,7 +1030,7 @@ def test_read_rows_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "read_stream=read_stream/value",
+        "read_stream=read_stream_value",
     ) in kw["metadata"]
 
 
@@ -1044,7 +1044,7 @@ async def test_read_rows_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = storage.ReadRowsRequest()
 
-    request.read_stream = "read_stream/value"
+    request.read_stream = "read_stream_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.read_rows), "__call__") as call:
@@ -1063,7 +1063,7 @@ async def test_read_rows_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "read_stream=read_stream/value",
+        "read_stream=read_stream_value",
     ) in kw["metadata"]
 
 
@@ -1255,7 +1255,7 @@ def test_split_read_stream_field_headers():
     # a field header. Set these to a non-empty value.
     request = storage.SplitReadStreamRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1273,7 +1273,7 @@ def test_split_read_stream_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1287,7 +1287,7 @@ async def test_split_read_stream_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = storage.SplitReadStreamRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1307,7 +1307,7 @@ async def test_split_read_stream_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 

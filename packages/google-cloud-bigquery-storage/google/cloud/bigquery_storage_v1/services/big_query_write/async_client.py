@@ -244,9 +244,9 @@ class BigQueryWriteAsyncClient:
 
             from google.cloud import bigquery_storage_v1
 
-            def sample_create_write_stream():
+            async def sample_create_write_stream():
                 # Create a client
-                client = bigquery_storage_v1.BigQueryWriteClient()
+                client = bigquery_storage_v1.BigQueryWriteAsyncClient()
 
                 # Initialize request argument(s)
                 request = bigquery_storage_v1.CreateWriteStreamRequest(
@@ -254,7 +254,7 @@ class BigQueryWriteAsyncClient:
                 )
 
                 # Make the request
-                response = client.create_write_stream(request=request)
+                response = await client.create_write_stream(request=request)
 
                 # Handle the response
                 print(response)
@@ -397,9 +397,9 @@ class BigQueryWriteAsyncClient:
 
             from google.cloud import bigquery_storage_v1
 
-            def sample_append_rows():
+            async def sample_append_rows():
                 # Create a client
-                client = bigquery_storage_v1.BigQueryWriteClient()
+                client = bigquery_storage_v1.BigQueryWriteAsyncClient()
 
                 # Initialize request argument(s)
                 request = bigquery_storage_v1.AppendRowsRequest(
@@ -417,10 +417,10 @@ class BigQueryWriteAsyncClient:
                         yield request
 
                 # Make the request
-                stream = client.append_rows(requests=request_generator())
+                stream = await client.append_rows(requests=request_generator())
 
                 # Handle the response
-                for response in stream:
+                async for response in stream:
                     print(response)
 
         Args:
@@ -488,9 +488,9 @@ class BigQueryWriteAsyncClient:
 
             from google.cloud import bigquery_storage_v1
 
-            def sample_get_write_stream():
+            async def sample_get_write_stream():
                 # Create a client
-                client = bigquery_storage_v1.BigQueryWriteClient()
+                client = bigquery_storage_v1.BigQueryWriteAsyncClient()
 
                 # Initialize request argument(s)
                 request = bigquery_storage_v1.GetWriteStreamRequest(
@@ -498,7 +498,7 @@ class BigQueryWriteAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_write_stream(request=request)
+                response = await client.get_write_stream(request=request)
 
                 # Handle the response
                 print(response)
@@ -595,9 +595,9 @@ class BigQueryWriteAsyncClient:
 
             from google.cloud import bigquery_storage_v1
 
-            def sample_finalize_write_stream():
+            async def sample_finalize_write_stream():
                 # Create a client
-                client = bigquery_storage_v1.BigQueryWriteClient()
+                client = bigquery_storage_v1.BigQueryWriteAsyncClient()
 
                 # Initialize request argument(s)
                 request = bigquery_storage_v1.FinalizeWriteStreamRequest(
@@ -605,7 +605,7 @@ class BigQueryWriteAsyncClient:
                 )
 
                 # Make the request
-                response = client.finalize_write_stream(request=request)
+                response = await client.finalize_write_stream(request=request)
 
                 # Handle the response
                 print(response)
@@ -703,9 +703,9 @@ class BigQueryWriteAsyncClient:
 
             from google.cloud import bigquery_storage_v1
 
-            def sample_batch_commit_write_streams():
+            async def sample_batch_commit_write_streams():
                 # Create a client
-                client = bigquery_storage_v1.BigQueryWriteClient()
+                client = bigquery_storage_v1.BigQueryWriteAsyncClient()
 
                 # Initialize request argument(s)
                 request = bigquery_storage_v1.BatchCommitWriteStreamsRequest(
@@ -714,7 +714,7 @@ class BigQueryWriteAsyncClient:
                 )
 
                 # Make the request
-                response = client.batch_commit_write_streams(request=request)
+                response = await client.batch_commit_write_streams(request=request)
 
                 # Handle the response
                 print(response)
@@ -817,9 +817,9 @@ class BigQueryWriteAsyncClient:
 
             from google.cloud import bigquery_storage_v1
 
-            def sample_flush_rows():
+            async def sample_flush_rows():
                 # Create a client
-                client = bigquery_storage_v1.BigQueryWriteClient()
+                client = bigquery_storage_v1.BigQueryWriteAsyncClient()
 
                 # Initialize request argument(s)
                 request = bigquery_storage_v1.FlushRowsRequest(
@@ -827,7 +827,7 @@ class BigQueryWriteAsyncClient:
                 )
 
                 # Make the request
-                response = client.flush_rows(request=request)
+                response = await client.flush_rows(request=request)
 
                 # Handle the response
                 print(response)

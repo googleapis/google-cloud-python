@@ -771,7 +771,7 @@ def test_create_write_stream_field_headers():
     # a field header. Set these to a non-empty value.
     request = storage.CreateWriteStreamRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -789,7 +789,7 @@ def test_create_write_stream_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -803,7 +803,7 @@ async def test_create_write_stream_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = storage.CreateWriteStreamRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -821,7 +821,7 @@ async def test_create_write_stream_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -1097,7 +1097,7 @@ def test_get_write_stream_field_headers():
     # a field header. Set these to a non-empty value.
     request = storage.GetWriteStreamRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_write_stream), "__call__") as call:
@@ -1113,7 +1113,7 @@ def test_get_write_stream_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1127,7 +1127,7 @@ async def test_get_write_stream_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = storage.GetWriteStreamRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_write_stream), "__call__") as call:
@@ -1143,7 +1143,7 @@ async def test_get_write_stream_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1331,7 +1331,7 @@ def test_finalize_write_stream_field_headers():
     # a field header. Set these to a non-empty value.
     request = storage.FinalizeWriteStreamRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1349,7 +1349,7 @@ def test_finalize_write_stream_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1363,7 +1363,7 @@ async def test_finalize_write_stream_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = storage.FinalizeWriteStreamRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1383,7 +1383,7 @@ async def test_finalize_write_stream_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1571,7 +1571,7 @@ def test_batch_commit_write_streams_field_headers():
     # a field header. Set these to a non-empty value.
     request = storage.BatchCommitWriteStreamsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1589,7 +1589,7 @@ def test_batch_commit_write_streams_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -1603,7 +1603,7 @@ async def test_batch_commit_write_streams_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = storage.BatchCommitWriteStreamsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1623,7 +1623,7 @@ async def test_batch_commit_write_streams_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -1811,7 +1811,7 @@ def test_flush_rows_field_headers():
     # a field header. Set these to a non-empty value.
     request = storage.FlushRowsRequest()
 
-    request.write_stream = "write_stream/value"
+    request.write_stream = "write_stream_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.flush_rows), "__call__") as call:
@@ -1827,7 +1827,7 @@ def test_flush_rows_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "write_stream=write_stream/value",
+        "write_stream=write_stream_value",
     ) in kw["metadata"]
 
 
@@ -1841,7 +1841,7 @@ async def test_flush_rows_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = storage.FlushRowsRequest()
 
-    request.write_stream = "write_stream/value"
+    request.write_stream = "write_stream_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.flush_rows), "__call__") as call:
@@ -1859,7 +1859,7 @@ async def test_flush_rows_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "write_stream=write_stream/value",
+        "write_stream=write_stream_value",
     ) in kw["metadata"]
 
 
