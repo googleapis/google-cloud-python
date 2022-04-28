@@ -774,7 +774,7 @@ def test_list_services_field_headers():
     # a field header. Set these to a non-empty value.
     request = metastore.ListServicesRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_services), "__call__") as call:
@@ -790,7 +790,7 @@ def test_list_services_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -804,7 +804,7 @@ async def test_list_services_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = metastore.ListServicesRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_services), "__call__") as call:
@@ -822,7 +822,7 @@ async def test_list_services_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -953,7 +953,7 @@ def test_list_services_pager(transport_name: str = "grpc"):
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, metastore.Service) for i in results)
 
@@ -1233,7 +1233,7 @@ def test_get_service_field_headers():
     # a field header. Set these to a non-empty value.
     request = metastore.GetServiceRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_service), "__call__") as call:
@@ -1249,7 +1249,7 @@ def test_get_service_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1263,7 +1263,7 @@ async def test_get_service_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = metastore.GetServiceRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_service), "__call__") as call:
@@ -1279,7 +1279,7 @@ async def test_get_service_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1455,7 +1455,7 @@ def test_create_service_field_headers():
     # a field header. Set these to a non-empty value.
     request = metastore.CreateServiceRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_service), "__call__") as call:
@@ -1471,7 +1471,7 @@ def test_create_service_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -1485,7 +1485,7 @@ async def test_create_service_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = metastore.CreateServiceRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_service), "__call__") as call:
@@ -1503,7 +1503,7 @@ async def test_create_service_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -1721,7 +1721,7 @@ def test_update_service_field_headers():
     # a field header. Set these to a non-empty value.
     request = metastore.UpdateServiceRequest()
 
-    request.service.name = "service.name/value"
+    request.service.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_service), "__call__") as call:
@@ -1737,7 +1737,7 @@ def test_update_service_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "service.name=service.name/value",
+        "service.name=name_value",
     ) in kw["metadata"]
 
 
@@ -1751,7 +1751,7 @@ async def test_update_service_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = metastore.UpdateServiceRequest()
 
-    request.service.name = "service.name/value"
+    request.service.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_service), "__call__") as call:
@@ -1769,7 +1769,7 @@ async def test_update_service_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "service.name=service.name/value",
+        "service.name=name_value",
     ) in kw["metadata"]
 
 
@@ -1977,7 +1977,7 @@ def test_delete_service_field_headers():
     # a field header. Set these to a non-empty value.
     request = metastore.DeleteServiceRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_service), "__call__") as call:
@@ -1993,7 +1993,7 @@ def test_delete_service_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2007,7 +2007,7 @@ async def test_delete_service_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = metastore.DeleteServiceRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_service), "__call__") as call:
@@ -2025,7 +2025,7 @@ async def test_delete_service_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2219,7 +2219,7 @@ def test_list_metadata_imports_field_headers():
     # a field header. Set these to a non-empty value.
     request = metastore.ListMetadataImportsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2237,7 +2237,7 @@ def test_list_metadata_imports_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -2251,7 +2251,7 @@ async def test_list_metadata_imports_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = metastore.ListMetadataImportsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2271,7 +2271,7 @@ async def test_list_metadata_imports_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -2408,7 +2408,7 @@ def test_list_metadata_imports_pager(transport_name: str = "grpc"):
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, metastore.MetadataImport) for i in results)
 
@@ -2672,7 +2672,7 @@ def test_get_metadata_import_field_headers():
     # a field header. Set these to a non-empty value.
     request = metastore.GetMetadataImportRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2690,7 +2690,7 @@ def test_get_metadata_import_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2704,7 +2704,7 @@ async def test_get_metadata_import_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = metastore.GetMetadataImportRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2724,7 +2724,7 @@ async def test_get_metadata_import_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2912,7 +2912,7 @@ def test_create_metadata_import_field_headers():
     # a field header. Set these to a non-empty value.
     request = metastore.CreateMetadataImportRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2930,7 +2930,7 @@ def test_create_metadata_import_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -2944,7 +2944,7 @@ async def test_create_metadata_import_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = metastore.CreateMetadataImportRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2964,7 +2964,7 @@ async def test_create_metadata_import_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -3196,7 +3196,7 @@ def test_update_metadata_import_field_headers():
     # a field header. Set these to a non-empty value.
     request = metastore.UpdateMetadataImportRequest()
 
-    request.metadata_import.name = "metadata_import.name/value"
+    request.metadata_import.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3214,7 +3214,7 @@ def test_update_metadata_import_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "metadata_import.name=metadata_import.name/value",
+        "metadata_import.name=name_value",
     ) in kw["metadata"]
 
 
@@ -3228,7 +3228,7 @@ async def test_update_metadata_import_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = metastore.UpdateMetadataImportRequest()
 
-    request.metadata_import.name = "metadata_import.name/value"
+    request.metadata_import.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3248,7 +3248,7 @@ async def test_update_metadata_import_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "metadata_import.name=metadata_import.name/value",
+        "metadata_import.name=name_value",
     ) in kw["metadata"]
 
 
@@ -3464,7 +3464,7 @@ def test_export_metadata_field_headers():
     # a field header. Set these to a non-empty value.
     request = metastore.ExportMetadataRequest()
 
-    request.service = "service/value"
+    request.service = "service_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.export_metadata), "__call__") as call:
@@ -3480,7 +3480,7 @@ def test_export_metadata_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "service=service/value",
+        "service=service_value",
     ) in kw["metadata"]
 
 
@@ -3494,7 +3494,7 @@ async def test_export_metadata_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = metastore.ExportMetadataRequest()
 
-    request.service = "service/value"
+    request.service = "service_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.export_metadata), "__call__") as call:
@@ -3512,7 +3512,7 @@ async def test_export_metadata_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "service=service/value",
+        "service=service_value",
     ) in kw["metadata"]
 
 
@@ -3608,7 +3608,7 @@ def test_restore_service_field_headers():
     # a field header. Set these to a non-empty value.
     request = metastore.RestoreServiceRequest()
 
-    request.service = "service/value"
+    request.service = "service_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.restore_service), "__call__") as call:
@@ -3624,7 +3624,7 @@ def test_restore_service_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "service=service/value",
+        "service=service_value",
     ) in kw["metadata"]
 
 
@@ -3638,7 +3638,7 @@ async def test_restore_service_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = metastore.RestoreServiceRequest()
 
-    request.service = "service/value"
+    request.service = "service_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.restore_service), "__call__") as call:
@@ -3656,7 +3656,7 @@ async def test_restore_service_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "service=service/value",
+        "service=service_value",
     ) in kw["metadata"]
 
 
@@ -3854,7 +3854,7 @@ def test_list_backups_field_headers():
     # a field header. Set these to a non-empty value.
     request = metastore.ListBackupsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_backups), "__call__") as call:
@@ -3870,7 +3870,7 @@ def test_list_backups_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -3884,7 +3884,7 @@ async def test_list_backups_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = metastore.ListBackupsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_backups), "__call__") as call:
@@ -3902,7 +3902,7 @@ async def test_list_backups_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -4033,7 +4033,7 @@ def test_list_backups_pager(transport_name: str = "grpc"):
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, metastore.Backup) for i in results)
 
@@ -4286,7 +4286,7 @@ def test_get_backup_field_headers():
     # a field header. Set these to a non-empty value.
     request = metastore.GetBackupRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_backup), "__call__") as call:
@@ -4302,7 +4302,7 @@ def test_get_backup_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -4316,7 +4316,7 @@ async def test_get_backup_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = metastore.GetBackupRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_backup), "__call__") as call:
@@ -4332,7 +4332,7 @@ async def test_get_backup_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -4508,7 +4508,7 @@ def test_create_backup_field_headers():
     # a field header. Set these to a non-empty value.
     request = metastore.CreateBackupRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_backup), "__call__") as call:
@@ -4524,7 +4524,7 @@ def test_create_backup_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -4538,7 +4538,7 @@ async def test_create_backup_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = metastore.CreateBackupRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_backup), "__call__") as call:
@@ -4556,7 +4556,7 @@ async def test_create_backup_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -4754,7 +4754,7 @@ def test_delete_backup_field_headers():
     # a field header. Set these to a non-empty value.
     request = metastore.DeleteBackupRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_backup), "__call__") as call:
@@ -4770,7 +4770,7 @@ def test_delete_backup_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -4784,7 +4784,7 @@ async def test_delete_backup_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = metastore.DeleteBackupRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_backup), "__call__") as call:
@@ -4802,7 +4802,7 @@ async def test_delete_backup_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 

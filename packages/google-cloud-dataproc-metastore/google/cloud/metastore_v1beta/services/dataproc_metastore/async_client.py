@@ -255,9 +255,9 @@ class DataprocMetastoreAsyncClient:
 
             from google.cloud import metastore_v1beta
 
-            def sample_list_services():
+            async def sample_list_services():
                 # Create a client
-                client = metastore_v1beta.DataprocMetastoreClient()
+                client = metastore_v1beta.DataprocMetastoreAsyncClient()
 
                 # Initialize request argument(s)
                 request = metastore_v1beta.ListServicesRequest(
@@ -268,7 +268,7 @@ class DataprocMetastoreAsyncClient:
                 page_result = client.list_services(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -365,9 +365,9 @@ class DataprocMetastoreAsyncClient:
 
             from google.cloud import metastore_v1beta
 
-            def sample_get_service():
+            async def sample_get_service():
                 # Create a client
-                client = metastore_v1beta.DataprocMetastoreClient()
+                client = metastore_v1beta.DataprocMetastoreAsyncClient()
 
                 # Initialize request argument(s)
                 request = metastore_v1beta.GetServiceRequest(
@@ -375,7 +375,7 @@ class DataprocMetastoreAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_service(request=request)
+                response = await client.get_service(request=request)
 
                 # Handle the response
                 print(response)
@@ -465,9 +465,9 @@ class DataprocMetastoreAsyncClient:
 
             from google.cloud import metastore_v1beta
 
-            def sample_create_service():
+            async def sample_create_service():
                 # Create a client
-                client = metastore_v1beta.DataprocMetastoreClient()
+                client = metastore_v1beta.DataprocMetastoreAsyncClient()
 
                 # Initialize request argument(s)
                 request = metastore_v1beta.CreateServiceRequest(
@@ -480,7 +480,7 @@ class DataprocMetastoreAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -607,9 +607,9 @@ class DataprocMetastoreAsyncClient:
 
             from google.cloud import metastore_v1beta
 
-            def sample_update_service():
+            async def sample_update_service():
                 # Create a client
-                client = metastore_v1beta.DataprocMetastoreClient()
+                client = metastore_v1beta.DataprocMetastoreAsyncClient()
 
                 # Initialize request argument(s)
                 request = metastore_v1beta.UpdateServiceRequest(
@@ -620,7 +620,7 @@ class DataprocMetastoreAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -734,9 +734,9 @@ class DataprocMetastoreAsyncClient:
 
             from google.cloud import metastore_v1beta
 
-            def sample_delete_service():
+            async def sample_delete_service():
                 # Create a client
-                client = metastore_v1beta.DataprocMetastoreClient()
+                client = metastore_v1beta.DataprocMetastoreAsyncClient()
 
                 # Initialize request argument(s)
                 request = metastore_v1beta.DeleteServiceRequest(
@@ -748,7 +748,7 @@ class DataprocMetastoreAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -856,9 +856,9 @@ class DataprocMetastoreAsyncClient:
 
             from google.cloud import metastore_v1beta
 
-            def sample_list_metadata_imports():
+            async def sample_list_metadata_imports():
                 # Create a client
-                client = metastore_v1beta.DataprocMetastoreClient()
+                client = metastore_v1beta.DataprocMetastoreAsyncClient()
 
                 # Initialize request argument(s)
                 request = metastore_v1beta.ListMetadataImportsRequest(
@@ -869,7 +869,7 @@ class DataprocMetastoreAsyncClient:
                 page_result = client.list_metadata_imports(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -966,9 +966,9 @@ class DataprocMetastoreAsyncClient:
 
             from google.cloud import metastore_v1beta
 
-            def sample_get_metadata_import():
+            async def sample_get_metadata_import():
                 # Create a client
-                client = metastore_v1beta.DataprocMetastoreClient()
+                client = metastore_v1beta.DataprocMetastoreAsyncClient()
 
                 # Initialize request argument(s)
                 request = metastore_v1beta.GetMetadataImportRequest(
@@ -976,7 +976,7 @@ class DataprocMetastoreAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_metadata_import(request=request)
+                response = await client.get_metadata_import(request=request)
 
                 # Handle the response
                 print(response)
@@ -1066,9 +1066,9 @@ class DataprocMetastoreAsyncClient:
 
             from google.cloud import metastore_v1beta
 
-            def sample_create_metadata_import():
+            async def sample_create_metadata_import():
                 # Create a client
-                client = metastore_v1beta.DataprocMetastoreClient()
+                client = metastore_v1beta.DataprocMetastoreAsyncClient()
 
                 # Initialize request argument(s)
                 request = metastore_v1beta.CreateMetadataImportRequest(
@@ -1081,7 +1081,7 @@ class DataprocMetastoreAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1209,9 +1209,9 @@ class DataprocMetastoreAsyncClient:
 
             from google.cloud import metastore_v1beta
 
-            def sample_update_metadata_import():
+            async def sample_update_metadata_import():
                 # Create a client
-                client = metastore_v1beta.DataprocMetastoreClient()
+                client = metastore_v1beta.DataprocMetastoreAsyncClient()
 
                 # Initialize request argument(s)
                 request = metastore_v1beta.UpdateMetadataImportRequest(
@@ -1222,7 +1222,7 @@ class DataprocMetastoreAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1335,9 +1335,9 @@ class DataprocMetastoreAsyncClient:
 
             from google.cloud import metastore_v1beta
 
-            def sample_export_metadata():
+            async def sample_export_metadata():
                 # Create a client
-                client = metastore_v1beta.DataprocMetastoreClient()
+                client = metastore_v1beta.DataprocMetastoreAsyncClient()
 
                 # Initialize request argument(s)
                 request = metastore_v1beta.ExportMetadataRequest(
@@ -1350,7 +1350,7 @@ class DataprocMetastoreAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1426,9 +1426,9 @@ class DataprocMetastoreAsyncClient:
 
             from google.cloud import metastore_v1beta
 
-            def sample_restore_service():
+            async def sample_restore_service():
                 # Create a client
-                client = metastore_v1beta.DataprocMetastoreClient()
+                client = metastore_v1beta.DataprocMetastoreAsyncClient()
 
                 # Initialize request argument(s)
                 request = metastore_v1beta.RestoreServiceRequest(
@@ -1441,7 +1441,7 @@ class DataprocMetastoreAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1550,9 +1550,9 @@ class DataprocMetastoreAsyncClient:
 
             from google.cloud import metastore_v1beta
 
-            def sample_list_backups():
+            async def sample_list_backups():
                 # Create a client
-                client = metastore_v1beta.DataprocMetastoreClient()
+                client = metastore_v1beta.DataprocMetastoreAsyncClient()
 
                 # Initialize request argument(s)
                 request = metastore_v1beta.ListBackupsRequest(
@@ -1563,7 +1563,7 @@ class DataprocMetastoreAsyncClient:
                 page_result = client.list_backups(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -1660,9 +1660,9 @@ class DataprocMetastoreAsyncClient:
 
             from google.cloud import metastore_v1beta
 
-            def sample_get_backup():
+            async def sample_get_backup():
                 # Create a client
-                client = metastore_v1beta.DataprocMetastoreClient()
+                client = metastore_v1beta.DataprocMetastoreAsyncClient()
 
                 # Initialize request argument(s)
                 request = metastore_v1beta.GetBackupRequest(
@@ -1670,7 +1670,7 @@ class DataprocMetastoreAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_backup(request=request)
+                response = await client.get_backup(request=request)
 
                 # Handle the response
                 print(response)
@@ -1757,9 +1757,9 @@ class DataprocMetastoreAsyncClient:
 
             from google.cloud import metastore_v1beta
 
-            def sample_create_backup():
+            async def sample_create_backup():
                 # Create a client
-                client = metastore_v1beta.DataprocMetastoreClient()
+                client = metastore_v1beta.DataprocMetastoreAsyncClient()
 
                 # Initialize request argument(s)
                 request = metastore_v1beta.CreateBackupRequest(
@@ -1772,7 +1772,7 @@ class DataprocMetastoreAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1895,9 +1895,9 @@ class DataprocMetastoreAsyncClient:
 
             from google.cloud import metastore_v1beta
 
-            def sample_delete_backup():
+            async def sample_delete_backup():
                 # Create a client
-                client = metastore_v1beta.DataprocMetastoreClient()
+                client = metastore_v1beta.DataprocMetastoreAsyncClient()
 
                 # Initialize request argument(s)
                 request = metastore_v1beta.DeleteBackupRequest(
@@ -1909,7 +1909,7 @@ class DataprocMetastoreAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
