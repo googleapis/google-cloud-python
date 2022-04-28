@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-videointelligence/#history
 
+## [2.7.0](https://github.com/googleapis/python-videointelligence/compare/v2.6.1...v2.7.0) (2022-04-28)
+
+
+### Features
+
+* field ObjectTrackingAnnotation.segment moved into oneof, added track_id ([#318](https://github.com/googleapis/python-videointelligence/issues/318)) ([f1f88d4](https://github.com/googleapis/python-videointelligence/commit/f1f88d4eef49927d8822f90af154cdc2f582c471))
+
 ### [2.6.1](https://github.com/googleapis/python-videointelligence/compare/v2.6.0...v2.6.1) (2022-03-05)
 
 
