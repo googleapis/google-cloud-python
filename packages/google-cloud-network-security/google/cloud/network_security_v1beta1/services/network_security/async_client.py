@@ -255,9 +255,9 @@ class NetworkSecurityAsyncClient:
 
             from google.cloud import network_security_v1beta1
 
-            def sample_list_authorization_policies():
+            async def sample_list_authorization_policies():
                 # Create a client
-                client = network_security_v1beta1.NetworkSecurityClient()
+                client = network_security_v1beta1.NetworkSecurityAsyncClient()
 
                 # Initialize request argument(s)
                 request = network_security_v1beta1.ListAuthorizationPoliciesRequest(
@@ -268,7 +268,7 @@ class NetworkSecurityAsyncClient:
                 page_result = client.list_authorization_policies(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -364,9 +364,9 @@ class NetworkSecurityAsyncClient:
 
             from google.cloud import network_security_v1beta1
 
-            def sample_get_authorization_policy():
+            async def sample_get_authorization_policy():
                 # Create a client
-                client = network_security_v1beta1.NetworkSecurityClient()
+                client = network_security_v1beta1.NetworkSecurityAsyncClient()
 
                 # Initialize request argument(s)
                 request = network_security_v1beta1.GetAuthorizationPolicyRequest(
@@ -374,7 +374,7 @@ class NetworkSecurityAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_authorization_policy(request=request)
+                response = await client.get_authorization_policy(request=request)
 
                 # Handle the response
                 print(response)
@@ -470,9 +470,9 @@ class NetworkSecurityAsyncClient:
 
             from google.cloud import network_security_v1beta1
 
-            def sample_create_authorization_policy():
+            async def sample_create_authorization_policy():
                 # Create a client
-                client = network_security_v1beta1.NetworkSecurityClient()
+                client = network_security_v1beta1.NetworkSecurityAsyncClient()
 
                 # Initialize request argument(s)
                 authorization_policy = network_security_v1beta1.AuthorizationPolicy()
@@ -490,7 +490,7 @@ class NetworkSecurityAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -616,9 +616,9 @@ class NetworkSecurityAsyncClient:
 
             from google.cloud import network_security_v1beta1
 
-            def sample_update_authorization_policy():
+            async def sample_update_authorization_policy():
                 # Create a client
-                client = network_security_v1beta1.NetworkSecurityClient()
+                client = network_security_v1beta1.NetworkSecurityAsyncClient()
 
                 # Initialize request argument(s)
                 authorization_policy = network_security_v1beta1.AuthorizationPolicy()
@@ -634,7 +634,7 @@ class NetworkSecurityAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -750,9 +750,9 @@ class NetworkSecurityAsyncClient:
 
             from google.cloud import network_security_v1beta1
 
-            def sample_delete_authorization_policy():
+            async def sample_delete_authorization_policy():
                 # Create a client
-                client = network_security_v1beta1.NetworkSecurityClient()
+                client = network_security_v1beta1.NetworkSecurityAsyncClient()
 
                 # Initialize request argument(s)
                 request = network_security_v1beta1.DeleteAuthorizationPolicyRequest(
@@ -764,7 +764,7 @@ class NetworkSecurityAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -872,9 +872,9 @@ class NetworkSecurityAsyncClient:
 
             from google.cloud import network_security_v1beta1
 
-            def sample_list_server_tls_policies():
+            async def sample_list_server_tls_policies():
                 # Create a client
-                client = network_security_v1beta1.NetworkSecurityClient()
+                client = network_security_v1beta1.NetworkSecurityAsyncClient()
 
                 # Initialize request argument(s)
                 request = network_security_v1beta1.ListServerTlsPoliciesRequest(
@@ -885,7 +885,7 @@ class NetworkSecurityAsyncClient:
                 page_result = client.list_server_tls_policies(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -981,9 +981,9 @@ class NetworkSecurityAsyncClient:
 
             from google.cloud import network_security_v1beta1
 
-            def sample_get_server_tls_policy():
+            async def sample_get_server_tls_policy():
                 # Create a client
-                client = network_security_v1beta1.NetworkSecurityClient()
+                client = network_security_v1beta1.NetworkSecurityAsyncClient()
 
                 # Initialize request argument(s)
                 request = network_security_v1beta1.GetServerTlsPolicyRequest(
@@ -991,7 +991,7 @@ class NetworkSecurityAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_server_tls_policy(request=request)
+                response = await client.get_server_tls_policy(request=request)
 
                 # Handle the response
                 print(response)
@@ -1085,9 +1085,9 @@ class NetworkSecurityAsyncClient:
 
             from google.cloud import network_security_v1beta1
 
-            def sample_create_server_tls_policy():
+            async def sample_create_server_tls_policy():
                 # Create a client
-                client = network_security_v1beta1.NetworkSecurityClient()
+                client = network_security_v1beta1.NetworkSecurityAsyncClient()
 
                 # Initialize request argument(s)
                 server_tls_policy = network_security_v1beta1.ServerTlsPolicy()
@@ -1104,7 +1104,7 @@ class NetworkSecurityAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1225,9 +1225,9 @@ class NetworkSecurityAsyncClient:
 
             from google.cloud import network_security_v1beta1
 
-            def sample_update_server_tls_policy():
+            async def sample_update_server_tls_policy():
                 # Create a client
-                client = network_security_v1beta1.NetworkSecurityClient()
+                client = network_security_v1beta1.NetworkSecurityAsyncClient()
 
                 # Initialize request argument(s)
                 server_tls_policy = network_security_v1beta1.ServerTlsPolicy()
@@ -1242,7 +1242,7 @@ class NetworkSecurityAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1356,9 +1356,9 @@ class NetworkSecurityAsyncClient:
 
             from google.cloud import network_security_v1beta1
 
-            def sample_delete_server_tls_policy():
+            async def sample_delete_server_tls_policy():
                 # Create a client
-                client = network_security_v1beta1.NetworkSecurityClient()
+                client = network_security_v1beta1.NetworkSecurityAsyncClient()
 
                 # Initialize request argument(s)
                 request = network_security_v1beta1.DeleteServerTlsPolicyRequest(
@@ -1370,7 +1370,7 @@ class NetworkSecurityAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1478,9 +1478,9 @@ class NetworkSecurityAsyncClient:
 
             from google.cloud import network_security_v1beta1
 
-            def sample_list_client_tls_policies():
+            async def sample_list_client_tls_policies():
                 # Create a client
-                client = network_security_v1beta1.NetworkSecurityClient()
+                client = network_security_v1beta1.NetworkSecurityAsyncClient()
 
                 # Initialize request argument(s)
                 request = network_security_v1beta1.ListClientTlsPoliciesRequest(
@@ -1491,7 +1491,7 @@ class NetworkSecurityAsyncClient:
                 page_result = client.list_client_tls_policies(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -1587,9 +1587,9 @@ class NetworkSecurityAsyncClient:
 
             from google.cloud import network_security_v1beta1
 
-            def sample_get_client_tls_policy():
+            async def sample_get_client_tls_policy():
                 # Create a client
-                client = network_security_v1beta1.NetworkSecurityClient()
+                client = network_security_v1beta1.NetworkSecurityAsyncClient()
 
                 # Initialize request argument(s)
                 request = network_security_v1beta1.GetClientTlsPolicyRequest(
@@ -1597,7 +1597,7 @@ class NetworkSecurityAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_client_tls_policy(request=request)
+                response = await client.get_client_tls_policy(request=request)
 
                 # Handle the response
                 print(response)
@@ -1690,9 +1690,9 @@ class NetworkSecurityAsyncClient:
 
             from google.cloud import network_security_v1beta1
 
-            def sample_create_client_tls_policy():
+            async def sample_create_client_tls_policy():
                 # Create a client
-                client = network_security_v1beta1.NetworkSecurityClient()
+                client = network_security_v1beta1.NetworkSecurityAsyncClient()
 
                 # Initialize request argument(s)
                 client_tls_policy = network_security_v1beta1.ClientTlsPolicy()
@@ -1709,7 +1709,7 @@ class NetworkSecurityAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1829,9 +1829,9 @@ class NetworkSecurityAsyncClient:
 
             from google.cloud import network_security_v1beta1
 
-            def sample_update_client_tls_policy():
+            async def sample_update_client_tls_policy():
                 # Create a client
-                client = network_security_v1beta1.NetworkSecurityClient()
+                client = network_security_v1beta1.NetworkSecurityAsyncClient()
 
                 # Initialize request argument(s)
                 client_tls_policy = network_security_v1beta1.ClientTlsPolicy()
@@ -1846,7 +1846,7 @@ class NetworkSecurityAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1959,9 +1959,9 @@ class NetworkSecurityAsyncClient:
 
             from google.cloud import network_security_v1beta1
 
-            def sample_delete_client_tls_policy():
+            async def sample_delete_client_tls_policy():
                 # Create a client
-                client = network_security_v1beta1.NetworkSecurityClient()
+                client = network_security_v1beta1.NetworkSecurityAsyncClient()
 
                 # Initialize request argument(s)
                 request = network_security_v1beta1.DeleteClientTlsPolicyRequest(
@@ -1973,7 +1973,7 @@ class NetworkSecurityAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)

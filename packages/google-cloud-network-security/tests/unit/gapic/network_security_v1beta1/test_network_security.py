@@ -787,7 +787,7 @@ def test_list_authorization_policies_field_headers():
     # a field header. Set these to a non-empty value.
     request = authorization_policy.ListAuthorizationPoliciesRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -805,7 +805,7 @@ def test_list_authorization_policies_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -819,7 +819,7 @@ async def test_list_authorization_policies_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = authorization_policy.ListAuthorizationPoliciesRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -839,7 +839,7 @@ async def test_list_authorization_policies_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -976,7 +976,7 @@ def test_list_authorization_policies_pager(transport_name: str = "grpc"):
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(
             isinstance(i, authorization_policy.AuthorizationPolicy) for i in results
@@ -1242,7 +1242,7 @@ def test_get_authorization_policy_field_headers():
     # a field header. Set these to a non-empty value.
     request = authorization_policy.GetAuthorizationPolicyRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1260,7 +1260,7 @@ def test_get_authorization_policy_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1274,7 +1274,7 @@ async def test_get_authorization_policy_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = authorization_policy.GetAuthorizationPolicyRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1294,7 +1294,7 @@ async def test_get_authorization_policy_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1483,7 +1483,7 @@ def test_create_authorization_policy_field_headers():
     # a field header. Set these to a non-empty value.
     request = gcn_authorization_policy.CreateAuthorizationPolicyRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1501,7 +1501,7 @@ def test_create_authorization_policy_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -1515,7 +1515,7 @@ async def test_create_authorization_policy_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = gcn_authorization_policy.CreateAuthorizationPolicyRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1535,7 +1535,7 @@ async def test_create_authorization_policy_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -1752,7 +1752,7 @@ def test_update_authorization_policy_field_headers():
     # a field header. Set these to a non-empty value.
     request = gcn_authorization_policy.UpdateAuthorizationPolicyRequest()
 
-    request.authorization_policy.name = "authorization_policy.name/value"
+    request.authorization_policy.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1770,7 +1770,7 @@ def test_update_authorization_policy_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "authorization_policy.name=authorization_policy.name/value",
+        "authorization_policy.name=name_value",
     ) in kw["metadata"]
 
 
@@ -1784,7 +1784,7 @@ async def test_update_authorization_policy_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = gcn_authorization_policy.UpdateAuthorizationPolicyRequest()
 
-    request.authorization_policy.name = "authorization_policy.name/value"
+    request.authorization_policy.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1804,7 +1804,7 @@ async def test_update_authorization_policy_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "authorization_policy.name=authorization_policy.name/value",
+        "authorization_policy.name=name_value",
     ) in kw["metadata"]
 
 
@@ -2011,7 +2011,7 @@ def test_delete_authorization_policy_field_headers():
     # a field header. Set these to a non-empty value.
     request = authorization_policy.DeleteAuthorizationPolicyRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2029,7 +2029,7 @@ def test_delete_authorization_policy_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2043,7 +2043,7 @@ async def test_delete_authorization_policy_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = authorization_policy.DeleteAuthorizationPolicyRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2063,7 +2063,7 @@ async def test_delete_authorization_policy_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2258,7 +2258,7 @@ def test_list_server_tls_policies_field_headers():
     # a field header. Set these to a non-empty value.
     request = server_tls_policy.ListServerTlsPoliciesRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2276,7 +2276,7 @@ def test_list_server_tls_policies_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -2290,7 +2290,7 @@ async def test_list_server_tls_policies_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = server_tls_policy.ListServerTlsPoliciesRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2310,7 +2310,7 @@ async def test_list_server_tls_policies_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -2447,7 +2447,7 @@ def test_list_server_tls_policies_pager(transport_name: str = "grpc"):
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, server_tls_policy.ServerTlsPolicy) for i in results)
 
@@ -2709,7 +2709,7 @@ def test_get_server_tls_policy_field_headers():
     # a field header. Set these to a non-empty value.
     request = server_tls_policy.GetServerTlsPolicyRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2727,7 +2727,7 @@ def test_get_server_tls_policy_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2741,7 +2741,7 @@ async def test_get_server_tls_policy_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = server_tls_policy.GetServerTlsPolicyRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2761,7 +2761,7 @@ async def test_get_server_tls_policy_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2950,7 +2950,7 @@ def test_create_server_tls_policy_field_headers():
     # a field header. Set these to a non-empty value.
     request = gcn_server_tls_policy.CreateServerTlsPolicyRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2968,7 +2968,7 @@ def test_create_server_tls_policy_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -2982,7 +2982,7 @@ async def test_create_server_tls_policy_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = gcn_server_tls_policy.CreateServerTlsPolicyRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3002,7 +3002,7 @@ async def test_create_server_tls_policy_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -3211,7 +3211,7 @@ def test_update_server_tls_policy_field_headers():
     # a field header. Set these to a non-empty value.
     request = gcn_server_tls_policy.UpdateServerTlsPolicyRequest()
 
-    request.server_tls_policy.name = "server_tls_policy.name/value"
+    request.server_tls_policy.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3229,7 +3229,7 @@ def test_update_server_tls_policy_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "server_tls_policy.name=server_tls_policy.name/value",
+        "server_tls_policy.name=name_value",
     ) in kw["metadata"]
 
 
@@ -3243,7 +3243,7 @@ async def test_update_server_tls_policy_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = gcn_server_tls_policy.UpdateServerTlsPolicyRequest()
 
-    request.server_tls_policy.name = "server_tls_policy.name/value"
+    request.server_tls_policy.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3263,7 +3263,7 @@ async def test_update_server_tls_policy_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "server_tls_policy.name=server_tls_policy.name/value",
+        "server_tls_policy.name=name_value",
     ) in kw["metadata"]
 
 
@@ -3462,7 +3462,7 @@ def test_delete_server_tls_policy_field_headers():
     # a field header. Set these to a non-empty value.
     request = server_tls_policy.DeleteServerTlsPolicyRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3480,7 +3480,7 @@ def test_delete_server_tls_policy_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -3494,7 +3494,7 @@ async def test_delete_server_tls_policy_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = server_tls_policy.DeleteServerTlsPolicyRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3514,7 +3514,7 @@ async def test_delete_server_tls_policy_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -3709,7 +3709,7 @@ def test_list_client_tls_policies_field_headers():
     # a field header. Set these to a non-empty value.
     request = client_tls_policy.ListClientTlsPoliciesRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3727,7 +3727,7 @@ def test_list_client_tls_policies_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -3741,7 +3741,7 @@ async def test_list_client_tls_policies_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = client_tls_policy.ListClientTlsPoliciesRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3761,7 +3761,7 @@ async def test_list_client_tls_policies_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -3898,7 +3898,7 @@ def test_list_client_tls_policies_pager(transport_name: str = "grpc"):
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, client_tls_policy.ClientTlsPolicy) for i in results)
 
@@ -4160,7 +4160,7 @@ def test_get_client_tls_policy_field_headers():
     # a field header. Set these to a non-empty value.
     request = client_tls_policy.GetClientTlsPolicyRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4178,7 +4178,7 @@ def test_get_client_tls_policy_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -4192,7 +4192,7 @@ async def test_get_client_tls_policy_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = client_tls_policy.GetClientTlsPolicyRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4212,7 +4212,7 @@ async def test_get_client_tls_policy_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -4401,7 +4401,7 @@ def test_create_client_tls_policy_field_headers():
     # a field header. Set these to a non-empty value.
     request = gcn_client_tls_policy.CreateClientTlsPolicyRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4419,7 +4419,7 @@ def test_create_client_tls_policy_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -4433,7 +4433,7 @@ async def test_create_client_tls_policy_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = gcn_client_tls_policy.CreateClientTlsPolicyRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4453,7 +4453,7 @@ async def test_create_client_tls_policy_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -4662,7 +4662,7 @@ def test_update_client_tls_policy_field_headers():
     # a field header. Set these to a non-empty value.
     request = gcn_client_tls_policy.UpdateClientTlsPolicyRequest()
 
-    request.client_tls_policy.name = "client_tls_policy.name/value"
+    request.client_tls_policy.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4680,7 +4680,7 @@ def test_update_client_tls_policy_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "client_tls_policy.name=client_tls_policy.name/value",
+        "client_tls_policy.name=name_value",
     ) in kw["metadata"]
 
 
@@ -4694,7 +4694,7 @@ async def test_update_client_tls_policy_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = gcn_client_tls_policy.UpdateClientTlsPolicyRequest()
 
-    request.client_tls_policy.name = "client_tls_policy.name/value"
+    request.client_tls_policy.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4714,7 +4714,7 @@ async def test_update_client_tls_policy_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "client_tls_policy.name=client_tls_policy.name/value",
+        "client_tls_policy.name=name_value",
     ) in kw["metadata"]
 
 
@@ -4913,7 +4913,7 @@ def test_delete_client_tls_policy_field_headers():
     # a field header. Set these to a non-empty value.
     request = client_tls_policy.DeleteClientTlsPolicyRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4931,7 +4931,7 @@ def test_delete_client_tls_policy_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -4945,7 +4945,7 @@ async def test_delete_client_tls_policy_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = client_tls_policy.DeleteClientTlsPolicyRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4965,7 +4965,7 @@ async def test_delete_client_tls_policy_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
