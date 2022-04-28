@@ -235,9 +235,9 @@ class DataMigrationServiceAsyncClient:
 
             from google.cloud import clouddms_v1
 
-            def sample_list_migration_jobs():
+            async def sample_list_migration_jobs():
                 # Create a client
-                client = clouddms_v1.DataMigrationServiceClient()
+                client = clouddms_v1.DataMigrationServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = clouddms_v1.ListMigrationJobsRequest(
@@ -248,7 +248,7 @@ class DataMigrationServiceAsyncClient:
                 page_result = client.list_migration_jobs(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -343,9 +343,9 @@ class DataMigrationServiceAsyncClient:
 
             from google.cloud import clouddms_v1
 
-            def sample_get_migration_job():
+            async def sample_get_migration_job():
                 # Create a client
-                client = clouddms_v1.DataMigrationServiceClient()
+                client = clouddms_v1.DataMigrationServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = clouddms_v1.GetMigrationJobRequest(
@@ -353,7 +353,7 @@ class DataMigrationServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_migration_job(request=request)
+                response = await client.get_migration_job(request=request)
 
                 # Handle the response
                 print(response)
@@ -441,9 +441,9 @@ class DataMigrationServiceAsyncClient:
 
             from google.cloud import clouddms_v1
 
-            def sample_create_migration_job():
+            async def sample_create_migration_job():
                 # Create a client
-                client = clouddms_v1.DataMigrationServiceClient()
+                client = clouddms_v1.DataMigrationServiceAsyncClient()
 
                 # Initialize request argument(s)
                 migration_job = clouddms_v1.MigrationJob()
@@ -464,7 +464,7 @@ class DataMigrationServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -582,9 +582,9 @@ class DataMigrationServiceAsyncClient:
 
             from google.cloud import clouddms_v1
 
-            def sample_update_migration_job():
+            async def sample_update_migration_job():
                 # Create a client
-                client = clouddms_v1.DataMigrationServiceClient()
+                client = clouddms_v1.DataMigrationServiceAsyncClient()
 
                 # Initialize request argument(s)
                 migration_job = clouddms_v1.MigrationJob()
@@ -603,7 +603,7 @@ class DataMigrationServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -713,9 +713,9 @@ class DataMigrationServiceAsyncClient:
 
             from google.cloud import clouddms_v1
 
-            def sample_delete_migration_job():
+            async def sample_delete_migration_job():
                 # Create a client
-                client = clouddms_v1.DataMigrationServiceClient()
+                client = clouddms_v1.DataMigrationServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = clouddms_v1.DeleteMigrationJobRequest(
@@ -727,7 +727,7 @@ class DataMigrationServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -832,9 +832,9 @@ class DataMigrationServiceAsyncClient:
 
             from google.cloud import clouddms_v1
 
-            def sample_start_migration_job():
+            async def sample_start_migration_job():
                 # Create a client
-                client = clouddms_v1.DataMigrationServiceClient()
+                client = clouddms_v1.DataMigrationServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = clouddms_v1.StartMigrationJobRequest(
@@ -845,7 +845,7 @@ class DataMigrationServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -920,9 +920,9 @@ class DataMigrationServiceAsyncClient:
 
             from google.cloud import clouddms_v1
 
-            def sample_stop_migration_job():
+            async def sample_stop_migration_job():
                 # Create a client
-                client = clouddms_v1.DataMigrationServiceClient()
+                client = clouddms_v1.DataMigrationServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = clouddms_v1.StopMigrationJobRequest(
@@ -933,7 +933,7 @@ class DataMigrationServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1009,9 +1009,9 @@ class DataMigrationServiceAsyncClient:
 
             from google.cloud import clouddms_v1
 
-            def sample_resume_migration_job():
+            async def sample_resume_migration_job():
                 # Create a client
-                client = clouddms_v1.DataMigrationServiceClient()
+                client = clouddms_v1.DataMigrationServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = clouddms_v1.ResumeMigrationJobRequest(
@@ -1022,7 +1022,7 @@ class DataMigrationServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1099,9 +1099,9 @@ class DataMigrationServiceAsyncClient:
 
             from google.cloud import clouddms_v1
 
-            def sample_promote_migration_job():
+            async def sample_promote_migration_job():
                 # Create a client
-                client = clouddms_v1.DataMigrationServiceClient()
+                client = clouddms_v1.DataMigrationServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = clouddms_v1.PromoteMigrationJobRequest(
@@ -1112,7 +1112,7 @@ class DataMigrationServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1189,9 +1189,9 @@ class DataMigrationServiceAsyncClient:
 
             from google.cloud import clouddms_v1
 
-            def sample_verify_migration_job():
+            async def sample_verify_migration_job():
                 # Create a client
-                client = clouddms_v1.DataMigrationServiceClient()
+                client = clouddms_v1.DataMigrationServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = clouddms_v1.VerifyMigrationJobRequest(
@@ -1202,7 +1202,7 @@ class DataMigrationServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1279,9 +1279,9 @@ class DataMigrationServiceAsyncClient:
 
             from google.cloud import clouddms_v1
 
-            def sample_restart_migration_job():
+            async def sample_restart_migration_job():
                 # Create a client
-                client = clouddms_v1.DataMigrationServiceClient()
+                client = clouddms_v1.DataMigrationServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = clouddms_v1.RestartMigrationJobRequest(
@@ -1292,7 +1292,7 @@ class DataMigrationServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1368,9 +1368,9 @@ class DataMigrationServiceAsyncClient:
 
             from google.cloud import clouddms_v1
 
-            def sample_generate_ssh_script():
+            async def sample_generate_ssh_script():
                 # Create a client
-                client = clouddms_v1.DataMigrationServiceClient()
+                client = clouddms_v1.DataMigrationServiceAsyncClient()
 
                 # Initialize request argument(s)
                 vm_creation_config = clouddms_v1.VmCreationConfig()
@@ -1382,7 +1382,7 @@ class DataMigrationServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.generate_ssh_script(request=request)
+                response = await client.generate_ssh_script(request=request)
 
                 # Handle the response
                 print(response)
@@ -1449,9 +1449,9 @@ class DataMigrationServiceAsyncClient:
 
             from google.cloud import clouddms_v1
 
-            def sample_list_connection_profiles():
+            async def sample_list_connection_profiles():
                 # Create a client
-                client = clouddms_v1.DataMigrationServiceClient()
+                client = clouddms_v1.DataMigrationServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = clouddms_v1.ListConnectionProfilesRequest(
@@ -1462,7 +1462,7 @@ class DataMigrationServiceAsyncClient:
                 page_result = client.list_connection_profiles(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -1557,9 +1557,9 @@ class DataMigrationServiceAsyncClient:
 
             from google.cloud import clouddms_v1
 
-            def sample_get_connection_profile():
+            async def sample_get_connection_profile():
                 # Create a client
-                client = clouddms_v1.DataMigrationServiceClient()
+                client = clouddms_v1.DataMigrationServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = clouddms_v1.GetConnectionProfileRequest(
@@ -1567,7 +1567,7 @@ class DataMigrationServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_connection_profile(request=request)
+                response = await client.get_connection_profile(request=request)
 
                 # Handle the response
                 print(response)
@@ -1653,9 +1653,9 @@ class DataMigrationServiceAsyncClient:
 
             from google.cloud import clouddms_v1
 
-            def sample_create_connection_profile():
+            async def sample_create_connection_profile():
                 # Create a client
-                client = clouddms_v1.DataMigrationServiceClient()
+                client = clouddms_v1.DataMigrationServiceAsyncClient()
 
                 # Initialize request argument(s)
                 connection_profile = clouddms_v1.ConnectionProfile()
@@ -1675,7 +1675,7 @@ class DataMigrationServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1791,9 +1791,9 @@ class DataMigrationServiceAsyncClient:
 
             from google.cloud import clouddms_v1
 
-            def sample_update_connection_profile():
+            async def sample_update_connection_profile():
                 # Create a client
-                client = clouddms_v1.DataMigrationServiceClient()
+                client = clouddms_v1.DataMigrationServiceAsyncClient()
 
                 # Initialize request argument(s)
                 connection_profile = clouddms_v1.ConnectionProfile()
@@ -1811,7 +1811,7 @@ class DataMigrationServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1923,9 +1923,9 @@ class DataMigrationServiceAsyncClient:
 
             from google.cloud import clouddms_v1
 
-            def sample_delete_connection_profile():
+            async def sample_delete_connection_profile():
                 # Create a client
-                client = clouddms_v1.DataMigrationServiceClient()
+                client = clouddms_v1.DataMigrationServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = clouddms_v1.DeleteConnectionProfileRequest(
@@ -1937,7 +1937,7 @@ class DataMigrationServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)

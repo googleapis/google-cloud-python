@@ -790,7 +790,7 @@ def test_list_migration_jobs_field_headers():
     # a field header. Set these to a non-empty value.
     request = clouddms.ListMigrationJobsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -808,7 +808,7 @@ def test_list_migration_jobs_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -822,7 +822,7 @@ async def test_list_migration_jobs_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = clouddms.ListMigrationJobsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -842,7 +842,7 @@ async def test_list_migration_jobs_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -979,7 +979,7 @@ def test_list_migration_jobs_pager(transport_name: str = "grpc"):
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, clouddms_resources.MigrationJob) for i in results)
 
@@ -1263,7 +1263,7 @@ def test_get_migration_job_field_headers():
     # a field header. Set these to a non-empty value.
     request = clouddms.GetMigrationJobRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1281,7 +1281,7 @@ def test_get_migration_job_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1295,7 +1295,7 @@ async def test_get_migration_job_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = clouddms.GetMigrationJobRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1315,7 +1315,7 @@ async def test_get_migration_job_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1503,7 +1503,7 @@ def test_create_migration_job_field_headers():
     # a field header. Set these to a non-empty value.
     request = clouddms.CreateMigrationJobRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1521,7 +1521,7 @@ def test_create_migration_job_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -1535,7 +1535,7 @@ async def test_create_migration_job_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = clouddms.CreateMigrationJobRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1555,7 +1555,7 @@ async def test_create_migration_job_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -1763,7 +1763,7 @@ def test_update_migration_job_field_headers():
     # a field header. Set these to a non-empty value.
     request = clouddms.UpdateMigrationJobRequest()
 
-    request.migration_job.name = "migration_job.name/value"
+    request.migration_job.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1781,7 +1781,7 @@ def test_update_migration_job_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "migration_job.name=migration_job.name/value",
+        "migration_job.name=name_value",
     ) in kw["metadata"]
 
 
@@ -1795,7 +1795,7 @@ async def test_update_migration_job_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = clouddms.UpdateMigrationJobRequest()
 
-    request.migration_job.name = "migration_job.name/value"
+    request.migration_job.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1815,7 +1815,7 @@ async def test_update_migration_job_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "migration_job.name=migration_job.name/value",
+        "migration_job.name=name_value",
     ) in kw["metadata"]
 
 
@@ -2013,7 +2013,7 @@ def test_delete_migration_job_field_headers():
     # a field header. Set these to a non-empty value.
     request = clouddms.DeleteMigrationJobRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2031,7 +2031,7 @@ def test_delete_migration_job_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2045,7 +2045,7 @@ async def test_delete_migration_job_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = clouddms.DeleteMigrationJobRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2065,7 +2065,7 @@ async def test_delete_migration_job_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2253,7 +2253,7 @@ def test_start_migration_job_field_headers():
     # a field header. Set these to a non-empty value.
     request = clouddms.StartMigrationJobRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2271,7 +2271,7 @@ def test_start_migration_job_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2285,7 +2285,7 @@ async def test_start_migration_job_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = clouddms.StartMigrationJobRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2305,7 +2305,7 @@ async def test_start_migration_job_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2407,7 +2407,7 @@ def test_stop_migration_job_field_headers():
     # a field header. Set these to a non-empty value.
     request = clouddms.StopMigrationJobRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2425,7 +2425,7 @@ def test_stop_migration_job_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2439,7 +2439,7 @@ async def test_stop_migration_job_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = clouddms.StopMigrationJobRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2459,7 +2459,7 @@ async def test_stop_migration_job_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2561,7 +2561,7 @@ def test_resume_migration_job_field_headers():
     # a field header. Set these to a non-empty value.
     request = clouddms.ResumeMigrationJobRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2579,7 +2579,7 @@ def test_resume_migration_job_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2593,7 +2593,7 @@ async def test_resume_migration_job_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = clouddms.ResumeMigrationJobRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2613,7 +2613,7 @@ async def test_resume_migration_job_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2715,7 +2715,7 @@ def test_promote_migration_job_field_headers():
     # a field header. Set these to a non-empty value.
     request = clouddms.PromoteMigrationJobRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2733,7 +2733,7 @@ def test_promote_migration_job_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2747,7 +2747,7 @@ async def test_promote_migration_job_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = clouddms.PromoteMigrationJobRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2767,7 +2767,7 @@ async def test_promote_migration_job_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2869,7 +2869,7 @@ def test_verify_migration_job_field_headers():
     # a field header. Set these to a non-empty value.
     request = clouddms.VerifyMigrationJobRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2887,7 +2887,7 @@ def test_verify_migration_job_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2901,7 +2901,7 @@ async def test_verify_migration_job_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = clouddms.VerifyMigrationJobRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2921,7 +2921,7 @@ async def test_verify_migration_job_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -3023,7 +3023,7 @@ def test_restart_migration_job_field_headers():
     # a field header. Set these to a non-empty value.
     request = clouddms.RestartMigrationJobRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3041,7 +3041,7 @@ def test_restart_migration_job_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -3055,7 +3055,7 @@ async def test_restart_migration_job_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = clouddms.RestartMigrationJobRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3075,7 +3075,7 @@ async def test_restart_migration_job_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -3183,7 +3183,7 @@ def test_generate_ssh_script_field_headers():
     # a field header. Set these to a non-empty value.
     request = clouddms.GenerateSshScriptRequest()
 
-    request.migration_job = "migration_job/value"
+    request.migration_job = "migration_job_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3201,7 +3201,7 @@ def test_generate_ssh_script_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "migration_job=migration_job/value",
+        "migration_job=migration_job_value",
     ) in kw["metadata"]
 
 
@@ -3215,7 +3215,7 @@ async def test_generate_ssh_script_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = clouddms.GenerateSshScriptRequest()
 
-    request.migration_job = "migration_job/value"
+    request.migration_job = "migration_job_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3233,7 +3233,7 @@ async def test_generate_ssh_script_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "migration_job=migration_job/value",
+        "migration_job=migration_job_value",
     ) in kw["metadata"]
 
 
@@ -3345,7 +3345,7 @@ def test_list_connection_profiles_field_headers():
     # a field header. Set these to a non-empty value.
     request = clouddms.ListConnectionProfilesRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3363,7 +3363,7 @@ def test_list_connection_profiles_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -3377,7 +3377,7 @@ async def test_list_connection_profiles_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = clouddms.ListConnectionProfilesRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3397,7 +3397,7 @@ async def test_list_connection_profiles_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -3534,7 +3534,7 @@ def test_list_connection_profiles_pager(transport_name: str = "grpc"):
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, clouddms_resources.ConnectionProfile) for i in results)
 
@@ -3802,7 +3802,7 @@ def test_get_connection_profile_field_headers():
     # a field header. Set these to a non-empty value.
     request = clouddms.GetConnectionProfileRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3820,7 +3820,7 @@ def test_get_connection_profile_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -3834,7 +3834,7 @@ async def test_get_connection_profile_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = clouddms.GetConnectionProfileRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3854,7 +3854,7 @@ async def test_get_connection_profile_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -4043,7 +4043,7 @@ def test_create_connection_profile_field_headers():
     # a field header. Set these to a non-empty value.
     request = clouddms.CreateConnectionProfileRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4061,7 +4061,7 @@ def test_create_connection_profile_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -4075,7 +4075,7 @@ async def test_create_connection_profile_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = clouddms.CreateConnectionProfileRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4095,7 +4095,7 @@ async def test_create_connection_profile_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -4304,7 +4304,7 @@ def test_update_connection_profile_field_headers():
     # a field header. Set these to a non-empty value.
     request = clouddms.UpdateConnectionProfileRequest()
 
-    request.connection_profile.name = "connection_profile.name/value"
+    request.connection_profile.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4322,7 +4322,7 @@ def test_update_connection_profile_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "connection_profile.name=connection_profile.name/value",
+        "connection_profile.name=name_value",
     ) in kw["metadata"]
 
 
@@ -4336,7 +4336,7 @@ async def test_update_connection_profile_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = clouddms.UpdateConnectionProfileRequest()
 
-    request.connection_profile.name = "connection_profile.name/value"
+    request.connection_profile.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4356,7 +4356,7 @@ async def test_update_connection_profile_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "connection_profile.name=connection_profile.name/value",
+        "connection_profile.name=name_value",
     ) in kw["metadata"]
 
 
@@ -4555,7 +4555,7 @@ def test_delete_connection_profile_field_headers():
     # a field header. Set these to a non-empty value.
     request = clouddms.DeleteConnectionProfileRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4573,7 +4573,7 @@ def test_delete_connection_profile_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -4587,7 +4587,7 @@ async def test_delete_connection_profile_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = clouddms.DeleteConnectionProfileRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4607,7 +4607,7 @@ async def test_delete_connection_profile_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
