@@ -231,9 +231,9 @@ class IdentityAwareProxyAdminServiceAsyncClient:
             from google.cloud import iap_v1
             from google.iam.v1 import iam_policy_pb2  # type: ignore
 
-            def sample_set_iam_policy():
+            async def sample_set_iam_policy():
                 # Create a client
-                client = iap_v1.IdentityAwareProxyAdminServiceClient()
+                client = iap_v1.IdentityAwareProxyAdminServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = iam_policy_pb2.SetIamPolicyRequest(
@@ -241,7 +241,7 @@ class IdentityAwareProxyAdminServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.set_iam_policy(request=request)
+                response = await client.set_iam_policy(request=request)
 
                 # Handle the response
                 print(response)
@@ -370,9 +370,9 @@ class IdentityAwareProxyAdminServiceAsyncClient:
             from google.cloud import iap_v1
             from google.iam.v1 import iam_policy_pb2  # type: ignore
 
-            def sample_get_iam_policy():
+            async def sample_get_iam_policy():
                 # Create a client
-                client = iap_v1.IdentityAwareProxyAdminServiceClient()
+                client = iap_v1.IdentityAwareProxyAdminServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = iam_policy_pb2.GetIamPolicyRequest(
@@ -380,7 +380,7 @@ class IdentityAwareProxyAdminServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_iam_policy(request=request)
+                response = await client.get_iam_policy(request=request)
 
                 # Handle the response
                 print(response)
@@ -509,9 +509,9 @@ class IdentityAwareProxyAdminServiceAsyncClient:
             from google.cloud import iap_v1
             from google.iam.v1 import iam_policy_pb2  # type: ignore
 
-            def sample_test_iam_permissions():
+            async def sample_test_iam_permissions():
                 # Create a client
-                client = iap_v1.IdentityAwareProxyAdminServiceClient()
+                client = iap_v1.IdentityAwareProxyAdminServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = iam_policy_pb2.TestIamPermissionsRequest(
@@ -520,7 +520,7 @@ class IdentityAwareProxyAdminServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.test_iam_permissions(request=request)
+                response = await client.test_iam_permissions(request=request)
 
                 # Handle the response
                 print(response)
@@ -585,9 +585,9 @@ class IdentityAwareProxyAdminServiceAsyncClient:
 
             from google.cloud import iap_v1
 
-            def sample_get_iap_settings():
+            async def sample_get_iap_settings():
                 # Create a client
-                client = iap_v1.IdentityAwareProxyAdminServiceClient()
+                client = iap_v1.IdentityAwareProxyAdminServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = iap_v1.GetIapSettingsRequest(
@@ -595,7 +595,7 @@ class IdentityAwareProxyAdminServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_iap_settings(request=request)
+                response = await client.get_iap_settings(request=request)
 
                 # Handle the response
                 print(response)
@@ -656,9 +656,9 @@ class IdentityAwareProxyAdminServiceAsyncClient:
 
             from google.cloud import iap_v1
 
-            def sample_update_iap_settings():
+            async def sample_update_iap_settings():
                 # Create a client
-                client = iap_v1.IdentityAwareProxyAdminServiceClient()
+                client = iap_v1.IdentityAwareProxyAdminServiceAsyncClient()
 
                 # Initialize request argument(s)
                 iap_settings = iap_v1.IapSettings()
@@ -669,7 +669,7 @@ class IdentityAwareProxyAdminServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.update_iap_settings(request=request)
+                response = await client.update_iap_settings(request=request)
 
                 # Handle the response
                 print(response)

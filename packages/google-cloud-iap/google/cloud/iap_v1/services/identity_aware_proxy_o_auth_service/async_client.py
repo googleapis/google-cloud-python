@@ -228,9 +228,9 @@ class IdentityAwareProxyOAuthServiceAsyncClient:
 
             from google.cloud import iap_v1
 
-            def sample_list_brands():
+            async def sample_list_brands():
                 # Create a client
-                client = iap_v1.IdentityAwareProxyOAuthServiceClient()
+                client = iap_v1.IdentityAwareProxyOAuthServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = iap_v1.ListBrandsRequest(
@@ -238,7 +238,7 @@ class IdentityAwareProxyOAuthServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.list_brands(request=request)
+                response = await client.list_brands(request=request)
 
                 # Handle the response
                 print(response)
@@ -307,9 +307,9 @@ class IdentityAwareProxyOAuthServiceAsyncClient:
 
             from google.cloud import iap_v1
 
-            def sample_create_brand():
+            async def sample_create_brand():
                 # Create a client
-                client = iap_v1.IdentityAwareProxyOAuthServiceClient()
+                client = iap_v1.IdentityAwareProxyOAuthServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = iap_v1.CreateBrandRequest(
@@ -317,7 +317,7 @@ class IdentityAwareProxyOAuthServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.create_brand(request=request)
+                response = await client.create_brand(request=request)
 
                 # Handle the response
                 print(response)
@@ -380,9 +380,9 @@ class IdentityAwareProxyOAuthServiceAsyncClient:
 
             from google.cloud import iap_v1
 
-            def sample_get_brand():
+            async def sample_get_brand():
                 # Create a client
-                client = iap_v1.IdentityAwareProxyOAuthServiceClient()
+                client = iap_v1.IdentityAwareProxyOAuthServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = iap_v1.GetBrandRequest(
@@ -390,7 +390,7 @@ class IdentityAwareProxyOAuthServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_brand(request=request)
+                response = await client.get_brand(request=request)
 
                 # Handle the response
                 print(response)
@@ -456,9 +456,9 @@ class IdentityAwareProxyOAuthServiceAsyncClient:
 
             from google.cloud import iap_v1
 
-            def sample_create_identity_aware_proxy_client():
+            async def sample_create_identity_aware_proxy_client():
                 # Create a client
-                client = iap_v1.IdentityAwareProxyOAuthServiceClient()
+                client = iap_v1.IdentityAwareProxyOAuthServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = iap_v1.CreateIdentityAwareProxyClientRequest(
@@ -466,7 +466,7 @@ class IdentityAwareProxyOAuthServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.create_identity_aware_proxy_client(request=request)
+                response = await client.create_identity_aware_proxy_client(request=request)
 
                 # Handle the response
                 print(response)
@@ -529,9 +529,9 @@ class IdentityAwareProxyOAuthServiceAsyncClient:
 
             from google.cloud import iap_v1
 
-            def sample_list_identity_aware_proxy_clients():
+            async def sample_list_identity_aware_proxy_clients():
                 # Create a client
-                client = iap_v1.IdentityAwareProxyOAuthServiceClient()
+                client = iap_v1.IdentityAwareProxyOAuthServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = iap_v1.ListIdentityAwareProxyClientsRequest(
@@ -542,7 +542,7 @@ class IdentityAwareProxyOAuthServiceAsyncClient:
                 page_result = client.list_identity_aware_proxy_clients(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -616,9 +616,9 @@ class IdentityAwareProxyOAuthServiceAsyncClient:
 
             from google.cloud import iap_v1
 
-            def sample_get_identity_aware_proxy_client():
+            async def sample_get_identity_aware_proxy_client():
                 # Create a client
-                client = iap_v1.IdentityAwareProxyOAuthServiceClient()
+                client = iap_v1.IdentityAwareProxyOAuthServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = iap_v1.GetIdentityAwareProxyClientRequest(
@@ -626,7 +626,7 @@ class IdentityAwareProxyOAuthServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_identity_aware_proxy_client(request=request)
+                response = await client.get_identity_aware_proxy_client(request=request)
 
                 # Handle the response
                 print(response)
@@ -691,9 +691,9 @@ class IdentityAwareProxyOAuthServiceAsyncClient:
 
             from google.cloud import iap_v1
 
-            def sample_reset_identity_aware_proxy_client_secret():
+            async def sample_reset_identity_aware_proxy_client_secret():
                 # Create a client
-                client = iap_v1.IdentityAwareProxyOAuthServiceClient()
+                client = iap_v1.IdentityAwareProxyOAuthServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = iap_v1.ResetIdentityAwareProxyClientSecretRequest(
@@ -701,7 +701,7 @@ class IdentityAwareProxyOAuthServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.reset_identity_aware_proxy_client_secret(request=request)
+                response = await client.reset_identity_aware_proxy_client_secret(request=request)
 
                 # Handle the response
                 print(response)
@@ -767,9 +767,9 @@ class IdentityAwareProxyOAuthServiceAsyncClient:
 
             from google.cloud import iap_v1
 
-            def sample_delete_identity_aware_proxy_client():
+            async def sample_delete_identity_aware_proxy_client():
                 # Create a client
-                client = iap_v1.IdentityAwareProxyOAuthServiceClient()
+                client = iap_v1.IdentityAwareProxyOAuthServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = iap_v1.DeleteIdentityAwareProxyClientRequest(
@@ -777,7 +777,7 @@ class IdentityAwareProxyOAuthServiceAsyncClient:
                 )
 
                 # Make the request
-                client.delete_identity_aware_proxy_client(request=request)
+                await client.delete_identity_aware_proxy_client(request=request)
 
         Args:
             request (Union[google.cloud.iap_v1.types.DeleteIdentityAwareProxyClientRequest, dict]):

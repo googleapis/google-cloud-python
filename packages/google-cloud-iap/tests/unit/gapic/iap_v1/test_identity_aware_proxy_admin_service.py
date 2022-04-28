@@ -786,7 +786,7 @@ def test_set_iam_policy_field_headers():
     # a field header. Set these to a non-empty value.
     request = iam_policy_pb2.SetIamPolicyRequest()
 
-    request.resource = "resource/value"
+    request.resource = "resource_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
@@ -802,7 +802,7 @@ def test_set_iam_policy_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "resource=resource/value",
+        "resource=resource_value",
     ) in kw["metadata"]
 
 
@@ -816,7 +816,7 @@ async def test_set_iam_policy_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = iam_policy_pb2.SetIamPolicyRequest()
 
-    request.resource = "resource/value"
+    request.resource = "resource_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
@@ -832,7 +832,7 @@ async def test_set_iam_policy_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "resource=resource/value",
+        "resource=resource_value",
     ) in kw["metadata"]
 
 
@@ -956,7 +956,7 @@ def test_get_iam_policy_field_headers():
     # a field header. Set these to a non-empty value.
     request = iam_policy_pb2.GetIamPolicyRequest()
 
-    request.resource = "resource/value"
+    request.resource = "resource_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
@@ -972,7 +972,7 @@ def test_get_iam_policy_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "resource=resource/value",
+        "resource=resource_value",
     ) in kw["metadata"]
 
 
@@ -986,7 +986,7 @@ async def test_get_iam_policy_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = iam_policy_pb2.GetIamPolicyRequest()
 
-    request.resource = "resource/value"
+    request.resource = "resource_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
@@ -1002,7 +1002,7 @@ async def test_get_iam_policy_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "resource=resource/value",
+        "resource=resource_value",
     ) in kw["metadata"]
 
 
@@ -1128,7 +1128,7 @@ def test_test_iam_permissions_field_headers():
     # a field header. Set these to a non-empty value.
     request = iam_policy_pb2.TestIamPermissionsRequest()
 
-    request.resource = "resource/value"
+    request.resource = "resource_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1146,7 +1146,7 @@ def test_test_iam_permissions_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "resource=resource/value",
+        "resource=resource_value",
     ) in kw["metadata"]
 
 
@@ -1160,7 +1160,7 @@ async def test_test_iam_permissions_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = iam_policy_pb2.TestIamPermissionsRequest()
 
-    request.resource = "resource/value"
+    request.resource = "resource_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1180,7 +1180,7 @@ async def test_test_iam_permissions_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "resource=resource/value",
+        "resource=resource_value",
     ) in kw["metadata"]
 
 
@@ -1301,7 +1301,7 @@ def test_get_iap_settings_field_headers():
     # a field header. Set these to a non-empty value.
     request = service.GetIapSettingsRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_iap_settings), "__call__") as call:
@@ -1317,7 +1317,7 @@ def test_get_iap_settings_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1331,7 +1331,7 @@ async def test_get_iap_settings_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = service.GetIapSettingsRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_iap_settings), "__call__") as call:
@@ -1347,7 +1347,7 @@ async def test_get_iap_settings_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1455,7 +1455,7 @@ def test_update_iap_settings_field_headers():
     # a field header. Set these to a non-empty value.
     request = service.UpdateIapSettingsRequest()
 
-    request.iap_settings.name = "iap_settings.name/value"
+    request.iap_settings.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1473,7 +1473,7 @@ def test_update_iap_settings_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "iap_settings.name=iap_settings.name/value",
+        "iap_settings.name=name_value",
     ) in kw["metadata"]
 
 
@@ -1487,7 +1487,7 @@ async def test_update_iap_settings_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = service.UpdateIapSettingsRequest()
 
-    request.iap_settings.name = "iap_settings.name/value"
+    request.iap_settings.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1505,7 +1505,7 @@ async def test_update_iap_settings_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "iap_settings.name=iap_settings.name/value",
+        "iap_settings.name=name_value",
     ) in kw["metadata"]
 
 

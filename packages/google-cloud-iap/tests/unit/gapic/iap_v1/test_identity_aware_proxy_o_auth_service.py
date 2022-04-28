@@ -771,7 +771,7 @@ def test_list_brands_field_headers():
     # a field header. Set these to a non-empty value.
     request = service.ListBrandsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_brands), "__call__") as call:
@@ -787,7 +787,7 @@ def test_list_brands_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -801,7 +801,7 @@ async def test_list_brands_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = service.ListBrandsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_brands), "__call__") as call:
@@ -819,7 +819,7 @@ async def test_list_brands_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -933,7 +933,7 @@ def test_create_brand_field_headers():
     # a field header. Set these to a non-empty value.
     request = service.CreateBrandRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_brand), "__call__") as call:
@@ -949,7 +949,7 @@ def test_create_brand_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -963,7 +963,7 @@ async def test_create_brand_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = service.CreateBrandRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_brand), "__call__") as call:
@@ -979,7 +979,7 @@ async def test_create_brand_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -1093,7 +1093,7 @@ def test_get_brand_field_headers():
     # a field header. Set these to a non-empty value.
     request = service.GetBrandRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_brand), "__call__") as call:
@@ -1109,7 +1109,7 @@ def test_get_brand_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1123,7 +1123,7 @@ async def test_get_brand_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = service.GetBrandRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_brand), "__call__") as call:
@@ -1139,7 +1139,7 @@ async def test_get_brand_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1256,7 +1256,7 @@ def test_create_identity_aware_proxy_client_field_headers():
     # a field header. Set these to a non-empty value.
     request = service.CreateIdentityAwareProxyClientRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1274,7 +1274,7 @@ def test_create_identity_aware_proxy_client_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -1288,7 +1288,7 @@ async def test_create_identity_aware_proxy_client_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = service.CreateIdentityAwareProxyClientRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1308,7 +1308,7 @@ async def test_create_identity_aware_proxy_client_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -1417,7 +1417,7 @@ def test_list_identity_aware_proxy_clients_field_headers():
     # a field header. Set these to a non-empty value.
     request = service.ListIdentityAwareProxyClientsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1435,7 +1435,7 @@ def test_list_identity_aware_proxy_clients_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -1449,7 +1449,7 @@ async def test_list_identity_aware_proxy_clients_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = service.ListIdentityAwareProxyClientsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1469,7 +1469,7 @@ async def test_list_identity_aware_proxy_clients_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -1520,7 +1520,7 @@ def test_list_identity_aware_proxy_clients_pager(transport_name: str = "grpc"):
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, service.IdentityAwareProxyClient) for i in results)
 
@@ -1782,7 +1782,7 @@ def test_get_identity_aware_proxy_client_field_headers():
     # a field header. Set these to a non-empty value.
     request = service.GetIdentityAwareProxyClientRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1800,7 +1800,7 @@ def test_get_identity_aware_proxy_client_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1814,7 +1814,7 @@ async def test_get_identity_aware_proxy_client_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = service.GetIdentityAwareProxyClientRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1834,7 +1834,7 @@ async def test_get_identity_aware_proxy_client_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1953,7 +1953,7 @@ def test_reset_identity_aware_proxy_client_secret_field_headers():
     # a field header. Set these to a non-empty value.
     request = service.ResetIdentityAwareProxyClientSecretRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1971,7 +1971,7 @@ def test_reset_identity_aware_proxy_client_secret_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1985,7 +1985,7 @@ async def test_reset_identity_aware_proxy_client_secret_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = service.ResetIdentityAwareProxyClientSecretRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2005,7 +2005,7 @@ async def test_reset_identity_aware_proxy_client_secret_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2106,7 +2106,7 @@ def test_delete_identity_aware_proxy_client_field_headers():
     # a field header. Set these to a non-empty value.
     request = service.DeleteIdentityAwareProxyClientRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2124,7 +2124,7 @@ def test_delete_identity_aware_proxy_client_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2138,7 +2138,7 @@ async def test_delete_identity_aware_proxy_client_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = service.DeleteIdentityAwareProxyClientRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2156,7 +2156,7 @@ async def test_delete_identity_aware_proxy_client_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
