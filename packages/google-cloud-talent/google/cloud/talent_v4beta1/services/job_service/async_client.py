@@ -226,9 +226,9 @@ class JobServiceAsyncClient:
 
             from google.cloud import talent_v4beta1
 
-            def sample_create_job():
+            async def sample_create_job():
                 # Create a client
-                client = talent_v4beta1.JobServiceClient()
+                client = talent_v4beta1.JobServiceAsyncClient()
 
                 # Initialize request argument(s)
                 job = talent_v4beta1.Job()
@@ -243,7 +243,7 @@ class JobServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.create_job(request=request)
+                response = await client.create_job(request=request)
 
                 # Handle the response
                 print(response)
@@ -343,9 +343,9 @@ class JobServiceAsyncClient:
 
             from google.cloud import talent_v4beta1
 
-            def sample_batch_create_jobs():
+            async def sample_batch_create_jobs():
                 # Create a client
-                client = talent_v4beta1.JobServiceClient()
+                client = talent_v4beta1.JobServiceAsyncClient()
 
                 # Initialize request argument(s)
                 jobs = talent_v4beta1.Job()
@@ -364,7 +364,7 @@ class JobServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -475,9 +475,9 @@ class JobServiceAsyncClient:
 
             from google.cloud import talent_v4beta1
 
-            def sample_get_job():
+            async def sample_get_job():
                 # Create a client
-                client = talent_v4beta1.JobServiceClient()
+                client = talent_v4beta1.JobServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = talent_v4beta1.GetJobRequest(
@@ -485,7 +485,7 @@ class JobServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_job(request=request)
+                response = await client.get_job(request=request)
 
                 # Handle the response
                 print(response)
@@ -590,9 +590,9 @@ class JobServiceAsyncClient:
 
             from google.cloud import talent_v4beta1
 
-            def sample_update_job():
+            async def sample_update_job():
                 # Create a client
-                client = talent_v4beta1.JobServiceClient()
+                client = talent_v4beta1.JobServiceAsyncClient()
 
                 # Initialize request argument(s)
                 job = talent_v4beta1.Job()
@@ -606,7 +606,7 @@ class JobServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.update_job(request=request)
+                response = await client.update_job(request=request)
 
                 # Handle the response
                 print(response)
@@ -691,9 +691,9 @@ class JobServiceAsyncClient:
 
             from google.cloud import talent_v4beta1
 
-            def sample_batch_update_jobs():
+            async def sample_batch_update_jobs():
                 # Create a client
-                client = talent_v4beta1.JobServiceClient()
+                client = talent_v4beta1.JobServiceAsyncClient()
 
                 # Initialize request argument(s)
                 jobs = talent_v4beta1.Job()
@@ -712,7 +712,7 @@ class JobServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -824,9 +824,9 @@ class JobServiceAsyncClient:
 
             from google.cloud import talent_v4beta1
 
-            def sample_delete_job():
+            async def sample_delete_job():
                 # Create a client
-                client = talent_v4beta1.JobServiceClient()
+                client = talent_v4beta1.JobServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = talent_v4beta1.DeleteJobRequest(
@@ -834,7 +834,7 @@ class JobServiceAsyncClient:
                 )
 
                 # Make the request
-                client.delete_job(request=request)
+                await client.delete_job(request=request)
 
         Args:
             request (Union[google.cloud.talent_v4beta1.types.DeleteJobRequest, dict]):
@@ -924,9 +924,9 @@ class JobServiceAsyncClient:
 
             from google.cloud import talent_v4beta1
 
-            def sample_batch_delete_jobs():
+            async def sample_batch_delete_jobs():
                 # Create a client
-                client = talent_v4beta1.JobServiceClient()
+                client = talent_v4beta1.JobServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = talent_v4beta1.BatchDeleteJobsRequest(
@@ -935,7 +935,7 @@ class JobServiceAsyncClient:
                 )
 
                 # Make the request
-                client.batch_delete_jobs(request=request)
+                await client.batch_delete_jobs(request=request)
 
         Args:
             request (Union[google.cloud.talent_v4beta1.types.BatchDeleteJobsRequest, dict]):
@@ -1033,9 +1033,9 @@ class JobServiceAsyncClient:
 
             from google.cloud import talent_v4beta1
 
-            def sample_list_jobs():
+            async def sample_list_jobs():
                 # Create a client
-                client = talent_v4beta1.JobServiceClient()
+                client = talent_v4beta1.JobServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = talent_v4beta1.ListJobsRequest(
@@ -1047,7 +1047,7 @@ class JobServiceAsyncClient:
                 page_result = client.list_jobs(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -1190,9 +1190,9 @@ class JobServiceAsyncClient:
 
             from google.cloud import talent_v4beta1
 
-            def sample_search_jobs():
+            async def sample_search_jobs():
                 # Create a client
-                client = talent_v4beta1.JobServiceClient()
+                client = talent_v4beta1.JobServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = talent_v4beta1.SearchJobsRequest(
@@ -1203,7 +1203,7 @@ class JobServiceAsyncClient:
                 page_result = client.search_jobs(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -1287,9 +1287,9 @@ class JobServiceAsyncClient:
 
             from google.cloud import talent_v4beta1
 
-            def sample_search_jobs_for_alert():
+            async def sample_search_jobs_for_alert():
                 # Create a client
-                client = talent_v4beta1.JobServiceClient()
+                client = talent_v4beta1.JobServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = talent_v4beta1.SearchJobsRequest(
@@ -1300,7 +1300,7 @@ class JobServiceAsyncClient:
                 page_result = client.search_jobs_for_alert(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:

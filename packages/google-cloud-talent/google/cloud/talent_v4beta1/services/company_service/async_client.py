@@ -224,9 +224,9 @@ class CompanyServiceAsyncClient:
 
             from google.cloud import talent_v4beta1
 
-            def sample_create_company():
+            async def sample_create_company():
                 # Create a client
-                client = talent_v4beta1.CompanyServiceClient()
+                client = talent_v4beta1.CompanyServiceAsyncClient()
 
                 # Initialize request argument(s)
                 company = talent_v4beta1.Company()
@@ -239,7 +239,7 @@ class CompanyServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.create_company(request=request)
+                response = await client.create_company(request=request)
 
                 # Handle the response
                 print(response)
@@ -341,9 +341,9 @@ class CompanyServiceAsyncClient:
 
             from google.cloud import talent_v4beta1
 
-            def sample_get_company():
+            async def sample_get_company():
                 # Create a client
-                client = talent_v4beta1.CompanyServiceClient()
+                client = talent_v4beta1.CompanyServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = talent_v4beta1.GetCompanyRequest(
@@ -351,7 +351,7 @@ class CompanyServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_company(request=request)
+                response = await client.get_company(request=request)
 
                 # Handle the response
                 print(response)
@@ -458,9 +458,9 @@ class CompanyServiceAsyncClient:
 
             from google.cloud import talent_v4beta1
 
-            def sample_update_company():
+            async def sample_update_company():
                 # Create a client
-                client = talent_v4beta1.CompanyServiceClient()
+                client = talent_v4beta1.CompanyServiceAsyncClient()
 
                 # Initialize request argument(s)
                 company = talent_v4beta1.Company()
@@ -472,7 +472,7 @@ class CompanyServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.update_company(request=request)
+                response = await client.update_company(request=request)
 
                 # Handle the response
                 print(response)
@@ -566,9 +566,9 @@ class CompanyServiceAsyncClient:
 
             from google.cloud import talent_v4beta1
 
-            def sample_delete_company():
+            async def sample_delete_company():
                 # Create a client
-                client = talent_v4beta1.CompanyServiceClient()
+                client = talent_v4beta1.CompanyServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = talent_v4beta1.DeleteCompanyRequest(
@@ -576,7 +576,7 @@ class CompanyServiceAsyncClient:
                 )
 
                 # Make the request
-                client.delete_company(request=request)
+                await client.delete_company(request=request)
 
         Args:
             request (Union[google.cloud.talent_v4beta1.types.DeleteCompanyRequest, dict]):
@@ -665,9 +665,9 @@ class CompanyServiceAsyncClient:
 
             from google.cloud import talent_v4beta1
 
-            def sample_list_companies():
+            async def sample_list_companies():
                 # Create a client
-                client = talent_v4beta1.CompanyServiceClient()
+                client = talent_v4beta1.CompanyServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = talent_v4beta1.ListCompaniesRequest(
@@ -678,7 +678,7 @@ class CompanyServiceAsyncClient:
                 page_result = client.list_companies(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:

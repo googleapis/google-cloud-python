@@ -228,9 +228,9 @@ class ProfileServiceAsyncClient:
 
             from google.cloud import talent_v4beta1
 
-            def sample_list_profiles():
+            async def sample_list_profiles():
                 # Create a client
-                client = talent_v4beta1.ProfileServiceClient()
+                client = talent_v4beta1.ProfileServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = talent_v4beta1.ListProfilesRequest(
@@ -241,7 +241,7 @@ class ProfileServiceAsyncClient:
                 page_result = client.list_profiles(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -349,9 +349,9 @@ class ProfileServiceAsyncClient:
 
             from google.cloud import talent_v4beta1
 
-            def sample_create_profile():
+            async def sample_create_profile():
                 # Create a client
-                client = talent_v4beta1.ProfileServiceClient()
+                client = talent_v4beta1.ProfileServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = talent_v4beta1.CreateProfileRequest(
@@ -359,7 +359,7 @@ class ProfileServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.create_profile(request=request)
+                response = await client.create_profile(request=request)
 
                 # Handle the response
                 print(response)
@@ -456,9 +456,9 @@ class ProfileServiceAsyncClient:
 
             from google.cloud import talent_v4beta1
 
-            def sample_get_profile():
+            async def sample_get_profile():
                 # Create a client
-                client = talent_v4beta1.ProfileServiceClient()
+                client = talent_v4beta1.ProfileServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = talent_v4beta1.GetProfileRequest(
@@ -466,7 +466,7 @@ class ProfileServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_profile(request=request)
+                response = await client.get_profile(request=request)
 
                 # Handle the response
                 print(response)
@@ -566,16 +566,16 @@ class ProfileServiceAsyncClient:
 
             from google.cloud import talent_v4beta1
 
-            def sample_update_profile():
+            async def sample_update_profile():
                 # Create a client
-                client = talent_v4beta1.ProfileServiceClient()
+                client = talent_v4beta1.ProfileServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = talent_v4beta1.UpdateProfileRequest(
                 )
 
                 # Make the request
-                response = client.update_profile(request=request)
+                response = await client.update_profile(request=request)
 
                 # Handle the response
                 print(response)
@@ -663,9 +663,9 @@ class ProfileServiceAsyncClient:
 
             from google.cloud import talent_v4beta1
 
-            def sample_delete_profile():
+            async def sample_delete_profile():
                 # Create a client
-                client = talent_v4beta1.ProfileServiceClient()
+                client = talent_v4beta1.ProfileServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = talent_v4beta1.DeleteProfileRequest(
@@ -673,7 +673,7 @@ class ProfileServiceAsyncClient:
                 )
 
                 # Make the request
-                client.delete_profile(request=request)
+                await client.delete_profile(request=request)
 
         Args:
             request (Union[google.cloud.talent_v4beta1.types.DeleteProfileRequest, dict]):
@@ -765,9 +765,9 @@ class ProfileServiceAsyncClient:
 
             from google.cloud import talent_v4beta1
 
-            def sample_search_profiles():
+            async def sample_search_profiles():
                 # Create a client
-                client = talent_v4beta1.ProfileServiceClient()
+                client = talent_v4beta1.ProfileServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = talent_v4beta1.SearchProfilesRequest(
@@ -778,7 +778,7 @@ class ProfileServiceAsyncClient:
                 page_result = client.search_profiles(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:

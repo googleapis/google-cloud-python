@@ -225,9 +225,9 @@ class TenantServiceAsyncClient:
 
             from google.cloud import talent_v4
 
-            def sample_create_tenant():
+            async def sample_create_tenant():
                 # Create a client
-                client = talent_v4.TenantServiceClient()
+                client = talent_v4.TenantServiceAsyncClient()
 
                 # Initialize request argument(s)
                 tenant = talent_v4.Tenant()
@@ -239,7 +239,7 @@ class TenantServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.create_tenant(request=request)
+                response = await client.create_tenant(request=request)
 
                 # Handle the response
                 print(response)
@@ -339,9 +339,9 @@ class TenantServiceAsyncClient:
 
             from google.cloud import talent_v4
 
-            def sample_get_tenant():
+            async def sample_get_tenant():
                 # Create a client
-                client = talent_v4.TenantServiceClient()
+                client = talent_v4.TenantServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = talent_v4.GetTenantRequest(
@@ -349,7 +349,7 @@ class TenantServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_tenant(request=request)
+                response = await client.get_tenant(request=request)
 
                 # Handle the response
                 print(response)
@@ -454,9 +454,9 @@ class TenantServiceAsyncClient:
 
             from google.cloud import talent_v4
 
-            def sample_update_tenant():
+            async def sample_update_tenant():
                 # Create a client
-                client = talent_v4.TenantServiceClient()
+                client = talent_v4.TenantServiceAsyncClient()
 
                 # Initialize request argument(s)
                 tenant = talent_v4.Tenant()
@@ -467,7 +467,7 @@ class TenantServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.update_tenant(request=request)
+                response = await client.update_tenant(request=request)
 
                 # Handle the response
                 print(response)
@@ -578,9 +578,9 @@ class TenantServiceAsyncClient:
 
             from google.cloud import talent_v4
 
-            def sample_delete_tenant():
+            async def sample_delete_tenant():
                 # Create a client
-                client = talent_v4.TenantServiceClient()
+                client = talent_v4.TenantServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = talent_v4.DeleteTenantRequest(
@@ -588,7 +588,7 @@ class TenantServiceAsyncClient:
                 )
 
                 # Make the request
-                client.delete_tenant(request=request)
+                await client.delete_tenant(request=request)
 
         Args:
             request (Union[google.cloud.talent_v4.types.DeleteTenantRequest, dict]):
@@ -673,9 +673,9 @@ class TenantServiceAsyncClient:
 
             from google.cloud import talent_v4
 
-            def sample_list_tenants():
+            async def sample_list_tenants():
                 # Create a client
-                client = talent_v4.TenantServiceClient()
+                client = talent_v4.TenantServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = talent_v4.ListTenantsRequest(
@@ -686,7 +686,7 @@ class TenantServiceAsyncClient:
                 page_result = client.list_tenants(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:

@@ -222,9 +222,9 @@ class EventServiceAsyncClient:
 
             from google.cloud import talent_v4
 
-            def sample_create_client_event():
+            async def sample_create_client_event():
                 # Create a client
-                client = talent_v4.EventServiceClient()
+                client = talent_v4.EventServiceAsyncClient()
 
                 # Initialize request argument(s)
                 client_event = talent_v4.ClientEvent()
@@ -238,7 +238,7 @@ class EventServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.create_client_event(request=request)
+                response = await client.create_client_event(request=request)
 
                 # Handle the response
                 print(response)

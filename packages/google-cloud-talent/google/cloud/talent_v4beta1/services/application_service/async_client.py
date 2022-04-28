@@ -236,9 +236,9 @@ class ApplicationServiceAsyncClient:
 
             from google.cloud import talent_v4beta1
 
-            def sample_create_application():
+            async def sample_create_application():
                 # Create a client
-                client = talent_v4beta1.ApplicationServiceClient()
+                client = talent_v4beta1.ApplicationServiceAsyncClient()
 
                 # Initialize request argument(s)
                 application = talent_v4beta1.Application()
@@ -252,7 +252,7 @@ class ApplicationServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.create_application(request=request)
+                response = await client.create_application(request=request)
 
                 # Handle the response
                 print(response)
@@ -350,9 +350,9 @@ class ApplicationServiceAsyncClient:
 
             from google.cloud import talent_v4beta1
 
-            def sample_get_application():
+            async def sample_get_application():
                 # Create a client
-                client = talent_v4beta1.ApplicationServiceClient()
+                client = talent_v4beta1.ApplicationServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = talent_v4beta1.GetApplicationRequest(
@@ -360,7 +360,7 @@ class ApplicationServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_application(request=request)
+                response = await client.get_application(request=request)
 
                 # Handle the response
                 print(response)
@@ -460,9 +460,9 @@ class ApplicationServiceAsyncClient:
 
             from google.cloud import talent_v4beta1
 
-            def sample_update_application():
+            async def sample_update_application():
                 # Create a client
-                client = talent_v4beta1.ApplicationServiceClient()
+                client = talent_v4beta1.ApplicationServiceAsyncClient()
 
                 # Initialize request argument(s)
                 application = talent_v4beta1.Application()
@@ -475,7 +475,7 @@ class ApplicationServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.update_application(request=request)
+                response = await client.update_application(request=request)
 
                 # Handle the response
                 print(response)
@@ -563,9 +563,9 @@ class ApplicationServiceAsyncClient:
 
             from google.cloud import talent_v4beta1
 
-            def sample_delete_application():
+            async def sample_delete_application():
                 # Create a client
-                client = talent_v4beta1.ApplicationServiceClient()
+                client = talent_v4beta1.ApplicationServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = talent_v4beta1.DeleteApplicationRequest(
@@ -573,7 +573,7 @@ class ApplicationServiceAsyncClient:
                 )
 
                 # Make the request
-                client.delete_application(request=request)
+                await client.delete_application(request=request)
 
         Args:
             request (Union[google.cloud.talent_v4beta1.types.DeleteApplicationRequest, dict]):
@@ -660,9 +660,9 @@ class ApplicationServiceAsyncClient:
 
             from google.cloud import talent_v4beta1
 
-            def sample_list_applications():
+            async def sample_list_applications():
                 # Create a client
-                client = talent_v4beta1.ApplicationServiceClient()
+                client = talent_v4beta1.ApplicationServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = talent_v4beta1.ListApplicationsRequest(
@@ -673,7 +673,7 @@ class ApplicationServiceAsyncClient:
                 page_result = client.list_applications(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:

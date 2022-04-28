@@ -214,9 +214,9 @@ class CompletionAsyncClient:
 
             from google.cloud import talent_v4
 
-            def sample_complete_query():
+            async def sample_complete_query():
                 # Create a client
-                client = talent_v4.CompletionClient()
+                client = talent_v4.CompletionAsyncClient()
 
                 # Initialize request argument(s)
                 request = talent_v4.CompleteQueryRequest(
@@ -226,7 +226,7 @@ class CompletionAsyncClient:
                 )
 
                 # Make the request
-                response = client.complete_query(request=request)
+                response = await client.complete_query(request=request)
 
                 # Handle the response
                 print(response)
