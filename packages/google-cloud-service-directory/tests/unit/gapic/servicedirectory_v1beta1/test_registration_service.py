@@ -777,7 +777,7 @@ def test_create_namespace_field_headers():
     # a field header. Set these to a non-empty value.
     request = registration_service.CreateNamespaceRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_namespace), "__call__") as call:
@@ -793,7 +793,7 @@ def test_create_namespace_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -807,7 +807,7 @@ async def test_create_namespace_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = registration_service.CreateNamespaceRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_namespace), "__call__") as call:
@@ -825,7 +825,7 @@ async def test_create_namespace_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -1030,7 +1030,7 @@ def test_list_namespaces_field_headers():
     # a field header. Set these to a non-empty value.
     request = registration_service.ListNamespacesRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_namespaces), "__call__") as call:
@@ -1046,7 +1046,7 @@ def test_list_namespaces_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -1060,7 +1060,7 @@ async def test_list_namespaces_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = registration_service.ListNamespacesRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_namespaces), "__call__") as call:
@@ -1078,7 +1078,7 @@ async def test_list_namespaces_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -1209,7 +1209,7 @@ def test_list_namespaces_pager(transport_name: str = "grpc"):
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, namespace.Namespace) for i in results)
 
@@ -1451,7 +1451,7 @@ def test_get_namespace_field_headers():
     # a field header. Set these to a non-empty value.
     request = registration_service.GetNamespaceRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_namespace), "__call__") as call:
@@ -1467,7 +1467,7 @@ def test_get_namespace_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1481,7 +1481,7 @@ async def test_get_namespace_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = registration_service.GetNamespaceRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_namespace), "__call__") as call:
@@ -1497,7 +1497,7 @@ async def test_get_namespace_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1680,7 +1680,7 @@ def test_update_namespace_field_headers():
     # a field header. Set these to a non-empty value.
     request = registration_service.UpdateNamespaceRequest()
 
-    request.namespace.name = "namespace.name/value"
+    request.namespace.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_namespace), "__call__") as call:
@@ -1696,7 +1696,7 @@ def test_update_namespace_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "namespace.name=namespace.name/value",
+        "namespace.name=name_value",
     ) in kw["metadata"]
 
 
@@ -1710,7 +1710,7 @@ async def test_update_namespace_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = registration_service.UpdateNamespaceRequest()
 
-    request.namespace.name = "namespace.name/value"
+    request.namespace.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_namespace), "__call__") as call:
@@ -1728,7 +1728,7 @@ async def test_update_namespace_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "namespace.name=namespace.name/value",
+        "namespace.name=name_value",
     ) in kw["metadata"]
 
 
@@ -1915,7 +1915,7 @@ def test_delete_namespace_field_headers():
     # a field header. Set these to a non-empty value.
     request = registration_service.DeleteNamespaceRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_namespace), "__call__") as call:
@@ -1931,7 +1931,7 @@ def test_delete_namespace_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1945,7 +1945,7 @@ async def test_delete_namespace_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = registration_service.DeleteNamespaceRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_namespace), "__call__") as call:
@@ -1961,7 +1961,7 @@ async def test_delete_namespace_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2144,7 +2144,7 @@ def test_create_service_field_headers():
     # a field header. Set these to a non-empty value.
     request = registration_service.CreateServiceRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_service), "__call__") as call:
@@ -2160,7 +2160,7 @@ def test_create_service_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -2174,7 +2174,7 @@ async def test_create_service_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = registration_service.CreateServiceRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_service), "__call__") as call:
@@ -2190,7 +2190,7 @@ async def test_create_service_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -2393,7 +2393,7 @@ def test_list_services_field_headers():
     # a field header. Set these to a non-empty value.
     request = registration_service.ListServicesRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_services), "__call__") as call:
@@ -2409,7 +2409,7 @@ def test_list_services_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -2423,7 +2423,7 @@ async def test_list_services_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = registration_service.ListServicesRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_services), "__call__") as call:
@@ -2441,7 +2441,7 @@ async def test_list_services_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -2572,7 +2572,7 @@ def test_list_services_pager(transport_name: str = "grpc"):
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, service.Service) for i in results)
 
@@ -2813,7 +2813,7 @@ def test_get_service_field_headers():
     # a field header. Set these to a non-empty value.
     request = registration_service.GetServiceRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_service), "__call__") as call:
@@ -2829,7 +2829,7 @@ def test_get_service_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2843,7 +2843,7 @@ async def test_get_service_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = registration_service.GetServiceRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_service), "__call__") as call:
@@ -2859,7 +2859,7 @@ async def test_get_service_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -3042,7 +3042,7 @@ def test_update_service_field_headers():
     # a field header. Set these to a non-empty value.
     request = registration_service.UpdateServiceRequest()
 
-    request.service.name = "service.name/value"
+    request.service.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_service), "__call__") as call:
@@ -3058,7 +3058,7 @@ def test_update_service_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "service.name=service.name/value",
+        "service.name=name_value",
     ) in kw["metadata"]
 
 
@@ -3072,7 +3072,7 @@ async def test_update_service_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = registration_service.UpdateServiceRequest()
 
-    request.service.name = "service.name/value"
+    request.service.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_service), "__call__") as call:
@@ -3088,7 +3088,7 @@ async def test_update_service_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "service.name=service.name/value",
+        "service.name=name_value",
     ) in kw["metadata"]
 
 
@@ -3273,7 +3273,7 @@ def test_delete_service_field_headers():
     # a field header. Set these to a non-empty value.
     request = registration_service.DeleteServiceRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_service), "__call__") as call:
@@ -3289,7 +3289,7 @@ def test_delete_service_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -3303,7 +3303,7 @@ async def test_delete_service_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = registration_service.DeleteServiceRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_service), "__call__") as call:
@@ -3319,7 +3319,7 @@ async def test_delete_service_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -3514,7 +3514,7 @@ def test_create_endpoint_field_headers():
     # a field header. Set these to a non-empty value.
     request = registration_service.CreateEndpointRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_endpoint), "__call__") as call:
@@ -3530,7 +3530,7 @@ def test_create_endpoint_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -3544,7 +3544,7 @@ async def test_create_endpoint_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = registration_service.CreateEndpointRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_endpoint), "__call__") as call:
@@ -3562,7 +3562,7 @@ async def test_create_endpoint_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -3767,7 +3767,7 @@ def test_list_endpoints_field_headers():
     # a field header. Set these to a non-empty value.
     request = registration_service.ListEndpointsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_endpoints), "__call__") as call:
@@ -3783,7 +3783,7 @@ def test_list_endpoints_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -3797,7 +3797,7 @@ async def test_list_endpoints_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = registration_service.ListEndpointsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_endpoints), "__call__") as call:
@@ -3815,7 +3815,7 @@ async def test_list_endpoints_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -3946,7 +3946,7 @@ def test_list_endpoints_pager(transport_name: str = "grpc"):
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, endpoint.Endpoint) for i in results)
 
@@ -4200,7 +4200,7 @@ def test_get_endpoint_field_headers():
     # a field header. Set these to a non-empty value.
     request = registration_service.GetEndpointRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_endpoint), "__call__") as call:
@@ -4216,7 +4216,7 @@ def test_get_endpoint_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -4230,7 +4230,7 @@ async def test_get_endpoint_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = registration_service.GetEndpointRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_endpoint), "__call__") as call:
@@ -4246,7 +4246,7 @@ async def test_get_endpoint_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -4441,7 +4441,7 @@ def test_update_endpoint_field_headers():
     # a field header. Set these to a non-empty value.
     request = registration_service.UpdateEndpointRequest()
 
-    request.endpoint.name = "endpoint.name/value"
+    request.endpoint.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_endpoint), "__call__") as call:
@@ -4457,7 +4457,7 @@ def test_update_endpoint_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "endpoint.name=endpoint.name/value",
+        "endpoint.name=name_value",
     ) in kw["metadata"]
 
 
@@ -4471,7 +4471,7 @@ async def test_update_endpoint_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = registration_service.UpdateEndpointRequest()
 
-    request.endpoint.name = "endpoint.name/value"
+    request.endpoint.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_endpoint), "__call__") as call:
@@ -4489,7 +4489,7 @@ async def test_update_endpoint_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "endpoint.name=endpoint.name/value",
+        "endpoint.name=name_value",
     ) in kw["metadata"]
 
 
@@ -4676,7 +4676,7 @@ def test_delete_endpoint_field_headers():
     # a field header. Set these to a non-empty value.
     request = registration_service.DeleteEndpointRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_endpoint), "__call__") as call:
@@ -4692,7 +4692,7 @@ def test_delete_endpoint_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -4706,7 +4706,7 @@ async def test_delete_endpoint_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = registration_service.DeleteEndpointRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_endpoint), "__call__") as call:
@@ -4722,7 +4722,7 @@ async def test_delete_endpoint_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -4908,7 +4908,7 @@ def test_get_iam_policy_field_headers():
     # a field header. Set these to a non-empty value.
     request = iam_policy_pb2.GetIamPolicyRequest()
 
-    request.resource = "resource/value"
+    request.resource = "resource_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
@@ -4924,7 +4924,7 @@ def test_get_iam_policy_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "resource=resource/value",
+        "resource=resource_value",
     ) in kw["metadata"]
 
 
@@ -4938,7 +4938,7 @@ async def test_get_iam_policy_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = iam_policy_pb2.GetIamPolicyRequest()
 
-    request.resource = "resource/value"
+    request.resource = "resource_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
@@ -4954,7 +4954,7 @@ async def test_get_iam_policy_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "resource=resource/value",
+        "resource=resource_value",
     ) in kw["metadata"]
 
 
@@ -5077,7 +5077,7 @@ def test_set_iam_policy_field_headers():
     # a field header. Set these to a non-empty value.
     request = iam_policy_pb2.SetIamPolicyRequest()
 
-    request.resource = "resource/value"
+    request.resource = "resource_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
@@ -5093,7 +5093,7 @@ def test_set_iam_policy_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "resource=resource/value",
+        "resource=resource_value",
     ) in kw["metadata"]
 
 
@@ -5107,7 +5107,7 @@ async def test_set_iam_policy_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = iam_policy_pb2.SetIamPolicyRequest()
 
-    request.resource = "resource/value"
+    request.resource = "resource_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
@@ -5123,7 +5123,7 @@ async def test_set_iam_policy_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "resource=resource/value",
+        "resource=resource_value",
     ) in kw["metadata"]
 
 
@@ -5250,7 +5250,7 @@ def test_test_iam_permissions_field_headers():
     # a field header. Set these to a non-empty value.
     request = iam_policy_pb2.TestIamPermissionsRequest()
 
-    request.resource = "resource/value"
+    request.resource = "resource_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5268,7 +5268,7 @@ def test_test_iam_permissions_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "resource=resource/value",
+        "resource=resource_value",
     ) in kw["metadata"]
 
 
@@ -5282,7 +5282,7 @@ async def test_test_iam_permissions_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = iam_policy_pb2.TestIamPermissionsRequest()
 
-    request.resource = "resource/value"
+    request.resource = "resource_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5302,7 +5302,7 @@ async def test_test_iam_permissions_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "resource=resource/value",
+        "resource=resource_value",
     ) in kw["metadata"]
 
 

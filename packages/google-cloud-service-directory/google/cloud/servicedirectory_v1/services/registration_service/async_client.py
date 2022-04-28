@@ -250,9 +250,9 @@ class RegistrationServiceAsyncClient:
 
             from google.cloud import servicedirectory_v1
 
-            def sample_create_namespace():
+            async def sample_create_namespace():
                 # Create a client
-                client = servicedirectory_v1.RegistrationServiceClient()
+                client = servicedirectory_v1.RegistrationServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = servicedirectory_v1.CreateNamespaceRequest(
@@ -261,7 +261,7 @@ class RegistrationServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.create_namespace(request=request)
+                response = await client.create_namespace(request=request)
 
                 # Handle the response
                 print(response)
@@ -373,9 +373,9 @@ class RegistrationServiceAsyncClient:
 
             from google.cloud import servicedirectory_v1
 
-            def sample_list_namespaces():
+            async def sample_list_namespaces():
                 # Create a client
-                client = servicedirectory_v1.RegistrationServiceClient()
+                client = servicedirectory_v1.RegistrationServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = servicedirectory_v1.ListNamespacesRequest(
@@ -386,7 +386,7 @@ class RegistrationServiceAsyncClient:
                 page_result = client.list_namespaces(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -482,9 +482,9 @@ class RegistrationServiceAsyncClient:
 
             from google.cloud import servicedirectory_v1
 
-            def sample_get_namespace():
+            async def sample_get_namespace():
                 # Create a client
-                client = servicedirectory_v1.RegistrationServiceClient()
+                client = servicedirectory_v1.RegistrationServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = servicedirectory_v1.GetNamespaceRequest(
@@ -492,7 +492,7 @@ class RegistrationServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_namespace(request=request)
+                response = await client.get_namespace(request=request)
 
                 # Handle the response
                 print(response)
@@ -580,16 +580,16 @@ class RegistrationServiceAsyncClient:
 
             from google.cloud import servicedirectory_v1
 
-            def sample_update_namespace():
+            async def sample_update_namespace():
                 # Create a client
-                client = servicedirectory_v1.RegistrationServiceClient()
+                client = servicedirectory_v1.RegistrationServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = servicedirectory_v1.UpdateNamespaceRequest(
                 )
 
                 # Make the request
-                response = client.update_namespace(request=request)
+                response = await client.update_namespace(request=request)
 
                 # Handle the response
                 print(response)
@@ -686,9 +686,9 @@ class RegistrationServiceAsyncClient:
 
             from google.cloud import servicedirectory_v1
 
-            def sample_delete_namespace():
+            async def sample_delete_namespace():
                 # Create a client
-                client = servicedirectory_v1.RegistrationServiceClient()
+                client = servicedirectory_v1.RegistrationServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = servicedirectory_v1.DeleteNamespaceRequest(
@@ -696,7 +696,7 @@ class RegistrationServiceAsyncClient:
                 )
 
                 # Make the request
-                client.delete_namespace(request=request)
+                await client.delete_namespace(request=request)
 
         Args:
             request (Union[google.cloud.servicedirectory_v1.types.DeleteNamespaceRequest, dict]):
@@ -771,9 +771,9 @@ class RegistrationServiceAsyncClient:
 
             from google.cloud import servicedirectory_v1
 
-            def sample_create_service():
+            async def sample_create_service():
                 # Create a client
-                client = servicedirectory_v1.RegistrationServiceClient()
+                client = servicedirectory_v1.RegistrationServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = servicedirectory_v1.CreateServiceRequest(
@@ -782,7 +782,7 @@ class RegistrationServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.create_service(request=request)
+                response = await client.create_service(request=request)
 
                 # Handle the response
                 print(response)
@@ -893,9 +893,9 @@ class RegistrationServiceAsyncClient:
 
             from google.cloud import servicedirectory_v1
 
-            def sample_list_services():
+            async def sample_list_services():
                 # Create a client
-                client = servicedirectory_v1.RegistrationServiceClient()
+                client = servicedirectory_v1.RegistrationServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = servicedirectory_v1.ListServicesRequest(
@@ -906,7 +906,7 @@ class RegistrationServiceAsyncClient:
                 page_result = client.list_services(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -1002,9 +1002,9 @@ class RegistrationServiceAsyncClient:
 
             from google.cloud import servicedirectory_v1
 
-            def sample_get_service():
+            async def sample_get_service():
                 # Create a client
-                client = servicedirectory_v1.RegistrationServiceClient()
+                client = servicedirectory_v1.RegistrationServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = servicedirectory_v1.GetServiceRequest(
@@ -1012,7 +1012,7 @@ class RegistrationServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_service(request=request)
+                response = await client.get_service(request=request)
 
                 # Handle the response
                 print(response)
@@ -1103,16 +1103,16 @@ class RegistrationServiceAsyncClient:
 
             from google.cloud import servicedirectory_v1
 
-            def sample_update_service():
+            async def sample_update_service():
                 # Create a client
-                client = servicedirectory_v1.RegistrationServiceClient()
+                client = servicedirectory_v1.RegistrationServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = servicedirectory_v1.UpdateServiceRequest(
                 )
 
                 # Make the request
-                response = client.update_service(request=request)
+                response = await client.update_service(request=request)
 
                 # Handle the response
                 print(response)
@@ -1209,9 +1209,9 @@ class RegistrationServiceAsyncClient:
 
             from google.cloud import servicedirectory_v1
 
-            def sample_delete_service():
+            async def sample_delete_service():
                 # Create a client
-                client = servicedirectory_v1.RegistrationServiceClient()
+                client = servicedirectory_v1.RegistrationServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = servicedirectory_v1.DeleteServiceRequest(
@@ -1219,7 +1219,7 @@ class RegistrationServiceAsyncClient:
                 )
 
                 # Make the request
-                client.delete_service(request=request)
+                await client.delete_service(request=request)
 
         Args:
             request (Union[google.cloud.servicedirectory_v1.types.DeleteServiceRequest, dict]):
@@ -1294,9 +1294,9 @@ class RegistrationServiceAsyncClient:
 
             from google.cloud import servicedirectory_v1
 
-            def sample_create_endpoint():
+            async def sample_create_endpoint():
                 # Create a client
-                client = servicedirectory_v1.RegistrationServiceClient()
+                client = servicedirectory_v1.RegistrationServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = servicedirectory_v1.CreateEndpointRequest(
@@ -1305,7 +1305,7 @@ class RegistrationServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.create_endpoint(request=request)
+                response = await client.create_endpoint(request=request)
 
                 # Handle the response
                 print(response)
@@ -1415,9 +1415,9 @@ class RegistrationServiceAsyncClient:
 
             from google.cloud import servicedirectory_v1
 
-            def sample_list_endpoints():
+            async def sample_list_endpoints():
                 # Create a client
-                client = servicedirectory_v1.RegistrationServiceClient()
+                client = servicedirectory_v1.RegistrationServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = servicedirectory_v1.ListEndpointsRequest(
@@ -1428,7 +1428,7 @@ class RegistrationServiceAsyncClient:
                 page_result = client.list_endpoints(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -1524,9 +1524,9 @@ class RegistrationServiceAsyncClient:
 
             from google.cloud import servicedirectory_v1
 
-            def sample_get_endpoint():
+            async def sample_get_endpoint():
                 # Create a client
-                client = servicedirectory_v1.RegistrationServiceClient()
+                client = servicedirectory_v1.RegistrationServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = servicedirectory_v1.GetEndpointRequest(
@@ -1534,7 +1534,7 @@ class RegistrationServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_endpoint(request=request)
+                response = await client.get_endpoint(request=request)
 
                 # Handle the response
                 print(response)
@@ -1623,16 +1623,16 @@ class RegistrationServiceAsyncClient:
 
             from google.cloud import servicedirectory_v1
 
-            def sample_update_endpoint():
+            async def sample_update_endpoint():
                 # Create a client
-                client = servicedirectory_v1.RegistrationServiceClient()
+                client = servicedirectory_v1.RegistrationServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = servicedirectory_v1.UpdateEndpointRequest(
                 )
 
                 # Make the request
-                response = client.update_endpoint(request=request)
+                response = await client.update_endpoint(request=request)
 
                 # Handle the response
                 print(response)
@@ -1727,9 +1727,9 @@ class RegistrationServiceAsyncClient:
 
             from google.cloud import servicedirectory_v1
 
-            def sample_delete_endpoint():
+            async def sample_delete_endpoint():
                 # Create a client
-                client = servicedirectory_v1.RegistrationServiceClient()
+                client = servicedirectory_v1.RegistrationServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = servicedirectory_v1.DeleteEndpointRequest(
@@ -1737,7 +1737,7 @@ class RegistrationServiceAsyncClient:
                 )
 
                 # Make the request
-                client.delete_endpoint(request=request)
+                await client.delete_endpoint(request=request)
 
         Args:
             request (Union[google.cloud.servicedirectory_v1.types.DeleteEndpointRequest, dict]):
@@ -1811,9 +1811,9 @@ class RegistrationServiceAsyncClient:
             from google.cloud import servicedirectory_v1
             from google.iam.v1 import iam_policy_pb2  # type: ignore
 
-            def sample_get_iam_policy():
+            async def sample_get_iam_policy():
                 # Create a client
-                client = servicedirectory_v1.RegistrationServiceClient()
+                client = servicedirectory_v1.RegistrationServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = iam_policy_pb2.GetIamPolicyRequest(
@@ -1821,7 +1821,7 @@ class RegistrationServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_iam_policy(request=request)
+                response = await client.get_iam_policy(request=request)
 
                 # Handle the response
                 print(response)
@@ -1948,9 +1948,9 @@ class RegistrationServiceAsyncClient:
             from google.cloud import servicedirectory_v1
             from google.iam.v1 import iam_policy_pb2  # type: ignore
 
-            def sample_set_iam_policy():
+            async def sample_set_iam_policy():
                 # Create a client
-                client = servicedirectory_v1.RegistrationServiceClient()
+                client = servicedirectory_v1.RegistrationServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = iam_policy_pb2.SetIamPolicyRequest(
@@ -1958,7 +1958,7 @@ class RegistrationServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.set_iam_policy(request=request)
+                response = await client.set_iam_policy(request=request)
 
                 # Handle the response
                 print(response)
@@ -2085,9 +2085,9 @@ class RegistrationServiceAsyncClient:
             from google.cloud import servicedirectory_v1
             from google.iam.v1 import iam_policy_pb2  # type: ignore
 
-            def sample_test_iam_permissions():
+            async def sample_test_iam_permissions():
                 # Create a client
-                client = servicedirectory_v1.RegistrationServiceClient()
+                client = servicedirectory_v1.RegistrationServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = iam_policy_pb2.TestIamPermissionsRequest(
@@ -2096,7 +2096,7 @@ class RegistrationServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.test_iam_permissions(request=request)
+                response = await client.test_iam_permissions(request=request)
 
                 # Handle the response
                 print(response)

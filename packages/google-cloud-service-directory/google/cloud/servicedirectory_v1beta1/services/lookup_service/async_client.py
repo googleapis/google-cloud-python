@@ -223,9 +223,9 @@ class LookupServiceAsyncClient:
 
             from google.cloud import servicedirectory_v1beta1
 
-            def sample_resolve_service():
+            async def sample_resolve_service():
                 # Create a client
-                client = servicedirectory_v1beta1.LookupServiceClient()
+                client = servicedirectory_v1beta1.LookupServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = servicedirectory_v1beta1.ResolveServiceRequest(
@@ -233,7 +233,7 @@ class LookupServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.resolve_service(request=request)
+                response = await client.resolve_service(request=request)
 
                 # Handle the response
                 print(response)
