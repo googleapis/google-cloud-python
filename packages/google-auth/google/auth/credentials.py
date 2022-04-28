@@ -63,7 +63,7 @@ class Credentials(object):
         if not self.expiry:
             return False
 
-        # Remove 10 seconds from expiry to err on the side of reporting
+        # Remove some threshold from expiry to err on the side of reporting
         # expiration early so that we avoid the 401-refresh-retry loop.
         skewed_expiry = self.expiry - _helpers.REFRESH_THRESHOLD
         return _helpers.utcnow() >= skewed_expiry
