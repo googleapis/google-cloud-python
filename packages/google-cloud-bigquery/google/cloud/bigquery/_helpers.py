@@ -19,6 +19,7 @@ import datetime
 import decimal
 import math
 import re
+import os
 from typing import Optional, Union
 
 from dateutil import relativedelta
@@ -28,8 +29,8 @@ from google.cloud._helpers import _datetime_from_microseconds
 from google.cloud._helpers import _RFC3339_MICROS
 from google.cloud._helpers import _RFC3339_NO_FRACTION
 from google.cloud._helpers import _to_bytes
-import packaging.version
 
+import packaging.version
 
 _RFC3339_MICROS_NO_ZULU = "%Y-%m-%dT%H:%M:%S.%f"
 _TIMEONLY_WO_MICROS = "%H:%M:%S"
@@ -50,6 +51,16 @@ _INTERVAL_PATTERN = re.compile(
 )
 
 _BQ_STORAGE_OPTIONAL_READ_SESSION_VERSION = packaging.version.Version("2.6.0")
+
+BIGQUERY_EMULATOR_HOST = "BIGQUERY_EMULATOR_HOST"
+"""Environment variable defining host for emulator."""
+
+_DEFAULT_HOST = "https://bigquery.googleapis.com"
+"""Default host for JSON API."""
+
+
+def _get_bigquery_host():
+    return os.environ.get(BIGQUERY_EMULATOR_HOST, _DEFAULT_HOST)
 
 
 class BQStorageVersions:

@@ -1288,3 +1288,29 @@ def test_decimal_as_float_api_repr():
         "parameterValue": {"value": 42.0},
         "name": "x",
     }
+
+
+class Test__get_bigquery_host(unittest.TestCase):
+    @staticmethod
+    def _call_fut():
+        from google.cloud.bigquery._helpers import _get_bigquery_host
+
+        return _get_bigquery_host()
+
+    def test_wo_env_var(self):
+        from google.cloud.bigquery._helpers import _DEFAULT_HOST
+
+        with mock.patch("os.environ", {}):
+            host = self._call_fut()
+
+        self.assertEqual(host, _DEFAULT_HOST)
+
+    def test_w_env_var(self):
+        from google.cloud.bigquery._helpers import BIGQUERY_EMULATOR_HOST
+
+        HOST = "https://api.example.com"
+
+        with mock.patch("os.environ", {BIGQUERY_EMULATOR_HOST: HOST}):
+            host = self._call_fut()
+
+        self.assertEqual(host, HOST)

@@ -56,7 +56,6 @@ from google.api_core import retry as retries
 import google.cloud._helpers  # type: ignore
 from google.cloud import exceptions  # pytype: disable=import-error
 from google.cloud.client import ClientWithProject  # type: ignore  # pytype: disable=import-error
-
 from google.cloud.bigquery_storage_v1.services.big_query_read.client import (
     DEFAULT_CLIENT_INFO as DEFAULT_BQSTORAGE_CLIENT_INFO,
 )
@@ -67,6 +66,8 @@ from google.cloud.bigquery._helpers import _get_sub_prop
 from google.cloud.bigquery._helpers import _record_field_to_json
 from google.cloud.bigquery._helpers import _str_or_none
 from google.cloud.bigquery._helpers import _verify_job_config_type
+from google.cloud.bigquery._helpers import _get_bigquery_host
+from google.cloud.bigquery._helpers import _DEFAULT_HOST
 from google.cloud.bigquery._http import Connection
 from google.cloud.bigquery import _pandas_helpers
 from google.cloud.bigquery.dataset import Dataset
@@ -230,6 +231,8 @@ class Client(ClientWithProject):
         )
 
         kw_args = {"client_info": client_info}
+        bq_host = _get_bigquery_host()
+        kw_args["api_endpoint"] = bq_host if bq_host != _DEFAULT_HOST else None
         if client_options:
             if type(client_options) == dict:
                 client_options = google.api_core.client_options.from_dict(
