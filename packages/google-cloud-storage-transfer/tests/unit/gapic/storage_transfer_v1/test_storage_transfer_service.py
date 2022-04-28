@@ -783,6 +783,71 @@ async def test_get_google_service_account_async_from_dict():
     await test_get_google_service_account_async(request_type=dict)
 
 
+def test_get_google_service_account_field_headers():
+    client = StorageTransferServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = transfer.GetGoogleServiceAccountRequest()
+
+    request.project_id = "project_id_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_google_service_account), "__call__"
+    ) as call:
+        call.return_value = transfer_types.GoogleServiceAccount()
+        client.get_google_service_account(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "project_id=project_id_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_get_google_service_account_field_headers_async():
+    client = StorageTransferServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = transfer.GetGoogleServiceAccountRequest()
+
+    request.project_id = "project_id_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_google_service_account), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            transfer_types.GoogleServiceAccount()
+        )
+        await client.get_google_service_account(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "project_id=project_id_value",
+    ) in kw["metadata"]
+
+
 @pytest.mark.parametrize(
     "request_type",
     [
@@ -1014,7 +1079,7 @@ def test_update_transfer_job_field_headers():
     # a field header. Set these to a non-empty value.
     request = transfer.UpdateTransferJobRequest()
 
-    request.job_name = "job_name/value"
+    request.job_name = "job_name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1032,7 +1097,7 @@ def test_update_transfer_job_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "job_name=job_name/value",
+        "job_name=job_name_value",
     ) in kw["metadata"]
 
 
@@ -1046,7 +1111,7 @@ async def test_update_transfer_job_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = transfer.UpdateTransferJobRequest()
 
-    request.job_name = "job_name/value"
+    request.job_name = "job_name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1066,7 +1131,7 @@ async def test_update_transfer_job_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "job_name=job_name/value",
+        "job_name=job_name_value",
     ) in kw["metadata"]
 
 
@@ -1184,7 +1249,7 @@ def test_get_transfer_job_field_headers():
     # a field header. Set these to a non-empty value.
     request = transfer.GetTransferJobRequest()
 
-    request.job_name = "job_name/value"
+    request.job_name = "job_name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_transfer_job), "__call__") as call:
@@ -1200,7 +1265,7 @@ def test_get_transfer_job_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "job_name=job_name/value",
+        "job_name=job_name_value",
     ) in kw["metadata"]
 
 
@@ -1214,7 +1279,7 @@ async def test_get_transfer_job_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = transfer.GetTransferJobRequest()
 
-    request.job_name = "job_name/value"
+    request.job_name = "job_name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_transfer_job), "__call__") as call:
@@ -1232,7 +1297,7 @@ async def test_get_transfer_job_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "job_name=job_name/value",
+        "job_name=job_name_value",
     ) in kw["metadata"]
 
 
@@ -1375,7 +1440,7 @@ def test_list_transfer_jobs_pager(transport_name: str = "grpc"):
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, transfer_types.TransferJob) for i in results)
 
@@ -1620,7 +1685,7 @@ def test_pause_transfer_operation_field_headers():
     # a field header. Set these to a non-empty value.
     request = transfer.PauseTransferOperationRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1638,7 +1703,7 @@ def test_pause_transfer_operation_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1652,7 +1717,7 @@ async def test_pause_transfer_operation_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = transfer.PauseTransferOperationRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1670,7 +1735,7 @@ async def test_pause_transfer_operation_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1771,7 +1836,7 @@ def test_resume_transfer_operation_field_headers():
     # a field header. Set these to a non-empty value.
     request = transfer.ResumeTransferOperationRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1789,7 +1854,7 @@ def test_resume_transfer_operation_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1803,7 +1868,7 @@ async def test_resume_transfer_operation_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = transfer.ResumeTransferOperationRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1821,7 +1886,7 @@ async def test_resume_transfer_operation_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1917,7 +1982,7 @@ def test_run_transfer_job_field_headers():
     # a field header. Set these to a non-empty value.
     request = transfer.RunTransferJobRequest()
 
-    request.job_name = "job_name/value"
+    request.job_name = "job_name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.run_transfer_job), "__call__") as call:
@@ -1933,7 +1998,7 @@ def test_run_transfer_job_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "job_name=job_name/value",
+        "job_name=job_name_value",
     ) in kw["metadata"]
 
 
@@ -1947,7 +2012,7 @@ async def test_run_transfer_job_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = transfer.RunTransferJobRequest()
 
-    request.job_name = "job_name/value"
+    request.job_name = "job_name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.run_transfer_job), "__call__") as call:
@@ -1965,7 +2030,7 @@ async def test_run_transfer_job_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "job_name=job_name/value",
+        "job_name=job_name_value",
     ) in kw["metadata"]
 
 
@@ -2081,7 +2146,7 @@ def test_create_agent_pool_field_headers():
     # a field header. Set these to a non-empty value.
     request = transfer.CreateAgentPoolRequest()
 
-    request.project_id = "project_id/value"
+    request.project_id = "project_id_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2099,7 +2164,7 @@ def test_create_agent_pool_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "project_id=project_id/value",
+        "project_id=project_id_value",
     ) in kw["metadata"]
 
 
@@ -2113,7 +2178,7 @@ async def test_create_agent_pool_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = transfer.CreateAgentPoolRequest()
 
-    request.project_id = "project_id/value"
+    request.project_id = "project_id_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2133,7 +2198,7 @@ async def test_create_agent_pool_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "project_id=project_id/value",
+        "project_id=project_id_value",
     ) in kw["metadata"]
 
 
@@ -2355,7 +2420,7 @@ def test_update_agent_pool_field_headers():
     # a field header. Set these to a non-empty value.
     request = transfer.UpdateAgentPoolRequest()
 
-    request.agent_pool.name = "agent_pool.name/value"
+    request.agent_pool.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2373,7 +2438,7 @@ def test_update_agent_pool_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "agent_pool.name=agent_pool.name/value",
+        "agent_pool.name=name_value",
     ) in kw["metadata"]
 
 
@@ -2387,7 +2452,7 @@ async def test_update_agent_pool_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = transfer.UpdateAgentPoolRequest()
 
-    request.agent_pool.name = "agent_pool.name/value"
+    request.agent_pool.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2407,7 +2472,7 @@ async def test_update_agent_pool_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "agent_pool.name=agent_pool.name/value",
+        "agent_pool.name=name_value",
     ) in kw["metadata"]
 
 
@@ -2613,7 +2678,7 @@ def test_get_agent_pool_field_headers():
     # a field header. Set these to a non-empty value.
     request = transfer.GetAgentPoolRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_agent_pool), "__call__") as call:
@@ -2629,7 +2694,7 @@ def test_get_agent_pool_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2643,7 +2708,7 @@ async def test_get_agent_pool_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = transfer.GetAgentPoolRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_agent_pool), "__call__") as call:
@@ -2661,7 +2726,7 @@ async def test_get_agent_pool_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2845,7 +2910,7 @@ def test_list_agent_pools_field_headers():
     # a field header. Set these to a non-empty value.
     request = transfer.ListAgentPoolsRequest()
 
-    request.project_id = "project_id/value"
+    request.project_id = "project_id_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_agent_pools), "__call__") as call:
@@ -2861,7 +2926,7 @@ def test_list_agent_pools_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "project_id=project_id/value",
+        "project_id=project_id_value",
     ) in kw["metadata"]
 
 
@@ -2875,7 +2940,7 @@ async def test_list_agent_pools_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = transfer.ListAgentPoolsRequest()
 
-    request.project_id = "project_id/value"
+    request.project_id = "project_id_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_agent_pools), "__call__") as call:
@@ -2893,7 +2958,7 @@ async def test_list_agent_pools_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "project_id=project_id/value",
+        "project_id=project_id_value",
     ) in kw["metadata"]
 
 
@@ -3024,7 +3089,7 @@ def test_list_agent_pools_pager(transport_name: str = "grpc"):
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, transfer_types.AgentPool) for i in results)
 
@@ -3263,7 +3328,7 @@ def test_delete_agent_pool_field_headers():
     # a field header. Set these to a non-empty value.
     request = transfer.DeleteAgentPoolRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3281,7 +3346,7 @@ def test_delete_agent_pool_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -3295,7 +3360,7 @@ async def test_delete_agent_pool_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = transfer.DeleteAgentPoolRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3313,7 +3378,7 @@ async def test_delete_agent_pool_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 

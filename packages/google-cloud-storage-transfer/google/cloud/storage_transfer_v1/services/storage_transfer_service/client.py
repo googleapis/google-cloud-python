@@ -499,6 +499,14 @@ class StorageTransferServiceClient(metaclass=StorageTransferServiceClientMeta):
             self._transport.get_google_service_account
         ]
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("project_id", request.project_id),)
+            ),
+        )
+
         # Send the request.
         response = rpc(
             request,

@@ -240,9 +240,9 @@ class StorageTransferServiceAsyncClient:
 
             from google.cloud import storage_transfer_v1
 
-            def sample_get_google_service_account():
+            async def sample_get_google_service_account():
                 # Create a client
-                client = storage_transfer_v1.StorageTransferServiceClient()
+                client = storage_transfer_v1.StorageTransferServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = storage_transfer_v1.GetGoogleServiceAccountRequest(
@@ -250,7 +250,7 @@ class StorageTransferServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_google_service_account(request=request)
+                response = await client.get_google_service_account(request=request)
 
                 # Handle the response
                 print(response)
@@ -280,6 +280,14 @@ class StorageTransferServiceAsyncClient:
             client_info=DEFAULT_CLIENT_INFO,
         )
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("project_id", request.project_id),)
+            ),
+        )
+
         # Send the request.
         response = await rpc(
             request,
@@ -305,16 +313,16 @@ class StorageTransferServiceAsyncClient:
 
             from google.cloud import storage_transfer_v1
 
-            def sample_create_transfer_job():
+            async def sample_create_transfer_job():
                 # Create a client
-                client = storage_transfer_v1.StorageTransferServiceClient()
+                client = storage_transfer_v1.StorageTransferServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = storage_transfer_v1.CreateTransferJobRequest(
                 )
 
                 # Make the request
-                response = client.create_transfer_job(request=request)
+                response = await client.create_transfer_job(request=request)
 
                 # Handle the response
                 print(response)
@@ -381,9 +389,9 @@ class StorageTransferServiceAsyncClient:
 
             from google.cloud import storage_transfer_v1
 
-            def sample_update_transfer_job():
+            async def sample_update_transfer_job():
                 # Create a client
-                client = storage_transfer_v1.StorageTransferServiceClient()
+                client = storage_transfer_v1.StorageTransferServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = storage_transfer_v1.UpdateTransferJobRequest(
@@ -392,7 +400,7 @@ class StorageTransferServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.update_transfer_job(request=request)
+                response = await client.update_transfer_job(request=request)
 
                 # Handle the response
                 print(response)
@@ -455,9 +463,9 @@ class StorageTransferServiceAsyncClient:
 
             from google.cloud import storage_transfer_v1
 
-            def sample_get_transfer_job():
+            async def sample_get_transfer_job():
                 # Create a client
-                client = storage_transfer_v1.StorageTransferServiceClient()
+                client = storage_transfer_v1.StorageTransferServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = storage_transfer_v1.GetTransferJobRequest(
@@ -466,7 +474,7 @@ class StorageTransferServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_transfer_job(request=request)
+                response = await client.get_transfer_job(request=request)
 
                 # Handle the response
                 print(response)
@@ -529,9 +537,9 @@ class StorageTransferServiceAsyncClient:
 
             from google.cloud import storage_transfer_v1
 
-            def sample_list_transfer_jobs():
+            async def sample_list_transfer_jobs():
                 # Create a client
-                client = storage_transfer_v1.StorageTransferServiceClient()
+                client = storage_transfer_v1.StorageTransferServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = storage_transfer_v1.ListTransferJobsRequest(
@@ -542,7 +550,7 @@ class StorageTransferServiceAsyncClient:
                 page_result = client.list_transfer_jobs(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -609,9 +617,9 @@ class StorageTransferServiceAsyncClient:
 
             from google.cloud import storage_transfer_v1
 
-            def sample_pause_transfer_operation():
+            async def sample_pause_transfer_operation():
                 # Create a client
-                client = storage_transfer_v1.StorageTransferServiceClient()
+                client = storage_transfer_v1.StorageTransferServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = storage_transfer_v1.PauseTransferOperationRequest(
@@ -619,7 +627,7 @@ class StorageTransferServiceAsyncClient:
                 )
 
                 # Make the request
-                client.pause_transfer_operation(request=request)
+                await client.pause_transfer_operation(request=request)
 
         Args:
             request (Union[google.cloud.storage_transfer_v1.types.PauseTransferOperationRequest, dict]):
@@ -670,9 +678,9 @@ class StorageTransferServiceAsyncClient:
 
             from google.cloud import storage_transfer_v1
 
-            def sample_resume_transfer_operation():
+            async def sample_resume_transfer_operation():
                 # Create a client
-                client = storage_transfer_v1.StorageTransferServiceClient()
+                client = storage_transfer_v1.StorageTransferServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = storage_transfer_v1.ResumeTransferOperationRequest(
@@ -680,7 +688,7 @@ class StorageTransferServiceAsyncClient:
                 )
 
                 # Make the request
-                client.resume_transfer_operation(request=request)
+                await client.resume_transfer_operation(request=request)
 
         Args:
             request (Union[google.cloud.storage_transfer_v1.types.ResumeTransferOperationRequest, dict]):
@@ -735,9 +743,9 @@ class StorageTransferServiceAsyncClient:
 
             from google.cloud import storage_transfer_v1
 
-            def sample_run_transfer_job():
+            async def sample_run_transfer_job():
                 # Create a client
-                client = storage_transfer_v1.StorageTransferServiceClient()
+                client = storage_transfer_v1.StorageTransferServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = storage_transfer_v1.RunTransferJobRequest(
@@ -750,7 +758,7 @@ class StorageTransferServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -836,9 +844,9 @@ class StorageTransferServiceAsyncClient:
 
             from google.cloud import storage_transfer_v1
 
-            def sample_create_agent_pool():
+            async def sample_create_agent_pool():
                 # Create a client
-                client = storage_transfer_v1.StorageTransferServiceClient()
+                client = storage_transfer_v1.StorageTransferServiceAsyncClient()
 
                 # Initialize request argument(s)
                 agent_pool = storage_transfer_v1.AgentPool()
@@ -851,7 +859,7 @@ class StorageTransferServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.create_agent_pool(request=request)
+                response = await client.create_agent_pool(request=request)
 
                 # Handle the response
                 print(response)
@@ -968,9 +976,9 @@ class StorageTransferServiceAsyncClient:
 
             from google.cloud import storage_transfer_v1
 
-            def sample_update_agent_pool():
+            async def sample_update_agent_pool():
                 # Create a client
-                client = storage_transfer_v1.StorageTransferServiceClient()
+                client = storage_transfer_v1.StorageTransferServiceAsyncClient()
 
                 # Initialize request argument(s)
                 agent_pool = storage_transfer_v1.AgentPool()
@@ -981,7 +989,7 @@ class StorageTransferServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.update_agent_pool(request=request)
+                response = await client.update_agent_pool(request=request)
 
                 # Handle the response
                 print(response)
@@ -1091,9 +1099,9 @@ class StorageTransferServiceAsyncClient:
 
             from google.cloud import storage_transfer_v1
 
-            def sample_get_agent_pool():
+            async def sample_get_agent_pool():
                 # Create a client
-                client = storage_transfer_v1.StorageTransferServiceClient()
+                client = storage_transfer_v1.StorageTransferServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = storage_transfer_v1.GetAgentPoolRequest(
@@ -1101,7 +1109,7 @@ class StorageTransferServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_agent_pool(request=request)
+                response = await client.get_agent_pool(request=request)
 
                 # Handle the response
                 print(response)
@@ -1184,9 +1192,9 @@ class StorageTransferServiceAsyncClient:
 
             from google.cloud import storage_transfer_v1
 
-            def sample_list_agent_pools():
+            async def sample_list_agent_pools():
                 # Create a client
-                client = storage_transfer_v1.StorageTransferServiceClient()
+                client = storage_transfer_v1.StorageTransferServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = storage_transfer_v1.ListAgentPoolsRequest(
@@ -1197,7 +1205,7 @@ class StorageTransferServiceAsyncClient:
                 page_result = client.list_agent_pools(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -1293,9 +1301,9 @@ class StorageTransferServiceAsyncClient:
 
             from google.cloud import storage_transfer_v1
 
-            def sample_delete_agent_pool():
+            async def sample_delete_agent_pool():
                 # Create a client
-                client = storage_transfer_v1.StorageTransferServiceClient()
+                client = storage_transfer_v1.StorageTransferServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = storage_transfer_v1.DeleteAgentPoolRequest(
@@ -1303,7 +1311,7 @@ class StorageTransferServiceAsyncClient:
                 )
 
                 # Make the request
-                client.delete_agent_pool(request=request)
+                await client.delete_agent_pool(request=request)
 
         Args:
             request (Union[google.cloud.storage_transfer_v1.types.DeleteAgentPoolRequest, dict]):
