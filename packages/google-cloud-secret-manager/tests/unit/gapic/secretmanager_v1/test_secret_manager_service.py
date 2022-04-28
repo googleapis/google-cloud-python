@@ -775,7 +775,7 @@ def test_list_secrets_field_headers():
     # a field header. Set these to a non-empty value.
     request = service.ListSecretsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_secrets), "__call__") as call:
@@ -791,7 +791,7 @@ def test_list_secrets_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -805,7 +805,7 @@ async def test_list_secrets_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = service.ListSecretsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_secrets), "__call__") as call:
@@ -823,7 +823,7 @@ async def test_list_secrets_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -954,7 +954,7 @@ def test_list_secrets_pager(transport_name: str = "grpc"):
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, resources.Secret) for i in results)
 
@@ -1200,7 +1200,7 @@ def test_create_secret_field_headers():
     # a field header. Set these to a non-empty value.
     request = service.CreateSecretRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_secret), "__call__") as call:
@@ -1216,7 +1216,7 @@ def test_create_secret_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -1230,7 +1230,7 @@ async def test_create_secret_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = service.CreateSecretRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_secret), "__call__") as call:
@@ -1246,7 +1246,7 @@ async def test_create_secret_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -1466,7 +1466,7 @@ def test_add_secret_version_field_headers():
     # a field header. Set these to a non-empty value.
     request = service.AddSecretVersionRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1484,7 +1484,7 @@ def test_add_secret_version_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -1498,7 +1498,7 @@ async def test_add_secret_version_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = service.AddSecretVersionRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1518,7 +1518,7 @@ async def test_add_secret_version_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -1721,7 +1721,7 @@ def test_get_secret_field_headers():
     # a field header. Set these to a non-empty value.
     request = service.GetSecretRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_secret), "__call__") as call:
@@ -1737,7 +1737,7 @@ def test_get_secret_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1751,7 +1751,7 @@ async def test_get_secret_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = service.GetSecretRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_secret), "__call__") as call:
@@ -1767,7 +1767,7 @@ async def test_get_secret_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1954,7 +1954,7 @@ def test_update_secret_field_headers():
     # a field header. Set these to a non-empty value.
     request = service.UpdateSecretRequest()
 
-    request.secret.name = "secret.name/value"
+    request.secret.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_secret), "__call__") as call:
@@ -1970,7 +1970,7 @@ def test_update_secret_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "secret.name=secret.name/value",
+        "secret.name=name_value",
     ) in kw["metadata"]
 
 
@@ -1984,7 +1984,7 @@ async def test_update_secret_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = service.UpdateSecretRequest()
 
-    request.secret.name = "secret.name/value"
+    request.secret.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_secret), "__call__") as call:
@@ -2000,7 +2000,7 @@ async def test_update_secret_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "secret.name=secret.name/value",
+        "secret.name=name_value",
     ) in kw["metadata"]
 
 
@@ -2184,7 +2184,7 @@ def test_delete_secret_field_headers():
     # a field header. Set these to a non-empty value.
     request = service.DeleteSecretRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_secret), "__call__") as call:
@@ -2200,7 +2200,7 @@ def test_delete_secret_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2214,7 +2214,7 @@ async def test_delete_secret_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = service.DeleteSecretRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_secret), "__call__") as call:
@@ -2230,7 +2230,7 @@ async def test_delete_secret_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2422,7 +2422,7 @@ def test_list_secret_versions_field_headers():
     # a field header. Set these to a non-empty value.
     request = service.ListSecretVersionsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2440,7 +2440,7 @@ def test_list_secret_versions_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -2454,7 +2454,7 @@ async def test_list_secret_versions_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = service.ListSecretVersionsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2474,7 +2474,7 @@ async def test_list_secret_versions_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -2611,7 +2611,7 @@ def test_list_secret_versions_pager(transport_name: str = "grpc"):
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, resources.SecretVersion) for i in results)
 
@@ -2876,7 +2876,7 @@ def test_get_secret_version_field_headers():
     # a field header. Set these to a non-empty value.
     request = service.GetSecretVersionRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2894,7 +2894,7 @@ def test_get_secret_version_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2908,7 +2908,7 @@ async def test_get_secret_version_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = service.GetSecretVersionRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2928,7 +2928,7 @@ async def test_get_secret_version_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -3122,7 +3122,7 @@ def test_access_secret_version_field_headers():
     # a field header. Set these to a non-empty value.
     request = service.AccessSecretVersionRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3140,7 +3140,7 @@ def test_access_secret_version_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -3154,7 +3154,7 @@ async def test_access_secret_version_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = service.AccessSecretVersionRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3174,7 +3174,7 @@ async def test_access_secret_version_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -3380,7 +3380,7 @@ def test_disable_secret_version_field_headers():
     # a field header. Set these to a non-empty value.
     request = service.DisableSecretVersionRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3398,7 +3398,7 @@ def test_disable_secret_version_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -3412,7 +3412,7 @@ async def test_disable_secret_version_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = service.DisableSecretVersionRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3432,7 +3432,7 @@ async def test_disable_secret_version_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -3638,7 +3638,7 @@ def test_enable_secret_version_field_headers():
     # a field header. Set these to a non-empty value.
     request = service.EnableSecretVersionRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3656,7 +3656,7 @@ def test_enable_secret_version_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -3670,7 +3670,7 @@ async def test_enable_secret_version_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = service.EnableSecretVersionRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3690,7 +3690,7 @@ async def test_enable_secret_version_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -3896,7 +3896,7 @@ def test_destroy_secret_version_field_headers():
     # a field header. Set these to a non-empty value.
     request = service.DestroySecretVersionRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3914,7 +3914,7 @@ def test_destroy_secret_version_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -3928,7 +3928,7 @@ async def test_destroy_secret_version_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = service.DestroySecretVersionRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3948,7 +3948,7 @@ async def test_destroy_secret_version_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -4140,7 +4140,7 @@ def test_set_iam_policy_field_headers():
     # a field header. Set these to a non-empty value.
     request = iam_policy_pb2.SetIamPolicyRequest()
 
-    request.resource = "resource/value"
+    request.resource = "resource_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
@@ -4156,7 +4156,7 @@ def test_set_iam_policy_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "resource=resource/value",
+        "resource=resource_value",
     ) in kw["metadata"]
 
 
@@ -4170,7 +4170,7 @@ async def test_set_iam_policy_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = iam_policy_pb2.SetIamPolicyRequest()
 
-    request.resource = "resource/value"
+    request.resource = "resource_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
@@ -4186,7 +4186,7 @@ async def test_set_iam_policy_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "resource=resource/value",
+        "resource=resource_value",
     ) in kw["metadata"]
 
 
@@ -4310,7 +4310,7 @@ def test_get_iam_policy_field_headers():
     # a field header. Set these to a non-empty value.
     request = iam_policy_pb2.GetIamPolicyRequest()
 
-    request.resource = "resource/value"
+    request.resource = "resource_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
@@ -4326,7 +4326,7 @@ def test_get_iam_policy_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "resource=resource/value",
+        "resource=resource_value",
     ) in kw["metadata"]
 
 
@@ -4340,7 +4340,7 @@ async def test_get_iam_policy_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = iam_policy_pb2.GetIamPolicyRequest()
 
-    request.resource = "resource/value"
+    request.resource = "resource_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
@@ -4356,7 +4356,7 @@ async def test_get_iam_policy_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "resource=resource/value",
+        "resource=resource_value",
     ) in kw["metadata"]
 
 
@@ -4482,7 +4482,7 @@ def test_test_iam_permissions_field_headers():
     # a field header. Set these to a non-empty value.
     request = iam_policy_pb2.TestIamPermissionsRequest()
 
-    request.resource = "resource/value"
+    request.resource = "resource_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4500,7 +4500,7 @@ def test_test_iam_permissions_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "resource=resource/value",
+        "resource=resource_value",
     ) in kw["metadata"]
 
 
@@ -4514,7 +4514,7 @@ async def test_test_iam_permissions_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = iam_policy_pb2.TestIamPermissionsRequest()
 
-    request.resource = "resource/value"
+    request.resource = "resource_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4534,7 +4534,7 @@ async def test_test_iam_permissions_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "resource=resource/value",
+        "resource=resource_value",
     ) in kw["metadata"]
 
 

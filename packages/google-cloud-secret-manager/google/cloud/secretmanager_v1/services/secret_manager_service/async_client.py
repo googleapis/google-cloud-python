@@ -238,9 +238,9 @@ class SecretManagerServiceAsyncClient:
 
             from google.cloud import secretmanager_v1
 
-            def sample_list_secrets():
+            async def sample_list_secrets():
                 # Create a client
-                client = secretmanager_v1.SecretManagerServiceClient()
+                client = secretmanager_v1.SecretManagerServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = secretmanager_v1.ListSecretsRequest(
@@ -251,7 +251,7 @@ class SecretManagerServiceAsyncClient:
                 page_result = client.list_secrets(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -352,9 +352,9 @@ class SecretManagerServiceAsyncClient:
 
             from google.cloud import secretmanager_v1
 
-            def sample_create_secret():
+            async def sample_create_secret():
                 # Create a client
-                client = secretmanager_v1.SecretManagerServiceClient()
+                client = secretmanager_v1.SecretManagerServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = secretmanager_v1.CreateSecretRequest(
@@ -363,7 +363,7 @@ class SecretManagerServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.create_secret(request=request)
+                response = await client.create_secret(request=request)
 
                 # Handle the response
                 print(response)
@@ -481,9 +481,9 @@ class SecretManagerServiceAsyncClient:
 
             from google.cloud import secretmanager_v1
 
-            def sample_add_secret_version():
+            async def sample_add_secret_version():
                 # Create a client
-                client = secretmanager_v1.SecretManagerServiceClient()
+                client = secretmanager_v1.SecretManagerServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = secretmanager_v1.AddSecretVersionRequest(
@@ -491,7 +491,7 @@ class SecretManagerServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.add_secret_version(request=request)
+                response = await client.add_secret_version(request=request)
 
                 # Handle the response
                 print(response)
@@ -589,9 +589,9 @@ class SecretManagerServiceAsyncClient:
 
             from google.cloud import secretmanager_v1
 
-            def sample_get_secret():
+            async def sample_get_secret():
                 # Create a client
-                client = secretmanager_v1.SecretManagerServiceClient()
+                client = secretmanager_v1.SecretManagerServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = secretmanager_v1.GetSecretRequest(
@@ -599,7 +599,7 @@ class SecretManagerServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_secret(request=request)
+                response = await client.get_secret(request=request)
 
                 # Handle the response
                 print(response)
@@ -692,16 +692,16 @@ class SecretManagerServiceAsyncClient:
 
             from google.cloud import secretmanager_v1
 
-            def sample_update_secret():
+            async def sample_update_secret():
                 # Create a client
-                client = secretmanager_v1.SecretManagerServiceClient()
+                client = secretmanager_v1.SecretManagerServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = secretmanager_v1.UpdateSecretRequest(
                 )
 
                 # Make the request
-                response = client.update_secret(request=request)
+                response = await client.update_secret(request=request)
 
                 # Handle the response
                 print(response)
@@ -802,9 +802,9 @@ class SecretManagerServiceAsyncClient:
 
             from google.cloud import secretmanager_v1
 
-            def sample_delete_secret():
+            async def sample_delete_secret():
                 # Create a client
-                client = secretmanager_v1.SecretManagerServiceClient()
+                client = secretmanager_v1.SecretManagerServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = secretmanager_v1.DeleteSecretRequest(
@@ -812,7 +812,7 @@ class SecretManagerServiceAsyncClient:
                 )
 
                 # Make the request
-                client.delete_secret(request=request)
+                await client.delete_secret(request=request)
 
         Args:
             request (Union[google.cloud.secretmanager_v1.types.DeleteSecretRequest, dict]):
@@ -888,9 +888,9 @@ class SecretManagerServiceAsyncClient:
 
             from google.cloud import secretmanager_v1
 
-            def sample_list_secret_versions():
+            async def sample_list_secret_versions():
                 # Create a client
-                client = secretmanager_v1.SecretManagerServiceClient()
+                client = secretmanager_v1.SecretManagerServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = secretmanager_v1.ListSecretVersionsRequest(
@@ -901,7 +901,7 @@ class SecretManagerServiceAsyncClient:
                 page_result = client.list_secret_versions(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -1004,9 +1004,9 @@ class SecretManagerServiceAsyncClient:
 
             from google.cloud import secretmanager_v1
 
-            def sample_get_secret_version():
+            async def sample_get_secret_version():
                 # Create a client
-                client = secretmanager_v1.SecretManagerServiceClient()
+                client = secretmanager_v1.SecretManagerServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = secretmanager_v1.GetSecretVersionRequest(
@@ -1014,7 +1014,7 @@ class SecretManagerServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_secret_version(request=request)
+                response = await client.get_secret_version(request=request)
 
                 # Handle the response
                 print(response)
@@ -1110,9 +1110,9 @@ class SecretManagerServiceAsyncClient:
 
             from google.cloud import secretmanager_v1
 
-            def sample_access_secret_version():
+            async def sample_access_secret_version():
                 # Create a client
-                client = secretmanager_v1.SecretManagerServiceClient()
+                client = secretmanager_v1.SecretManagerServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = secretmanager_v1.AccessSecretVersionRequest(
@@ -1120,7 +1120,7 @@ class SecretManagerServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.access_secret_version(request=request)
+                response = await client.access_secret_version(request=request)
 
                 # Handle the response
                 print(response)
@@ -1227,9 +1227,9 @@ class SecretManagerServiceAsyncClient:
 
             from google.cloud import secretmanager_v1
 
-            def sample_disable_secret_version():
+            async def sample_disable_secret_version():
                 # Create a client
-                client = secretmanager_v1.SecretManagerServiceClient()
+                client = secretmanager_v1.SecretManagerServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = secretmanager_v1.DisableSecretVersionRequest(
@@ -1237,7 +1237,7 @@ class SecretManagerServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.disable_secret_version(request=request)
+                response = await client.disable_secret_version(request=request)
 
                 # Handle the response
                 print(response)
@@ -1331,9 +1331,9 @@ class SecretManagerServiceAsyncClient:
 
             from google.cloud import secretmanager_v1
 
-            def sample_enable_secret_version():
+            async def sample_enable_secret_version():
                 # Create a client
-                client = secretmanager_v1.SecretManagerServiceClient()
+                client = secretmanager_v1.SecretManagerServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = secretmanager_v1.EnableSecretVersionRequest(
@@ -1341,7 +1341,7 @@ class SecretManagerServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.enable_secret_version(request=request)
+                response = await client.enable_secret_version(request=request)
 
                 # Handle the response
                 print(response)
@@ -1436,9 +1436,9 @@ class SecretManagerServiceAsyncClient:
 
             from google.cloud import secretmanager_v1
 
-            def sample_destroy_secret_version():
+            async def sample_destroy_secret_version():
                 # Create a client
-                client = secretmanager_v1.SecretManagerServiceClient()
+                client = secretmanager_v1.SecretManagerServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = secretmanager_v1.DestroySecretVersionRequest(
@@ -1446,7 +1446,7 @@ class SecretManagerServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.destroy_secret_version(request=request)
+                response = await client.destroy_secret_version(request=request)
 
                 # Handle the response
                 print(response)
@@ -1539,9 +1539,9 @@ class SecretManagerServiceAsyncClient:
             from google.cloud import secretmanager_v1
             from google.iam.v1 import iam_policy_pb2  # type: ignore
 
-            def sample_set_iam_policy():
+            async def sample_set_iam_policy():
                 # Create a client
-                client = secretmanager_v1.SecretManagerServiceClient()
+                client = secretmanager_v1.SecretManagerServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = iam_policy_pb2.SetIamPolicyRequest(
@@ -1549,7 +1549,7 @@ class SecretManagerServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.set_iam_policy(request=request)
+                response = await client.set_iam_policy(request=request)
 
                 # Handle the response
                 print(response)
@@ -1677,9 +1677,9 @@ class SecretManagerServiceAsyncClient:
             from google.cloud import secretmanager_v1
             from google.iam.v1 import iam_policy_pb2  # type: ignore
 
-            def sample_get_iam_policy():
+            async def sample_get_iam_policy():
                 # Create a client
-                client = secretmanager_v1.SecretManagerServiceClient()
+                client = secretmanager_v1.SecretManagerServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = iam_policy_pb2.GetIamPolicyRequest(
@@ -1687,7 +1687,7 @@ class SecretManagerServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_iam_policy(request=request)
+                response = await client.get_iam_policy(request=request)
 
                 # Handle the response
                 print(response)
@@ -1820,9 +1820,9 @@ class SecretManagerServiceAsyncClient:
             from google.cloud import secretmanager_v1
             from google.iam.v1 import iam_policy_pb2  # type: ignore
 
-            def sample_test_iam_permissions():
+            async def sample_test_iam_permissions():
                 # Create a client
-                client = secretmanager_v1.SecretManagerServiceClient()
+                client = secretmanager_v1.SecretManagerServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = iam_policy_pb2.TestIamPermissionsRequest(
@@ -1831,7 +1831,7 @@ class SecretManagerServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.test_iam_permissions(request=request)
+                response = await client.test_iam_permissions(request=request)
 
                 # Handle the response
                 print(response)
