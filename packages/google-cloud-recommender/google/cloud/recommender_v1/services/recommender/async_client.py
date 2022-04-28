@@ -237,9 +237,9 @@ class RecommenderAsyncClient:
 
             from google.cloud import recommender_v1
 
-            def sample_list_insights():
+            async def sample_list_insights():
                 # Create a client
-                client = recommender_v1.RecommenderClient()
+                client = recommender_v1.RecommenderAsyncClient()
 
                 # Initialize request argument(s)
                 request = recommender_v1.ListInsightsRequest(
@@ -250,7 +250,7 @@ class RecommenderAsyncClient:
                 page_result = client.list_insights(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -370,9 +370,9 @@ class RecommenderAsyncClient:
 
             from google.cloud import recommender_v1
 
-            def sample_get_insight():
+            async def sample_get_insight():
                 # Create a client
-                client = recommender_v1.RecommenderClient()
+                client = recommender_v1.RecommenderAsyncClient()
 
                 # Initialize request argument(s)
                 request = recommender_v1.GetInsightRequest(
@@ -380,7 +380,7 @@ class RecommenderAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_insight(request=request)
+                response = await client.get_insight(request=request)
 
                 # Handle the response
                 print(response)
@@ -483,9 +483,9 @@ class RecommenderAsyncClient:
 
             from google.cloud import recommender_v1
 
-            def sample_mark_insight_accepted():
+            async def sample_mark_insight_accepted():
                 # Create a client
-                client = recommender_v1.RecommenderClient()
+                client = recommender_v1.RecommenderAsyncClient()
 
                 # Initialize request argument(s)
                 request = recommender_v1.MarkInsightAcceptedRequest(
@@ -494,7 +494,7 @@ class RecommenderAsyncClient:
                 )
 
                 # Make the request
-                response = client.mark_insight_accepted(request=request)
+                response = await client.mark_insight_accepted(request=request)
 
                 # Handle the response
                 print(response)
@@ -601,9 +601,9 @@ class RecommenderAsyncClient:
 
             from google.cloud import recommender_v1
 
-            def sample_list_recommendations():
+            async def sample_list_recommendations():
                 # Create a client
-                client = recommender_v1.RecommenderClient()
+                client = recommender_v1.RecommenderAsyncClient()
 
                 # Initialize request argument(s)
                 request = recommender_v1.ListRecommendationsRequest(
@@ -614,7 +614,7 @@ class RecommenderAsyncClient:
                 page_result = client.list_recommendations(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -762,9 +762,9 @@ class RecommenderAsyncClient:
 
             from google.cloud import recommender_v1
 
-            def sample_get_recommendation():
+            async def sample_get_recommendation():
                 # Create a client
-                client = recommender_v1.RecommenderClient()
+                client = recommender_v1.RecommenderAsyncClient()
 
                 # Initialize request argument(s)
                 request = recommender_v1.GetRecommendationRequest(
@@ -772,7 +772,7 @@ class RecommenderAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_recommendation(request=request)
+                response = await client.get_recommendation(request=request)
 
                 # Handle the response
                 print(response)
@@ -881,9 +881,9 @@ class RecommenderAsyncClient:
 
             from google.cloud import recommender_v1
 
-            def sample_mark_recommendation_claimed():
+            async def sample_mark_recommendation_claimed():
                 # Create a client
-                client = recommender_v1.RecommenderClient()
+                client = recommender_v1.RecommenderAsyncClient()
 
                 # Initialize request argument(s)
                 request = recommender_v1.MarkRecommendationClaimedRequest(
@@ -892,7 +892,7 @@ class RecommenderAsyncClient:
                 )
 
                 # Make the request
-                response = client.mark_recommendation_claimed(request=request)
+                response = await client.mark_recommendation_claimed(request=request)
 
                 # Handle the response
                 print(response)
@@ -1013,9 +1013,9 @@ class RecommenderAsyncClient:
 
             from google.cloud import recommender_v1
 
-            def sample_mark_recommendation_succeeded():
+            async def sample_mark_recommendation_succeeded():
                 # Create a client
-                client = recommender_v1.RecommenderClient()
+                client = recommender_v1.RecommenderAsyncClient()
 
                 # Initialize request argument(s)
                 request = recommender_v1.MarkRecommendationSucceededRequest(
@@ -1024,7 +1024,7 @@ class RecommenderAsyncClient:
                 )
 
                 # Make the request
-                response = client.mark_recommendation_succeeded(request=request)
+                response = await client.mark_recommendation_succeeded(request=request)
 
                 # Handle the response
                 print(response)
@@ -1145,9 +1145,9 @@ class RecommenderAsyncClient:
 
             from google.cloud import recommender_v1
 
-            def sample_mark_recommendation_failed():
+            async def sample_mark_recommendation_failed():
                 # Create a client
-                client = recommender_v1.RecommenderClient()
+                client = recommender_v1.RecommenderAsyncClient()
 
                 # Initialize request argument(s)
                 request = recommender_v1.MarkRecommendationFailedRequest(
@@ -1156,7 +1156,7 @@ class RecommenderAsyncClient:
                 )
 
                 # Make the request
-                response = client.mark_recommendation_failed(request=request)
+                response = await client.mark_recommendation_failed(request=request)
 
                 # Handle the response
                 print(response)

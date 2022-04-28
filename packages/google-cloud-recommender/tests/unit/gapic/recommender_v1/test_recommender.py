@@ -726,7 +726,7 @@ def test_list_insights_field_headers():
     # a field header. Set these to a non-empty value.
     request = recommender_service.ListInsightsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_insights), "__call__") as call:
@@ -742,7 +742,7 @@ def test_list_insights_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -756,7 +756,7 @@ async def test_list_insights_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = recommender_service.ListInsightsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_insights), "__call__") as call:
@@ -774,7 +774,7 @@ async def test_list_insights_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -905,7 +905,7 @@ def test_list_insights_pager(transport_name: str = "grpc"):
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, insight.Insight) for i in results)
 
@@ -1170,7 +1170,7 @@ def test_get_insight_field_headers():
     # a field header. Set these to a non-empty value.
     request = recommender_service.GetInsightRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_insight), "__call__") as call:
@@ -1186,7 +1186,7 @@ def test_get_insight_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1200,7 +1200,7 @@ async def test_get_insight_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = recommender_service.GetInsightRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_insight), "__call__") as call:
@@ -1216,7 +1216,7 @@ async def test_get_insight_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1429,7 +1429,7 @@ def test_mark_insight_accepted_field_headers():
     # a field header. Set these to a non-empty value.
     request = recommender_service.MarkInsightAcceptedRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1447,7 +1447,7 @@ def test_mark_insight_accepted_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1461,7 +1461,7 @@ async def test_mark_insight_accepted_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = recommender_service.MarkInsightAcceptedRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1479,7 +1479,7 @@ async def test_mark_insight_accepted_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1692,7 +1692,7 @@ def test_list_recommendations_field_headers():
     # a field header. Set these to a non-empty value.
     request = recommender_service.ListRecommendationsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1710,7 +1710,7 @@ def test_list_recommendations_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -1724,7 +1724,7 @@ async def test_list_recommendations_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = recommender_service.ListRecommendationsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1744,7 +1744,7 @@ async def test_list_recommendations_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -1891,7 +1891,7 @@ def test_list_recommendations_pager(transport_name: str = "grpc"):
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, recommendation.Recommendation) for i in results)
 
@@ -2165,7 +2165,7 @@ def test_get_recommendation_field_headers():
     # a field header. Set these to a non-empty value.
     request = recommender_service.GetRecommendationRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2183,7 +2183,7 @@ def test_get_recommendation_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2197,7 +2197,7 @@ async def test_get_recommendation_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = recommender_service.GetRecommendationRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2217,7 +2217,7 @@ async def test_get_recommendation_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2432,7 +2432,7 @@ def test_mark_recommendation_claimed_field_headers():
     # a field header. Set these to a non-empty value.
     request = recommender_service.MarkRecommendationClaimedRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2450,7 +2450,7 @@ def test_mark_recommendation_claimed_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2464,7 +2464,7 @@ async def test_mark_recommendation_claimed_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = recommender_service.MarkRecommendationClaimedRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2484,7 +2484,7 @@ async def test_mark_recommendation_claimed_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2719,7 +2719,7 @@ def test_mark_recommendation_succeeded_field_headers():
     # a field header. Set these to a non-empty value.
     request = recommender_service.MarkRecommendationSucceededRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2737,7 +2737,7 @@ def test_mark_recommendation_succeeded_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2751,7 +2751,7 @@ async def test_mark_recommendation_succeeded_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = recommender_service.MarkRecommendationSucceededRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2771,7 +2771,7 @@ async def test_mark_recommendation_succeeded_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -3006,7 +3006,7 @@ def test_mark_recommendation_failed_field_headers():
     # a field header. Set these to a non-empty value.
     request = recommender_service.MarkRecommendationFailedRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3024,7 +3024,7 @@ def test_mark_recommendation_failed_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -3038,7 +3038,7 @@ async def test_mark_recommendation_failed_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = recommender_service.MarkRecommendationFailedRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3058,7 +3058,7 @@ async def test_mark_recommendation_failed_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
