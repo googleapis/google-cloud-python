@@ -248,9 +248,9 @@ class NotificationChannelServiceAsyncClient:
 
             from google.cloud import monitoring_v3
 
-            def sample_list_notification_channel_descriptors():
+            async def sample_list_notification_channel_descriptors():
                 # Create a client
-                client = monitoring_v3.NotificationChannelServiceClient()
+                client = monitoring_v3.NotificationChannelServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = monitoring_v3.ListNotificationChannelDescriptorsRequest(
@@ -261,7 +261,7 @@ class NotificationChannelServiceAsyncClient:
                 page_result = client.list_notification_channel_descriptors(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -383,9 +383,9 @@ class NotificationChannelServiceAsyncClient:
 
             from google.cloud import monitoring_v3
 
-            def sample_get_notification_channel_descriptor():
+            async def sample_get_notification_channel_descriptor():
                 # Create a client
-                client = monitoring_v3.NotificationChannelServiceClient()
+                client = monitoring_v3.NotificationChannelServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = monitoring_v3.GetNotificationChannelDescriptorRequest(
@@ -393,7 +393,7 @@ class NotificationChannelServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_notification_channel_descriptor(request=request)
+                response = await client.get_notification_channel_descriptor(request=request)
 
                 # Handle the response
                 print(response)
@@ -497,9 +497,9 @@ class NotificationChannelServiceAsyncClient:
 
             from google.cloud import monitoring_v3
 
-            def sample_list_notification_channels():
+            async def sample_list_notification_channels():
                 # Create a client
-                client = monitoring_v3.NotificationChannelServiceClient()
+                client = monitoring_v3.NotificationChannelServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = monitoring_v3.ListNotificationChannelsRequest(
@@ -510,7 +510,7 @@ class NotificationChannelServiceAsyncClient:
                 page_result = client.list_notification_channels(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -631,9 +631,9 @@ class NotificationChannelServiceAsyncClient:
 
             from google.cloud import monitoring_v3
 
-            def sample_get_notification_channel():
+            async def sample_get_notification_channel():
                 # Create a client
-                client = monitoring_v3.NotificationChannelServiceClient()
+                client = monitoring_v3.NotificationChannelServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = monitoring_v3.GetNotificationChannelRequest(
@@ -641,7 +641,7 @@ class NotificationChannelServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_notification_channel(request=request)
+                response = await client.get_notification_channel(request=request)
 
                 # Handle the response
                 print(response)
@@ -749,9 +749,9 @@ class NotificationChannelServiceAsyncClient:
 
             from google.cloud import monitoring_v3
 
-            def sample_create_notification_channel():
+            async def sample_create_notification_channel():
                 # Create a client
-                client = monitoring_v3.NotificationChannelServiceClient()
+                client = monitoring_v3.NotificationChannelServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = monitoring_v3.CreateNotificationChannelRequest(
@@ -759,7 +759,7 @@ class NotificationChannelServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.create_notification_channel(request=request)
+                response = await client.create_notification_channel(request=request)
 
                 # Handle the response
                 print(response)
@@ -874,16 +874,16 @@ class NotificationChannelServiceAsyncClient:
 
             from google.cloud import monitoring_v3
 
-            def sample_update_notification_channel():
+            async def sample_update_notification_channel():
                 # Create a client
-                client = monitoring_v3.NotificationChannelServiceClient()
+                client = monitoring_v3.NotificationChannelServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = monitoring_v3.UpdateNotificationChannelRequest(
                 )
 
                 # Make the request
-                response = client.update_notification_channel(request=request)
+                response = await client.update_notification_channel(request=request)
 
                 # Handle the response
                 print(response)
@@ -988,9 +988,9 @@ class NotificationChannelServiceAsyncClient:
 
             from google.cloud import monitoring_v3
 
-            def sample_delete_notification_channel():
+            async def sample_delete_notification_channel():
                 # Create a client
-                client = monitoring_v3.NotificationChannelServiceClient()
+                client = monitoring_v3.NotificationChannelServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = monitoring_v3.DeleteNotificationChannelRequest(
@@ -998,7 +998,7 @@ class NotificationChannelServiceAsyncClient:
                 )
 
                 # Make the request
-                client.delete_notification_channel(request=request)
+                await client.delete_notification_channel(request=request)
 
         Args:
             request (Union[google.cloud.monitoring_v3.types.DeleteNotificationChannelRequest, dict]):
@@ -1103,9 +1103,9 @@ class NotificationChannelServiceAsyncClient:
 
             from google.cloud import monitoring_v3
 
-            def sample_send_notification_channel_verification_code():
+            async def sample_send_notification_channel_verification_code():
                 # Create a client
-                client = monitoring_v3.NotificationChannelServiceClient()
+                client = monitoring_v3.NotificationChannelServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = monitoring_v3.SendNotificationChannelVerificationCodeRequest(
@@ -1113,7 +1113,7 @@ class NotificationChannelServiceAsyncClient:
                 )
 
                 # Make the request
-                client.send_notification_channel_verification_code(request=request)
+                await client.send_notification_channel_verification_code(request=request)
 
         Args:
             request (Union[google.cloud.monitoring_v3.types.SendNotificationChannelVerificationCodeRequest, dict]):
@@ -1217,9 +1217,9 @@ class NotificationChannelServiceAsyncClient:
 
             from google.cloud import monitoring_v3
 
-            def sample_get_notification_channel_verification_code():
+            async def sample_get_notification_channel_verification_code():
                 # Create a client
-                client = monitoring_v3.NotificationChannelServiceClient()
+                client = monitoring_v3.NotificationChannelServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = monitoring_v3.GetNotificationChannelVerificationCodeRequest(
@@ -1227,7 +1227,7 @@ class NotificationChannelServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_notification_channel_verification_code(request=request)
+                response = await client.get_notification_channel_verification_code(request=request)
 
                 # Handle the response
                 print(response)
@@ -1330,9 +1330,9 @@ class NotificationChannelServiceAsyncClient:
 
             from google.cloud import monitoring_v3
 
-            def sample_verify_notification_channel():
+            async def sample_verify_notification_channel():
                 # Create a client
-                client = monitoring_v3.NotificationChannelServiceClient()
+                client = monitoring_v3.NotificationChannelServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = monitoring_v3.VerifyNotificationChannelRequest(
@@ -1341,7 +1341,7 @@ class NotificationChannelServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.verify_notification_channel(request=request)
+                response = await client.verify_notification_channel(request=request)
 
                 # Handle the response
                 print(response)

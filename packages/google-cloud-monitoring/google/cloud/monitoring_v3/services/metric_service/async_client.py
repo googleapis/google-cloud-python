@@ -236,9 +236,9 @@ class MetricServiceAsyncClient:
 
             from google.cloud import monitoring_v3
 
-            def sample_list_monitored_resource_descriptors():
+            async def sample_list_monitored_resource_descriptors():
                 # Create a client
-                client = monitoring_v3.MetricServiceClient()
+                client = monitoring_v3.MetricServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = monitoring_v3.ListMonitoredResourceDescriptorsRequest(
@@ -249,7 +249,7 @@ class MetricServiceAsyncClient:
                 page_result = client.list_monitored_resource_descriptors(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -360,9 +360,9 @@ class MetricServiceAsyncClient:
 
             from google.cloud import monitoring_v3
 
-            def sample_get_monitored_resource_descriptor():
+            async def sample_get_monitored_resource_descriptor():
                 # Create a client
-                client = monitoring_v3.MetricServiceClient()
+                client = monitoring_v3.MetricServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = monitoring_v3.GetMonitoredResourceDescriptorRequest(
@@ -370,7 +370,7 @@ class MetricServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_monitored_resource_descriptor(request=request)
+                response = await client.get_monitored_resource_descriptor(request=request)
 
                 # Handle the response
                 print(response)
@@ -481,9 +481,9 @@ class MetricServiceAsyncClient:
 
             from google.cloud import monitoring_v3
 
-            def sample_list_metric_descriptors():
+            async def sample_list_metric_descriptors():
                 # Create a client
-                client = monitoring_v3.MetricServiceClient()
+                client = monitoring_v3.MetricServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = monitoring_v3.ListMetricDescriptorsRequest(
@@ -494,7 +494,7 @@ class MetricServiceAsyncClient:
                 page_result = client.list_metric_descriptors(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -602,9 +602,9 @@ class MetricServiceAsyncClient:
 
             from google.cloud import monitoring_v3
 
-            def sample_get_metric_descriptor():
+            async def sample_get_metric_descriptor():
                 # Create a client
-                client = monitoring_v3.MetricServiceClient()
+                client = monitoring_v3.MetricServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = monitoring_v3.GetMetricDescriptorRequest(
@@ -612,7 +612,7 @@ class MetricServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_metric_descriptor(request=request)
+                response = await client.get_metric_descriptor(request=request)
 
                 # Handle the response
                 print(response)
@@ -720,9 +720,9 @@ class MetricServiceAsyncClient:
 
             from google.cloud import monitoring_v3
 
-            def sample_create_metric_descriptor():
+            async def sample_create_metric_descriptor():
                 # Create a client
-                client = monitoring_v3.MetricServiceClient()
+                client = monitoring_v3.MetricServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = monitoring_v3.CreateMetricDescriptorRequest(
@@ -730,7 +730,7 @@ class MetricServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.create_metric_descriptor(request=request)
+                response = await client.create_metric_descriptor(request=request)
 
                 # Handle the response
                 print(response)
@@ -832,9 +832,9 @@ class MetricServiceAsyncClient:
 
             from google.cloud import monitoring_v3
 
-            def sample_delete_metric_descriptor():
+            async def sample_delete_metric_descriptor():
                 # Create a client
-                client = monitoring_v3.MetricServiceClient()
+                client = monitoring_v3.MetricServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = monitoring_v3.DeleteMetricDescriptorRequest(
@@ -842,7 +842,7 @@ class MetricServiceAsyncClient:
                 )
 
                 # Make the request
-                client.delete_metric_descriptor(request=request)
+                await client.delete_metric_descriptor(request=request)
 
         Args:
             request (Union[google.cloud.monitoring_v3.types.DeleteMetricDescriptorRequest, dict]):
@@ -935,9 +935,9 @@ class MetricServiceAsyncClient:
 
             from google.cloud import monitoring_v3
 
-            def sample_list_time_series():
+            async def sample_list_time_series():
                 # Create a client
-                client = monitoring_v3.MetricServiceClient()
+                client = monitoring_v3.MetricServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = monitoring_v3.ListTimeSeriesRequest(
@@ -950,7 +950,7 @@ class MetricServiceAsyncClient:
                 page_result = client.list_time_series(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -1104,9 +1104,9 @@ class MetricServiceAsyncClient:
 
             from google.cloud import monitoring_v3
 
-            def sample_create_time_series():
+            async def sample_create_time_series():
                 # Create a client
-                client = monitoring_v3.MetricServiceClient()
+                client = monitoring_v3.MetricServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = monitoring_v3.CreateTimeSeriesRequest(
@@ -1114,7 +1114,7 @@ class MetricServiceAsyncClient:
                 )
 
                 # Make the request
-                client.create_time_series(request=request)
+                await client.create_time_series(request=request)
 
         Args:
             request (Union[google.cloud.monitoring_v3.types.CreateTimeSeriesRequest, dict]):
@@ -1217,9 +1217,9 @@ class MetricServiceAsyncClient:
 
             from google.cloud import monitoring_v3
 
-            def sample_create_service_time_series():
+            async def sample_create_service_time_series():
                 # Create a client
-                client = monitoring_v3.MetricServiceClient()
+                client = monitoring_v3.MetricServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = monitoring_v3.CreateTimeSeriesRequest(
@@ -1227,7 +1227,7 @@ class MetricServiceAsyncClient:
                 )
 
                 # Make the request
-                client.create_service_time_series(request=request)
+                await client.create_service_time_series(request=request)
 
         Args:
             request (Union[google.cloud.monitoring_v3.types.CreateTimeSeriesRequest, dict]):

@@ -235,9 +235,9 @@ class UptimeCheckServiceAsyncClient:
 
             from google.cloud import monitoring_v3
 
-            def sample_list_uptime_check_configs():
+            async def sample_list_uptime_check_configs():
                 # Create a client
-                client = monitoring_v3.UptimeCheckServiceClient()
+                client = monitoring_v3.UptimeCheckServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = monitoring_v3.ListUptimeCheckConfigsRequest(
@@ -248,7 +248,7 @@ class UptimeCheckServiceAsyncClient:
                 page_result = client.list_uptime_check_configs(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -357,9 +357,9 @@ class UptimeCheckServiceAsyncClient:
 
             from google.cloud import monitoring_v3
 
-            def sample_get_uptime_check_config():
+            async def sample_get_uptime_check_config():
                 # Create a client
-                client = monitoring_v3.UptimeCheckServiceClient()
+                client = monitoring_v3.UptimeCheckServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = monitoring_v3.GetUptimeCheckConfigRequest(
@@ -367,7 +367,7 @@ class UptimeCheckServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_uptime_check_config(request=request)
+                response = await client.get_uptime_check_config(request=request)
 
                 # Handle the response
                 print(response)
@@ -467,9 +467,9 @@ class UptimeCheckServiceAsyncClient:
 
             from google.cloud import monitoring_v3
 
-            def sample_create_uptime_check_config():
+            async def sample_create_uptime_check_config():
                 # Create a client
-                client = monitoring_v3.UptimeCheckServiceClient()
+                client = monitoring_v3.UptimeCheckServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = monitoring_v3.CreateUptimeCheckConfigRequest(
@@ -477,7 +477,7 @@ class UptimeCheckServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.create_uptime_check_config(request=request)
+                response = await client.create_uptime_check_config(request=request)
 
                 # Handle the response
                 print(response)
@@ -581,16 +581,16 @@ class UptimeCheckServiceAsyncClient:
 
             from google.cloud import monitoring_v3
 
-            def sample_update_uptime_check_config():
+            async def sample_update_uptime_check_config():
                 # Create a client
-                client = monitoring_v3.UptimeCheckServiceClient()
+                client = monitoring_v3.UptimeCheckServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = monitoring_v3.UpdateUptimeCheckConfigRequest(
                 )
 
                 # Make the request
-                response = client.update_uptime_check_config(request=request)
+                response = await client.update_uptime_check_config(request=request)
 
                 # Handle the response
                 print(response)
@@ -692,9 +692,9 @@ class UptimeCheckServiceAsyncClient:
 
             from google.cloud import monitoring_v3
 
-            def sample_delete_uptime_check_config():
+            async def sample_delete_uptime_check_config():
                 # Create a client
-                client = monitoring_v3.UptimeCheckServiceClient()
+                client = monitoring_v3.UptimeCheckServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = monitoring_v3.DeleteUptimeCheckConfigRequest(
@@ -702,7 +702,7 @@ class UptimeCheckServiceAsyncClient:
                 )
 
                 # Make the request
-                client.delete_uptime_check_config(request=request)
+                await client.delete_uptime_check_config(request=request)
 
         Args:
             request (Union[google.cloud.monitoring_v3.types.DeleteUptimeCheckConfigRequest, dict]):
@@ -788,9 +788,9 @@ class UptimeCheckServiceAsyncClient:
 
             from google.cloud import monitoring_v3
 
-            def sample_list_uptime_check_ips():
+            async def sample_list_uptime_check_ips():
                 # Create a client
-                client = monitoring_v3.UptimeCheckServiceClient()
+                client = monitoring_v3.UptimeCheckServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = monitoring_v3.ListUptimeCheckIpsRequest(
@@ -800,7 +800,7 @@ class UptimeCheckServiceAsyncClient:
                 page_result = client.list_uptime_check_ips(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:

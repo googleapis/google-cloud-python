@@ -806,7 +806,7 @@ def test_list_notification_channel_descriptors_field_headers():
     # a field header. Set these to a non-empty value.
     request = notification_service.ListNotificationChannelDescriptorsRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -826,7 +826,7 @@ def test_list_notification_channel_descriptors_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -840,7 +840,7 @@ async def test_list_notification_channel_descriptors_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = notification_service.ListNotificationChannelDescriptorsRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -860,7 +860,7 @@ async def test_list_notification_channel_descriptors_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1001,7 +1001,7 @@ def test_list_notification_channel_descriptors_pager(transport_name: str = "grpc
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(
             isinstance(i, notification.NotificationChannelDescriptor) for i in results
@@ -1275,7 +1275,7 @@ def test_get_notification_channel_descriptor_field_headers():
     # a field header. Set these to a non-empty value.
     request = notification_service.GetNotificationChannelDescriptorRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1293,7 +1293,7 @@ def test_get_notification_channel_descriptor_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1307,7 +1307,7 @@ async def test_get_notification_channel_descriptor_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = notification_service.GetNotificationChannelDescriptorRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1327,7 +1327,7 @@ async def test_get_notification_channel_descriptor_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1526,7 +1526,7 @@ def test_list_notification_channels_field_headers():
     # a field header. Set these to a non-empty value.
     request = notification_service.ListNotificationChannelsRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1544,7 +1544,7 @@ def test_list_notification_channels_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1558,7 +1558,7 @@ async def test_list_notification_channels_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = notification_service.ListNotificationChannelsRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1578,7 +1578,7 @@ async def test_list_notification_channels_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1715,7 +1715,7 @@ def test_list_notification_channels_pager(transport_name: str = "grpc"):
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, notification.NotificationChannel) for i in results)
 
@@ -1991,7 +1991,7 @@ def test_get_notification_channel_field_headers():
     # a field header. Set these to a non-empty value.
     request = notification_service.GetNotificationChannelRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2009,7 +2009,7 @@ def test_get_notification_channel_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2023,7 +2023,7 @@ async def test_get_notification_channel_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = notification_service.GetNotificationChannelRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2043,7 +2043,7 @@ async def test_get_notification_channel_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2260,7 +2260,7 @@ def test_create_notification_channel_field_headers():
     # a field header. Set these to a non-empty value.
     request = notification_service.CreateNotificationChannelRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2278,7 +2278,7 @@ def test_create_notification_channel_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2292,7 +2292,7 @@ async def test_create_notification_channel_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = notification_service.CreateNotificationChannelRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2312,7 +2312,7 @@ async def test_create_notification_channel_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2539,7 +2539,7 @@ def test_update_notification_channel_field_headers():
     # a field header. Set these to a non-empty value.
     request = notification_service.UpdateNotificationChannelRequest()
 
-    request.notification_channel.name = "notification_channel.name/value"
+    request.notification_channel.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2557,7 +2557,7 @@ def test_update_notification_channel_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "notification_channel.name=notification_channel.name/value",
+        "notification_channel.name=name_value",
     ) in kw["metadata"]
 
 
@@ -2571,7 +2571,7 @@ async def test_update_notification_channel_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = notification_service.UpdateNotificationChannelRequest()
 
-    request.notification_channel.name = "notification_channel.name/value"
+    request.notification_channel.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2591,7 +2591,7 @@ async def test_update_notification_channel_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "notification_channel.name=notification_channel.name/value",
+        "notification_channel.name=name_value",
     ) in kw["metadata"]
 
 
@@ -2788,7 +2788,7 @@ def test_delete_notification_channel_field_headers():
     # a field header. Set these to a non-empty value.
     request = notification_service.DeleteNotificationChannelRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2806,7 +2806,7 @@ def test_delete_notification_channel_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2820,7 +2820,7 @@ async def test_delete_notification_channel_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = notification_service.DeleteNotificationChannelRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2838,7 +2838,7 @@ async def test_delete_notification_channel_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -3044,7 +3044,7 @@ def test_send_notification_channel_verification_code_field_headers():
     # a field header. Set these to a non-empty value.
     request = notification_service.SendNotificationChannelVerificationCodeRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3062,7 +3062,7 @@ def test_send_notification_channel_verification_code_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -3076,7 +3076,7 @@ async def test_send_notification_channel_verification_code_field_headers_async()
     # a field header. Set these to a non-empty value.
     request = notification_service.SendNotificationChannelVerificationCodeRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3094,7 +3094,7 @@ async def test_send_notification_channel_verification_code_field_headers_async()
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -3304,7 +3304,7 @@ def test_get_notification_channel_verification_code_field_headers():
     # a field header. Set these to a non-empty value.
     request = notification_service.GetNotificationChannelVerificationCodeRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3324,7 +3324,7 @@ def test_get_notification_channel_verification_code_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -3338,7 +3338,7 @@ async def test_get_notification_channel_verification_code_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = notification_service.GetNotificationChannelVerificationCodeRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3358,7 +3358,7 @@ async def test_get_notification_channel_verification_code_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -3579,7 +3579,7 @@ def test_verify_notification_channel_field_headers():
     # a field header. Set these to a non-empty value.
     request = notification_service.VerifyNotificationChannelRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3597,7 +3597,7 @@ def test_verify_notification_channel_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -3611,7 +3611,7 @@ async def test_verify_notification_channel_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = notification_service.VerifyNotificationChannelRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3631,7 +3631,7 @@ async def test_verify_notification_channel_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 

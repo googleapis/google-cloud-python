@@ -741,7 +741,7 @@ def test_query_time_series_field_headers():
     # a field header. Set these to a non-empty value.
     request = metric_service.QueryTimeSeriesRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -759,7 +759,7 @@ def test_query_time_series_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -773,7 +773,7 @@ async def test_query_time_series_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = metric_service.QueryTimeSeriesRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -793,7 +793,7 @@ async def test_query_time_series_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -844,7 +844,7 @@ def test_query_time_series_pager(transport_name: str = "grpc"):
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, metric.TimeSeriesData) for i in results)
 

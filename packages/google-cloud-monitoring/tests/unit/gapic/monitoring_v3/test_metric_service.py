@@ -766,7 +766,7 @@ def test_list_monitored_resource_descriptors_field_headers():
     # a field header. Set these to a non-empty value.
     request = metric_service.ListMonitoredResourceDescriptorsRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -784,7 +784,7 @@ def test_list_monitored_resource_descriptors_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -798,7 +798,7 @@ async def test_list_monitored_resource_descriptors_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = metric_service.ListMonitoredResourceDescriptorsRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -818,7 +818,7 @@ async def test_list_monitored_resource_descriptors_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -955,7 +955,7 @@ def test_list_monitored_resource_descriptors_pager(transport_name: str = "grpc")
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(
             isinstance(i, monitored_resource_pb2.MonitoredResourceDescriptor)
@@ -1227,7 +1227,7 @@ def test_get_monitored_resource_descriptor_field_headers():
     # a field header. Set these to a non-empty value.
     request = metric_service.GetMonitoredResourceDescriptorRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1245,7 +1245,7 @@ def test_get_monitored_resource_descriptor_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1259,7 +1259,7 @@ async def test_get_monitored_resource_descriptor_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = metric_service.GetMonitoredResourceDescriptorRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1279,7 +1279,7 @@ async def test_get_monitored_resource_descriptor_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1474,7 +1474,7 @@ def test_list_metric_descriptors_field_headers():
     # a field header. Set these to a non-empty value.
     request = metric_service.ListMetricDescriptorsRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1492,7 +1492,7 @@ def test_list_metric_descriptors_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1506,7 +1506,7 @@ async def test_list_metric_descriptors_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = metric_service.ListMetricDescriptorsRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1526,7 +1526,7 @@ async def test_list_metric_descriptors_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1663,7 +1663,7 @@ def test_list_metric_descriptors_pager(transport_name: str = "grpc"):
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, metric_pb2.MetricDescriptor) for i in results)
 
@@ -1941,7 +1941,7 @@ def test_get_metric_descriptor_field_headers():
     # a field header. Set these to a non-empty value.
     request = metric_service.GetMetricDescriptorRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1959,7 +1959,7 @@ def test_get_metric_descriptor_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1973,7 +1973,7 @@ async def test_get_metric_descriptor_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = metric_service.GetMetricDescriptorRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1993,7 +1993,7 @@ async def test_get_metric_descriptor_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2212,7 +2212,7 @@ def test_create_metric_descriptor_field_headers():
     # a field header. Set these to a non-empty value.
     request = metric_service.CreateMetricDescriptorRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2230,7 +2230,7 @@ def test_create_metric_descriptor_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2244,7 +2244,7 @@ async def test_create_metric_descriptor_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = metric_service.CreateMetricDescriptorRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2264,7 +2264,7 @@ async def test_create_metric_descriptor_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2461,7 +2461,7 @@ def test_delete_metric_descriptor_field_headers():
     # a field header. Set these to a non-empty value.
     request = metric_service.DeleteMetricDescriptorRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2479,7 +2479,7 @@ def test_delete_metric_descriptor_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2493,7 +2493,7 @@ async def test_delete_metric_descriptor_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = metric_service.DeleteMetricDescriptorRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2511,7 +2511,7 @@ async def test_delete_metric_descriptor_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2701,7 +2701,7 @@ def test_list_time_series_field_headers():
     # a field header. Set these to a non-empty value.
     request = metric_service.ListTimeSeriesRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_time_series), "__call__") as call:
@@ -2717,7 +2717,7 @@ def test_list_time_series_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2731,7 +2731,7 @@ async def test_list_time_series_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = metric_service.ListTimeSeriesRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_time_series), "__call__") as call:
@@ -2749,7 +2749,7 @@ async def test_list_time_series_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2910,7 +2910,7 @@ def test_list_time_series_pager(transport_name: str = "grpc"):
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, gm_metric.TimeSeries) for i in results)
 
@@ -3149,7 +3149,7 @@ def test_create_time_series_field_headers():
     # a field header. Set these to a non-empty value.
     request = metric_service.CreateTimeSeriesRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3167,7 +3167,7 @@ def test_create_time_series_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -3181,7 +3181,7 @@ async def test_create_time_series_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = metric_service.CreateTimeSeriesRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3199,7 +3199,7 @@ async def test_create_time_series_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -3401,7 +3401,7 @@ def test_create_service_time_series_field_headers():
     # a field header. Set these to a non-empty value.
     request = metric_service.CreateTimeSeriesRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3419,7 +3419,7 @@ def test_create_service_time_series_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -3433,7 +3433,7 @@ async def test_create_service_time_series_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = metric_service.CreateTimeSeriesRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3451,7 +3451,7 @@ async def test_create_service_time_series_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 

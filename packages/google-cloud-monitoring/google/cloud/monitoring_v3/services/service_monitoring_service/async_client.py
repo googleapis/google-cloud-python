@@ -237,9 +237,9 @@ class ServiceMonitoringServiceAsyncClient:
 
             from google.cloud import monitoring_v3
 
-            def sample_create_service():
+            async def sample_create_service():
                 # Create a client
-                client = monitoring_v3.ServiceMonitoringServiceClient()
+                client = monitoring_v3.ServiceMonitoringServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = monitoring_v3.CreateServiceRequest(
@@ -247,7 +247,7 @@ class ServiceMonitoringServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.create_service(request=request)
+                response = await client.create_service(request=request)
 
                 # Handle the response
                 print(response)
@@ -347,9 +347,9 @@ class ServiceMonitoringServiceAsyncClient:
 
             from google.cloud import monitoring_v3
 
-            def sample_get_service():
+            async def sample_get_service():
                 # Create a client
-                client = monitoring_v3.ServiceMonitoringServiceClient()
+                client = monitoring_v3.ServiceMonitoringServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = monitoring_v3.GetServiceRequest(
@@ -357,7 +357,7 @@ class ServiceMonitoringServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_service(request=request)
+                response = await client.get_service(request=request)
 
                 # Handle the response
                 print(response)
@@ -458,9 +458,9 @@ class ServiceMonitoringServiceAsyncClient:
 
             from google.cloud import monitoring_v3
 
-            def sample_list_services():
+            async def sample_list_services():
                 # Create a client
-                client = monitoring_v3.ServiceMonitoringServiceClient()
+                client = monitoring_v3.ServiceMonitoringServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = monitoring_v3.ListServicesRequest(
@@ -471,7 +471,7 @@ class ServiceMonitoringServiceAsyncClient:
                 page_result = client.list_services(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -580,16 +580,16 @@ class ServiceMonitoringServiceAsyncClient:
 
             from google.cloud import monitoring_v3
 
-            def sample_update_service():
+            async def sample_update_service():
                 # Create a client
-                client = monitoring_v3.ServiceMonitoringServiceClient()
+                client = monitoring_v3.ServiceMonitoringServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = monitoring_v3.UpdateServiceRequest(
                 )
 
                 # Make the request
-                response = client.update_service(request=request)
+                response = await client.update_service(request=request)
 
                 # Handle the response
                 print(response)
@@ -679,9 +679,9 @@ class ServiceMonitoringServiceAsyncClient:
 
             from google.cloud import monitoring_v3
 
-            def sample_delete_service():
+            async def sample_delete_service():
                 # Create a client
-                client = monitoring_v3.ServiceMonitoringServiceClient()
+                client = monitoring_v3.ServiceMonitoringServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = monitoring_v3.DeleteServiceRequest(
@@ -689,7 +689,7 @@ class ServiceMonitoringServiceAsyncClient:
                 )
 
                 # Make the request
-                client.delete_service(request=request)
+                await client.delete_service(request=request)
 
         Args:
             request (Union[google.cloud.monitoring_v3.types.DeleteServiceRequest, dict]):
@@ -775,9 +775,9 @@ class ServiceMonitoringServiceAsyncClient:
 
             from google.cloud import monitoring_v3
 
-            def sample_create_service_level_objective():
+            async def sample_create_service_level_objective():
                 # Create a client
-                client = monitoring_v3.ServiceMonitoringServiceClient()
+                client = monitoring_v3.ServiceMonitoringServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = monitoring_v3.CreateServiceLevelObjectiveRequest(
@@ -785,7 +785,7 @@ class ServiceMonitoringServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.create_service_level_objective(request=request)
+                response = await client.create_service_level_objective(request=request)
 
                 # Handle the response
                 print(response)
@@ -895,9 +895,9 @@ class ServiceMonitoringServiceAsyncClient:
 
             from google.cloud import monitoring_v3
 
-            def sample_get_service_level_objective():
+            async def sample_get_service_level_objective():
                 # Create a client
-                client = monitoring_v3.ServiceMonitoringServiceClient()
+                client = monitoring_v3.ServiceMonitoringServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = monitoring_v3.GetServiceLevelObjectiveRequest(
@@ -905,7 +905,7 @@ class ServiceMonitoringServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_service_level_objective(request=request)
+                response = await client.get_service_level_objective(request=request)
 
                 # Handle the response
                 print(response)
@@ -1014,9 +1014,9 @@ class ServiceMonitoringServiceAsyncClient:
 
             from google.cloud import monitoring_v3
 
-            def sample_list_service_level_objectives():
+            async def sample_list_service_level_objectives():
                 # Create a client
-                client = monitoring_v3.ServiceMonitoringServiceClient()
+                client = monitoring_v3.ServiceMonitoringServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = monitoring_v3.ListServiceLevelObjectivesRequest(
@@ -1027,7 +1027,7 @@ class ServiceMonitoringServiceAsyncClient:
                 page_result = client.list_service_level_objectives(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -1136,16 +1136,16 @@ class ServiceMonitoringServiceAsyncClient:
 
             from google.cloud import monitoring_v3
 
-            def sample_update_service_level_objective():
+            async def sample_update_service_level_objective():
                 # Create a client
-                client = monitoring_v3.ServiceMonitoringServiceClient()
+                client = monitoring_v3.ServiceMonitoringServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = monitoring_v3.UpdateServiceLevelObjectiveRequest(
                 )
 
                 # Make the request
-                response = client.update_service_level_objective(request=request)
+                response = await client.update_service_level_objective(request=request)
 
                 # Handle the response
                 print(response)
@@ -1249,9 +1249,9 @@ class ServiceMonitoringServiceAsyncClient:
 
             from google.cloud import monitoring_v3
 
-            def sample_delete_service_level_objective():
+            async def sample_delete_service_level_objective():
                 # Create a client
-                client = monitoring_v3.ServiceMonitoringServiceClient()
+                client = monitoring_v3.ServiceMonitoringServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = monitoring_v3.DeleteServiceLevelObjectiveRequest(
@@ -1259,7 +1259,7 @@ class ServiceMonitoringServiceAsyncClient:
                 )
 
                 # Make the request
-                client.delete_service_level_objective(request=request)
+                await client.delete_service_level_objective(request=request)
 
         Args:
             request (Union[google.cloud.monitoring_v3.types.DeleteServiceLevelObjectiveRequest, dict]):

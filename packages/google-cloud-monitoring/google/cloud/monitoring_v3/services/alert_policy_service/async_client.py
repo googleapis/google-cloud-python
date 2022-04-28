@@ -241,9 +241,9 @@ class AlertPolicyServiceAsyncClient:
 
             from google.cloud import monitoring_v3
 
-            def sample_list_alert_policies():
+            async def sample_list_alert_policies():
                 # Create a client
-                client = monitoring_v3.AlertPolicyServiceClient()
+                client = monitoring_v3.AlertPolicyServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = monitoring_v3.ListAlertPoliciesRequest(
@@ -254,7 +254,7 @@ class AlertPolicyServiceAsyncClient:
                 page_result = client.list_alert_policies(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -368,9 +368,9 @@ class AlertPolicyServiceAsyncClient:
 
             from google.cloud import monitoring_v3
 
-            def sample_get_alert_policy():
+            async def sample_get_alert_policy():
                 # Create a client
-                client = monitoring_v3.AlertPolicyServiceClient()
+                client = monitoring_v3.AlertPolicyServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = monitoring_v3.GetAlertPolicyRequest(
@@ -378,7 +378,7 @@ class AlertPolicyServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_alert_policy(request=request)
+                response = await client.get_alert_policy(request=request)
 
                 # Handle the response
                 print(response)
@@ -480,9 +480,9 @@ class AlertPolicyServiceAsyncClient:
 
             from google.cloud import monitoring_v3
 
-            def sample_create_alert_policy():
+            async def sample_create_alert_policy():
                 # Create a client
-                client = monitoring_v3.AlertPolicyServiceClient()
+                client = monitoring_v3.AlertPolicyServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = monitoring_v3.CreateAlertPolicyRequest(
@@ -490,7 +490,7 @@ class AlertPolicyServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.create_alert_policy(request=request)
+                response = await client.create_alert_policy(request=request)
 
                 # Handle the response
                 print(response)
@@ -604,9 +604,9 @@ class AlertPolicyServiceAsyncClient:
 
             from google.cloud import monitoring_v3
 
-            def sample_delete_alert_policy():
+            async def sample_delete_alert_policy():
                 # Create a client
-                client = monitoring_v3.AlertPolicyServiceClient()
+                client = monitoring_v3.AlertPolicyServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = monitoring_v3.DeleteAlertPolicyRequest(
@@ -614,7 +614,7 @@ class AlertPolicyServiceAsyncClient:
                 )
 
                 # Make the request
-                client.delete_alert_policy(request=request)
+                await client.delete_alert_policy(request=request)
 
         Args:
             request (Union[google.cloud.monitoring_v3.types.DeleteAlertPolicyRequest, dict]):
@@ -706,16 +706,16 @@ class AlertPolicyServiceAsyncClient:
 
             from google.cloud import monitoring_v3
 
-            def sample_update_alert_policy():
+            async def sample_update_alert_policy():
                 # Create a client
-                client = monitoring_v3.AlertPolicyServiceClient()
+                client = monitoring_v3.AlertPolicyServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = monitoring_v3.UpdateAlertPolicyRequest(
                 )
 
                 # Make the request
-                response = client.update_alert_policy(request=request)
+                response = await client.update_alert_policy(request=request)
 
                 # Handle the response
                 print(response)

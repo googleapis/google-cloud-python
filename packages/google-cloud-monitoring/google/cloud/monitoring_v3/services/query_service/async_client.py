@@ -215,9 +215,9 @@ class QueryServiceAsyncClient:
 
             from google.cloud import monitoring_v3
 
-            def sample_query_time_series():
+            async def sample_query_time_series():
                 # Create a client
-                client = monitoring_v3.QueryServiceClient()
+                client = monitoring_v3.QueryServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = monitoring_v3.QueryTimeSeriesRequest(
@@ -229,7 +229,7 @@ class QueryServiceAsyncClient:
                 page_result = client.query_time_series(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:

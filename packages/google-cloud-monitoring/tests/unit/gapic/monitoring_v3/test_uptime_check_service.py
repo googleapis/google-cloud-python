@@ -781,7 +781,7 @@ def test_list_uptime_check_configs_field_headers():
     # a field header. Set these to a non-empty value.
     request = uptime_service.ListUptimeCheckConfigsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -799,7 +799,7 @@ def test_list_uptime_check_configs_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -813,7 +813,7 @@ async def test_list_uptime_check_configs_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = uptime_service.ListUptimeCheckConfigsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -833,7 +833,7 @@ async def test_list_uptime_check_configs_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -970,7 +970,7 @@ def test_list_uptime_check_configs_pager(transport_name: str = "grpc"):
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, uptime.UptimeCheckConfig) for i in results)
 
@@ -1242,7 +1242,7 @@ def test_get_uptime_check_config_field_headers():
     # a field header. Set these to a non-empty value.
     request = uptime_service.GetUptimeCheckConfigRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1260,7 +1260,7 @@ def test_get_uptime_check_config_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1274,7 +1274,7 @@ async def test_get_uptime_check_config_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = uptime_service.GetUptimeCheckConfigRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1294,7 +1294,7 @@ async def test_get_uptime_check_config_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1507,7 +1507,7 @@ def test_create_uptime_check_config_field_headers():
     # a field header. Set these to a non-empty value.
     request = uptime_service.CreateUptimeCheckConfigRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1525,7 +1525,7 @@ def test_create_uptime_check_config_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -1539,7 +1539,7 @@ async def test_create_uptime_check_config_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = uptime_service.CreateUptimeCheckConfigRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1559,7 +1559,7 @@ async def test_create_uptime_check_config_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -1782,7 +1782,7 @@ def test_update_uptime_check_config_field_headers():
     # a field header. Set these to a non-empty value.
     request = uptime_service.UpdateUptimeCheckConfigRequest()
 
-    request.uptime_check_config.name = "uptime_check_config.name/value"
+    request.uptime_check_config.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1800,7 +1800,7 @@ def test_update_uptime_check_config_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "uptime_check_config.name=uptime_check_config.name/value",
+        "uptime_check_config.name=name_value",
     ) in kw["metadata"]
 
 
@@ -1814,7 +1814,7 @@ async def test_update_uptime_check_config_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = uptime_service.UpdateUptimeCheckConfigRequest()
 
-    request.uptime_check_config.name = "uptime_check_config.name/value"
+    request.uptime_check_config.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1834,7 +1834,7 @@ async def test_update_uptime_check_config_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "uptime_check_config.name=uptime_check_config.name/value",
+        "uptime_check_config.name=name_value",
     ) in kw["metadata"]
 
 
@@ -2021,7 +2021,7 @@ def test_delete_uptime_check_config_field_headers():
     # a field header. Set these to a non-empty value.
     request = uptime_service.DeleteUptimeCheckConfigRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2039,7 +2039,7 @@ def test_delete_uptime_check_config_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2053,7 +2053,7 @@ async def test_delete_uptime_check_config_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = uptime_service.DeleteUptimeCheckConfigRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2071,7 +2071,7 @@ async def test_delete_uptime_check_config_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2299,7 +2299,7 @@ def test_list_uptime_check_ips_pager(transport_name: str = "grpc"):
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, uptime.UptimeCheckIp) for i in results)
 

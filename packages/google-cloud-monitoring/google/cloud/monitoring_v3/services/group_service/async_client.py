@@ -228,9 +228,9 @@ class GroupServiceAsyncClient:
 
             from google.cloud import monitoring_v3
 
-            def sample_list_groups():
+            async def sample_list_groups():
                 # Create a client
-                client = monitoring_v3.GroupServiceClient()
+                client = monitoring_v3.GroupServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = monitoring_v3.ListGroupsRequest(
@@ -242,7 +242,7 @@ class GroupServiceAsyncClient:
                 page_result = client.list_groups(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -349,9 +349,9 @@ class GroupServiceAsyncClient:
 
             from google.cloud import monitoring_v3
 
-            def sample_get_group():
+            async def sample_get_group():
                 # Create a client
-                client = monitoring_v3.GroupServiceClient()
+                client = monitoring_v3.GroupServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = monitoring_v3.GetGroupRequest(
@@ -359,7 +359,7 @@ class GroupServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_group(request=request)
+                response = await client.get_group(request=request)
 
                 # Handle the response
                 print(response)
@@ -487,9 +487,9 @@ class GroupServiceAsyncClient:
 
             from google.cloud import monitoring_v3
 
-            def sample_create_group():
+            async def sample_create_group():
                 # Create a client
-                client = monitoring_v3.GroupServiceClient()
+                client = monitoring_v3.GroupServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = monitoring_v3.CreateGroupRequest(
@@ -497,7 +497,7 @@ class GroupServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.create_group(request=request)
+                response = await client.create_group(request=request)
 
                 # Handle the response
                 print(response)
@@ -627,16 +627,16 @@ class GroupServiceAsyncClient:
 
             from google.cloud import monitoring_v3
 
-            def sample_update_group():
+            async def sample_update_group():
                 # Create a client
-                client = monitoring_v3.GroupServiceClient()
+                client = monitoring_v3.GroupServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = monitoring_v3.UpdateGroupRequest(
                 )
 
                 # Make the request
-                response = client.update_group(request=request)
+                response = await client.update_group(request=request)
 
                 # Handle the response
                 print(response)
@@ -763,9 +763,9 @@ class GroupServiceAsyncClient:
 
             from google.cloud import monitoring_v3
 
-            def sample_delete_group():
+            async def sample_delete_group():
                 # Create a client
-                client = monitoring_v3.GroupServiceClient()
+                client = monitoring_v3.GroupServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = monitoring_v3.DeleteGroupRequest(
@@ -773,7 +773,7 @@ class GroupServiceAsyncClient:
                 )
 
                 # Make the request
-                client.delete_group(request=request)
+                await client.delete_group(request=request)
 
         Args:
             request (Union[google.cloud.monitoring_v3.types.DeleteGroupRequest, dict]):
@@ -860,9 +860,9 @@ class GroupServiceAsyncClient:
 
             from google.cloud import monitoring_v3
 
-            def sample_list_group_members():
+            async def sample_list_group_members():
                 # Create a client
-                client = monitoring_v3.GroupServiceClient()
+                client = monitoring_v3.GroupServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = monitoring_v3.ListGroupMembersRequest(
@@ -873,7 +873,7 @@ class GroupServiceAsyncClient:
                 page_result = client.list_group_members(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:

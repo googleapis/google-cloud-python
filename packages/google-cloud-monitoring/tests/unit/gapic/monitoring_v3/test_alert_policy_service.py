@@ -785,7 +785,7 @@ def test_list_alert_policies_field_headers():
     # a field header. Set these to a non-empty value.
     request = alert_service.ListAlertPoliciesRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -803,7 +803,7 @@ def test_list_alert_policies_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -817,7 +817,7 @@ async def test_list_alert_policies_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = alert_service.ListAlertPoliciesRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -837,7 +837,7 @@ async def test_list_alert_policies_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -974,7 +974,7 @@ def test_list_alert_policies_pager(transport_name: str = "grpc"):
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, alert.AlertPolicy) for i in results)
 
@@ -1233,7 +1233,7 @@ def test_get_alert_policy_field_headers():
     # a field header. Set these to a non-empty value.
     request = alert_service.GetAlertPolicyRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_alert_policy), "__call__") as call:
@@ -1249,7 +1249,7 @@ def test_get_alert_policy_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1263,7 +1263,7 @@ async def test_get_alert_policy_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = alert_service.GetAlertPolicyRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_alert_policy), "__call__") as call:
@@ -1279,7 +1279,7 @@ async def test_get_alert_policy_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1479,7 +1479,7 @@ def test_create_alert_policy_field_headers():
     # a field header. Set these to a non-empty value.
     request = alert_service.CreateAlertPolicyRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1497,7 +1497,7 @@ def test_create_alert_policy_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1511,7 +1511,7 @@ async def test_create_alert_policy_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = alert_service.CreateAlertPolicyRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1529,7 +1529,7 @@ async def test_create_alert_policy_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1723,7 +1723,7 @@ def test_delete_alert_policy_field_headers():
     # a field header. Set these to a non-empty value.
     request = alert_service.DeleteAlertPolicyRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1741,7 +1741,7 @@ def test_delete_alert_policy_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1755,7 +1755,7 @@ async def test_delete_alert_policy_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = alert_service.DeleteAlertPolicyRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1773,7 +1773,7 @@ async def test_delete_alert_policy_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1977,7 +1977,7 @@ def test_update_alert_policy_field_headers():
     # a field header. Set these to a non-empty value.
     request = alert_service.UpdateAlertPolicyRequest()
 
-    request.alert_policy.name = "alert_policy.name/value"
+    request.alert_policy.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1995,7 +1995,7 @@ def test_update_alert_policy_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "alert_policy.name=alert_policy.name/value",
+        "alert_policy.name=name_value",
     ) in kw["metadata"]
 
 
@@ -2009,7 +2009,7 @@ async def test_update_alert_policy_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = alert_service.UpdateAlertPolicyRequest()
 
-    request.alert_policy.name = "alert_policy.name/value"
+    request.alert_policy.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2027,7 +2027,7 @@ async def test_update_alert_policy_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "alert_policy.name=alert_policy.name/value",
+        "alert_policy.name=name_value",
     ) in kw["metadata"]
 
 
