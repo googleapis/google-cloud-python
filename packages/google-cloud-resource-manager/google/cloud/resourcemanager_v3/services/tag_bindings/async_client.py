@@ -226,9 +226,9 @@ class TagBindingsAsyncClient:
 
             from google.cloud import resourcemanager_v3
 
-            def sample_list_tag_bindings():
+            async def sample_list_tag_bindings():
                 # Create a client
-                client = resourcemanager_v3.TagBindingsClient()
+                client = resourcemanager_v3.TagBindingsAsyncClient()
 
                 # Initialize request argument(s)
                 request = resourcemanager_v3.ListTagBindingsRequest(
@@ -239,7 +239,7 @@ class TagBindingsAsyncClient:
                 page_result = client.list_tag_bindings(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -339,9 +339,9 @@ class TagBindingsAsyncClient:
 
             from google.cloud import resourcemanager_v3
 
-            def sample_create_tag_binding():
+            async def sample_create_tag_binding():
                 # Create a client
-                client = resourcemanager_v3.TagBindingsClient()
+                client = resourcemanager_v3.TagBindingsAsyncClient()
 
                 # Initialize request argument(s)
                 request = resourcemanager_v3.CreateTagBindingRequest(
@@ -352,7 +352,7 @@ class TagBindingsAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -444,9 +444,9 @@ class TagBindingsAsyncClient:
 
             from google.cloud import resourcemanager_v3
 
-            def sample_delete_tag_binding():
+            async def sample_delete_tag_binding():
                 # Create a client
-                client = resourcemanager_v3.TagBindingsClient()
+                client = resourcemanager_v3.TagBindingsAsyncClient()
 
                 # Initialize request argument(s)
                 request = resourcemanager_v3.DeleteTagBindingRequest(
@@ -458,7 +458,7 @@ class TagBindingsAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)

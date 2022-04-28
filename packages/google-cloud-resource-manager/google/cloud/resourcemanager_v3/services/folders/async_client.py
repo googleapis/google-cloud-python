@@ -225,9 +225,9 @@ class FoldersAsyncClient:
 
             from google.cloud import resourcemanager_v3
 
-            def sample_get_folder():
+            async def sample_get_folder():
                 # Create a client
-                client = resourcemanager_v3.FoldersClient()
+                client = resourcemanager_v3.FoldersAsyncClient()
 
                 # Initialize request argument(s)
                 request = resourcemanager_v3.GetFolderRequest(
@@ -235,7 +235,7 @@ class FoldersAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_folder(request=request)
+                response = await client.get_folder(request=request)
 
                 # Handle the response
                 print(response)
@@ -335,9 +335,9 @@ class FoldersAsyncClient:
 
             from google.cloud import resourcemanager_v3
 
-            def sample_list_folders():
+            async def sample_list_folders():
                 # Create a client
-                client = resourcemanager_v3.FoldersClient()
+                client = resourcemanager_v3.FoldersAsyncClient()
 
                 # Initialize request argument(s)
                 request = resourcemanager_v3.ListFoldersRequest(
@@ -348,7 +348,7 @@ class FoldersAsyncClient:
                 page_result = client.list_folders(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -455,9 +455,9 @@ class FoldersAsyncClient:
 
             from google.cloud import resourcemanager_v3
 
-            def sample_search_folders():
+            async def sample_search_folders():
                 # Create a client
-                client = resourcemanager_v3.FoldersClient()
+                client = resourcemanager_v3.FoldersAsyncClient()
 
                 # Initialize request argument(s)
                 request = resourcemanager_v3.SearchFoldersRequest(
@@ -467,7 +467,7 @@ class FoldersAsyncClient:
                 page_result = client.search_folders(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -617,9 +617,9 @@ class FoldersAsyncClient:
 
             from google.cloud import resourcemanager_v3
 
-            def sample_create_folder():
+            async def sample_create_folder():
                 # Create a client
-                client = resourcemanager_v3.FoldersClient()
+                client = resourcemanager_v3.FoldersAsyncClient()
 
                 # Initialize request argument(s)
                 folder = resourcemanager_v3.Folder()
@@ -634,7 +634,7 @@ class FoldersAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -742,9 +742,9 @@ class FoldersAsyncClient:
 
             from google.cloud import resourcemanager_v3
 
-            def sample_update_folder():
+            async def sample_update_folder():
                 # Create a client
-                client = resourcemanager_v3.FoldersClient()
+                client = resourcemanager_v3.FoldersAsyncClient()
 
                 # Initialize request argument(s)
                 folder = resourcemanager_v3.Folder()
@@ -759,7 +759,7 @@ class FoldersAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -889,9 +889,9 @@ class FoldersAsyncClient:
 
             from google.cloud import resourcemanager_v3
 
-            def sample_move_folder():
+            async def sample_move_folder():
                 # Create a client
-                client = resourcemanager_v3.FoldersClient()
+                client = resourcemanager_v3.FoldersAsyncClient()
 
                 # Initialize request argument(s)
                 request = resourcemanager_v3.MoveFolderRequest(
@@ -904,7 +904,7 @@ class FoldersAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1020,9 +1020,9 @@ class FoldersAsyncClient:
 
             from google.cloud import resourcemanager_v3
 
-            def sample_delete_folder():
+            async def sample_delete_folder():
                 # Create a client
-                client = resourcemanager_v3.FoldersClient()
+                client = resourcemanager_v3.FoldersAsyncClient()
 
                 # Initialize request argument(s)
                 request = resourcemanager_v3.DeleteFolderRequest(
@@ -1034,7 +1034,7 @@ class FoldersAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1140,9 +1140,9 @@ class FoldersAsyncClient:
 
             from google.cloud import resourcemanager_v3
 
-            def sample_undelete_folder():
+            async def sample_undelete_folder():
                 # Create a client
-                client = resourcemanager_v3.FoldersClient()
+                client = resourcemanager_v3.FoldersAsyncClient()
 
                 # Initialize request argument(s)
                 request = resourcemanager_v3.UndeleteFolderRequest(
@@ -1154,7 +1154,7 @@ class FoldersAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1254,9 +1254,9 @@ class FoldersAsyncClient:
             from google.cloud import resourcemanager_v3
             from google.iam.v1 import iam_policy_pb2  # type: ignore
 
-            def sample_get_iam_policy():
+            async def sample_get_iam_policy():
                 # Create a client
-                client = resourcemanager_v3.FoldersClient()
+                client = resourcemanager_v3.FoldersAsyncClient()
 
                 # Initialize request argument(s)
                 request = iam_policy_pb2.GetIamPolicyRequest(
@@ -1264,7 +1264,7 @@ class FoldersAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_iam_policy(request=request)
+                response = await client.get_iam_policy(request=request)
 
                 # Handle the response
                 print(response)
@@ -1426,9 +1426,9 @@ class FoldersAsyncClient:
             from google.cloud import resourcemanager_v3
             from google.iam.v1 import iam_policy_pb2  # type: ignore
 
-            def sample_set_iam_policy():
+            async def sample_set_iam_policy():
                 # Create a client
-                client = resourcemanager_v3.FoldersClient()
+                client = resourcemanager_v3.FoldersAsyncClient()
 
                 # Initialize request argument(s)
                 request = iam_policy_pb2.SetIamPolicyRequest(
@@ -1436,7 +1436,7 @@ class FoldersAsyncClient:
                 )
 
                 # Make the request
-                response = client.set_iam_policy(request=request)
+                response = await client.set_iam_policy(request=request)
 
                 # Handle the response
                 print(response)
@@ -1590,9 +1590,9 @@ class FoldersAsyncClient:
             from google.cloud import resourcemanager_v3
             from google.iam.v1 import iam_policy_pb2  # type: ignore
 
-            def sample_test_iam_permissions():
+            async def sample_test_iam_permissions():
                 # Create a client
-                client = resourcemanager_v3.FoldersClient()
+                client = resourcemanager_v3.FoldersAsyncClient()
 
                 # Initialize request argument(s)
                 request = iam_policy_pb2.TestIamPermissionsRequest(
@@ -1601,7 +1601,7 @@ class FoldersAsyncClient:
                 )
 
                 # Make the request
-                response = client.test_iam_permissions(request=request)
+                response = await client.test_iam_permissions(request=request)
 
                 # Handle the response
                 print(response)

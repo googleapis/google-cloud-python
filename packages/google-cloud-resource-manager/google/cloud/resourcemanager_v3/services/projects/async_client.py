@@ -221,9 +221,9 @@ class ProjectsAsyncClient:
 
             from google.cloud import resourcemanager_v3
 
-            def sample_get_project():
+            async def sample_get_project():
                 # Create a client
-                client = resourcemanager_v3.ProjectsClient()
+                client = resourcemanager_v3.ProjectsAsyncClient()
 
                 # Initialize request argument(s)
                 request = resourcemanager_v3.GetProjectRequest(
@@ -231,7 +231,7 @@ class ProjectsAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_project(request=request)
+                response = await client.get_project(request=request)
 
                 # Handle the response
                 print(response)
@@ -334,9 +334,9 @@ class ProjectsAsyncClient:
 
             from google.cloud import resourcemanager_v3
 
-            def sample_list_projects():
+            async def sample_list_projects():
                 # Create a client
-                client = resourcemanager_v3.ProjectsClient()
+                client = resourcemanager_v3.ProjectsAsyncClient()
 
                 # Initialize request argument(s)
                 request = resourcemanager_v3.ListProjectsRequest(
@@ -347,7 +347,7 @@ class ProjectsAsyncClient:
                 page_result = client.list_projects(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -469,9 +469,9 @@ class ProjectsAsyncClient:
 
             from google.cloud import resourcemanager_v3
 
-            def sample_search_projects():
+            async def sample_search_projects():
                 # Create a client
-                client = resourcemanager_v3.ProjectsClient()
+                client = resourcemanager_v3.ProjectsAsyncClient()
 
                 # Initialize request argument(s)
                 request = resourcemanager_v3.SearchProjectsRequest(
@@ -481,7 +481,7 @@ class ProjectsAsyncClient:
                 page_result = client.search_projects(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -620,9 +620,9 @@ class ProjectsAsyncClient:
 
             from google.cloud import resourcemanager_v3
 
-            def sample_create_project():
+            async def sample_create_project():
                 # Create a client
-                client = resourcemanager_v3.ProjectsClient()
+                client = resourcemanager_v3.ProjectsAsyncClient()
 
                 # Initialize request argument(s)
                 request = resourcemanager_v3.CreateProjectRequest(
@@ -633,7 +633,7 @@ class ProjectsAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -739,9 +739,9 @@ class ProjectsAsyncClient:
 
             from google.cloud import resourcemanager_v3
 
-            def sample_update_project():
+            async def sample_update_project():
                 # Create a client
-                client = resourcemanager_v3.ProjectsClient()
+                client = resourcemanager_v3.ProjectsAsyncClient()
 
                 # Initialize request argument(s)
                 request = resourcemanager_v3.UpdateProjectRequest(
@@ -752,7 +752,7 @@ class ProjectsAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -877,9 +877,9 @@ class ProjectsAsyncClient:
 
             from google.cloud import resourcemanager_v3
 
-            def sample_move_project():
+            async def sample_move_project():
                 # Create a client
-                client = resourcemanager_v3.ProjectsClient()
+                client = resourcemanager_v3.ProjectsAsyncClient()
 
                 # Initialize request argument(s)
                 request = resourcemanager_v3.MoveProjectRequest(
@@ -892,7 +892,7 @@ class ProjectsAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1032,9 +1032,9 @@ class ProjectsAsyncClient:
 
             from google.cloud import resourcemanager_v3
 
-            def sample_delete_project():
+            async def sample_delete_project():
                 # Create a client
-                client = resourcemanager_v3.ProjectsClient()
+                client = resourcemanager_v3.ProjectsAsyncClient()
 
                 # Initialize request argument(s)
                 request = resourcemanager_v3.DeleteProjectRequest(
@@ -1046,7 +1046,7 @@ class ProjectsAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1149,9 +1149,9 @@ class ProjectsAsyncClient:
 
             from google.cloud import resourcemanager_v3
 
-            def sample_undelete_project():
+            async def sample_undelete_project():
                 # Create a client
-                client = resourcemanager_v3.ProjectsClient()
+                client = resourcemanager_v3.ProjectsAsyncClient()
 
                 # Initialize request argument(s)
                 request = resourcemanager_v3.UndeleteProjectRequest(
@@ -1163,7 +1163,7 @@ class ProjectsAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1266,9 +1266,9 @@ class ProjectsAsyncClient:
             from google.cloud import resourcemanager_v3
             from google.iam.v1 import iam_policy_pb2  # type: ignore
 
-            def sample_get_iam_policy():
+            async def sample_get_iam_policy():
                 # Create a client
-                client = resourcemanager_v3.ProjectsClient()
+                client = resourcemanager_v3.ProjectsAsyncClient()
 
                 # Initialize request argument(s)
                 request = iam_policy_pb2.GetIamPolicyRequest(
@@ -1276,7 +1276,7 @@ class ProjectsAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_iam_policy(request=request)
+                response = await client.get_iam_policy(request=request)
 
                 # Handle the response
                 print(response)
@@ -1485,9 +1485,9 @@ class ProjectsAsyncClient:
             from google.cloud import resourcemanager_v3
             from google.iam.v1 import iam_policy_pb2  # type: ignore
 
-            def sample_set_iam_policy():
+            async def sample_set_iam_policy():
                 # Create a client
-                client = resourcemanager_v3.ProjectsClient()
+                client = resourcemanager_v3.ProjectsAsyncClient()
 
                 # Initialize request argument(s)
                 request = iam_policy_pb2.SetIamPolicyRequest(
@@ -1495,7 +1495,7 @@ class ProjectsAsyncClient:
                 )
 
                 # Make the request
-                response = client.set_iam_policy(request=request)
+                response = await client.set_iam_policy(request=request)
 
                 # Handle the response
                 print(response)
@@ -1646,9 +1646,9 @@ class ProjectsAsyncClient:
             from google.cloud import resourcemanager_v3
             from google.iam.v1 import iam_policy_pb2  # type: ignore
 
-            def sample_test_iam_permissions():
+            async def sample_test_iam_permissions():
                 # Create a client
-                client = resourcemanager_v3.ProjectsClient()
+                client = resourcemanager_v3.ProjectsAsyncClient()
 
                 # Initialize request argument(s)
                 request = iam_policy_pb2.TestIamPermissionsRequest(
@@ -1657,7 +1657,7 @@ class ProjectsAsyncClient:
                 )
 
                 # Make the request
-                response = client.test_iam_permissions(request=request)
+                response = await client.test_iam_permissions(request=request)
 
                 # Handle the response
                 print(response)

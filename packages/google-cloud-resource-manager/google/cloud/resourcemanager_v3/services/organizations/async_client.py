@@ -223,9 +223,9 @@ class OrganizationsAsyncClient:
 
             from google.cloud import resourcemanager_v3
 
-            def sample_get_organization():
+            async def sample_get_organization():
                 # Create a client
-                client = resourcemanager_v3.OrganizationsClient()
+                client = resourcemanager_v3.OrganizationsAsyncClient()
 
                 # Initialize request argument(s)
                 request = resourcemanager_v3.GetOrganizationRequest(
@@ -233,7 +233,7 @@ class OrganizationsAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_organization(request=request)
+                response = await client.get_organization(request=request)
 
                 # Handle the response
                 print(response)
@@ -339,9 +339,9 @@ class OrganizationsAsyncClient:
 
             from google.cloud import resourcemanager_v3
 
-            def sample_search_organizations():
+            async def sample_search_organizations():
                 # Create a client
-                client = resourcemanager_v3.OrganizationsClient()
+                client = resourcemanager_v3.OrganizationsAsyncClient()
 
                 # Initialize request argument(s)
                 request = resourcemanager_v3.SearchOrganizationsRequest(
@@ -351,7 +351,7 @@ class OrganizationsAsyncClient:
                 page_result = client.search_organizations(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -468,9 +468,9 @@ class OrganizationsAsyncClient:
             from google.cloud import resourcemanager_v3
             from google.iam.v1 import iam_policy_pb2  # type: ignore
 
-            def sample_get_iam_policy():
+            async def sample_get_iam_policy():
                 # Create a client
-                client = resourcemanager_v3.OrganizationsClient()
+                client = resourcemanager_v3.OrganizationsAsyncClient()
 
                 # Initialize request argument(s)
                 request = iam_policy_pb2.GetIamPolicyRequest(
@@ -478,7 +478,7 @@ class OrganizationsAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_iam_policy(request=request)
+                response = await client.get_iam_policy(request=request)
 
                 # Handle the response
                 print(response)
@@ -643,9 +643,9 @@ class OrganizationsAsyncClient:
             from google.cloud import resourcemanager_v3
             from google.iam.v1 import iam_policy_pb2  # type: ignore
 
-            def sample_set_iam_policy():
+            async def sample_set_iam_policy():
                 # Create a client
-                client = resourcemanager_v3.OrganizationsClient()
+                client = resourcemanager_v3.OrganizationsAsyncClient()
 
                 # Initialize request argument(s)
                 request = iam_policy_pb2.SetIamPolicyRequest(
@@ -653,7 +653,7 @@ class OrganizationsAsyncClient:
                 )
 
                 # Make the request
-                response = client.set_iam_policy(request=request)
+                response = await client.set_iam_policy(request=request)
 
                 # Handle the response
                 print(response)
@@ -807,9 +807,9 @@ class OrganizationsAsyncClient:
             from google.cloud import resourcemanager_v3
             from google.iam.v1 import iam_policy_pb2  # type: ignore
 
-            def sample_test_iam_permissions():
+            async def sample_test_iam_permissions():
                 # Create a client
-                client = resourcemanager_v3.OrganizationsClient()
+                client = resourcemanager_v3.OrganizationsAsyncClient()
 
                 # Initialize request argument(s)
                 request = iam_policy_pb2.TestIamPermissionsRequest(
@@ -818,7 +818,7 @@ class OrganizationsAsyncClient:
                 )
 
                 # Make the request
-                response = client.test_iam_permissions(request=request)
+                response = await client.test_iam_permissions(request=request)
 
                 # Handle the response
                 print(response)

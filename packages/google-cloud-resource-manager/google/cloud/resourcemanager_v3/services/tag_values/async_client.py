@@ -219,9 +219,9 @@ class TagValuesAsyncClient:
 
             from google.cloud import resourcemanager_v3
 
-            def sample_list_tag_values():
+            async def sample_list_tag_values():
                 # Create a client
-                client = resourcemanager_v3.TagValuesClient()
+                client = resourcemanager_v3.TagValuesAsyncClient()
 
                 # Initialize request argument(s)
                 request = resourcemanager_v3.ListTagValuesRequest(
@@ -232,7 +232,7 @@ class TagValuesAsyncClient:
                 page_result = client.list_tag_values(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -331,9 +331,9 @@ class TagValuesAsyncClient:
 
             from google.cloud import resourcemanager_v3
 
-            def sample_get_tag_value():
+            async def sample_get_tag_value():
                 # Create a client
-                client = resourcemanager_v3.TagValuesClient()
+                client = resourcemanager_v3.TagValuesAsyncClient()
 
                 # Initialize request argument(s)
                 request = resourcemanager_v3.GetTagValueRequest(
@@ -341,7 +341,7 @@ class TagValuesAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_tag_value(request=request)
+                response = await client.get_tag_value(request=request)
 
                 # Handle the response
                 print(response)
@@ -441,9 +441,9 @@ class TagValuesAsyncClient:
 
             from google.cloud import resourcemanager_v3
 
-            def sample_create_tag_value():
+            async def sample_create_tag_value():
                 # Create a client
-                client = resourcemanager_v3.TagValuesClient()
+                client = resourcemanager_v3.TagValuesAsyncClient()
 
                 # Initialize request argument(s)
                 tag_value = resourcemanager_v3.TagValue()
@@ -458,7 +458,7 @@ class TagValuesAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -550,9 +550,9 @@ class TagValuesAsyncClient:
 
             from google.cloud import resourcemanager_v3
 
-            def sample_update_tag_value():
+            async def sample_update_tag_value():
                 # Create a client
-                client = resourcemanager_v3.TagValuesClient()
+                client = resourcemanager_v3.TagValuesAsyncClient()
 
                 # Initialize request argument(s)
                 tag_value = resourcemanager_v3.TagValue()
@@ -567,7 +567,7 @@ class TagValuesAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -677,9 +677,9 @@ class TagValuesAsyncClient:
 
             from google.cloud import resourcemanager_v3
 
-            def sample_delete_tag_value():
+            async def sample_delete_tag_value():
                 # Create a client
-                client = resourcemanager_v3.TagValuesClient()
+                client = resourcemanager_v3.TagValuesAsyncClient()
 
                 # Initialize request argument(s)
                 request = resourcemanager_v3.DeleteTagValueRequest(
@@ -691,7 +691,7 @@ class TagValuesAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -795,9 +795,9 @@ class TagValuesAsyncClient:
             from google.cloud import resourcemanager_v3
             from google.iam.v1 import iam_policy_pb2  # type: ignore
 
-            def sample_get_iam_policy():
+            async def sample_get_iam_policy():
                 # Create a client
-                client = resourcemanager_v3.TagValuesClient()
+                client = resourcemanager_v3.TagValuesAsyncClient()
 
                 # Initialize request argument(s)
                 request = iam_policy_pb2.GetIamPolicyRequest(
@@ -805,7 +805,7 @@ class TagValuesAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_iam_policy(request=request)
+                response = await client.get_iam_policy(request=request)
 
                 # Handle the response
                 print(response)
@@ -967,9 +967,9 @@ class TagValuesAsyncClient:
             from google.cloud import resourcemanager_v3
             from google.iam.v1 import iam_policy_pb2  # type: ignore
 
-            def sample_set_iam_policy():
+            async def sample_set_iam_policy():
                 # Create a client
-                client = resourcemanager_v3.TagValuesClient()
+                client = resourcemanager_v3.TagValuesAsyncClient()
 
                 # Initialize request argument(s)
                 request = iam_policy_pb2.SetIamPolicyRequest(
@@ -977,7 +977,7 @@ class TagValuesAsyncClient:
                 )
 
                 # Make the request
-                response = client.set_iam_policy(request=request)
+                response = await client.set_iam_policy(request=request)
 
                 # Handle the response
                 print(response)
@@ -1131,9 +1131,9 @@ class TagValuesAsyncClient:
             from google.cloud import resourcemanager_v3
             from google.iam.v1 import iam_policy_pb2  # type: ignore
 
-            def sample_test_iam_permissions():
+            async def sample_test_iam_permissions():
                 # Create a client
-                client = resourcemanager_v3.TagValuesClient()
+                client = resourcemanager_v3.TagValuesAsyncClient()
 
                 # Initialize request argument(s)
                 request = iam_policy_pb2.TestIamPermissionsRequest(
@@ -1142,7 +1142,7 @@ class TagValuesAsyncClient:
                 )
 
                 # Make the request
-                response = client.test_iam_permissions(request=request)
+                response = await client.test_iam_permissions(request=request)
 
                 # Handle the response
                 print(response)
