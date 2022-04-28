@@ -787,7 +787,7 @@ def test_create_os_policy_assignment_field_headers():
     # a field header. Set these to a non-empty value.
     request = os_policy_assignments.CreateOSPolicyAssignmentRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -805,7 +805,7 @@ def test_create_os_policy_assignment_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -819,7 +819,7 @@ async def test_create_os_policy_assignment_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = os_policy_assignments.CreateOSPolicyAssignmentRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -839,7 +839,7 @@ async def test_create_os_policy_assignment_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -1056,7 +1056,7 @@ def test_update_os_policy_assignment_field_headers():
     # a field header. Set these to a non-empty value.
     request = os_policy_assignments.UpdateOSPolicyAssignmentRequest()
 
-    request.os_policy_assignment.name = "os_policy_assignment.name/value"
+    request.os_policy_assignment.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1074,7 +1074,7 @@ def test_update_os_policy_assignment_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "os_policy_assignment.name=os_policy_assignment.name/value",
+        "os_policy_assignment.name=name_value",
     ) in kw["metadata"]
 
 
@@ -1088,7 +1088,7 @@ async def test_update_os_policy_assignment_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = os_policy_assignments.UpdateOSPolicyAssignmentRequest()
 
-    request.os_policy_assignment.name = "os_policy_assignment.name/value"
+    request.os_policy_assignment.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1108,7 +1108,7 @@ async def test_update_os_policy_assignment_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "os_policy_assignment.name=os_policy_assignment.name/value",
+        "os_policy_assignment.name=name_value",
     ) in kw["metadata"]
 
 
@@ -1359,7 +1359,7 @@ def test_get_os_policy_assignment_field_headers():
     # a field header. Set these to a non-empty value.
     request = os_policy_assignments.GetOSPolicyAssignmentRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1377,7 +1377,7 @@ def test_get_os_policy_assignment_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1391,7 +1391,7 @@ async def test_get_os_policy_assignment_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = os_policy_assignments.GetOSPolicyAssignmentRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1411,7 +1411,7 @@ async def test_get_os_policy_assignment_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1606,7 +1606,7 @@ def test_list_os_policy_assignments_field_headers():
     # a field header. Set these to a non-empty value.
     request = os_policy_assignments.ListOSPolicyAssignmentsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1624,7 +1624,7 @@ def test_list_os_policy_assignments_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -1638,7 +1638,7 @@ async def test_list_os_policy_assignments_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = os_policy_assignments.ListOSPolicyAssignmentsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1658,7 +1658,7 @@ async def test_list_os_policy_assignments_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -1795,7 +1795,7 @@ def test_list_os_policy_assignments_pager(transport_name: str = "grpc"):
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(
             isinstance(i, os_policy_assignments.OSPolicyAssignment) for i in results
@@ -2055,7 +2055,7 @@ def test_list_os_policy_assignment_revisions_field_headers():
     # a field header. Set these to a non-empty value.
     request = os_policy_assignments.ListOSPolicyAssignmentRevisionsRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2075,7 +2075,7 @@ def test_list_os_policy_assignment_revisions_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2089,7 +2089,7 @@ async def test_list_os_policy_assignment_revisions_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = os_policy_assignments.ListOSPolicyAssignmentRevisionsRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2109,7 +2109,7 @@ async def test_list_os_policy_assignment_revisions_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2250,7 +2250,7 @@ def test_list_os_policy_assignment_revisions_pager(transport_name: str = "grpc")
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(
             isinstance(i, os_policy_assignments.OSPolicyAssignment) for i in results
@@ -2502,7 +2502,7 @@ def test_delete_os_policy_assignment_field_headers():
     # a field header. Set these to a non-empty value.
     request = os_policy_assignments.DeleteOSPolicyAssignmentRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2520,7 +2520,7 @@ def test_delete_os_policy_assignment_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2534,7 +2534,7 @@ async def test_delete_os_policy_assignment_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = os_policy_assignments.DeleteOSPolicyAssignmentRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2554,7 +2554,7 @@ async def test_delete_os_policy_assignment_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2784,7 +2784,7 @@ def test_get_instance_os_policies_compliance_field_headers():
     # a field header. Set these to a non-empty value.
     request = instance_os_policies_compliance.GetInstanceOSPoliciesComplianceRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2804,7 +2804,7 @@ def test_get_instance_os_policies_compliance_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2818,7 +2818,7 @@ async def test_get_instance_os_policies_compliance_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = instance_os_policies_compliance.GetInstanceOSPoliciesComplianceRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2838,7 +2838,7 @@ async def test_get_instance_os_policies_compliance_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -3048,7 +3048,7 @@ def test_list_instance_os_policies_compliances_field_headers():
     # a field header. Set these to a non-empty value.
     request = instance_os_policies_compliance.ListInstanceOSPoliciesCompliancesRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3068,7 +3068,7 @@ def test_list_instance_os_policies_compliances_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -3082,7 +3082,7 @@ async def test_list_instance_os_policies_compliances_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = instance_os_policies_compliance.ListInstanceOSPoliciesCompliancesRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3102,7 +3102,7 @@ async def test_list_instance_os_policies_compliances_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -3243,7 +3243,7 @@ def test_list_instance_os_policies_compliances_pager(transport_name: str = "grpc
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(
             isinstance(i, instance_os_policies_compliance.InstanceOSPoliciesCompliance)
@@ -3521,7 +3521,7 @@ def test_get_os_policy_assignment_report_field_headers():
     # a field header. Set these to a non-empty value.
     request = os_policy_assignment_reports.GetOSPolicyAssignmentReportRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3539,7 +3539,7 @@ def test_get_os_policy_assignment_report_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -3553,7 +3553,7 @@ async def test_get_os_policy_assignment_report_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = os_policy_assignment_reports.GetOSPolicyAssignmentReportRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3573,7 +3573,7 @@ async def test_get_os_policy_assignment_report_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -3779,7 +3779,7 @@ def test_list_os_policy_assignment_reports_field_headers():
     # a field header. Set these to a non-empty value.
     request = os_policy_assignment_reports.ListOSPolicyAssignmentReportsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3799,7 +3799,7 @@ def test_list_os_policy_assignment_reports_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -3813,7 +3813,7 @@ async def test_list_os_policy_assignment_reports_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = os_policy_assignment_reports.ListOSPolicyAssignmentReportsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3833,7 +3833,7 @@ async def test_list_os_policy_assignment_reports_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -3974,7 +3974,7 @@ def test_list_os_policy_assignment_reports_pager(transport_name: str = "grpc"):
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(
             isinstance(i, os_policy_assignment_reports.OSPolicyAssignmentReport)
@@ -4227,7 +4227,7 @@ def test_get_inventory_field_headers():
     # a field header. Set these to a non-empty value.
     request = inventory.GetInventoryRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_inventory), "__call__") as call:
@@ -4243,7 +4243,7 @@ def test_get_inventory_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -4257,7 +4257,7 @@ async def test_get_inventory_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = inventory.GetInventoryRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_inventory), "__call__") as call:
@@ -4273,7 +4273,7 @@ async def test_get_inventory_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -4455,7 +4455,7 @@ def test_list_inventories_field_headers():
     # a field header. Set these to a non-empty value.
     request = inventory.ListInventoriesRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_inventories), "__call__") as call:
@@ -4471,7 +4471,7 @@ def test_list_inventories_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -4485,7 +4485,7 @@ async def test_list_inventories_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = inventory.ListInventoriesRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_inventories), "__call__") as call:
@@ -4503,7 +4503,7 @@ async def test_list_inventories_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -4634,7 +4634,7 @@ def test_list_inventories_pager(transport_name: str = "grpc"):
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, inventory.Inventory) for i in results)
 
@@ -4882,7 +4882,7 @@ def test_get_vulnerability_report_field_headers():
     # a field header. Set these to a non-empty value.
     request = vulnerability.GetVulnerabilityReportRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4900,7 +4900,7 @@ def test_get_vulnerability_report_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -4914,7 +4914,7 @@ async def test_get_vulnerability_report_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = vulnerability.GetVulnerabilityReportRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4934,7 +4934,7 @@ async def test_get_vulnerability_report_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -5129,7 +5129,7 @@ def test_list_vulnerability_reports_field_headers():
     # a field header. Set these to a non-empty value.
     request = vulnerability.ListVulnerabilityReportsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5147,7 +5147,7 @@ def test_list_vulnerability_reports_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -5161,7 +5161,7 @@ async def test_list_vulnerability_reports_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = vulnerability.ListVulnerabilityReportsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5181,7 +5181,7 @@ async def test_list_vulnerability_reports_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -5318,7 +5318,7 @@ def test_list_vulnerability_reports_pager(transport_name: str = "grpc"):
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, vulnerability.VulnerabilityReport) for i in results)
 

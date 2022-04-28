@@ -284,9 +284,9 @@ class OsConfigZonalServiceAsyncClient:
 
             from google.cloud import osconfig_v1alpha
 
-            def sample_create_os_policy_assignment():
+            async def sample_create_os_policy_assignment():
                 # Create a client
-                client = osconfig_v1alpha.OsConfigZonalServiceClient()
+                client = osconfig_v1alpha.OsConfigZonalServiceAsyncClient()
 
                 # Initialize request argument(s)
                 os_policy_assignment = osconfig_v1alpha.OSPolicyAssignment()
@@ -308,7 +308,7 @@ class OsConfigZonalServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -453,9 +453,9 @@ class OsConfigZonalServiceAsyncClient:
 
             from google.cloud import osconfig_v1alpha
 
-            def sample_update_os_policy_assignment():
+            async def sample_update_os_policy_assignment():
                 # Create a client
-                client = osconfig_v1alpha.OsConfigZonalServiceClient()
+                client = osconfig_v1alpha.OsConfigZonalServiceAsyncClient()
 
                 # Initialize request argument(s)
                 os_policy_assignment = osconfig_v1alpha.OSPolicyAssignment()
@@ -475,7 +475,7 @@ class OsConfigZonalServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -596,9 +596,9 @@ class OsConfigZonalServiceAsyncClient:
 
             from google.cloud import osconfig_v1alpha
 
-            def sample_get_os_policy_assignment():
+            async def sample_get_os_policy_assignment():
                 # Create a client
-                client = osconfig_v1alpha.OsConfigZonalServiceClient()
+                client = osconfig_v1alpha.OsConfigZonalServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = osconfig_v1alpha.GetOSPolicyAssignmentRequest(
@@ -606,7 +606,7 @@ class OsConfigZonalServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_os_policy_assignment(request=request)
+                response = await client.get_os_policy_assignment(request=request)
 
                 # Handle the response
                 print(response)
@@ -708,9 +708,9 @@ class OsConfigZonalServiceAsyncClient:
 
             from google.cloud import osconfig_v1alpha
 
-            def sample_list_os_policy_assignments():
+            async def sample_list_os_policy_assignments():
                 # Create a client
-                client = osconfig_v1alpha.OsConfigZonalServiceClient()
+                client = osconfig_v1alpha.OsConfigZonalServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = osconfig_v1alpha.ListOSPolicyAssignmentsRequest(
@@ -721,7 +721,7 @@ class OsConfigZonalServiceAsyncClient:
                 page_result = client.list_os_policy_assignments(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -817,9 +817,9 @@ class OsConfigZonalServiceAsyncClient:
 
             from google.cloud import osconfig_v1alpha
 
-            def sample_list_os_policy_assignment_revisions():
+            async def sample_list_os_policy_assignment_revisions():
                 # Create a client
-                client = osconfig_v1alpha.OsConfigZonalServiceClient()
+                client = osconfig_v1alpha.OsConfigZonalServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = osconfig_v1alpha.ListOSPolicyAssignmentRevisionsRequest(
@@ -830,7 +830,7 @@ class OsConfigZonalServiceAsyncClient:
                 page_result = client.list_os_policy_assignment_revisions(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -939,9 +939,9 @@ class OsConfigZonalServiceAsyncClient:
 
             from google.cloud import osconfig_v1alpha
 
-            def sample_delete_os_policy_assignment():
+            async def sample_delete_os_policy_assignment():
                 # Create a client
-                client = osconfig_v1alpha.OsConfigZonalServiceClient()
+                client = osconfig_v1alpha.OsConfigZonalServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = osconfig_v1alpha.DeleteOSPolicyAssignmentRequest(
@@ -953,7 +953,7 @@ class OsConfigZonalServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1062,9 +1062,9 @@ class OsConfigZonalServiceAsyncClient:
 
             from google.cloud import osconfig_v1alpha
 
-            def sample_get_instance_os_policies_compliance():
+            async def sample_get_instance_os_policies_compliance():
                 # Create a client
-                client = osconfig_v1alpha.OsConfigZonalServiceClient()
+                client = osconfig_v1alpha.OsConfigZonalServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = osconfig_v1alpha.GetInstanceOSPoliciesComplianceRequest(
@@ -1072,7 +1072,7 @@ class OsConfigZonalServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_instance_os_policies_compliance(request=request)
+                response = await client.get_instance_os_policies_compliance(request=request)
 
                 # Handle the response
                 print(response)
@@ -1192,9 +1192,9 @@ class OsConfigZonalServiceAsyncClient:
 
             from google.cloud import osconfig_v1alpha
 
-            def sample_list_instance_os_policies_compliances():
+            async def sample_list_instance_os_policies_compliances():
                 # Create a client
-                client = osconfig_v1alpha.OsConfigZonalServiceClient()
+                client = osconfig_v1alpha.OsConfigZonalServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = osconfig_v1alpha.ListInstanceOSPoliciesCompliancesRequest(
@@ -1205,7 +1205,7 @@ class OsConfigZonalServiceAsyncClient:
                 page_result = client.list_instance_os_policies_compliances(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -1318,9 +1318,9 @@ class OsConfigZonalServiceAsyncClient:
 
             from google.cloud import osconfig_v1alpha
 
-            def sample_get_os_policy_assignment_report():
+            async def sample_get_os_policy_assignment_report():
                 # Create a client
-                client = osconfig_v1alpha.OsConfigZonalServiceClient()
+                client = osconfig_v1alpha.OsConfigZonalServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = osconfig_v1alpha.GetOSPolicyAssignmentReportRequest(
@@ -1328,7 +1328,7 @@ class OsConfigZonalServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_os_policy_assignment_report(request=request)
+                response = await client.get_os_policy_assignment_report(request=request)
 
                 # Handle the response
                 print(response)
@@ -1428,9 +1428,9 @@ class OsConfigZonalServiceAsyncClient:
 
             from google.cloud import osconfig_v1alpha
 
-            def sample_list_os_policy_assignment_reports():
+            async def sample_list_os_policy_assignment_reports():
                 # Create a client
-                client = osconfig_v1alpha.OsConfigZonalServiceClient()
+                client = osconfig_v1alpha.OsConfigZonalServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = osconfig_v1alpha.ListOSPolicyAssignmentReportsRequest(
@@ -1441,7 +1441,7 @@ class OsConfigZonalServiceAsyncClient:
                 page_result = client.list_os_policy_assignment_reports(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -1564,9 +1564,9 @@ class OsConfigZonalServiceAsyncClient:
 
             from google.cloud import osconfig_v1alpha
 
-            def sample_get_inventory():
+            async def sample_get_inventory():
                 # Create a client
-                client = osconfig_v1alpha.OsConfigZonalServiceClient()
+                client = osconfig_v1alpha.OsConfigZonalServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = osconfig_v1alpha.GetInventoryRequest(
@@ -1574,7 +1574,7 @@ class OsConfigZonalServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_inventory(request=request)
+                response = await client.get_inventory(request=request)
 
                 # Handle the response
                 print(response)
@@ -1675,9 +1675,9 @@ class OsConfigZonalServiceAsyncClient:
 
             from google.cloud import osconfig_v1alpha
 
-            def sample_list_inventories():
+            async def sample_list_inventories():
                 # Create a client
-                client = osconfig_v1alpha.OsConfigZonalServiceClient()
+                client = osconfig_v1alpha.OsConfigZonalServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = osconfig_v1alpha.ListInventoriesRequest(
@@ -1688,7 +1688,7 @@ class OsConfigZonalServiceAsyncClient:
                 page_result = client.list_inventories(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -1791,9 +1791,9 @@ class OsConfigZonalServiceAsyncClient:
 
             from google.cloud import osconfig_v1alpha
 
-            def sample_get_vulnerability_report():
+            async def sample_get_vulnerability_report():
                 # Create a client
-                client = osconfig_v1alpha.OsConfigZonalServiceClient()
+                client = osconfig_v1alpha.OsConfigZonalServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = osconfig_v1alpha.GetVulnerabilityReportRequest(
@@ -1801,7 +1801,7 @@ class OsConfigZonalServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_vulnerability_report(request=request)
+                response = await client.get_vulnerability_report(request=request)
 
                 # Handle the response
                 print(response)
@@ -1898,9 +1898,9 @@ class OsConfigZonalServiceAsyncClient:
 
             from google.cloud import osconfig_v1alpha
 
-            def sample_list_vulnerability_reports():
+            async def sample_list_vulnerability_reports():
                 # Create a client
-                client = osconfig_v1alpha.OsConfigZonalServiceClient()
+                client = osconfig_v1alpha.OsConfigZonalServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = osconfig_v1alpha.ListVulnerabilityReportsRequest(
@@ -1911,7 +1911,7 @@ class OsConfigZonalServiceAsyncClient:
                 page_result = client.list_vulnerability_reports(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:

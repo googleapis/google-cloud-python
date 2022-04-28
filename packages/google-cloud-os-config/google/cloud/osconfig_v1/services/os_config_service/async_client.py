@@ -232,9 +232,9 @@ class OsConfigServiceAsyncClient:
 
             from google.cloud import osconfig_v1
 
-            def sample_execute_patch_job():
+            async def sample_execute_patch_job():
                 # Create a client
-                client = osconfig_v1.OsConfigServiceClient()
+                client = osconfig_v1.OsConfigServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = osconfig_v1.ExecutePatchJobRequest(
@@ -242,7 +242,7 @@ class OsConfigServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.execute_patch_job(request=request)
+                response = await client.execute_patch_job(request=request)
 
                 # Handle the response
                 print(response)
@@ -316,9 +316,9 @@ class OsConfigServiceAsyncClient:
 
             from google.cloud import osconfig_v1
 
-            def sample_get_patch_job():
+            async def sample_get_patch_job():
                 # Create a client
-                client = osconfig_v1.OsConfigServiceClient()
+                client = osconfig_v1.OsConfigServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = osconfig_v1.GetPatchJobRequest(
@@ -326,7 +326,7 @@ class OsConfigServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_patch_job(request=request)
+                response = await client.get_patch_job(request=request)
 
                 # Handle the response
                 print(response)
@@ -419,9 +419,9 @@ class OsConfigServiceAsyncClient:
 
             from google.cloud import osconfig_v1
 
-            def sample_cancel_patch_job():
+            async def sample_cancel_patch_job():
                 # Create a client
-                client = osconfig_v1.OsConfigServiceClient()
+                client = osconfig_v1.OsConfigServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = osconfig_v1.CancelPatchJobRequest(
@@ -429,7 +429,7 @@ class OsConfigServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.cancel_patch_job(request=request)
+                response = await client.cancel_patch_job(request=request)
 
                 # Handle the response
                 print(response)
@@ -500,9 +500,9 @@ class OsConfigServiceAsyncClient:
 
             from google.cloud import osconfig_v1
 
-            def sample_list_patch_jobs():
+            async def sample_list_patch_jobs():
                 # Create a client
-                client = osconfig_v1.OsConfigServiceClient()
+                client = osconfig_v1.OsConfigServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = osconfig_v1.ListPatchJobsRequest(
@@ -513,7 +513,7 @@ class OsConfigServiceAsyncClient:
                 page_result = client.list_patch_jobs(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -606,9 +606,9 @@ class OsConfigServiceAsyncClient:
 
             from google.cloud import osconfig_v1
 
-            def sample_list_patch_job_instance_details():
+            async def sample_list_patch_job_instance_details():
                 # Create a client
-                client = osconfig_v1.OsConfigServiceClient()
+                client = osconfig_v1.OsConfigServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = osconfig_v1.ListPatchJobInstanceDetailsRequest(
@@ -619,7 +619,7 @@ class OsConfigServiceAsyncClient:
                 page_result = client.list_patch_job_instance_details(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -716,9 +716,9 @@ class OsConfigServiceAsyncClient:
 
             from google.cloud import osconfig_v1
 
-            def sample_create_patch_deployment():
+            async def sample_create_patch_deployment():
                 # Create a client
-                client = osconfig_v1.OsConfigServiceClient()
+                client = osconfig_v1.OsConfigServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = osconfig_v1.CreatePatchDeploymentRequest(
@@ -727,7 +727,7 @@ class OsConfigServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.create_patch_deployment(request=request)
+                response = await client.create_patch_deployment(request=request)
 
                 # Handle the response
                 print(response)
@@ -841,9 +841,9 @@ class OsConfigServiceAsyncClient:
 
             from google.cloud import osconfig_v1
 
-            def sample_get_patch_deployment():
+            async def sample_get_patch_deployment():
                 # Create a client
-                client = osconfig_v1.OsConfigServiceClient()
+                client = osconfig_v1.OsConfigServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = osconfig_v1.GetPatchDeploymentRequest(
@@ -851,7 +851,7 @@ class OsConfigServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_patch_deployment(request=request)
+                response = await client.get_patch_deployment(request=request)
 
                 # Handle the response
                 print(response)
@@ -940,9 +940,9 @@ class OsConfigServiceAsyncClient:
 
             from google.cloud import osconfig_v1
 
-            def sample_list_patch_deployments():
+            async def sample_list_patch_deployments():
                 # Create a client
-                client = osconfig_v1.OsConfigServiceClient()
+                client = osconfig_v1.OsConfigServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = osconfig_v1.ListPatchDeploymentsRequest(
@@ -953,7 +953,7 @@ class OsConfigServiceAsyncClient:
                 page_result = client.list_patch_deployments(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -1048,9 +1048,9 @@ class OsConfigServiceAsyncClient:
 
             from google.cloud import osconfig_v1
 
-            def sample_delete_patch_deployment():
+            async def sample_delete_patch_deployment():
                 # Create a client
-                client = osconfig_v1.OsConfigServiceClient()
+                client = osconfig_v1.OsConfigServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = osconfig_v1.DeletePatchDeploymentRequest(
@@ -1058,7 +1058,7 @@ class OsConfigServiceAsyncClient:
                 )
 
                 # Make the request
-                client.delete_patch_deployment(request=request)
+                await client.delete_patch_deployment(request=request)
 
         Args:
             request (Union[google.cloud.osconfig_v1.types.DeletePatchDeploymentRequest, dict]):
@@ -1132,16 +1132,16 @@ class OsConfigServiceAsyncClient:
 
             from google.cloud import osconfig_v1
 
-            def sample_update_patch_deployment():
+            async def sample_update_patch_deployment():
                 # Create a client
-                client = osconfig_v1.OsConfigServiceClient()
+                client = osconfig_v1.OsConfigServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = osconfig_v1.UpdatePatchDeploymentRequest(
                 )
 
                 # Make the request
-                response = client.update_patch_deployment(request=request)
+                response = await client.update_patch_deployment(request=request)
 
                 # Handle the response
                 print(response)
@@ -1244,9 +1244,9 @@ class OsConfigServiceAsyncClient:
 
             from google.cloud import osconfig_v1
 
-            def sample_pause_patch_deployment():
+            async def sample_pause_patch_deployment():
                 # Create a client
-                client = osconfig_v1.OsConfigServiceClient()
+                client = osconfig_v1.OsConfigServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = osconfig_v1.PausePatchDeploymentRequest(
@@ -1254,7 +1254,7 @@ class OsConfigServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.pause_patch_deployment(request=request)
+                response = await client.pause_patch_deployment(request=request)
 
                 # Handle the response
                 print(response)
@@ -1345,9 +1345,9 @@ class OsConfigServiceAsyncClient:
 
             from google.cloud import osconfig_v1
 
-            def sample_resume_patch_deployment():
+            async def sample_resume_patch_deployment():
                 # Create a client
-                client = osconfig_v1.OsConfigServiceClient()
+                client = osconfig_v1.OsConfigServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = osconfig_v1.ResumePatchDeploymentRequest(
@@ -1355,7 +1355,7 @@ class OsConfigServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.resume_patch_deployment(request=request)
+                response = await client.resume_patch_deployment(request=request)
 
                 # Handle the response
                 print(response)
