@@ -224,9 +224,9 @@ class WebRiskServiceV1Beta1AsyncClient:
 
             from google.cloud import webrisk_v1beta1
 
-            def sample_compute_threat_list_diff():
+            async def sample_compute_threat_list_diff():
                 # Create a client
-                client = webrisk_v1beta1.WebRiskServiceV1Beta1Client()
+                client = webrisk_v1beta1.WebRiskServiceV1Beta1AsyncClient()
 
                 # Initialize request argument(s)
                 request = webrisk_v1beta1.ComputeThreatListDiffRequest(
@@ -234,7 +234,7 @@ class WebRiskServiceV1Beta1AsyncClient:
                 )
 
                 # Make the request
-                response = client.compute_threat_list_diff(request=request)
+                response = await client.compute_threat_list_diff(request=request)
 
                 # Handle the response
                 print(response)
@@ -340,9 +340,9 @@ class WebRiskServiceV1Beta1AsyncClient:
 
             from google.cloud import webrisk_v1beta1
 
-            def sample_search_uris():
+            async def sample_search_uris():
                 # Create a client
-                client = webrisk_v1beta1.WebRiskServiceV1Beta1Client()
+                client = webrisk_v1beta1.WebRiskServiceV1Beta1AsyncClient()
 
                 # Initialize request argument(s)
                 request = webrisk_v1beta1.SearchUrisRequest(
@@ -351,7 +351,7 @@ class WebRiskServiceV1Beta1AsyncClient:
                 )
 
                 # Make the request
-                response = client.search_uris(request=request)
+                response = await client.search_uris(request=request)
 
                 # Handle the response
                 print(response)
@@ -453,9 +453,9 @@ class WebRiskServiceV1Beta1AsyncClient:
 
             from google.cloud import webrisk_v1beta1
 
-            def sample_search_hashes():
+            async def sample_search_hashes():
                 # Create a client
-                client = webrisk_v1beta1.WebRiskServiceV1Beta1Client()
+                client = webrisk_v1beta1.WebRiskServiceV1Beta1AsyncClient()
 
                 # Initialize request argument(s)
                 request = webrisk_v1beta1.SearchHashesRequest(
@@ -463,7 +463,7 @@ class WebRiskServiceV1Beta1AsyncClient:
                 )
 
                 # Make the request
-                response = client.search_hashes(request=request)
+                response = await client.search_hashes(request=request)
 
                 # Handle the response
                 print(response)

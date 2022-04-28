@@ -228,9 +228,9 @@ class WebRiskServiceAsyncClient:
 
             from google.cloud import webrisk_v1
 
-            def sample_compute_threat_list_diff():
+            async def sample_compute_threat_list_diff():
                 # Create a client
-                client = webrisk_v1.WebRiskServiceClient()
+                client = webrisk_v1.WebRiskServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = webrisk_v1.ComputeThreatListDiffRequest(
@@ -238,7 +238,7 @@ class WebRiskServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.compute_threat_list_diff(request=request)
+                response = await client.compute_threat_list_diff(request=request)
 
                 # Handle the response
                 print(response)
@@ -356,9 +356,9 @@ class WebRiskServiceAsyncClient:
 
             from google.cloud import webrisk_v1
 
-            def sample_search_uris():
+            async def sample_search_uris():
                 # Create a client
-                client = webrisk_v1.WebRiskServiceClient()
+                client = webrisk_v1.WebRiskServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = webrisk_v1.SearchUrisRequest(
@@ -367,7 +367,7 @@ class WebRiskServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.search_uris(request=request)
+                response = await client.search_uris(request=request)
 
                 # Handle the response
                 print(response)
@@ -470,9 +470,9 @@ class WebRiskServiceAsyncClient:
 
             from google.cloud import webrisk_v1
 
-            def sample_search_hashes():
+            async def sample_search_hashes():
                 # Create a client
-                client = webrisk_v1.WebRiskServiceClient()
+                client = webrisk_v1.WebRiskServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = webrisk_v1.SearchHashesRequest(
@@ -480,7 +480,7 @@ class WebRiskServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.search_hashes(request=request)
+                response = await client.search_hashes(request=request)
 
                 # Handle the response
                 print(response)
@@ -587,9 +587,9 @@ class WebRiskServiceAsyncClient:
 
             from google.cloud import webrisk_v1
 
-            def sample_create_submission():
+            async def sample_create_submission():
                 # Create a client
-                client = webrisk_v1.WebRiskServiceClient()
+                client = webrisk_v1.WebRiskServiceAsyncClient()
 
                 # Initialize request argument(s)
                 submission = webrisk_v1.Submission()
@@ -601,7 +601,7 @@ class WebRiskServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.create_submission(request=request)
+                response = await client.create_submission(request=request)
 
                 # Handle the response
                 print(response)

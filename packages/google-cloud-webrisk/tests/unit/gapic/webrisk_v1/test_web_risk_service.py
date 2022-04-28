@@ -1324,7 +1324,7 @@ def test_create_submission_field_headers():
     # a field header. Set these to a non-empty value.
     request = webrisk.CreateSubmissionRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1342,7 +1342,7 @@ def test_create_submission_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -1356,7 +1356,7 @@ async def test_create_submission_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = webrisk.CreateSubmissionRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1374,7 +1374,7 @@ async def test_create_submission_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
