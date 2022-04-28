@@ -282,9 +282,9 @@ class SecurityCenterAsyncClient:
 
             from google.cloud import securitycenter_v1
 
-            def sample_bulk_mute_findings():
+            async def sample_bulk_mute_findings():
                 # Create a client
-                client = securitycenter_v1.SecurityCenterClient()
+                client = securitycenter_v1.SecurityCenterAsyncClient()
 
                 # Initialize request argument(s)
                 request = securitycenter_v1.BulkMuteFindingsRequest(
@@ -296,7 +296,7 @@ class SecurityCenterAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -402,9 +402,9 @@ class SecurityCenterAsyncClient:
 
             from google.cloud import securitycenter_v1
 
-            def sample_create_source():
+            async def sample_create_source():
                 # Create a client
-                client = securitycenter_v1.SecurityCenterClient()
+                client = securitycenter_v1.SecurityCenterAsyncClient()
 
                 # Initialize request argument(s)
                 request = securitycenter_v1.CreateSourceRequest(
@@ -412,7 +412,7 @@ class SecurityCenterAsyncClient:
                 )
 
                 # Make the request
-                response = client.create_source(request=request)
+                response = await client.create_source(request=request)
 
                 # Handle the response
                 print(response)
@@ -514,9 +514,9 @@ class SecurityCenterAsyncClient:
 
             from google.cloud import securitycenter_v1
 
-            def sample_create_finding():
+            async def sample_create_finding():
                 # Create a client
-                client = securitycenter_v1.SecurityCenterClient()
+                client = securitycenter_v1.SecurityCenterAsyncClient()
 
                 # Initialize request argument(s)
                 request = securitycenter_v1.CreateFindingRequest(
@@ -525,7 +525,7 @@ class SecurityCenterAsyncClient:
                 )
 
                 # Make the request
-                response = client.create_finding(request=request)
+                response = await client.create_finding(request=request)
 
                 # Handle the response
                 print(response)
@@ -642,9 +642,9 @@ class SecurityCenterAsyncClient:
 
             from google.cloud import securitycenter_v1
 
-            def sample_create_mute_config():
+            async def sample_create_mute_config():
                 # Create a client
-                client = securitycenter_v1.SecurityCenterClient()
+                client = securitycenter_v1.SecurityCenterAsyncClient()
 
                 # Initialize request argument(s)
                 mute_config = securitycenter_v1.MuteConfig()
@@ -657,7 +657,7 @@ class SecurityCenterAsyncClient:
                 )
 
                 # Make the request
-                response = client.create_mute_config(request=request)
+                response = await client.create_mute_config(request=request)
 
                 # Handle the response
                 print(response)
@@ -770,9 +770,9 @@ class SecurityCenterAsyncClient:
 
             from google.cloud import securitycenter_v1
 
-            def sample_create_notification_config():
+            async def sample_create_notification_config():
                 # Create a client
-                client = securitycenter_v1.SecurityCenterClient()
+                client = securitycenter_v1.SecurityCenterAsyncClient()
 
                 # Initialize request argument(s)
                 request = securitycenter_v1.CreateNotificationConfigRequest(
@@ -781,7 +781,7 @@ class SecurityCenterAsyncClient:
                 )
 
                 # Make the request
-                response = client.create_notification_config(request=request)
+                response = await client.create_notification_config(request=request)
 
                 # Handle the response
                 print(response)
@@ -894,9 +894,9 @@ class SecurityCenterAsyncClient:
 
             from google.cloud import securitycenter_v1
 
-            def sample_delete_mute_config():
+            async def sample_delete_mute_config():
                 # Create a client
-                client = securitycenter_v1.SecurityCenterClient()
+                client = securitycenter_v1.SecurityCenterAsyncClient()
 
                 # Initialize request argument(s)
                 request = securitycenter_v1.DeleteMuteConfigRequest(
@@ -904,7 +904,7 @@ class SecurityCenterAsyncClient:
                 )
 
                 # Make the request
-                client.delete_mute_config(request=request)
+                await client.delete_mute_config(request=request)
 
         Args:
             request (Union[google.cloud.securitycenter_v1.types.DeleteMuteConfigRequest, dict]):
@@ -981,9 +981,9 @@ class SecurityCenterAsyncClient:
 
             from google.cloud import securitycenter_v1
 
-            def sample_delete_notification_config():
+            async def sample_delete_notification_config():
                 # Create a client
-                client = securitycenter_v1.SecurityCenterClient()
+                client = securitycenter_v1.SecurityCenterAsyncClient()
 
                 # Initialize request argument(s)
                 request = securitycenter_v1.DeleteNotificationConfigRequest(
@@ -991,7 +991,7 @@ class SecurityCenterAsyncClient:
                 )
 
                 # Make the request
-                client.delete_notification_config(request=request)
+                await client.delete_notification_config(request=request)
 
         Args:
             request (Union[google.cloud.securitycenter_v1.types.DeleteNotificationConfigRequest, dict]):
@@ -1065,9 +1065,9 @@ class SecurityCenterAsyncClient:
 
             from google.cloud import securitycenter_v1
 
-            def sample_get_big_query_export():
+            async def sample_get_big_query_export():
                 # Create a client
-                client = securitycenter_v1.SecurityCenterClient()
+                client = securitycenter_v1.SecurityCenterAsyncClient()
 
                 # Initialize request argument(s)
                 request = securitycenter_v1.GetBigQueryExportRequest(
@@ -1075,7 +1075,7 @@ class SecurityCenterAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_big_query_export(request=request)
+                response = await client.get_big_query_export(request=request)
 
                 # Handle the response
                 print(response)
@@ -1165,9 +1165,9 @@ class SecurityCenterAsyncClient:
             from google.cloud import securitycenter_v1
             from google.iam.v1 import iam_policy_pb2  # type: ignore
 
-            def sample_get_iam_policy():
+            async def sample_get_iam_policy():
                 # Create a client
-                client = securitycenter_v1.SecurityCenterClient()
+                client = securitycenter_v1.SecurityCenterAsyncClient()
 
                 # Initialize request argument(s)
                 request = iam_policy_pb2.GetIamPolicyRequest(
@@ -1175,7 +1175,7 @@ class SecurityCenterAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_iam_policy(request=request)
+                response = await client.get_iam_policy(request=request)
 
                 # Handle the response
                 print(response)
@@ -1333,9 +1333,9 @@ class SecurityCenterAsyncClient:
 
             from google.cloud import securitycenter_v1
 
-            def sample_get_mute_config():
+            async def sample_get_mute_config():
                 # Create a client
-                client = securitycenter_v1.SecurityCenterClient()
+                client = securitycenter_v1.SecurityCenterAsyncClient()
 
                 # Initialize request argument(s)
                 request = securitycenter_v1.GetMuteConfigRequest(
@@ -1343,7 +1343,7 @@ class SecurityCenterAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_mute_config(request=request)
+                response = await client.get_mute_config(request=request)
 
                 # Handle the response
                 print(response)
@@ -1434,9 +1434,9 @@ class SecurityCenterAsyncClient:
 
             from google.cloud import securitycenter_v1
 
-            def sample_get_notification_config():
+            async def sample_get_notification_config():
                 # Create a client
-                client = securitycenter_v1.SecurityCenterClient()
+                client = securitycenter_v1.SecurityCenterAsyncClient()
 
                 # Initialize request argument(s)
                 request = securitycenter_v1.GetNotificationConfigRequest(
@@ -1444,7 +1444,7 @@ class SecurityCenterAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_notification_config(request=request)
+                response = await client.get_notification_config(request=request)
 
                 # Handle the response
                 print(response)
@@ -1546,9 +1546,9 @@ class SecurityCenterAsyncClient:
 
             from google.cloud import securitycenter_v1
 
-            def sample_get_organization_settings():
+            async def sample_get_organization_settings():
                 # Create a client
-                client = securitycenter_v1.SecurityCenterClient()
+                client = securitycenter_v1.SecurityCenterAsyncClient()
 
                 # Initialize request argument(s)
                 request = securitycenter_v1.GetOrganizationSettingsRequest(
@@ -1556,7 +1556,7 @@ class SecurityCenterAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_organization_settings(request=request)
+                response = await client.get_organization_settings(request=request)
 
                 # Handle the response
                 print(response)
@@ -1653,9 +1653,9 @@ class SecurityCenterAsyncClient:
 
             from google.cloud import securitycenter_v1
 
-            def sample_get_source():
+            async def sample_get_source():
                 # Create a client
-                client = securitycenter_v1.SecurityCenterClient()
+                client = securitycenter_v1.SecurityCenterAsyncClient()
 
                 # Initialize request argument(s)
                 request = securitycenter_v1.GetSourceRequest(
@@ -1663,7 +1663,7 @@ class SecurityCenterAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_source(request=request)
+                response = await client.get_source(request=request)
 
                 # Handle the response
                 print(response)
@@ -1763,9 +1763,9 @@ class SecurityCenterAsyncClient:
 
             from google.cloud import securitycenter_v1
 
-            def sample_group_assets():
+            async def sample_group_assets():
                 # Create a client
-                client = securitycenter_v1.SecurityCenterClient()
+                client = securitycenter_v1.SecurityCenterAsyncClient()
 
                 # Initialize request argument(s)
                 request = securitycenter_v1.GroupAssetsRequest(
@@ -1777,7 +1777,7 @@ class SecurityCenterAsyncClient:
                 page_result = client.group_assets(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -1868,9 +1868,9 @@ class SecurityCenterAsyncClient:
 
             from google.cloud import securitycenter_v1
 
-            def sample_group_findings():
+            async def sample_group_findings():
                 # Create a client
-                client = securitycenter_v1.SecurityCenterClient()
+                client = securitycenter_v1.SecurityCenterAsyncClient()
 
                 # Initialize request argument(s)
                 request = securitycenter_v1.GroupFindingsRequest(
@@ -1882,7 +1882,7 @@ class SecurityCenterAsyncClient:
                 page_result = client.group_findings(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -2016,9 +2016,9 @@ class SecurityCenterAsyncClient:
 
             from google.cloud import securitycenter_v1
 
-            def sample_list_assets():
+            async def sample_list_assets():
                 # Create a client
-                client = securitycenter_v1.SecurityCenterClient()
+                client = securitycenter_v1.SecurityCenterAsyncClient()
 
                 # Initialize request argument(s)
                 request = securitycenter_v1.ListAssetsRequest(
@@ -2029,7 +2029,7 @@ class SecurityCenterAsyncClient:
                 page_result = client.list_assets(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -2113,9 +2113,9 @@ class SecurityCenterAsyncClient:
 
             from google.cloud import securitycenter_v1
 
-            def sample_list_findings():
+            async def sample_list_findings():
                 # Create a client
-                client = securitycenter_v1.SecurityCenterClient()
+                client = securitycenter_v1.SecurityCenterAsyncClient()
 
                 # Initialize request argument(s)
                 request = securitycenter_v1.ListFindingsRequest(
@@ -2126,7 +2126,7 @@ class SecurityCenterAsyncClient:
                 page_result = client.list_findings(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -2210,9 +2210,9 @@ class SecurityCenterAsyncClient:
 
             from google.cloud import securitycenter_v1
 
-            def sample_list_mute_configs():
+            async def sample_list_mute_configs():
                 # Create a client
-                client = securitycenter_v1.SecurityCenterClient()
+                client = securitycenter_v1.SecurityCenterAsyncClient()
 
                 # Initialize request argument(s)
                 request = securitycenter_v1.ListMuteConfigsRequest(
@@ -2223,7 +2223,7 @@ class SecurityCenterAsyncClient:
                 page_result = client.list_mute_configs(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -2323,9 +2323,9 @@ class SecurityCenterAsyncClient:
 
             from google.cloud import securitycenter_v1
 
-            def sample_list_notification_configs():
+            async def sample_list_notification_configs():
                 # Create a client
-                client = securitycenter_v1.SecurityCenterClient()
+                client = securitycenter_v1.SecurityCenterAsyncClient()
 
                 # Initialize request argument(s)
                 request = securitycenter_v1.ListNotificationConfigsRequest(
@@ -2336,7 +2336,7 @@ class SecurityCenterAsyncClient:
                 page_result = client.list_notification_configs(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -2442,9 +2442,9 @@ class SecurityCenterAsyncClient:
 
             from google.cloud import securitycenter_v1
 
-            def sample_list_sources():
+            async def sample_list_sources():
                 # Create a client
-                client = securitycenter_v1.SecurityCenterClient()
+                client = securitycenter_v1.SecurityCenterAsyncClient()
 
                 # Initialize request argument(s)
                 request = securitycenter_v1.ListSourcesRequest(
@@ -2455,7 +2455,7 @@ class SecurityCenterAsyncClient:
                 page_result = client.list_sources(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -2565,9 +2565,9 @@ class SecurityCenterAsyncClient:
 
             from google.cloud import securitycenter_v1
 
-            def sample_run_asset_discovery():
+            async def sample_run_asset_discovery():
                 # Create a client
-                client = securitycenter_v1.SecurityCenterClient()
+                client = securitycenter_v1.SecurityCenterAsyncClient()
 
                 # Initialize request argument(s)
                 request = securitycenter_v1.RunAssetDiscoveryRequest(
@@ -2579,7 +2579,7 @@ class SecurityCenterAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2678,9 +2678,9 @@ class SecurityCenterAsyncClient:
 
             from google.cloud import securitycenter_v1
 
-            def sample_set_finding_state():
+            async def sample_set_finding_state():
                 # Create a client
-                client = securitycenter_v1.SecurityCenterClient()
+                client = securitycenter_v1.SecurityCenterAsyncClient()
 
                 # Initialize request argument(s)
                 request = securitycenter_v1.SetFindingStateRequest(
@@ -2689,7 +2689,7 @@ class SecurityCenterAsyncClient:
                 )
 
                 # Make the request
-                response = client.set_finding_state(request=request)
+                response = await client.set_finding_state(request=request)
 
                 # Handle the response
                 print(response)
@@ -2803,9 +2803,9 @@ class SecurityCenterAsyncClient:
 
             from google.cloud import securitycenter_v1
 
-            def sample_set_mute():
+            async def sample_set_mute():
                 # Create a client
-                client = securitycenter_v1.SecurityCenterClient()
+                client = securitycenter_v1.SecurityCenterAsyncClient()
 
                 # Initialize request argument(s)
                 request = securitycenter_v1.SetMuteRequest(
@@ -2814,7 +2814,7 @@ class SecurityCenterAsyncClient:
                 )
 
                 # Make the request
-                response = client.set_mute(request=request)
+                response = await client.set_mute(request=request)
 
                 # Handle the response
                 print(response)
@@ -2922,9 +2922,9 @@ class SecurityCenterAsyncClient:
             from google.cloud import securitycenter_v1
             from google.iam.v1 import iam_policy_pb2  # type: ignore
 
-            def sample_set_iam_policy():
+            async def sample_set_iam_policy():
                 # Create a client
-                client = securitycenter_v1.SecurityCenterClient()
+                client = securitycenter_v1.SecurityCenterAsyncClient()
 
                 # Initialize request argument(s)
                 request = iam_policy_pb2.SetIamPolicyRequest(
@@ -2932,7 +2932,7 @@ class SecurityCenterAsyncClient:
                 )
 
                 # Make the request
-                response = client.set_iam_policy(request=request)
+                response = await client.set_iam_policy(request=request)
 
                 # Handle the response
                 print(response)
@@ -3083,9 +3083,9 @@ class SecurityCenterAsyncClient:
             from google.cloud import securitycenter_v1
             from google.iam.v1 import iam_policy_pb2  # type: ignore
 
-            def sample_test_iam_permissions():
+            async def sample_test_iam_permissions():
                 # Create a client
-                client = securitycenter_v1.SecurityCenterClient()
+                client = securitycenter_v1.SecurityCenterAsyncClient()
 
                 # Initialize request argument(s)
                 request = iam_policy_pb2.TestIamPermissionsRequest(
@@ -3094,7 +3094,7 @@ class SecurityCenterAsyncClient:
                 )
 
                 # Make the request
-                response = client.test_iam_permissions(request=request)
+                response = await client.test_iam_permissions(request=request)
 
                 # Handle the response
                 print(response)
@@ -3202,16 +3202,16 @@ class SecurityCenterAsyncClient:
 
             from google.cloud import securitycenter_v1
 
-            def sample_update_external_system():
+            async def sample_update_external_system():
                 # Create a client
-                client = securitycenter_v1.SecurityCenterClient()
+                client = securitycenter_v1.SecurityCenterAsyncClient()
 
                 # Initialize request argument(s)
                 request = securitycenter_v1.UpdateExternalSystemRequest(
                 )
 
                 # Make the request
-                response = client.update_external_system(request=request)
+                response = await client.update_external_system(request=request)
 
                 # Handle the response
                 print(response)
@@ -3310,16 +3310,16 @@ class SecurityCenterAsyncClient:
 
             from google.cloud import securitycenter_v1
 
-            def sample_update_finding():
+            async def sample_update_finding():
                 # Create a client
-                client = securitycenter_v1.SecurityCenterClient()
+                client = securitycenter_v1.SecurityCenterAsyncClient()
 
                 # Initialize request argument(s)
                 request = securitycenter_v1.UpdateFindingRequest(
                 )
 
                 # Make the request
-                response = client.update_finding(request=request)
+                response = await client.update_finding(request=request)
 
                 # Handle the response
                 print(response)
@@ -3419,9 +3419,9 @@ class SecurityCenterAsyncClient:
 
             from google.cloud import securitycenter_v1
 
-            def sample_update_mute_config():
+            async def sample_update_mute_config():
                 # Create a client
-                client = securitycenter_v1.SecurityCenterClient()
+                client = securitycenter_v1.SecurityCenterAsyncClient()
 
                 # Initialize request argument(s)
                 mute_config = securitycenter_v1.MuteConfig()
@@ -3432,7 +3432,7 @@ class SecurityCenterAsyncClient:
                 )
 
                 # Make the request
-                response = client.update_mute_config(request=request)
+                response = await client.update_mute_config(request=request)
 
                 # Handle the response
                 print(response)
@@ -3534,16 +3534,16 @@ class SecurityCenterAsyncClient:
 
             from google.cloud import securitycenter_v1
 
-            def sample_update_notification_config():
+            async def sample_update_notification_config():
                 # Create a client
-                client = securitycenter_v1.SecurityCenterClient()
+                client = securitycenter_v1.SecurityCenterAsyncClient()
 
                 # Initialize request argument(s)
                 request = securitycenter_v1.UpdateNotificationConfigRequest(
                 )
 
                 # Make the request
-                response = client.update_notification_config(request=request)
+                response = await client.update_notification_config(request=request)
 
                 # Handle the response
                 print(response)
@@ -3647,16 +3647,16 @@ class SecurityCenterAsyncClient:
 
             from google.cloud import securitycenter_v1
 
-            def sample_update_organization_settings():
+            async def sample_update_organization_settings():
                 # Create a client
-                client = securitycenter_v1.SecurityCenterClient()
+                client = securitycenter_v1.SecurityCenterAsyncClient()
 
                 # Initialize request argument(s)
                 request = securitycenter_v1.UpdateOrganizationSettingsRequest(
                 )
 
                 # Make the request
-                response = client.update_organization_settings(request=request)
+                response = await client.update_organization_settings(request=request)
 
                 # Handle the response
                 print(response)
@@ -3744,16 +3744,16 @@ class SecurityCenterAsyncClient:
 
             from google.cloud import securitycenter_v1
 
-            def sample_update_source():
+            async def sample_update_source():
                 # Create a client
-                client = securitycenter_v1.SecurityCenterClient()
+                client = securitycenter_v1.SecurityCenterAsyncClient()
 
                 # Initialize request argument(s)
                 request = securitycenter_v1.UpdateSourceRequest(
                 )
 
                 # Make the request
-                response = client.update_source(request=request)
+                response = await client.update_source(request=request)
 
                 # Handle the response
                 print(response)
@@ -3844,16 +3844,16 @@ class SecurityCenterAsyncClient:
 
             from google.cloud import securitycenter_v1
 
-            def sample_update_security_marks():
+            async def sample_update_security_marks():
                 # Create a client
-                client = securitycenter_v1.SecurityCenterClient()
+                client = securitycenter_v1.SecurityCenterAsyncClient()
 
                 # Initialize request argument(s)
                 request = securitycenter_v1.UpdateSecurityMarksRequest(
                 )
 
                 # Make the request
-                response = client.update_security_marks(request=request)
+                response = await client.update_security_marks(request=request)
 
                 # Handle the response
                 print(response)
@@ -3948,9 +3948,9 @@ class SecurityCenterAsyncClient:
 
             from google.cloud import securitycenter_v1
 
-            def sample_create_big_query_export():
+            async def sample_create_big_query_export():
                 # Create a client
-                client = securitycenter_v1.SecurityCenterClient()
+                client = securitycenter_v1.SecurityCenterAsyncClient()
 
                 # Initialize request argument(s)
                 request = securitycenter_v1.CreateBigQueryExportRequest(
@@ -3959,7 +3959,7 @@ class SecurityCenterAsyncClient:
                 )
 
                 # Make the request
-                response = client.create_big_query_export(request=request)
+                response = await client.create_big_query_export(request=request)
 
                 # Handle the response
                 print(response)
@@ -4067,9 +4067,9 @@ class SecurityCenterAsyncClient:
 
             from google.cloud import securitycenter_v1
 
-            def sample_delete_big_query_export():
+            async def sample_delete_big_query_export():
                 # Create a client
-                client = securitycenter_v1.SecurityCenterClient()
+                client = securitycenter_v1.SecurityCenterAsyncClient()
 
                 # Initialize request argument(s)
                 request = securitycenter_v1.DeleteBigQueryExportRequest(
@@ -4077,7 +4077,7 @@ class SecurityCenterAsyncClient:
                 )
 
                 # Make the request
-                client.delete_big_query_export(request=request)
+                await client.delete_big_query_export(request=request)
 
         Args:
             request (Union[google.cloud.securitycenter_v1.types.DeleteBigQueryExportRequest, dict]):
@@ -4154,16 +4154,16 @@ class SecurityCenterAsyncClient:
 
             from google.cloud import securitycenter_v1
 
-            def sample_update_big_query_export():
+            async def sample_update_big_query_export():
                 # Create a client
-                client = securitycenter_v1.SecurityCenterClient()
+                client = securitycenter_v1.SecurityCenterAsyncClient()
 
                 # Initialize request argument(s)
                 request = securitycenter_v1.UpdateBigQueryExportRequest(
                 )
 
                 # Make the request
-                response = client.update_big_query_export(request=request)
+                response = await client.update_big_query_export(request=request)
 
                 # Handle the response
                 print(response)
@@ -4265,9 +4265,9 @@ class SecurityCenterAsyncClient:
 
             from google.cloud import securitycenter_v1
 
-            def sample_list_big_query_exports():
+            async def sample_list_big_query_exports():
                 # Create a client
-                client = securitycenter_v1.SecurityCenterClient()
+                client = securitycenter_v1.SecurityCenterAsyncClient()
 
                 # Initialize request argument(s)
                 request = securitycenter_v1.ListBigQueryExportsRequest(
@@ -4278,7 +4278,7 @@ class SecurityCenterAsyncClient:
                 page_result = client.list_big_query_exports(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
