@@ -243,9 +243,9 @@ class VmMigrationAsyncClient:
 
             from google.cloud import vmmigration_v1
 
-            def sample_list_sources():
+            async def sample_list_sources():
                 # Create a client
-                client = vmmigration_v1.VmMigrationClient()
+                client = vmmigration_v1.VmMigrationAsyncClient()
 
                 # Initialize request argument(s)
                 request = vmmigration_v1.ListSourcesRequest(
@@ -257,7 +257,7 @@ class VmMigrationAsyncClient:
                 page_result = client.list_sources(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -352,9 +352,9 @@ class VmMigrationAsyncClient:
 
             from google.cloud import vmmigration_v1
 
-            def sample_get_source():
+            async def sample_get_source():
                 # Create a client
-                client = vmmigration_v1.VmMigrationClient()
+                client = vmmigration_v1.VmMigrationAsyncClient()
 
                 # Initialize request argument(s)
                 request = vmmigration_v1.GetSourceRequest(
@@ -362,7 +362,7 @@ class VmMigrationAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_source(request=request)
+                response = await client.get_source(request=request)
 
                 # Handle the response
                 print(response)
@@ -449,9 +449,9 @@ class VmMigrationAsyncClient:
 
             from google.cloud import vmmigration_v1
 
-            def sample_create_source():
+            async def sample_create_source():
                 # Create a client
-                client = vmmigration_v1.VmMigrationClient()
+                client = vmmigration_v1.VmMigrationAsyncClient()
 
                 # Initialize request argument(s)
                 request = vmmigration_v1.CreateSourceRequest(
@@ -464,7 +464,7 @@ class VmMigrationAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -572,9 +572,9 @@ class VmMigrationAsyncClient:
 
             from google.cloud import vmmigration_v1
 
-            def sample_update_source():
+            async def sample_update_source():
                 # Create a client
-                client = vmmigration_v1.VmMigrationClient()
+                client = vmmigration_v1.VmMigrationAsyncClient()
 
                 # Initialize request argument(s)
                 request = vmmigration_v1.UpdateSourceRequest(
@@ -585,7 +585,7 @@ class VmMigrationAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -693,9 +693,9 @@ class VmMigrationAsyncClient:
 
             from google.cloud import vmmigration_v1
 
-            def sample_delete_source():
+            async def sample_delete_source():
                 # Create a client
-                client = vmmigration_v1.VmMigrationClient()
+                client = vmmigration_v1.VmMigrationAsyncClient()
 
                 # Initialize request argument(s)
                 request = vmmigration_v1.DeleteSourceRequest(
@@ -707,7 +707,7 @@ class VmMigrationAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -817,9 +817,9 @@ class VmMigrationAsyncClient:
 
             from google.cloud import vmmigration_v1
 
-            def sample_fetch_inventory():
+            async def sample_fetch_inventory():
                 # Create a client
-                client = vmmigration_v1.VmMigrationClient()
+                client = vmmigration_v1.VmMigrationAsyncClient()
 
                 # Initialize request argument(s)
                 request = vmmigration_v1.FetchInventoryRequest(
@@ -827,7 +827,7 @@ class VmMigrationAsyncClient:
                 )
 
                 # Make the request
-                response = client.fetch_inventory(request=request)
+                response = await client.fetch_inventory(request=request)
 
                 # Handle the response
                 print(response)
@@ -910,9 +910,9 @@ class VmMigrationAsyncClient:
 
             from google.cloud import vmmigration_v1
 
-            def sample_list_utilization_reports():
+            async def sample_list_utilization_reports():
                 # Create a client
-                client = vmmigration_v1.VmMigrationClient()
+                client = vmmigration_v1.VmMigrationAsyncClient()
 
                 # Initialize request argument(s)
                 request = vmmigration_v1.ListUtilizationReportsRequest(
@@ -924,7 +924,7 @@ class VmMigrationAsyncClient:
                 page_result = client.list_utilization_reports(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -1019,9 +1019,9 @@ class VmMigrationAsyncClient:
 
             from google.cloud import vmmigration_v1
 
-            def sample_get_utilization_report():
+            async def sample_get_utilization_report():
                 # Create a client
-                client = vmmigration_v1.VmMigrationClient()
+                client = vmmigration_v1.VmMigrationAsyncClient()
 
                 # Initialize request argument(s)
                 request = vmmigration_v1.GetUtilizationReportRequest(
@@ -1029,7 +1029,7 @@ class VmMigrationAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_utilization_report(request=request)
+                response = await client.get_utilization_report(request=request)
 
                 # Handle the response
                 print(response)
@@ -1117,9 +1117,9 @@ class VmMigrationAsyncClient:
 
             from google.cloud import vmmigration_v1
 
-            def sample_create_utilization_report():
+            async def sample_create_utilization_report():
                 # Create a client
-                client = vmmigration_v1.VmMigrationClient()
+                client = vmmigration_v1.VmMigrationAsyncClient()
 
                 # Initialize request argument(s)
                 request = vmmigration_v1.CreateUtilizationReportRequest(
@@ -1132,7 +1132,7 @@ class VmMigrationAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1248,9 +1248,9 @@ class VmMigrationAsyncClient:
 
             from google.cloud import vmmigration_v1
 
-            def sample_delete_utilization_report():
+            async def sample_delete_utilization_report():
                 # Create a client
-                client = vmmigration_v1.VmMigrationClient()
+                client = vmmigration_v1.VmMigrationAsyncClient()
 
                 # Initialize request argument(s)
                 request = vmmigration_v1.DeleteUtilizationReportRequest(
@@ -1262,7 +1262,7 @@ class VmMigrationAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1368,9 +1368,9 @@ class VmMigrationAsyncClient:
 
             from google.cloud import vmmigration_v1
 
-            def sample_list_datacenter_connectors():
+            async def sample_list_datacenter_connectors():
                 # Create a client
-                client = vmmigration_v1.VmMigrationClient()
+                client = vmmigration_v1.VmMigrationAsyncClient()
 
                 # Initialize request argument(s)
                 request = vmmigration_v1.ListDatacenterConnectorsRequest(
@@ -1382,7 +1382,7 @@ class VmMigrationAsyncClient:
                 page_result = client.list_datacenter_connectors(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -1477,9 +1477,9 @@ class VmMigrationAsyncClient:
 
             from google.cloud import vmmigration_v1
 
-            def sample_get_datacenter_connector():
+            async def sample_get_datacenter_connector():
                 # Create a client
-                client = vmmigration_v1.VmMigrationClient()
+                client = vmmigration_v1.VmMigrationAsyncClient()
 
                 # Initialize request argument(s)
                 request = vmmigration_v1.GetDatacenterConnectorRequest(
@@ -1487,7 +1487,7 @@ class VmMigrationAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_datacenter_connector(request=request)
+                response = await client.get_datacenter_connector(request=request)
 
                 # Handle the response
                 print(response)
@@ -1578,9 +1578,9 @@ class VmMigrationAsyncClient:
 
             from google.cloud import vmmigration_v1
 
-            def sample_create_datacenter_connector():
+            async def sample_create_datacenter_connector():
                 # Create a client
-                client = vmmigration_v1.VmMigrationClient()
+                client = vmmigration_v1.VmMigrationAsyncClient()
 
                 # Initialize request argument(s)
                 request = vmmigration_v1.CreateDatacenterConnectorRequest(
@@ -1593,7 +1593,7 @@ class VmMigrationAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1710,9 +1710,9 @@ class VmMigrationAsyncClient:
 
             from google.cloud import vmmigration_v1
 
-            def sample_delete_datacenter_connector():
+            async def sample_delete_datacenter_connector():
                 # Create a client
-                client = vmmigration_v1.VmMigrationClient()
+                client = vmmigration_v1.VmMigrationAsyncClient()
 
                 # Initialize request argument(s)
                 request = vmmigration_v1.DeleteDatacenterConnectorRequest(
@@ -1724,7 +1724,7 @@ class VmMigrationAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1832,9 +1832,9 @@ class VmMigrationAsyncClient:
 
             from google.cloud import vmmigration_v1
 
-            def sample_create_migrating_vm():
+            async def sample_create_migrating_vm():
                 # Create a client
-                client = vmmigration_v1.VmMigrationClient()
+                client = vmmigration_v1.VmMigrationAsyncClient()
 
                 # Initialize request argument(s)
                 request = vmmigration_v1.CreateMigratingVmRequest(
@@ -1847,7 +1847,7 @@ class VmMigrationAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1954,9 +1954,9 @@ class VmMigrationAsyncClient:
 
             from google.cloud import vmmigration_v1
 
-            def sample_list_migrating_vms():
+            async def sample_list_migrating_vms():
                 # Create a client
-                client = vmmigration_v1.VmMigrationClient()
+                client = vmmigration_v1.VmMigrationAsyncClient()
 
                 # Initialize request argument(s)
                 request = vmmigration_v1.ListMigratingVmsRequest(
@@ -1968,7 +1968,7 @@ class VmMigrationAsyncClient:
                 page_result = client.list_migrating_vms(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -2063,9 +2063,9 @@ class VmMigrationAsyncClient:
 
             from google.cloud import vmmigration_v1
 
-            def sample_get_migrating_vm():
+            async def sample_get_migrating_vm():
                 # Create a client
-                client = vmmigration_v1.VmMigrationClient()
+                client = vmmigration_v1.VmMigrationAsyncClient()
 
                 # Initialize request argument(s)
                 request = vmmigration_v1.GetMigratingVmRequest(
@@ -2073,7 +2073,7 @@ class VmMigrationAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_migrating_vm(request=request)
+                response = await client.get_migrating_vm(request=request)
 
                 # Handle the response
                 print(response)
@@ -2160,9 +2160,9 @@ class VmMigrationAsyncClient:
 
             from google.cloud import vmmigration_v1
 
-            def sample_update_migrating_vm():
+            async def sample_update_migrating_vm():
                 # Create a client
-                client = vmmigration_v1.VmMigrationClient()
+                client = vmmigration_v1.VmMigrationAsyncClient()
 
                 # Initialize request argument(s)
                 request = vmmigration_v1.UpdateMigratingVmRequest(
@@ -2173,7 +2173,7 @@ class VmMigrationAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2281,9 +2281,9 @@ class VmMigrationAsyncClient:
 
             from google.cloud import vmmigration_v1
 
-            def sample_delete_migrating_vm():
+            async def sample_delete_migrating_vm():
                 # Create a client
-                client = vmmigration_v1.VmMigrationClient()
+                client = vmmigration_v1.VmMigrationAsyncClient()
 
                 # Initialize request argument(s)
                 request = vmmigration_v1.DeleteMigratingVmRequest(
@@ -2295,7 +2295,7 @@ class VmMigrationAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2403,9 +2403,9 @@ class VmMigrationAsyncClient:
 
             from google.cloud import vmmigration_v1
 
-            def sample_start_migration():
+            async def sample_start_migration():
                 # Create a client
-                client = vmmigration_v1.VmMigrationClient()
+                client = vmmigration_v1.VmMigrationAsyncClient()
 
                 # Initialize request argument(s)
                 request = vmmigration_v1.StartMigrationRequest(
@@ -2417,7 +2417,7 @@ class VmMigrationAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2519,9 +2519,9 @@ class VmMigrationAsyncClient:
 
             from google.cloud import vmmigration_v1
 
-            def sample_resume_migration():
+            async def sample_resume_migration():
                 # Create a client
-                client = vmmigration_v1.VmMigrationClient()
+                client = vmmigration_v1.VmMigrationAsyncClient()
 
                 # Initialize request argument(s)
                 request = vmmigration_v1.ResumeMigrationRequest(
@@ -2533,7 +2533,7 @@ class VmMigrationAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2612,9 +2612,9 @@ class VmMigrationAsyncClient:
 
             from google.cloud import vmmigration_v1
 
-            def sample_pause_migration():
+            async def sample_pause_migration():
                 # Create a client
-                client = vmmigration_v1.VmMigrationClient()
+                client = vmmigration_v1.VmMigrationAsyncClient()
 
                 # Initialize request argument(s)
                 request = vmmigration_v1.PauseMigrationRequest(
@@ -2626,7 +2626,7 @@ class VmMigrationAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2705,9 +2705,9 @@ class VmMigrationAsyncClient:
 
             from google.cloud import vmmigration_v1
 
-            def sample_finalize_migration():
+            async def sample_finalize_migration():
                 # Create a client
-                client = vmmigration_v1.VmMigrationClient()
+                client = vmmigration_v1.VmMigrationAsyncClient()
 
                 # Initialize request argument(s)
                 request = vmmigration_v1.FinalizeMigrationRequest(
@@ -2719,7 +2719,7 @@ class VmMigrationAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2819,9 +2819,9 @@ class VmMigrationAsyncClient:
 
             from google.cloud import vmmigration_v1
 
-            def sample_create_clone_job():
+            async def sample_create_clone_job():
                 # Create a client
-                client = vmmigration_v1.VmMigrationClient()
+                client = vmmigration_v1.VmMigrationAsyncClient()
 
                 # Initialize request argument(s)
                 request = vmmigration_v1.CreateCloneJobRequest(
@@ -2834,7 +2834,7 @@ class VmMigrationAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2953,9 +2953,9 @@ class VmMigrationAsyncClient:
 
             from google.cloud import vmmigration_v1
 
-            def sample_cancel_clone_job():
+            async def sample_cancel_clone_job():
                 # Create a client
-                client = vmmigration_v1.VmMigrationClient()
+                client = vmmigration_v1.VmMigrationAsyncClient()
 
                 # Initialize request argument(s)
                 request = vmmigration_v1.CancelCloneJobRequest(
@@ -2967,7 +2967,7 @@ class VmMigrationAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -3061,9 +3061,9 @@ class VmMigrationAsyncClient:
 
             from google.cloud import vmmigration_v1
 
-            def sample_list_clone_jobs():
+            async def sample_list_clone_jobs():
                 # Create a client
-                client = vmmigration_v1.VmMigrationClient()
+                client = vmmigration_v1.VmMigrationAsyncClient()
 
                 # Initialize request argument(s)
                 request = vmmigration_v1.ListCloneJobsRequest(
@@ -3075,7 +3075,7 @@ class VmMigrationAsyncClient:
                 page_result = client.list_clone_jobs(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -3170,9 +3170,9 @@ class VmMigrationAsyncClient:
 
             from google.cloud import vmmigration_v1
 
-            def sample_get_clone_job():
+            async def sample_get_clone_job():
                 # Create a client
-                client = vmmigration_v1.VmMigrationClient()
+                client = vmmigration_v1.VmMigrationAsyncClient()
 
                 # Initialize request argument(s)
                 request = vmmigration_v1.GetCloneJobRequest(
@@ -3180,7 +3180,7 @@ class VmMigrationAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_clone_job(request=request)
+                response = await client.get_clone_job(request=request)
 
                 # Handle the response
                 print(response)
@@ -3279,9 +3279,9 @@ class VmMigrationAsyncClient:
 
             from google.cloud import vmmigration_v1
 
-            def sample_create_cutover_job():
+            async def sample_create_cutover_job():
                 # Create a client
-                client = vmmigration_v1.VmMigrationClient()
+                client = vmmigration_v1.VmMigrationAsyncClient()
 
                 # Initialize request argument(s)
                 request = vmmigration_v1.CreateCutoverJobRequest(
@@ -3294,7 +3294,7 @@ class VmMigrationAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -3403,9 +3403,9 @@ class VmMigrationAsyncClient:
 
             from google.cloud import vmmigration_v1
 
-            def sample_cancel_cutover_job():
+            async def sample_cancel_cutover_job():
                 # Create a client
-                client = vmmigration_v1.VmMigrationClient()
+                client = vmmigration_v1.VmMigrationAsyncClient()
 
                 # Initialize request argument(s)
                 request = vmmigration_v1.CancelCutoverJobRequest(
@@ -3417,7 +3417,7 @@ class VmMigrationAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -3511,9 +3511,9 @@ class VmMigrationAsyncClient:
 
             from google.cloud import vmmigration_v1
 
-            def sample_list_cutover_jobs():
+            async def sample_list_cutover_jobs():
                 # Create a client
-                client = vmmigration_v1.VmMigrationClient()
+                client = vmmigration_v1.VmMigrationAsyncClient()
 
                 # Initialize request argument(s)
                 request = vmmigration_v1.ListCutoverJobsRequest(
@@ -3525,7 +3525,7 @@ class VmMigrationAsyncClient:
                 page_result = client.list_cutover_jobs(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -3620,9 +3620,9 @@ class VmMigrationAsyncClient:
 
             from google.cloud import vmmigration_v1
 
-            def sample_get_cutover_job():
+            async def sample_get_cutover_job():
                 # Create a client
-                client = vmmigration_v1.VmMigrationClient()
+                client = vmmigration_v1.VmMigrationAsyncClient()
 
                 # Initialize request argument(s)
                 request = vmmigration_v1.GetCutoverJobRequest(
@@ -3630,7 +3630,7 @@ class VmMigrationAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_cutover_job(request=request)
+                response = await client.get_cutover_job(request=request)
 
                 # Handle the response
                 print(response)
@@ -3717,9 +3717,9 @@ class VmMigrationAsyncClient:
 
             from google.cloud import vmmigration_v1
 
-            def sample_list_groups():
+            async def sample_list_groups():
                 # Create a client
-                client = vmmigration_v1.VmMigrationClient()
+                client = vmmigration_v1.VmMigrationAsyncClient()
 
                 # Initialize request argument(s)
                 request = vmmigration_v1.ListGroupsRequest(
@@ -3731,7 +3731,7 @@ class VmMigrationAsyncClient:
                 page_result = client.list_groups(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -3826,9 +3826,9 @@ class VmMigrationAsyncClient:
 
             from google.cloud import vmmigration_v1
 
-            def sample_get_group():
+            async def sample_get_group():
                 # Create a client
-                client = vmmigration_v1.VmMigrationClient()
+                client = vmmigration_v1.VmMigrationAsyncClient()
 
                 # Initialize request argument(s)
                 request = vmmigration_v1.GetGroupRequest(
@@ -3836,7 +3836,7 @@ class VmMigrationAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_group(request=request)
+                response = await client.get_group(request=request)
 
                 # Handle the response
                 print(response)
@@ -3922,9 +3922,9 @@ class VmMigrationAsyncClient:
 
             from google.cloud import vmmigration_v1
 
-            def sample_create_group():
+            async def sample_create_group():
                 # Create a client
-                client = vmmigration_v1.VmMigrationClient()
+                client = vmmigration_v1.VmMigrationAsyncClient()
 
                 # Initialize request argument(s)
                 request = vmmigration_v1.CreateGroupRequest(
@@ -3937,7 +3937,7 @@ class VmMigrationAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -4045,9 +4045,9 @@ class VmMigrationAsyncClient:
 
             from google.cloud import vmmigration_v1
 
-            def sample_update_group():
+            async def sample_update_group():
                 # Create a client
-                client = vmmigration_v1.VmMigrationClient()
+                client = vmmigration_v1.VmMigrationAsyncClient()
 
                 # Initialize request argument(s)
                 request = vmmigration_v1.UpdateGroupRequest(
@@ -4058,7 +4058,7 @@ class VmMigrationAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -4166,9 +4166,9 @@ class VmMigrationAsyncClient:
 
             from google.cloud import vmmigration_v1
 
-            def sample_delete_group():
+            async def sample_delete_group():
                 # Create a client
-                client = vmmigration_v1.VmMigrationClient()
+                client = vmmigration_v1.VmMigrationAsyncClient()
 
                 # Initialize request argument(s)
                 request = vmmigration_v1.DeleteGroupRequest(
@@ -4180,7 +4180,7 @@ class VmMigrationAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -4284,9 +4284,9 @@ class VmMigrationAsyncClient:
 
             from google.cloud import vmmigration_v1
 
-            def sample_add_group_migration():
+            async def sample_add_group_migration():
                 # Create a client
-                client = vmmigration_v1.VmMigrationClient()
+                client = vmmigration_v1.VmMigrationAsyncClient()
 
                 # Initialize request argument(s)
                 request = vmmigration_v1.AddGroupMigrationRequest(
@@ -4298,7 +4298,7 @@ class VmMigrationAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -4394,9 +4394,9 @@ class VmMigrationAsyncClient:
 
             from google.cloud import vmmigration_v1
 
-            def sample_remove_group_migration():
+            async def sample_remove_group_migration():
                 # Create a client
-                client = vmmigration_v1.VmMigrationClient()
+                client = vmmigration_v1.VmMigrationAsyncClient()
 
                 # Initialize request argument(s)
                 request = vmmigration_v1.RemoveGroupMigrationRequest(
@@ -4408,7 +4408,7 @@ class VmMigrationAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -4505,9 +4505,9 @@ class VmMigrationAsyncClient:
 
             from google.cloud import vmmigration_v1
 
-            def sample_list_target_projects():
+            async def sample_list_target_projects():
                 # Create a client
-                client = vmmigration_v1.VmMigrationClient()
+                client = vmmigration_v1.VmMigrationAsyncClient()
 
                 # Initialize request argument(s)
                 request = vmmigration_v1.ListTargetProjectsRequest(
@@ -4519,7 +4519,7 @@ class VmMigrationAsyncClient:
                 page_result = client.list_target_projects(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -4617,9 +4617,9 @@ class VmMigrationAsyncClient:
 
             from google.cloud import vmmigration_v1
 
-            def sample_get_target_project():
+            async def sample_get_target_project():
                 # Create a client
-                client = vmmigration_v1.VmMigrationClient()
+                client = vmmigration_v1.VmMigrationAsyncClient()
 
                 # Initialize request argument(s)
                 request = vmmigration_v1.GetTargetProjectRequest(
@@ -4627,7 +4627,7 @@ class VmMigrationAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_target_project(request=request)
+                response = await client.get_target_project(request=request)
 
                 # Handle the response
                 print(response)
@@ -4716,9 +4716,9 @@ class VmMigrationAsyncClient:
 
             from google.cloud import vmmigration_v1
 
-            def sample_create_target_project():
+            async def sample_create_target_project():
                 # Create a client
-                client = vmmigration_v1.VmMigrationClient()
+                client = vmmigration_v1.VmMigrationAsyncClient()
 
                 # Initialize request argument(s)
                 request = vmmigration_v1.CreateTargetProjectRequest(
@@ -4731,7 +4731,7 @@ class VmMigrationAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -4842,9 +4842,9 @@ class VmMigrationAsyncClient:
 
             from google.cloud import vmmigration_v1
 
-            def sample_update_target_project():
+            async def sample_update_target_project():
                 # Create a client
-                client = vmmigration_v1.VmMigrationClient()
+                client = vmmigration_v1.VmMigrationAsyncClient()
 
                 # Initialize request argument(s)
                 request = vmmigration_v1.UpdateTargetProjectRequest(
@@ -4855,7 +4855,7 @@ class VmMigrationAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -4966,9 +4966,9 @@ class VmMigrationAsyncClient:
 
             from google.cloud import vmmigration_v1
 
-            def sample_delete_target_project():
+            async def sample_delete_target_project():
                 # Create a client
-                client = vmmigration_v1.VmMigrationClient()
+                client = vmmigration_v1.VmMigrationAsyncClient()
 
                 # Initialize request argument(s)
                 request = vmmigration_v1.DeleteTargetProjectRequest(
@@ -4980,7 +4980,7 @@ class VmMigrationAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)

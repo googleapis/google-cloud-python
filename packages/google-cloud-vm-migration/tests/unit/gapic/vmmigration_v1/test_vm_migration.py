@@ -737,7 +737,7 @@ def test_list_sources_field_headers():
     # a field header. Set these to a non-empty value.
     request = vmmigration.ListSourcesRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_sources), "__call__") as call:
@@ -753,7 +753,7 @@ def test_list_sources_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -767,7 +767,7 @@ async def test_list_sources_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = vmmigration.ListSourcesRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_sources), "__call__") as call:
@@ -785,7 +785,7 @@ async def test_list_sources_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -916,7 +916,7 @@ def test_list_sources_pager(transport_name: str = "grpc"):
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, vmmigration.Source) for i in results)
 
@@ -1162,7 +1162,7 @@ def test_get_source_field_headers():
     # a field header. Set these to a non-empty value.
     request = vmmigration.GetSourceRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_source), "__call__") as call:
@@ -1178,7 +1178,7 @@ def test_get_source_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1192,7 +1192,7 @@ async def test_get_source_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = vmmigration.GetSourceRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_source), "__call__") as call:
@@ -1208,7 +1208,7 @@ async def test_get_source_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1384,7 +1384,7 @@ def test_create_source_field_headers():
     # a field header. Set these to a non-empty value.
     request = vmmigration.CreateSourceRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_source), "__call__") as call:
@@ -1400,7 +1400,7 @@ def test_create_source_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -1414,7 +1414,7 @@ async def test_create_source_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = vmmigration.CreateSourceRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_source), "__call__") as call:
@@ -1432,7 +1432,7 @@ async def test_create_source_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -1642,7 +1642,7 @@ def test_update_source_field_headers():
     # a field header. Set these to a non-empty value.
     request = vmmigration.UpdateSourceRequest()
 
-    request.source.name = "source.name/value"
+    request.source.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_source), "__call__") as call:
@@ -1658,7 +1658,7 @@ def test_update_source_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "source.name=source.name/value",
+        "source.name=name_value",
     ) in kw["metadata"]
 
 
@@ -1672,7 +1672,7 @@ async def test_update_source_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = vmmigration.UpdateSourceRequest()
 
-    request.source.name = "source.name/value"
+    request.source.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_source), "__call__") as call:
@@ -1690,7 +1690,7 @@ async def test_update_source_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "source.name=source.name/value",
+        "source.name=name_value",
     ) in kw["metadata"]
 
 
@@ -1890,7 +1890,7 @@ def test_delete_source_field_headers():
     # a field header. Set these to a non-empty value.
     request = vmmigration.DeleteSourceRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_source), "__call__") as call:
@@ -1906,7 +1906,7 @@ def test_delete_source_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1920,7 +1920,7 @@ async def test_delete_source_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = vmmigration.DeleteSourceRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_source), "__call__") as call:
@@ -1938,7 +1938,7 @@ async def test_delete_source_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2120,7 +2120,7 @@ def test_fetch_inventory_field_headers():
     # a field header. Set these to a non-empty value.
     request = vmmigration.FetchInventoryRequest()
 
-    request.source = "source/value"
+    request.source = "source_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.fetch_inventory), "__call__") as call:
@@ -2136,7 +2136,7 @@ def test_fetch_inventory_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "source=source/value",
+        "source=source_value",
     ) in kw["metadata"]
 
 
@@ -2150,7 +2150,7 @@ async def test_fetch_inventory_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = vmmigration.FetchInventoryRequest()
 
-    request.source = "source/value"
+    request.source = "source_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.fetch_inventory), "__call__") as call:
@@ -2168,7 +2168,7 @@ async def test_fetch_inventory_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "source=source/value",
+        "source=source_value",
     ) in kw["metadata"]
 
 
@@ -2363,7 +2363,7 @@ def test_list_utilization_reports_field_headers():
     # a field header. Set these to a non-empty value.
     request = vmmigration.ListUtilizationReportsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2381,7 +2381,7 @@ def test_list_utilization_reports_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -2395,7 +2395,7 @@ async def test_list_utilization_reports_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = vmmigration.ListUtilizationReportsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2415,7 +2415,7 @@ async def test_list_utilization_reports_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -2552,7 +2552,7 @@ def test_list_utilization_reports_pager(transport_name: str = "grpc"):
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, vmmigration.UtilizationReport) for i in results)
 
@@ -2822,7 +2822,7 @@ def test_get_utilization_report_field_headers():
     # a field header. Set these to a non-empty value.
     request = vmmigration.GetUtilizationReportRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2840,7 +2840,7 @@ def test_get_utilization_report_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2854,7 +2854,7 @@ async def test_get_utilization_report_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = vmmigration.GetUtilizationReportRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2874,7 +2874,7 @@ async def test_get_utilization_report_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -3063,7 +3063,7 @@ def test_create_utilization_report_field_headers():
     # a field header. Set these to a non-empty value.
     request = vmmigration.CreateUtilizationReportRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3081,7 +3081,7 @@ def test_create_utilization_report_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -3095,7 +3095,7 @@ async def test_create_utilization_report_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = vmmigration.CreateUtilizationReportRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3115,7 +3115,7 @@ async def test_create_utilization_report_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -3324,7 +3324,7 @@ def test_delete_utilization_report_field_headers():
     # a field header. Set these to a non-empty value.
     request = vmmigration.DeleteUtilizationReportRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3342,7 +3342,7 @@ def test_delete_utilization_report_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -3356,7 +3356,7 @@ async def test_delete_utilization_report_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = vmmigration.DeleteUtilizationReportRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3376,7 +3376,7 @@ async def test_delete_utilization_report_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -3575,7 +3575,7 @@ def test_list_datacenter_connectors_field_headers():
     # a field header. Set these to a non-empty value.
     request = vmmigration.ListDatacenterConnectorsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3593,7 +3593,7 @@ def test_list_datacenter_connectors_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -3607,7 +3607,7 @@ async def test_list_datacenter_connectors_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = vmmigration.ListDatacenterConnectorsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3627,7 +3627,7 @@ async def test_list_datacenter_connectors_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -3764,7 +3764,7 @@ def test_list_datacenter_connectors_pager(transport_name: str = "grpc"):
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, vmmigration.DatacenterConnector) for i in results)
 
@@ -4038,7 +4038,7 @@ def test_get_datacenter_connector_field_headers():
     # a field header. Set these to a non-empty value.
     request = vmmigration.GetDatacenterConnectorRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4056,7 +4056,7 @@ def test_get_datacenter_connector_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -4070,7 +4070,7 @@ async def test_get_datacenter_connector_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = vmmigration.GetDatacenterConnectorRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4090,7 +4090,7 @@ async def test_get_datacenter_connector_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -4279,7 +4279,7 @@ def test_create_datacenter_connector_field_headers():
     # a field header. Set these to a non-empty value.
     request = vmmigration.CreateDatacenterConnectorRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4297,7 +4297,7 @@ def test_create_datacenter_connector_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -4311,7 +4311,7 @@ async def test_create_datacenter_connector_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = vmmigration.CreateDatacenterConnectorRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4331,7 +4331,7 @@ async def test_create_datacenter_connector_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -4552,7 +4552,7 @@ def test_delete_datacenter_connector_field_headers():
     # a field header. Set these to a non-empty value.
     request = vmmigration.DeleteDatacenterConnectorRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4570,7 +4570,7 @@ def test_delete_datacenter_connector_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -4584,7 +4584,7 @@ async def test_delete_datacenter_connector_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = vmmigration.DeleteDatacenterConnectorRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4604,7 +4604,7 @@ async def test_delete_datacenter_connector_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -4792,7 +4792,7 @@ def test_create_migrating_vm_field_headers():
     # a field header. Set these to a non-empty value.
     request = vmmigration.CreateMigratingVmRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4810,7 +4810,7 @@ def test_create_migrating_vm_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -4824,7 +4824,7 @@ async def test_create_migrating_vm_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = vmmigration.CreateMigratingVmRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4844,7 +4844,7 @@ async def test_create_migrating_vm_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -5086,7 +5086,7 @@ def test_list_migrating_vms_field_headers():
     # a field header. Set these to a non-empty value.
     request = vmmigration.ListMigratingVmsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5104,7 +5104,7 @@ def test_list_migrating_vms_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -5118,7 +5118,7 @@ async def test_list_migrating_vms_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = vmmigration.ListMigratingVmsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5138,7 +5138,7 @@ async def test_list_migrating_vms_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -5275,7 +5275,7 @@ def test_list_migrating_vms_pager(transport_name: str = "grpc"):
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, vmmigration.MigratingVm) for i in results)
 
@@ -5545,7 +5545,7 @@ def test_get_migrating_vm_field_headers():
     # a field header. Set these to a non-empty value.
     request = vmmigration.GetMigratingVmRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_migrating_vm), "__call__") as call:
@@ -5561,7 +5561,7 @@ def test_get_migrating_vm_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -5575,7 +5575,7 @@ async def test_get_migrating_vm_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = vmmigration.GetMigratingVmRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_migrating_vm), "__call__") as call:
@@ -5593,7 +5593,7 @@ async def test_get_migrating_vm_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -5777,7 +5777,7 @@ def test_update_migrating_vm_field_headers():
     # a field header. Set these to a non-empty value.
     request = vmmigration.UpdateMigratingVmRequest()
 
-    request.migrating_vm.name = "migrating_vm.name/value"
+    request.migrating_vm.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5795,7 +5795,7 @@ def test_update_migrating_vm_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "migrating_vm.name=migrating_vm.name/value",
+        "migrating_vm.name=name_value",
     ) in kw["metadata"]
 
 
@@ -5809,7 +5809,7 @@ async def test_update_migrating_vm_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = vmmigration.UpdateMigratingVmRequest()
 
-    request.migrating_vm.name = "migrating_vm.name/value"
+    request.migrating_vm.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5829,7 +5829,7 @@ async def test_update_migrating_vm_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "migrating_vm.name=migrating_vm.name/value",
+        "migrating_vm.name=name_value",
     ) in kw["metadata"]
 
 
@@ -6051,7 +6051,7 @@ def test_delete_migrating_vm_field_headers():
     # a field header. Set these to a non-empty value.
     request = vmmigration.DeleteMigratingVmRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6069,7 +6069,7 @@ def test_delete_migrating_vm_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -6083,7 +6083,7 @@ async def test_delete_migrating_vm_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = vmmigration.DeleteMigratingVmRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6103,7 +6103,7 @@ async def test_delete_migrating_vm_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -6285,7 +6285,7 @@ def test_start_migration_field_headers():
     # a field header. Set these to a non-empty value.
     request = vmmigration.StartMigrationRequest()
 
-    request.migrating_vm = "migrating_vm/value"
+    request.migrating_vm = "migrating_vm_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.start_migration), "__call__") as call:
@@ -6301,7 +6301,7 @@ def test_start_migration_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "migrating_vm=migrating_vm/value",
+        "migrating_vm=migrating_vm_value",
     ) in kw["metadata"]
 
 
@@ -6315,7 +6315,7 @@ async def test_start_migration_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = vmmigration.StartMigrationRequest()
 
-    request.migrating_vm = "migrating_vm/value"
+    request.migrating_vm = "migrating_vm_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.start_migration), "__call__") as call:
@@ -6333,7 +6333,7 @@ async def test_start_migration_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "migrating_vm=migrating_vm/value",
+        "migrating_vm=migrating_vm_value",
     ) in kw["metadata"]
 
 
@@ -6511,7 +6511,7 @@ def test_resume_migration_field_headers():
     # a field header. Set these to a non-empty value.
     request = vmmigration.ResumeMigrationRequest()
 
-    request.migrating_vm = "migrating_vm/value"
+    request.migrating_vm = "migrating_vm_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.resume_migration), "__call__") as call:
@@ -6527,7 +6527,7 @@ def test_resume_migration_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "migrating_vm=migrating_vm/value",
+        "migrating_vm=migrating_vm_value",
     ) in kw["metadata"]
 
 
@@ -6541,7 +6541,7 @@ async def test_resume_migration_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = vmmigration.ResumeMigrationRequest()
 
-    request.migrating_vm = "migrating_vm/value"
+    request.migrating_vm = "migrating_vm_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.resume_migration), "__call__") as call:
@@ -6559,7 +6559,7 @@ async def test_resume_migration_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "migrating_vm=migrating_vm/value",
+        "migrating_vm=migrating_vm_value",
     ) in kw["metadata"]
 
 
@@ -6655,7 +6655,7 @@ def test_pause_migration_field_headers():
     # a field header. Set these to a non-empty value.
     request = vmmigration.PauseMigrationRequest()
 
-    request.migrating_vm = "migrating_vm/value"
+    request.migrating_vm = "migrating_vm_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.pause_migration), "__call__") as call:
@@ -6671,7 +6671,7 @@ def test_pause_migration_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "migrating_vm=migrating_vm/value",
+        "migrating_vm=migrating_vm_value",
     ) in kw["metadata"]
 
 
@@ -6685,7 +6685,7 @@ async def test_pause_migration_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = vmmigration.PauseMigrationRequest()
 
-    request.migrating_vm = "migrating_vm/value"
+    request.migrating_vm = "migrating_vm_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.pause_migration), "__call__") as call:
@@ -6703,7 +6703,7 @@ async def test_pause_migration_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "migrating_vm=migrating_vm/value",
+        "migrating_vm=migrating_vm_value",
     ) in kw["metadata"]
 
 
@@ -6805,7 +6805,7 @@ def test_finalize_migration_field_headers():
     # a field header. Set these to a non-empty value.
     request = vmmigration.FinalizeMigrationRequest()
 
-    request.migrating_vm = "migrating_vm/value"
+    request.migrating_vm = "migrating_vm_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6823,7 +6823,7 @@ def test_finalize_migration_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "migrating_vm=migrating_vm/value",
+        "migrating_vm=migrating_vm_value",
     ) in kw["metadata"]
 
 
@@ -6837,7 +6837,7 @@ async def test_finalize_migration_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = vmmigration.FinalizeMigrationRequest()
 
-    request.migrating_vm = "migrating_vm/value"
+    request.migrating_vm = "migrating_vm_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6857,7 +6857,7 @@ async def test_finalize_migration_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "migrating_vm=migrating_vm/value",
+        "migrating_vm=migrating_vm_value",
     ) in kw["metadata"]
 
 
@@ -7039,7 +7039,7 @@ def test_create_clone_job_field_headers():
     # a field header. Set these to a non-empty value.
     request = vmmigration.CreateCloneJobRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_clone_job), "__call__") as call:
@@ -7055,7 +7055,7 @@ def test_create_clone_job_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -7069,7 +7069,7 @@ async def test_create_clone_job_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = vmmigration.CreateCloneJobRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_clone_job), "__call__") as call:
@@ -7087,7 +7087,7 @@ async def test_create_clone_job_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -7309,7 +7309,7 @@ def test_cancel_clone_job_field_headers():
     # a field header. Set these to a non-empty value.
     request = vmmigration.CancelCloneJobRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.cancel_clone_job), "__call__") as call:
@@ -7325,7 +7325,7 @@ def test_cancel_clone_job_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -7339,7 +7339,7 @@ async def test_cancel_clone_job_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = vmmigration.CancelCloneJobRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.cancel_clone_job), "__call__") as call:
@@ -7357,7 +7357,7 @@ async def test_cancel_clone_job_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -7545,7 +7545,7 @@ def test_list_clone_jobs_field_headers():
     # a field header. Set these to a non-empty value.
     request = vmmigration.ListCloneJobsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_clone_jobs), "__call__") as call:
@@ -7561,7 +7561,7 @@ def test_list_clone_jobs_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -7575,7 +7575,7 @@ async def test_list_clone_jobs_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = vmmigration.ListCloneJobsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_clone_jobs), "__call__") as call:
@@ -7593,7 +7593,7 @@ async def test_list_clone_jobs_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -7724,7 +7724,7 @@ def test_list_clone_jobs_pager(transport_name: str = "grpc"):
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, vmmigration.CloneJob) for i in results)
 
@@ -7972,7 +7972,7 @@ def test_get_clone_job_field_headers():
     # a field header. Set these to a non-empty value.
     request = vmmigration.GetCloneJobRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_clone_job), "__call__") as call:
@@ -7988,7 +7988,7 @@ def test_get_clone_job_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -8002,7 +8002,7 @@ async def test_get_clone_job_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = vmmigration.GetCloneJobRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_clone_job), "__call__") as call:
@@ -8020,7 +8020,7 @@ async def test_get_clone_job_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -8204,7 +8204,7 @@ def test_create_cutover_job_field_headers():
     # a field header. Set these to a non-empty value.
     request = vmmigration.CreateCutoverJobRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8222,7 +8222,7 @@ def test_create_cutover_job_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -8236,7 +8236,7 @@ async def test_create_cutover_job_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = vmmigration.CreateCutoverJobRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8256,7 +8256,7 @@ async def test_create_cutover_job_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -8488,7 +8488,7 @@ def test_cancel_cutover_job_field_headers():
     # a field header. Set these to a non-empty value.
     request = vmmigration.CancelCutoverJobRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8506,7 +8506,7 @@ def test_cancel_cutover_job_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -8520,7 +8520,7 @@ async def test_cancel_cutover_job_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = vmmigration.CancelCutoverJobRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8540,7 +8540,7 @@ async def test_cancel_cutover_job_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -8738,7 +8738,7 @@ def test_list_cutover_jobs_field_headers():
     # a field header. Set these to a non-empty value.
     request = vmmigration.ListCutoverJobsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8756,7 +8756,7 @@ def test_list_cutover_jobs_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -8770,7 +8770,7 @@ async def test_list_cutover_jobs_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = vmmigration.ListCutoverJobsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8790,7 +8790,7 @@ async def test_list_cutover_jobs_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -8927,7 +8927,7 @@ def test_list_cutover_jobs_pager(transport_name: str = "grpc"):
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, vmmigration.CutoverJob) for i in results)
 
@@ -9189,7 +9189,7 @@ def test_get_cutover_job_field_headers():
     # a field header. Set these to a non-empty value.
     request = vmmigration.GetCutoverJobRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_cutover_job), "__call__") as call:
@@ -9205,7 +9205,7 @@ def test_get_cutover_job_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -9219,7 +9219,7 @@ async def test_get_cutover_job_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = vmmigration.GetCutoverJobRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_cutover_job), "__call__") as call:
@@ -9237,7 +9237,7 @@ async def test_get_cutover_job_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -9425,7 +9425,7 @@ def test_list_groups_field_headers():
     # a field header. Set these to a non-empty value.
     request = vmmigration.ListGroupsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_groups), "__call__") as call:
@@ -9441,7 +9441,7 @@ def test_list_groups_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -9455,7 +9455,7 @@ async def test_list_groups_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = vmmigration.ListGroupsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_groups), "__call__") as call:
@@ -9473,7 +9473,7 @@ async def test_list_groups_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -9604,7 +9604,7 @@ def test_list_groups_pager(transport_name: str = "grpc"):
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, vmmigration.Group) for i in results)
 
@@ -9853,7 +9853,7 @@ def test_get_group_field_headers():
     # a field header. Set these to a non-empty value.
     request = vmmigration.GetGroupRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_group), "__call__") as call:
@@ -9869,7 +9869,7 @@ def test_get_group_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -9883,7 +9883,7 @@ async def test_get_group_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = vmmigration.GetGroupRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_group), "__call__") as call:
@@ -9899,7 +9899,7 @@ async def test_get_group_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -10075,7 +10075,7 @@ def test_create_group_field_headers():
     # a field header. Set these to a non-empty value.
     request = vmmigration.CreateGroupRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_group), "__call__") as call:
@@ -10091,7 +10091,7 @@ def test_create_group_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -10105,7 +10105,7 @@ async def test_create_group_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = vmmigration.CreateGroupRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_group), "__call__") as call:
@@ -10123,7 +10123,7 @@ async def test_create_group_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -10321,7 +10321,7 @@ def test_update_group_field_headers():
     # a field header. Set these to a non-empty value.
     request = vmmigration.UpdateGroupRequest()
 
-    request.group.name = "group.name/value"
+    request.group.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_group), "__call__") as call:
@@ -10337,7 +10337,7 @@ def test_update_group_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "group.name=group.name/value",
+        "group.name=name_value",
     ) in kw["metadata"]
 
 
@@ -10351,7 +10351,7 @@ async def test_update_group_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = vmmigration.UpdateGroupRequest()
 
-    request.group.name = "group.name/value"
+    request.group.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_group), "__call__") as call:
@@ -10369,7 +10369,7 @@ async def test_update_group_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "group.name=group.name/value",
+        "group.name=name_value",
     ) in kw["metadata"]
 
 
@@ -10557,7 +10557,7 @@ def test_delete_group_field_headers():
     # a field header. Set these to a non-empty value.
     request = vmmigration.DeleteGroupRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_group), "__call__") as call:
@@ -10573,7 +10573,7 @@ def test_delete_group_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -10587,7 +10587,7 @@ async def test_delete_group_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = vmmigration.DeleteGroupRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_group), "__call__") as call:
@@ -10605,7 +10605,7 @@ async def test_delete_group_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -10789,7 +10789,7 @@ def test_add_group_migration_field_headers():
     # a field header. Set these to a non-empty value.
     request = vmmigration.AddGroupMigrationRequest()
 
-    request.group = "group/value"
+    request.group = "group_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10807,7 +10807,7 @@ def test_add_group_migration_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "group=group/value",
+        "group=group_value",
     ) in kw["metadata"]
 
 
@@ -10821,7 +10821,7 @@ async def test_add_group_migration_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = vmmigration.AddGroupMigrationRequest()
 
-    request.group = "group/value"
+    request.group = "group_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10841,7 +10841,7 @@ async def test_add_group_migration_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "group=group/value",
+        "group=group_value",
     ) in kw["metadata"]
 
 
@@ -11030,7 +11030,7 @@ def test_remove_group_migration_field_headers():
     # a field header. Set these to a non-empty value.
     request = vmmigration.RemoveGroupMigrationRequest()
 
-    request.group = "group/value"
+    request.group = "group_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -11048,7 +11048,7 @@ def test_remove_group_migration_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "group=group/value",
+        "group=group_value",
     ) in kw["metadata"]
 
 
@@ -11062,7 +11062,7 @@ async def test_remove_group_migration_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = vmmigration.RemoveGroupMigrationRequest()
 
-    request.group = "group/value"
+    request.group = "group_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -11082,7 +11082,7 @@ async def test_remove_group_migration_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "group=group/value",
+        "group=group_value",
     ) in kw["metadata"]
 
 
@@ -11280,7 +11280,7 @@ def test_list_target_projects_field_headers():
     # a field header. Set these to a non-empty value.
     request = vmmigration.ListTargetProjectsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -11298,7 +11298,7 @@ def test_list_target_projects_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -11312,7 +11312,7 @@ async def test_list_target_projects_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = vmmigration.ListTargetProjectsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -11332,7 +11332,7 @@ async def test_list_target_projects_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -11469,7 +11469,7 @@ def test_list_target_projects_pager(transport_name: str = "grpc"):
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, vmmigration.TargetProject) for i in results)
 
@@ -11730,7 +11730,7 @@ def test_get_target_project_field_headers():
     # a field header. Set these to a non-empty value.
     request = vmmigration.GetTargetProjectRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -11748,7 +11748,7 @@ def test_get_target_project_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -11762,7 +11762,7 @@ async def test_get_target_project_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = vmmigration.GetTargetProjectRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -11782,7 +11782,7 @@ async def test_get_target_project_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -11970,7 +11970,7 @@ def test_create_target_project_field_headers():
     # a field header. Set these to a non-empty value.
     request = vmmigration.CreateTargetProjectRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -11988,7 +11988,7 @@ def test_create_target_project_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -12002,7 +12002,7 @@ async def test_create_target_project_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = vmmigration.CreateTargetProjectRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -12022,7 +12022,7 @@ async def test_create_target_project_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -12230,7 +12230,7 @@ def test_update_target_project_field_headers():
     # a field header. Set these to a non-empty value.
     request = vmmigration.UpdateTargetProjectRequest()
 
-    request.target_project.name = "target_project.name/value"
+    request.target_project.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -12248,7 +12248,7 @@ def test_update_target_project_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "target_project.name=target_project.name/value",
+        "target_project.name=name_value",
     ) in kw["metadata"]
 
 
@@ -12262,7 +12262,7 @@ async def test_update_target_project_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = vmmigration.UpdateTargetProjectRequest()
 
-    request.target_project.name = "target_project.name/value"
+    request.target_project.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -12282,7 +12282,7 @@ async def test_update_target_project_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "target_project.name=target_project.name/value",
+        "target_project.name=name_value",
     ) in kw["metadata"]
 
 
@@ -12480,7 +12480,7 @@ def test_delete_target_project_field_headers():
     # a field header. Set these to a non-empty value.
     request = vmmigration.DeleteTargetProjectRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -12498,7 +12498,7 @@ def test_delete_target_project_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -12512,7 +12512,7 @@ async def test_delete_target_project_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = vmmigration.DeleteTargetProjectRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -12532,7 +12532,7 @@ async def test_delete_target_project_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
