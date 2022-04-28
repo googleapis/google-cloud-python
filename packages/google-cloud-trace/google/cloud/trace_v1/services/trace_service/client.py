@@ -491,6 +491,14 @@ class TraceServiceClient(metaclass=TraceServiceClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.list_traces]
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("project_id", request.project_id),)
+            ),
+        )
+
         # Send the request.
         response = rpc(
             request,
@@ -601,6 +609,17 @@ class TraceServiceClient(metaclass=TraceServiceClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.get_trace]
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project_id", request.project_id),
+                    ("trace_id", request.trace_id),
+                )
+            ),
+        )
+
         # Send the request.
         response = rpc(
             request,
@@ -694,6 +713,14 @@ class TraceServiceClient(metaclass=TraceServiceClientMeta):
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.patch_traces]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("project_id", request.project_id),)
+            ),
+        )
 
         # Send the request.
         rpc(

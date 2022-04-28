@@ -224,9 +224,9 @@ class TraceServiceAsyncClient:
 
             from google.cloud import trace_v2
 
-            def sample_batch_write_spans():
+            async def sample_batch_write_spans():
                 # Create a client
-                client = trace_v2.TraceServiceClient()
+                client = trace_v2.TraceServiceAsyncClient()
 
                 # Initialize request argument(s)
                 spans = trace_v2.Span()
@@ -239,7 +239,7 @@ class TraceServiceAsyncClient:
                 )
 
                 # Make the request
-                client.batch_write_spans(request=request)
+                await client.batch_write_spans(request=request)
 
         Args:
             request (Union[google.cloud.trace_v2.types.BatchWriteSpansRequest, dict]):
@@ -321,9 +321,9 @@ class TraceServiceAsyncClient:
 
             from google.cloud import trace_v2
 
-            def sample_create_span():
+            async def sample_create_span():
                 # Create a client
-                client = trace_v2.TraceServiceClient()
+                client = trace_v2.TraceServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = trace_v2.Span(
@@ -332,7 +332,7 @@ class TraceServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.create_span(request=request)
+                response = await client.create_span(request=request)
 
                 # Handle the response
                 print(response)

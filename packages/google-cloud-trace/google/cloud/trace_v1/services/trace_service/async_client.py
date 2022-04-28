@@ -218,9 +218,9 @@ class TraceServiceAsyncClient:
 
             from google.cloud import trace_v1
 
-            def sample_list_traces():
+            async def sample_list_traces():
                 # Create a client
-                client = trace_v1.TraceServiceClient()
+                client = trace_v1.TraceServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = trace_v1.ListTracesRequest(
@@ -231,7 +231,7 @@ class TraceServiceAsyncClient:
                 page_result = client.list_traces(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -295,6 +295,14 @@ class TraceServiceAsyncClient:
             client_info=DEFAULT_CLIENT_INFO,
         )
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("project_id", request.project_id),)
+            ),
+        )
+
         # Send the request.
         response = await rpc(
             request,
@@ -331,9 +339,9 @@ class TraceServiceAsyncClient:
 
             from google.cloud import trace_v1
 
-            def sample_get_trace():
+            async def sample_get_trace():
                 # Create a client
-                client = trace_v1.TraceServiceClient()
+                client = trace_v1.TraceServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = trace_v1.GetTraceRequest(
@@ -342,7 +350,7 @@ class TraceServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_trace(request=request)
+                response = await client.get_trace(request=request)
 
                 # Handle the response
                 print(response)
@@ -415,6 +423,17 @@ class TraceServiceAsyncClient:
             client_info=DEFAULT_CLIENT_INFO,
         )
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project_id", request.project_id),
+                    ("trace_id", request.trace_id),
+                )
+            ),
+        )
+
         # Send the request.
         response = await rpc(
             request,
@@ -448,9 +467,9 @@ class TraceServiceAsyncClient:
 
             from google.cloud import trace_v1
 
-            def sample_patch_traces():
+            async def sample_patch_traces():
                 # Create a client
-                client = trace_v1.TraceServiceClient()
+                client = trace_v1.TraceServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = trace_v1.PatchTracesRequest(
@@ -458,7 +477,7 @@ class TraceServiceAsyncClient:
                 )
 
                 # Make the request
-                client.patch_traces(request=request)
+                await client.patch_traces(request=request)
 
         Args:
             request (Union[google.cloud.trace_v1.types.PatchTracesRequest, dict]):
@@ -517,6 +536,14 @@ class TraceServiceAsyncClient:
             ),
             default_timeout=45.0,
             client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("project_id", request.project_id),)
+            ),
         )
 
         # Send the request.
