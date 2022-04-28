@@ -225,9 +225,9 @@ class SpeechAsyncClient:
 
             from google.cloud import speech_v1p1beta1
 
-            def sample_recognize():
+            async def sample_recognize():
                 # Create a client
-                client = speech_v1p1beta1.SpeechClient()
+                client = speech_v1p1beta1.SpeechAsyncClient()
 
                 # Initialize request argument(s)
                 config = speech_v1p1beta1.RecognitionConfig()
@@ -242,7 +242,7 @@ class SpeechAsyncClient:
                 )
 
                 # Make the request
-                response = client.recognize(request=request)
+                response = await client.recognize(request=request)
 
                 # Handle the response
                 print(response)
@@ -348,9 +348,9 @@ class SpeechAsyncClient:
 
             from google.cloud import speech_v1p1beta1
 
-            def sample_long_running_recognize():
+            async def sample_long_running_recognize():
                 # Create a client
-                client = speech_v1p1beta1.SpeechClient()
+                client = speech_v1p1beta1.SpeechAsyncClient()
 
                 # Initialize request argument(s)
                 config = speech_v1p1beta1.RecognitionConfig()
@@ -369,7 +369,7 @@ class SpeechAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -473,9 +473,9 @@ class SpeechAsyncClient:
 
             from google.cloud import speech_v1p1beta1
 
-            def sample_streaming_recognize():
+            async def sample_streaming_recognize():
                 # Create a client
-                client = speech_v1p1beta1.SpeechClient()
+                client = speech_v1p1beta1.SpeechAsyncClient()
 
                 # Initialize request argument(s)
                 streaming_config = speech_v1p1beta1.StreamingRecognitionConfig()
@@ -496,10 +496,10 @@ class SpeechAsyncClient:
                         yield request
 
                 # Make the request
-                stream = client.streaming_recognize(requests=request_generator())
+                stream = await client.streaming_recognize(requests=request_generator())
 
                 # Handle the response
-                for response in stream:
+                async for response in stream:
                     print(response)
 
         Args:
