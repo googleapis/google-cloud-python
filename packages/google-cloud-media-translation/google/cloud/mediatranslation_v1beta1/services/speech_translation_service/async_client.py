@@ -236,9 +236,9 @@ class SpeechTranslationServiceAsyncClient:
 
             from google.cloud import mediatranslation_v1beta1
 
-            def sample_streaming_translate_speech():
+            async def sample_streaming_translate_speech():
                 # Create a client
-                client = mediatranslation_v1beta1.SpeechTranslationServiceClient()
+                client = mediatranslation_v1beta1.SpeechTranslationServiceAsyncClient()
 
                 # Initialize request argument(s)
                 streaming_config = mediatranslation_v1beta1.StreamingTranslateSpeechConfig()
@@ -261,10 +261,10 @@ class SpeechTranslationServiceAsyncClient:
                         yield request
 
                 # Make the request
-                stream = client.streaming_translate_speech(requests=request_generator())
+                stream = await client.streaming_translate_speech(requests=request_generator())
 
                 # Handle the response
-                for response in stream:
+                async for response in stream:
                     print(response)
 
         Args:
