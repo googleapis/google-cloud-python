@@ -242,9 +242,9 @@ class CloudDeployAsyncClient:
 
             from google.cloud import deploy_v1
 
-            def sample_list_delivery_pipelines():
+            async def sample_list_delivery_pipelines():
                 # Create a client
-                client = deploy_v1.CloudDeployClient()
+                client = deploy_v1.CloudDeployAsyncClient()
 
                 # Initialize request argument(s)
                 request = deploy_v1.ListDeliveryPipelinesRequest(
@@ -255,7 +255,7 @@ class CloudDeployAsyncClient:
                 page_result = client.list_delivery_pipelines(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -359,9 +359,9 @@ class CloudDeployAsyncClient:
 
             from google.cloud import deploy_v1
 
-            def sample_get_delivery_pipeline():
+            async def sample_get_delivery_pipeline():
                 # Create a client
-                client = deploy_v1.CloudDeployClient()
+                client = deploy_v1.CloudDeployAsyncClient()
 
                 # Initialize request argument(s)
                 request = deploy_v1.GetDeliveryPipelineRequest(
@@ -369,7 +369,7 @@ class CloudDeployAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_delivery_pipeline(request=request)
+                response = await client.get_delivery_pipeline(request=request)
 
                 # Handle the response
                 print(response)
@@ -470,9 +470,9 @@ class CloudDeployAsyncClient:
 
             from google.cloud import deploy_v1
 
-            def sample_create_delivery_pipeline():
+            async def sample_create_delivery_pipeline():
                 # Create a client
-                client = deploy_v1.CloudDeployClient()
+                client = deploy_v1.CloudDeployAsyncClient()
 
                 # Initialize request argument(s)
                 request = deploy_v1.CreateDeliveryPipelineRequest(
@@ -485,7 +485,7 @@ class CloudDeployAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -601,9 +601,9 @@ class CloudDeployAsyncClient:
 
             from google.cloud import deploy_v1
 
-            def sample_update_delivery_pipeline():
+            async def sample_update_delivery_pipeline():
                 # Create a client
-                client = deploy_v1.CloudDeployClient()
+                client = deploy_v1.CloudDeployAsyncClient()
 
                 # Initialize request argument(s)
                 request = deploy_v1.UpdateDeliveryPipelineRequest(
@@ -614,7 +614,7 @@ class CloudDeployAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -728,9 +728,9 @@ class CloudDeployAsyncClient:
 
             from google.cloud import deploy_v1
 
-            def sample_delete_delivery_pipeline():
+            async def sample_delete_delivery_pipeline():
                 # Create a client
-                client = deploy_v1.CloudDeployClient()
+                client = deploy_v1.CloudDeployAsyncClient()
 
                 # Initialize request argument(s)
                 request = deploy_v1.DeleteDeliveryPipelineRequest(
@@ -742,7 +742,7 @@ class CloudDeployAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -849,9 +849,9 @@ class CloudDeployAsyncClient:
 
             from google.cloud import deploy_v1
 
-            def sample_list_targets():
+            async def sample_list_targets():
                 # Create a client
-                client = deploy_v1.CloudDeployClient()
+                client = deploy_v1.CloudDeployAsyncClient()
 
                 # Initialize request argument(s)
                 request = deploy_v1.ListTargetsRequest(
@@ -862,7 +862,7 @@ class CloudDeployAsyncClient:
                 page_result = client.list_targets(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -966,9 +966,9 @@ class CloudDeployAsyncClient:
 
             from google.cloud import deploy_v1
 
-            def sample_get_target():
+            async def sample_get_target():
                 # Create a client
-                client = deploy_v1.CloudDeployClient()
+                client = deploy_v1.CloudDeployAsyncClient()
 
                 # Initialize request argument(s)
                 request = deploy_v1.GetTargetRequest(
@@ -976,7 +976,7 @@ class CloudDeployAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_target(request=request)
+                response = await client.get_target(request=request)
 
                 # Handle the response
                 print(response)
@@ -1073,9 +1073,9 @@ class CloudDeployAsyncClient:
 
             from google.cloud import deploy_v1
 
-            def sample_create_target():
+            async def sample_create_target():
                 # Create a client
-                client = deploy_v1.CloudDeployClient()
+                client = deploy_v1.CloudDeployAsyncClient()
 
                 # Initialize request argument(s)
                 request = deploy_v1.CreateTargetRequest(
@@ -1088,7 +1088,7 @@ class CloudDeployAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1203,9 +1203,9 @@ class CloudDeployAsyncClient:
 
             from google.cloud import deploy_v1
 
-            def sample_update_target():
+            async def sample_update_target():
                 # Create a client
-                client = deploy_v1.CloudDeployClient()
+                client = deploy_v1.CloudDeployAsyncClient()
 
                 # Initialize request argument(s)
                 request = deploy_v1.UpdateTargetRequest(
@@ -1216,7 +1216,7 @@ class CloudDeployAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1328,9 +1328,9 @@ class CloudDeployAsyncClient:
 
             from google.cloud import deploy_v1
 
-            def sample_delete_target():
+            async def sample_delete_target():
                 # Create a client
-                client = deploy_v1.CloudDeployClient()
+                client = deploy_v1.CloudDeployAsyncClient()
 
                 # Initialize request argument(s)
                 request = deploy_v1.DeleteTargetRequest(
@@ -1342,7 +1342,7 @@ class CloudDeployAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1449,9 +1449,9 @@ class CloudDeployAsyncClient:
 
             from google.cloud import deploy_v1
 
-            def sample_list_releases():
+            async def sample_list_releases():
                 # Create a client
-                client = deploy_v1.CloudDeployClient()
+                client = deploy_v1.CloudDeployAsyncClient()
 
                 # Initialize request argument(s)
                 request = deploy_v1.ListReleasesRequest(
@@ -1462,7 +1462,7 @@ class CloudDeployAsyncClient:
                 page_result = client.list_releases(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -1565,9 +1565,9 @@ class CloudDeployAsyncClient:
 
             from google.cloud import deploy_v1
 
-            def sample_get_release():
+            async def sample_get_release():
                 # Create a client
-                client = deploy_v1.CloudDeployClient()
+                client = deploy_v1.CloudDeployAsyncClient()
 
                 # Initialize request argument(s)
                 request = deploy_v1.GetReleaseRequest(
@@ -1575,7 +1575,7 @@ class CloudDeployAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_release(request=request)
+                response = await client.get_release(request=request)
 
                 # Handle the response
                 print(response)
@@ -1673,9 +1673,9 @@ class CloudDeployAsyncClient:
 
             from google.cloud import deploy_v1
 
-            def sample_create_release():
+            async def sample_create_release():
                 # Create a client
-                client = deploy_v1.CloudDeployClient()
+                client = deploy_v1.CloudDeployAsyncClient()
 
                 # Initialize request argument(s)
                 request = deploy_v1.CreateReleaseRequest(
@@ -1688,7 +1688,7 @@ class CloudDeployAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1802,9 +1802,9 @@ class CloudDeployAsyncClient:
 
             from google.cloud import deploy_v1
 
-            def sample_approve_rollout():
+            async def sample_approve_rollout():
                 # Create a client
-                client = deploy_v1.CloudDeployClient()
+                client = deploy_v1.CloudDeployAsyncClient()
 
                 # Initialize request argument(s)
                 request = deploy_v1.ApproveRolloutRequest(
@@ -1813,7 +1813,7 @@ class CloudDeployAsyncClient:
                 )
 
                 # Make the request
-                response = client.approve_rollout(request=request)
+                response = await client.approve_rollout(request=request)
 
                 # Handle the response
                 print(response)
@@ -1898,9 +1898,9 @@ class CloudDeployAsyncClient:
 
             from google.cloud import deploy_v1
 
-            def sample_list_rollouts():
+            async def sample_list_rollouts():
                 # Create a client
-                client = deploy_v1.CloudDeployClient()
+                client = deploy_v1.CloudDeployAsyncClient()
 
                 # Initialize request argument(s)
                 request = deploy_v1.ListRolloutsRequest(
@@ -1911,7 +1911,7 @@ class CloudDeployAsyncClient:
                 page_result = client.list_rollouts(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -2015,9 +2015,9 @@ class CloudDeployAsyncClient:
 
             from google.cloud import deploy_v1
 
-            def sample_get_rollout():
+            async def sample_get_rollout():
                 # Create a client
-                client = deploy_v1.CloudDeployClient()
+                client = deploy_v1.CloudDeployAsyncClient()
 
                 # Initialize request argument(s)
                 request = deploy_v1.GetRolloutRequest(
@@ -2025,7 +2025,7 @@ class CloudDeployAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_rollout(request=request)
+                response = await client.get_rollout(request=request)
 
                 # Handle the response
                 print(response)
@@ -2124,9 +2124,9 @@ class CloudDeployAsyncClient:
 
             from google.cloud import deploy_v1
 
-            def sample_create_rollout():
+            async def sample_create_rollout():
                 # Create a client
-                client = deploy_v1.CloudDeployClient()
+                client = deploy_v1.CloudDeployAsyncClient()
 
                 # Initialize request argument(s)
                 rollout = deploy_v1.Rollout()
@@ -2143,7 +2143,7 @@ class CloudDeployAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2257,9 +2257,9 @@ class CloudDeployAsyncClient:
 
             from google.cloud import deploy_v1
 
-            def sample_get_config():
+            async def sample_get_config():
                 # Create a client
-                client = deploy_v1.CloudDeployClient()
+                client = deploy_v1.CloudDeployAsyncClient()
 
                 # Initialize request argument(s)
                 request = deploy_v1.GetConfigRequest(
@@ -2267,7 +2267,7 @@ class CloudDeployAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_config(request=request)
+                response = await client.get_config(request=request)
 
                 # Handle the response
                 print(response)
