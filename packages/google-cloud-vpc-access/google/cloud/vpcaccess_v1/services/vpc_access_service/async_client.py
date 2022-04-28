@@ -228,9 +228,9 @@ class VpcAccessServiceAsyncClient:
 
             from google.cloud import vpcaccess_v1
 
-            def sample_create_connector():
+            async def sample_create_connector():
                 # Create a client
-                client = vpcaccess_v1.VpcAccessServiceClient()
+                client = vpcaccess_v1.VpcAccessServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = vpcaccess_v1.CreateConnectorRequest(
@@ -243,7 +243,7 @@ class VpcAccessServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -357,9 +357,9 @@ class VpcAccessServiceAsyncClient:
 
             from google.cloud import vpcaccess_v1
 
-            def sample_get_connector():
+            async def sample_get_connector():
                 # Create a client
-                client = vpcaccess_v1.VpcAccessServiceClient()
+                client = vpcaccess_v1.VpcAccessServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = vpcaccess_v1.GetConnectorRequest(
@@ -367,7 +367,7 @@ class VpcAccessServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_connector(request=request)
+                response = await client.get_connector(request=request)
 
                 # Handle the response
                 print(response)
@@ -452,9 +452,9 @@ class VpcAccessServiceAsyncClient:
 
             from google.cloud import vpcaccess_v1
 
-            def sample_list_connectors():
+            async def sample_list_connectors():
                 # Create a client
-                client = vpcaccess_v1.VpcAccessServiceClient()
+                client = vpcaccess_v1.VpcAccessServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = vpcaccess_v1.ListConnectorsRequest(
@@ -465,7 +465,7 @@ class VpcAccessServiceAsyncClient:
                 page_result = client.list_connectors(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -561,9 +561,9 @@ class VpcAccessServiceAsyncClient:
 
             from google.cloud import vpcaccess_v1
 
-            def sample_delete_connector():
+            async def sample_delete_connector():
                 # Create a client
-                client = vpcaccess_v1.VpcAccessServiceClient()
+                client = vpcaccess_v1.VpcAccessServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = vpcaccess_v1.DeleteConnectorRequest(
@@ -575,7 +575,7 @@ class VpcAccessServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
