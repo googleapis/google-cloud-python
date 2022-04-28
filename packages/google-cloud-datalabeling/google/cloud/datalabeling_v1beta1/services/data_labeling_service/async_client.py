@@ -268,9 +268,9 @@ class DataLabelingServiceAsyncClient:
 
             from google.cloud import datalabeling_v1beta1
 
-            def sample_create_dataset():
+            async def sample_create_dataset():
                 # Create a client
-                client = datalabeling_v1beta1.DataLabelingServiceClient()
+                client = datalabeling_v1beta1.DataLabelingServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = datalabeling_v1beta1.CreateDatasetRequest(
@@ -278,7 +278,7 @@ class DataLabelingServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.create_dataset(request=request)
+                response = await client.create_dataset(request=request)
 
                 # Handle the response
                 print(response)
@@ -371,9 +371,9 @@ class DataLabelingServiceAsyncClient:
 
             from google.cloud import datalabeling_v1beta1
 
-            def sample_get_dataset():
+            async def sample_get_dataset():
                 # Create a client
-                client = datalabeling_v1beta1.DataLabelingServiceClient()
+                client = datalabeling_v1beta1.DataLabelingServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = datalabeling_v1beta1.GetDatasetRequest(
@@ -381,7 +381,7 @@ class DataLabelingServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_dataset(request=request)
+                response = await client.get_dataset(request=request)
 
                 # Handle the response
                 print(response)
@@ -479,9 +479,9 @@ class DataLabelingServiceAsyncClient:
 
             from google.cloud import datalabeling_v1beta1
 
-            def sample_list_datasets():
+            async def sample_list_datasets():
                 # Create a client
-                client = datalabeling_v1beta1.DataLabelingServiceClient()
+                client = datalabeling_v1beta1.DataLabelingServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = datalabeling_v1beta1.ListDatasetsRequest(
@@ -492,7 +492,7 @@ class DataLabelingServiceAsyncClient:
                 page_result = client.list_datasets(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -605,9 +605,9 @@ class DataLabelingServiceAsyncClient:
 
             from google.cloud import datalabeling_v1beta1
 
-            def sample_delete_dataset():
+            async def sample_delete_dataset():
                 # Create a client
-                client = datalabeling_v1beta1.DataLabelingServiceClient()
+                client = datalabeling_v1beta1.DataLabelingServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = datalabeling_v1beta1.DeleteDatasetRequest(
@@ -615,7 +615,7 @@ class DataLabelingServiceAsyncClient:
                 )
 
                 # Make the request
-                client.delete_dataset(request=request)
+                await client.delete_dataset(request=request)
 
         Args:
             request (Union[google.cloud.datalabeling_v1beta1.types.DeleteDatasetRequest, dict]):
@@ -703,9 +703,9 @@ class DataLabelingServiceAsyncClient:
 
             from google.cloud import datalabeling_v1beta1
 
-            def sample_import_data():
+            async def sample_import_data():
                 # Create a client
-                client = datalabeling_v1beta1.DataLabelingServiceClient()
+                client = datalabeling_v1beta1.DataLabelingServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = datalabeling_v1beta1.ImportDataRequest(
@@ -717,7 +717,7 @@ class DataLabelingServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -824,9 +824,9 @@ class DataLabelingServiceAsyncClient:
 
             from google.cloud import datalabeling_v1beta1
 
-            def sample_export_data():
+            async def sample_export_data():
                 # Create a client
-                client = datalabeling_v1beta1.DataLabelingServiceClient()
+                client = datalabeling_v1beta1.DataLabelingServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = datalabeling_v1beta1.ExportDataRequest(
@@ -839,7 +839,7 @@ class DataLabelingServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -975,9 +975,9 @@ class DataLabelingServiceAsyncClient:
 
             from google.cloud import datalabeling_v1beta1
 
-            def sample_get_data_item():
+            async def sample_get_data_item():
                 # Create a client
-                client = datalabeling_v1beta1.DataLabelingServiceClient()
+                client = datalabeling_v1beta1.DataLabelingServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = datalabeling_v1beta1.GetDataItemRequest(
@@ -985,7 +985,7 @@ class DataLabelingServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_data_item(request=request)
+                response = await client.get_data_item(request=request)
 
                 # Handle the response
                 print(response)
@@ -1082,9 +1082,9 @@ class DataLabelingServiceAsyncClient:
 
             from google.cloud import datalabeling_v1beta1
 
-            def sample_list_data_items():
+            async def sample_list_data_items():
                 # Create a client
-                client = datalabeling_v1beta1.DataLabelingServiceClient()
+                client = datalabeling_v1beta1.DataLabelingServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = datalabeling_v1beta1.ListDataItemsRequest(
@@ -1095,7 +1095,7 @@ class DataLabelingServiceAsyncClient:
                 page_result = client.list_data_items(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -1208,9 +1208,9 @@ class DataLabelingServiceAsyncClient:
 
             from google.cloud import datalabeling_v1beta1
 
-            def sample_get_annotated_dataset():
+            async def sample_get_annotated_dataset():
                 # Create a client
-                client = datalabeling_v1beta1.DataLabelingServiceClient()
+                client = datalabeling_v1beta1.DataLabelingServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = datalabeling_v1beta1.GetAnnotatedDatasetRequest(
@@ -1218,7 +1218,7 @@ class DataLabelingServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_annotated_dataset(request=request)
+                response = await client.get_annotated_dataset(request=request)
 
                 # Handle the response
                 print(response)
@@ -1319,9 +1319,9 @@ class DataLabelingServiceAsyncClient:
 
             from google.cloud import datalabeling_v1beta1
 
-            def sample_list_annotated_datasets():
+            async def sample_list_annotated_datasets():
                 # Create a client
-                client = datalabeling_v1beta1.DataLabelingServiceClient()
+                client = datalabeling_v1beta1.DataLabelingServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = datalabeling_v1beta1.ListAnnotatedDatasetsRequest(
@@ -1332,7 +1332,7 @@ class DataLabelingServiceAsyncClient:
                 page_result = client.list_annotated_datasets(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -1448,9 +1448,9 @@ class DataLabelingServiceAsyncClient:
 
             from google.cloud import datalabeling_v1beta1
 
-            def sample_delete_annotated_dataset():
+            async def sample_delete_annotated_dataset():
                 # Create a client
-                client = datalabeling_v1beta1.DataLabelingServiceClient()
+                client = datalabeling_v1beta1.DataLabelingServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = datalabeling_v1beta1.DeleteAnnotatedDatasetRequest(
@@ -1458,7 +1458,7 @@ class DataLabelingServiceAsyncClient:
                 )
 
                 # Make the request
-                client.delete_annotated_dataset(request=request)
+                await client.delete_annotated_dataset(request=request)
 
         Args:
             request (Union[google.cloud.datalabeling_v1beta1.types.DeleteAnnotatedDatasetRequest, dict]):
@@ -1513,9 +1513,9 @@ class DataLabelingServiceAsyncClient:
 
             from google.cloud import datalabeling_v1beta1
 
-            def sample_label_image():
+            async def sample_label_image():
                 # Create a client
-                client = datalabeling_v1beta1.DataLabelingServiceClient()
+                client = datalabeling_v1beta1.DataLabelingServiceAsyncClient()
 
                 # Initialize request argument(s)
                 image_classification_config = datalabeling_v1beta1.ImageClassificationConfig()
@@ -1537,7 +1537,7 @@ class DataLabelingServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1654,9 +1654,9 @@ class DataLabelingServiceAsyncClient:
 
             from google.cloud import datalabeling_v1beta1
 
-            def sample_label_video():
+            async def sample_label_video():
                 # Create a client
-                client = datalabeling_v1beta1.DataLabelingServiceClient()
+                client = datalabeling_v1beta1.DataLabelingServiceAsyncClient()
 
                 # Initialize request argument(s)
                 video_classification_config = datalabeling_v1beta1.VideoClassificationConfig()
@@ -1678,7 +1678,7 @@ class DataLabelingServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1794,9 +1794,9 @@ class DataLabelingServiceAsyncClient:
 
             from google.cloud import datalabeling_v1beta1
 
-            def sample_label_text():
+            async def sample_label_text():
                 # Create a client
-                client = datalabeling_v1beta1.DataLabelingServiceClient()
+                client = datalabeling_v1beta1.DataLabelingServiceAsyncClient()
 
                 # Initialize request argument(s)
                 text_classification_config = datalabeling_v1beta1.TextClassificationConfig()
@@ -1818,7 +1818,7 @@ class DataLabelingServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1933,9 +1933,9 @@ class DataLabelingServiceAsyncClient:
 
             from google.cloud import datalabeling_v1beta1
 
-            def sample_get_example():
+            async def sample_get_example():
                 # Create a client
-                client = datalabeling_v1beta1.DataLabelingServiceClient()
+                client = datalabeling_v1beta1.DataLabelingServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = datalabeling_v1beta1.GetExampleRequest(
@@ -1943,7 +1943,7 @@ class DataLabelingServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_example(request=request)
+                response = await client.get_example(request=request)
 
                 # Handle the response
                 print(response)
@@ -2051,9 +2051,9 @@ class DataLabelingServiceAsyncClient:
 
             from google.cloud import datalabeling_v1beta1
 
-            def sample_list_examples():
+            async def sample_list_examples():
                 # Create a client
-                client = datalabeling_v1beta1.DataLabelingServiceClient()
+                client = datalabeling_v1beta1.DataLabelingServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = datalabeling_v1beta1.ListExamplesRequest(
@@ -2064,7 +2064,7 @@ class DataLabelingServiceAsyncClient:
                 page_result = client.list_examples(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -2181,9 +2181,9 @@ class DataLabelingServiceAsyncClient:
 
             from google.cloud import datalabeling_v1beta1
 
-            def sample_create_annotation_spec_set():
+            async def sample_create_annotation_spec_set():
                 # Create a client
-                client = datalabeling_v1beta1.DataLabelingServiceClient()
+                client = datalabeling_v1beta1.DataLabelingServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = datalabeling_v1beta1.CreateAnnotationSpecSetRequest(
@@ -2191,7 +2191,7 @@ class DataLabelingServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.create_annotation_spec_set(request=request)
+                response = await client.create_annotation_spec_set(request=request)
 
                 # Handle the response
                 print(response)
@@ -2290,9 +2290,9 @@ class DataLabelingServiceAsyncClient:
 
             from google.cloud import datalabeling_v1beta1
 
-            def sample_get_annotation_spec_set():
+            async def sample_get_annotation_spec_set():
                 # Create a client
-                client = datalabeling_v1beta1.DataLabelingServiceClient()
+                client = datalabeling_v1beta1.DataLabelingServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = datalabeling_v1beta1.GetAnnotationSpecSetRequest(
@@ -2300,7 +2300,7 @@ class DataLabelingServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_annotation_spec_set(request=request)
+                response = await client.get_annotation_spec_set(request=request)
 
                 # Handle the response
                 print(response)
@@ -2403,9 +2403,9 @@ class DataLabelingServiceAsyncClient:
 
             from google.cloud import datalabeling_v1beta1
 
-            def sample_list_annotation_spec_sets():
+            async def sample_list_annotation_spec_sets():
                 # Create a client
-                client = datalabeling_v1beta1.DataLabelingServiceClient()
+                client = datalabeling_v1beta1.DataLabelingServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = datalabeling_v1beta1.ListAnnotationSpecSetsRequest(
@@ -2416,7 +2416,7 @@ class DataLabelingServiceAsyncClient:
                 page_result = client.list_annotation_spec_sets(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -2532,9 +2532,9 @@ class DataLabelingServiceAsyncClient:
 
             from google.cloud import datalabeling_v1beta1
 
-            def sample_delete_annotation_spec_set():
+            async def sample_delete_annotation_spec_set():
                 # Create a client
-                client = datalabeling_v1beta1.DataLabelingServiceClient()
+                client = datalabeling_v1beta1.DataLabelingServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = datalabeling_v1beta1.DeleteAnnotationSpecSetRequest(
@@ -2542,7 +2542,7 @@ class DataLabelingServiceAsyncClient:
                 )
 
                 # Make the request
-                client.delete_annotation_spec_set(request=request)
+                await client.delete_annotation_spec_set(request=request)
 
         Args:
             request (Union[google.cloud.datalabeling_v1beta1.types.DeleteAnnotationSpecSetRequest, dict]):
@@ -2627,9 +2627,9 @@ class DataLabelingServiceAsyncClient:
 
             from google.cloud import datalabeling_v1beta1
 
-            def sample_create_instruction():
+            async def sample_create_instruction():
                 # Create a client
-                client = datalabeling_v1beta1.DataLabelingServiceClient()
+                client = datalabeling_v1beta1.DataLabelingServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = datalabeling_v1beta1.CreateInstructionRequest(
@@ -2641,7 +2641,7 @@ class DataLabelingServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2745,9 +2745,9 @@ class DataLabelingServiceAsyncClient:
 
             from google.cloud import datalabeling_v1beta1
 
-            def sample_get_instruction():
+            async def sample_get_instruction():
                 # Create a client
-                client = datalabeling_v1beta1.DataLabelingServiceClient()
+                client = datalabeling_v1beta1.DataLabelingServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = datalabeling_v1beta1.GetInstructionRequest(
@@ -2755,7 +2755,7 @@ class DataLabelingServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_instruction(request=request)
+                response = await client.get_instruction(request=request)
 
                 # Handle the response
                 print(response)
@@ -2853,9 +2853,9 @@ class DataLabelingServiceAsyncClient:
 
             from google.cloud import datalabeling_v1beta1
 
-            def sample_list_instructions():
+            async def sample_list_instructions():
                 # Create a client
-                client = datalabeling_v1beta1.DataLabelingServiceClient()
+                client = datalabeling_v1beta1.DataLabelingServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = datalabeling_v1beta1.ListInstructionsRequest(
@@ -2866,7 +2866,7 @@ class DataLabelingServiceAsyncClient:
                 page_result = client.list_instructions(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -2980,9 +2980,9 @@ class DataLabelingServiceAsyncClient:
 
             from google.cloud import datalabeling_v1beta1
 
-            def sample_delete_instruction():
+            async def sample_delete_instruction():
                 # Create a client
-                client = datalabeling_v1beta1.DataLabelingServiceClient()
+                client = datalabeling_v1beta1.DataLabelingServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = datalabeling_v1beta1.DeleteInstructionRequest(
@@ -2990,7 +2990,7 @@ class DataLabelingServiceAsyncClient:
                 )
 
                 # Make the request
-                client.delete_instruction(request=request)
+                await client.delete_instruction(request=request)
 
         Args:
             request (Union[google.cloud.datalabeling_v1beta1.types.DeleteInstructionRequest, dict]):
@@ -3074,9 +3074,9 @@ class DataLabelingServiceAsyncClient:
 
             from google.cloud import datalabeling_v1beta1
 
-            def sample_get_evaluation():
+            async def sample_get_evaluation():
                 # Create a client
-                client = datalabeling_v1beta1.DataLabelingServiceClient()
+                client = datalabeling_v1beta1.DataLabelingServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = datalabeling_v1beta1.GetEvaluationRequest(
@@ -3084,7 +3084,7 @@ class DataLabelingServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_evaluation(request=request)
+                response = await client.get_evaluation(request=request)
 
                 # Handle the response
                 print(response)
@@ -3184,9 +3184,9 @@ class DataLabelingServiceAsyncClient:
 
             from google.cloud import datalabeling_v1beta1
 
-            def sample_search_evaluations():
+            async def sample_search_evaluations():
                 # Create a client
-                client = datalabeling_v1beta1.DataLabelingServiceClient()
+                client = datalabeling_v1beta1.DataLabelingServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = datalabeling_v1beta1.SearchEvaluationsRequest(
@@ -3197,7 +3197,7 @@ class DataLabelingServiceAsyncClient:
                 page_result = client.search_evaluations(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -3346,9 +3346,9 @@ class DataLabelingServiceAsyncClient:
 
             from google.cloud import datalabeling_v1beta1
 
-            def sample_search_example_comparisons():
+            async def sample_search_example_comparisons():
                 # Create a client
-                client = datalabeling_v1beta1.DataLabelingServiceClient()
+                client = datalabeling_v1beta1.DataLabelingServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = datalabeling_v1beta1.SearchExampleComparisonsRequest(
@@ -3359,7 +3359,7 @@ class DataLabelingServiceAsyncClient:
                 page_result = client.search_example_comparisons(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -3458,9 +3458,9 @@ class DataLabelingServiceAsyncClient:
 
             from google.cloud import datalabeling_v1beta1
 
-            def sample_create_evaluation_job():
+            async def sample_create_evaluation_job():
                 # Create a client
-                client = datalabeling_v1beta1.DataLabelingServiceClient()
+                client = datalabeling_v1beta1.DataLabelingServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = datalabeling_v1beta1.CreateEvaluationJobRequest(
@@ -3468,7 +3468,7 @@ class DataLabelingServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.create_evaluation_job(request=request)
+                response = await client.create_evaluation_job(request=request)
 
                 # Handle the response
                 print(response)
@@ -3574,16 +3574,16 @@ class DataLabelingServiceAsyncClient:
 
             from google.cloud import datalabeling_v1beta1
 
-            def sample_update_evaluation_job():
+            async def sample_update_evaluation_job():
                 # Create a client
-                client = datalabeling_v1beta1.DataLabelingServiceClient()
+                client = datalabeling_v1beta1.DataLabelingServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = datalabeling_v1beta1.UpdateEvaluationJobRequest(
                 )
 
                 # Make the request
-                response = client.update_evaluation_job(request=request)
+                response = await client.update_evaluation_job(request=request)
 
                 # Handle the response
                 print(response)
@@ -3690,9 +3690,9 @@ class DataLabelingServiceAsyncClient:
 
             from google.cloud import datalabeling_v1beta1
 
-            def sample_get_evaluation_job():
+            async def sample_get_evaluation_job():
                 # Create a client
-                client = datalabeling_v1beta1.DataLabelingServiceClient()
+                client = datalabeling_v1beta1.DataLabelingServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = datalabeling_v1beta1.GetEvaluationJobRequest(
@@ -3700,7 +3700,7 @@ class DataLabelingServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_evaluation_job(request=request)
+                response = await client.get_evaluation_job(request=request)
 
                 # Handle the response
                 print(response)
@@ -3801,9 +3801,9 @@ class DataLabelingServiceAsyncClient:
 
             from google.cloud import datalabeling_v1beta1
 
-            def sample_pause_evaluation_job():
+            async def sample_pause_evaluation_job():
                 # Create a client
-                client = datalabeling_v1beta1.DataLabelingServiceClient()
+                client = datalabeling_v1beta1.DataLabelingServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = datalabeling_v1beta1.PauseEvaluationJobRequest(
@@ -3811,7 +3811,7 @@ class DataLabelingServiceAsyncClient:
                 )
 
                 # Make the request
-                client.pause_evaluation_job(request=request)
+                await client.pause_evaluation_job(request=request)
 
         Args:
             request (Union[google.cloud.datalabeling_v1beta1.types.PauseEvaluationJobRequest, dict]):
@@ -3888,9 +3888,9 @@ class DataLabelingServiceAsyncClient:
 
             from google.cloud import datalabeling_v1beta1
 
-            def sample_resume_evaluation_job():
+            async def sample_resume_evaluation_job():
                 # Create a client
-                client = datalabeling_v1beta1.DataLabelingServiceClient()
+                client = datalabeling_v1beta1.DataLabelingServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = datalabeling_v1beta1.ResumeEvaluationJobRequest(
@@ -3898,7 +3898,7 @@ class DataLabelingServiceAsyncClient:
                 )
 
                 # Make the request
-                client.resume_evaluation_job(request=request)
+                await client.resume_evaluation_job(request=request)
 
         Args:
             request (Union[google.cloud.datalabeling_v1beta1.types.ResumeEvaluationJobRequest, dict]):
@@ -3972,9 +3972,9 @@ class DataLabelingServiceAsyncClient:
 
             from google.cloud import datalabeling_v1beta1
 
-            def sample_delete_evaluation_job():
+            async def sample_delete_evaluation_job():
                 # Create a client
-                client = datalabeling_v1beta1.DataLabelingServiceClient()
+                client = datalabeling_v1beta1.DataLabelingServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = datalabeling_v1beta1.DeleteEvaluationJobRequest(
@@ -3982,7 +3982,7 @@ class DataLabelingServiceAsyncClient:
                 )
 
                 # Make the request
-                client.delete_evaluation_job(request=request)
+                await client.delete_evaluation_job(request=request)
 
         Args:
             request (Union[google.cloud.datalabeling_v1beta1.types.DeleteEvaluationJobRequest, dict]):
@@ -4068,9 +4068,9 @@ class DataLabelingServiceAsyncClient:
 
             from google.cloud import datalabeling_v1beta1
 
-            def sample_list_evaluation_jobs():
+            async def sample_list_evaluation_jobs():
                 # Create a client
-                client = datalabeling_v1beta1.DataLabelingServiceClient()
+                client = datalabeling_v1beta1.DataLabelingServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = datalabeling_v1beta1.ListEvaluationJobsRequest(
@@ -4081,7 +4081,7 @@ class DataLabelingServiceAsyncClient:
                 page_result = client.list_evaluation_jobs(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
