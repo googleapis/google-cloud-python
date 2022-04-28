@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.1.2](https://github.com/googleapis/python-video-live-stream/compare/v0.1.1...v0.1.2) (2022-04-28)
+
+
+### Documentation
+
+* **samples:** add code samples ([#21](https://github.com/googleapis/python-video-live-stream/issues/21)) ([484271d](https://github.com/googleapis/python-video-live-stream/commit/484271de8790e2d9d0d4ea02feb344398317ffe5))
+
 ### [0.1.1](https://github.com/googleapis/python-video-live-stream/compare/v0.1.0...v0.1.1) (2022-03-05)
 
 
