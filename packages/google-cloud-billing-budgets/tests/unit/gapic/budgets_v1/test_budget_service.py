@@ -756,7 +756,7 @@ def test_create_budget_field_headers():
     # a field header. Set these to a non-empty value.
     request = budget_service.CreateBudgetRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_budget), "__call__") as call:
@@ -772,7 +772,7 @@ def test_create_budget_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -786,7 +786,7 @@ async def test_create_budget_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = budget_service.CreateBudgetRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_budget), "__call__") as call:
@@ -802,7 +802,7 @@ async def test_create_budget_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -1002,7 +1002,7 @@ def test_update_budget_field_headers():
     # a field header. Set these to a non-empty value.
     request = budget_service.UpdateBudgetRequest()
 
-    request.budget.name = "budget.name/value"
+    request.budget.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_budget), "__call__") as call:
@@ -1018,7 +1018,7 @@ def test_update_budget_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "budget.name=budget.name/value",
+        "budget.name=name_value",
     ) in kw["metadata"]
 
 
@@ -1032,7 +1032,7 @@ async def test_update_budget_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = budget_service.UpdateBudgetRequest()
 
-    request.budget.name = "budget.name/value"
+    request.budget.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_budget), "__call__") as call:
@@ -1048,7 +1048,7 @@ async def test_update_budget_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "budget.name=budget.name/value",
+        "budget.name=name_value",
     ) in kw["metadata"]
 
 
@@ -1248,7 +1248,7 @@ def test_get_budget_field_headers():
     # a field header. Set these to a non-empty value.
     request = budget_service.GetBudgetRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_budget), "__call__") as call:
@@ -1264,7 +1264,7 @@ def test_get_budget_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1278,7 +1278,7 @@ async def test_get_budget_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = budget_service.GetBudgetRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_budget), "__call__") as call:
@@ -1294,7 +1294,7 @@ async def test_get_budget_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1476,7 +1476,7 @@ def test_list_budgets_field_headers():
     # a field header. Set these to a non-empty value.
     request = budget_service.ListBudgetsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_budgets), "__call__") as call:
@@ -1492,7 +1492,7 @@ def test_list_budgets_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -1506,7 +1506,7 @@ async def test_list_budgets_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = budget_service.ListBudgetsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_budgets), "__call__") as call:
@@ -1524,7 +1524,7 @@ async def test_list_budgets_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -1655,7 +1655,7 @@ def test_list_budgets_pager(transport_name: str = "grpc"):
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, budget_model.Budget) for i in results)
 
@@ -1888,7 +1888,7 @@ def test_delete_budget_field_headers():
     # a field header. Set these to a non-empty value.
     request = budget_service.DeleteBudgetRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_budget), "__call__") as call:
@@ -1904,7 +1904,7 @@ def test_delete_budget_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1918,7 +1918,7 @@ async def test_delete_budget_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = budget_service.DeleteBudgetRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_budget), "__call__") as call:
@@ -1934,7 +1934,7 @@ async def test_delete_budget_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 

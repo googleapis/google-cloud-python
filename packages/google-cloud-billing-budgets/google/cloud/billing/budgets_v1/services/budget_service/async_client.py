@@ -227,9 +227,9 @@ class BudgetServiceAsyncClient:
 
             from google.cloud.billing import budgets_v1
 
-            def sample_create_budget():
+            async def sample_create_budget():
                 # Create a client
-                client = budgets_v1.BudgetServiceClient()
+                client = budgets_v1.BudgetServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = budgets_v1.CreateBudgetRequest(
@@ -237,7 +237,7 @@ class BudgetServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.create_budget(request=request)
+                response = await client.create_budget(request=request)
 
                 # Handle the response
                 print(response)
@@ -341,16 +341,16 @@ class BudgetServiceAsyncClient:
 
             from google.cloud.billing import budgets_v1
 
-            def sample_update_budget():
+            async def sample_update_budget():
                 # Create a client
-                client = budgets_v1.BudgetServiceClient()
+                client = budgets_v1.BudgetServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = budgets_v1.UpdateBudgetRequest(
                 )
 
                 # Make the request
-                response = client.update_budget(request=request)
+                response = await client.update_budget(request=request)
 
                 # Handle the response
                 print(response)
@@ -472,9 +472,9 @@ class BudgetServiceAsyncClient:
 
             from google.cloud.billing import budgets_v1
 
-            def sample_get_budget():
+            async def sample_get_budget():
                 # Create a client
-                client = budgets_v1.BudgetServiceClient()
+                client = budgets_v1.BudgetServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = budgets_v1.GetBudgetRequest(
@@ -482,7 +482,7 @@ class BudgetServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_budget(request=request)
+                response = await client.get_budget(request=request)
 
                 # Handle the response
                 print(response)
@@ -588,9 +588,9 @@ class BudgetServiceAsyncClient:
 
             from google.cloud.billing import budgets_v1
 
-            def sample_list_budgets():
+            async def sample_list_budgets():
                 # Create a client
-                client = budgets_v1.BudgetServiceClient()
+                client = budgets_v1.BudgetServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = budgets_v1.ListBudgetsRequest(
@@ -601,7 +601,7 @@ class BudgetServiceAsyncClient:
                 page_result = client.list_budgets(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -706,9 +706,9 @@ class BudgetServiceAsyncClient:
 
             from google.cloud.billing import budgets_v1
 
-            def sample_delete_budget():
+            async def sample_delete_budget():
                 # Create a client
-                client = budgets_v1.BudgetServiceClient()
+                client = budgets_v1.BudgetServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = budgets_v1.DeleteBudgetRequest(
@@ -716,7 +716,7 @@ class BudgetServiceAsyncClient:
                 )
 
                 # Make the request
-                client.delete_budget(request=request)
+                await client.delete_budget(request=request)
 
         Args:
             request (Union[google.cloud.billing.budgets_v1.types.DeleteBudgetRequest, dict]):
