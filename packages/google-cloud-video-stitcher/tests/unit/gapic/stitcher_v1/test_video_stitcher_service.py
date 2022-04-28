@@ -781,7 +781,7 @@ def test_create_cdn_key_field_headers():
     # a field header. Set these to a non-empty value.
     request = video_stitcher_service.CreateCdnKeyRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_cdn_key), "__call__") as call:
@@ -797,7 +797,7 @@ def test_create_cdn_key_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -811,7 +811,7 @@ async def test_create_cdn_key_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = video_stitcher_service.CreateCdnKeyRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_cdn_key), "__call__") as call:
@@ -827,7 +827,7 @@ async def test_create_cdn_key_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -1046,7 +1046,7 @@ def test_list_cdn_keys_field_headers():
     # a field header. Set these to a non-empty value.
     request = video_stitcher_service.ListCdnKeysRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_cdn_keys), "__call__") as call:
@@ -1062,7 +1062,7 @@ def test_list_cdn_keys_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -1076,7 +1076,7 @@ async def test_list_cdn_keys_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = video_stitcher_service.ListCdnKeysRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_cdn_keys), "__call__") as call:
@@ -1094,7 +1094,7 @@ async def test_list_cdn_keys_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -1225,7 +1225,7 @@ def test_list_cdn_keys_pager(transport_name: str = "grpc"):
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, cdn_keys.CdnKey) for i in results)
 
@@ -1472,7 +1472,7 @@ def test_get_cdn_key_field_headers():
     # a field header. Set these to a non-empty value.
     request = video_stitcher_service.GetCdnKeyRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_cdn_key), "__call__") as call:
@@ -1488,7 +1488,7 @@ def test_get_cdn_key_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1502,7 +1502,7 @@ async def test_get_cdn_key_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = video_stitcher_service.GetCdnKeyRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_cdn_key), "__call__") as call:
@@ -1518,7 +1518,7 @@ async def test_get_cdn_key_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1693,7 +1693,7 @@ def test_delete_cdn_key_field_headers():
     # a field header. Set these to a non-empty value.
     request = video_stitcher_service.DeleteCdnKeyRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_cdn_key), "__call__") as call:
@@ -1709,7 +1709,7 @@ def test_delete_cdn_key_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1723,7 +1723,7 @@ async def test_delete_cdn_key_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = video_stitcher_service.DeleteCdnKeyRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_cdn_key), "__call__") as call:
@@ -1739,7 +1739,7 @@ async def test_delete_cdn_key_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1927,7 +1927,7 @@ def test_update_cdn_key_field_headers():
     # a field header. Set these to a non-empty value.
     request = video_stitcher_service.UpdateCdnKeyRequest()
 
-    request.cdn_key.name = "cdn_key.name/value"
+    request.cdn_key.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_cdn_key), "__call__") as call:
@@ -1943,7 +1943,7 @@ def test_update_cdn_key_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "cdn_key.name=cdn_key.name/value",
+        "cdn_key.name=name_value",
     ) in kw["metadata"]
 
 
@@ -1957,7 +1957,7 @@ async def test_update_cdn_key_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = video_stitcher_service.UpdateCdnKeyRequest()
 
-    request.cdn_key.name = "cdn_key.name/value"
+    request.cdn_key.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_cdn_key), "__call__") as call:
@@ -1973,7 +1973,7 @@ async def test_update_cdn_key_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "cdn_key.name=cdn_key.name/value",
+        "cdn_key.name=name_value",
     ) in kw["metadata"]
 
 
@@ -2200,7 +2200,7 @@ def test_create_vod_session_field_headers():
     # a field header. Set these to a non-empty value.
     request = video_stitcher_service.CreateVodSessionRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2218,7 +2218,7 @@ def test_create_vod_session_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -2232,7 +2232,7 @@ async def test_create_vod_session_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = video_stitcher_service.CreateVodSessionRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2250,7 +2250,7 @@ async def test_create_vod_session_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -2463,7 +2463,7 @@ def test_get_vod_session_field_headers():
     # a field header. Set these to a non-empty value.
     request = video_stitcher_service.GetVodSessionRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_vod_session), "__call__") as call:
@@ -2479,7 +2479,7 @@ def test_get_vod_session_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2493,7 +2493,7 @@ async def test_get_vod_session_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = video_stitcher_service.GetVodSessionRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_vod_session), "__call__") as call:
@@ -2509,7 +2509,7 @@ async def test_get_vod_session_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2698,7 +2698,7 @@ def test_list_vod_stitch_details_field_headers():
     # a field header. Set these to a non-empty value.
     request = video_stitcher_service.ListVodStitchDetailsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2716,7 +2716,7 @@ def test_list_vod_stitch_details_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -2730,7 +2730,7 @@ async def test_list_vod_stitch_details_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = video_stitcher_service.ListVodStitchDetailsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2750,7 +2750,7 @@ async def test_list_vod_stitch_details_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -2887,7 +2887,7 @@ def test_list_vod_stitch_details_pager(transport_name: str = "grpc"):
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, stitch_details.VodStitchDetail) for i in results)
 
@@ -3141,7 +3141,7 @@ def test_get_vod_stitch_detail_field_headers():
     # a field header. Set these to a non-empty value.
     request = video_stitcher_service.GetVodStitchDetailRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3159,7 +3159,7 @@ def test_get_vod_stitch_detail_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -3173,7 +3173,7 @@ async def test_get_vod_stitch_detail_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = video_stitcher_service.GetVodStitchDetailRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3193,7 +3193,7 @@ async def test_get_vod_stitch_detail_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -3388,7 +3388,7 @@ def test_list_vod_ad_tag_details_field_headers():
     # a field header. Set these to a non-empty value.
     request = video_stitcher_service.ListVodAdTagDetailsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3406,7 +3406,7 @@ def test_list_vod_ad_tag_details_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -3420,7 +3420,7 @@ async def test_list_vod_ad_tag_details_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = video_stitcher_service.ListVodAdTagDetailsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3440,7 +3440,7 @@ async def test_list_vod_ad_tag_details_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -3577,7 +3577,7 @@ def test_list_vod_ad_tag_details_pager(transport_name: str = "grpc"):
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, ad_tag_details.VodAdTagDetail) for i in results)
 
@@ -3831,7 +3831,7 @@ def test_get_vod_ad_tag_detail_field_headers():
     # a field header. Set these to a non-empty value.
     request = video_stitcher_service.GetVodAdTagDetailRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3849,7 +3849,7 @@ def test_get_vod_ad_tag_detail_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -3863,7 +3863,7 @@ async def test_get_vod_ad_tag_detail_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = video_stitcher_service.GetVodAdTagDetailRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3883,7 +3883,7 @@ async def test_get_vod_ad_tag_detail_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -4078,7 +4078,7 @@ def test_list_live_ad_tag_details_field_headers():
     # a field header. Set these to a non-empty value.
     request = video_stitcher_service.ListLiveAdTagDetailsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4096,7 +4096,7 @@ def test_list_live_ad_tag_details_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -4110,7 +4110,7 @@ async def test_list_live_ad_tag_details_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = video_stitcher_service.ListLiveAdTagDetailsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4130,7 +4130,7 @@ async def test_list_live_ad_tag_details_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -4267,7 +4267,7 @@ def test_list_live_ad_tag_details_pager(transport_name: str = "grpc"):
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, ad_tag_details.LiveAdTagDetail) for i in results)
 
@@ -4521,7 +4521,7 @@ def test_get_live_ad_tag_detail_field_headers():
     # a field header. Set these to a non-empty value.
     request = video_stitcher_service.GetLiveAdTagDetailRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4539,7 +4539,7 @@ def test_get_live_ad_tag_detail_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -4553,7 +4553,7 @@ async def test_get_live_ad_tag_detail_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = video_stitcher_service.GetLiveAdTagDetailRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4573,7 +4573,7 @@ async def test_get_live_ad_tag_detail_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -4766,7 +4766,7 @@ def test_create_slate_field_headers():
     # a field header. Set these to a non-empty value.
     request = video_stitcher_service.CreateSlateRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_slate), "__call__") as call:
@@ -4782,7 +4782,7 @@ def test_create_slate_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -4796,7 +4796,7 @@ async def test_create_slate_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = video_stitcher_service.CreateSlateRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_slate), "__call__") as call:
@@ -4812,7 +4812,7 @@ async def test_create_slate_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -5019,7 +5019,7 @@ def test_list_slates_field_headers():
     # a field header. Set these to a non-empty value.
     request = video_stitcher_service.ListSlatesRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_slates), "__call__") as call:
@@ -5035,7 +5035,7 @@ def test_list_slates_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -5049,7 +5049,7 @@ async def test_list_slates_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = video_stitcher_service.ListSlatesRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_slates), "__call__") as call:
@@ -5067,7 +5067,7 @@ async def test_list_slates_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -5198,7 +5198,7 @@ def test_list_slates_pager(transport_name: str = "grpc"):
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, slates.Slate) for i in results)
 
@@ -5443,7 +5443,7 @@ def test_get_slate_field_headers():
     # a field header. Set these to a non-empty value.
     request = video_stitcher_service.GetSlateRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_slate), "__call__") as call:
@@ -5459,7 +5459,7 @@ def test_get_slate_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -5473,7 +5473,7 @@ async def test_get_slate_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = video_stitcher_service.GetSlateRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_slate), "__call__") as call:
@@ -5489,7 +5489,7 @@ async def test_get_slate_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -5676,7 +5676,7 @@ def test_update_slate_field_headers():
     # a field header. Set these to a non-empty value.
     request = video_stitcher_service.UpdateSlateRequest()
 
-    request.slate.name = "slate.name/value"
+    request.slate.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_slate), "__call__") as call:
@@ -5692,7 +5692,7 @@ def test_update_slate_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "slate.name=slate.name/value",
+        "slate.name=name_value",
     ) in kw["metadata"]
 
 
@@ -5706,7 +5706,7 @@ async def test_update_slate_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = video_stitcher_service.UpdateSlateRequest()
 
-    request.slate.name = "slate.name/value"
+    request.slate.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_slate), "__call__") as call:
@@ -5722,7 +5722,7 @@ async def test_update_slate_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "slate.name=slate.name/value",
+        "slate.name=name_value",
     ) in kw["metadata"]
 
 
@@ -5907,7 +5907,7 @@ def test_delete_slate_field_headers():
     # a field header. Set these to a non-empty value.
     request = video_stitcher_service.DeleteSlateRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_slate), "__call__") as call:
@@ -5923,7 +5923,7 @@ def test_delete_slate_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -5937,7 +5937,7 @@ async def test_delete_slate_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = video_stitcher_service.DeleteSlateRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_slate), "__call__") as call:
@@ -5953,7 +5953,7 @@ async def test_delete_slate_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -6166,7 +6166,7 @@ def test_create_live_session_field_headers():
     # a field header. Set these to a non-empty value.
     request = video_stitcher_service.CreateLiveSessionRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6184,7 +6184,7 @@ def test_create_live_session_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -6198,7 +6198,7 @@ async def test_create_live_session_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = video_stitcher_service.CreateLiveSessionRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6218,7 +6218,7 @@ async def test_create_live_session_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -6441,7 +6441,7 @@ def test_get_live_session_field_headers():
     # a field header. Set these to a non-empty value.
     request = video_stitcher_service.GetLiveSessionRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_live_session), "__call__") as call:
@@ -6457,7 +6457,7 @@ def test_get_live_session_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -6471,7 +6471,7 @@ async def test_get_live_session_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = video_stitcher_service.GetLiveSessionRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_live_session), "__call__") as call:
@@ -6489,7 +6489,7 @@ async def test_get_live_session_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 

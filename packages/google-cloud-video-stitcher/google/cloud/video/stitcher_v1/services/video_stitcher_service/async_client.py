@@ -263,9 +263,9 @@ class VideoStitcherServiceAsyncClient:
 
             from google.cloud.video import stitcher_v1
 
-            def sample_create_cdn_key():
+            async def sample_create_cdn_key():
                 # Create a client
-                client = stitcher_v1.VideoStitcherServiceClient()
+                client = stitcher_v1.VideoStitcherServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = stitcher_v1.CreateCdnKeyRequest(
@@ -274,7 +274,7 @@ class VideoStitcherServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.create_cdn_key(request=request)
+                response = await client.create_cdn_key(request=request)
 
                 # Handle the response
                 print(response)
@@ -388,9 +388,9 @@ class VideoStitcherServiceAsyncClient:
 
             from google.cloud.video import stitcher_v1
 
-            def sample_list_cdn_keys():
+            async def sample_list_cdn_keys():
                 # Create a client
-                client = stitcher_v1.VideoStitcherServiceClient()
+                client = stitcher_v1.VideoStitcherServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = stitcher_v1.ListCdnKeysRequest(
@@ -401,7 +401,7 @@ class VideoStitcherServiceAsyncClient:
                 page_result = client.list_cdn_keys(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -497,9 +497,9 @@ class VideoStitcherServiceAsyncClient:
 
             from google.cloud.video import stitcher_v1
 
-            def sample_get_cdn_key():
+            async def sample_get_cdn_key():
                 # Create a client
-                client = stitcher_v1.VideoStitcherServiceClient()
+                client = stitcher_v1.VideoStitcherServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = stitcher_v1.GetCdnKeyRequest(
@@ -507,7 +507,7 @@ class VideoStitcherServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_cdn_key(request=request)
+                response = await client.get_cdn_key(request=request)
 
                 # Handle the response
                 print(response)
@@ -595,9 +595,9 @@ class VideoStitcherServiceAsyncClient:
 
             from google.cloud.video import stitcher_v1
 
-            def sample_delete_cdn_key():
+            async def sample_delete_cdn_key():
                 # Create a client
-                client = stitcher_v1.VideoStitcherServiceClient()
+                client = stitcher_v1.VideoStitcherServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = stitcher_v1.DeleteCdnKeyRequest(
@@ -605,7 +605,7 @@ class VideoStitcherServiceAsyncClient:
                 )
 
                 # Make the request
-                client.delete_cdn_key(request=request)
+                await client.delete_cdn_key(request=request)
 
         Args:
             request (Union[google.cloud.video.stitcher_v1.types.DeleteCdnKeyRequest, dict]):
@@ -681,16 +681,16 @@ class VideoStitcherServiceAsyncClient:
 
             from google.cloud.video import stitcher_v1
 
-            def sample_update_cdn_key():
+            async def sample_update_cdn_key():
                 # Create a client
-                client = stitcher_v1.VideoStitcherServiceClient()
+                client = stitcher_v1.VideoStitcherServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = stitcher_v1.UpdateCdnKeyRequest(
                 )
 
                 # Make the request
-                response = client.update_cdn_key(request=request)
+                response = await client.update_cdn_key(request=request)
 
                 # Handle the response
                 print(response)
@@ -792,9 +792,9 @@ class VideoStitcherServiceAsyncClient:
 
             from google.cloud.video import stitcher_v1
 
-            def sample_create_vod_session():
+            async def sample_create_vod_session():
                 # Create a client
-                client = stitcher_v1.VideoStitcherServiceClient()
+                client = stitcher_v1.VideoStitcherServiceAsyncClient()
 
                 # Initialize request argument(s)
                 vod_session = stitcher_v1.VodSession()
@@ -807,7 +807,7 @@ class VideoStitcherServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.create_vod_session(request=request)
+                response = await client.create_vod_session(request=request)
 
                 # Handle the response
                 print(response)
@@ -901,9 +901,9 @@ class VideoStitcherServiceAsyncClient:
 
             from google.cloud.video import stitcher_v1
 
-            def sample_get_vod_session():
+            async def sample_get_vod_session():
                 # Create a client
-                client = stitcher_v1.VideoStitcherServiceClient()
+                client = stitcher_v1.VideoStitcherServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = stitcher_v1.GetVodSessionRequest(
@@ -911,7 +911,7 @@ class VideoStitcherServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_vod_session(request=request)
+                response = await client.get_vod_session(request=request)
 
                 # Handle the response
                 print(response)
@@ -996,9 +996,9 @@ class VideoStitcherServiceAsyncClient:
 
             from google.cloud.video import stitcher_v1
 
-            def sample_list_vod_stitch_details():
+            async def sample_list_vod_stitch_details():
                 # Create a client
-                client = stitcher_v1.VideoStitcherServiceClient()
+                client = stitcher_v1.VideoStitcherServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = stitcher_v1.ListVodStitchDetailsRequest(
@@ -1009,7 +1009,7 @@ class VideoStitcherServiceAsyncClient:
                 page_result = client.list_vod_stitch_details(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -1106,9 +1106,9 @@ class VideoStitcherServiceAsyncClient:
 
             from google.cloud.video import stitcher_v1
 
-            def sample_get_vod_stitch_detail():
+            async def sample_get_vod_stitch_detail():
                 # Create a client
-                client = stitcher_v1.VideoStitcherServiceClient()
+                client = stitcher_v1.VideoStitcherServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = stitcher_v1.GetVodStitchDetailRequest(
@@ -1116,7 +1116,7 @@ class VideoStitcherServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_vod_stitch_detail(request=request)
+                response = await client.get_vod_stitch_detail(request=request)
 
                 # Handle the response
                 print(response)
@@ -1203,9 +1203,9 @@ class VideoStitcherServiceAsyncClient:
 
             from google.cloud.video import stitcher_v1
 
-            def sample_list_vod_ad_tag_details():
+            async def sample_list_vod_ad_tag_details():
                 # Create a client
-                client = stitcher_v1.VideoStitcherServiceClient()
+                client = stitcher_v1.VideoStitcherServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = stitcher_v1.ListVodAdTagDetailsRequest(
@@ -1216,7 +1216,7 @@ class VideoStitcherServiceAsyncClient:
                 page_result = client.list_vod_ad_tag_details(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -1313,9 +1313,9 @@ class VideoStitcherServiceAsyncClient:
 
             from google.cloud.video import stitcher_v1
 
-            def sample_get_vod_ad_tag_detail():
+            async def sample_get_vod_ad_tag_detail():
                 # Create a client
-                client = stitcher_v1.VideoStitcherServiceClient()
+                client = stitcher_v1.VideoStitcherServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = stitcher_v1.GetVodAdTagDetailRequest(
@@ -1323,7 +1323,7 @@ class VideoStitcherServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_vod_ad_tag_detail(request=request)
+                response = await client.get_vod_ad_tag_detail(request=request)
 
                 # Handle the response
                 print(response)
@@ -1410,9 +1410,9 @@ class VideoStitcherServiceAsyncClient:
 
             from google.cloud.video import stitcher_v1
 
-            def sample_list_live_ad_tag_details():
+            async def sample_list_live_ad_tag_details():
                 # Create a client
-                client = stitcher_v1.VideoStitcherServiceClient()
+                client = stitcher_v1.VideoStitcherServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = stitcher_v1.ListLiveAdTagDetailsRequest(
@@ -1423,7 +1423,7 @@ class VideoStitcherServiceAsyncClient:
                 page_result = client.list_live_ad_tag_details(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -1519,9 +1519,9 @@ class VideoStitcherServiceAsyncClient:
 
             from google.cloud.video import stitcher_v1
 
-            def sample_get_live_ad_tag_detail():
+            async def sample_get_live_ad_tag_detail():
                 # Create a client
-                client = stitcher_v1.VideoStitcherServiceClient()
+                client = stitcher_v1.VideoStitcherServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = stitcher_v1.GetLiveAdTagDetailRequest(
@@ -1529,7 +1529,7 @@ class VideoStitcherServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_live_ad_tag_detail(request=request)
+                response = await client.get_live_ad_tag_detail(request=request)
 
                 # Handle the response
                 print(response)
@@ -1616,9 +1616,9 @@ class VideoStitcherServiceAsyncClient:
 
             from google.cloud.video import stitcher_v1
 
-            def sample_create_slate():
+            async def sample_create_slate():
                 # Create a client
-                client = stitcher_v1.VideoStitcherServiceClient()
+                client = stitcher_v1.VideoStitcherServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = stitcher_v1.CreateSlateRequest(
@@ -1627,7 +1627,7 @@ class VideoStitcherServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.create_slate(request=request)
+                response = await client.create_slate(request=request)
 
                 # Handle the response
                 print(response)
@@ -1732,9 +1732,9 @@ class VideoStitcherServiceAsyncClient:
 
             from google.cloud.video import stitcher_v1
 
-            def sample_list_slates():
+            async def sample_list_slates():
                 # Create a client
-                client = stitcher_v1.VideoStitcherServiceClient()
+                client = stitcher_v1.VideoStitcherServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = stitcher_v1.ListSlatesRequest(
@@ -1745,7 +1745,7 @@ class VideoStitcherServiceAsyncClient:
                 page_result = client.list_slates(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -1840,9 +1840,9 @@ class VideoStitcherServiceAsyncClient:
 
             from google.cloud.video import stitcher_v1
 
-            def sample_get_slate():
+            async def sample_get_slate():
                 # Create a client
-                client = stitcher_v1.VideoStitcherServiceClient()
+                client = stitcher_v1.VideoStitcherServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = stitcher_v1.GetSlateRequest(
@@ -1850,7 +1850,7 @@ class VideoStitcherServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_slate(request=request)
+                response = await client.get_slate(request=request)
 
                 # Handle the response
                 print(response)
@@ -1935,16 +1935,16 @@ class VideoStitcherServiceAsyncClient:
 
             from google.cloud.video import stitcher_v1
 
-            def sample_update_slate():
+            async def sample_update_slate():
                 # Create a client
-                client = stitcher_v1.VideoStitcherServiceClient()
+                client = stitcher_v1.VideoStitcherServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = stitcher_v1.UpdateSlateRequest(
                 )
 
                 # Make the request
-                response = client.update_slate(request=request)
+                response = await client.update_slate(request=request)
 
                 # Handle the response
                 print(response)
@@ -2039,9 +2039,9 @@ class VideoStitcherServiceAsyncClient:
 
             from google.cloud.video import stitcher_v1
 
-            def sample_delete_slate():
+            async def sample_delete_slate():
                 # Create a client
-                client = stitcher_v1.VideoStitcherServiceClient()
+                client = stitcher_v1.VideoStitcherServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = stitcher_v1.DeleteSlateRequest(
@@ -2049,7 +2049,7 @@ class VideoStitcherServiceAsyncClient:
                 )
 
                 # Make the request
-                client.delete_slate(request=request)
+                await client.delete_slate(request=request)
 
         Args:
             request (Union[google.cloud.video.stitcher_v1.types.DeleteSlateRequest, dict]):
@@ -2124,9 +2124,9 @@ class VideoStitcherServiceAsyncClient:
 
             from google.cloud.video import stitcher_v1
 
-            def sample_create_live_session():
+            async def sample_create_live_session():
                 # Create a client
-                client = stitcher_v1.VideoStitcherServiceClient()
+                client = stitcher_v1.VideoStitcherServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = stitcher_v1.CreateLiveSessionRequest(
@@ -2134,7 +2134,7 @@ class VideoStitcherServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.create_live_session(request=request)
+                response = await client.create_live_session(request=request)
 
                 # Handle the response
                 print(response)
@@ -2236,9 +2236,9 @@ class VideoStitcherServiceAsyncClient:
 
             from google.cloud.video import stitcher_v1
 
-            def sample_get_live_session():
+            async def sample_get_live_session():
                 # Create a client
-                client = stitcher_v1.VideoStitcherServiceClient()
+                client = stitcher_v1.VideoStitcherServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = stitcher_v1.GetLiveSessionRequest(
@@ -2246,7 +2246,7 @@ class VideoStitcherServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_live_session(request=request)
+                response = await client.get_live_session(request=request)
 
                 # Handle the response
                 print(response)
