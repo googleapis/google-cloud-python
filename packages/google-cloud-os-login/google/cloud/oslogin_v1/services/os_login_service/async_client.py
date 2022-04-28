@@ -228,9 +228,9 @@ class OsLoginServiceAsyncClient:
 
             from google.cloud import oslogin_v1
 
-            def sample_delete_posix_account():
+            async def sample_delete_posix_account():
                 # Create a client
-                client = oslogin_v1.OsLoginServiceClient()
+                client = oslogin_v1.OsLoginServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = oslogin_v1.DeletePosixAccountRequest(
@@ -238,7 +238,7 @@ class OsLoginServiceAsyncClient:
                 )
 
                 # Make the request
-                client.delete_posix_account(request=request)
+                await client.delete_posix_account(request=request)
 
         Args:
             request (Union[google.cloud.oslogin_v1.types.DeletePosixAccountRequest, dict]):
@@ -323,9 +323,9 @@ class OsLoginServiceAsyncClient:
 
             from google.cloud import oslogin_v1
 
-            def sample_delete_ssh_public_key():
+            async def sample_delete_ssh_public_key():
                 # Create a client
-                client = oslogin_v1.OsLoginServiceClient()
+                client = oslogin_v1.OsLoginServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = oslogin_v1.DeleteSshPublicKeyRequest(
@@ -333,7 +333,7 @@ class OsLoginServiceAsyncClient:
                 )
 
                 # Make the request
-                client.delete_ssh_public_key(request=request)
+                await client.delete_ssh_public_key(request=request)
 
         Args:
             request (Union[google.cloud.oslogin_v1.types.DeleteSshPublicKeyRequest, dict]):
@@ -419,9 +419,9 @@ class OsLoginServiceAsyncClient:
 
             from google.cloud import oslogin_v1
 
-            def sample_get_login_profile():
+            async def sample_get_login_profile():
                 # Create a client
-                client = oslogin_v1.OsLoginServiceClient()
+                client = oslogin_v1.OsLoginServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = oslogin_v1.GetLoginProfileRequest(
@@ -429,7 +429,7 @@ class OsLoginServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_login_profile(request=request)
+                response = await client.get_login_profile(request=request)
 
                 # Handle the response
                 print(response)
@@ -525,9 +525,9 @@ class OsLoginServiceAsyncClient:
 
             from google.cloud import oslogin_v1
 
-            def sample_get_ssh_public_key():
+            async def sample_get_ssh_public_key():
                 # Create a client
-                client = oslogin_v1.OsLoginServiceClient()
+                client = oslogin_v1.OsLoginServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = oslogin_v1.GetSshPublicKeyRequest(
@@ -535,7 +535,7 @@ class OsLoginServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_ssh_public_key(request=request)
+                response = await client.get_ssh_public_key(request=request)
 
                 # Handle the response
                 print(response)
@@ -637,9 +637,9 @@ class OsLoginServiceAsyncClient:
 
             from google.cloud import oslogin_v1
 
-            def sample_import_ssh_public_key():
+            async def sample_import_ssh_public_key():
                 # Create a client
-                client = oslogin_v1.OsLoginServiceClient()
+                client = oslogin_v1.OsLoginServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = oslogin_v1.ImportSshPublicKeyRequest(
@@ -647,7 +647,7 @@ class OsLoginServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.import_ssh_public_key(request=request)
+                response = await client.import_ssh_public_key(request=request)
 
                 # Handle the response
                 print(response)
@@ -763,9 +763,9 @@ class OsLoginServiceAsyncClient:
 
             from google.cloud import oslogin_v1
 
-            def sample_update_ssh_public_key():
+            async def sample_update_ssh_public_key():
                 # Create a client
-                client = oslogin_v1.OsLoginServiceClient()
+                client = oslogin_v1.OsLoginServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = oslogin_v1.UpdateSshPublicKeyRequest(
@@ -773,7 +773,7 @@ class OsLoginServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.update_ssh_public_key(request=request)
+                response = await client.update_ssh_public_key(request=request)
 
                 # Handle the response
                 print(response)

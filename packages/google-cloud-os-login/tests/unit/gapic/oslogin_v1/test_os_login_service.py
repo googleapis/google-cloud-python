@@ -749,7 +749,7 @@ def test_delete_posix_account_field_headers():
     # a field header. Set these to a non-empty value.
     request = oslogin.DeletePosixAccountRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -767,7 +767,7 @@ def test_delete_posix_account_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -781,7 +781,7 @@ async def test_delete_posix_account_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = oslogin.DeletePosixAccountRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -799,7 +799,7 @@ async def test_delete_posix_account_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -983,7 +983,7 @@ def test_delete_ssh_public_key_field_headers():
     # a field header. Set these to a non-empty value.
     request = oslogin.DeleteSshPublicKeyRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1001,7 +1001,7 @@ def test_delete_ssh_public_key_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1015,7 +1015,7 @@ async def test_delete_ssh_public_key_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = oslogin.DeleteSshPublicKeyRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1033,7 +1033,7 @@ async def test_delete_ssh_public_key_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1225,7 +1225,7 @@ def test_get_login_profile_field_headers():
     # a field header. Set these to a non-empty value.
     request = oslogin.GetLoginProfileRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1243,7 +1243,7 @@ def test_get_login_profile_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1257,7 +1257,7 @@ async def test_get_login_profile_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = oslogin.GetLoginProfileRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1277,7 +1277,7 @@ async def test_get_login_profile_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1483,7 +1483,7 @@ def test_get_ssh_public_key_field_headers():
     # a field header. Set these to a non-empty value.
     request = oslogin.GetSshPublicKeyRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1501,7 +1501,7 @@ def test_get_ssh_public_key_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1515,7 +1515,7 @@ async def test_get_ssh_public_key_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = oslogin.GetSshPublicKeyRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1533,7 +1533,7 @@ async def test_get_ssh_public_key_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1719,7 +1719,7 @@ def test_import_ssh_public_key_field_headers():
     # a field header. Set these to a non-empty value.
     request = oslogin.ImportSshPublicKeyRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1737,7 +1737,7 @@ def test_import_ssh_public_key_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -1751,7 +1751,7 @@ async def test_import_ssh_public_key_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = oslogin.ImportSshPublicKeyRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1771,7 +1771,7 @@ async def test_import_ssh_public_key_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -1997,7 +1997,7 @@ def test_update_ssh_public_key_field_headers():
     # a field header. Set these to a non-empty value.
     request = oslogin.UpdateSshPublicKeyRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2015,7 +2015,7 @@ def test_update_ssh_public_key_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2029,7 +2029,7 @@ async def test_update_ssh_public_key_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = oslogin.UpdateSshPublicKeyRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2047,7 +2047,7 @@ async def test_update_ssh_public_key_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
