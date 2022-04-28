@@ -225,9 +225,9 @@ class DomainsAsyncClient:
 
             from google.cloud import domains_v1beta1
 
-            def sample_search_domains():
+            async def sample_search_domains():
                 # Create a client
-                client = domains_v1beta1.DomainsClient()
+                client = domains_v1beta1.DomainsAsyncClient()
 
                 # Initialize request argument(s)
                 request = domains_v1beta1.SearchDomainsRequest(
@@ -236,7 +236,7 @@ class DomainsAsyncClient:
                 )
 
                 # Make the request
-                response = client.search_domains(request=request)
+                response = await client.search_domains(request=request)
 
                 # Handle the response
                 print(response)
@@ -331,9 +331,9 @@ class DomainsAsyncClient:
 
             from google.cloud import domains_v1beta1
 
-            def sample_retrieve_register_parameters():
+            async def sample_retrieve_register_parameters():
                 # Create a client
-                client = domains_v1beta1.DomainsClient()
+                client = domains_v1beta1.DomainsAsyncClient()
 
                 # Initialize request argument(s)
                 request = domains_v1beta1.RetrieveRegisterParametersRequest(
@@ -342,7 +342,7 @@ class DomainsAsyncClient:
                 )
 
                 # Make the request
-                response = client.retrieve_register_parameters(request=request)
+                response = await client.retrieve_register_parameters(request=request)
 
                 # Handle the response
                 print(response)
@@ -450,9 +450,9 @@ class DomainsAsyncClient:
 
             from google.cloud import domains_v1beta1
 
-            def sample_register_domain():
+            async def sample_register_domain():
                 # Create a client
-                client = domains_v1beta1.DomainsClient()
+                client = domains_v1beta1.DomainsAsyncClient()
 
                 # Initialize request argument(s)
                 registration = domains_v1beta1.Registration()
@@ -475,7 +475,7 @@ class DomainsAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -616,9 +616,9 @@ class DomainsAsyncClient:
 
             from google.cloud import domains_v1beta1
 
-            def sample_retrieve_transfer_parameters():
+            async def sample_retrieve_transfer_parameters():
                 # Create a client
-                client = domains_v1beta1.DomainsClient()
+                client = domains_v1beta1.DomainsAsyncClient()
 
                 # Initialize request argument(s)
                 request = domains_v1beta1.RetrieveTransferParametersRequest(
@@ -627,7 +627,7 @@ class DomainsAsyncClient:
                 )
 
                 # Make the request
-                response = client.retrieve_transfer_parameters(request=request)
+                response = await client.retrieve_transfer_parameters(request=request)
 
                 # Handle the response
                 print(response)
@@ -746,9 +746,9 @@ class DomainsAsyncClient:
 
             from google.cloud import domains_v1beta1
 
-            def sample_transfer_domain():
+            async def sample_transfer_domain():
                 # Create a client
-                client = domains_v1beta1.DomainsClient()
+                client = domains_v1beta1.DomainsAsyncClient()
 
                 # Initialize request argument(s)
                 registration = domains_v1beta1.Registration()
@@ -771,7 +771,7 @@ class DomainsAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -925,9 +925,9 @@ class DomainsAsyncClient:
 
             from google.cloud import domains_v1beta1
 
-            def sample_list_registrations():
+            async def sample_list_registrations():
                 # Create a client
-                client = domains_v1beta1.DomainsClient()
+                client = domains_v1beta1.DomainsAsyncClient()
 
                 # Initialize request argument(s)
                 request = domains_v1beta1.ListRegistrationsRequest(
@@ -938,7 +938,7 @@ class DomainsAsyncClient:
                 page_result = client.list_registrations(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -1033,9 +1033,9 @@ class DomainsAsyncClient:
 
             from google.cloud import domains_v1beta1
 
-            def sample_get_registration():
+            async def sample_get_registration():
                 # Create a client
-                client = domains_v1beta1.DomainsClient()
+                client = domains_v1beta1.DomainsAsyncClient()
 
                 # Initialize request argument(s)
                 request = domains_v1beta1.GetRegistrationRequest(
@@ -1043,7 +1043,7 @@ class DomainsAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_registration(request=request)
+                response = await client.get_registration(request=request)
 
                 # Handle the response
                 print(response)
@@ -1157,9 +1157,9 @@ class DomainsAsyncClient:
 
             from google.cloud import domains_v1beta1
 
-            def sample_update_registration():
+            async def sample_update_registration():
                 # Create a client
-                client = domains_v1beta1.DomainsClient()
+                client = domains_v1beta1.DomainsAsyncClient()
 
                 # Initialize request argument(s)
                 request = domains_v1beta1.UpdateRegistrationRequest(
@@ -1170,7 +1170,7 @@ class DomainsAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1298,9 +1298,9 @@ class DomainsAsyncClient:
 
             from google.cloud import domains_v1beta1
 
-            def sample_configure_management_settings():
+            async def sample_configure_management_settings():
                 # Create a client
-                client = domains_v1beta1.DomainsClient()
+                client = domains_v1beta1.DomainsAsyncClient()
 
                 # Initialize request argument(s)
                 request = domains_v1beta1.ConfigureManagementSettingsRequest(
@@ -1312,7 +1312,7 @@ class DomainsAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1450,9 +1450,9 @@ class DomainsAsyncClient:
 
             from google.cloud import domains_v1beta1
 
-            def sample_configure_dns_settings():
+            async def sample_configure_dns_settings():
                 # Create a client
-                client = domains_v1beta1.DomainsClient()
+                client = domains_v1beta1.DomainsAsyncClient()
 
                 # Initialize request argument(s)
                 request = domains_v1beta1.ConfigureDnsSettingsRequest(
@@ -1464,7 +1464,7 @@ class DomainsAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1610,9 +1610,9 @@ class DomainsAsyncClient:
 
             from google.cloud import domains_v1beta1
 
-            def sample_configure_contact_settings():
+            async def sample_configure_contact_settings():
                 # Create a client
-                client = domains_v1beta1.DomainsClient()
+                client = domains_v1beta1.DomainsAsyncClient()
 
                 # Initialize request argument(s)
                 request = domains_v1beta1.ConfigureContactSettingsRequest(
@@ -1624,7 +1624,7 @@ class DomainsAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1769,9 +1769,9 @@ class DomainsAsyncClient:
 
             from google.cloud import domains_v1beta1
 
-            def sample_export_registration():
+            async def sample_export_registration():
                 # Create a client
-                client = domains_v1beta1.DomainsClient()
+                client = domains_v1beta1.DomainsAsyncClient()
 
                 # Initialize request argument(s)
                 request = domains_v1beta1.ExportRegistrationRequest(
@@ -1783,7 +1783,7 @@ class DomainsAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1919,9 +1919,9 @@ class DomainsAsyncClient:
 
             from google.cloud import domains_v1beta1
 
-            def sample_delete_registration():
+            async def sample_delete_registration():
                 # Create a client
-                client = domains_v1beta1.DomainsClient()
+                client = domains_v1beta1.DomainsAsyncClient()
 
                 # Initialize request argument(s)
                 request = domains_v1beta1.DeleteRegistrationRequest(
@@ -1933,7 +1933,7 @@ class DomainsAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2043,9 +2043,9 @@ class DomainsAsyncClient:
 
             from google.cloud import domains_v1beta1
 
-            def sample_retrieve_authorization_code():
+            async def sample_retrieve_authorization_code():
                 # Create a client
-                client = domains_v1beta1.DomainsClient()
+                client = domains_v1beta1.DomainsAsyncClient()
 
                 # Initialize request argument(s)
                 request = domains_v1beta1.RetrieveAuthorizationCodeRequest(
@@ -2053,7 +2053,7 @@ class DomainsAsyncClient:
                 )
 
                 # Make the request
-                response = client.retrieve_authorization_code(request=request)
+                response = await client.retrieve_authorization_code(request=request)
 
                 # Handle the response
                 print(response)
@@ -2143,9 +2143,9 @@ class DomainsAsyncClient:
 
             from google.cloud import domains_v1beta1
 
-            def sample_reset_authorization_code():
+            async def sample_reset_authorization_code():
                 # Create a client
-                client = domains_v1beta1.DomainsClient()
+                client = domains_v1beta1.DomainsAsyncClient()
 
                 # Initialize request argument(s)
                 request = domains_v1beta1.ResetAuthorizationCodeRequest(
@@ -2153,7 +2153,7 @@ class DomainsAsyncClient:
                 )
 
                 # Make the request
-                response = client.reset_authorization_code(request=request)
+                response = await client.reset_authorization_code(request=request)
 
                 # Handle the response
                 print(response)

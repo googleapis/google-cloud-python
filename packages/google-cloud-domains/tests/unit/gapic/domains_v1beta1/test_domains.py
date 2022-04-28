@@ -705,7 +705,7 @@ def test_search_domains_field_headers():
     # a field header. Set these to a non-empty value.
     request = domains.SearchDomainsRequest()
 
-    request.location = "location/value"
+    request.location = "location_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.search_domains), "__call__") as call:
@@ -721,7 +721,7 @@ def test_search_domains_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "location=location/value",
+        "location=location_value",
     ) in kw["metadata"]
 
 
@@ -735,7 +735,7 @@ async def test_search_domains_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = domains.SearchDomainsRequest()
 
-    request.location = "location/value"
+    request.location = "location_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.search_domains), "__call__") as call:
@@ -753,7 +753,7 @@ async def test_search_domains_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "location=location/value",
+        "location=location_value",
     ) in kw["metadata"]
 
 
@@ -948,7 +948,7 @@ def test_retrieve_register_parameters_field_headers():
     # a field header. Set these to a non-empty value.
     request = domains.RetrieveRegisterParametersRequest()
 
-    request.location = "location/value"
+    request.location = "location_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -966,7 +966,7 @@ def test_retrieve_register_parameters_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "location=location/value",
+        "location=location_value",
     ) in kw["metadata"]
 
 
@@ -980,7 +980,7 @@ async def test_retrieve_register_parameters_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = domains.RetrieveRegisterParametersRequest()
 
-    request.location = "location/value"
+    request.location = "location_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1000,7 +1000,7 @@ async def test_retrieve_register_parameters_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "location=location/value",
+        "location=location_value",
     ) in kw["metadata"]
 
 
@@ -1192,7 +1192,7 @@ def test_register_domain_field_headers():
     # a field header. Set these to a non-empty value.
     request = domains.RegisterDomainRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.register_domain), "__call__") as call:
@@ -1208,7 +1208,7 @@ def test_register_domain_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -1222,7 +1222,7 @@ async def test_register_domain_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = domains.RegisterDomainRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.register_domain), "__call__") as call:
@@ -1240,7 +1240,7 @@ async def test_register_domain_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -1445,7 +1445,7 @@ def test_retrieve_transfer_parameters_field_headers():
     # a field header. Set these to a non-empty value.
     request = domains.RetrieveTransferParametersRequest()
 
-    request.location = "location/value"
+    request.location = "location_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1463,7 +1463,7 @@ def test_retrieve_transfer_parameters_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "location=location/value",
+        "location=location_value",
     ) in kw["metadata"]
 
 
@@ -1477,7 +1477,7 @@ async def test_retrieve_transfer_parameters_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = domains.RetrieveTransferParametersRequest()
 
-    request.location = "location/value"
+    request.location = "location_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1497,7 +1497,7 @@ async def test_retrieve_transfer_parameters_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "location=location/value",
+        "location=location_value",
     ) in kw["metadata"]
 
 
@@ -1689,7 +1689,7 @@ def test_transfer_domain_field_headers():
     # a field header. Set these to a non-empty value.
     request = domains.TransferDomainRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.transfer_domain), "__call__") as call:
@@ -1705,7 +1705,7 @@ def test_transfer_domain_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -1719,7 +1719,7 @@ async def test_transfer_domain_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = domains.TransferDomainRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.transfer_domain), "__call__") as call:
@@ -1737,7 +1737,7 @@ async def test_transfer_domain_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -1957,7 +1957,7 @@ def test_list_registrations_field_headers():
     # a field header. Set these to a non-empty value.
     request = domains.ListRegistrationsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1975,7 +1975,7 @@ def test_list_registrations_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -1989,7 +1989,7 @@ async def test_list_registrations_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = domains.ListRegistrationsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2009,7 +2009,7 @@ async def test_list_registrations_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -2146,7 +2146,7 @@ def test_list_registrations_pager(transport_name: str = "grpc"):
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, domains.Registration) for i in results)
 
@@ -2409,7 +2409,7 @@ def test_get_registration_field_headers():
     # a field header. Set these to a non-empty value.
     request = domains.GetRegistrationRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_registration), "__call__") as call:
@@ -2425,7 +2425,7 @@ def test_get_registration_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2439,7 +2439,7 @@ async def test_get_registration_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = domains.GetRegistrationRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_registration), "__call__") as call:
@@ -2457,7 +2457,7 @@ async def test_get_registration_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2641,7 +2641,7 @@ def test_update_registration_field_headers():
     # a field header. Set these to a non-empty value.
     request = domains.UpdateRegistrationRequest()
 
-    request.registration.name = "registration.name/value"
+    request.registration.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2659,7 +2659,7 @@ def test_update_registration_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "registration.name=registration.name/value",
+        "registration.name=name_value",
     ) in kw["metadata"]
 
 
@@ -2673,7 +2673,7 @@ async def test_update_registration_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = domains.UpdateRegistrationRequest()
 
-    request.registration.name = "registration.name/value"
+    request.registration.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2693,7 +2693,7 @@ async def test_update_registration_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "registration.name=registration.name/value",
+        "registration.name=name_value",
     ) in kw["metadata"]
 
 
@@ -2892,7 +2892,7 @@ def test_configure_management_settings_field_headers():
     # a field header. Set these to a non-empty value.
     request = domains.ConfigureManagementSettingsRequest()
 
-    request.registration = "registration/value"
+    request.registration = "registration_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2910,7 +2910,7 @@ def test_configure_management_settings_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "registration=registration/value",
+        "registration=registration_value",
     ) in kw["metadata"]
 
 
@@ -2924,7 +2924,7 @@ async def test_configure_management_settings_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = domains.ConfigureManagementSettingsRequest()
 
-    request.registration = "registration/value"
+    request.registration = "registration_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2944,7 +2944,7 @@ async def test_configure_management_settings_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "registration=registration/value",
+        "registration=registration_value",
     ) in kw["metadata"]
 
 
@@ -3164,7 +3164,7 @@ def test_configure_dns_settings_field_headers():
     # a field header. Set these to a non-empty value.
     request = domains.ConfigureDnsSettingsRequest()
 
-    request.registration = "registration/value"
+    request.registration = "registration_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3182,7 +3182,7 @@ def test_configure_dns_settings_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "registration=registration/value",
+        "registration=registration_value",
     ) in kw["metadata"]
 
 
@@ -3196,7 +3196,7 @@ async def test_configure_dns_settings_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = domains.ConfigureDnsSettingsRequest()
 
-    request.registration = "registration/value"
+    request.registration = "registration_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3216,7 +3216,7 @@ async def test_configure_dns_settings_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "registration=registration/value",
+        "registration=registration_value",
     ) in kw["metadata"]
 
 
@@ -3449,7 +3449,7 @@ def test_configure_contact_settings_field_headers():
     # a field header. Set these to a non-empty value.
     request = domains.ConfigureContactSettingsRequest()
 
-    request.registration = "registration/value"
+    request.registration = "registration_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3467,7 +3467,7 @@ def test_configure_contact_settings_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "registration=registration/value",
+        "registration=registration_value",
     ) in kw["metadata"]
 
 
@@ -3481,7 +3481,7 @@ async def test_configure_contact_settings_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = domains.ConfigureContactSettingsRequest()
 
-    request.registration = "registration/value"
+    request.registration = "registration_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3501,7 +3501,7 @@ async def test_configure_contact_settings_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "registration=registration/value",
+        "registration=registration_value",
     ) in kw["metadata"]
 
 
@@ -3721,7 +3721,7 @@ def test_export_registration_field_headers():
     # a field header. Set these to a non-empty value.
     request = domains.ExportRegistrationRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3739,7 +3739,7 @@ def test_export_registration_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -3753,7 +3753,7 @@ async def test_export_registration_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = domains.ExportRegistrationRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3773,7 +3773,7 @@ async def test_export_registration_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -3961,7 +3961,7 @@ def test_delete_registration_field_headers():
     # a field header. Set these to a non-empty value.
     request = domains.DeleteRegistrationRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3979,7 +3979,7 @@ def test_delete_registration_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -3993,7 +3993,7 @@ async def test_delete_registration_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = domains.DeleteRegistrationRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4013,7 +4013,7 @@ async def test_delete_registration_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -4208,7 +4208,7 @@ def test_retrieve_authorization_code_field_headers():
     # a field header. Set these to a non-empty value.
     request = domains.RetrieveAuthorizationCodeRequest()
 
-    request.registration = "registration/value"
+    request.registration = "registration_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4226,7 +4226,7 @@ def test_retrieve_authorization_code_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "registration=registration/value",
+        "registration=registration_value",
     ) in kw["metadata"]
 
 
@@ -4240,7 +4240,7 @@ async def test_retrieve_authorization_code_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = domains.RetrieveAuthorizationCodeRequest()
 
-    request.registration = "registration/value"
+    request.registration = "registration_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4260,7 +4260,7 @@ async def test_retrieve_authorization_code_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "registration=registration/value",
+        "registration=registration_value",
     ) in kw["metadata"]
 
 
@@ -4454,7 +4454,7 @@ def test_reset_authorization_code_field_headers():
     # a field header. Set these to a non-empty value.
     request = domains.ResetAuthorizationCodeRequest()
 
-    request.registration = "registration/value"
+    request.registration = "registration_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4472,7 +4472,7 @@ def test_reset_authorization_code_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "registration=registration/value",
+        "registration=registration_value",
     ) in kw["metadata"]
 
 
@@ -4486,7 +4486,7 @@ async def test_reset_authorization_code_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = domains.ResetAuthorizationCodeRequest()
 
-    request.registration = "registration/value"
+    request.registration = "registration_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4506,7 +4506,7 @@ async def test_reset_authorization_code_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "registration=registration/value",
+        "registration=registration_value",
     ) in kw["metadata"]
 
 
