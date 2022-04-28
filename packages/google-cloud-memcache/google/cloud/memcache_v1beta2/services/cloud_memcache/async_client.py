@@ -243,9 +243,9 @@ class CloudMemcacheAsyncClient:
 
             from google.cloud import memcache_v1beta2
 
-            def sample_list_instances():
+            async def sample_list_instances():
                 # Create a client
-                client = memcache_v1beta2.CloudMemcacheClient()
+                client = memcache_v1beta2.CloudMemcacheAsyncClient()
 
                 # Initialize request argument(s)
                 request = memcache_v1beta2.ListInstancesRequest(
@@ -256,7 +256,7 @@ class CloudMemcacheAsyncClient:
                 page_result = client.list_instances(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -353,9 +353,9 @@ class CloudMemcacheAsyncClient:
 
             from google.cloud import memcache_v1beta2
 
-            def sample_get_instance():
+            async def sample_get_instance():
                 # Create a client
-                client = memcache_v1beta2.CloudMemcacheClient()
+                client = memcache_v1beta2.CloudMemcacheAsyncClient()
 
                 # Initialize request argument(s)
                 request = memcache_v1beta2.GetInstanceRequest(
@@ -363,7 +363,7 @@ class CloudMemcacheAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_instance(request=request)
+                response = await client.get_instance(request=request)
 
                 # Handle the response
                 print(response)
@@ -450,9 +450,9 @@ class CloudMemcacheAsyncClient:
 
             from google.cloud import memcache_v1beta2
 
-            def sample_create_instance():
+            async def sample_create_instance():
                 # Create a client
-                client = memcache_v1beta2.CloudMemcacheClient()
+                client = memcache_v1beta2.CloudMemcacheAsyncClient()
 
                 # Initialize request argument(s)
                 resource = memcache_v1beta2.Instance()
@@ -472,7 +472,7 @@ class CloudMemcacheAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -598,9 +598,9 @@ class CloudMemcacheAsyncClient:
 
             from google.cloud import memcache_v1beta2
 
-            def sample_update_instance():
+            async def sample_update_instance():
                 # Create a client
-                client = memcache_v1beta2.CloudMemcacheClient()
+                client = memcache_v1beta2.CloudMemcacheAsyncClient()
 
                 # Initialize request argument(s)
                 resource = memcache_v1beta2.Instance()
@@ -618,7 +618,7 @@ class CloudMemcacheAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -731,9 +731,9 @@ class CloudMemcacheAsyncClient:
 
             from google.cloud import memcache_v1beta2
 
-            def sample_update_parameters():
+            async def sample_update_parameters():
                 # Create a client
-                client = memcache_v1beta2.CloudMemcacheClient()
+                client = memcache_v1beta2.CloudMemcacheAsyncClient()
 
                 # Initialize request argument(s)
                 request = memcache_v1beta2.UpdateParametersRequest(
@@ -745,7 +745,7 @@ class CloudMemcacheAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -858,9 +858,9 @@ class CloudMemcacheAsyncClient:
 
             from google.cloud import memcache_v1beta2
 
-            def sample_delete_instance():
+            async def sample_delete_instance():
                 # Create a client
-                client = memcache_v1beta2.CloudMemcacheClient()
+                client = memcache_v1beta2.CloudMemcacheAsyncClient()
 
                 # Initialize request argument(s)
                 request = memcache_v1beta2.DeleteInstanceRequest(
@@ -872,7 +872,7 @@ class CloudMemcacheAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -984,9 +984,9 @@ class CloudMemcacheAsyncClient:
 
             from google.cloud import memcache_v1beta2
 
-            def sample_apply_parameters():
+            async def sample_apply_parameters():
                 # Create a client
-                client = memcache_v1beta2.CloudMemcacheClient()
+                client = memcache_v1beta2.CloudMemcacheAsyncClient()
 
                 # Initialize request argument(s)
                 request = memcache_v1beta2.ApplyParametersRequest(
@@ -998,7 +998,7 @@ class CloudMemcacheAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1118,9 +1118,9 @@ class CloudMemcacheAsyncClient:
 
             from google.cloud import memcache_v1beta2
 
-            def sample_apply_software_update():
+            async def sample_apply_software_update():
                 # Create a client
-                client = memcache_v1beta2.CloudMemcacheClient()
+                client = memcache_v1beta2.CloudMemcacheAsyncClient()
 
                 # Initialize request argument(s)
                 request = memcache_v1beta2.ApplySoftwareUpdateRequest(
@@ -1132,7 +1132,7 @@ class CloudMemcacheAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
