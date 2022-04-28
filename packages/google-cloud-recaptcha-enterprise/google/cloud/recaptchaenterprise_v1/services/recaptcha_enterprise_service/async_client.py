@@ -251,9 +251,9 @@ class RecaptchaEnterpriseServiceAsyncClient:
 
             from google.cloud import recaptchaenterprise_v1
 
-            def sample_create_assessment():
+            async def sample_create_assessment():
                 # Create a client
-                client = recaptchaenterprise_v1.RecaptchaEnterpriseServiceClient()
+                client = recaptchaenterprise_v1.RecaptchaEnterpriseServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = recaptchaenterprise_v1.CreateAssessmentRequest(
@@ -261,7 +261,7 @@ class RecaptchaEnterpriseServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.create_assessment(request=request)
+                response = await client.create_assessment(request=request)
 
                 # Handle the response
                 print(response)
@@ -355,9 +355,9 @@ class RecaptchaEnterpriseServiceAsyncClient:
 
             from google.cloud import recaptchaenterprise_v1
 
-            def sample_annotate_assessment():
+            async def sample_annotate_assessment():
                 # Create a client
-                client = recaptchaenterprise_v1.RecaptchaEnterpriseServiceClient()
+                client = recaptchaenterprise_v1.RecaptchaEnterpriseServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = recaptchaenterprise_v1.AnnotateAssessmentRequest(
@@ -365,7 +365,7 @@ class RecaptchaEnterpriseServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.annotate_assessment(request=request)
+                response = await client.annotate_assessment(request=request)
 
                 # Handle the response
                 print(response)
@@ -462,9 +462,9 @@ class RecaptchaEnterpriseServiceAsyncClient:
 
             from google.cloud import recaptchaenterprise_v1
 
-            def sample_create_key():
+            async def sample_create_key():
                 # Create a client
-                client = recaptchaenterprise_v1.RecaptchaEnterpriseServiceClient()
+                client = recaptchaenterprise_v1.RecaptchaEnterpriseServiceAsyncClient()
 
                 # Initialize request argument(s)
                 key = recaptchaenterprise_v1.Key()
@@ -476,7 +476,7 @@ class RecaptchaEnterpriseServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.create_key(request=request)
+                response = await client.create_key(request=request)
 
                 # Handle the response
                 print(response)
@@ -540,9 +540,9 @@ class RecaptchaEnterpriseServiceAsyncClient:
 
             from google.cloud import recaptchaenterprise_v1
 
-            def sample_list_keys():
+            async def sample_list_keys():
                 # Create a client
-                client = recaptchaenterprise_v1.RecaptchaEnterpriseServiceClient()
+                client = recaptchaenterprise_v1.RecaptchaEnterpriseServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = recaptchaenterprise_v1.ListKeysRequest(
@@ -553,7 +553,7 @@ class RecaptchaEnterpriseServiceAsyncClient:
                 page_result = client.list_keys(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -625,9 +625,9 @@ class RecaptchaEnterpriseServiceAsyncClient:
 
             from google.cloud import recaptchaenterprise_v1
 
-            def sample_get_key():
+            async def sample_get_key():
                 # Create a client
-                client = recaptchaenterprise_v1.RecaptchaEnterpriseServiceClient()
+                client = recaptchaenterprise_v1.RecaptchaEnterpriseServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = recaptchaenterprise_v1.GetKeyRequest(
@@ -635,7 +635,7 @@ class RecaptchaEnterpriseServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_key(request=request)
+                response = await client.get_key(request=request)
 
                 # Handle the response
                 print(response)
@@ -698,9 +698,9 @@ class RecaptchaEnterpriseServiceAsyncClient:
 
             from google.cloud import recaptchaenterprise_v1
 
-            def sample_update_key():
+            async def sample_update_key():
                 # Create a client
-                client = recaptchaenterprise_v1.RecaptchaEnterpriseServiceClient()
+                client = recaptchaenterprise_v1.RecaptchaEnterpriseServiceAsyncClient()
 
                 # Initialize request argument(s)
                 key = recaptchaenterprise_v1.Key()
@@ -711,7 +711,7 @@ class RecaptchaEnterpriseServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.update_key(request=request)
+                response = await client.update_key(request=request)
 
                 # Handle the response
                 print(response)
@@ -774,9 +774,9 @@ class RecaptchaEnterpriseServiceAsyncClient:
 
             from google.cloud import recaptchaenterprise_v1
 
-            def sample_delete_key():
+            async def sample_delete_key():
                 # Create a client
-                client = recaptchaenterprise_v1.RecaptchaEnterpriseServiceClient()
+                client = recaptchaenterprise_v1.RecaptchaEnterpriseServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = recaptchaenterprise_v1.DeleteKeyRequest(
@@ -784,7 +784,7 @@ class RecaptchaEnterpriseServiceAsyncClient:
                 )
 
                 # Make the request
-                client.delete_key(request=request)
+                await client.delete_key(request=request)
 
         Args:
             request (Union[google.cloud.recaptchaenterprise_v1.types.DeleteKeyRequest, dict]):
@@ -840,9 +840,9 @@ class RecaptchaEnterpriseServiceAsyncClient:
 
             from google.cloud import recaptchaenterprise_v1
 
-            def sample_migrate_key():
+            async def sample_migrate_key():
                 # Create a client
-                client = recaptchaenterprise_v1.RecaptchaEnterpriseServiceClient()
+                client = recaptchaenterprise_v1.RecaptchaEnterpriseServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = recaptchaenterprise_v1.MigrateKeyRequest(
@@ -850,7 +850,7 @@ class RecaptchaEnterpriseServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.migrate_key(request=request)
+                response = await client.migrate_key(request=request)
 
                 # Handle the response
                 print(response)
@@ -915,9 +915,9 @@ class RecaptchaEnterpriseServiceAsyncClient:
 
             from google.cloud import recaptchaenterprise_v1
 
-            def sample_get_metrics():
+            async def sample_get_metrics():
                 # Create a client
-                client = recaptchaenterprise_v1.RecaptchaEnterpriseServiceClient()
+                client = recaptchaenterprise_v1.RecaptchaEnterpriseServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = recaptchaenterprise_v1.GetMetricsRequest(
@@ -925,7 +925,7 @@ class RecaptchaEnterpriseServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_metrics(request=request)
+                response = await client.get_metrics(request=request)
 
                 # Handle the response
                 print(response)
@@ -1010,9 +1010,9 @@ class RecaptchaEnterpriseServiceAsyncClient:
 
             from google.cloud import recaptchaenterprise_v1
 
-            def sample_list_related_account_groups():
+            async def sample_list_related_account_groups():
                 # Create a client
-                client = recaptchaenterprise_v1.RecaptchaEnterpriseServiceClient()
+                client = recaptchaenterprise_v1.RecaptchaEnterpriseServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = recaptchaenterprise_v1.ListRelatedAccountGroupsRequest(
@@ -1023,7 +1023,7 @@ class RecaptchaEnterpriseServiceAsyncClient:
                 page_result = client.list_related_account_groups(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -1120,9 +1120,9 @@ class RecaptchaEnterpriseServiceAsyncClient:
 
             from google.cloud import recaptchaenterprise_v1
 
-            def sample_list_related_account_group_memberships():
+            async def sample_list_related_account_group_memberships():
                 # Create a client
-                client = recaptchaenterprise_v1.RecaptchaEnterpriseServiceClient()
+                client = recaptchaenterprise_v1.RecaptchaEnterpriseServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = recaptchaenterprise_v1.ListRelatedAccountGroupMembershipsRequest(
@@ -1133,7 +1133,7 @@ class RecaptchaEnterpriseServiceAsyncClient:
                 page_result = client.list_related_account_group_memberships(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -1232,9 +1232,9 @@ class RecaptchaEnterpriseServiceAsyncClient:
 
             from google.cloud import recaptchaenterprise_v1
 
-            def sample_search_related_account_group_memberships():
+            async def sample_search_related_account_group_memberships():
                 # Create a client
-                client = recaptchaenterprise_v1.RecaptchaEnterpriseServiceClient()
+                client = recaptchaenterprise_v1.RecaptchaEnterpriseServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = recaptchaenterprise_v1.SearchRelatedAccountGroupMembershipsRequest(
@@ -1245,7 +1245,7 @@ class RecaptchaEnterpriseServiceAsyncClient:
                 page_result = client.search_related_account_group_memberships(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
