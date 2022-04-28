@@ -237,9 +237,9 @@ class OrgPolicyAsyncClient:
 
             from google.cloud import orgpolicy_v2
 
-            def sample_list_constraints():
+            async def sample_list_constraints():
                 # Create a client
-                client = orgpolicy_v2.OrgPolicyClient()
+                client = orgpolicy_v2.OrgPolicyAsyncClient()
 
                 # Initialize request argument(s)
                 request = orgpolicy_v2.ListConstraintsRequest(
@@ -250,7 +250,7 @@ class OrgPolicyAsyncClient:
                 page_result = client.list_constraints(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -364,9 +364,9 @@ class OrgPolicyAsyncClient:
 
             from google.cloud import orgpolicy_v2
 
-            def sample_list_policies():
+            async def sample_list_policies():
                 # Create a client
-                client = orgpolicy_v2.OrgPolicyClient()
+                client = orgpolicy_v2.OrgPolicyAsyncClient()
 
                 # Initialize request argument(s)
                 request = orgpolicy_v2.ListPoliciesRequest(
@@ -377,7 +377,7 @@ class OrgPolicyAsyncClient:
                 page_result = client.list_policies(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -496,9 +496,9 @@ class OrgPolicyAsyncClient:
 
             from google.cloud import orgpolicy_v2
 
-            def sample_get_policy():
+            async def sample_get_policy():
                 # Create a client
-                client = orgpolicy_v2.OrgPolicyClient()
+                client = orgpolicy_v2.OrgPolicyAsyncClient()
 
                 # Initialize request argument(s)
                 request = orgpolicy_v2.GetPolicyRequest(
@@ -506,7 +506,7 @@ class OrgPolicyAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_policy(request=request)
+                response = await client.get_policy(request=request)
 
                 # Handle the response
                 print(response)
@@ -606,9 +606,9 @@ class OrgPolicyAsyncClient:
 
             from google.cloud import orgpolicy_v2
 
-            def sample_get_effective_policy():
+            async def sample_get_effective_policy():
                 # Create a client
-                client = orgpolicy_v2.OrgPolicyClient()
+                client = orgpolicy_v2.OrgPolicyAsyncClient()
 
                 # Initialize request argument(s)
                 request = orgpolicy_v2.GetEffectivePolicyRequest(
@@ -616,7 +616,7 @@ class OrgPolicyAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_effective_policy(request=request)
+                response = await client.get_effective_policy(request=request)
 
                 # Handle the response
                 print(response)
@@ -720,9 +720,9 @@ class OrgPolicyAsyncClient:
 
             from google.cloud import orgpolicy_v2
 
-            def sample_create_policy():
+            async def sample_create_policy():
                 # Create a client
-                client = orgpolicy_v2.OrgPolicyClient()
+                client = orgpolicy_v2.OrgPolicyAsyncClient()
 
                 # Initialize request argument(s)
                 request = orgpolicy_v2.CreatePolicyRequest(
@@ -730,7 +730,7 @@ class OrgPolicyAsyncClient:
                 )
 
                 # Make the request
-                response = client.create_policy(request=request)
+                response = await client.create_policy(request=request)
 
                 # Handle the response
                 print(response)
@@ -848,16 +848,16 @@ class OrgPolicyAsyncClient:
 
             from google.cloud import orgpolicy_v2
 
-            def sample_update_policy():
+            async def sample_update_policy():
                 # Create a client
-                client = orgpolicy_v2.OrgPolicyClient()
+                client = orgpolicy_v2.OrgPolicyAsyncClient()
 
                 # Initialize request argument(s)
                 request = orgpolicy_v2.UpdatePolicyRequest(
                 )
 
                 # Make the request
-                response = client.update_policy(request=request)
+                response = await client.update_policy(request=request)
 
                 # Handle the response
                 print(response)
@@ -958,9 +958,9 @@ class OrgPolicyAsyncClient:
 
             from google.cloud import orgpolicy_v2
 
-            def sample_delete_policy():
+            async def sample_delete_policy():
                 # Create a client
-                client = orgpolicy_v2.OrgPolicyClient()
+                client = orgpolicy_v2.OrgPolicyAsyncClient()
 
                 # Initialize request argument(s)
                 request = orgpolicy_v2.DeletePolicyRequest(
@@ -968,7 +968,7 @@ class OrgPolicyAsyncClient:
                 )
 
                 # Make the request
-                client.delete_policy(request=request)
+                await client.delete_policy(request=request)
 
         Args:
             request (Union[google.cloud.orgpolicy_v2.types.DeletePolicyRequest, dict]):
