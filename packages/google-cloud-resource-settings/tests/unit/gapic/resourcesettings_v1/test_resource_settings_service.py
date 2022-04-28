@@ -766,7 +766,7 @@ def test_list_settings_field_headers():
     # a field header. Set these to a non-empty value.
     request = resource_settings.ListSettingsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_settings), "__call__") as call:
@@ -782,7 +782,7 @@ def test_list_settings_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -796,7 +796,7 @@ async def test_list_settings_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = resource_settings.ListSettingsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_settings), "__call__") as call:
@@ -814,7 +814,7 @@ async def test_list_settings_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -945,7 +945,7 @@ def test_list_settings_pager(transport_name: str = "grpc"):
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, resource_settings.Setting) for i in results)
 
@@ -1190,7 +1190,7 @@ def test_get_setting_field_headers():
     # a field header. Set these to a non-empty value.
     request = resource_settings.GetSettingRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_setting), "__call__") as call:
@@ -1206,7 +1206,7 @@ def test_get_setting_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1220,7 +1220,7 @@ async def test_get_setting_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = resource_settings.GetSettingRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_setting), "__call__") as call:
@@ -1238,7 +1238,7 @@ async def test_get_setting_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1426,7 +1426,7 @@ def test_update_setting_field_headers():
     # a field header. Set these to a non-empty value.
     request = resource_settings.UpdateSettingRequest()
 
-    request.setting.name = "setting.name/value"
+    request.setting.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_setting), "__call__") as call:
@@ -1442,7 +1442,7 @@ def test_update_setting_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "setting.name=setting.name/value",
+        "setting.name=name_value",
     ) in kw["metadata"]
 
 
@@ -1456,7 +1456,7 @@ async def test_update_setting_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = resource_settings.UpdateSettingRequest()
 
-    request.setting.name = "setting.name/value"
+    request.setting.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_setting), "__call__") as call:
@@ -1474,7 +1474,7 @@ async def test_update_setting_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "setting.name=setting.name/value",
+        "setting.name=name_value",
     ) in kw["metadata"]
 
 

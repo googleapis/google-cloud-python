@@ -237,9 +237,9 @@ class ResourceSettingsServiceAsyncClient:
 
             from google.cloud import resourcesettings_v1
 
-            def sample_list_settings():
+            async def sample_list_settings():
                 # Create a client
-                client = resourcesettings_v1.ResourceSettingsServiceClient()
+                client = resourcesettings_v1.ResourceSettingsServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = resourcesettings_v1.ListSettingsRequest(
@@ -250,7 +250,7 @@ class ResourceSettingsServiceAsyncClient:
                 page_result = client.list_settings(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -361,9 +361,9 @@ class ResourceSettingsServiceAsyncClient:
 
             from google.cloud import resourcesettings_v1
 
-            def sample_get_setting():
+            async def sample_get_setting():
                 # Create a client
-                client = resourcesettings_v1.ResourceSettingsServiceClient()
+                client = resourcesettings_v1.ResourceSettingsServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = resourcesettings_v1.GetSettingRequest(
@@ -371,7 +371,7 @@ class ResourceSettingsServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_setting(request=request)
+                response = await client.get_setting(request=request)
 
                 # Handle the response
                 print(response)
@@ -478,16 +478,16 @@ class ResourceSettingsServiceAsyncClient:
 
             from google.cloud import resourcesettings_v1
 
-            def sample_update_setting():
+            async def sample_update_setting():
                 # Create a client
-                client = resourcesettings_v1.ResourceSettingsServiceClient()
+                client = resourcesettings_v1.ResourceSettingsServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = resourcesettings_v1.UpdateSettingRequest(
                 )
 
                 # Make the request
-                response = client.update_setting(request=request)
+                response = await client.update_setting(request=request)
 
                 # Handle the response
                 print(response)
