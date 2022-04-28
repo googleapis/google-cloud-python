@@ -245,9 +245,9 @@ class PrivateCatalogAsyncClient:
 
             from google.cloud import privatecatalog_v1beta1
 
-            def sample_search_catalogs():
+            async def sample_search_catalogs():
                 # Create a client
-                client = privatecatalog_v1beta1.PrivateCatalogClient()
+                client = privatecatalog_v1beta1.PrivateCatalogAsyncClient()
 
                 # Initialize request argument(s)
                 request = privatecatalog_v1beta1.SearchCatalogsRequest(
@@ -258,7 +258,7 @@ class PrivateCatalogAsyncClient:
                 page_result = client.search_catalogs(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -333,9 +333,9 @@ class PrivateCatalogAsyncClient:
 
             from google.cloud import privatecatalog_v1beta1
 
-            def sample_search_products():
+            async def sample_search_products():
                 # Create a client
-                client = privatecatalog_v1beta1.PrivateCatalogClient()
+                client = privatecatalog_v1beta1.PrivateCatalogAsyncClient()
 
                 # Initialize request argument(s)
                 request = privatecatalog_v1beta1.SearchProductsRequest(
@@ -346,7 +346,7 @@ class PrivateCatalogAsyncClient:
                 page_result = client.search_products(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -421,9 +421,9 @@ class PrivateCatalogAsyncClient:
 
             from google.cloud import privatecatalog_v1beta1
 
-            def sample_search_versions():
+            async def sample_search_versions():
                 # Create a client
-                client = privatecatalog_v1beta1.PrivateCatalogClient()
+                client = privatecatalog_v1beta1.PrivateCatalogAsyncClient()
 
                 # Initialize request argument(s)
                 request = privatecatalog_v1beta1.SearchVersionsRequest(
@@ -435,7 +435,7 @@ class PrivateCatalogAsyncClient:
                 page_result = client.search_versions(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:

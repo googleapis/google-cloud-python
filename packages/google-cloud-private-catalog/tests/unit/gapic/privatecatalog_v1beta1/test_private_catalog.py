@@ -741,7 +741,7 @@ def test_search_catalogs_field_headers():
     # a field header. Set these to a non-empty value.
     request = private_catalog.SearchCatalogsRequest()
 
-    request.resource = "resource/value"
+    request.resource = "resource_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.search_catalogs), "__call__") as call:
@@ -757,7 +757,7 @@ def test_search_catalogs_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "resource=resource/value",
+        "resource=resource_value",
     ) in kw["metadata"]
 
 
@@ -771,7 +771,7 @@ async def test_search_catalogs_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = private_catalog.SearchCatalogsRequest()
 
-    request.resource = "resource/value"
+    request.resource = "resource_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.search_catalogs), "__call__") as call:
@@ -789,7 +789,7 @@ async def test_search_catalogs_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "resource=resource/value",
+        "resource=resource_value",
     ) in kw["metadata"]
 
 
@@ -838,7 +838,7 @@ def test_search_catalogs_pager(transport_name: str = "grpc"):
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, private_catalog.Catalog) for i in results)
 
@@ -1079,7 +1079,7 @@ def test_search_products_field_headers():
     # a field header. Set these to a non-empty value.
     request = private_catalog.SearchProductsRequest()
 
-    request.resource = "resource/value"
+    request.resource = "resource_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.search_products), "__call__") as call:
@@ -1095,7 +1095,7 @@ def test_search_products_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "resource=resource/value",
+        "resource=resource_value",
     ) in kw["metadata"]
 
 
@@ -1109,7 +1109,7 @@ async def test_search_products_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = private_catalog.SearchProductsRequest()
 
-    request.resource = "resource/value"
+    request.resource = "resource_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.search_products), "__call__") as call:
@@ -1127,7 +1127,7 @@ async def test_search_products_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "resource=resource/value",
+        "resource=resource_value",
     ) in kw["metadata"]
 
 
@@ -1176,7 +1176,7 @@ def test_search_products_pager(transport_name: str = "grpc"):
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, private_catalog.Product) for i in results)
 
@@ -1417,7 +1417,7 @@ def test_search_versions_field_headers():
     # a field header. Set these to a non-empty value.
     request = private_catalog.SearchVersionsRequest()
 
-    request.resource = "resource/value"
+    request.resource = "resource_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.search_versions), "__call__") as call:
@@ -1433,7 +1433,7 @@ def test_search_versions_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "resource=resource/value",
+        "resource=resource_value",
     ) in kw["metadata"]
 
 
@@ -1447,7 +1447,7 @@ async def test_search_versions_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = private_catalog.SearchVersionsRequest()
 
-    request.resource = "resource/value"
+    request.resource = "resource_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.search_versions), "__call__") as call:
@@ -1465,7 +1465,7 @@ async def test_search_versions_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "resource=resource/value",
+        "resource=resource_value",
     ) in kw["metadata"]
 
 
@@ -1514,7 +1514,7 @@ def test_search_versions_pager(transport_name: str = "grpc"):
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, private_catalog.Version) for i in results)
 
