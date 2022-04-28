@@ -737,7 +737,7 @@ def test_get_trigger_field_headers():
     # a field header. Set these to a non-empty value.
     request = eventarc.GetTriggerRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_trigger), "__call__") as call:
@@ -753,7 +753,7 @@ def test_get_trigger_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -767,7 +767,7 @@ async def test_get_trigger_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = eventarc.GetTriggerRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_trigger), "__call__") as call:
@@ -783,7 +783,7 @@ async def test_get_trigger_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -969,7 +969,7 @@ def test_list_triggers_field_headers():
     # a field header. Set these to a non-empty value.
     request = eventarc.ListTriggersRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_triggers), "__call__") as call:
@@ -985,7 +985,7 @@ def test_list_triggers_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -999,7 +999,7 @@ async def test_list_triggers_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = eventarc.ListTriggersRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_triggers), "__call__") as call:
@@ -1017,7 +1017,7 @@ async def test_list_triggers_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -1148,7 +1148,7 @@ def test_list_triggers_pager(transport_name: str = "grpc"):
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, trigger.Trigger) for i in results)
 
@@ -1383,7 +1383,7 @@ def test_create_trigger_field_headers():
     # a field header. Set these to a non-empty value.
     request = eventarc.CreateTriggerRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_trigger), "__call__") as call:
@@ -1399,7 +1399,7 @@ def test_create_trigger_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -1413,7 +1413,7 @@ async def test_create_trigger_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = eventarc.CreateTriggerRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_trigger), "__call__") as call:
@@ -1431,7 +1431,7 @@ async def test_create_trigger_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -1629,7 +1629,7 @@ def test_update_trigger_field_headers():
     # a field header. Set these to a non-empty value.
     request = eventarc.UpdateTriggerRequest()
 
-    request.trigger.name = "trigger.name/value"
+    request.trigger.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_trigger), "__call__") as call:
@@ -1645,7 +1645,7 @@ def test_update_trigger_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "trigger.name=trigger.name/value",
+        "trigger.name=name_value",
     ) in kw["metadata"]
 
 
@@ -1659,7 +1659,7 @@ async def test_update_trigger_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = eventarc.UpdateTriggerRequest()
 
-    request.trigger.name = "trigger.name/value"
+    request.trigger.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_trigger), "__call__") as call:
@@ -1677,7 +1677,7 @@ async def test_update_trigger_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "trigger.name=trigger.name/value",
+        "trigger.name=name_value",
     ) in kw["metadata"]
 
 
@@ -1875,7 +1875,7 @@ def test_delete_trigger_field_headers():
     # a field header. Set these to a non-empty value.
     request = eventarc.DeleteTriggerRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_trigger), "__call__") as call:
@@ -1891,7 +1891,7 @@ def test_delete_trigger_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1905,7 +1905,7 @@ async def test_delete_trigger_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = eventarc.DeleteTriggerRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_trigger), "__call__") as call:
@@ -1923,7 +1923,7 @@ async def test_delete_trigger_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2134,7 +2134,7 @@ def test_get_channel_field_headers():
     # a field header. Set these to a non-empty value.
     request = eventarc.GetChannelRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_channel), "__call__") as call:
@@ -2150,7 +2150,7 @@ def test_get_channel_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2164,7 +2164,7 @@ async def test_get_channel_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = eventarc.GetChannelRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_channel), "__call__") as call:
@@ -2180,7 +2180,7 @@ async def test_get_channel_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2366,7 +2366,7 @@ def test_list_channels_field_headers():
     # a field header. Set these to a non-empty value.
     request = eventarc.ListChannelsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_channels), "__call__") as call:
@@ -2382,7 +2382,7 @@ def test_list_channels_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -2396,7 +2396,7 @@ async def test_list_channels_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = eventarc.ListChannelsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_channels), "__call__") as call:
@@ -2414,7 +2414,7 @@ async def test_list_channels_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -2545,7 +2545,7 @@ def test_list_channels_pager(transport_name: str = "grpc"):
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, channel.Channel) for i in results)
 
@@ -2780,7 +2780,7 @@ def test_create_channel_field_headers():
     # a field header. Set these to a non-empty value.
     request = eventarc.CreateChannelRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_channel_), "__call__") as call:
@@ -2796,7 +2796,7 @@ def test_create_channel_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -2810,7 +2810,7 @@ async def test_create_channel_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = eventarc.CreateChannelRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_channel_), "__call__") as call:
@@ -2828,7 +2828,7 @@ async def test_create_channel_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -3026,7 +3026,7 @@ def test_update_channel_field_headers():
     # a field header. Set these to a non-empty value.
     request = eventarc.UpdateChannelRequest()
 
-    request.channel.name = "channel.name/value"
+    request.channel.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_channel), "__call__") as call:
@@ -3042,7 +3042,7 @@ def test_update_channel_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "channel.name=channel.name/value",
+        "channel.name=name_value",
     ) in kw["metadata"]
 
 
@@ -3056,7 +3056,7 @@ async def test_update_channel_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = eventarc.UpdateChannelRequest()
 
-    request.channel.name = "channel.name/value"
+    request.channel.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_channel), "__call__") as call:
@@ -3074,7 +3074,7 @@ async def test_update_channel_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "channel.name=channel.name/value",
+        "channel.name=name_value",
     ) in kw["metadata"]
 
 
@@ -3262,7 +3262,7 @@ def test_delete_channel_field_headers():
     # a field header. Set these to a non-empty value.
     request = eventarc.DeleteChannelRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_channel), "__call__") as call:
@@ -3278,7 +3278,7 @@ def test_delete_channel_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -3292,7 +3292,7 @@ async def test_delete_channel_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = eventarc.DeleteChannelRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_channel), "__call__") as call:
@@ -3310,7 +3310,7 @@ async def test_delete_channel_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -3512,7 +3512,7 @@ def test_get_channel_connection_field_headers():
     # a field header. Set these to a non-empty value.
     request = eventarc.GetChannelConnectionRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3530,7 +3530,7 @@ def test_get_channel_connection_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -3544,7 +3544,7 @@ async def test_get_channel_connection_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = eventarc.GetChannelConnectionRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3564,7 +3564,7 @@ async def test_get_channel_connection_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -3762,7 +3762,7 @@ def test_list_channel_connections_field_headers():
     # a field header. Set these to a non-empty value.
     request = eventarc.ListChannelConnectionsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3780,7 +3780,7 @@ def test_list_channel_connections_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -3794,7 +3794,7 @@ async def test_list_channel_connections_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = eventarc.ListChannelConnectionsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3814,7 +3814,7 @@ async def test_list_channel_connections_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -3951,7 +3951,7 @@ def test_list_channel_connections_pager(transport_name: str = "grpc"):
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, channel_connection.ChannelConnection) for i in results)
 
@@ -4201,7 +4201,7 @@ def test_create_channel_connection_field_headers():
     # a field header. Set these to a non-empty value.
     request = eventarc.CreateChannelConnectionRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4219,7 +4219,7 @@ def test_create_channel_connection_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -4233,7 +4233,7 @@ async def test_create_channel_connection_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = eventarc.CreateChannelConnectionRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4253,7 +4253,7 @@ async def test_create_channel_connection_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -4470,7 +4470,7 @@ def test_delete_channel_connection_field_headers():
     # a field header. Set these to a non-empty value.
     request = eventarc.DeleteChannelConnectionRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4488,7 +4488,7 @@ def test_delete_channel_connection_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -4502,7 +4502,7 @@ async def test_delete_channel_connection_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = eventarc.DeleteChannelConnectionRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4522,7 +4522,7 @@ async def test_delete_channel_connection_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 

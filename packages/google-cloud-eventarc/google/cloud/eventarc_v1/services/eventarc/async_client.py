@@ -234,9 +234,9 @@ class EventarcAsyncClient:
 
             from google.cloud import eventarc_v1
 
-            def sample_get_trigger():
+            async def sample_get_trigger():
                 # Create a client
-                client = eventarc_v1.EventarcClient()
+                client = eventarc_v1.EventarcAsyncClient()
 
                 # Initialize request argument(s)
                 request = eventarc_v1.GetTriggerRequest(
@@ -244,7 +244,7 @@ class EventarcAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_trigger(request=request)
+                response = await client.get_trigger(request=request)
 
                 # Handle the response
                 print(response)
@@ -329,9 +329,9 @@ class EventarcAsyncClient:
 
             from google.cloud import eventarc_v1
 
-            def sample_list_triggers():
+            async def sample_list_triggers():
                 # Create a client
-                client = eventarc_v1.EventarcClient()
+                client = eventarc_v1.EventarcAsyncClient()
 
                 # Initialize request argument(s)
                 request = eventarc_v1.ListTriggersRequest(
@@ -342,7 +342,7 @@ class EventarcAsyncClient:
                 page_result = client.list_triggers(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -439,9 +439,9 @@ class EventarcAsyncClient:
 
             from google.cloud import eventarc_v1
 
-            def sample_create_trigger():
+            async def sample_create_trigger():
                 # Create a client
-                client = eventarc_v1.EventarcClient()
+                client = eventarc_v1.EventarcAsyncClient()
 
                 # Initialize request argument(s)
                 trigger = eventarc_v1.Trigger()
@@ -463,7 +463,7 @@ class EventarcAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -577,9 +577,9 @@ class EventarcAsyncClient:
 
             from google.cloud import eventarc_v1
 
-            def sample_update_trigger():
+            async def sample_update_trigger():
                 # Create a client
-                client = eventarc_v1.EventarcClient()
+                client = eventarc_v1.EventarcAsyncClient()
 
                 # Initialize request argument(s)
                 request = eventarc_v1.UpdateTriggerRequest(
@@ -591,7 +591,7 @@ class EventarcAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -709,9 +709,9 @@ class EventarcAsyncClient:
 
             from google.cloud import eventarc_v1
 
-            def sample_delete_trigger():
+            async def sample_delete_trigger():
                 # Create a client
-                client = eventarc_v1.EventarcClient()
+                client = eventarc_v1.EventarcAsyncClient()
 
                 # Initialize request argument(s)
                 request = eventarc_v1.DeleteTriggerRequest(
@@ -724,7 +724,7 @@ class EventarcAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -830,9 +830,9 @@ class EventarcAsyncClient:
 
             from google.cloud import eventarc_v1
 
-            def sample_get_channel():
+            async def sample_get_channel():
                 # Create a client
-                client = eventarc_v1.EventarcClient()
+                client = eventarc_v1.EventarcAsyncClient()
 
                 # Initialize request argument(s)
                 request = eventarc_v1.GetChannelRequest(
@@ -840,7 +840,7 @@ class EventarcAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_channel(request=request)
+                response = await client.get_channel(request=request)
 
                 # Handle the response
                 print(response)
@@ -931,9 +931,9 @@ class EventarcAsyncClient:
 
             from google.cloud import eventarc_v1
 
-            def sample_list_channels():
+            async def sample_list_channels():
                 # Create a client
-                client = eventarc_v1.EventarcClient()
+                client = eventarc_v1.EventarcAsyncClient()
 
                 # Initialize request argument(s)
                 request = eventarc_v1.ListChannelsRequest(
@@ -944,7 +944,7 @@ class EventarcAsyncClient:
                 page_result = client.list_channels(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -1041,9 +1041,9 @@ class EventarcAsyncClient:
 
             from google.cloud import eventarc_v1
 
-            def sample_create_channel():
+            async def sample_create_channel():
                 # Create a client
-                client = eventarc_v1.EventarcClient()
+                client = eventarc_v1.EventarcAsyncClient()
 
                 # Initialize request argument(s)
                 channel = eventarc_v1.Channel()
@@ -1063,7 +1063,7 @@ class EventarcAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1179,9 +1179,9 @@ class EventarcAsyncClient:
 
             from google.cloud import eventarc_v1
 
-            def sample_update_channel():
+            async def sample_update_channel():
                 # Create a client
-                client = eventarc_v1.EventarcClient()
+                client = eventarc_v1.EventarcAsyncClient()
 
                 # Initialize request argument(s)
                 request = eventarc_v1.UpdateChannelRequest(
@@ -1193,7 +1193,7 @@ class EventarcAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1303,9 +1303,9 @@ class EventarcAsyncClient:
 
             from google.cloud import eventarc_v1
 
-            def sample_delete_channel():
+            async def sample_delete_channel():
                 # Create a client
-                client = eventarc_v1.EventarcClient()
+                client = eventarc_v1.EventarcAsyncClient()
 
                 # Initialize request argument(s)
                 request = eventarc_v1.DeleteChannelRequest(
@@ -1318,7 +1318,7 @@ class EventarcAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1417,9 +1417,9 @@ class EventarcAsyncClient:
 
             from google.cloud import eventarc_v1
 
-            def sample_get_channel_connection():
+            async def sample_get_channel_connection():
                 # Create a client
-                client = eventarc_v1.EventarcClient()
+                client = eventarc_v1.EventarcAsyncClient()
 
                 # Initialize request argument(s)
                 request = eventarc_v1.GetChannelConnectionRequest(
@@ -1427,7 +1427,7 @@ class EventarcAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_channel_connection(request=request)
+                response = await client.get_channel_connection(request=request)
 
                 # Handle the response
                 print(response)
@@ -1517,9 +1517,9 @@ class EventarcAsyncClient:
 
             from google.cloud import eventarc_v1
 
-            def sample_list_channel_connections():
+            async def sample_list_channel_connections():
                 # Create a client
-                client = eventarc_v1.EventarcClient()
+                client = eventarc_v1.EventarcAsyncClient()
 
                 # Initialize request argument(s)
                 request = eventarc_v1.ListChannelConnectionsRequest(
@@ -1530,7 +1530,7 @@ class EventarcAsyncClient:
                 page_result = client.list_channel_connections(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -1628,9 +1628,9 @@ class EventarcAsyncClient:
 
             from google.cloud import eventarc_v1
 
-            def sample_create_channel_connection():
+            async def sample_create_channel_connection():
                 # Create a client
-                client = eventarc_v1.EventarcClient()
+                client = eventarc_v1.EventarcAsyncClient()
 
                 # Initialize request argument(s)
                 channel_connection = eventarc_v1.ChannelConnection()
@@ -1648,7 +1648,7 @@ class EventarcAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1764,9 +1764,9 @@ class EventarcAsyncClient:
 
             from google.cloud import eventarc_v1
 
-            def sample_delete_channel_connection():
+            async def sample_delete_channel_connection():
                 # Create a client
-                client = eventarc_v1.EventarcClient()
+                client = eventarc_v1.EventarcAsyncClient()
 
                 # Initialize request argument(s)
                 request = eventarc_v1.DeleteChannelConnectionRequest(
@@ -1778,7 +1778,7 @@ class EventarcAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
