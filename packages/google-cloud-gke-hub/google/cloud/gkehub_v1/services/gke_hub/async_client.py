@@ -230,9 +230,9 @@ class GkeHubAsyncClient:
 
             from google.cloud import gkehub_v1
 
-            def sample_list_memberships():
+            async def sample_list_memberships():
                 # Create a client
-                client = gkehub_v1.GkeHubClient()
+                client = gkehub_v1.GkeHubAsyncClient()
 
                 # Initialize request argument(s)
                 request = gkehub_v1.ListMembershipsRequest(
@@ -243,7 +243,7 @@ class GkeHubAsyncClient:
                 page_result = client.list_memberships(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -338,9 +338,9 @@ class GkeHubAsyncClient:
 
             from google.cloud import gkehub_v1
 
-            def sample_list_features():
+            async def sample_list_features():
                 # Create a client
-                client = gkehub_v1.GkeHubClient()
+                client = gkehub_v1.GkeHubAsyncClient()
 
                 # Initialize request argument(s)
                 request = gkehub_v1.ListFeaturesRequest(
@@ -350,7 +350,7 @@ class GkeHubAsyncClient:
                 page_result = client.list_features(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -445,9 +445,9 @@ class GkeHubAsyncClient:
 
             from google.cloud import gkehub_v1
 
-            def sample_get_membership():
+            async def sample_get_membership():
                 # Create a client
-                client = gkehub_v1.GkeHubClient()
+                client = gkehub_v1.GkeHubAsyncClient()
 
                 # Initialize request argument(s)
                 request = gkehub_v1.GetMembershipRequest(
@@ -455,7 +455,7 @@ class GkeHubAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_membership(request=request)
+                response = await client.get_membership(request=request)
 
                 # Handle the response
                 print(response)
@@ -540,16 +540,16 @@ class GkeHubAsyncClient:
 
             from google.cloud import gkehub_v1
 
-            def sample_get_feature():
+            async def sample_get_feature():
                 # Create a client
-                client = gkehub_v1.GkeHubClient()
+                client = gkehub_v1.GkeHubAsyncClient()
 
                 # Initialize request argument(s)
                 request = gkehub_v1.GetFeatureRequest(
                 )
 
                 # Make the request
-                response = client.get_feature(request=request)
+                response = await client.get_feature(request=request)
 
                 # Handle the response
                 print(response)
@@ -640,9 +640,9 @@ class GkeHubAsyncClient:
 
             from google.cloud import gkehub_v1
 
-            def sample_create_membership():
+            async def sample_create_membership():
                 # Create a client
-                client = gkehub_v1.GkeHubClient()
+                client = gkehub_v1.GkeHubAsyncClient()
 
                 # Initialize request argument(s)
                 request = gkehub_v1.CreateMembershipRequest(
@@ -655,7 +655,7 @@ class GkeHubAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -780,9 +780,9 @@ class GkeHubAsyncClient:
 
             from google.cloud import gkehub_v1
 
-            def sample_create_feature():
+            async def sample_create_feature():
                 # Create a client
-                client = gkehub_v1.GkeHubClient()
+                client = gkehub_v1.GkeHubAsyncClient()
 
                 # Initialize request argument(s)
                 request = gkehub_v1.CreateFeatureRequest(
@@ -793,7 +793,7 @@ class GkeHubAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -909,9 +909,9 @@ class GkeHubAsyncClient:
 
             from google.cloud import gkehub_v1
 
-            def sample_delete_membership():
+            async def sample_delete_membership():
                 # Create a client
-                client = gkehub_v1.GkeHubClient()
+                client = gkehub_v1.GkeHubAsyncClient()
 
                 # Initialize request argument(s)
                 request = gkehub_v1.DeleteMembershipRequest(
@@ -923,7 +923,7 @@ class GkeHubAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1029,9 +1029,9 @@ class GkeHubAsyncClient:
 
             from google.cloud import gkehub_v1
 
-            def sample_delete_feature():
+            async def sample_delete_feature():
                 # Create a client
-                client = gkehub_v1.GkeHubClient()
+                client = gkehub_v1.GkeHubAsyncClient()
 
                 # Initialize request argument(s)
                 request = gkehub_v1.DeleteFeatureRequest(
@@ -1042,7 +1042,7 @@ class GkeHubAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1150,9 +1150,9 @@ class GkeHubAsyncClient:
 
             from google.cloud import gkehub_v1
 
-            def sample_update_membership():
+            async def sample_update_membership():
                 # Create a client
-                client = gkehub_v1.GkeHubClient()
+                client = gkehub_v1.GkeHubAsyncClient()
 
                 # Initialize request argument(s)
                 request = gkehub_v1.UpdateMembershipRequest(
@@ -1164,7 +1164,7 @@ class GkeHubAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1285,9 +1285,9 @@ class GkeHubAsyncClient:
 
             from google.cloud import gkehub_v1
 
-            def sample_update_feature():
+            async def sample_update_feature():
                 # Create a client
-                client = gkehub_v1.GkeHubClient()
+                client = gkehub_v1.GkeHubAsyncClient()
 
                 # Initialize request argument(s)
                 request = gkehub_v1.UpdateFeatureRequest(
@@ -1298,7 +1298,7 @@ class GkeHubAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1419,9 +1419,9 @@ class GkeHubAsyncClient:
 
             from google.cloud import gkehub_v1
 
-            def sample_generate_connect_manifest():
+            async def sample_generate_connect_manifest():
                 # Create a client
-                client = gkehub_v1.GkeHubClient()
+                client = gkehub_v1.GkeHubAsyncClient()
 
                 # Initialize request argument(s)
                 request = gkehub_v1.GenerateConnectManifestRequest(
@@ -1429,7 +1429,7 @@ class GkeHubAsyncClient:
                 )
 
                 # Make the request
-                response = client.generate_connect_manifest(request=request)
+                response = await client.generate_connect_manifest(request=request)
 
                 # Handle the response
                 print(response)
