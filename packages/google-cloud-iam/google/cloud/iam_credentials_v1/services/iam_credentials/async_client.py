@@ -236,9 +236,9 @@ class IAMCredentialsAsyncClient:
 
             from google.cloud import iam_credentials_v1
 
-            def sample_generate_access_token():
+            async def sample_generate_access_token():
                 # Create a client
-                client = iam_credentials_v1.IAMCredentialsClient()
+                client = iam_credentials_v1.IAMCredentialsAsyncClient()
 
                 # Initialize request argument(s)
                 request = iam_credentials_v1.GenerateAccessTokenRequest(
@@ -247,7 +247,7 @@ class IAMCredentialsAsyncClient:
                 )
 
                 # Make the request
-                response = client.generate_access_token(request=request)
+                response = await client.generate_access_token(request=request)
 
                 # Handle the response
                 print(response)
@@ -393,9 +393,9 @@ class IAMCredentialsAsyncClient:
 
             from google.cloud import iam_credentials_v1
 
-            def sample_generate_id_token():
+            async def sample_generate_id_token():
                 # Create a client
-                client = iam_credentials_v1.IAMCredentialsClient()
+                client = iam_credentials_v1.IAMCredentialsAsyncClient()
 
                 # Initialize request argument(s)
                 request = iam_credentials_v1.GenerateIdTokenRequest(
@@ -404,7 +404,7 @@ class IAMCredentialsAsyncClient:
                 )
 
                 # Make the request
-                response = client.generate_id_token(request=request)
+                response = await client.generate_id_token(request=request)
 
                 # Handle the response
                 print(response)
@@ -543,9 +543,9 @@ class IAMCredentialsAsyncClient:
 
             from google.cloud import iam_credentials_v1
 
-            def sample_sign_blob():
+            async def sample_sign_blob():
                 # Create a client
-                client = iam_credentials_v1.IAMCredentialsClient()
+                client = iam_credentials_v1.IAMCredentialsAsyncClient()
 
                 # Initialize request argument(s)
                 request = iam_credentials_v1.SignBlobRequest(
@@ -554,7 +554,7 @@ class IAMCredentialsAsyncClient:
                 )
 
                 # Make the request
-                response = client.sign_blob(request=request)
+                response = await client.sign_blob(request=request)
 
                 # Handle the response
                 print(response)
@@ -680,9 +680,9 @@ class IAMCredentialsAsyncClient:
 
             from google.cloud import iam_credentials_v1
 
-            def sample_sign_jwt():
+            async def sample_sign_jwt():
                 # Create a client
-                client = iam_credentials_v1.IAMCredentialsClient()
+                client = iam_credentials_v1.IAMCredentialsAsyncClient()
 
                 # Initialize request argument(s)
                 request = iam_credentials_v1.SignJwtRequest(
@@ -691,7 +691,7 @@ class IAMCredentialsAsyncClient:
                 )
 
                 # Make the request
-                response = client.sign_jwt(request=request)
+                response = await client.sign_jwt(request=request)
 
                 # Handle the response
                 print(response)
