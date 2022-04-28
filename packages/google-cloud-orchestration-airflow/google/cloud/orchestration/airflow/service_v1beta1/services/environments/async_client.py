@@ -226,9 +226,9 @@ class EnvironmentsAsyncClient:
 
             from google.cloud.orchestration.airflow import service_v1beta1
 
-            def sample_create_environment():
+            async def sample_create_environment():
                 # Create a client
-                client = service_v1beta1.EnvironmentsClient()
+                client = service_v1beta1.EnvironmentsAsyncClient()
 
                 # Initialize request argument(s)
                 request = service_v1beta1.CreateEnvironmentRequest(
@@ -239,7 +239,7 @@ class EnvironmentsAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -341,16 +341,16 @@ class EnvironmentsAsyncClient:
 
             from google.cloud.orchestration.airflow import service_v1beta1
 
-            def sample_get_environment():
+            async def sample_get_environment():
                 # Create a client
-                client = service_v1beta1.EnvironmentsClient()
+                client = service_v1beta1.EnvironmentsAsyncClient()
 
                 # Initialize request argument(s)
                 request = service_v1beta1.GetEnvironmentRequest(
                 )
 
                 # Make the request
-                response = client.get_environment(request=request)
+                response = await client.get_environment(request=request)
 
                 # Handle the response
                 print(response)
@@ -435,9 +435,9 @@ class EnvironmentsAsyncClient:
 
             from google.cloud.orchestration.airflow import service_v1beta1
 
-            def sample_list_environments():
+            async def sample_list_environments():
                 # Create a client
-                client = service_v1beta1.EnvironmentsClient()
+                client = service_v1beta1.EnvironmentsAsyncClient()
 
                 # Initialize request argument(s)
                 request = service_v1beta1.ListEnvironmentsRequest(
@@ -447,7 +447,7 @@ class EnvironmentsAsyncClient:
                 page_result = client.list_environments(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -545,9 +545,9 @@ class EnvironmentsAsyncClient:
 
             from google.cloud.orchestration.airflow import service_v1beta1
 
-            def sample_update_environment():
+            async def sample_update_environment():
                 # Create a client
-                client = service_v1beta1.EnvironmentsClient()
+                client = service_v1beta1.EnvironmentsAsyncClient()
 
                 # Initialize request argument(s)
                 request = service_v1beta1.UpdateEnvironmentRequest(
@@ -558,7 +558,7 @@ class EnvironmentsAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -853,9 +853,9 @@ class EnvironmentsAsyncClient:
 
             from google.cloud.orchestration.airflow import service_v1beta1
 
-            def sample_delete_environment():
+            async def sample_delete_environment():
                 # Create a client
-                client = service_v1beta1.EnvironmentsClient()
+                client = service_v1beta1.EnvironmentsAsyncClient()
 
                 # Initialize request argument(s)
                 request = service_v1beta1.DeleteEnvironmentRequest(
@@ -866,7 +866,7 @@ class EnvironmentsAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -971,9 +971,9 @@ class EnvironmentsAsyncClient:
 
             from google.cloud.orchestration.airflow import service_v1beta1
 
-            def sample_restart_web_server():
+            async def sample_restart_web_server():
                 # Create a client
-                client = service_v1beta1.EnvironmentsClient()
+                client = service_v1beta1.EnvironmentsAsyncClient()
 
                 # Initialize request argument(s)
                 request = service_v1beta1.RestartWebServerRequest(
@@ -984,7 +984,7 @@ class EnvironmentsAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1060,9 +1060,9 @@ class EnvironmentsAsyncClient:
 
             from google.cloud.orchestration.airflow import service_v1beta1
 
-            def sample_check_upgrade():
+            async def sample_check_upgrade():
                 # Create a client
-                client = service_v1beta1.EnvironmentsClient()
+                client = service_v1beta1.EnvironmentsAsyncClient()
 
                 # Initialize request argument(s)
                 request = service_v1beta1.CheckUpgradeRequest(
@@ -1073,7 +1073,7 @@ class EnvironmentsAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)

@@ -218,9 +218,9 @@ class ImageVersionsAsyncClient:
 
             from google.cloud.orchestration.airflow import service_v1beta1
 
-            def sample_list_image_versions():
+            async def sample_list_image_versions():
                 # Create a client
-                client = service_v1beta1.ImageVersionsClient()
+                client = service_v1beta1.ImageVersionsAsyncClient()
 
                 # Initialize request argument(s)
                 request = service_v1beta1.ListImageVersionsRequest(
@@ -230,7 +230,7 @@ class ImageVersionsAsyncClient:
                 page_result = client.list_image_versions(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
