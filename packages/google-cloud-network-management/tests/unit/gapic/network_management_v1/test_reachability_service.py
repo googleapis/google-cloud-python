@@ -793,7 +793,7 @@ def test_list_connectivity_tests_field_headers():
     # a field header. Set these to a non-empty value.
     request = reachability.ListConnectivityTestsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -811,7 +811,7 @@ def test_list_connectivity_tests_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -825,7 +825,7 @@ async def test_list_connectivity_tests_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = reachability.ListConnectivityTestsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -845,7 +845,7 @@ async def test_list_connectivity_tests_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -982,7 +982,7 @@ def test_list_connectivity_tests_pager(transport_name: str = "grpc"):
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, connectivity_test.ConnectivityTest) for i in results)
 
@@ -1252,7 +1252,7 @@ def test_get_connectivity_test_field_headers():
     # a field header. Set these to a non-empty value.
     request = reachability.GetConnectivityTestRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1270,7 +1270,7 @@ def test_get_connectivity_test_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1284,7 +1284,7 @@ async def test_get_connectivity_test_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = reachability.GetConnectivityTestRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1304,7 +1304,7 @@ async def test_get_connectivity_test_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1493,7 +1493,7 @@ def test_create_connectivity_test_field_headers():
     # a field header. Set these to a non-empty value.
     request = reachability.CreateConnectivityTestRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1511,7 +1511,7 @@ def test_create_connectivity_test_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -1525,7 +1525,7 @@ async def test_create_connectivity_test_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = reachability.CreateConnectivityTestRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1545,7 +1545,7 @@ async def test_create_connectivity_test_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -1754,7 +1754,7 @@ def test_update_connectivity_test_field_headers():
     # a field header. Set these to a non-empty value.
     request = reachability.UpdateConnectivityTestRequest()
 
-    request.resource.name = "resource.name/value"
+    request.resource.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1772,7 +1772,7 @@ def test_update_connectivity_test_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "resource.name=resource.name/value",
+        "resource.name=name_value",
     ) in kw["metadata"]
 
 
@@ -1786,7 +1786,7 @@ async def test_update_connectivity_test_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = reachability.UpdateConnectivityTestRequest()
 
-    request.resource.name = "resource.name/value"
+    request.resource.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1806,7 +1806,7 @@ async def test_update_connectivity_test_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "resource.name=resource.name/value",
+        "resource.name=name_value",
     ) in kw["metadata"]
 
 
@@ -2005,7 +2005,7 @@ def test_rerun_connectivity_test_field_headers():
     # a field header. Set these to a non-empty value.
     request = reachability.RerunConnectivityTestRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2023,7 +2023,7 @@ def test_rerun_connectivity_test_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2037,7 +2037,7 @@ async def test_rerun_connectivity_test_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = reachability.RerunConnectivityTestRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2057,7 +2057,7 @@ async def test_rerun_connectivity_test_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2160,7 +2160,7 @@ def test_delete_connectivity_test_field_headers():
     # a field header. Set these to a non-empty value.
     request = reachability.DeleteConnectivityTestRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2178,7 +2178,7 @@ def test_delete_connectivity_test_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2192,7 +2192,7 @@ async def test_delete_connectivity_test_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = reachability.DeleteConnectivityTestRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2212,7 +2212,7 @@ async def test_delete_connectivity_test_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 

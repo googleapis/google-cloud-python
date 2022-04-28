@@ -239,9 +239,9 @@ class ReachabilityServiceAsyncClient:
 
             from google.cloud import network_management_v1
 
-            def sample_list_connectivity_tests():
+            async def sample_list_connectivity_tests():
                 # Create a client
-                client = network_management_v1.ReachabilityServiceClient()
+                client = network_management_v1.ReachabilityServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = network_management_v1.ListConnectivityTestsRequest(
@@ -252,7 +252,7 @@ class ReachabilityServiceAsyncClient:
                 page_result = client.list_connectivity_tests(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -346,9 +346,9 @@ class ReachabilityServiceAsyncClient:
 
             from google.cloud import network_management_v1
 
-            def sample_get_connectivity_test():
+            async def sample_get_connectivity_test():
                 # Create a client
-                client = network_management_v1.ReachabilityServiceClient()
+                client = network_management_v1.ReachabilityServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = network_management_v1.GetConnectivityTestRequest(
@@ -356,7 +356,7 @@ class ReachabilityServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_connectivity_test(request=request)
+                response = await client.get_connectivity_test(request=request)
 
                 # Handle the response
                 print(response)
@@ -457,9 +457,9 @@ class ReachabilityServiceAsyncClient:
 
             from google.cloud import network_management_v1
 
-            def sample_create_connectivity_test():
+            async def sample_create_connectivity_test():
                 # Create a client
-                client = network_management_v1.ReachabilityServiceClient()
+                client = network_management_v1.ReachabilityServiceAsyncClient()
 
                 # Initialize request argument(s)
                 resource = network_management_v1.ConnectivityTest()
@@ -476,7 +476,7 @@ class ReachabilityServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -611,9 +611,9 @@ class ReachabilityServiceAsyncClient:
 
             from google.cloud import network_management_v1
 
-            def sample_update_connectivity_test():
+            async def sample_update_connectivity_test():
                 # Create a client
-                client = network_management_v1.ReachabilityServiceClient()
+                client = network_management_v1.ReachabilityServiceAsyncClient()
 
                 # Initialize request argument(s)
                 resource = network_management_v1.ConnectivityTest()
@@ -628,7 +628,7 @@ class ReachabilityServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -748,9 +748,9 @@ class ReachabilityServiceAsyncClient:
 
             from google.cloud import network_management_v1
 
-            def sample_rerun_connectivity_test():
+            async def sample_rerun_connectivity_test():
                 # Create a client
-                client = network_management_v1.ReachabilityServiceClient()
+                client = network_management_v1.ReachabilityServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = network_management_v1.RerunConnectivityTestRequest(
@@ -762,7 +762,7 @@ class ReachabilityServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -837,9 +837,9 @@ class ReachabilityServiceAsyncClient:
 
             from google.cloud import network_management_v1
 
-            def sample_delete_connectivity_test():
+            async def sample_delete_connectivity_test():
                 # Create a client
-                client = network_management_v1.ReachabilityServiceClient()
+                client = network_management_v1.ReachabilityServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = network_management_v1.DeleteConnectivityTestRequest(
@@ -851,7 +851,7 @@ class ReachabilityServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
