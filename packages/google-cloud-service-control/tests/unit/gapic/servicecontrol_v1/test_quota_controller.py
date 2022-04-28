@@ -756,6 +756,67 @@ async def test_allocate_quota_async_from_dict():
     await test_allocate_quota_async(request_type=dict)
 
 
+def test_allocate_quota_field_headers():
+    client = QuotaControllerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = quota_controller.AllocateQuotaRequest()
+
+    request.service_name = "service_name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.allocate_quota), "__call__") as call:
+        call.return_value = quota_controller.AllocateQuotaResponse()
+        client.allocate_quota(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "service_name=service_name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_allocate_quota_field_headers_async():
+    client = QuotaControllerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = quota_controller.AllocateQuotaRequest()
+
+    request.service_name = "service_name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.allocate_quota), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            quota_controller.AllocateQuotaResponse()
+        )
+        await client.allocate_quota(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "service_name=service_name_value",
+    ) in kw["metadata"]
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.QuotaControllerGrpcTransport(

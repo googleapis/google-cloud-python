@@ -475,6 +475,14 @@ class QuotaControllerClient(metaclass=QuotaControllerClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.allocate_quota]
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("service_name", request.service_name),)
+            ),
+        )
+
         # Send the request.
         response = rpc(
             request,

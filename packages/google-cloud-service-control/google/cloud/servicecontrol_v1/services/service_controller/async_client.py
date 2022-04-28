@@ -236,16 +236,16 @@ class ServiceControllerAsyncClient:
 
             from google.cloud import servicecontrol_v1
 
-            def sample_check():
+            async def sample_check():
                 # Create a client
-                client = servicecontrol_v1.ServiceControllerClient()
+                client = servicecontrol_v1.ServiceControllerAsyncClient()
 
                 # Initialize request argument(s)
                 request = servicecontrol_v1.CheckRequest(
                 )
 
                 # Make the request
-                response = client.check(request=request)
+                response = await client.check(request=request)
 
                 # Handle the response
                 print(response)
@@ -284,6 +284,14 @@ class ServiceControllerAsyncClient:
             ),
             default_timeout=5.0,
             client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("service_name", request.service_name),)
+            ),
         )
 
         # Send the request.
@@ -328,16 +336,16 @@ class ServiceControllerAsyncClient:
 
             from google.cloud import servicecontrol_v1
 
-            def sample_report():
+            async def sample_report():
                 # Create a client
-                client = servicecontrol_v1.ServiceControllerClient()
+                client = servicecontrol_v1.ServiceControllerAsyncClient()
 
                 # Initialize request argument(s)
                 request = servicecontrol_v1.ReportRequest(
                 )
 
                 # Make the request
-                response = client.report(request=request)
+                response = await client.report(request=request)
 
                 # Handle the response
                 print(response)
@@ -367,6 +375,14 @@ class ServiceControllerAsyncClient:
             self._client._transport.report,
             default_timeout=16.0,
             client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("service_name", request.service_name),)
+            ),
         )
 
         # Send the request.

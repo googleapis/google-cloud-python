@@ -229,16 +229,16 @@ class QuotaControllerAsyncClient:
 
             from google.cloud import servicecontrol_v1
 
-            def sample_allocate_quota():
+            async def sample_allocate_quota():
                 # Create a client
-                client = servicecontrol_v1.QuotaControllerClient()
+                client = servicecontrol_v1.QuotaControllerAsyncClient()
 
                 # Initialize request argument(s)
                 request = servicecontrol_v1.AllocateQuotaRequest(
                 )
 
                 # Make the request
-                response = client.allocate_quota(request=request)
+                response = await client.allocate_quota(request=request)
 
                 # Handle the response
                 print(response)
@@ -268,6 +268,14 @@ class QuotaControllerAsyncClient:
             self._client._transport.allocate_quota,
             default_timeout=None,
             client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("service_name", request.service_name),)
+            ),
         )
 
         # Send the request.

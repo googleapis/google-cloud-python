@@ -771,6 +771,67 @@ async def test_check_async_from_dict():
     await test_check_async(request_type=dict)
 
 
+def test_check_field_headers():
+    client = ServiceControllerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = service_controller.CheckRequest()
+
+    request.service_name = "service_name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.check), "__call__") as call:
+        call.return_value = service_controller.CheckResponse()
+        client.check(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "service_name=service_name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_check_field_headers_async():
+    client = ServiceControllerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = service_controller.CheckRequest()
+
+    request.service_name = "service_name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.check), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service_controller.CheckResponse()
+        )
+        await client.check(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "service_name=service_name_value",
+    ) in kw["metadata"]
+
+
 @pytest.mark.parametrize(
     "request_type",
     [
@@ -862,6 +923,67 @@ async def test_report_async(
 @pytest.mark.asyncio
 async def test_report_async_from_dict():
     await test_report_async(request_type=dict)
+
+
+def test_report_field_headers():
+    client = ServiceControllerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = service_controller.ReportRequest()
+
+    request.service_name = "service_name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.report), "__call__") as call:
+        call.return_value = service_controller.ReportResponse()
+        client.report(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "service_name=service_name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_report_field_headers_async():
+    client = ServiceControllerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = service_controller.ReportRequest()
+
+    request.service_name = "service_name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.report), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service_controller.ReportResponse()
+        )
+        await client.report(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "service_name=service_name_value",
+    ) in kw["metadata"]
 
 
 def test_credentials_transport_error():
