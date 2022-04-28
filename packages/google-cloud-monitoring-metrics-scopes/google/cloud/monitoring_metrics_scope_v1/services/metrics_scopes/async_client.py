@@ -230,9 +230,9 @@ class MetricsScopesAsyncClient:
 
             from google.cloud import monitoring_metrics_scope_v1
 
-            def sample_get_metrics_scope():
+            async def sample_get_metrics_scope():
                 # Create a client
-                client = monitoring_metrics_scope_v1.MetricsScopesClient()
+                client = monitoring_metrics_scope_v1.MetricsScopesAsyncClient()
 
                 # Initialize request argument(s)
                 request = monitoring_metrics_scope_v1.GetMetricsScopeRequest(
@@ -240,7 +240,7 @@ class MetricsScopesAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_metrics_scope(request=request)
+                response = await client.get_metrics_scope(request=request)
 
                 # Handle the response
                 print(response)
@@ -333,9 +333,9 @@ class MetricsScopesAsyncClient:
 
             from google.cloud import monitoring_metrics_scope_v1
 
-            def sample_list_metrics_scopes_by_monitored_project():
+            async def sample_list_metrics_scopes_by_monitored_project():
                 # Create a client
-                client = monitoring_metrics_scope_v1.MetricsScopesClient()
+                client = monitoring_metrics_scope_v1.MetricsScopesAsyncClient()
 
                 # Initialize request argument(s)
                 request = monitoring_metrics_scope_v1.ListMetricsScopesByMonitoredProjectRequest(
@@ -343,7 +343,7 @@ class MetricsScopesAsyncClient:
                 )
 
                 # Make the request
-                response = client.list_metrics_scopes_by_monitored_project(request=request)
+                response = await client.list_metrics_scopes_by_monitored_project(request=request)
 
                 # Handle the response
                 print(response)
@@ -403,9 +403,9 @@ class MetricsScopesAsyncClient:
 
             from google.cloud import monitoring_metrics_scope_v1
 
-            def sample_create_monitored_project():
+            async def sample_create_monitored_project():
                 # Create a client
-                client = monitoring_metrics_scope_v1.MetricsScopesClient()
+                client = monitoring_metrics_scope_v1.MetricsScopesAsyncClient()
 
                 # Initialize request argument(s)
                 request = monitoring_metrics_scope_v1.CreateMonitoredProjectRequest(
@@ -417,7 +417,7 @@ class MetricsScopesAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -529,9 +529,9 @@ class MetricsScopesAsyncClient:
 
             from google.cloud import monitoring_metrics_scope_v1
 
-            def sample_delete_monitored_project():
+            async def sample_delete_monitored_project():
                 # Create a client
-                client = monitoring_metrics_scope_v1.MetricsScopesClient()
+                client = monitoring_metrics_scope_v1.MetricsScopesAsyncClient()
 
                 # Initialize request argument(s)
                 request = monitoring_metrics_scope_v1.DeleteMonitoredProjectRequest(
@@ -543,7 +543,7 @@ class MetricsScopesAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
