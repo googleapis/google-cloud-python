@@ -239,9 +239,9 @@ class WorkflowsServiceV2BetaAsyncClient:
 
             from google.cloud import lifesciences_v2beta
 
-            def sample_run_pipeline():
+            async def sample_run_pipeline():
                 # Create a client
-                client = lifesciences_v2beta.WorkflowsServiceV2BetaClient()
+                client = lifesciences_v2beta.WorkflowsServiceV2BetaAsyncClient()
 
                 # Initialize request argument(s)
                 request = lifesciences_v2beta.RunPipelineRequest(
@@ -252,7 +252,7 @@ class WorkflowsServiceV2BetaAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
