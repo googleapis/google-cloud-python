@@ -227,9 +227,9 @@ class CompletionServiceAsyncClient:
 
             from google.cloud import retail_v2
 
-            def sample_complete_query():
+            async def sample_complete_query():
                 # Create a client
-                client = retail_v2.CompletionServiceClient()
+                client = retail_v2.CompletionServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = retail_v2.CompleteQueryRequest(
@@ -238,7 +238,7 @@ class CompletionServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.complete_query(request=request)
+                response = await client.complete_query(request=request)
 
                 # Handle the response
                 print(response)
@@ -306,9 +306,9 @@ class CompletionServiceAsyncClient:
 
             from google.cloud import retail_v2
 
-            def sample_import_completion_data():
+            async def sample_import_completion_data():
                 # Create a client
-                client = retail_v2.CompletionServiceClient()
+                client = retail_v2.CompletionServiceAsyncClient()
 
                 # Initialize request argument(s)
                 input_config = retail_v2.CompletionDataInputConfig()
@@ -325,7 +325,7 @@ class CompletionServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)

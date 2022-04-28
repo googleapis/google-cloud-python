@@ -833,7 +833,7 @@ def test_write_user_event_field_headers():
     # a field header. Set these to a non-empty value.
     request = user_event_service.WriteUserEventRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.write_user_event), "__call__") as call:
@@ -849,7 +849,7 @@ def test_write_user_event_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -863,7 +863,7 @@ async def test_write_user_event_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = user_event_service.WriteUserEventRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.write_user_event), "__call__") as call:
@@ -881,7 +881,7 @@ async def test_write_user_event_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -994,7 +994,7 @@ def test_collect_user_event_field_headers():
     # a field header. Set these to a non-empty value.
     request = user_event_service.CollectUserEventRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1012,7 +1012,7 @@ def test_collect_user_event_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -1026,7 +1026,7 @@ async def test_collect_user_event_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = user_event_service.CollectUserEventRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1046,7 +1046,7 @@ async def test_collect_user_event_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -1148,7 +1148,7 @@ def test_purge_user_events_field_headers():
     # a field header. Set these to a non-empty value.
     request = purge_config.PurgeUserEventsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1166,7 +1166,7 @@ def test_purge_user_events_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -1180,7 +1180,7 @@ async def test_purge_user_events_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = purge_config.PurgeUserEventsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1200,7 +1200,7 @@ async def test_purge_user_events_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -1302,7 +1302,7 @@ def test_import_user_events_field_headers():
     # a field header. Set these to a non-empty value.
     request = import_config.ImportUserEventsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1320,7 +1320,7 @@ def test_import_user_events_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -1334,7 +1334,7 @@ async def test_import_user_events_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = import_config.ImportUserEventsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1354,7 +1354,7 @@ async def test_import_user_events_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -1457,7 +1457,7 @@ def test_rejoin_user_events_field_headers():
     # a field header. Set these to a non-empty value.
     request = user_event_service.RejoinUserEventsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1475,7 +1475,7 @@ def test_rejoin_user_events_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -1489,7 +1489,7 @@ async def test_rejoin_user_events_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = user_event_service.RejoinUserEventsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1509,7 +1509,7 @@ async def test_rejoin_user_events_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 

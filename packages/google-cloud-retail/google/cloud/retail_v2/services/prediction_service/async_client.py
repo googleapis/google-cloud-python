@@ -216,9 +216,9 @@ class PredictionServiceAsyncClient:
 
             from google.cloud import retail_v2
 
-            def sample_predict():
+            async def sample_predict():
                 # Create a client
-                client = retail_v2.PredictionServiceClient()
+                client = retail_v2.PredictionServiceAsyncClient()
 
                 # Initialize request argument(s)
                 user_event = retail_v2.UserEvent()
@@ -231,7 +231,7 @@ class PredictionServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.predict(request=request)
+                response = await client.predict(request=request)
 
                 # Handle the response
                 print(response)

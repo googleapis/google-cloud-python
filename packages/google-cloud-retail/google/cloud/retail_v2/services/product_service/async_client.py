@@ -234,9 +234,9 @@ class ProductServiceAsyncClient:
 
             from google.cloud import retail_v2
 
-            def sample_create_product():
+            async def sample_create_product():
                 # Create a client
-                client = retail_v2.ProductServiceClient()
+                client = retail_v2.ProductServiceAsyncClient()
 
                 # Initialize request argument(s)
                 product = retail_v2.Product()
@@ -249,7 +249,7 @@ class ProductServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.create_product(request=request)
+                response = await client.create_product(request=request)
 
                 # Handle the response
                 print(response)
@@ -369,9 +369,9 @@ class ProductServiceAsyncClient:
 
             from google.cloud import retail_v2
 
-            def sample_get_product():
+            async def sample_get_product():
                 # Create a client
-                client = retail_v2.ProductServiceClient()
+                client = retail_v2.ProductServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = retail_v2.GetProductRequest(
@@ -379,7 +379,7 @@ class ProductServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_product(request=request)
+                response = await client.get_product(request=request)
 
                 # Handle the response
                 print(response)
@@ -475,9 +475,9 @@ class ProductServiceAsyncClient:
 
             from google.cloud import retail_v2
 
-            def sample_list_products():
+            async def sample_list_products():
                 # Create a client
-                client = retail_v2.ProductServiceClient()
+                client = retail_v2.ProductServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = retail_v2.ListProductsRequest(
@@ -488,7 +488,7 @@ class ProductServiceAsyncClient:
                 page_result = client.list_products(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -593,9 +593,9 @@ class ProductServiceAsyncClient:
 
             from google.cloud import retail_v2
 
-            def sample_update_product():
+            async def sample_update_product():
                 # Create a client
-                client = retail_v2.ProductServiceClient()
+                client = retail_v2.ProductServiceAsyncClient()
 
                 # Initialize request argument(s)
                 product = retail_v2.Product()
@@ -606,7 +606,7 @@ class ProductServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.update_product(request=request)
+                response = await client.update_product(request=request)
 
                 # Handle the response
                 print(response)
@@ -718,9 +718,9 @@ class ProductServiceAsyncClient:
 
             from google.cloud import retail_v2
 
-            def sample_delete_product():
+            async def sample_delete_product():
                 # Create a client
-                client = retail_v2.ProductServiceClient()
+                client = retail_v2.ProductServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = retail_v2.DeleteProductRequest(
@@ -728,7 +728,7 @@ class ProductServiceAsyncClient:
                 )
 
                 # Make the request
-                client.delete_product(request=request)
+                await client.delete_product(request=request)
 
         Args:
             request (Union[google.cloud.retail_v2.types.DeleteProductRequest, dict]):
@@ -831,9 +831,9 @@ class ProductServiceAsyncClient:
 
             from google.cloud import retail_v2
 
-            def sample_import_products():
+            async def sample_import_products():
                 # Create a client
-                client = retail_v2.ProductServiceClient()
+                client = retail_v2.ProductServiceAsyncClient()
 
                 # Initialize request argument(s)
                 input_config = retail_v2.ProductInputConfig()
@@ -849,7 +849,7 @@ class ProductServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -982,9 +982,9 @@ class ProductServiceAsyncClient:
 
             from google.cloud import retail_v2
 
-            def sample_set_inventory():
+            async def sample_set_inventory():
                 # Create a client
-                client = retail_v2.ProductServiceClient()
+                client = retail_v2.ProductServiceAsyncClient()
 
                 # Initialize request argument(s)
                 inventory = retail_v2.Product()
@@ -999,7 +999,7 @@ class ProductServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1187,9 +1187,9 @@ class ProductServiceAsyncClient:
 
             from google.cloud import retail_v2
 
-            def sample_add_fulfillment_places():
+            async def sample_add_fulfillment_places():
                 # Create a client
-                client = retail_v2.ProductServiceClient()
+                client = retail_v2.ProductServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = retail_v2.AddFulfillmentPlacesRequest(
@@ -1203,7 +1203,7 @@ class ProductServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1321,9 +1321,9 @@ class ProductServiceAsyncClient:
 
             from google.cloud import retail_v2
 
-            def sample_remove_fulfillment_places():
+            async def sample_remove_fulfillment_places():
                 # Create a client
-                client = retail_v2.ProductServiceClient()
+                client = retail_v2.ProductServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = retail_v2.RemoveFulfillmentPlacesRequest(
@@ -1337,7 +1337,7 @@ class ProductServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1464,9 +1464,9 @@ class ProductServiceAsyncClient:
 
             from google.cloud import retail_v2
 
-            def sample_add_local_inventories():
+            async def sample_add_local_inventories():
                 # Create a client
-                client = retail_v2.ProductServiceClient()
+                client = retail_v2.ProductServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = retail_v2.AddLocalInventoriesRequest(
@@ -1478,7 +1478,7 @@ class ProductServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1602,9 +1602,9 @@ class ProductServiceAsyncClient:
 
             from google.cloud import retail_v2
 
-            def sample_remove_local_inventories():
+            async def sample_remove_local_inventories():
                 # Create a client
-                client = retail_v2.ProductServiceClient()
+                client = retail_v2.ProductServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = retail_v2.RemoveLocalInventoriesRequest(
@@ -1617,7 +1617,7 @@ class ProductServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)

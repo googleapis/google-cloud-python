@@ -226,9 +226,9 @@ class SearchServiceAsyncClient:
 
             from google.cloud import retail_v2
 
-            def sample_search():
+            async def sample_search():
                 # Create a client
-                client = retail_v2.SearchServiceClient()
+                client = retail_v2.SearchServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = retail_v2.SearchRequest(
@@ -240,7 +240,7 @@ class SearchServiceAsyncClient:
                 page_result = client.search(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:

@@ -232,9 +232,9 @@ class UserEventServiceAsyncClient:
 
             from google.cloud import retail_v2
 
-            def sample_write_user_event():
+            async def sample_write_user_event():
                 # Create a client
-                client = retail_v2.UserEventServiceClient()
+                client = retail_v2.UserEventServiceAsyncClient()
 
                 # Initialize request argument(s)
                 user_event = retail_v2.UserEvent()
@@ -247,7 +247,7 @@ class UserEventServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.write_user_event(request=request)
+                response = await client.write_user_event(request=request)
 
                 # Handle the response
                 print(response)
@@ -317,9 +317,9 @@ class UserEventServiceAsyncClient:
 
             from google.cloud import retail_v2
 
-            def sample_collect_user_event():
+            async def sample_collect_user_event():
                 # Create a client
-                client = retail_v2.UserEventServiceClient()
+                client = retail_v2.UserEventServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = retail_v2.CollectUserEventRequest(
@@ -328,7 +328,7 @@ class UserEventServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.collect_user_event(request=request)
+                response = await client.collect_user_event(request=request)
 
                 # Handle the response
                 print(response)
@@ -439,9 +439,9 @@ class UserEventServiceAsyncClient:
 
             from google.cloud import retail_v2
 
-            def sample_purge_user_events():
+            async def sample_purge_user_events():
                 # Create a client
-                client = retail_v2.UserEventServiceClient()
+                client = retail_v2.UserEventServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = retail_v2.PurgeUserEventsRequest(
@@ -454,7 +454,7 @@ class UserEventServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -544,9 +544,9 @@ class UserEventServiceAsyncClient:
 
             from google.cloud import retail_v2
 
-            def sample_import_user_events():
+            async def sample_import_user_events():
                 # Create a client
-                client = retail_v2.UserEventServiceClient()
+                client = retail_v2.UserEventServiceAsyncClient()
 
                 # Initialize request argument(s)
                 input_config = retail_v2.UserEventInputConfig()
@@ -563,7 +563,7 @@ class UserEventServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -659,9 +659,9 @@ class UserEventServiceAsyncClient:
 
             from google.cloud import retail_v2
 
-            def sample_rejoin_user_events():
+            async def sample_rejoin_user_events():
                 # Create a client
-                client = retail_v2.UserEventServiceClient()
+                client = retail_v2.UserEventServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = retail_v2.RejoinUserEventsRequest(
@@ -673,7 +673,7 @@ class UserEventServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)

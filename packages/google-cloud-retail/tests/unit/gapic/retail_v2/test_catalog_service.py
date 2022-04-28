@@ -745,7 +745,7 @@ def test_list_catalogs_field_headers():
     # a field header. Set these to a non-empty value.
     request = catalog_service.ListCatalogsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_catalogs), "__call__") as call:
@@ -761,7 +761,7 @@ def test_list_catalogs_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -775,7 +775,7 @@ async def test_list_catalogs_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = catalog_service.ListCatalogsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_catalogs), "__call__") as call:
@@ -793,7 +793,7 @@ async def test_list_catalogs_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -924,7 +924,7 @@ def test_list_catalogs_pager(transport_name: str = "grpc"):
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, catalog.Catalog) for i in results)
 
@@ -1169,7 +1169,7 @@ def test_update_catalog_field_headers():
     # a field header. Set these to a non-empty value.
     request = catalog_service.UpdateCatalogRequest()
 
-    request.catalog.name = "catalog.name/value"
+    request.catalog.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_catalog), "__call__") as call:
@@ -1185,7 +1185,7 @@ def test_update_catalog_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "catalog.name=catalog.name/value",
+        "catalog.name=name_value",
     ) in kw["metadata"]
 
 
@@ -1199,7 +1199,7 @@ async def test_update_catalog_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = catalog_service.UpdateCatalogRequest()
 
-    request.catalog.name = "catalog.name/value"
+    request.catalog.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_catalog), "__call__") as call:
@@ -1215,7 +1215,7 @@ async def test_update_catalog_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "catalog.name=catalog.name/value",
+        "catalog.name=name_value",
     ) in kw["metadata"]
 
 
@@ -1406,7 +1406,7 @@ def test_set_default_branch_field_headers():
     # a field header. Set these to a non-empty value.
     request = catalog_service.SetDefaultBranchRequest()
 
-    request.catalog = "catalog/value"
+    request.catalog = "catalog_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1424,7 +1424,7 @@ def test_set_default_branch_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "catalog=catalog/value",
+        "catalog=catalog_value",
     ) in kw["metadata"]
 
 
@@ -1438,7 +1438,7 @@ async def test_set_default_branch_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = catalog_service.SetDefaultBranchRequest()
 
-    request.catalog = "catalog/value"
+    request.catalog = "catalog_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1456,7 +1456,7 @@ async def test_set_default_branch_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "catalog=catalog/value",
+        "catalog=catalog_value",
     ) in kw["metadata"]
 
 
@@ -1653,7 +1653,7 @@ def test_get_default_branch_field_headers():
     # a field header. Set these to a non-empty value.
     request = catalog_service.GetDefaultBranchRequest()
 
-    request.catalog = "catalog/value"
+    request.catalog = "catalog_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1671,7 +1671,7 @@ def test_get_default_branch_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "catalog=catalog/value",
+        "catalog=catalog_value",
     ) in kw["metadata"]
 
 
@@ -1685,7 +1685,7 @@ async def test_get_default_branch_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = catalog_service.GetDefaultBranchRequest()
 
-    request.catalog = "catalog/value"
+    request.catalog = "catalog_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1705,7 +1705,7 @@ async def test_get_default_branch_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "catalog=catalog/value",
+        "catalog=catalog_value",
     ) in kw["metadata"]
 
 

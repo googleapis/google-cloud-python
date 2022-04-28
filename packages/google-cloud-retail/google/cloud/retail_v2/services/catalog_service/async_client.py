@@ -226,9 +226,9 @@ class CatalogServiceAsyncClient:
 
             from google.cloud import retail_v2
 
-            def sample_list_catalogs():
+            async def sample_list_catalogs():
                 # Create a client
-                client = retail_v2.CatalogServiceClient()
+                client = retail_v2.CatalogServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = retail_v2.ListCatalogsRequest(
@@ -239,7 +239,7 @@ class CatalogServiceAsyncClient:
                 page_result = client.list_catalogs(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -342,9 +342,9 @@ class CatalogServiceAsyncClient:
 
             from google.cloud import retail_v2
 
-            def sample_update_catalog():
+            async def sample_update_catalog():
                 # Create a client
-                client = retail_v2.CatalogServiceClient()
+                client = retail_v2.CatalogServiceAsyncClient()
 
                 # Initialize request argument(s)
                 catalog = retail_v2.Catalog()
@@ -356,7 +356,7 @@ class CatalogServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.update_catalog(request=request)
+                response = await client.update_catalog(request=request)
 
                 # Handle the response
                 print(response)
@@ -496,16 +496,16 @@ class CatalogServiceAsyncClient:
 
             from google.cloud import retail_v2
 
-            def sample_set_default_branch():
+            async def sample_set_default_branch():
                 # Create a client
-                client = retail_v2.CatalogServiceClient()
+                client = retail_v2.CatalogServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = retail_v2.SetDefaultBranchRequest(
                 )
 
                 # Make the request
-                client.set_default_branch(request=request)
+                await client.set_default_branch(request=request)
 
         Args:
             request (Union[google.cloud.retail_v2.types.SetDefaultBranchRequest, dict]):
@@ -580,16 +580,16 @@ class CatalogServiceAsyncClient:
 
             from google.cloud import retail_v2
 
-            def sample_get_default_branch():
+            async def sample_get_default_branch():
                 # Create a client
-                client = retail_v2.CatalogServiceClient()
+                client = retail_v2.CatalogServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = retail_v2.GetDefaultBranchRequest(
                 )
 
                 # Make the request
-                response = client.get_default_branch(request=request)
+                response = await client.get_default_branch(request=request)
 
                 # Handle the response
                 print(response)
