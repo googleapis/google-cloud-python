@@ -250,9 +250,9 @@ class FleetRoutingAsyncClient:
 
             from google.cloud import optimization_v1
 
-            def sample_optimize_tours():
+            async def sample_optimize_tours():
                 # Create a client
-                client = optimization_v1.FleetRoutingClient()
+                client = optimization_v1.FleetRoutingAsyncClient()
 
                 # Initialize request argument(s)
                 request = optimization_v1.OptimizeToursRequest(
@@ -260,7 +260,7 @@ class FleetRoutingAsyncClient:
                 )
 
                 # Make the request
-                response = client.optimize_tours(request=request)
+                response = await client.optimize_tours(request=request)
 
                 # Handle the response
                 print(response)
@@ -346,9 +346,9 @@ class FleetRoutingAsyncClient:
 
             from google.cloud import optimization_v1
 
-            def sample_batch_optimize_tours():
+            async def sample_batch_optimize_tours():
                 # Create a client
-                client = optimization_v1.FleetRoutingClient()
+                client = optimization_v1.FleetRoutingAsyncClient()
 
                 # Initialize request argument(s)
                 model_configs = optimization_v1.AsyncModelConfig()
@@ -365,7 +365,7 @@ class FleetRoutingAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
