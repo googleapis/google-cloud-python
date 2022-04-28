@@ -223,9 +223,9 @@ class PredictionServiceAsyncClient:
 
             from google.cloud import recommendationengine_v1beta1
 
-            def sample_predict():
+            async def sample_predict():
                 # Create a client
-                client = recommendationengine_v1beta1.PredictionServiceClient()
+                client = recommendationengine_v1beta1.PredictionServiceAsyncClient()
 
                 # Initialize request argument(s)
                 user_event = recommendationengine_v1beta1.UserEvent()
@@ -241,7 +241,7 @@ class PredictionServiceAsyncClient:
                 page_result = client.predict(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:

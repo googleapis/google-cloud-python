@@ -227,9 +227,9 @@ class CatalogServiceAsyncClient:
 
             from google.cloud import recommendationengine_v1beta1
 
-            def sample_create_catalog_item():
+            async def sample_create_catalog_item():
                 # Create a client
-                client = recommendationengine_v1beta1.CatalogServiceClient()
+                client = recommendationengine_v1beta1.CatalogServiceAsyncClient()
 
                 # Initialize request argument(s)
                 catalog_item = recommendationengine_v1beta1.CatalogItem()
@@ -243,7 +243,7 @@ class CatalogServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.create_catalog_item(request=request)
+                response = await client.create_catalog_item(request=request)
 
                 # Handle the response
                 print(response)
@@ -345,9 +345,9 @@ class CatalogServiceAsyncClient:
 
             from google.cloud import recommendationengine_v1beta1
 
-            def sample_get_catalog_item():
+            async def sample_get_catalog_item():
                 # Create a client
-                client = recommendationengine_v1beta1.CatalogServiceClient()
+                client = recommendationengine_v1beta1.CatalogServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = recommendationengine_v1beta1.GetCatalogItemRequest(
@@ -355,7 +355,7 @@ class CatalogServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_catalog_item(request=request)
+                response = await client.get_catalog_item(request=request)
 
                 # Handle the response
                 print(response)
@@ -451,9 +451,9 @@ class CatalogServiceAsyncClient:
 
             from google.cloud import recommendationengine_v1beta1
 
-            def sample_list_catalog_items():
+            async def sample_list_catalog_items():
                 # Create a client
-                client = recommendationengine_v1beta1.CatalogServiceClient()
+                client = recommendationengine_v1beta1.CatalogServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = recommendationengine_v1beta1.ListCatalogItemsRequest(
@@ -464,7 +464,7 @@ class CatalogServiceAsyncClient:
                 page_result = client.list_catalog_items(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -581,9 +581,9 @@ class CatalogServiceAsyncClient:
 
             from google.cloud import recommendationengine_v1beta1
 
-            def sample_update_catalog_item():
+            async def sample_update_catalog_item():
                 # Create a client
-                client = recommendationengine_v1beta1.CatalogServiceClient()
+                client = recommendationengine_v1beta1.CatalogServiceAsyncClient()
 
                 # Initialize request argument(s)
                 catalog_item = recommendationengine_v1beta1.CatalogItem()
@@ -597,7 +597,7 @@ class CatalogServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.update_catalog_item(request=request)
+                response = await client.update_catalog_item(request=request)
 
                 # Handle the response
                 print(response)
@@ -711,9 +711,9 @@ class CatalogServiceAsyncClient:
 
             from google.cloud import recommendationengine_v1beta1
 
-            def sample_delete_catalog_item():
+            async def sample_delete_catalog_item():
                 # Create a client
-                client = recommendationengine_v1beta1.CatalogServiceClient()
+                client = recommendationengine_v1beta1.CatalogServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = recommendationengine_v1beta1.DeleteCatalogItemRequest(
@@ -721,7 +721,7 @@ class CatalogServiceAsyncClient:
                 )
 
                 # Make the request
-                client.delete_catalog_item(request=request)
+                await client.delete_catalog_item(request=request)
 
         Args:
             request (Union[google.cloud.recommendationengine_v1beta1.types.DeleteCatalogItemRequest, dict]):
@@ -813,9 +813,9 @@ class CatalogServiceAsyncClient:
 
             from google.cloud import recommendationengine_v1beta1
 
-            def sample_import_catalog_items():
+            async def sample_import_catalog_items():
                 # Create a client
-                client = recommendationengine_v1beta1.CatalogServiceClient()
+                client = recommendationengine_v1beta1.CatalogServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = recommendationengine_v1beta1.ImportCatalogItemsRequest(
@@ -827,7 +827,7 @@ class CatalogServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)

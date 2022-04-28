@@ -807,7 +807,7 @@ def test_create_prediction_api_key_registration_field_headers():
         prediction_apikey_registry_service.CreatePredictionApiKeyRegistrationRequest()
     )
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -827,7 +827,7 @@ def test_create_prediction_api_key_registration_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -843,7 +843,7 @@ async def test_create_prediction_api_key_registration_field_headers_async():
         prediction_apikey_registry_service.CreatePredictionApiKeyRegistrationRequest()
     )
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -863,7 +863,7 @@ async def test_create_prediction_api_key_registration_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -1095,7 +1095,7 @@ def test_list_prediction_api_key_registrations_field_headers():
         prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsRequest()
     )
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1115,7 +1115,7 @@ def test_list_prediction_api_key_registrations_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -1131,7 +1131,7 @@ async def test_list_prediction_api_key_registrations_field_headers_async():
         prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsRequest()
     )
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1151,7 +1151,7 @@ async def test_list_prediction_api_key_registrations_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -1292,7 +1292,7 @@ def test_list_prediction_api_key_registrations_pager(transport_name: str = "grpc
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(
             isinstance(
@@ -1559,7 +1559,7 @@ def test_delete_prediction_api_key_registration_field_headers():
         prediction_apikey_registry_service.DeletePredictionApiKeyRegistrationRequest()
     )
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1577,7 +1577,7 @@ def test_delete_prediction_api_key_registration_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1593,7 +1593,7 @@ async def test_delete_prediction_api_key_registration_field_headers_async():
         prediction_apikey_registry_service.DeletePredictionApiKeyRegistrationRequest()
     )
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1611,7 +1611,7 @@ async def test_delete_prediction_api_key_registration_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 

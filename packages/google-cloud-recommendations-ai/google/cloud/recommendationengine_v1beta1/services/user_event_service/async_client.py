@@ -228,9 +228,9 @@ class UserEventServiceAsyncClient:
 
             from google.cloud import recommendationengine_v1beta1
 
-            def sample_write_user_event():
+            async def sample_write_user_event():
                 # Create a client
-                client = recommendationengine_v1beta1.UserEventServiceClient()
+                client = recommendationengine_v1beta1.UserEventServiceAsyncClient()
 
                 # Initialize request argument(s)
                 user_event = recommendationengine_v1beta1.UserEvent()
@@ -243,7 +243,7 @@ class UserEventServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.write_user_event(request=request)
+                response = await client.write_user_event(request=request)
 
                 # Handle the response
                 print(response)
@@ -355,9 +355,9 @@ class UserEventServiceAsyncClient:
 
             from google.cloud import recommendationengine_v1beta1
 
-            def sample_collect_user_event():
+            async def sample_collect_user_event():
                 # Create a client
-                client = recommendationengine_v1beta1.UserEventServiceClient()
+                client = recommendationengine_v1beta1.UserEventServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = recommendationengine_v1beta1.CollectUserEventRequest(
@@ -366,7 +366,7 @@ class UserEventServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.collect_user_event(request=request)
+                response = await client.collect_user_event(request=request)
 
                 # Handle the response
                 print(response)
@@ -543,9 +543,9 @@ class UserEventServiceAsyncClient:
 
             from google.cloud import recommendationengine_v1beta1
 
-            def sample_list_user_events():
+            async def sample_list_user_events():
                 # Create a client
-                client = recommendationengine_v1beta1.UserEventServiceClient()
+                client = recommendationengine_v1beta1.UserEventServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = recommendationengine_v1beta1.ListUserEventsRequest(
@@ -556,7 +556,7 @@ class UserEventServiceAsyncClient:
                 page_result = client.list_user_events(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -710,9 +710,9 @@ class UserEventServiceAsyncClient:
 
             from google.cloud import recommendationengine_v1beta1
 
-            def sample_purge_user_events():
+            async def sample_purge_user_events():
                 # Create a client
-                client = recommendationengine_v1beta1.UserEventServiceClient()
+                client = recommendationengine_v1beta1.UserEventServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = recommendationengine_v1beta1.PurgeUserEventsRequest(
@@ -725,7 +725,7 @@ class UserEventServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -879,9 +879,9 @@ class UserEventServiceAsyncClient:
 
             from google.cloud import recommendationengine_v1beta1
 
-            def sample_import_user_events():
+            async def sample_import_user_events():
                 # Create a client
-                client = recommendationengine_v1beta1.UserEventServiceClient()
+                client = recommendationengine_v1beta1.UserEventServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = recommendationengine_v1beta1.ImportUserEventsRequest(
@@ -893,7 +893,7 @@ class UserEventServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)

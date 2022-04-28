@@ -244,9 +244,9 @@ class PredictionApiKeyRegistryAsyncClient:
 
             from google.cloud import recommendationengine_v1beta1
 
-            def sample_create_prediction_api_key_registration():
+            async def sample_create_prediction_api_key_registration():
                 # Create a client
-                client = recommendationengine_v1beta1.PredictionApiKeyRegistryClient()
+                client = recommendationengine_v1beta1.PredictionApiKeyRegistryAsyncClient()
 
                 # Initialize request argument(s)
                 request = recommendationengine_v1beta1.CreatePredictionApiKeyRegistrationRequest(
@@ -254,7 +254,7 @@ class PredictionApiKeyRegistryAsyncClient:
                 )
 
                 # Make the request
-                response = client.create_prediction_api_key_registration(request=request)
+                response = await client.create_prediction_api_key_registration(request=request)
 
                 # Handle the response
                 print(response)
@@ -362,9 +362,9 @@ class PredictionApiKeyRegistryAsyncClient:
 
             from google.cloud import recommendationengine_v1beta1
 
-            def sample_list_prediction_api_key_registrations():
+            async def sample_list_prediction_api_key_registrations():
                 # Create a client
-                client = recommendationengine_v1beta1.PredictionApiKeyRegistryClient()
+                client = recommendationengine_v1beta1.PredictionApiKeyRegistryAsyncClient()
 
                 # Initialize request argument(s)
                 request = recommendationengine_v1beta1.ListPredictionApiKeyRegistrationsRequest(
@@ -375,7 +375,7 @@ class PredictionApiKeyRegistryAsyncClient:
                 page_result = client.list_prediction_api_key_registrations(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -487,9 +487,9 @@ class PredictionApiKeyRegistryAsyncClient:
 
             from google.cloud import recommendationengine_v1beta1
 
-            def sample_delete_prediction_api_key_registration():
+            async def sample_delete_prediction_api_key_registration():
                 # Create a client
-                client = recommendationengine_v1beta1.PredictionApiKeyRegistryClient()
+                client = recommendationengine_v1beta1.PredictionApiKeyRegistryAsyncClient()
 
                 # Initialize request argument(s)
                 request = recommendationengine_v1beta1.DeletePredictionApiKeyRegistrationRequest(
@@ -497,7 +497,7 @@ class PredictionApiKeyRegistryAsyncClient:
                 )
 
                 # Make the request
-                client.delete_prediction_api_key_registration(request=request)
+                await client.delete_prediction_api_key_registration(request=request)
 
         Args:
             request (Union[google.cloud.recommendationengine_v1beta1.types.DeletePredictionApiKeyRegistrationRequest, dict]):
