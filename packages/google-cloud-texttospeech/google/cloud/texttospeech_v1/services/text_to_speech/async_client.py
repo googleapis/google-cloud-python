@@ -213,16 +213,16 @@ class TextToSpeechAsyncClient:
 
             from google.cloud import texttospeech_v1
 
-            def sample_list_voices():
+            async def sample_list_voices():
                 # Create a client
-                client = texttospeech_v1.TextToSpeechClient()
+                client = texttospeech_v1.TextToSpeechAsyncClient()
 
                 # Initialize request argument(s)
                 request = texttospeech_v1.ListVoicesRequest(
                 )
 
                 # Make the request
-                response = client.list_voices(request=request)
+                response = await client.list_voices(request=request)
 
                 # Handle the response
                 print(response)
@@ -311,9 +311,9 @@ class TextToSpeechAsyncClient:
 
             from google.cloud import texttospeech_v1
 
-            def sample_synthesize_speech():
+            async def sample_synthesize_speech():
                 # Create a client
-                client = texttospeech_v1.TextToSpeechClient()
+                client = texttospeech_v1.TextToSpeechAsyncClient()
 
                 # Initialize request argument(s)
                 input = texttospeech_v1.SynthesisInput()
@@ -332,7 +332,7 @@ class TextToSpeechAsyncClient:
                 )
 
                 # Make the request
-                response = client.synthesize_speech(request=request)
+                response = await client.synthesize_speech(request=request)
 
                 # Handle the response
                 print(response)
