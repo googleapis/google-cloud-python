@@ -28,6 +28,7 @@ from google.protobuf import duration_pb2
 from google.protobuf import timestamp_pb2
 
 
+__protobuf__ = proto.module(package=__name__)
 SEED = int(time.time())
 logging.info(f"Starting rest streaming tests with random seed: {SEED}")
 random.seed(SEED)
