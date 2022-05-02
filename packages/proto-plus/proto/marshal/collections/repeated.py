@@ -104,7 +104,13 @@ class RepeatedComposite(Repeated):
         if len(self.pb) > 0:
             return type(self.pb[0])
 
-        # We have no members in the list.
+        # We have no members in the list, so we get the type from the attributes.
+        if hasattr(self.pb, "_message_descriptor") and hasattr(
+            self.pb._message_descriptor, "_concrete_class"
+        ):
+            return self.pb._message_descriptor._concrete_class
+
+        # Fallback logic in case attributes are not available
         # In order to get the type, we create a throw-away copy and add a
         # blank member to it.
         canary = copy.deepcopy(self.pb).add()
