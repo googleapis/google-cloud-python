@@ -12,8 +12,12 @@ branchProtectionRules:
     - 'unit (3.7)'
     - 'unit (3.7, cpp)'
     - 'unit (3.8)'
-    # - 'unit (3.9, cpp)' # Don't have binary wheels for 3.9 cpp protobuf yet
+    - 'unit (3.9, cpp)'
     - 'unit (3.9)'
+    - 'unit (3.10, cpp)'
+    - 'unit (3.10)'
+    - cover
+    - OwlBot Post Processor
     - 'cla/google'
   requiredApprovingReviewCount: 1
   requiresCodeOwnerReviews: true
