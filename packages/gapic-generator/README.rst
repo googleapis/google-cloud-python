@@ -1,7 +1,7 @@
 API Client Generator for Python
 ===============================
 
-|release level| |ci| |docs| |codecov|
+|release level| |docs|
 
     A generator for protocol buffer described APIs for and in Python 3.
 
@@ -32,7 +32,3 @@ Documentation
   :target: https://cloud.google.com/terms/launch-stages
 .. |docs| image:: https://readthedocs.org/projects/gapic-generator-python/badge/?version=latest
   :target: https://gapic-generator-python.readthedocs.io/
-.. |ci| image:: https://circleci.com/gh/googleapis/gapic-generator-python.svg?style=shield
-  :target: https://circleci.com/gh/googleapis/gapic-generator-python
-.. |codecov| image:: https://codecov.io/gh/googleapis/gapic-generator-python/graph/badge.svg
-  :target: https://codecov.io/gh/googleapis/gapic-generator-python

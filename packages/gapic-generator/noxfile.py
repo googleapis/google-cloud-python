@@ -170,14 +170,10 @@ def showcase_library(
 ):
     """Install the generated library into the session for showcase tests."""
 
-    # Try to make it clear if Showcase is not running, so that
-    # people do not end up with tons of difficult-to-debug failures over
-    # an obvious problem.
-    if not os.environ.get("CIRCLECI"):
-        session.log("-" * 70)
-        session.log("Note: Showcase must be running for these tests to work.")
-        session.log("See https://github.com/googleapis/gapic-showcase")
-        session.log("-" * 70)
+    session.log("-" * 70)
+    session.log("Note: Showcase must be running for these tests to work.")
+    session.log("See https://github.com/googleapis/gapic-showcase")
+    session.log("-" * 70)
 
     # Install gapic-generator-python
     session.install("-e", ".")
