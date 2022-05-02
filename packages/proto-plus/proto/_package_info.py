@@ -33,10 +33,11 @@ def compile(name, attrs):
     # Pull a reference to the module where this class is being
     # declared.
     module = sys.modules.get(attrs.get("__module__"))
+    module_name = module.__name__ if hasattr(module, __name__) else ""
     proto_module = getattr(module, "__protobuf__", object())
 
     # A package should be present; get the marshal from there.
-    package = getattr(proto_module, "package", "")
+    package = getattr(proto_module, "package", module_name)
     marshal = Marshal(name=getattr(proto_module, "marshal", package))
 
     # Done; return the data.
