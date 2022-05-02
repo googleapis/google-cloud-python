@@ -75,28 +75,20 @@ the usual ways. It fundamentally provides a CLI command,
 ``snake_case`` is weird, sorry), so you will want to install using a mechanism
 that is conducive to making CLI commands available.
 
-Additionally, this program currently only runs against Python 3.6 or
-Python 3.7, so you will need that installed. (Most Linux distributions ship
-with earlier versions.) Use `pyenv`_ to get Python 3.7 installed in a
-friendly way.
-
 .. code-block:: shell
 
-    # Due to its experimental state, this tool is not published to a
-    # package manager; you should clone it.
-    # (You can pip install it from GitHub, not not if you want to tinker.)
-    git clone https://github.com/googleapis/gapic-generator-python.git
-    cd gapic-generator-python/
+    # Install this package using
+    pip install gapic-generator
 
-	# Install a version of python that is supported by the microgenerator.
-	# We use 3.8.6 as an example.
-	# You may need to install additional packages in order to
-	# build python from source.
-	# Setting a 'global' python is convenient for development but may interfere
-	# with other system activities. Adjust as your environment requires.
-	pyenv install 3.8.6 && pyenv global 3.8.6
+    # Install a version of python that is supported by the microgenerator.
+    # We use 3.9.12 as an example.
+    # You may need to install additional packages in order to
+    # build python from source.
+    # Setting a 'global' python is convenient for development but may interfere
+    # with other system activities. Adjust as your environment requires.
+    pyenv install 3.9.12 && pyenv global 3.9.12
 
-	# Install the tool. This will handle the virtualenv for you, and
+    # Install the tool. This will handle the virtualenv for you, and
     # make an appropriately-aliased executable.
     # The `--editable` flag is only necessary if you want to work on the
     # tool (as opposed to just use it).
