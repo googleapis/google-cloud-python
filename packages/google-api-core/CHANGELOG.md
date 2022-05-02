@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-api-core/#history
 
+### [2.7.3](https://github.com/googleapis/python-api-core/compare/v2.7.2...v2.7.3) (2022-04-29)
+
+
+### Bug Fixes
+
+* Avoid AttributeError if grpcio-status is not installed ([#370](https://github.com/googleapis/python-api-core/issues/370)) ([022add1](https://github.com/googleapis/python-api-core/commit/022add16266f9c07f0f88eea13472cc2e0bfc991))
+
 ### [2.7.2](https://github.com/googleapis/python-api-core/compare/v2.7.1...v2.7.2) (2022-04-13)
 
 
