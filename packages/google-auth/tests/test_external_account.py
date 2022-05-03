@@ -275,9 +275,110 @@ class TestCredentials(object):
         assert request_kwargs["headers"] == headers
         assert "body" not in request_kwargs
 
-    def test_default_state(self):
-        credentials = self.make_credentials()
+    def test_valid_token_url_shall_pass_validation(self):
+        valid_urls = [
+            "https://sts.googleapis.com",
+            "https://us-east-1.sts.googleapis.com",
+            "https://US-EAST-1.sts.googleapis.com",
+            "https://sts.us-east-1.googleapis.com",
+            "https://sts.US-WEST-1.googleapis.com",
+            "https://us-east-1-sts.googleapis.com",
+            "https://US-WEST-1-sts.googleapis.com",
+            "https://us-west-1-sts.googleapis.com/path?query",
+        ]
 
+        for url in valid_urls:
+            # A valid url shouldn't throw exception and a None value should be returned
+            external_account.Credentials.validate_token_url(url)
+
+    def test_invalid_token_url_shall_throw_exceptions(self):
+        invalid_urls = [
+            "https://iamcredentials.googleapis.com",
+            "sts.googleapis.com",
+            "https://",
+            "http://sts.googleapis.com",
+            "https://st.s.googleapis.com",
+            "https://us-eas\t-1.sts.googleapis.com",
+            "https:/us-east-1.sts.googleapis.com",
+            "https://US-WE/ST-1-sts.googleapis.com",
+            "https://sts-us-east-1.googleapis.com",
+            "https://sts-US-WEST-1.googleapis.com",
+            "testhttps://us-east-1.sts.googleapis.com",
+            "https://us-east-1.sts.googleapis.comevil.com",
+            "https://us-east-1.us-east-1.sts.googleapis.com",
+            "https://us-ea.s.t.sts.googleapis.com",
+            "https://sts.googleapis.comevil.com",
+            "hhttps://us-east-1.sts.googleapis.com",
+            "https://us- -1.sts.googleapis.com",
+            "https://-sts.googleapis.com",
+            "https://us-east-1.sts.googleapis.com.evil.com",
+        ]
+
+        for url in invalid_urls:
+            # An invalid url should throw a ValueError exception
+            with pytest.raises(ValueError) as excinfo:
+                external_account.Credentials.validate_token_url(url)
+
+            assert excinfo.match("The provided token URL is invalid.")
+
+    def test_valid_service_account_impersonation_url_shall_pass_validation(self):
+        valid_urls = [
+            "https://iamcredentials.googleapis.com",
+            "https://us-east-1.iamcredentials.googleapis.com",
+            "https://US-EAST-1.iamcredentials.googleapis.com",
+            "https://iamcredentials.us-east-1.googleapis.com",
+            "https://iamcredentials.US-WEST-1.googleapis.com",
+            "https://us-east-1-iamcredentials.googleapis.com",
+            "https://US-WEST-1-iamcredentials.googleapis.com",
+            "https://us-west-1-iamcredentials.googleapis.com/path?query",
+        ]
+
+        for url in valid_urls:
+            # A valid url shouldn't throw exception and a None value should be returned
+            external_account.Credentials.validate_service_account_impersonation_url(url)
+
+    def test_invalid_service_account_impersonate_url_shall_throw_exceptions(self):
+        invalid_urls = [
+            "https://sts.googleapis.com",
+            "iamcredentials.googleapis.com",
+            "https://",
+            "http://iamcredentials.googleapis.com",
+            "https://iamcre.dentials.googleapis.com",
+            "https://us-eas\t-1.iamcredentials.googleapis.com",
+            "https:/us-east-1.iamcredentials.googleapis.com",
+            "https://US-WE/ST-1-iamcredentials.googleapis.com",
+            "https://iamcredentials-us-east-1.googleapis.com",
+            "https://iamcredentials-US-WEST-1.googleapis.com",
+            "testhttps://us-east-1.iamcredentials.googleapis.com",
+            "https://us-east-1.iamcredentials.googleapis.comevil.com",
+            "https://us-east-1.us-east-1.iamcredentials.googleapis.com",
+            "https://us-ea.s.t.iamcredentials.googleapis.com",
+            "https://iamcredentials.googleapis.comevil.com",
+            "hhttps://us-east-1.iamcredentials.googleapis.com",
+            "https://us- -1.iamcredentials.googleapis.com",
+            "https://-iamcredentials.googleapis.com",
+            "https://us-east-1.iamcredentials.googleapis.com.evil.com",
+        ]
+
+        for url in invalid_urls:
+            # An invalid url should throw a ValueError exception
+            with pytest.raises(ValueError) as excinfo:
+                external_account.Credentials.validate_service_account_impersonation_url(
+                    url
+                )
+
+            assert excinfo.match(
+                "The provided service account impersonation URL is invalid."
+            )
+
+    def test_default_state(self):
+        credentials = self.make_credentials(
+            service_account_impersonation_url=self.SERVICE_ACCOUNT_IMPERSONATION_URL
+        )
+
+        # Token url and service account impersonation url should be set
+        assert credentials._token_url
+        assert credentials._service_account_impersonation_url
         # Not token acquired yet
         assert not credentials.token
         assert not credentials.valid
@@ -288,6 +389,31 @@ class TestCredentials(object):
         assert not credentials.scopes
         assert credentials.requires_scopes
         assert not credentials.quota_project_id
+
+    def test_invalid_token_url(self):
+        with pytest.raises(ValueError) as excinfo:
+            CredentialsImpl(
+                audience=self.AUDIENCE,
+                subject_token_type=self.SUBJECT_TOKEN_TYPE,
+                token_url="https:///v1/token",
+                credential_source=self.CREDENTIAL_SOURCE,
+            )
+
+        assert excinfo.match("The provided token URL is invalid.")
+
+    def test_invalid_service_account_impersonate_url(self):
+        with pytest.raises(ValueError) as excinfo:
+            CredentialsImpl(
+                audience=self.AUDIENCE,
+                subject_token_type=self.SUBJECT_TOKEN_TYPE,
+                token_url=self.TOKEN_URL,
+                credential_source=self.CREDENTIAL_SOURCE,
+                service_account_impersonation_url=12345,  # create an exception by sending to parse url
+            )
+
+        assert excinfo.match(
+            "The provided service account impersonation URL is invalid."
+        )
 
     def test_nonworkforce_with_workforce_pool_user_project(self):
         with pytest.raises(ValueError) as excinfo:

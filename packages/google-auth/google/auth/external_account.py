@@ -34,6 +34,7 @@ import json
 import re
 
 import six
+from urllib3.util import parse_url
 
 from google.auth import _helpers
 from google.auth import credentials
@@ -113,6 +114,12 @@ class Credentials(credentials.Scoped, credentials.CredentialsWithQuotaProject):
         self._scopes = scopes
         self._default_scopes = default_scopes
         self._workforce_pool_user_project = workforce_pool_user_project
+
+        Credentials.validate_token_url(token_url)
+        if service_account_impersonation_url:
+            Credentials.validate_service_account_impersonation_url(
+                service_account_impersonation_url
+            )
 
         if self._client_id:
             self._client_auth = utils.ClientAuthentication(
@@ -413,3 +420,51 @@ class Credentials(credentials.Scoped, credentials.CredentialsWithQuotaProject):
             quota_project_id=self._quota_project_id,
             iam_endpoint_override=self._service_account_impersonation_url,
         )
+
+    @staticmethod
+    def validate_token_url(token_url):
+        _TOKEN_URL_PATTERNS = [
+            "^[^\\.\\s\\/\\\\]+\\.sts\\.googleapis\\.com$",
+            "^sts\\.googleapis\\.com$",
+            "^sts\\.[^\\.\\s\\/\\\\]+\\.googleapis\\.com$",
+            "^[^\\.\\s\\/\\\\]+\\-sts\\.googleapis\\.com$",
+        ]
+
+        if not Credentials.is_valid_url(_TOKEN_URL_PATTERNS, token_url):
+            raise ValueError("The provided token URL is invalid.")
+
+    @staticmethod
+    def validate_service_account_impersonation_url(url):
+        _SERVICE_ACCOUNT_IMPERSONATION_URL_PATTERNS = [
+            "^[^\\.\\s\\/\\\\]+\\.iamcredentials\\.googleapis\\.com$",
+            "^iamcredentials\\.googleapis\\.com$",
+            "^iamcredentials\\.[^\\.\\s\\/\\\\]+\\.googleapis\\.com$",
+            "^[^\\.\\s\\/\\\\]+\\-iamcredentials\\.googleapis\\.com$",
+        ]
+
+        if not Credentials.is_valid_url(
+            _SERVICE_ACCOUNT_IMPERSONATION_URL_PATTERNS, url
+        ):
+            raise ValueError(
+                "The provided service account impersonation URL is invalid."
+            )
+
+    @staticmethod
+    def is_valid_url(patterns, url):
+        """
+        Returns True if the provided URL's scheme is HTTPS and the host comforms to at least one of the provided patterns.
+        """
+        # Check specifically for whitespcaces:
+        #   Some python3.6 will parse the space character into %20 and pass the regex check which shouldn't be passed
+        if not url or len(str(url).split()) > 1:
+            return False
+
+        try:
+            uri = parse_url(url)
+        except Exception:
+            return False
+
+        if not uri.scheme or uri.scheme != "https" or not uri.hostname:
+            return False
+
+        return any(re.compile(p).match(uri.hostname.lower()) for p in patterns)
