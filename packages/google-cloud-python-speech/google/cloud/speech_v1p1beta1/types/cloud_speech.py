@@ -402,6 +402,15 @@ class RecognitionConfig(proto.Message):
                     <td><b>Description</b></td>
                   </tr>
                   <tr>
+                    <td><code>latest_long</code></td>
+                    <td>Best for long form content like media or conversation.</td>
+                  </tr>
+                  <tr>
+                    <td><code>latest_short</code></td>
+                    <td>Best for short form content like commands or single shot directed
+                    speech.</td>
+                  </tr>
+                  <tr>
                     <td><code>command_and_search</code></td>
                     <td>Best for short queries such as voice commands or voice search.</td>
                   </tr>
