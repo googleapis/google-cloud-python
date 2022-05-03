@@ -1,7 +1,8 @@
 {
-    "name": "gapic-generator-python",
+    "name": "gapic-generator",
     "name_pretty": "Google API Client Generator for Python",
     "client_documentation": "https://gapic-generator-python.readthedocs.io/en/stable/",
+    "product_documentation": "",
     "issue_tracker": "https://github.com/googleapis/gapic-generator-python/issues",
     "release_level": "preview",
     "language": "python",

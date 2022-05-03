@@ -18,7 +18,18 @@ from synthtool.gcp import CommonTemplates
 templated_files = CommonTemplates().py_library()
 s.move(
     templated_files / ".kokoro",
-    excludes=["samples/**/*", "test-samples*"],
+    excludes=["samples/**/*", "test-samples*", "publish-docs.sh"],
 )
+
+# remove docfx build
+assert 1 == s.replace(
+    ".kokoro/docs/docs-presubmit.cfg",
+    'value: "docs docfx"',
+    'value: "docs"',
+)
+
+# needed for docs build
+s.move(templated_files / ".trampolinerc")
+
 s.move(templated_files / "LICENSE")
 s.move(templated_files / ".github", excludes=["workflows", "CODEOWNERS"])

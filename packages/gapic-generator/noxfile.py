@@ -422,7 +422,7 @@ def snippetgen(session):
     session.run("py.test", "-vv", "tests/snippetgen")
 
 
-@nox.session(python="3.9")
+@nox.session(python="3.8")
 def docs(session):
     """Build the docs."""
 
