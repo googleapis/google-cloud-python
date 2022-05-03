@@ -1,6 +1,13 @@
 # Changelog
 
 
+### [0.65.3](https://github.com/googleapis/gapic-generator-python/compare/v0.65.2...v0.65.3) (2022-05-03)
+
+
+### Bug Fixes
+
+* don't use stale session in rest transport ([#1291](https://github.com/googleapis/gapic-generator-python/issues/1291)) ([a96ef9e](https://github.com/googleapis/gapic-generator-python/commit/a96ef9ef3f99b0114f1d5630ee6e8907dd24bec2))
+
 ### [0.65.2](https://github.com/googleapis/gapic-generator-python/compare/v0.65.1...v0.65.2) (2022-04-21)
 
 
