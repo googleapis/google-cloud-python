@@ -1,5 +1,29 @@
 # Changelog
 
+## [1.11.0](https://github.com/googleapis/python-dialogflow-cx/compare/v1.10.0...v1.11.0) (2022-05-03)
+
+
+### Features
+
+* added data format specification for export agent ([1844193](https://github.com/googleapis/python-dialogflow-cx/commit/1844193788ce3d9f66f2822846b31f469f34f530))
+* **v3:** add support for locking an agent for changes ([#276](https://github.com/googleapis/python-dialogflow-cx/issues/276)) ([1844193](https://github.com/googleapis/python-dialogflow-cx/commit/1844193788ce3d9f66f2822846b31f469f34f530))
+* **v3:** added audio_export_settings ([#300](https://github.com/googleapis/python-dialogflow-cx/issues/300)) ([b225dfe](https://github.com/googleapis/python-dialogflow-cx/commit/b225dfe9371e89ee54e483888b7ed36d8374e011))
+* **v3beta1:** added data format specification for export agent ([72e624a](https://github.com/googleapis/python-dialogflow-cx/commit/72e624ae6430fd454380cdf6e348dbe763e56e6f))
+* **v3beta1:** added support for locking an agent for changes ([#281](https://github.com/googleapis/python-dialogflow-cx/issues/281)) ([72e624a](https://github.com/googleapis/python-dialogflow-cx/commit/72e624ae6430fd454380cdf6e348dbe763e56e6f))
+
+
+### Documentation
+
+* improved docs format ([#275](https://github.com/googleapis/python-dialogflow-cx/issues/275)) ([560e6a4](https://github.com/googleapis/python-dialogflow-cx/commit/560e6a478a7daaf1ac9fac23ca01390a6e7699a7))
+* minor wording update ([#294](https://github.com/googleapis/python-dialogflow-cx/issues/294)) ([f660888](https://github.com/googleapis/python-dialogflow-cx/commit/f660888d55f5aab2b40d5e7f0b214e3e8ba01864))
+* **samples:** Adds snippet for configuring a webhook to enable an agent response. ([#306](https://github.com/googleapis/python-dialogflow-cx/issues/306)) ([c0cc924](https://github.com/googleapis/python-dialogflow-cx/commit/c0cc924a257740e68d244c265c6406a8d6888cc5))
+* **samples:** Adds snippet for configuring optional or required form parameters ([#305](https://github.com/googleapis/python-dialogflow-cx/issues/305)) ([720c0bd](https://github.com/googleapis/python-dialogflow-cx/commit/720c0bdd0f5707a2c71c9d32a91f06f86c48a98e))
+* **samples:** Adds snippet for validating a form parameter. ([#302](https://github.com/googleapis/python-dialogflow-cx/issues/302)) ([8cfe6a1](https://github.com/googleapis/python-dialogflow-cx/commit/8cfe6a15b18b558faa2cd5ceb8dc7b291add4444))
+* **samples:** Configure session parameters snippet ([#303](https://github.com/googleapis/python-dialogflow-cx/issues/303)) ([ace3936](https://github.com/googleapis/python-dialogflow-cx/commit/ace393696fdec8040bd5b23daa09f80183ad9125))
+* **samples:** Configure session parameters trigger transition ([#304](https://github.com/googleapis/python-dialogflow-cx/issues/304)) ([d6cab9d](https://github.com/googleapis/python-dialogflow-cx/commit/d6cab9dd6db83aea15548795a0fc449f72a2b56f))
+* **v3beta1:** added explanation for uri fields in resources ([#273](https://github.com/googleapis/python-dialogflow-cx/issues/273)) ([01b0f8f](https://github.com/googleapis/python-dialogflow-cx/commit/01b0f8f795d06609b370ba7568db753152764d9b))
+* **v3beta1:** improved docs format ([01b0f8f](https://github.com/googleapis/python-dialogflow-cx/commit/01b0f8f795d06609b370ba7568db753152764d9b))
+
 ## [1.10.0](https://github.com/googleapis/python-dialogflow-cx/compare/v1.9.1...v1.10.0) (2022-03-10)
 
 
