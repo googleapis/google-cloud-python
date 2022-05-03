@@ -1941,6 +1941,28 @@ def test_{{ service.name|snake_case }}_host_with_port(transport_name):
     )
     {% endwith %}
 
+{% if 'rest' in opts.transport %}
+@pytest.mark.parametrize("transport_name", [
+    "rest",
+])
+def test_{{ service.name|snake_case }}_client_transport_session_collision(transport_name):
+    creds1 = ga_credentials.AnonymousCredentials()
+    creds2 = ga_credentials.AnonymousCredentials()
+    client1 = {{ service.client_name }}(
+        credentials=creds1,
+        transport=transport_name,
+    )
+    client2 = {{ service.client_name }}(
+        credentials=creds2,
+        transport=transport_name,
+    )
+    {% for method in service.methods.values() %}
+    session1 = client1.transport.{{ method.transport_safe_name|snake_case }}._session
+    session2 = client2.transport.{{ method.transport_safe_name|snake_case }}._session
+    assert session1 != session2
+    {% endfor %}
+{% endif -%}
+
 {% if 'grpc' in opts.transport %}
 def test_{{ service.name|snake_case }}_grpc_transport_channel():
     channel = grpc.secure_channel('http://localhost/', grpc.local_channel_credentials())

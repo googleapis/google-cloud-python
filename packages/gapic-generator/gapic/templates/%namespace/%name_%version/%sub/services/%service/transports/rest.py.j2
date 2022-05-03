@@ -129,7 +129,6 @@ class {{service.name}}RestTransport({{service.name}}Transport):
 
     It sends JSON representations of protocol buffers over HTTP/1.1
     """
-    _STUBS: Dict[str, {{service.name}}RestStub] = {}
 
 
     {# TODO(yon-mg): handle mtls stuff if that is relevant for rest transport #}
@@ -399,13 +398,9 @@ class {{service.name}}RestTransport({{service.name}}Transport):
     def {{method.transport_safe_name|snake_case}}(self) -> Callable[
             [{{method.input.ident}}],
             {{method.output.ident}}]:
-        stub = self._STUBS.get("{{method.transport_safe_name|snake_case}}")
-        if not stub:
-            stub = self._STUBS["{{method.transport_safe_name|snake_case}}"] = self._{{method.name}}(self._session, self._host, self._interceptor)
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub # type: ignore
+        return self._{{method.name}}(self._session, self._host, self._interceptor) # type: ignore
 
     {% endfor %}
 
