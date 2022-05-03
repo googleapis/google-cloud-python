@@ -46,6 +46,8 @@ s.replace(
 
 python.py_samples(skip_readmes=True)
 
+python.configure_previous_major_version_branches()
+
 # ----------------------------------------------------------------------------
 # Run blacken session
 # ----------------------------------------------------------------------------
