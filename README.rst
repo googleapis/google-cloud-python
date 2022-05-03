@@ -103,6 +103,9 @@ Libraries
    * - `AutoML <https://github.com/googleapis/python-automl>`_
      - |stable|
      - |PyPI-google-cloud-automl|
+   * - `Bare Metal Solution <https://github.com/googleapis/python-bare-metal-solution>`_
+     - |stable|
+     - |PyPI-google-cloud-bare-metal-solution|
    * - `BigQuery <https://github.com/googleapis/python-bigquery>`_
      - |stable|
      - |PyPI-google-cloud-bigquery|
@@ -166,6 +169,9 @@ Libraries
    * - `Database Migration Service <https://github.com/googleapis/python-dms>`_
      - |stable|
      - |PyPI-google-cloud-dms|
+   * - `Dataplex API <https://github.com/googleapis/python-dataplex>`_
+     - |stable|
+     - |PyPI-google-cloud-dataplex|
    * - `Dataproc <https://github.com/googleapis/python-dataproc>`_
      - |stable|
      - |PyPI-google-cloud-dataproc|
@@ -277,6 +283,9 @@ Libraries
    * - `OS Login <https://github.com/googleapis/python-oslogin>`_
      - |stable|
      - |PyPI-google-cloud-os-login|
+   * - `Optimization <https://github.com/googleapis/python-optimization>`_
+     - |stable|
+     - |PyPI-google-cloud-optimization|
    * - `Pandas Data Types for SQL systems (BigQuery, Spanner) <https://github.com/googleapis/python-db-dtypes-pandas>`_
      - |stable|
      - |PyPI-db-dtypes|
@@ -406,9 +415,6 @@ Libraries
    * - `Audit Log <https://github.com/googleapis/python-audit-log>`_
      - |preview|
      - |PyPI-google-cloud-audit-log|
-   * - `Bare Metal Solution <https://github.com/googleapis/python-bare-metal-solution>`_
-     - |preview|
-     - |PyPI-google-cloud-bare-metal-solution|
    * - `BigQuery Analytics Hub <https://github.com/googleapis/python-bigquery-data-exchange>`_
      - |preview|
      - |PyPI-google-cloud-bigquery-data-exchange|
@@ -433,9 +439,6 @@ Libraries
    * - `Dataflow <https://github.com/googleapis/python-dataflow-client>`_
      - |preview|
      - |PyPI-google-cloud-dataflow-client|
-   * - `Dataplex API <https://github.com/googleapis/python-dataplex>`_
-     - |preview|
-     - |PyPI-google-cloud-dataplex|
    * - `Error Reporting <https://github.com/googleapis/python-error-reporting>`_
      - |preview|
      - |PyPI-google-cloud-error-reporting|
@@ -460,9 +463,6 @@ Libraries
    * - `Network Services <https://github.com/googleapis/python-network-services>`_
      - |preview|
      - |PyPI-google-cloud-network-services|
-   * - `Optimization <https://github.com/googleapis/python-optimization>`_
-     - |preview|
-     - |PyPI-google-cloud-optimization|
    * - `Phishing Protection <https://github.com/googleapis/python-phishingprotection>`_
      - |preview|
      - |PyPI-google-cloud-phishing-protection|
@@ -507,6 +507,8 @@ Libraries
      :target: https://pypi.org/project/google-cloud-assured-workloads
 .. |PyPI-google-cloud-automl| image:: https://img.shields.io/pypi/v/google-cloud-automl.svg
      :target: https://pypi.org/project/google-cloud-automl
+.. |PyPI-google-cloud-bare-metal-solution| image:: https://img.shields.io/pypi/v/google-cloud-bare-metal-solution.svg
+     :target: https://pypi.org/project/google-cloud-bare-metal-solution
 .. |PyPI-google-cloud-bigquery| image:: https://img.shields.io/pypi/v/google-cloud-bigquery.svg
      :target: https://pypi.org/project/google-cloud-bigquery
 .. |PyPI-google-cloud-bigquery-connection| image:: https://img.shields.io/pypi/v/google-cloud-bigquery-connection.svg
@@ -549,6 +551,8 @@ Libraries
      :target: https://pypi.org/project/google-cloud-dlp
 .. |PyPI-google-cloud-dms| image:: https://img.shields.io/pypi/v/google-cloud-dms.svg
      :target: https://pypi.org/project/google-cloud-dms
+.. |PyPI-google-cloud-dataplex| image:: https://img.shields.io/pypi/v/google-cloud-dataplex.svg
+     :target: https://pypi.org/project/google-cloud-dataplex
 .. |PyPI-google-cloud-dataproc| image:: https://img.shields.io/pypi/v/google-cloud-dataproc.svg
      :target: https://pypi.org/project/google-cloud-dataproc
 .. |PyPI-google-cloud-dataproc-metastore| image:: https://img.shields.io/pypi/v/google-cloud-dataproc-metastore.svg
@@ -623,6 +627,8 @@ Libraries
      :target: https://pypi.org/project/google-cloud-network-management
 .. |PyPI-google-cloud-os-login| image:: https://img.shields.io/pypi/v/google-cloud-os-login.svg
      :target: https://pypi.org/project/google-cloud-os-login
+.. |PyPI-google-cloud-optimization| image:: https://img.shields.io/pypi/v/google-cloud-optimization.svg
+     :target: https://pypi.org/project/google-cloud-optimization
 .. |PyPI-db-dtypes| image:: https://img.shields.io/pypi/v/db-dtypes.svg
      :target: https://pypi.org/project/db-dtypes
 .. |PyPI-google-cloud-private-ca| image:: https://img.shields.io/pypi/v/google-cloud-private-ca.svg
@@ -709,8 +715,6 @@ Libraries
      :target: https://pypi.org/project/google-area120-tables
 .. |PyPI-google-cloud-audit-log| image:: https://img.shields.io/pypi/v/google-cloud-audit-log.svg
      :target: https://pypi.org/project/google-cloud-audit-log
-.. |PyPI-google-cloud-bare-metal-solution| image:: https://img.shields.io/pypi/v/google-cloud-bare-metal-solution.svg
-     :target: https://pypi.org/project/google-cloud-bare-metal-solution
 .. |PyPI-google-cloud-bigquery-data-exchange| image:: https://img.shields.io/pypi/v/google-cloud-bigquery-data-exchange.svg
      :target: https://pypi.org/project/google-cloud-bigquery-data-exchange
 .. |PyPI-google-cloud-bigquery-migration| image:: https://img.shields.io/pypi/v/google-cloud-bigquery-migration.svg
@@ -727,8 +731,6 @@ Libraries
      :target: https://pypi.org/project/google-cloud-data-qna
 .. |PyPI-google-cloud-dataflow-client| image:: https://img.shields.io/pypi/v/google-cloud-dataflow-client.svg
      :target: https://pypi.org/project/google-cloud-dataflow-client
-.. |PyPI-google-cloud-dataplex| image:: https://img.shields.io/pypi/v/google-cloud-dataplex.svg
-     :target: https://pypi.org/project/google-cloud-dataplex
 .. |PyPI-google-cloud-error-reporting| image:: https://img.shields.io/pypi/v/google-cloud-error-reporting.svg
      :target: https://pypi.org/project/google-cloud-error-reporting
 .. |PyPI-google-cloud-eventarc-publishing| image:: https://img.shields.io/pypi/v/google-cloud-eventarc-publishing.svg
@@ -745,8 +747,6 @@ Libraries
      :target: https://pypi.org/project/google-cloud-network-security
 .. |PyPI-google-cloud-network-services| image:: https://img.shields.io/pypi/v/google-cloud-network-services.svg
      :target: https://pypi.org/project/google-cloud-network-services
-.. |PyPI-google-cloud-optimization| image:: https://img.shields.io/pypi/v/google-cloud-optimization.svg
-     :target: https://pypi.org/project/google-cloud-optimization
 .. |PyPI-google-cloud-phishing-protection| image:: https://img.shields.io/pypi/v/google-cloud-phishing-protection.svg
      :target: https://pypi.org/project/google-cloud-phishing-protection
 .. |PyPI-google-cloud-private-catalog| image:: https://img.shields.io/pypi/v/google-cloud-private-catalog.svg
