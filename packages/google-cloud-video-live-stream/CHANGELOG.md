@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.1.3](https://github.com/googleapis/python-video-live-stream/compare/v0.1.2...v0.1.3) (2022-05-03)
+
+
+### Documentation
+
+* **samples:** add sample for creating a channel with a failover backup input ([#37](https://github.com/googleapis/python-video-live-stream/issues/37)) ([9587382](https://github.com/googleapis/python-video-live-stream/commit/958738237c7c055a3a656ce2c3a7964e49d6b6b1))
+
 ### [0.1.2](https://github.com/googleapis/python-video-live-stream/compare/v0.1.1...v0.1.2) (2022-04-28)
 
 
