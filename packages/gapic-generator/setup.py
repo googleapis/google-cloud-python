@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+#
 # Copyright 2018 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,63 +17,65 @@
 import io
 import os
 
-from setuptools import find_packages, setup  # type: ignore
+import setuptools
 
-
-PACKAGE_ROOT = os.path.abspath(os.path.dirname(__file__))
-
+name = "gapic-generator"
+description = "Google API Client Generator for Python"
+url = "https://github.com/googleapis/gapic-generator-python"
 version = "0.65.2"
+release_status = "Development Status :: 4 - Beta"
+dependencies = [
+    "click >= 6.7",
+    "google-api-core >= 2.3.2",
+    "googleapis-common-protos >= 1.55.0",
+    "grpcio >= 1.24.3",
+    "jinja2 >= 2.10",
+    "protobuf >= 3.18.0",
+    "pypandoc >= 1.4",
+    "PyYAML >= 5.1.1",
+    "dataclasses < 0.8; python_version < '3.7'",
+    "grpc-google-iam-v1 >= 0.12.4, < 1.0.0dev",
+]
 
-with io.open(os.path.join(PACKAGE_ROOT, "README.rst")) as file_obj:
-    README = file_obj.read()
+package_root = os.path.abspath(os.path.dirname(__file__))
 
-setup(
-    name="gapic-generator",
+readme_filename = os.path.join(package_root, "README.rst")
+with io.open(readme_filename, encoding="utf-8") as readme_file:
+    readme = readme_file.read()
+
+setuptools.setup(
+    name=name,
     version=version,
-    license="Apache 2.0",
-    author="Dov Shlachter",
-    author_email="dovs@google.com",
-    url="https://github.com/googleapis/gapic-generator-python.git",
-    packages=find_packages(exclude=["docs", "tests"]),
-    description="Python client library generator for APIs defined by protocol"
-    "buffers",
-    long_description=README,
+    description=description,
+    long_description=readme,
     entry_points="""[console_scripts]
         protoc-gen-dump=gapic.cli.dump:dump
         protoc-gen-python_gapic=gapic.cli.generate:generate
     """,
-    platforms="Posix; MacOS X",
-    include_package_data=True,
-    install_requires=(
-        # There is a typing issue with click==8.1.0
-        # See https://github.com/pallets/click/issues/2227
-        "click >= 6.7,!=8.1.0",
-        "google-api-core >= 2.3.2",
-        "googleapis-common-protos >= 1.55.0",
-        "grpcio >= 1.24.3",
-        "jinja2 >= 2.10",
-        "protobuf >= 3.18.0",
-        "pypandoc >= 1.4",
-        "PyYAML >= 5.1.1",
-        "dataclasses < 0.8; python_version < '3.7'",
-        "grpc-google-iam-v1 >= 0.12.3, < 0.13dev",
-    ),
-    extras_require={':python_version<"3.7"': ("dataclasses >= 0.4, < 0.8",),},
-    tests_require=("pyfakefs >= 3.6",),
-    python_requires=">=3.6",
-    classifiers=(
-        "Development Status :: 4 - Beta",
+    author="Google LLC",
+    author_email="googleapis-packages@google.com",
+    license="Apache 2.0",
+    packages=setuptools.find_packages(exclude=["docs", "tests"]),
+    url=url,
+    classifiers=[
+        release_status,
         "Environment :: Console",
         "Intended Audience :: Developers",
         "License :: OSI Approved :: Apache Software License",
-        "Operating System :: POSIX",
+        "Programming Language :: Python",
+        "Programming Language :: Python :: 3",
         "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
+        "Operating System :: OS Independent",
         "Topic :: Software Development :: Code Generators",
         "Topic :: Software Development :: Libraries :: Python Modules",
-    ),
+    ],
+    platforms="Posix; MacOS X",
+    python_requires=">=3.6",
+    install_requires=dependencies,
+    include_package_data=True,
     zip_safe=False,
 )
