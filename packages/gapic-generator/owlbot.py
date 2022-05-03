@@ -18,7 +18,7 @@ from synthtool.gcp import CommonTemplates
 templated_files = CommonTemplates().py_library()
 s.move(
     templated_files / ".kokoro",
-    excludes=["docs/**/*", "publish-docs.sh", "samples/**/*", "test-samples*"],
+    excludes=["samples/**/*", "test-samples*"],
 )
 s.move(templated_files / "LICENSE")
 s.move(templated_files / ".github", excludes=["workflows", "CODEOWNERS"])
