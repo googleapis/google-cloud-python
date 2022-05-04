@@ -22,6 +22,8 @@ import time
 import typing
 from typing import Dict, Iterable, Optional, Union
 
+from google.cloud.pubsub_v1.subscriber._protocol.dispatcher import _MAX_BATCH_LATENCY
+
 try:
     from collections.abc import KeysView
 
@@ -200,10 +202,13 @@ class Leaser(object):
             # Now wait an appropriate period of time and do this again.
             #
             # We determine the appropriate period of time based on a random
-            # period between 0 seconds and 90% of the lease. This use of
-            # jitter (http://bit.ly/2s2ekL7) helps decrease contention in cases
+            # period between:
+            # minimum: MAX_BATCH_LATENCY (to prevent duplicate modacks being created in one batch)
+            # maximum: 90% of the deadline
+            # This maximum time attempts to prevent ack expiration before new lease modacks arrive at the server.
+            # This use of jitter (http://bit.ly/2s2ekL7) helps decrease contention in cases
             # where there are many clients.
-            snooze = random.uniform(0.0, deadline * 0.9)
+            snooze = random.uniform(_MAX_BATCH_LATENCY, deadline * 0.9)
             _LOGGER.debug("Snoozing lease management for %f seconds.", snooze)
             self._stop_event.wait(timeout=snooze)
 
