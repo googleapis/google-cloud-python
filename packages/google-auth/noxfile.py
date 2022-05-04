@@ -34,7 +34,7 @@ BLACK_PATHS = [
 ]
 
 
-@nox.session(python="3.7")
+@nox.session(python="3.8")
 def lint(session):
     session.install(
         "flake8", "flake8-import-order", "docutils", CLICK_VERSION, BLACK_VERSION
@@ -67,7 +67,7 @@ def blacken(session):
     session.run("black", *BLACK_PATHS)
 
 
-@nox.session(python="3.6")
+@nox.session(python="3.8")
 def mypy(session):
     """Verify type hints are mypy compatible."""
     session.install("-e", ".")
@@ -121,7 +121,7 @@ def unit_prev_versions(session):
     )
 
 
-@nox.session(python="3.7")
+@nox.session(python="3.8")
 def cover(session):
     session.install("-r", "testing/requirements.txt")
     session.install("-e", ".")
