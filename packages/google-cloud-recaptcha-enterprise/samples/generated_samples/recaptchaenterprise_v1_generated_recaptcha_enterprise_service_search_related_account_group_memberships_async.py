@@ -33,7 +33,7 @@ async def sample_search_related_account_group_memberships():
 
     # Initialize request argument(s)
     request = recaptchaenterprise_v1.SearchRelatedAccountGroupMembershipsRequest(
-        parent="parent_value",
+        project="project_value",
     )
 
     # Make the request

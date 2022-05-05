@@ -53,6 +53,7 @@ __protobuf__ = proto.module(
         "SearchRelatedAccountGroupMembershipsResponse",
         "RelatedAccountGroupMembership",
         "RelatedAccountGroup",
+        "WafSettings",
     },
 )
 
@@ -620,6 +621,8 @@ class Key(proto.Message):
             of this Key.
         testing_options (google.cloud.recaptchaenterprise_v1.types.TestingOptions):
             Options for user acceptance testing.
+        waf_settings (google.cloud.recaptchaenterprise_v1.types.WafSettings):
+            Settings for WAF
     """
 
     name = proto.Field(
@@ -662,6 +665,11 @@ class Key(proto.Message):
         proto.MESSAGE,
         number=9,
         message="TestingOptions",
+    )
+    waf_settings = proto.Field(
+        proto.MESSAGE,
+        number=10,
+        message="WafSettings",
     )
 
 
@@ -1030,7 +1038,7 @@ class SearchRelatedAccountGroupMembershipsRequest(proto.Message):
     memberships.
 
     Attributes:
-        parent (str):
+        project (str):
             Required. The name of the project to search
             related account group memberships from, in the
             format "projects/{project}".
@@ -1055,7 +1063,7 @@ class SearchRelatedAccountGroupMembershipsRequest(proto.Message):
             that provided the page token.
     """
 
-    parent = proto.Field(
+    project = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -1137,6 +1145,44 @@ class RelatedAccountGroup(proto.Message):
     name = proto.Field(
         proto.STRING,
         number=1,
+    )
+
+
+class WafSettings(proto.Message):
+    r"""Settings specific to keys that can be used for WAF (Web
+    Application Firewall).
+
+    Attributes:
+        waf_service (google.cloud.recaptchaenterprise_v1.types.WafSettings.WafService):
+            Required. The WAF service that uses this key.
+        waf_feature (google.cloud.recaptchaenterprise_v1.types.WafSettings.WafFeature):
+            Required. The WAF feature for which this key
+            is enabled.
+    """
+
+    class WafFeature(proto.Enum):
+        r"""Supported WAF features. For more information, see
+        https://cloud.google.com/recaptcha-enterprise/docs/usecase#comparison_of_features.
+        """
+        WAF_FEATURE_UNSPECIFIED = 0
+        CHALLENGE_PAGE = 1
+        SESSION_TOKEN = 2
+        ACTION_TOKEN = 3
+
+    class WafService(proto.Enum):
+        r"""Web Application Firewalls supported by reCAPTCHA Enterprise."""
+        WAF_SERVICE_UNSPECIFIED = 0
+        CA = 1
+
+    waf_service = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=WafService,
+    )
+    waf_feature = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=WafFeature,
     )
 
 

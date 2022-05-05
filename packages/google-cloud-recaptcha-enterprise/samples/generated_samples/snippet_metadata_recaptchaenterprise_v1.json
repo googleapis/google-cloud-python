@@ -1613,7 +1613,7 @@
             "type": "google.cloud.recaptchaenterprise_v1.types.SearchRelatedAccountGroupMembershipsRequest"
           },
           {
-            "name": "parent",
+            "name": "project",
             "type": "str"
           },
           {
@@ -1697,7 +1697,7 @@
             "type": "google.cloud.recaptchaenterprise_v1.types.SearchRelatedAccountGroupMembershipsRequest"
           },
           {
-            "name": "parent",
+            "name": "project",
             "type": "str"
           },
           {

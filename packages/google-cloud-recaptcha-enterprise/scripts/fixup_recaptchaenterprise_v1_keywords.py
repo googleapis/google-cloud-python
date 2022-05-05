@@ -49,7 +49,7 @@ class recaptchaenterpriseCallTransformer(cst.CSTTransformer):
         'list_related_account_group_memberships': ('parent', 'page_size', 'page_token', ),
         'list_related_account_groups': ('parent', 'page_size', 'page_token', ),
         'migrate_key': ('name', ),
-        'search_related_account_group_memberships': ('parent', 'hashed_account_id', 'page_size', 'page_token', ),
+        'search_related_account_group_memberships': ('project', 'hashed_account_id', 'page_size', 'page_token', ),
         'update_key': ('key', 'update_mask', ),
     }
 

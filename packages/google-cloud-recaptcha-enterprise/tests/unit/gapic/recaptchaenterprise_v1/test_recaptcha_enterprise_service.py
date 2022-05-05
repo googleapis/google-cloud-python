@@ -3540,7 +3540,7 @@ def test_search_related_account_group_memberships_field_headers():
     # a field header. Set these to a non-empty value.
     request = recaptchaenterprise.SearchRelatedAccountGroupMembershipsRequest()
 
-    request.parent = "parent_value"
+    request.project = "project_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3560,7 +3560,7 @@ def test_search_related_account_group_memberships_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent_value",
+        "project=project_value",
     ) in kw["metadata"]
 
 
@@ -3574,7 +3574,7 @@ async def test_search_related_account_group_memberships_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = recaptchaenterprise.SearchRelatedAccountGroupMembershipsRequest()
 
-    request.parent = "parent_value"
+    request.project = "project_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3594,7 +3594,7 @@ async def test_search_related_account_group_memberships_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent_value",
+        "project=project_value",
     ) in kw["metadata"]
 
 
@@ -3614,7 +3614,7 @@ def test_search_related_account_group_memberships_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.search_related_account_group_memberships(
-            parent="parent_value",
+            project="project_value",
             hashed_account_id=b"hashed_account_id_blob",
         )
 
@@ -3622,8 +3622,8 @@ def test_search_related_account_group_memberships_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        arg = args[0].parent
-        mock_val = "parent_value"
+        arg = args[0].project
+        mock_val = "project_value"
         assert arg == mock_val
         arg = args[0].hashed_account_id
         mock_val = b"hashed_account_id_blob"
@@ -3640,7 +3640,7 @@ def test_search_related_account_group_memberships_flattened_error():
     with pytest.raises(ValueError):
         client.search_related_account_group_memberships(
             recaptchaenterprise.SearchRelatedAccountGroupMembershipsRequest(),
-            parent="parent_value",
+            project="project_value",
             hashed_account_id=b"hashed_account_id_blob",
         )
 
@@ -3666,7 +3666,7 @@ async def test_search_related_account_group_memberships_flattened_async():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.search_related_account_group_memberships(
-            parent="parent_value",
+            project="project_value",
             hashed_account_id=b"hashed_account_id_blob",
         )
 
@@ -3674,8 +3674,8 @@ async def test_search_related_account_group_memberships_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        arg = args[0].parent
-        mock_val = "parent_value"
+        arg = args[0].project
+        mock_val = "project_value"
         assert arg == mock_val
         arg = args[0].hashed_account_id
         mock_val = b"hashed_account_id_blob"
@@ -3693,7 +3693,7 @@ async def test_search_related_account_group_memberships_flattened_error_async():
     with pytest.raises(ValueError):
         await client.search_related_account_group_memberships(
             recaptchaenterprise.SearchRelatedAccountGroupMembershipsRequest(),
-            parent="parent_value",
+            project="project_value",
             hashed_account_id=b"hashed_account_id_blob",
         )
 
@@ -3739,7 +3739,7 @@ def test_search_related_account_group_memberships_pager(transport_name: str = "g
 
         metadata = ()
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
+            gapic_v1.routing_header.to_grpc_metadata((("project", ""),)),
         )
         pager = client.search_related_account_group_memberships(request={})
 

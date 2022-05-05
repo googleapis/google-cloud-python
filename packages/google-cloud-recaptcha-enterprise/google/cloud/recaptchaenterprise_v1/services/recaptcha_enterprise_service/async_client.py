@@ -1220,7 +1220,7 @@ class RecaptchaEnterpriseServiceAsyncClient:
             recaptchaenterprise.SearchRelatedAccountGroupMembershipsRequest, dict
         ] = None,
         *,
-        parent: str = None,
+        project: str = None,
         hashed_account_id: bytes = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -1238,7 +1238,7 @@ class RecaptchaEnterpriseServiceAsyncClient:
 
                 # Initialize request argument(s)
                 request = recaptchaenterprise_v1.SearchRelatedAccountGroupMembershipsRequest(
-                    parent="parent_value",
+                    project="project_value",
                 )
 
                 # Make the request
@@ -1252,13 +1252,13 @@ class RecaptchaEnterpriseServiceAsyncClient:
             request (Union[google.cloud.recaptchaenterprise_v1.types.SearchRelatedAccountGroupMembershipsRequest, dict]):
                 The request object. The request message to search
                 related account group memberships.
-            parent (:class:`str`):
+            project (:class:`str`):
                 Required. The name of the project to
                 search related account group memberships
                 from, in the format
                 "projects/{project}".
 
-                This corresponds to the ``parent`` field
+                This corresponds to the ``project`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             hashed_account_id (:class:`bytes`):
@@ -1288,7 +1288,7 @@ class RecaptchaEnterpriseServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        has_flattened_params = any([parent, hashed_account_id])
+        has_flattened_params = any([project, hashed_account_id])
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -1301,8 +1301,8 @@ class RecaptchaEnterpriseServiceAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-        if parent is not None:
-            request.parent = parent
+        if project is not None:
+            request.project = project
         if hashed_account_id is not None:
             request.hashed_account_id = hashed_account_id
 
@@ -1317,7 +1317,7 @@ class RecaptchaEnterpriseServiceAsyncClient:
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+            gapic_v1.routing_header.to_grpc_metadata((("project", request.project),)),
         )
 
         # Send the request.

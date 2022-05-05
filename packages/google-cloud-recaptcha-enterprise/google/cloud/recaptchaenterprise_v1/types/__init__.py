@@ -46,6 +46,7 @@ from .recaptchaenterprise import (
     TestingOptions,
     TokenProperties,
     UpdateKeyRequest,
+    WafSettings,
     WebKeySettings,
 )
 
@@ -82,5 +83,6 @@ __all__ = (
     "TestingOptions",
     "TokenProperties",
     "UpdateKeyRequest",
+    "WafSettings",
     "WebKeySettings",
 )
