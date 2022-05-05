@@ -115,7 +115,7 @@ class VmImage(proto.Message):
     Attributes:
         project (str):
             Required. The name of the Google Cloud project that this VM
-            image belongs to. Format: ``projects/{project_id}``
+            image belongs to. Format: ``{project_id}``
         image_name (str):
             Use VM image name to find the image.
 
