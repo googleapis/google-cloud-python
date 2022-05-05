@@ -4,6 +4,28 @@
 
 [1]: https://pypi.org/project/google-cloud-securitycenter/#history
 
+## [1.11.0](https://github.com/googleapis/python-securitycenter/compare/v1.10.0...v1.11.0) (2022-04-28)
+
+
+### Features
+
+* Add connection and description field to finding's list of attributes ([#323](https://github.com/googleapis/python-securitycenter/issues/323)) ([3a9e9bd](https://github.com/googleapis/python-securitycenter/commit/3a9e9bd2a622f6fab30c21b4cd5b918d1a1d27a1))
+* Add next_steps field to finding's list of attributes ([#319](https://github.com/googleapis/python-securitycenter/issues/319)) ([35ab26e](https://github.com/googleapis/python-securitycenter/commit/35ab26ec21652af1f9d71e8e00f395020e716fcd))
+* AuditConfig for IAM v1 ([35ab26e](https://github.com/googleapis/python-securitycenter/commit/35ab26ec21652af1f9d71e8e00f395020e716fcd))
+
+
+### Bug Fixes
+
+* **deps:** require grpc-google-iam-v1 >=0.12.4 ([35ab26e](https://github.com/googleapis/python-securitycenter/commit/35ab26ec21652af1f9d71e8e00f395020e716fcd))
+
+
+### Documentation
+
+* fix type in docstring for map fields ([35ab26e](https://github.com/googleapis/python-securitycenter/commit/35ab26ec21652af1f9d71e8e00f395020e716fcd))
+* **samples:** add bigquery export samples ([#315](https://github.com/googleapis/python-securitycenter/issues/315)) ([beec49d](https://github.com/googleapis/python-securitycenter/commit/beec49d6e1228c8a9f1c0ecfd3573cf08d1990ec))
+* **samples:** added mute config samples ([#276](https://github.com/googleapis/python-securitycenter/issues/276)) ([3ac8eac](https://github.com/googleapis/python-securitycenter/commit/3ac8eac8ad53ed83097bcd66e27d039eccedaa58))
+* **samples:** included snippet for unmute finding ([#308](https://github.com/googleapis/python-securitycenter/issues/308)) ([fe05cc3](https://github.com/googleapis/python-securitycenter/commit/fe05cc3f23f792c1060f28cc77495a50be4ccde0))
+
 ## [1.10.0](https://github.com/googleapis/python-securitycenter/compare/v1.9.0...v1.10.0) (2022-03-05)
 
 
