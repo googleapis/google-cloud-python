@@ -255,6 +255,27 @@ class SecuritySettings(proto.Message):
         purge_data_types (Sequence[google.cloud.dialogflowcx_v3beta1.types.SecuritySettings.PurgeDataType]):
             List of types of data to remove when
             retention settings triggers purge.
+        audio_export_settings (google.cloud.dialogflowcx_v3beta1.types.SecuritySettings.AudioExportSettings):
+            Controls audio export settings for post-conversation
+            analytics when ingesting audio to conversations via
+            [Participants.AnalyzeContent][] or
+            [Participants.StreamingAnalyzeContent][].
+
+            If
+            [retention_strategy][google.cloud.dialogflow.cx.v3beta1.SecuritySettings.retention_strategy]
+            is set to REMOVE_AFTER_CONVERSATION or
+            [audio_export_settings.gcs_bucket][] is empty, audio export
+            is disabled.
+
+            If audio export is enabled, audio is recorded and saved to
+            [audio_export_settings.gcs_bucket][], subject to retention
+            policy of [audio_export_settings.gcs_bucket][].
+
+            This setting won't effect audio input for implicit sessions
+            via
+            [Sessions.DetectIntent][google.cloud.dialogflow.cx.v3beta1.Sessions.DetectIntent]
+            or
+            [Sessions.StreamingDetectIntent][google.cloud.dialogflow.cx.v3beta1.Sessions.StreamingDetectIntent].
         insights_export_settings (google.cloud.dialogflowcx_v3beta1.types.SecuritySettings.InsightsExportSettings):
             Controls conversation exporting settings to Insights after
             conversation is completed.
@@ -281,6 +302,51 @@ class SecuritySettings(proto.Message):
         """
         PURGE_DATA_TYPE_UNSPECIFIED = 0
         DIALOGFLOW_HISTORY = 1
+
+    class AudioExportSettings(proto.Message):
+        r"""Settings for exporting audio.
+
+        Attributes:
+            gcs_bucket (str):
+                Cloud Storage bucket to export audio record to. You need to
+                grant
+                ``service-<Conversation Project Number>@gcp-sa-dialogflow.iam.gserviceaccount.com``
+                the ``Storage Object Admin`` role in this bucket.
+            audio_export_pattern (str):
+                Filename pattern for exported audio.
+            enable_audio_redaction (bool):
+                Enable audio redaction if it is true.
+            audio_format (google.cloud.dialogflowcx_v3beta1.types.SecuritySettings.AudioExportSettings.AudioFormat):
+                File format for exported audio file.
+                Currently only in telephony recordings.
+        """
+
+        class AudioFormat(proto.Enum):
+            r"""File format for exported audio file. Currently only in
+            telephony recordings.
+            """
+            AUDIO_FORMAT_UNSPECIFIED = 0
+            MULAW = 1
+            MP3 = 2
+            OGG = 3
+
+        gcs_bucket = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        audio_export_pattern = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+        enable_audio_redaction = proto.Field(
+            proto.BOOL,
+            number=3,
+        )
+        audio_format = proto.Field(
+            proto.ENUM,
+            number=4,
+            enum="SecuritySettings.AudioExportSettings.AudioFormat",
+        )
 
     class InsightsExportSettings(proto.Message):
         r"""Settings for exporting conversations to
@@ -333,6 +399,11 @@ class SecuritySettings(proto.Message):
         proto.ENUM,
         number=8,
         enum=PurgeDataType,
+    )
+    audio_export_settings = proto.Field(
+        proto.MESSAGE,
+        number=12,
+        message=AudioExportSettings,
     )
     insights_export_settings = proto.Field(
         proto.MESSAGE,
