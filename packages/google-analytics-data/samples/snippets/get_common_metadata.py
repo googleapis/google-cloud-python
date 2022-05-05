@@ -61,7 +61,7 @@ def print_get_metadata_response(response):
     for metric in response.metrics:
         print("METRIC")
         print(f"{metric.api_name} ({metric.ui_name}): {metric.description}")
-        print(f"custom_definition: {dimension.custom_definition}")
+        print(f"custom_definition: {metric.custom_definition}")
         if metric.expression:
             print(f"Expression: {metric.expression}")
 
