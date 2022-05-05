@@ -33,26 +33,29 @@ nox.options.sessions = [
 ]
 
 
+# Error if a python version is missing
+nox.options.error_on_missing_interpreters = True
+
 BLACK_VERSION = "black==19.3b0"
 BLACK_PATHS = ["test_utils", "setup.py"]
 CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
 
 
-@nox.session(python="3.7")
+@nox.session(python="3.8")
 def lint(session):
     """Run linters.
 
     Returns a failure if the linters find linting errors or sufficiently
     serious code quality issues.
     """
-    session.install("flake8", BLACK_VERSION)
+    session.install("flake8", BLACK_VERSION, "click<8.1.0")
     session.run(
         "black", "--check", *BLACK_PATHS,
     )
     session.run("flake8", *BLACK_PATHS)
 
 
-@nox.session(python="3.6")
+@nox.session(python="3.8")
 def blacken(session):
     """Run black.
 
@@ -62,20 +65,20 @@ def blacken(session):
     That run uses an image that doesn't have 3.6 installed. Before updating this
     check the state of the `gcp_ubuntu_config` we use for that Kokoro run.
     """
-    session.install(BLACK_VERSION)
+    session.install(BLACK_VERSION, "click<8.1.0")
     session.run(
         "black", *BLACK_PATHS,
     )
 
 
-@nox.session(python="3.7")
+@nox.session(python="3.8")
 def lint_setup_py(session):
     """Verify that setup.py is valid (including RST check)."""
     session.install("docutils", "pygments")
     session.run("python", "setup.py", "check", "--restructuredtext", "--strict")
 
 
-@nox.session(python="3.6")
+@nox.session(python="3.8")
 def mypy(session):
     """Verify type hints are mypy compatible."""
     session.install("-e", ".")
