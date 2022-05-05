@@ -89,7 +89,7 @@ jobs:
     - name: Set up QEMU for ARM64 cross compile
       if: ${{ matrix.arch }} == 'aarch64'
       id: qemu
-      uses: docker/setup-qemu-action@v1
+      uses: docker/setup-qemu-action@v2
 
     - name: Build Wheels
       uses: pypa/cibuildwheel@2.5.0
