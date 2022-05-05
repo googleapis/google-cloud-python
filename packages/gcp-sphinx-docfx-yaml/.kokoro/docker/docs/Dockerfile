@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from ubuntu:20.04
+from ubuntu:22.04
 
 ENV DEBIAN_FRONTEND noninteractive
 
