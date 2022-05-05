@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-build/#history
 
+### [3.8.2](https://github.com/googleapis/python-cloudbuild/compare/v3.8.1...v3.8.2) (2022-05-05)
+
+
+### Documentation
+
+* fix type in docstring for map fields ([3a4be49](https://github.com/googleapis/python-cloudbuild/commit/3a4be49489628fd07a7377085d90e4ec6b06d76a))
+
 ### [3.8.1](https://github.com/googleapis/python-cloudbuild/compare/v3.8.0...v3.8.1) (2022-03-05)
 
 
