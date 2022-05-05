@@ -994,6 +994,7 @@ def test_get_version(request_type, transport: str = "grpc"):
             runtime_channel="runtime_channel_value",
             threadsafe=True,
             vm=True,
+            app_engine_apis=True,
             env="env_value",
             serving_status=version.ServingStatus.SERVING,
             created_by="created_by_value",
@@ -1027,6 +1028,7 @@ def test_get_version(request_type, transport: str = "grpc"):
     assert response.runtime_channel == "runtime_channel_value"
     assert response.threadsafe is True
     assert response.vm is True
+    assert response.app_engine_apis is True
     assert response.env == "env_value"
     assert response.serving_status == version.ServingStatus.SERVING
     assert response.created_by == "created_by_value"
@@ -1081,6 +1083,7 @@ async def test_get_version_async(
                 runtime_channel="runtime_channel_value",
                 threadsafe=True,
                 vm=True,
+                app_engine_apis=True,
                 env="env_value",
                 serving_status=version.ServingStatus.SERVING,
                 created_by="created_by_value",
@@ -1112,6 +1115,7 @@ async def test_get_version_async(
     assert response.runtime_channel == "runtime_channel_value"
     assert response.threadsafe is True
     assert response.vm is True
+    assert response.app_engine_apis is True
     assert response.env == "env_value"
     assert response.serving_status == version.ServingStatus.SERVING
     assert response.created_by == "created_by_value"

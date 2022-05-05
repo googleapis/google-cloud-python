@@ -148,6 +148,9 @@ class Version(proto.Message):
         vm (bool):
             Whether to deploy this version in a container
             on a virtual machine.
+        app_engine_apis (bool):
+            Allows App Engine second generation runtimes
+            to access the legacy bundled services.
         beta_settings (Mapping[str, str]):
             Metadata settings that are supplied to this
             version to enable beta runtime features.
@@ -329,6 +332,10 @@ class Version(proto.Message):
     vm = proto.Field(
         proto.BOOL,
         number=12,
+    )
+    app_engine_apis = proto.Field(
+        proto.BOOL,
+        number=128,
     )
     beta_settings = proto.MapField(
         proto.STRING,
@@ -964,11 +971,29 @@ class VpcAccessConnector(proto.Message):
             Full Serverless VPC Access Connector name
             e.g.
             /projects/my-project/locations/us-central1/connectors/c1.
+        egress_setting (google.cloud.appengine_admin_v1.types.VpcAccessConnector.EgressSetting):
+            The egress setting for the connector,
+            controlling what traffic is diverted through it.
     """
+
+    class EgressSetting(proto.Enum):
+        r"""Available egress settings.
+
+        This controls what traffic is diverted through the VPC Access
+        Connector resource. By default PRIVATE_IP_RANGES will be used.
+        """
+        EGRESS_SETTING_UNSPECIFIED = 0
+        ALL_TRAFFIC = 1
+        PRIVATE_IP_RANGES = 2
 
     name = proto.Field(
         proto.STRING,
         number=1,
+    )
+    egress_setting = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=EgressSetting,
     )
 
 

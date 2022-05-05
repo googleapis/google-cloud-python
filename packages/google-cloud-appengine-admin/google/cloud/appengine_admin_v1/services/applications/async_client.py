@@ -204,6 +204,7 @@ class ApplicationsAsyncClient:
         self,
         request: Union[appengine.GetApplicationRequest, dict] = None,
         *,
+        name: str = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
@@ -232,6 +233,13 @@ class ApplicationsAsyncClient:
             request (Union[google.cloud.appengine_admin_v1.types.GetApplicationRequest, dict]):
                 The request object. Request message for
                 `Applications.GetApplication`.
+            name (:class:`str`):
+                Name of the Application resource to get. Example:
+                ``apps/myapp``.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -246,7 +254,21 @@ class ApplicationsAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
         request = appengine.GetApplicationRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -378,6 +400,8 @@ class ApplicationsAsyncClient:
            controlling user access to the application.
         -  ``default_cookie_expiration`` - Cookie expiration policy for
            the application.
+        -  ``iap`` - Identity-Aware Proxy properties for the
+           application.
 
         .. code-block:: python
 

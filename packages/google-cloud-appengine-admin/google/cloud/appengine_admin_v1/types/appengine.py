@@ -142,8 +142,8 @@ class UpdateApplicationRequest(proto.Message):
             An Application containing the updated
             resource.
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Standard field mask for the set of fields to
-            be updated.
+            Required. Standard field mask for the set of
+            fields to be updated.
     """
 
     name = proto.Field(
@@ -258,8 +258,8 @@ class UpdateServiceRequest(proto.Message):
             service. Only fields set in the field mask will
             be updated.
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Standard field mask for the set of fields to
-            be updated.
+            Required. Standard field mask for the set of
+            fields to be updated.
         migrate_traffic (bool):
             Set to ``true`` to gradually shift traffic to one or more
             versions that you specify. By default, traffic is shifted
@@ -1101,8 +1101,8 @@ class UpdateDomainMappingRequest(proto.Message):
             resource. Only fields set in the field mask will
             be updated.
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Standard field mask for the set of fields to
-            be updated.
+            Required. Standard field mask for the set of
+            fields to be updated.
     """
 
     name = proto.Field(

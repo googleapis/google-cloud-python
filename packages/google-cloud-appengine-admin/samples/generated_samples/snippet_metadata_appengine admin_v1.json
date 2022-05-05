@@ -186,6 +186,10 @@
             "type": "google.cloud.appengine_admin_v1.types.GetApplicationRequest"
           },
           {
+            "name": "name",
+            "type": "str"
+          },
+          {
             "name": "retry",
             "type": "google.api_core.retry.Retry"
           },
@@ -260,6 +264,10 @@
           {
             "name": "request",
             "type": "google.cloud.appengine_admin_v1.types.GetApplicationRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
           },
           {
             "name": "retry",

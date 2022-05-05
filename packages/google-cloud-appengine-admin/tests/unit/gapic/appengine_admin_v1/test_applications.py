@@ -675,6 +675,7 @@ def test_get_application(request_type, transport: str = "grpc"):
             serving_status=application.Application.ServingStatus.SERVING,
             default_hostname="default_hostname_value",
             default_bucket="default_bucket_value",
+            service_account="service_account_value",
             gcr_domain="gcr_domain_value",
             database_type=application.Application.DatabaseType.CLOUD_DATASTORE,
         )
@@ -695,6 +696,7 @@ def test_get_application(request_type, transport: str = "grpc"):
     assert response.serving_status == application.Application.ServingStatus.SERVING
     assert response.default_hostname == "default_hostname_value"
     assert response.default_bucket == "default_bucket_value"
+    assert response.service_account == "service_account_value"
     assert response.gcr_domain == "gcr_domain_value"
     assert (
         response.database_type == application.Application.DatabaseType.CLOUD_DATASTORE
@@ -743,6 +745,7 @@ async def test_get_application_async(
                 serving_status=application.Application.ServingStatus.SERVING,
                 default_hostname="default_hostname_value",
                 default_bucket="default_bucket_value",
+                service_account="service_account_value",
                 gcr_domain="gcr_domain_value",
                 database_type=application.Application.DatabaseType.CLOUD_DATASTORE,
             )
@@ -764,6 +767,7 @@ async def test_get_application_async(
     assert response.serving_status == application.Application.ServingStatus.SERVING
     assert response.default_hostname == "default_hostname_value"
     assert response.default_bucket == "default_bucket_value"
+    assert response.service_account == "service_account_value"
     assert response.gcr_domain == "gcr_domain_value"
     assert (
         response.database_type == application.Application.DatabaseType.CLOUD_DATASTORE
@@ -834,6 +838,88 @@ async def test_get_application_field_headers_async():
         "x-goog-request-params",
         "name=name_value",
     ) in kw["metadata"]
+
+
+def test_get_application_flattened():
+    client = ApplicationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_application), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = application.Application()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.get_application(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_get_application_flattened_error():
+    client = ApplicationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_application(
+            appengine.GetApplicationRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_application_flattened_async():
+    client = ApplicationsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_application), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = application.Application()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            application.Application()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.get_application(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_get_application_flattened_error_async():
+    client = ApplicationsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.get_application(
+            appengine.GetApplicationRequest(),
+            name="name_value",
+        )
 
 
 @pytest.mark.parametrize(

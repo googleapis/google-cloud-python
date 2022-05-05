@@ -331,6 +331,8 @@ class ApplicationsGrpcAsyncIOTransport(ApplicationsTransport):
            controlling user access to the application.
         -  ``default_cookie_expiration`` - Cookie expiration policy for
            the application.
+        -  ``iap`` - Identity-Aware Proxy properties for the
+           application.
 
         Returns:
             Callable[[~.UpdateApplicationRequest],

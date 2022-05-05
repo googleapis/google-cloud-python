@@ -83,6 +83,11 @@ class Application(proto.Message):
             by this application to store content.
 
             @OutputOnly
+        service_account (str):
+            The service account associated with the
+            application. This is the app-level default
+            identity. If no identity provided during create
+            version, Admin API will fallback to this one.
         iap (google.cloud.appengine_admin_v1.types.Application.IdentityAwareProxy):
 
         gcr_domain (str):
@@ -225,6 +230,10 @@ class Application(proto.Message):
     default_bucket = proto.Field(
         proto.STRING,
         number=12,
+    )
+    service_account = proto.Field(
+        proto.STRING,
+        number=13,
     )
     iap = proto.Field(
         proto.MESSAGE,
