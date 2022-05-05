@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/grafeas/#history
 
+### [1.4.4](https://github.com/googleapis/python-grafeas/compare/v1.4.3...v1.4.4) (2022-05-05)
+
+
+### Documentation
+
+* fix type in docstring for map fields ([30b3cba](https://github.com/googleapis/python-grafeas/commit/30b3cba74aec079cd7ac29d08b55dae7caaf8018))
+
 ### [1.4.3](https://github.com/googleapis/python-grafeas/compare/v1.4.2...v1.4.3) (2022-03-04)
 
 
