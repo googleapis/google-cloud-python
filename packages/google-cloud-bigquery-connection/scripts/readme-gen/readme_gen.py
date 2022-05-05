@@ -28,7 +28,10 @@ import yaml
 jinja_env = jinja2.Environment(
     trim_blocks=True,
     loader=jinja2.FileSystemLoader(
-        os.path.abspath(os.path.join(os.path.dirname(__file__), 'templates'))))
+        os.path.abspath(os.path.join(os.path.dirname(__file__), "templates"))
+    ),
+    autoescape=True,
+)
 
 README_TMPL = jinja_env.get_template('README.tmpl.rst')
 
