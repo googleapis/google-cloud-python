@@ -1,5 +1,17 @@
 # Changelog
 
+## [2.8.0](https://github.com/googleapis/python-containeranalysis/compare/v2.7.3...v2.8.0) (2022-05-05)
+
+
+### Features
+
+* AuditConfig for IAM v1 ([dfb21df](https://github.com/googleapis/python-containeranalysis/commit/dfb21df83a30d33f31dc67b8a50cc5d5cf9e9ccf))
+
+
+### Bug Fixes
+
+* **deps:** require grpc-google-iam-v1 >=0.12.4 ([dfb21df](https://github.com/googleapis/python-containeranalysis/commit/dfb21df83a30d33f31dc67b8a50cc5d5cf9e9ccf))
+
 ### [2.7.3](https://github.com/googleapis/python-containeranalysis/compare/v2.7.2...v2.7.3) (2022-03-07)
 
 
