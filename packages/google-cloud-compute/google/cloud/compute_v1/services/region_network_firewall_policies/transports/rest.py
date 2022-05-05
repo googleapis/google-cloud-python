@@ -624,8 +624,6 @@ class RegionNetworkFirewallPoliciesRestTransport(
     It sends JSON representations of protocol buffers over HTTP/1.1
     """
 
-    _STUBS: Dict[str, RegionNetworkFirewallPoliciesRestStub] = {}
-
     def __init__(
         self,
         *,
@@ -2552,15 +2550,9 @@ class RegionNetworkFirewallPoliciesRestTransport(
     ) -> Callable[
         [compute.AddAssociationRegionNetworkFirewallPolicyRequest], compute.Operation
     ]:
-        stub = self._STUBS.get("add_association")
-        if not stub:
-            stub = self._STUBS["add_association"] = self._AddAssociation(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._AddAssociation(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def add_rule(
@@ -2568,15 +2560,9 @@ class RegionNetworkFirewallPoliciesRestTransport(
     ) -> Callable[
         [compute.AddRuleRegionNetworkFirewallPolicyRequest], compute.Operation
     ]:
-        stub = self._STUBS.get("add_rule")
-        if not stub:
-            stub = self._STUBS["add_rule"] = self._AddRule(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._AddRule(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def clone_rules(
@@ -2584,15 +2570,9 @@ class RegionNetworkFirewallPoliciesRestTransport(
     ) -> Callable[
         [compute.CloneRulesRegionNetworkFirewallPolicyRequest], compute.Operation
     ]:
-        stub = self._STUBS.get("clone_rules")
-        if not stub:
-            stub = self._STUBS["clone_rules"] = self._CloneRules(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._CloneRules(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def delete(
@@ -2600,15 +2580,9 @@ class RegionNetworkFirewallPoliciesRestTransport(
     ) -> Callable[
         [compute.DeleteRegionNetworkFirewallPolicyRequest], compute.Operation
     ]:
-        stub = self._STUBS.get("delete")
-        if not stub:
-            stub = self._STUBS["delete"] = self._Delete(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._Delete(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get(
@@ -2616,15 +2590,9 @@ class RegionNetworkFirewallPoliciesRestTransport(
     ) -> Callable[
         [compute.GetRegionNetworkFirewallPolicyRequest], compute.FirewallPolicy
     ]:
-        stub = self._STUBS.get("get")
-        if not stub:
-            stub = self._STUBS["get"] = self._Get(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._Get(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get_association(
@@ -2633,15 +2601,9 @@ class RegionNetworkFirewallPoliciesRestTransport(
         [compute.GetAssociationRegionNetworkFirewallPolicyRequest],
         compute.FirewallPolicyAssociation,
     ]:
-        stub = self._STUBS.get("get_association")
-        if not stub:
-            stub = self._STUBS["get_association"] = self._GetAssociation(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._GetAssociation(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get_effective_firewalls(
@@ -2650,15 +2612,9 @@ class RegionNetworkFirewallPoliciesRestTransport(
         [compute.GetEffectiveFirewallsRegionNetworkFirewallPolicyRequest],
         compute.RegionNetworkFirewallPoliciesGetEffectiveFirewallsResponse,
     ]:
-        stub = self._STUBS.get("get_effective_firewalls")
-        if not stub:
-            stub = self._STUBS["get_effective_firewalls"] = self._GetEffectiveFirewalls(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._GetEffectiveFirewalls(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get_iam_policy(
@@ -2666,15 +2622,9 @@ class RegionNetworkFirewallPoliciesRestTransport(
     ) -> Callable[
         [compute.GetIamPolicyRegionNetworkFirewallPolicyRequest], compute.Policy
     ]:
-        stub = self._STUBS.get("get_iam_policy")
-        if not stub:
-            stub = self._STUBS["get_iam_policy"] = self._GetIamPolicy(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._GetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get_rule(
@@ -2682,15 +2632,9 @@ class RegionNetworkFirewallPoliciesRestTransport(
     ) -> Callable[
         [compute.GetRuleRegionNetworkFirewallPolicyRequest], compute.FirewallPolicyRule
     ]:
-        stub = self._STUBS.get("get_rule")
-        if not stub:
-            stub = self._STUBS["get_rule"] = self._GetRule(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._GetRule(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def insert(
@@ -2698,15 +2642,9 @@ class RegionNetworkFirewallPoliciesRestTransport(
     ) -> Callable[
         [compute.InsertRegionNetworkFirewallPolicyRequest], compute.Operation
     ]:
-        stub = self._STUBS.get("insert")
-        if not stub:
-            stub = self._STUBS["insert"] = self._Insert(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._Insert(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def list(
@@ -2714,29 +2652,17 @@ class RegionNetworkFirewallPoliciesRestTransport(
     ) -> Callable[
         [compute.ListRegionNetworkFirewallPoliciesRequest], compute.FirewallPolicyList
     ]:
-        stub = self._STUBS.get("list")
-        if not stub:
-            stub = self._STUBS["list"] = self._List(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._List(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def patch(
         self,
     ) -> Callable[[compute.PatchRegionNetworkFirewallPolicyRequest], compute.Operation]:
-        stub = self._STUBS.get("patch")
-        if not stub:
-            stub = self._STUBS["patch"] = self._Patch(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._Patch(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def patch_rule(
@@ -2744,15 +2670,9 @@ class RegionNetworkFirewallPoliciesRestTransport(
     ) -> Callable[
         [compute.PatchRuleRegionNetworkFirewallPolicyRequest], compute.Operation
     ]:
-        stub = self._STUBS.get("patch_rule")
-        if not stub:
-            stub = self._STUBS["patch_rule"] = self._PatchRule(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._PatchRule(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def remove_association(
@@ -2760,15 +2680,9 @@ class RegionNetworkFirewallPoliciesRestTransport(
     ) -> Callable[
         [compute.RemoveAssociationRegionNetworkFirewallPolicyRequest], compute.Operation
     ]:
-        stub = self._STUBS.get("remove_association")
-        if not stub:
-            stub = self._STUBS["remove_association"] = self._RemoveAssociation(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._RemoveAssociation(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def remove_rule(
@@ -2776,15 +2690,9 @@ class RegionNetworkFirewallPoliciesRestTransport(
     ) -> Callable[
         [compute.RemoveRuleRegionNetworkFirewallPolicyRequest], compute.Operation
     ]:
-        stub = self._STUBS.get("remove_rule")
-        if not stub:
-            stub = self._STUBS["remove_rule"] = self._RemoveRule(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._RemoveRule(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def set_iam_policy(
@@ -2792,15 +2700,9 @@ class RegionNetworkFirewallPoliciesRestTransport(
     ) -> Callable[
         [compute.SetIamPolicyRegionNetworkFirewallPolicyRequest], compute.Policy
     ]:
-        stub = self._STUBS.get("set_iam_policy")
-        if not stub:
-            stub = self._STUBS["set_iam_policy"] = self._SetIamPolicy(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._SetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def test_iam_permissions(
@@ -2809,15 +2711,9 @@ class RegionNetworkFirewallPoliciesRestTransport(
         [compute.TestIamPermissionsRegionNetworkFirewallPolicyRequest],
         compute.TestPermissionsResponse,
     ]:
-        stub = self._STUBS.get("test_iam_permissions")
-        if not stub:
-            stub = self._STUBS["test_iam_permissions"] = self._TestIamPermissions(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._TestIamPermissions(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def kind(self) -> str:

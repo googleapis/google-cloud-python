@@ -294,8 +294,6 @@ class RegionBackendServicesRestTransport(RegionBackendServicesTransport):
     It sends JSON representations of protocol buffers over HTTP/1.1
     """
 
-    _STUBS: Dict[str, RegionBackendServicesRestStub] = {}
-
     def __init__(
         self,
         *,
@@ -1108,29 +1106,17 @@ class RegionBackendServicesRestTransport(RegionBackendServicesTransport):
     def delete(
         self,
     ) -> Callable[[compute.DeleteRegionBackendServiceRequest], compute.Operation]:
-        stub = self._STUBS.get("delete")
-        if not stub:
-            stub = self._STUBS["delete"] = self._Delete(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._Delete(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get(
         self,
     ) -> Callable[[compute.GetRegionBackendServiceRequest], compute.BackendService]:
-        stub = self._STUBS.get("get")
-        if not stub:
-            stub = self._STUBS["get"] = self._Get(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._Get(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get_health(
@@ -1139,29 +1125,17 @@ class RegionBackendServicesRestTransport(RegionBackendServicesTransport):
         [compute.GetHealthRegionBackendServiceRequest],
         compute.BackendServiceGroupHealth,
     ]:
-        stub = self._STUBS.get("get_health")
-        if not stub:
-            stub = self._STUBS["get_health"] = self._GetHealth(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._GetHealth(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def insert(
         self,
     ) -> Callable[[compute.InsertRegionBackendServiceRequest], compute.Operation]:
-        stub = self._STUBS.get("insert")
-        if not stub:
-            stub = self._STUBS["insert"] = self._Insert(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._Insert(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def list(
@@ -1169,43 +1143,25 @@ class RegionBackendServicesRestTransport(RegionBackendServicesTransport):
     ) -> Callable[
         [compute.ListRegionBackendServicesRequest], compute.BackendServiceList
     ]:
-        stub = self._STUBS.get("list")
-        if not stub:
-            stub = self._STUBS["list"] = self._List(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._List(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def patch(
         self,
     ) -> Callable[[compute.PatchRegionBackendServiceRequest], compute.Operation]:
-        stub = self._STUBS.get("patch")
-        if not stub:
-            stub = self._STUBS["patch"] = self._Patch(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._Patch(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def update(
         self,
     ) -> Callable[[compute.UpdateRegionBackendServiceRequest], compute.Operation]:
-        stub = self._STUBS.get("update")
-        if not stub:
-            stub = self._STUBS["update"] = self._Update(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._Update(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def kind(self) -> str:

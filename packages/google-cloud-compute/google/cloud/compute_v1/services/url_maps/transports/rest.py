@@ -335,8 +335,6 @@ class UrlMapsRestTransport(UrlMapsTransport):
     It sends JSON representations of protocol buffers over HTTP/1.1
     """
 
-    _STUBS: Dict[str, UrlMapsRestStub] = {}
-
     def __init__(
         self,
         *,
@@ -1336,115 +1334,61 @@ class UrlMapsRestTransport(UrlMapsTransport):
     ) -> Callable[
         [compute.AggregatedListUrlMapsRequest], compute.UrlMapsAggregatedList
     ]:
-        stub = self._STUBS.get("aggregated_list")
-        if not stub:
-            stub = self._STUBS["aggregated_list"] = self._AggregatedList(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._AggregatedList(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def delete(self) -> Callable[[compute.DeleteUrlMapRequest], compute.Operation]:
-        stub = self._STUBS.get("delete")
-        if not stub:
-            stub = self._STUBS["delete"] = self._Delete(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._Delete(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get(self) -> Callable[[compute.GetUrlMapRequest], compute.UrlMap]:
-        stub = self._STUBS.get("get")
-        if not stub:
-            stub = self._STUBS["get"] = self._Get(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._Get(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def insert(self) -> Callable[[compute.InsertUrlMapRequest], compute.Operation]:
-        stub = self._STUBS.get("insert")
-        if not stub:
-            stub = self._STUBS["insert"] = self._Insert(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._Insert(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def invalidate_cache(
         self,
     ) -> Callable[[compute.InvalidateCacheUrlMapRequest], compute.Operation]:
-        stub = self._STUBS.get("invalidate_cache")
-        if not stub:
-            stub = self._STUBS["invalidate_cache"] = self._InvalidateCache(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._InvalidateCache(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def list(self) -> Callable[[compute.ListUrlMapsRequest], compute.UrlMapList]:
-        stub = self._STUBS.get("list")
-        if not stub:
-            stub = self._STUBS["list"] = self._List(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._List(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def patch(self) -> Callable[[compute.PatchUrlMapRequest], compute.Operation]:
-        stub = self._STUBS.get("patch")
-        if not stub:
-            stub = self._STUBS["patch"] = self._Patch(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._Patch(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def update(self) -> Callable[[compute.UpdateUrlMapRequest], compute.Operation]:
-        stub = self._STUBS.get("update")
-        if not stub:
-            stub = self._STUBS["update"] = self._Update(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._Update(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def validate(
         self,
     ) -> Callable[[compute.ValidateUrlMapRequest], compute.UrlMapsValidateResponse]:
-        stub = self._STUBS.get("validate")
-        if not stub:
-            stub = self._STUBS["validate"] = self._Validate(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._Validate(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def kind(self) -> str:

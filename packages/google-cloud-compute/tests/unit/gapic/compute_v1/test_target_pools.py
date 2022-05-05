@@ -6627,6 +6627,58 @@ def test_target_pools_host_with_port(transport_name):
     )
 
 
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        "rest",
+    ],
+)
+def test_target_pools_client_transport_session_collision(transport_name):
+    creds1 = ga_credentials.AnonymousCredentials()
+    creds2 = ga_credentials.AnonymousCredentials()
+    client1 = TargetPoolsClient(
+        credentials=creds1,
+        transport=transport_name,
+    )
+    client2 = TargetPoolsClient(
+        credentials=creds2,
+        transport=transport_name,
+    )
+    session1 = client1.transport.add_health_check._session
+    session2 = client2.transport.add_health_check._session
+    assert session1 != session2
+    session1 = client1.transport.add_instance._session
+    session2 = client2.transport.add_instance._session
+    assert session1 != session2
+    session1 = client1.transport.aggregated_list._session
+    session2 = client2.transport.aggregated_list._session
+    assert session1 != session2
+    session1 = client1.transport.delete._session
+    session2 = client2.transport.delete._session
+    assert session1 != session2
+    session1 = client1.transport.get._session
+    session2 = client2.transport.get._session
+    assert session1 != session2
+    session1 = client1.transport.get_health._session
+    session2 = client2.transport.get_health._session
+    assert session1 != session2
+    session1 = client1.transport.insert._session
+    session2 = client2.transport.insert._session
+    assert session1 != session2
+    session1 = client1.transport.list._session
+    session2 = client2.transport.list._session
+    assert session1 != session2
+    session1 = client1.transport.remove_health_check._session
+    session2 = client2.transport.remove_health_check._session
+    assert session1 != session2
+    session1 = client1.transport.remove_instance._session
+    session2 = client2.transport.remove_instance._session
+    assert session1 != session2
+    session1 = client1.transport.set_backup._session
+    session2 = client2.transport.set_backup._session
+    assert session1 != session2
+
+
 def test_common_billing_account_path():
     billing_account = "squid"
     expected = "billingAccounts/{billing_account}".format(

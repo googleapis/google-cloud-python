@@ -437,8 +437,6 @@ class SubnetworksRestTransport(SubnetworksTransport):
     It sends JSON representations of protocol buffers over HTTP/1.1
     """
 
-    _STUBS: Dict[str, SubnetworksRestStub] = {}
-
     def __init__(
         self,
         *,
@@ -1804,93 +1802,51 @@ class SubnetworksRestTransport(SubnetworksTransport):
     ) -> Callable[
         [compute.AggregatedListSubnetworksRequest], compute.SubnetworkAggregatedList
     ]:
-        stub = self._STUBS.get("aggregated_list")
-        if not stub:
-            stub = self._STUBS["aggregated_list"] = self._AggregatedList(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._AggregatedList(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def delete(self) -> Callable[[compute.DeleteSubnetworkRequest], compute.Operation]:
-        stub = self._STUBS.get("delete")
-        if not stub:
-            stub = self._STUBS["delete"] = self._Delete(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._Delete(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def expand_ip_cidr_range(
         self,
     ) -> Callable[[compute.ExpandIpCidrRangeSubnetworkRequest], compute.Operation]:
-        stub = self._STUBS.get("expand_ip_cidr_range")
-        if not stub:
-            stub = self._STUBS["expand_ip_cidr_range"] = self._ExpandIpCidrRange(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._ExpandIpCidrRange(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get(self) -> Callable[[compute.GetSubnetworkRequest], compute.Subnetwork]:
-        stub = self._STUBS.get("get")
-        if not stub:
-            stub = self._STUBS["get"] = self._Get(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._Get(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get_iam_policy(
         self,
     ) -> Callable[[compute.GetIamPolicySubnetworkRequest], compute.Policy]:
-        stub = self._STUBS.get("get_iam_policy")
-        if not stub:
-            stub = self._STUBS["get_iam_policy"] = self._GetIamPolicy(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._GetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def insert(self) -> Callable[[compute.InsertSubnetworkRequest], compute.Operation]:
-        stub = self._STUBS.get("insert")
-        if not stub:
-            stub = self._STUBS["insert"] = self._Insert(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._Insert(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def list(
         self,
     ) -> Callable[[compute.ListSubnetworksRequest], compute.SubnetworkList]:
-        stub = self._STUBS.get("list")
-        if not stub:
-            stub = self._STUBS["list"] = self._List(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._List(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def list_usable(
@@ -1898,41 +1854,23 @@ class SubnetworksRestTransport(SubnetworksTransport):
     ) -> Callable[
         [compute.ListUsableSubnetworksRequest], compute.UsableSubnetworksAggregatedList
     ]:
-        stub = self._STUBS.get("list_usable")
-        if not stub:
-            stub = self._STUBS["list_usable"] = self._ListUsable(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._ListUsable(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def patch(self) -> Callable[[compute.PatchSubnetworkRequest], compute.Operation]:
-        stub = self._STUBS.get("patch")
-        if not stub:
-            stub = self._STUBS["patch"] = self._Patch(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._Patch(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def set_iam_policy(
         self,
     ) -> Callable[[compute.SetIamPolicySubnetworkRequest], compute.Policy]:
-        stub = self._STUBS.get("set_iam_policy")
-        if not stub:
-            stub = self._STUBS["set_iam_policy"] = self._SetIamPolicy(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._SetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def set_private_ip_google_access(
@@ -1940,17 +1878,9 @@ class SubnetworksRestTransport(SubnetworksTransport):
     ) -> Callable[
         [compute.SetPrivateIpGoogleAccessSubnetworkRequest], compute.Operation
     ]:
-        stub = self._STUBS.get("set_private_ip_google_access")
-        if not stub:
-            stub = self._STUBS[
-                "set_private_ip_google_access"
-            ] = self._SetPrivateIpGoogleAccess(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._SetPrivateIpGoogleAccess(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def test_iam_permissions(
@@ -1958,15 +1888,9 @@ class SubnetworksRestTransport(SubnetworksTransport):
     ) -> Callable[
         [compute.TestIamPermissionsSubnetworkRequest], compute.TestPermissionsResponse
     ]:
-        stub = self._STUBS.get("test_iam_permissions")
-        if not stub:
-            stub = self._STUBS["test_iam_permissions"] = self._TestIamPermissions(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._TestIamPermissions(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def kind(self) -> str:

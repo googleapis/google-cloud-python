@@ -1537,6 +1537,36 @@ def test_global_organization_operations_host_with_port(transport_name):
     )
 
 
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        "rest",
+    ],
+)
+def test_global_organization_operations_client_transport_session_collision(
+    transport_name,
+):
+    creds1 = ga_credentials.AnonymousCredentials()
+    creds2 = ga_credentials.AnonymousCredentials()
+    client1 = GlobalOrganizationOperationsClient(
+        credentials=creds1,
+        transport=transport_name,
+    )
+    client2 = GlobalOrganizationOperationsClient(
+        credentials=creds2,
+        transport=transport_name,
+    )
+    session1 = client1.transport.delete._session
+    session2 = client2.transport.delete._session
+    assert session1 != session2
+    session1 = client1.transport.get._session
+    session2 = client2.transport.get._session
+    assert session1 != session2
+    session1 = client1.transport.list._session
+    session2 = client2.transport.list._session
+    assert session1 != session2
+
+
 def test_common_billing_account_path():
     billing_account = "squid"
     expected = "billingAccounts/{billing_account}".format(

@@ -149,8 +149,6 @@ class LicenseCodesRestTransport(LicenseCodesTransport):
     It sends JSON representations of protocol buffers over HTTP/1.1
     """
 
-    _STUBS: Dict[str, LicenseCodesRestStub] = {}
-
     def __init__(
         self,
         *,
@@ -420,15 +418,9 @@ class LicenseCodesRestTransport(LicenseCodesTransport):
 
     @property
     def get(self) -> Callable[[compute.GetLicenseCodeRequest], compute.LicenseCode]:
-        stub = self._STUBS.get("get")
-        if not stub:
-            stub = self._STUBS["get"] = self._Get(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._Get(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def test_iam_permissions(
@@ -436,15 +428,9 @@ class LicenseCodesRestTransport(LicenseCodesTransport):
     ) -> Callable[
         [compute.TestIamPermissionsLicenseCodeRequest], compute.TestPermissionsResponse
     ]:
-        stub = self._STUBS.get("test_iam_permissions")
-        if not stub:
-            stub = self._STUBS["test_iam_permissions"] = self._TestIamPermissions(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._TestIamPermissions(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def kind(self) -> str:

@@ -299,8 +299,6 @@ class RegionTargetHttpsProxiesRestTransport(RegionTargetHttpsProxiesTransport):
     It sends JSON representations of protocol buffers over HTTP/1.1
     """
 
-    _STUBS: Dict[str, RegionTargetHttpsProxiesRestStub] = {}
-
     def __init__(
         self,
         *,
@@ -1137,43 +1135,25 @@ class RegionTargetHttpsProxiesRestTransport(RegionTargetHttpsProxiesTransport):
     def delete(
         self,
     ) -> Callable[[compute.DeleteRegionTargetHttpsProxyRequest], compute.Operation]:
-        stub = self._STUBS.get("delete")
-        if not stub:
-            stub = self._STUBS["delete"] = self._Delete(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._Delete(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get(
         self,
     ) -> Callable[[compute.GetRegionTargetHttpsProxyRequest], compute.TargetHttpsProxy]:
-        stub = self._STUBS.get("get")
-        if not stub:
-            stub = self._STUBS["get"] = self._Get(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._Get(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def insert(
         self,
     ) -> Callable[[compute.InsertRegionTargetHttpsProxyRequest], compute.Operation]:
-        stub = self._STUBS.get("insert")
-        if not stub:
-            stub = self._STUBS["insert"] = self._Insert(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._Insert(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def list(
@@ -1181,29 +1161,17 @@ class RegionTargetHttpsProxiesRestTransport(RegionTargetHttpsProxiesTransport):
     ) -> Callable[
         [compute.ListRegionTargetHttpsProxiesRequest], compute.TargetHttpsProxyList
     ]:
-        stub = self._STUBS.get("list")
-        if not stub:
-            stub = self._STUBS["list"] = self._List(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._List(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def patch(
         self,
     ) -> Callable[[compute.PatchRegionTargetHttpsProxyRequest], compute.Operation]:
-        stub = self._STUBS.get("patch")
-        if not stub:
-            stub = self._STUBS["patch"] = self._Patch(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._Patch(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def set_ssl_certificates(
@@ -1211,29 +1179,17 @@ class RegionTargetHttpsProxiesRestTransport(RegionTargetHttpsProxiesTransport):
     ) -> Callable[
         [compute.SetSslCertificatesRegionTargetHttpsProxyRequest], compute.Operation
     ]:
-        stub = self._STUBS.get("set_ssl_certificates")
-        if not stub:
-            stub = self._STUBS["set_ssl_certificates"] = self._SetSslCertificates(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._SetSslCertificates(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def set_url_map(
         self,
     ) -> Callable[[compute.SetUrlMapRegionTargetHttpsProxyRequest], compute.Operation]:
-        stub = self._STUBS.get("set_url_map")
-        if not stub:
-            stub = self._STUBS["set_url_map"] = self._SetUrlMap(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._SetUrlMap(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def kind(self) -> str:

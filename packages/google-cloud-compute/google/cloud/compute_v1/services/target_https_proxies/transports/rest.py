@@ -386,8 +386,6 @@ class TargetHttpsProxiesRestTransport(TargetHttpsProxiesTransport):
     It sends JSON representations of protocol buffers over HTTP/1.1
     """
 
-    _STUBS: Dict[str, TargetHttpsProxiesRestStub] = {}
-
     def __init__(
         self,
         *,
@@ -1542,57 +1540,33 @@ class TargetHttpsProxiesRestTransport(TargetHttpsProxiesTransport):
         [compute.AggregatedListTargetHttpsProxiesRequest],
         compute.TargetHttpsProxyAggregatedList,
     ]:
-        stub = self._STUBS.get("aggregated_list")
-        if not stub:
-            stub = self._STUBS["aggregated_list"] = self._AggregatedList(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._AggregatedList(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def delete(
         self,
     ) -> Callable[[compute.DeleteTargetHttpsProxyRequest], compute.Operation]:
-        stub = self._STUBS.get("delete")
-        if not stub:
-            stub = self._STUBS["delete"] = self._Delete(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._Delete(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get(
         self,
     ) -> Callable[[compute.GetTargetHttpsProxyRequest], compute.TargetHttpsProxy]:
-        stub = self._STUBS.get("get")
-        if not stub:
-            stub = self._STUBS["get"] = self._Get(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._Get(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def insert(
         self,
     ) -> Callable[[compute.InsertTargetHttpsProxyRequest], compute.Operation]:
-        stub = self._STUBS.get("insert")
-        if not stub:
-            stub = self._STUBS["insert"] = self._Insert(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._Insert(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def list(
@@ -1600,43 +1574,25 @@ class TargetHttpsProxiesRestTransport(TargetHttpsProxiesTransport):
     ) -> Callable[
         [compute.ListTargetHttpsProxiesRequest], compute.TargetHttpsProxyList
     ]:
-        stub = self._STUBS.get("list")
-        if not stub:
-            stub = self._STUBS["list"] = self._List(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._List(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def patch(
         self,
     ) -> Callable[[compute.PatchTargetHttpsProxyRequest], compute.Operation]:
-        stub = self._STUBS.get("patch")
-        if not stub:
-            stub = self._STUBS["patch"] = self._Patch(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._Patch(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def set_quic_override(
         self,
     ) -> Callable[[compute.SetQuicOverrideTargetHttpsProxyRequest], compute.Operation]:
-        stub = self._STUBS.get("set_quic_override")
-        if not stub:
-            stub = self._STUBS["set_quic_override"] = self._SetQuicOverride(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._SetQuicOverride(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def set_ssl_certificates(
@@ -1644,43 +1600,25 @@ class TargetHttpsProxiesRestTransport(TargetHttpsProxiesTransport):
     ) -> Callable[
         [compute.SetSslCertificatesTargetHttpsProxyRequest], compute.Operation
     ]:
-        stub = self._STUBS.get("set_ssl_certificates")
-        if not stub:
-            stub = self._STUBS["set_ssl_certificates"] = self._SetSslCertificates(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._SetSslCertificates(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def set_ssl_policy(
         self,
     ) -> Callable[[compute.SetSslPolicyTargetHttpsProxyRequest], compute.Operation]:
-        stub = self._STUBS.get("set_ssl_policy")
-        if not stub:
-            stub = self._STUBS["set_ssl_policy"] = self._SetSslPolicy(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._SetSslPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def set_url_map(
         self,
     ) -> Callable[[compute.SetUrlMapTargetHttpsProxyRequest], compute.Operation]:
-        stub = self._STUBS.get("set_url_map")
-        if not stub:
-            stub = self._STUBS["set_url_map"] = self._SetUrlMap(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._SetUrlMap(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def kind(self) -> str:

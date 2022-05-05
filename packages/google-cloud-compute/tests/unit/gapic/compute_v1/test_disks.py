@@ -7533,6 +7533,64 @@ def test_disks_host_with_port(transport_name):
     )
 
 
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        "rest",
+    ],
+)
+def test_disks_client_transport_session_collision(transport_name):
+    creds1 = ga_credentials.AnonymousCredentials()
+    creds2 = ga_credentials.AnonymousCredentials()
+    client1 = DisksClient(
+        credentials=creds1,
+        transport=transport_name,
+    )
+    client2 = DisksClient(
+        credentials=creds2,
+        transport=transport_name,
+    )
+    session1 = client1.transport.add_resource_policies._session
+    session2 = client2.transport.add_resource_policies._session
+    assert session1 != session2
+    session1 = client1.transport.aggregated_list._session
+    session2 = client2.transport.aggregated_list._session
+    assert session1 != session2
+    session1 = client1.transport.create_snapshot._session
+    session2 = client2.transport.create_snapshot._session
+    assert session1 != session2
+    session1 = client1.transport.delete._session
+    session2 = client2.transport.delete._session
+    assert session1 != session2
+    session1 = client1.transport.get._session
+    session2 = client2.transport.get._session
+    assert session1 != session2
+    session1 = client1.transport.get_iam_policy._session
+    session2 = client2.transport.get_iam_policy._session
+    assert session1 != session2
+    session1 = client1.transport.insert._session
+    session2 = client2.transport.insert._session
+    assert session1 != session2
+    session1 = client1.transport.list._session
+    session2 = client2.transport.list._session
+    assert session1 != session2
+    session1 = client1.transport.remove_resource_policies._session
+    session2 = client2.transport.remove_resource_policies._session
+    assert session1 != session2
+    session1 = client1.transport.resize._session
+    session2 = client2.transport.resize._session
+    assert session1 != session2
+    session1 = client1.transport.set_iam_policy._session
+    session2 = client2.transport.set_iam_policy._session
+    assert session1 != session2
+    session1 = client1.transport.set_labels._session
+    session2 = client2.transport.set_labels._session
+    assert session1 != session2
+    session1 = client1.transport.test_iam_permissions._session
+    session2 = client2.transport.test_iam_permissions._session
+    assert session1 != session2
+
+
 def test_common_billing_account_path():
     billing_account = "squid"
     expected = "billingAccounts/{billing_account}".format(

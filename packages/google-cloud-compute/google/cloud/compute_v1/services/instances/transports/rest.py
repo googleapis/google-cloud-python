@@ -1404,8 +1404,6 @@ class InstancesRestTransport(InstancesTransport):
     It sends JSON representations of protocol buffers over HTTP/1.1
     """
 
-    _STUBS: Dict[str, InstancesRestStub] = {}
-
     def __init__(
         self,
         *,
@@ -6315,29 +6313,17 @@ class InstancesRestTransport(InstancesTransport):
     def add_access_config(
         self,
     ) -> Callable[[compute.AddAccessConfigInstanceRequest], compute.Operation]:
-        stub = self._STUBS.get("add_access_config")
-        if not stub:
-            stub = self._STUBS["add_access_config"] = self._AddAccessConfig(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._AddAccessConfig(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def add_resource_policies(
         self,
     ) -> Callable[[compute.AddResourcePoliciesInstanceRequest], compute.Operation]:
-        stub = self._STUBS.get("add_resource_policies")
-        if not stub:
-            stub = self._STUBS["add_resource_policies"] = self._AddResourcePolicies(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._AddResourcePolicies(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def aggregated_list(
@@ -6345,95 +6331,53 @@ class InstancesRestTransport(InstancesTransport):
     ) -> Callable[
         [compute.AggregatedListInstancesRequest], compute.InstanceAggregatedList
     ]:
-        stub = self._STUBS.get("aggregated_list")
-        if not stub:
-            stub = self._STUBS["aggregated_list"] = self._AggregatedList(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._AggregatedList(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def attach_disk(
         self,
     ) -> Callable[[compute.AttachDiskInstanceRequest], compute.Operation]:
-        stub = self._STUBS.get("attach_disk")
-        if not stub:
-            stub = self._STUBS["attach_disk"] = self._AttachDisk(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._AttachDisk(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def bulk_insert(
         self,
     ) -> Callable[[compute.BulkInsertInstanceRequest], compute.Operation]:
-        stub = self._STUBS.get("bulk_insert")
-        if not stub:
-            stub = self._STUBS["bulk_insert"] = self._BulkInsert(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._BulkInsert(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def delete(self) -> Callable[[compute.DeleteInstanceRequest], compute.Operation]:
-        stub = self._STUBS.get("delete")
-        if not stub:
-            stub = self._STUBS["delete"] = self._Delete(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._Delete(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def delete_access_config(
         self,
     ) -> Callable[[compute.DeleteAccessConfigInstanceRequest], compute.Operation]:
-        stub = self._STUBS.get("delete_access_config")
-        if not stub:
-            stub = self._STUBS["delete_access_config"] = self._DeleteAccessConfig(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._DeleteAccessConfig(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def detach_disk(
         self,
     ) -> Callable[[compute.DetachDiskInstanceRequest], compute.Operation]:
-        stub = self._STUBS.get("detach_disk")
-        if not stub:
-            stub = self._STUBS["detach_disk"] = self._DetachDisk(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._DetachDisk(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get(self) -> Callable[[compute.GetInstanceRequest], compute.Instance]:
-        stub = self._STUBS.get("get")
-        if not stub:
-            stub = self._STUBS["get"] = self._Get(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._Get(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get_effective_firewalls(
@@ -6442,57 +6386,33 @@ class InstancesRestTransport(InstancesTransport):
         [compute.GetEffectiveFirewallsInstanceRequest],
         compute.InstancesGetEffectiveFirewallsResponse,
     ]:
-        stub = self._STUBS.get("get_effective_firewalls")
-        if not stub:
-            stub = self._STUBS["get_effective_firewalls"] = self._GetEffectiveFirewalls(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._GetEffectiveFirewalls(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get_guest_attributes(
         self,
     ) -> Callable[[compute.GetGuestAttributesInstanceRequest], compute.GuestAttributes]:
-        stub = self._STUBS.get("get_guest_attributes")
-        if not stub:
-            stub = self._STUBS["get_guest_attributes"] = self._GetGuestAttributes(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._GetGuestAttributes(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get_iam_policy(
         self,
     ) -> Callable[[compute.GetIamPolicyInstanceRequest], compute.Policy]:
-        stub = self._STUBS.get("get_iam_policy")
-        if not stub:
-            stub = self._STUBS["get_iam_policy"] = self._GetIamPolicy(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._GetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get_screenshot(
         self,
     ) -> Callable[[compute.GetScreenshotInstanceRequest], compute.Screenshot]:
-        stub = self._STUBS.get("get_screenshot")
-        if not stub:
-            stub = self._STUBS["get_screenshot"] = self._GetScreenshot(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._GetScreenshot(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get_serial_port_output(
@@ -6500,15 +6420,9 @@ class InstancesRestTransport(InstancesTransport):
     ) -> Callable[
         [compute.GetSerialPortOutputInstanceRequest], compute.SerialPortOutput
     ]:
-        stub = self._STUBS.get("get_serial_port_output")
-        if not stub:
-            stub = self._STUBS["get_serial_port_output"] = self._GetSerialPortOutput(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._GetSerialPortOutput(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get_shielded_instance_identity(
@@ -6517,41 +6431,21 @@ class InstancesRestTransport(InstancesTransport):
         [compute.GetShieldedInstanceIdentityInstanceRequest],
         compute.ShieldedInstanceIdentity,
     ]:
-        stub = self._STUBS.get("get_shielded_instance_identity")
-        if not stub:
-            stub = self._STUBS[
-                "get_shielded_instance_identity"
-            ] = self._GetShieldedInstanceIdentity(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._GetShieldedInstanceIdentity(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def insert(self) -> Callable[[compute.InsertInstanceRequest], compute.Operation]:
-        stub = self._STUBS.get("insert")
-        if not stub:
-            stub = self._STUBS["insert"] = self._Insert(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._Insert(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def list(self) -> Callable[[compute.ListInstancesRequest], compute.InstanceList]:
-        stub = self._STUBS.get("list")
-        if not stub:
-            stub = self._STUBS["list"] = self._List(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._List(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def list_referrers(
@@ -6559,55 +6453,29 @@ class InstancesRestTransport(InstancesTransport):
     ) -> Callable[
         [compute.ListReferrersInstancesRequest], compute.InstanceListReferrers
     ]:
-        stub = self._STUBS.get("list_referrers")
-        if not stub:
-            stub = self._STUBS["list_referrers"] = self._ListReferrers(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._ListReferrers(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def remove_resource_policies(
         self,
     ) -> Callable[[compute.RemoveResourcePoliciesInstanceRequest], compute.Operation]:
-        stub = self._STUBS.get("remove_resource_policies")
-        if not stub:
-            stub = self._STUBS[
-                "remove_resource_policies"
-            ] = self._RemoveResourcePolicies(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._RemoveResourcePolicies(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def reset(self) -> Callable[[compute.ResetInstanceRequest], compute.Operation]:
-        stub = self._STUBS.get("reset")
-        if not stub:
-            stub = self._STUBS["reset"] = self._Reset(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._Reset(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def resume(self) -> Callable[[compute.ResumeInstanceRequest], compute.Operation]:
-        stub = self._STUBS.get("resume")
-        if not stub:
-            stub = self._STUBS["resume"] = self._Resume(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._Resume(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def send_diagnostic_interrupt(
@@ -6616,157 +6484,89 @@ class InstancesRestTransport(InstancesTransport):
         [compute.SendDiagnosticInterruptInstanceRequest],
         compute.SendDiagnosticInterruptInstanceResponse,
     ]:
-        stub = self._STUBS.get("send_diagnostic_interrupt")
-        if not stub:
-            stub = self._STUBS[
-                "send_diagnostic_interrupt"
-            ] = self._SendDiagnosticInterrupt(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._SendDiagnosticInterrupt(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def set_deletion_protection(
         self,
     ) -> Callable[[compute.SetDeletionProtectionInstanceRequest], compute.Operation]:
-        stub = self._STUBS.get("set_deletion_protection")
-        if not stub:
-            stub = self._STUBS["set_deletion_protection"] = self._SetDeletionProtection(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._SetDeletionProtection(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def set_disk_auto_delete(
         self,
     ) -> Callable[[compute.SetDiskAutoDeleteInstanceRequest], compute.Operation]:
-        stub = self._STUBS.get("set_disk_auto_delete")
-        if not stub:
-            stub = self._STUBS["set_disk_auto_delete"] = self._SetDiskAutoDelete(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._SetDiskAutoDelete(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def set_iam_policy(
         self,
     ) -> Callable[[compute.SetIamPolicyInstanceRequest], compute.Policy]:
-        stub = self._STUBS.get("set_iam_policy")
-        if not stub:
-            stub = self._STUBS["set_iam_policy"] = self._SetIamPolicy(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._SetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def set_labels(
         self,
     ) -> Callable[[compute.SetLabelsInstanceRequest], compute.Operation]:
-        stub = self._STUBS.get("set_labels")
-        if not stub:
-            stub = self._STUBS["set_labels"] = self._SetLabels(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._SetLabels(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def set_machine_resources(
         self,
     ) -> Callable[[compute.SetMachineResourcesInstanceRequest], compute.Operation]:
-        stub = self._STUBS.get("set_machine_resources")
-        if not stub:
-            stub = self._STUBS["set_machine_resources"] = self._SetMachineResources(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._SetMachineResources(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def set_machine_type(
         self,
     ) -> Callable[[compute.SetMachineTypeInstanceRequest], compute.Operation]:
-        stub = self._STUBS.get("set_machine_type")
-        if not stub:
-            stub = self._STUBS["set_machine_type"] = self._SetMachineType(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._SetMachineType(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def set_metadata(
         self,
     ) -> Callable[[compute.SetMetadataInstanceRequest], compute.Operation]:
-        stub = self._STUBS.get("set_metadata")
-        if not stub:
-            stub = self._STUBS["set_metadata"] = self._SetMetadata(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._SetMetadata(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def set_min_cpu_platform(
         self,
     ) -> Callable[[compute.SetMinCpuPlatformInstanceRequest], compute.Operation]:
-        stub = self._STUBS.get("set_min_cpu_platform")
-        if not stub:
-            stub = self._STUBS["set_min_cpu_platform"] = self._SetMinCpuPlatform(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._SetMinCpuPlatform(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def set_scheduling(
         self,
     ) -> Callable[[compute.SetSchedulingInstanceRequest], compute.Operation]:
-        stub = self._STUBS.get("set_scheduling")
-        if not stub:
-            stub = self._STUBS["set_scheduling"] = self._SetScheduling(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._SetScheduling(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def set_service_account(
         self,
     ) -> Callable[[compute.SetServiceAccountInstanceRequest], compute.Operation]:
-        stub = self._STUBS.get("set_service_account")
-        if not stub:
-            stub = self._STUBS["set_service_account"] = self._SetServiceAccount(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._SetServiceAccount(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def set_shielded_instance_integrity_policy(
@@ -6774,97 +6574,49 @@ class InstancesRestTransport(InstancesTransport):
     ) -> Callable[
         [compute.SetShieldedInstanceIntegrityPolicyInstanceRequest], compute.Operation
     ]:
-        stub = self._STUBS.get("set_shielded_instance_integrity_policy")
-        if not stub:
-            stub = self._STUBS[
-                "set_shielded_instance_integrity_policy"
-            ] = self._SetShieldedInstanceIntegrityPolicy(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._SetShieldedInstanceIntegrityPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def set_tags(self) -> Callable[[compute.SetTagsInstanceRequest], compute.Operation]:
-        stub = self._STUBS.get("set_tags")
-        if not stub:
-            stub = self._STUBS["set_tags"] = self._SetTags(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._SetTags(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def simulate_maintenance_event(
         self,
     ) -> Callable[[compute.SimulateMaintenanceEventInstanceRequest], compute.Operation]:
-        stub = self._STUBS.get("simulate_maintenance_event")
-        if not stub:
-            stub = self._STUBS[
-                "simulate_maintenance_event"
-            ] = self._SimulateMaintenanceEvent(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._SimulateMaintenanceEvent(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def start(self) -> Callable[[compute.StartInstanceRequest], compute.Operation]:
-        stub = self._STUBS.get("start")
-        if not stub:
-            stub = self._STUBS["start"] = self._Start(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._Start(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def start_with_encryption_key(
         self,
     ) -> Callable[[compute.StartWithEncryptionKeyInstanceRequest], compute.Operation]:
-        stub = self._STUBS.get("start_with_encryption_key")
-        if not stub:
-            stub = self._STUBS[
-                "start_with_encryption_key"
-            ] = self._StartWithEncryptionKey(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._StartWithEncryptionKey(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def stop(self) -> Callable[[compute.StopInstanceRequest], compute.Operation]:
-        stub = self._STUBS.get("stop")
-        if not stub:
-            stub = self._STUBS["stop"] = self._Stop(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._Stop(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def suspend(self) -> Callable[[compute.SuspendInstanceRequest], compute.Operation]:
-        stub = self._STUBS.get("suspend")
-        if not stub:
-            stub = self._STUBS["suspend"] = self._Suspend(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._Suspend(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def test_iam_permissions(
@@ -6872,71 +6624,39 @@ class InstancesRestTransport(InstancesTransport):
     ) -> Callable[
         [compute.TestIamPermissionsInstanceRequest], compute.TestPermissionsResponse
     ]:
-        stub = self._STUBS.get("test_iam_permissions")
-        if not stub:
-            stub = self._STUBS["test_iam_permissions"] = self._TestIamPermissions(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._TestIamPermissions(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def update(self) -> Callable[[compute.UpdateInstanceRequest], compute.Operation]:
-        stub = self._STUBS.get("update")
-        if not stub:
-            stub = self._STUBS["update"] = self._Update(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._Update(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def update_access_config(
         self,
     ) -> Callable[[compute.UpdateAccessConfigInstanceRequest], compute.Operation]:
-        stub = self._STUBS.get("update_access_config")
-        if not stub:
-            stub = self._STUBS["update_access_config"] = self._UpdateAccessConfig(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._UpdateAccessConfig(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def update_display_device(
         self,
     ) -> Callable[[compute.UpdateDisplayDeviceInstanceRequest], compute.Operation]:
-        stub = self._STUBS.get("update_display_device")
-        if not stub:
-            stub = self._STUBS["update_display_device"] = self._UpdateDisplayDevice(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._UpdateDisplayDevice(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def update_network_interface(
         self,
     ) -> Callable[[compute.UpdateNetworkInterfaceInstanceRequest], compute.Operation]:
-        stub = self._STUBS.get("update_network_interface")
-        if not stub:
-            stub = self._STUBS[
-                "update_network_interface"
-            ] = self._UpdateNetworkInterface(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._UpdateNetworkInterface(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def update_shielded_instance_config(
@@ -6944,17 +6664,9 @@ class InstancesRestTransport(InstancesTransport):
     ) -> Callable[
         [compute.UpdateShieldedInstanceConfigInstanceRequest], compute.Operation
     ]:
-        stub = self._STUBS.get("update_shielded_instance_config")
-        if not stub:
-            stub = self._STUBS[
-                "update_shielded_instance_config"
-            ] = self._UpdateShieldedInstanceConfig(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._UpdateShieldedInstanceConfig(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def kind(self) -> str:

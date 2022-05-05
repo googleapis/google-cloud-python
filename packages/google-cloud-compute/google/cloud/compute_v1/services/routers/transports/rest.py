@@ -365,8 +365,6 @@ class RoutersRestTransport(RoutersTransport):
     It sends JSON representations of protocol buffers over HTTP/1.1
     """
 
-    _STUBS: Dict[str, RoutersRestStub] = {}
-
     def __init__(
         self,
         *,
@@ -1416,39 +1414,21 @@ class RoutersRestTransport(RoutersTransport):
     def aggregated_list(
         self,
     ) -> Callable[[compute.AggregatedListRoutersRequest], compute.RouterAggregatedList]:
-        stub = self._STUBS.get("aggregated_list")
-        if not stub:
-            stub = self._STUBS["aggregated_list"] = self._AggregatedList(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._AggregatedList(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def delete(self) -> Callable[[compute.DeleteRouterRequest], compute.Operation]:
-        stub = self._STUBS.get("delete")
-        if not stub:
-            stub = self._STUBS["delete"] = self._Delete(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._Delete(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get(self) -> Callable[[compute.GetRouterRequest], compute.Router]:
-        stub = self._STUBS.get("get")
-        if not stub:
-            stub = self._STUBS["get"] = self._Get(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._Get(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get_nat_mapping_info(
@@ -1456,91 +1436,49 @@ class RoutersRestTransport(RoutersTransport):
     ) -> Callable[
         [compute.GetNatMappingInfoRoutersRequest], compute.VmEndpointNatMappingsList
     ]:
-        stub = self._STUBS.get("get_nat_mapping_info")
-        if not stub:
-            stub = self._STUBS["get_nat_mapping_info"] = self._GetNatMappingInfo(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._GetNatMappingInfo(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get_router_status(
         self,
     ) -> Callable[[compute.GetRouterStatusRouterRequest], compute.RouterStatusResponse]:
-        stub = self._STUBS.get("get_router_status")
-        if not stub:
-            stub = self._STUBS["get_router_status"] = self._GetRouterStatus(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._GetRouterStatus(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def insert(self) -> Callable[[compute.InsertRouterRequest], compute.Operation]:
-        stub = self._STUBS.get("insert")
-        if not stub:
-            stub = self._STUBS["insert"] = self._Insert(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._Insert(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def list(self) -> Callable[[compute.ListRoutersRequest], compute.RouterList]:
-        stub = self._STUBS.get("list")
-        if not stub:
-            stub = self._STUBS["list"] = self._List(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._List(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def patch(self) -> Callable[[compute.PatchRouterRequest], compute.Operation]:
-        stub = self._STUBS.get("patch")
-        if not stub:
-            stub = self._STUBS["patch"] = self._Patch(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._Patch(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def preview(
         self,
     ) -> Callable[[compute.PreviewRouterRequest], compute.RoutersPreviewResponse]:
-        stub = self._STUBS.get("preview")
-        if not stub:
-            stub = self._STUBS["preview"] = self._Preview(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._Preview(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def update(self) -> Callable[[compute.UpdateRouterRequest], compute.Operation]:
-        stub = self._STUBS.get("update")
-        if not stub:
-            stub = self._STUBS["update"] = self._Update(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._Update(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def kind(self) -> str:

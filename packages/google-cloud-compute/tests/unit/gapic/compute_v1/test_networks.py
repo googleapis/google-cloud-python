@@ -6642,6 +6642,58 @@ def test_networks_host_with_port(transport_name):
     )
 
 
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        "rest",
+    ],
+)
+def test_networks_client_transport_session_collision(transport_name):
+    creds1 = ga_credentials.AnonymousCredentials()
+    creds2 = ga_credentials.AnonymousCredentials()
+    client1 = NetworksClient(
+        credentials=creds1,
+        transport=transport_name,
+    )
+    client2 = NetworksClient(
+        credentials=creds2,
+        transport=transport_name,
+    )
+    session1 = client1.transport.add_peering._session
+    session2 = client2.transport.add_peering._session
+    assert session1 != session2
+    session1 = client1.transport.delete._session
+    session2 = client2.transport.delete._session
+    assert session1 != session2
+    session1 = client1.transport.get._session
+    session2 = client2.transport.get._session
+    assert session1 != session2
+    session1 = client1.transport.get_effective_firewalls._session
+    session2 = client2.transport.get_effective_firewalls._session
+    assert session1 != session2
+    session1 = client1.transport.insert._session
+    session2 = client2.transport.insert._session
+    assert session1 != session2
+    session1 = client1.transport.list._session
+    session2 = client2.transport.list._session
+    assert session1 != session2
+    session1 = client1.transport.list_peering_routes._session
+    session2 = client2.transport.list_peering_routes._session
+    assert session1 != session2
+    session1 = client1.transport.patch._session
+    session2 = client2.transport.patch._session
+    assert session1 != session2
+    session1 = client1.transport.remove_peering._session
+    session2 = client2.transport.remove_peering._session
+    assert session1 != session2
+    session1 = client1.transport.switch_to_custom_mode._session
+    session2 = client2.transport.switch_to_custom_mode._session
+    assert session1 != session2
+    session1 = client1.transport.update_peering._session
+    session2 = client2.transport.update_peering._session
+    assert session1 != session2
+
+
 def test_common_billing_account_path():
     billing_account = "squid"
     expected = "billingAccounts/{billing_account}".format(

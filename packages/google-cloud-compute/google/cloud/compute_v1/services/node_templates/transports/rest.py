@@ -324,8 +324,6 @@ class NodeTemplatesRestTransport(NodeTemplatesTransport):
     It sends JSON representations of protocol buffers over HTTP/1.1
     """
 
-    _STUBS: Dict[str, NodeTemplatesRestStub] = {}
-
     def __init__(
         self,
         *,
@@ -1261,97 +1259,55 @@ class NodeTemplatesRestTransport(NodeTemplatesTransport):
     ) -> Callable[
         [compute.AggregatedListNodeTemplatesRequest], compute.NodeTemplateAggregatedList
     ]:
-        stub = self._STUBS.get("aggregated_list")
-        if not stub:
-            stub = self._STUBS["aggregated_list"] = self._AggregatedList(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._AggregatedList(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def delete(
         self,
     ) -> Callable[[compute.DeleteNodeTemplateRequest], compute.Operation]:
-        stub = self._STUBS.get("delete")
-        if not stub:
-            stub = self._STUBS["delete"] = self._Delete(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._Delete(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get(self) -> Callable[[compute.GetNodeTemplateRequest], compute.NodeTemplate]:
-        stub = self._STUBS.get("get")
-        if not stub:
-            stub = self._STUBS["get"] = self._Get(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._Get(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get_iam_policy(
         self,
     ) -> Callable[[compute.GetIamPolicyNodeTemplateRequest], compute.Policy]:
-        stub = self._STUBS.get("get_iam_policy")
-        if not stub:
-            stub = self._STUBS["get_iam_policy"] = self._GetIamPolicy(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._GetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def insert(
         self,
     ) -> Callable[[compute.InsertNodeTemplateRequest], compute.Operation]:
-        stub = self._STUBS.get("insert")
-        if not stub:
-            stub = self._STUBS["insert"] = self._Insert(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._Insert(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def list(
         self,
     ) -> Callable[[compute.ListNodeTemplatesRequest], compute.NodeTemplateList]:
-        stub = self._STUBS.get("list")
-        if not stub:
-            stub = self._STUBS["list"] = self._List(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._List(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def set_iam_policy(
         self,
     ) -> Callable[[compute.SetIamPolicyNodeTemplateRequest], compute.Policy]:
-        stub = self._STUBS.get("set_iam_policy")
-        if not stub:
-            stub = self._STUBS["set_iam_policy"] = self._SetIamPolicy(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._SetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def test_iam_permissions(
@@ -1359,15 +1315,9 @@ class NodeTemplatesRestTransport(NodeTemplatesTransport):
     ) -> Callable[
         [compute.TestIamPermissionsNodeTemplateRequest], compute.TestPermissionsResponse
     ]:
-        stub = self._STUBS.get("test_iam_permissions")
-        if not stub:
-            stub = self._STUBS["test_iam_permissions"] = self._TestIamPermissions(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._TestIamPermissions(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def kind(self) -> str:

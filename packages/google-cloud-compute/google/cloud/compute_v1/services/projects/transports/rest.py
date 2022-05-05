@@ -467,8 +467,6 @@ class ProjectsRestTransport(ProjectsTransport):
     It sends JSON representations of protocol buffers over HTTP/1.1
     """
 
-    _STUBS: Dict[str, ProjectsRestStub] = {}
-
     def __init__(
         self,
         *,
@@ -1929,83 +1927,47 @@ class ProjectsRestTransport(ProjectsTransport):
     def disable_xpn_host(
         self,
     ) -> Callable[[compute.DisableXpnHostProjectRequest], compute.Operation]:
-        stub = self._STUBS.get("disable_xpn_host")
-        if not stub:
-            stub = self._STUBS["disable_xpn_host"] = self._DisableXpnHost(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._DisableXpnHost(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def disable_xpn_resource(
         self,
     ) -> Callable[[compute.DisableXpnResourceProjectRequest], compute.Operation]:
-        stub = self._STUBS.get("disable_xpn_resource")
-        if not stub:
-            stub = self._STUBS["disable_xpn_resource"] = self._DisableXpnResource(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._DisableXpnResource(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def enable_xpn_host(
         self,
     ) -> Callable[[compute.EnableXpnHostProjectRequest], compute.Operation]:
-        stub = self._STUBS.get("enable_xpn_host")
-        if not stub:
-            stub = self._STUBS["enable_xpn_host"] = self._EnableXpnHost(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._EnableXpnHost(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def enable_xpn_resource(
         self,
     ) -> Callable[[compute.EnableXpnResourceProjectRequest], compute.Operation]:
-        stub = self._STUBS.get("enable_xpn_resource")
-        if not stub:
-            stub = self._STUBS["enable_xpn_resource"] = self._EnableXpnResource(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._EnableXpnResource(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get(self) -> Callable[[compute.GetProjectRequest], compute.Project]:
-        stub = self._STUBS.get("get")
-        if not stub:
-            stub = self._STUBS["get"] = self._Get(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._Get(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get_xpn_host(
         self,
     ) -> Callable[[compute.GetXpnHostProjectRequest], compute.Project]:
-        stub = self._STUBS.get("get_xpn_host")
-        if not stub:
-            stub = self._STUBS["get_xpn_host"] = self._GetXpnHost(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._GetXpnHost(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get_xpn_resources(
@@ -2013,103 +1975,57 @@ class ProjectsRestTransport(ProjectsTransport):
     ) -> Callable[
         [compute.GetXpnResourcesProjectsRequest], compute.ProjectsGetXpnResources
     ]:
-        stub = self._STUBS.get("get_xpn_resources")
-        if not stub:
-            stub = self._STUBS["get_xpn_resources"] = self._GetXpnResources(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._GetXpnResources(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def list_xpn_hosts(
         self,
     ) -> Callable[[compute.ListXpnHostsProjectsRequest], compute.XpnHostList]:
-        stub = self._STUBS.get("list_xpn_hosts")
-        if not stub:
-            stub = self._STUBS["list_xpn_hosts"] = self._ListXpnHosts(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._ListXpnHosts(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def move_disk(
         self,
     ) -> Callable[[compute.MoveDiskProjectRequest], compute.Operation]:
-        stub = self._STUBS.get("move_disk")
-        if not stub:
-            stub = self._STUBS["move_disk"] = self._MoveDisk(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._MoveDisk(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def move_instance(
         self,
     ) -> Callable[[compute.MoveInstanceProjectRequest], compute.Operation]:
-        stub = self._STUBS.get("move_instance")
-        if not stub:
-            stub = self._STUBS["move_instance"] = self._MoveInstance(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._MoveInstance(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def set_common_instance_metadata(
         self,
     ) -> Callable[[compute.SetCommonInstanceMetadataProjectRequest], compute.Operation]:
-        stub = self._STUBS.get("set_common_instance_metadata")
-        if not stub:
-            stub = self._STUBS[
-                "set_common_instance_metadata"
-            ] = self._SetCommonInstanceMetadata(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._SetCommonInstanceMetadata(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def set_default_network_tier(
         self,
     ) -> Callable[[compute.SetDefaultNetworkTierProjectRequest], compute.Operation]:
-        stub = self._STUBS.get("set_default_network_tier")
-        if not stub:
-            stub = self._STUBS[
-                "set_default_network_tier"
-            ] = self._SetDefaultNetworkTier(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._SetDefaultNetworkTier(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def set_usage_export_bucket(
         self,
     ) -> Callable[[compute.SetUsageExportBucketProjectRequest], compute.Operation]:
-        stub = self._STUBS.get("set_usage_export_bucket")
-        if not stub:
-            stub = self._STUBS["set_usage_export_bucket"] = self._SetUsageExportBucket(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._SetUsageExportBucket(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def kind(self) -> str:

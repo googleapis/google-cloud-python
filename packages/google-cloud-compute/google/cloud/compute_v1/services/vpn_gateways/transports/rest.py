@@ -319,8 +319,6 @@ class VpnGatewaysRestTransport(VpnGatewaysTransport):
     It sends JSON representations of protocol buffers over HTTP/1.1
     """
 
-    _STUBS: Dict[str, VpnGatewaysRestStub] = {}
-
     def __init__(
         self,
         *,
@@ -1189,39 +1187,21 @@ class VpnGatewaysRestTransport(VpnGatewaysTransport):
     ) -> Callable[
         [compute.AggregatedListVpnGatewaysRequest], compute.VpnGatewayAggregatedList
     ]:
-        stub = self._STUBS.get("aggregated_list")
-        if not stub:
-            stub = self._STUBS["aggregated_list"] = self._AggregatedList(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._AggregatedList(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def delete(self) -> Callable[[compute.DeleteVpnGatewayRequest], compute.Operation]:
-        stub = self._STUBS.get("delete")
-        if not stub:
-            stub = self._STUBS["delete"] = self._Delete(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._Delete(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get(self) -> Callable[[compute.GetVpnGatewayRequest], compute.VpnGateway]:
-        stub = self._STUBS.get("get")
-        if not stub:
-            stub = self._STUBS["get"] = self._Get(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._Get(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get_status(
@@ -1229,55 +1209,31 @@ class VpnGatewaysRestTransport(VpnGatewaysTransport):
     ) -> Callable[
         [compute.GetStatusVpnGatewayRequest], compute.VpnGatewaysGetStatusResponse
     ]:
-        stub = self._STUBS.get("get_status")
-        if not stub:
-            stub = self._STUBS["get_status"] = self._GetStatus(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._GetStatus(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def insert(self) -> Callable[[compute.InsertVpnGatewayRequest], compute.Operation]:
-        stub = self._STUBS.get("insert")
-        if not stub:
-            stub = self._STUBS["insert"] = self._Insert(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._Insert(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def list(
         self,
     ) -> Callable[[compute.ListVpnGatewaysRequest], compute.VpnGatewayList]:
-        stub = self._STUBS.get("list")
-        if not stub:
-            stub = self._STUBS["list"] = self._List(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._List(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def set_labels(
         self,
     ) -> Callable[[compute.SetLabelsVpnGatewayRequest], compute.Operation]:
-        stub = self._STUBS.get("set_labels")
-        if not stub:
-            stub = self._STUBS["set_labels"] = self._SetLabels(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._SetLabels(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def test_iam_permissions(
@@ -1285,15 +1241,9 @@ class VpnGatewaysRestTransport(VpnGatewaysTransport):
     ) -> Callable[
         [compute.TestIamPermissionsVpnGatewayRequest], compute.TestPermissionsResponse
     ]:
-        stub = self._STUBS.get("test_iam_permissions")
-        if not stub:
-            stub = self._STUBS["test_iam_permissions"] = self._TestIamPermissions(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._TestIamPermissions(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def kind(self) -> str:

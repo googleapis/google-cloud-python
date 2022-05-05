@@ -711,8 +711,6 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
     It sends JSON representations of protocol buffers over HTTP/1.1
     """
 
-    _STUBS: Dict[str, InstanceGroupManagersRestStub] = {}
-
     def __init__(
         self,
         *,
@@ -2979,15 +2977,9 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
     ) -> Callable[
         [compute.AbandonInstancesInstanceGroupManagerRequest], compute.Operation
     ]:
-        stub = self._STUBS.get("abandon_instances")
-        if not stub:
-            stub = self._STUBS["abandon_instances"] = self._AbandonInstances(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._AbandonInstances(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def aggregated_list(
@@ -2996,15 +2988,9 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
         [compute.AggregatedListInstanceGroupManagersRequest],
         compute.InstanceGroupManagerAggregatedList,
     ]:
-        stub = self._STUBS.get("aggregated_list")
-        if not stub:
-            stub = self._STUBS["aggregated_list"] = self._AggregatedList(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._AggregatedList(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def apply_updates_to_instances(
@@ -3012,17 +2998,9 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
     ) -> Callable[
         [compute.ApplyUpdatesToInstancesInstanceGroupManagerRequest], compute.Operation
     ]:
-        stub = self._STUBS.get("apply_updates_to_instances")
-        if not stub:
-            stub = self._STUBS[
-                "apply_updates_to_instances"
-            ] = self._ApplyUpdatesToInstances(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._ApplyUpdatesToInstances(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def create_instances(
@@ -3030,29 +3008,17 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
     ) -> Callable[
         [compute.CreateInstancesInstanceGroupManagerRequest], compute.Operation
     ]:
-        stub = self._STUBS.get("create_instances")
-        if not stub:
-            stub = self._STUBS["create_instances"] = self._CreateInstances(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._CreateInstances(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def delete(
         self,
     ) -> Callable[[compute.DeleteInstanceGroupManagerRequest], compute.Operation]:
-        stub = self._STUBS.get("delete")
-        if not stub:
-            stub = self._STUBS["delete"] = self._Delete(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._Delete(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def delete_instances(
@@ -3060,15 +3026,9 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
     ) -> Callable[
         [compute.DeleteInstancesInstanceGroupManagerRequest], compute.Operation
     ]:
-        stub = self._STUBS.get("delete_instances")
-        if not stub:
-            stub = self._STUBS["delete_instances"] = self._DeleteInstances(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._DeleteInstances(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def delete_per_instance_configs(
@@ -3076,17 +3036,9 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
     ) -> Callable[
         [compute.DeletePerInstanceConfigsInstanceGroupManagerRequest], compute.Operation
     ]:
-        stub = self._STUBS.get("delete_per_instance_configs")
-        if not stub:
-            stub = self._STUBS[
-                "delete_per_instance_configs"
-            ] = self._DeletePerInstanceConfigs(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._DeletePerInstanceConfigs(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get(
@@ -3094,29 +3046,17 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
     ) -> Callable[
         [compute.GetInstanceGroupManagerRequest], compute.InstanceGroupManager
     ]:
-        stub = self._STUBS.get("get")
-        if not stub:
-            stub = self._STUBS["get"] = self._Get(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._Get(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def insert(
         self,
     ) -> Callable[[compute.InsertInstanceGroupManagerRequest], compute.Operation]:
-        stub = self._STUBS.get("insert")
-        if not stub:
-            stub = self._STUBS["insert"] = self._Insert(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._Insert(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def list(
@@ -3124,15 +3064,9 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
     ) -> Callable[
         [compute.ListInstanceGroupManagersRequest], compute.InstanceGroupManagerList
     ]:
-        stub = self._STUBS.get("list")
-        if not stub:
-            stub = self._STUBS["list"] = self._List(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._List(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def list_errors(
@@ -3141,15 +3075,9 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
         [compute.ListErrorsInstanceGroupManagersRequest],
         compute.InstanceGroupManagersListErrorsResponse,
     ]:
-        stub = self._STUBS.get("list_errors")
-        if not stub:
-            stub = self._STUBS["list_errors"] = self._ListErrors(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._ListErrors(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def list_managed_instances(
@@ -3158,15 +3086,9 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
         [compute.ListManagedInstancesInstanceGroupManagersRequest],
         compute.InstanceGroupManagersListManagedInstancesResponse,
     ]:
-        stub = self._STUBS.get("list_managed_instances")
-        if not stub:
-            stub = self._STUBS["list_managed_instances"] = self._ListManagedInstances(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._ListManagedInstances(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def list_per_instance_configs(
@@ -3175,31 +3097,17 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
         [compute.ListPerInstanceConfigsInstanceGroupManagersRequest],
         compute.InstanceGroupManagersListPerInstanceConfigsResp,
     ]:
-        stub = self._STUBS.get("list_per_instance_configs")
-        if not stub:
-            stub = self._STUBS[
-                "list_per_instance_configs"
-            ] = self._ListPerInstanceConfigs(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._ListPerInstanceConfigs(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def patch(
         self,
     ) -> Callable[[compute.PatchInstanceGroupManagerRequest], compute.Operation]:
-        stub = self._STUBS.get("patch")
-        if not stub:
-            stub = self._STUBS["patch"] = self._Patch(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._Patch(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def patch_per_instance_configs(
@@ -3207,17 +3115,9 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
     ) -> Callable[
         [compute.PatchPerInstanceConfigsInstanceGroupManagerRequest], compute.Operation
     ]:
-        stub = self._STUBS.get("patch_per_instance_configs")
-        if not stub:
-            stub = self._STUBS[
-                "patch_per_instance_configs"
-            ] = self._PatchPerInstanceConfigs(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._PatchPerInstanceConfigs(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def recreate_instances(
@@ -3225,29 +3125,17 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
     ) -> Callable[
         [compute.RecreateInstancesInstanceGroupManagerRequest], compute.Operation
     ]:
-        stub = self._STUBS.get("recreate_instances")
-        if not stub:
-            stub = self._STUBS["recreate_instances"] = self._RecreateInstances(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._RecreateInstances(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def resize(
         self,
     ) -> Callable[[compute.ResizeInstanceGroupManagerRequest], compute.Operation]:
-        stub = self._STUBS.get("resize")
-        if not stub:
-            stub = self._STUBS["resize"] = self._Resize(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._Resize(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def set_instance_template(
@@ -3255,15 +3143,9 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
     ) -> Callable[
         [compute.SetInstanceTemplateInstanceGroupManagerRequest], compute.Operation
     ]:
-        stub = self._STUBS.get("set_instance_template")
-        if not stub:
-            stub = self._STUBS["set_instance_template"] = self._SetInstanceTemplate(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._SetInstanceTemplate(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def set_target_pools(
@@ -3271,15 +3153,9 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
     ) -> Callable[
         [compute.SetTargetPoolsInstanceGroupManagerRequest], compute.Operation
     ]:
-        stub = self._STUBS.get("set_target_pools")
-        if not stub:
-            stub = self._STUBS["set_target_pools"] = self._SetTargetPools(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._SetTargetPools(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def update_per_instance_configs(
@@ -3287,17 +3163,9 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
     ) -> Callable[
         [compute.UpdatePerInstanceConfigsInstanceGroupManagerRequest], compute.Operation
     ]:
-        stub = self._STUBS.get("update_per_instance_configs")
-        if not stub:
-            stub = self._STUBS[
-                "update_per_instance_configs"
-            ] = self._UpdatePerInstanceConfigs(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._UpdatePerInstanceConfigs(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def kind(self) -> str:

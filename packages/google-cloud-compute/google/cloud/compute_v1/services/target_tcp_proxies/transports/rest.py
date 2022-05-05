@@ -268,8 +268,6 @@ class TargetTcpProxiesRestTransport(TargetTcpProxiesTransport):
     It sends JSON representations of protocol buffers over HTTP/1.1
     """
 
-    _STUBS: Dict[str, TargetTcpProxiesRestStub] = {}
-
     def __init__(
         self,
         *,
@@ -988,85 +986,49 @@ class TargetTcpProxiesRestTransport(TargetTcpProxiesTransport):
     def delete(
         self,
     ) -> Callable[[compute.DeleteTargetTcpProxyRequest], compute.Operation]:
-        stub = self._STUBS.get("delete")
-        if not stub:
-            stub = self._STUBS["delete"] = self._Delete(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._Delete(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get(
         self,
     ) -> Callable[[compute.GetTargetTcpProxyRequest], compute.TargetTcpProxy]:
-        stub = self._STUBS.get("get")
-        if not stub:
-            stub = self._STUBS["get"] = self._Get(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._Get(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def insert(
         self,
     ) -> Callable[[compute.InsertTargetTcpProxyRequest], compute.Operation]:
-        stub = self._STUBS.get("insert")
-        if not stub:
-            stub = self._STUBS["insert"] = self._Insert(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._Insert(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def list(
         self,
     ) -> Callable[[compute.ListTargetTcpProxiesRequest], compute.TargetTcpProxyList]:
-        stub = self._STUBS.get("list")
-        if not stub:
-            stub = self._STUBS["list"] = self._List(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._List(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def set_backend_service(
         self,
     ) -> Callable[[compute.SetBackendServiceTargetTcpProxyRequest], compute.Operation]:
-        stub = self._STUBS.get("set_backend_service")
-        if not stub:
-            stub = self._STUBS["set_backend_service"] = self._SetBackendService(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._SetBackendService(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def set_proxy_header(
         self,
     ) -> Callable[[compute.SetProxyHeaderTargetTcpProxyRequest], compute.Operation]:
-        stub = self._STUBS.get("set_proxy_header")
-        if not stub:
-            stub = self._STUBS["set_proxy_header"] = self._SetProxyHeader(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._SetProxyHeader(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def kind(self) -> str:

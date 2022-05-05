@@ -143,8 +143,6 @@ class ZonesRestTransport(ZonesTransport):
     It sends JSON representations of protocol buffers over HTTP/1.1
     """
 
-    _STUBS: Dict[str, ZonesRestStub] = {}
-
     def __init__(
         self,
         *,
@@ -397,27 +395,15 @@ class ZonesRestTransport(ZonesTransport):
 
     @property
     def get(self) -> Callable[[compute.GetZoneRequest], compute.Zone]:
-        stub = self._STUBS.get("get")
-        if not stub:
-            stub = self._STUBS["get"] = self._Get(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._Get(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def list(self) -> Callable[[compute.ListZonesRequest], compute.ZoneList]:
-        stub = self._STUBS.get("list")
-        if not stub:
-            stub = self._STUBS["list"] = self._List(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._List(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def kind(self) -> str:

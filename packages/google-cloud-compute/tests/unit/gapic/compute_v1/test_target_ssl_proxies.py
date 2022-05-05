@@ -5178,6 +5178,49 @@ def test_target_ssl_proxies_host_with_port(transport_name):
     )
 
 
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        "rest",
+    ],
+)
+def test_target_ssl_proxies_client_transport_session_collision(transport_name):
+    creds1 = ga_credentials.AnonymousCredentials()
+    creds2 = ga_credentials.AnonymousCredentials()
+    client1 = TargetSslProxiesClient(
+        credentials=creds1,
+        transport=transport_name,
+    )
+    client2 = TargetSslProxiesClient(
+        credentials=creds2,
+        transport=transport_name,
+    )
+    session1 = client1.transport.delete._session
+    session2 = client2.transport.delete._session
+    assert session1 != session2
+    session1 = client1.transport.get._session
+    session2 = client2.transport.get._session
+    assert session1 != session2
+    session1 = client1.transport.insert._session
+    session2 = client2.transport.insert._session
+    assert session1 != session2
+    session1 = client1.transport.list._session
+    session2 = client2.transport.list._session
+    assert session1 != session2
+    session1 = client1.transport.set_backend_service._session
+    session2 = client2.transport.set_backend_service._session
+    assert session1 != session2
+    session1 = client1.transport.set_proxy_header._session
+    session2 = client2.transport.set_proxy_header._session
+    assert session1 != session2
+    session1 = client1.transport.set_ssl_certificates._session
+    session2 = client2.transport.set_ssl_certificates._session
+    assert session1 != session2
+    session1 = client1.transport.set_ssl_policy._session
+    session2 = client2.transport.set_ssl_policy._session
+    assert session1 != session2
+
+
 def test_common_billing_account_path():
     billing_account = "squid"
     expected = "billingAccounts/{billing_account}".format(

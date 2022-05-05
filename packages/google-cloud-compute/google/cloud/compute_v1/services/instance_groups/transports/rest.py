@@ -352,8 +352,6 @@ class InstanceGroupsRestTransport(InstanceGroupsTransport):
     It sends JSON representations of protocol buffers over HTTP/1.1
     """
 
-    _STUBS: Dict[str, InstanceGroupsRestStub] = {}
-
     def __init__(
         self,
         *,
@@ -1368,15 +1366,9 @@ class InstanceGroupsRestTransport(InstanceGroupsTransport):
     def add_instances(
         self,
     ) -> Callable[[compute.AddInstancesInstanceGroupRequest], compute.Operation]:
-        stub = self._STUBS.get("add_instances")
-        if not stub:
-            stub = self._STUBS["add_instances"] = self._AddInstances(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._AddInstances(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def aggregated_list(
@@ -1385,69 +1377,39 @@ class InstanceGroupsRestTransport(InstanceGroupsTransport):
         [compute.AggregatedListInstanceGroupsRequest],
         compute.InstanceGroupAggregatedList,
     ]:
-        stub = self._STUBS.get("aggregated_list")
-        if not stub:
-            stub = self._STUBS["aggregated_list"] = self._AggregatedList(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._AggregatedList(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def delete(
         self,
     ) -> Callable[[compute.DeleteInstanceGroupRequest], compute.Operation]:
-        stub = self._STUBS.get("delete")
-        if not stub:
-            stub = self._STUBS["delete"] = self._Delete(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._Delete(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get(self) -> Callable[[compute.GetInstanceGroupRequest], compute.InstanceGroup]:
-        stub = self._STUBS.get("get")
-        if not stub:
-            stub = self._STUBS["get"] = self._Get(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._Get(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def insert(
         self,
     ) -> Callable[[compute.InsertInstanceGroupRequest], compute.Operation]:
-        stub = self._STUBS.get("insert")
-        if not stub:
-            stub = self._STUBS["insert"] = self._Insert(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._Insert(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def list(
         self,
     ) -> Callable[[compute.ListInstanceGroupsRequest], compute.InstanceGroupList]:
-        stub = self._STUBS.get("list")
-        if not stub:
-            stub = self._STUBS["list"] = self._List(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._List(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def list_instances(
@@ -1456,43 +1418,25 @@ class InstanceGroupsRestTransport(InstanceGroupsTransport):
         [compute.ListInstancesInstanceGroupsRequest],
         compute.InstanceGroupsListInstances,
     ]:
-        stub = self._STUBS.get("list_instances")
-        if not stub:
-            stub = self._STUBS["list_instances"] = self._ListInstances(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._ListInstances(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def remove_instances(
         self,
     ) -> Callable[[compute.RemoveInstancesInstanceGroupRequest], compute.Operation]:
-        stub = self._STUBS.get("remove_instances")
-        if not stub:
-            stub = self._STUBS["remove_instances"] = self._RemoveInstances(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._RemoveInstances(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def set_named_ports(
         self,
     ) -> Callable[[compute.SetNamedPortsInstanceGroupRequest], compute.Operation]:
-        stub = self._STUBS.get("set_named_ports")
-        if not stub:
-            stub = self._STUBS["set_named_ports"] = self._SetNamedPorts(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._SetNamedPorts(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def kind(self) -> str:

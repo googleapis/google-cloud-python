@@ -7422,6 +7422,64 @@ def test_projects_host_with_port(transport_name):
     )
 
 
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        "rest",
+    ],
+)
+def test_projects_client_transport_session_collision(transport_name):
+    creds1 = ga_credentials.AnonymousCredentials()
+    creds2 = ga_credentials.AnonymousCredentials()
+    client1 = ProjectsClient(
+        credentials=creds1,
+        transport=transport_name,
+    )
+    client2 = ProjectsClient(
+        credentials=creds2,
+        transport=transport_name,
+    )
+    session1 = client1.transport.disable_xpn_host._session
+    session2 = client2.transport.disable_xpn_host._session
+    assert session1 != session2
+    session1 = client1.transport.disable_xpn_resource._session
+    session2 = client2.transport.disable_xpn_resource._session
+    assert session1 != session2
+    session1 = client1.transport.enable_xpn_host._session
+    session2 = client2.transport.enable_xpn_host._session
+    assert session1 != session2
+    session1 = client1.transport.enable_xpn_resource._session
+    session2 = client2.transport.enable_xpn_resource._session
+    assert session1 != session2
+    session1 = client1.transport.get._session
+    session2 = client2.transport.get._session
+    assert session1 != session2
+    session1 = client1.transport.get_xpn_host._session
+    session2 = client2.transport.get_xpn_host._session
+    assert session1 != session2
+    session1 = client1.transport.get_xpn_resources._session
+    session2 = client2.transport.get_xpn_resources._session
+    assert session1 != session2
+    session1 = client1.transport.list_xpn_hosts._session
+    session2 = client2.transport.list_xpn_hosts._session
+    assert session1 != session2
+    session1 = client1.transport.move_disk._session
+    session2 = client2.transport.move_disk._session
+    assert session1 != session2
+    session1 = client1.transport.move_instance._session
+    session2 = client2.transport.move_instance._session
+    assert session1 != session2
+    session1 = client1.transport.set_common_instance_metadata._session
+    session2 = client2.transport.set_common_instance_metadata._session
+    assert session1 != session2
+    session1 = client1.transport.set_default_network_tier._session
+    session2 = client2.transport.set_default_network_tier._session
+    assert session1 != session2
+    session1 = client1.transport.set_usage_export_bucket._session
+    session2 = client2.transport.set_usage_export_bucket._session
+    assert session1 != session2
+
+
 def test_common_billing_account_path():
     billing_account = "squid"
     expected = "billingAccounts/{billing_account}".format(

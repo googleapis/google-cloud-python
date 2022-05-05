@@ -28255,6 +28255,160 @@ def test_instances_host_with_port(transport_name):
     )
 
 
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        "rest",
+    ],
+)
+def test_instances_client_transport_session_collision(transport_name):
+    creds1 = ga_credentials.AnonymousCredentials()
+    creds2 = ga_credentials.AnonymousCredentials()
+    client1 = InstancesClient(
+        credentials=creds1,
+        transport=transport_name,
+    )
+    client2 = InstancesClient(
+        credentials=creds2,
+        transport=transport_name,
+    )
+    session1 = client1.transport.add_access_config._session
+    session2 = client2.transport.add_access_config._session
+    assert session1 != session2
+    session1 = client1.transport.add_resource_policies._session
+    session2 = client2.transport.add_resource_policies._session
+    assert session1 != session2
+    session1 = client1.transport.aggregated_list._session
+    session2 = client2.transport.aggregated_list._session
+    assert session1 != session2
+    session1 = client1.transport.attach_disk._session
+    session2 = client2.transport.attach_disk._session
+    assert session1 != session2
+    session1 = client1.transport.bulk_insert._session
+    session2 = client2.transport.bulk_insert._session
+    assert session1 != session2
+    session1 = client1.transport.delete._session
+    session2 = client2.transport.delete._session
+    assert session1 != session2
+    session1 = client1.transport.delete_access_config._session
+    session2 = client2.transport.delete_access_config._session
+    assert session1 != session2
+    session1 = client1.transport.detach_disk._session
+    session2 = client2.transport.detach_disk._session
+    assert session1 != session2
+    session1 = client1.transport.get._session
+    session2 = client2.transport.get._session
+    assert session1 != session2
+    session1 = client1.transport.get_effective_firewalls._session
+    session2 = client2.transport.get_effective_firewalls._session
+    assert session1 != session2
+    session1 = client1.transport.get_guest_attributes._session
+    session2 = client2.transport.get_guest_attributes._session
+    assert session1 != session2
+    session1 = client1.transport.get_iam_policy._session
+    session2 = client2.transport.get_iam_policy._session
+    assert session1 != session2
+    session1 = client1.transport.get_screenshot._session
+    session2 = client2.transport.get_screenshot._session
+    assert session1 != session2
+    session1 = client1.transport.get_serial_port_output._session
+    session2 = client2.transport.get_serial_port_output._session
+    assert session1 != session2
+    session1 = client1.transport.get_shielded_instance_identity._session
+    session2 = client2.transport.get_shielded_instance_identity._session
+    assert session1 != session2
+    session1 = client1.transport.insert._session
+    session2 = client2.transport.insert._session
+    assert session1 != session2
+    session1 = client1.transport.list._session
+    session2 = client2.transport.list._session
+    assert session1 != session2
+    session1 = client1.transport.list_referrers._session
+    session2 = client2.transport.list_referrers._session
+    assert session1 != session2
+    session1 = client1.transport.remove_resource_policies._session
+    session2 = client2.transport.remove_resource_policies._session
+    assert session1 != session2
+    session1 = client1.transport.reset._session
+    session2 = client2.transport.reset._session
+    assert session1 != session2
+    session1 = client1.transport.resume._session
+    session2 = client2.transport.resume._session
+    assert session1 != session2
+    session1 = client1.transport.send_diagnostic_interrupt._session
+    session2 = client2.transport.send_diagnostic_interrupt._session
+    assert session1 != session2
+    session1 = client1.transport.set_deletion_protection._session
+    session2 = client2.transport.set_deletion_protection._session
+    assert session1 != session2
+    session1 = client1.transport.set_disk_auto_delete._session
+    session2 = client2.transport.set_disk_auto_delete._session
+    assert session1 != session2
+    session1 = client1.transport.set_iam_policy._session
+    session2 = client2.transport.set_iam_policy._session
+    assert session1 != session2
+    session1 = client1.transport.set_labels._session
+    session2 = client2.transport.set_labels._session
+    assert session1 != session2
+    session1 = client1.transport.set_machine_resources._session
+    session2 = client2.transport.set_machine_resources._session
+    assert session1 != session2
+    session1 = client1.transport.set_machine_type._session
+    session2 = client2.transport.set_machine_type._session
+    assert session1 != session2
+    session1 = client1.transport.set_metadata._session
+    session2 = client2.transport.set_metadata._session
+    assert session1 != session2
+    session1 = client1.transport.set_min_cpu_platform._session
+    session2 = client2.transport.set_min_cpu_platform._session
+    assert session1 != session2
+    session1 = client1.transport.set_scheduling._session
+    session2 = client2.transport.set_scheduling._session
+    assert session1 != session2
+    session1 = client1.transport.set_service_account._session
+    session2 = client2.transport.set_service_account._session
+    assert session1 != session2
+    session1 = client1.transport.set_shielded_instance_integrity_policy._session
+    session2 = client2.transport.set_shielded_instance_integrity_policy._session
+    assert session1 != session2
+    session1 = client1.transport.set_tags._session
+    session2 = client2.transport.set_tags._session
+    assert session1 != session2
+    session1 = client1.transport.simulate_maintenance_event._session
+    session2 = client2.transport.simulate_maintenance_event._session
+    assert session1 != session2
+    session1 = client1.transport.start._session
+    session2 = client2.transport.start._session
+    assert session1 != session2
+    session1 = client1.transport.start_with_encryption_key._session
+    session2 = client2.transport.start_with_encryption_key._session
+    assert session1 != session2
+    session1 = client1.transport.stop._session
+    session2 = client2.transport.stop._session
+    assert session1 != session2
+    session1 = client1.transport.suspend._session
+    session2 = client2.transport.suspend._session
+    assert session1 != session2
+    session1 = client1.transport.test_iam_permissions._session
+    session2 = client2.transport.test_iam_permissions._session
+    assert session1 != session2
+    session1 = client1.transport.update._session
+    session2 = client2.transport.update._session
+    assert session1 != session2
+    session1 = client1.transport.update_access_config._session
+    session2 = client2.transport.update_access_config._session
+    assert session1 != session2
+    session1 = client1.transport.update_display_device._session
+    session2 = client2.transport.update_display_device._session
+    assert session1 != session2
+    session1 = client1.transport.update_network_interface._session
+    session2 = client2.transport.update_network_interface._session
+    assert session1 != session2
+    session1 = client1.transport.update_shielded_instance_config._session
+    session2 = client2.transport.update_shielded_instance_config._session
+    assert session1 != session2
+
+
 def test_common_billing_account_path():
     billing_account = "squid"
     expected = "billingAccounts/{billing_account}".format(

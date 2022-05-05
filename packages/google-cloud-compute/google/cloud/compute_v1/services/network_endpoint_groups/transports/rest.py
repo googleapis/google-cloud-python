@@ -373,8 +373,6 @@ class NetworkEndpointGroupsRestTransport(NetworkEndpointGroupsTransport):
     It sends JSON representations of protocol buffers over HTTP/1.1
     """
 
-    _STUBS: Dict[str, NetworkEndpointGroupsRestStub] = {}
-
     def __init__(
         self,
         *,
@@ -1398,15 +1396,9 @@ class NetworkEndpointGroupsRestTransport(NetworkEndpointGroupsTransport):
         [compute.AggregatedListNetworkEndpointGroupsRequest],
         compute.NetworkEndpointGroupAggregatedList,
     ]:
-        stub = self._STUBS.get("aggregated_list")
-        if not stub:
-            stub = self._STUBS["aggregated_list"] = self._AggregatedList(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._AggregatedList(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def attach_network_endpoints(
@@ -1414,31 +1406,17 @@ class NetworkEndpointGroupsRestTransport(NetworkEndpointGroupsTransport):
     ) -> Callable[
         [compute.AttachNetworkEndpointsNetworkEndpointGroupRequest], compute.Operation
     ]:
-        stub = self._STUBS.get("attach_network_endpoints")
-        if not stub:
-            stub = self._STUBS[
-                "attach_network_endpoints"
-            ] = self._AttachNetworkEndpoints(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._AttachNetworkEndpoints(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def delete(
         self,
     ) -> Callable[[compute.DeleteNetworkEndpointGroupRequest], compute.Operation]:
-        stub = self._STUBS.get("delete")
-        if not stub:
-            stub = self._STUBS["delete"] = self._Delete(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._Delete(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def detach_network_endpoints(
@@ -1446,17 +1424,9 @@ class NetworkEndpointGroupsRestTransport(NetworkEndpointGroupsTransport):
     ) -> Callable[
         [compute.DetachNetworkEndpointsNetworkEndpointGroupRequest], compute.Operation
     ]:
-        stub = self._STUBS.get("detach_network_endpoints")
-        if not stub:
-            stub = self._STUBS[
-                "detach_network_endpoints"
-            ] = self._DetachNetworkEndpoints(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._DetachNetworkEndpoints(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get(
@@ -1464,29 +1434,17 @@ class NetworkEndpointGroupsRestTransport(NetworkEndpointGroupsTransport):
     ) -> Callable[
         [compute.GetNetworkEndpointGroupRequest], compute.NetworkEndpointGroup
     ]:
-        stub = self._STUBS.get("get")
-        if not stub:
-            stub = self._STUBS["get"] = self._Get(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._Get(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def insert(
         self,
     ) -> Callable[[compute.InsertNetworkEndpointGroupRequest], compute.Operation]:
-        stub = self._STUBS.get("insert")
-        if not stub:
-            stub = self._STUBS["insert"] = self._Insert(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._Insert(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def list(
@@ -1494,15 +1452,9 @@ class NetworkEndpointGroupsRestTransport(NetworkEndpointGroupsTransport):
     ) -> Callable[
         [compute.ListNetworkEndpointGroupsRequest], compute.NetworkEndpointGroupList
     ]:
-        stub = self._STUBS.get("list")
-        if not stub:
-            stub = self._STUBS["list"] = self._List(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._List(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def list_network_endpoints(
@@ -1511,15 +1463,9 @@ class NetworkEndpointGroupsRestTransport(NetworkEndpointGroupsTransport):
         [compute.ListNetworkEndpointsNetworkEndpointGroupsRequest],
         compute.NetworkEndpointGroupsListNetworkEndpoints,
     ]:
-        stub = self._STUBS.get("list_network_endpoints")
-        if not stub:
-            stub = self._STUBS["list_network_endpoints"] = self._ListNetworkEndpoints(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._ListNetworkEndpoints(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def test_iam_permissions(
@@ -1528,15 +1474,9 @@ class NetworkEndpointGroupsRestTransport(NetworkEndpointGroupsTransport):
         [compute.TestIamPermissionsNetworkEndpointGroupRequest],
         compute.TestPermissionsResponse,
     ]:
-        stub = self._STUBS.get("test_iam_permissions")
-        if not stub:
-            stub = self._STUBS["test_iam_permissions"] = self._TestIamPermissions(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._TestIamPermissions(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def kind(self) -> str:

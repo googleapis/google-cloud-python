@@ -356,8 +356,6 @@ class BackendBucketsRestTransport(BackendBucketsTransport):
     It sends JSON representations of protocol buffers over HTTP/1.1
     """
 
-    _STUBS: Dict[str, BackendBucketsRestStub] = {}
-
     def __init__(
         self,
         *,
@@ -1401,95 +1399,53 @@ class BackendBucketsRestTransport(BackendBucketsTransport):
     def add_signed_url_key(
         self,
     ) -> Callable[[compute.AddSignedUrlKeyBackendBucketRequest], compute.Operation]:
-        stub = self._STUBS.get("add_signed_url_key")
-        if not stub:
-            stub = self._STUBS["add_signed_url_key"] = self._AddSignedUrlKey(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._AddSignedUrlKey(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def delete(
         self,
     ) -> Callable[[compute.DeleteBackendBucketRequest], compute.Operation]:
-        stub = self._STUBS.get("delete")
-        if not stub:
-            stub = self._STUBS["delete"] = self._Delete(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._Delete(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def delete_signed_url_key(
         self,
     ) -> Callable[[compute.DeleteSignedUrlKeyBackendBucketRequest], compute.Operation]:
-        stub = self._STUBS.get("delete_signed_url_key")
-        if not stub:
-            stub = self._STUBS["delete_signed_url_key"] = self._DeleteSignedUrlKey(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._DeleteSignedUrlKey(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get(self) -> Callable[[compute.GetBackendBucketRequest], compute.BackendBucket]:
-        stub = self._STUBS.get("get")
-        if not stub:
-            stub = self._STUBS["get"] = self._Get(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._Get(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def insert(
         self,
     ) -> Callable[[compute.InsertBackendBucketRequest], compute.Operation]:
-        stub = self._STUBS.get("insert")
-        if not stub:
-            stub = self._STUBS["insert"] = self._Insert(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._Insert(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def list(
         self,
     ) -> Callable[[compute.ListBackendBucketsRequest], compute.BackendBucketList]:
-        stub = self._STUBS.get("list")
-        if not stub:
-            stub = self._STUBS["list"] = self._List(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._List(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def patch(self) -> Callable[[compute.PatchBackendBucketRequest], compute.Operation]:
-        stub = self._STUBS.get("patch")
-        if not stub:
-            stub = self._STUBS["patch"] = self._Patch(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._Patch(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def set_edge_security_policy(
@@ -1497,31 +1453,17 @@ class BackendBucketsRestTransport(BackendBucketsTransport):
     ) -> Callable[
         [compute.SetEdgeSecurityPolicyBackendBucketRequest], compute.Operation
     ]:
-        stub = self._STUBS.get("set_edge_security_policy")
-        if not stub:
-            stub = self._STUBS[
-                "set_edge_security_policy"
-            ] = self._SetEdgeSecurityPolicy(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._SetEdgeSecurityPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def update(
         self,
     ) -> Callable[[compute.UpdateBackendBucketRequest], compute.Operation]:
-        stub = self._STUBS.get("update")
-        if not stub:
-            stub = self._STUBS["update"] = self._Update(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._Update(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def kind(self) -> str:

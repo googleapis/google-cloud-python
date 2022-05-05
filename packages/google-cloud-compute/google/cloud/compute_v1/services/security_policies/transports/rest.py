@@ -415,8 +415,6 @@ class SecurityPoliciesRestTransport(SecurityPoliciesTransport):
     It sends JSON representations of protocol buffers over HTTP/1.1
     """
 
-    _STUBS: Dict[str, SecurityPoliciesRestStub] = {}
-
     def __init__(
         self,
         *,
@@ -1618,15 +1616,9 @@ class SecurityPoliciesRestTransport(SecurityPoliciesTransport):
     def add_rule(
         self,
     ) -> Callable[[compute.AddRuleSecurityPolicyRequest], compute.Operation]:
-        stub = self._STUBS.get("add_rule")
-        if not stub:
-            stub = self._STUBS["add_rule"] = self._AddRule(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._AddRule(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def aggregated_list(
@@ -1635,85 +1627,49 @@ class SecurityPoliciesRestTransport(SecurityPoliciesTransport):
         [compute.AggregatedListSecurityPoliciesRequest],
         compute.SecurityPoliciesAggregatedList,
     ]:
-        stub = self._STUBS.get("aggregated_list")
-        if not stub:
-            stub = self._STUBS["aggregated_list"] = self._AggregatedList(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._AggregatedList(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def delete(
         self,
     ) -> Callable[[compute.DeleteSecurityPolicyRequest], compute.Operation]:
-        stub = self._STUBS.get("delete")
-        if not stub:
-            stub = self._STUBS["delete"] = self._Delete(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._Delete(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get(
         self,
     ) -> Callable[[compute.GetSecurityPolicyRequest], compute.SecurityPolicy]:
-        stub = self._STUBS.get("get")
-        if not stub:
-            stub = self._STUBS["get"] = self._Get(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._Get(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get_rule(
         self,
     ) -> Callable[[compute.GetRuleSecurityPolicyRequest], compute.SecurityPolicyRule]:
-        stub = self._STUBS.get("get_rule")
-        if not stub:
-            stub = self._STUBS["get_rule"] = self._GetRule(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._GetRule(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def insert(
         self,
     ) -> Callable[[compute.InsertSecurityPolicyRequest], compute.Operation]:
-        stub = self._STUBS.get("insert")
-        if not stub:
-            stub = self._STUBS["insert"] = self._Insert(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._Insert(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def list(
         self,
     ) -> Callable[[compute.ListSecurityPoliciesRequest], compute.SecurityPolicyList]:
-        stub = self._STUBS.get("list")
-        if not stub:
-            stub = self._STUBS["list"] = self._List(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._List(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def list_preconfigured_expression_sets(
@@ -1722,59 +1678,33 @@ class SecurityPoliciesRestTransport(SecurityPoliciesTransport):
         [compute.ListPreconfiguredExpressionSetsSecurityPoliciesRequest],
         compute.SecurityPoliciesListPreconfiguredExpressionSetsResponse,
     ]:
-        stub = self._STUBS.get("list_preconfigured_expression_sets")
-        if not stub:
-            stub = self._STUBS[
-                "list_preconfigured_expression_sets"
-            ] = self._ListPreconfiguredExpressionSets(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._ListPreconfiguredExpressionSets(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def patch(
         self,
     ) -> Callable[[compute.PatchSecurityPolicyRequest], compute.Operation]:
-        stub = self._STUBS.get("patch")
-        if not stub:
-            stub = self._STUBS["patch"] = self._Patch(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._Patch(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def patch_rule(
         self,
     ) -> Callable[[compute.PatchRuleSecurityPolicyRequest], compute.Operation]:
-        stub = self._STUBS.get("patch_rule")
-        if not stub:
-            stub = self._STUBS["patch_rule"] = self._PatchRule(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._PatchRule(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def remove_rule(
         self,
     ) -> Callable[[compute.RemoveRuleSecurityPolicyRequest], compute.Operation]:
-        stub = self._STUBS.get("remove_rule")
-        if not stub:
-            stub = self._STUBS["remove_rule"] = self._RemoveRule(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._RemoveRule(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def kind(self) -> str:

@@ -395,8 +395,6 @@ class NetworksRestTransport(NetworksTransport):
     It sends JSON representations of protocol buffers over HTTP/1.1
     """
 
-    _STUBS: Dict[str, NetworksRestStub] = {}
-
     def __init__(
         self,
         *,
@@ -1599,39 +1597,21 @@ class NetworksRestTransport(NetworksTransport):
     def add_peering(
         self,
     ) -> Callable[[compute.AddPeeringNetworkRequest], compute.Operation]:
-        stub = self._STUBS.get("add_peering")
-        if not stub:
-            stub = self._STUBS["add_peering"] = self._AddPeering(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._AddPeering(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def delete(self) -> Callable[[compute.DeleteNetworkRequest], compute.Operation]:
-        stub = self._STUBS.get("delete")
-        if not stub:
-            stub = self._STUBS["delete"] = self._Delete(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._Delete(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get(self) -> Callable[[compute.GetNetworkRequest], compute.Network]:
-        stub = self._STUBS.get("get")
-        if not stub:
-            stub = self._STUBS["get"] = self._Get(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._Get(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get_effective_firewalls(
@@ -1640,39 +1620,21 @@ class NetworksRestTransport(NetworksTransport):
         [compute.GetEffectiveFirewallsNetworkRequest],
         compute.NetworksGetEffectiveFirewallsResponse,
     ]:
-        stub = self._STUBS.get("get_effective_firewalls")
-        if not stub:
-            stub = self._STUBS["get_effective_firewalls"] = self._GetEffectiveFirewalls(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._GetEffectiveFirewalls(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def insert(self) -> Callable[[compute.InsertNetworkRequest], compute.Operation]:
-        stub = self._STUBS.get("insert")
-        if not stub:
-            stub = self._STUBS["insert"] = self._Insert(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._Insert(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def list(self) -> Callable[[compute.ListNetworksRequest], compute.NetworkList]:
-        stub = self._STUBS.get("list")
-        if not stub:
-            stub = self._STUBS["list"] = self._List(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._List(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def list_peering_routes(
@@ -1680,69 +1642,39 @@ class NetworksRestTransport(NetworksTransport):
     ) -> Callable[
         [compute.ListPeeringRoutesNetworksRequest], compute.ExchangedPeeringRoutesList
     ]:
-        stub = self._STUBS.get("list_peering_routes")
-        if not stub:
-            stub = self._STUBS["list_peering_routes"] = self._ListPeeringRoutes(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._ListPeeringRoutes(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def patch(self) -> Callable[[compute.PatchNetworkRequest], compute.Operation]:
-        stub = self._STUBS.get("patch")
-        if not stub:
-            stub = self._STUBS["patch"] = self._Patch(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._Patch(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def remove_peering(
         self,
     ) -> Callable[[compute.RemovePeeringNetworkRequest], compute.Operation]:
-        stub = self._STUBS.get("remove_peering")
-        if not stub:
-            stub = self._STUBS["remove_peering"] = self._RemovePeering(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._RemovePeering(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def switch_to_custom_mode(
         self,
     ) -> Callable[[compute.SwitchToCustomModeNetworkRequest], compute.Operation]:
-        stub = self._STUBS.get("switch_to_custom_mode")
-        if not stub:
-            stub = self._STUBS["switch_to_custom_mode"] = self._SwitchToCustomMode(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._SwitchToCustomMode(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def update_peering(
         self,
     ) -> Callable[[compute.UpdatePeeringNetworkRequest], compute.Operation]:
-        stub = self._STUBS.get("update_peering")
-        if not stub:
-            stub = self._STUBS["update_peering"] = self._UpdatePeering(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._UpdatePeering(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def kind(self) -> str:

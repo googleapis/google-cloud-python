@@ -122,8 +122,6 @@ class RegionInstancesRestTransport(RegionInstancesTransport):
     It sends JSON representations of protocol buffers over HTTP/1.1
     """
 
-    _STUBS: Dict[str, RegionInstancesRestStub] = {}
-
     def __init__(
         self,
         *,
@@ -314,15 +312,9 @@ class RegionInstancesRestTransport(RegionInstancesTransport):
     def bulk_insert(
         self,
     ) -> Callable[[compute.BulkInsertRegionInstanceRequest], compute.Operation]:
-        stub = self._STUBS.get("bulk_insert")
-        if not stub:
-            stub = self._STUBS["bulk_insert"] = self._BulkInsert(
-                self._session, self._host, self._interceptor
-            )
-
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return stub  # type: ignore
+        return self._BulkInsert(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def kind(self) -> str:
