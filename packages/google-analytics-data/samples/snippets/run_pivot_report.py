@@ -40,7 +40,7 @@ def run_sample():
 
 def run_pivot_report(property_id="YOUR-GA4-PROPERTY-ID"):
     """Runs a pivot query to build a report of session counts by country,
-    pivoted by the browser dimension.."""
+    pivoted by the browser dimension."""
     client = BetaAnalyticsDataClient()
 
     request = RunPivotReportRequest(
