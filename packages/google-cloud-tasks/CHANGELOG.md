@@ -4,6 +4,23 @@
 
 [1]: https://pypi.org/project/google-cloud-tasks/#history
 
+## [2.9.0](https://github.com/googleapis/python-tasks/compare/v2.8.1...v2.9.0) (2022-05-05)
+
+
+### Features
+
+* AuditConfig for IAM v1 ([7b7a294](https://github.com/googleapis/python-tasks/commit/7b7a2946a8554a06d8fdc57b13c2726c5d8a443b))
+
+
+### Bug Fixes
+
+* **deps:** require grpc-google-iam-v1 >=0.12.4 ([7b7a294](https://github.com/googleapis/python-tasks/commit/7b7a2946a8554a06d8fdc57b13c2726c5d8a443b))
+
+
+### Documentation
+
+* fix type in docstring for map fields ([7b7a294](https://github.com/googleapis/python-tasks/commit/7b7a2946a8554a06d8fdc57b13c2726c5d8a443b))
+
 ### [2.8.1](https://github.com/googleapis/python-tasks/compare/v2.8.0...v2.8.1) (2022-03-05)
 
 
