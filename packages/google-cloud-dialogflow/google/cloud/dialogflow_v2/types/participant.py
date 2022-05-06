@@ -358,6 +358,14 @@ class AnalyzeContentRequest(proto.Message):
             query.
         assist_query_params (google.cloud.dialogflow_v2.types.AssistQueryParameters):
             Parameters for a human assist query.
+        cx_parameters (google.protobuf.struct_pb2.Struct):
+            Additional parameters to be put into
+            Dialogflow CX session parameters. To remove a
+            parameter from the session, clients should
+            explicitly set the parameter value to null.
+
+            Note: this field should only be used if you are
+            connecting to a Dialogflow CX agent.
         request_id (str):
             A unique identifier for this request. Restricted to 36 ASCII
             characters. A random UUID is recommended. This request is
@@ -394,6 +402,11 @@ class AnalyzeContentRequest(proto.Message):
         proto.MESSAGE,
         number=14,
         message="AssistQueryParameters",
+    )
+    cx_parameters = proto.Field(
+        proto.MESSAGE,
+        number=18,
+        message=struct_pb2.Struct,
     )
     request_id = proto.Field(
         proto.STRING,
