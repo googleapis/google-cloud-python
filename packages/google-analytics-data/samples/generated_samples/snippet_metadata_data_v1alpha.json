@@ -1,0 +1,167 @@
+{
+  "clientLibrary": {
+    "apis": [
+      {
+        "id": "google.analytics.data.v1alpha",
+        "version": "v1alpha"
+      }
+    ],
+    "language": "PYTHON",
+    "name": "google-analytics-data"
+  },
+  "snippets": [
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.analytics.data_v1alpha.AlphaAnalyticsDataAsyncClient",
+          "shortName": "AlphaAnalyticsDataAsyncClient"
+        },
+        "fullName": "google.analytics.data_v1alpha.AlphaAnalyticsDataAsyncClient.run_funnel_report",
+        "method": {
+          "fullName": "google.analytics.data.v1alpha.AlphaAnalyticsData.RunFunnelReport",
+          "service": {
+            "fullName": "google.analytics.data.v1alpha.AlphaAnalyticsData",
+            "shortName": "AlphaAnalyticsData"
+          },
+          "shortName": "RunFunnelReport"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.analytics.data_v1alpha.types.RunFunnelReportRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.analytics.data_v1alpha.types.RunFunnelReportResponse",
+        "shortName": "run_funnel_report"
+      },
+      "description": "Sample for RunFunnelReport",
+      "file": "analyticsdata_v1alpha_generated_alpha_analytics_data_run_funnel_report_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "analyticsdata_v1alpha_generated_AlphaAnalyticsData_RunFunnelReport_async",
+      "segments": [
+        {
+          "end": 43,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 43,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 37,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 44,
+          "start": 41,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "analyticsdata_v1alpha_generated_alpha_analytics_data_run_funnel_report_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.analytics.data_v1alpha.AlphaAnalyticsDataClient",
+          "shortName": "AlphaAnalyticsDataClient"
+        },
+        "fullName": "google.analytics.data_v1alpha.AlphaAnalyticsDataClient.run_funnel_report",
+        "method": {
+          "fullName": "google.analytics.data.v1alpha.AlphaAnalyticsData.RunFunnelReport",
+          "service": {
+            "fullName": "google.analytics.data.v1alpha.AlphaAnalyticsData",
+            "shortName": "AlphaAnalyticsData"
+          },
+          "shortName": "RunFunnelReport"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.analytics.data_v1alpha.types.RunFunnelReportRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.analytics.data_v1alpha.types.RunFunnelReportResponse",
+        "shortName": "run_funnel_report"
+      },
+      "description": "Sample for RunFunnelReport",
+      "file": "analyticsdata_v1alpha_generated_alpha_analytics_data_run_funnel_report_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "analyticsdata_v1alpha_generated_AlphaAnalyticsData_RunFunnelReport_sync",
+      "segments": [
+        {
+          "end": 43,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 43,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 37,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 44,
+          "start": 41,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "analyticsdata_v1alpha_generated_alpha_analytics_data_run_funnel_report_sync.py"
+    }
+  ]
+}

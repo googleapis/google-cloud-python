@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2020 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,50 +15,130 @@
 #
 import proto  # type: ignore
 
+from google.protobuf import duration_pb2  # type: ignore
+
 
 __protobuf__ = proto.module(
     package="google.analytics.data.v1alpha",
     manifest={
-        "MetricAggregation",
+        "UserCriteriaScoping",
+        "UserExclusionDuration",
+        "SessionCriteriaScoping",
+        "SessionExclusionDuration",
+        "EventCriteriaScoping",
+        "EventExclusionDuration",
         "MetricType",
         "DateRange",
-        "Entity",
         "Dimension",
         "DimensionExpression",
-        "Metric",
         "FilterExpression",
         "FilterExpressionList",
         "Filter",
-        "OrderBy",
-        "Pivot",
-        "CohortSpec",
-        "Cohort",
-        "CohortsRange",
-        "CohortReportSettings",
-        "ResponseMetaData",
+        "StringFilter",
+        "InListFilter",
+        "NumericFilter",
+        "BetweenFilter",
+        "NumericValue",
         "DimensionHeader",
         "MetricHeader",
-        "PivotHeader",
-        "PivotDimensionHeader",
         "Row",
         "DimensionValue",
         "MetricValue",
-        "NumericValue",
         "PropertyQuota",
         "QuotaStatus",
-        "DimensionMetadata",
-        "MetricMetadata",
+        "FunnelBreakdown",
+        "FunnelNextAction",
+        "Funnel",
+        "FunnelStep",
+        "FunnelSubReport",
+        "UserSegment",
+        "UserSegmentCriteria",
+        "UserSegmentConditionGroup",
+        "UserSegmentSequenceGroup",
+        "UserSequenceStep",
+        "UserSegmentExclusion",
+        "SessionSegment",
+        "SessionSegmentCriteria",
+        "SessionSegmentConditionGroup",
+        "SessionSegmentExclusion",
+        "EventSegment",
+        "EventSegmentCriteria",
+        "EventSegmentConditionGroup",
+        "EventSegmentExclusion",
+        "Segment",
+        "SegmentFilterExpression",
+        "SegmentFilterExpressionList",
+        "SegmentFilter",
+        "SegmentFilterScoping",
+        "SegmentEventFilter",
+        "SegmentParameterFilterExpression",
+        "SegmentParameterFilterExpressionList",
+        "SegmentParameterFilter",
+        "SegmentParameterFilterScoping",
+        "FunnelFilterExpression",
+        "FunnelFilterExpressionList",
+        "FunnelFilter",
+        "FunnelEventFilter",
+        "FunnelParameterFilterExpression",
+        "FunnelParameterFilterExpressionList",
+        "FunnelParameterFilter",
+        "FunnelResponseMetadata",
+        "SamplingMetadata",
     },
 )
 
 
-class MetricAggregation(proto.Enum):
-    r"""Represents aggregation of metrics."""
-    METRIC_AGGREGATION_UNSPECIFIED = 0
-    TOTAL = 1
-    MINIMUM = 5
-    MAXIMUM = 6
-    COUNT = 4
+class UserCriteriaScoping(proto.Enum):
+    r"""Scoping specifies which events are considered when evaluating
+    if a user meets a criteria.
+    """
+    USER_CRITERIA_SCOPING_UNSPECIFIED = 0
+    USER_CRITERIA_WITHIN_SAME_EVENT = 1
+    USER_CRITERIA_WITHIN_SAME_SESSION = 2
+    USER_CRITERIA_ACROSS_ALL_SESSIONS = 3
+
+
+class UserExclusionDuration(proto.Enum):
+    r"""Enumerates options for how long an exclusion will last if a user
+    matches the ``userExclusionCriteria``.
+    """
+    USER_EXCLUSION_DURATION_UNSPECIFIED = 0
+    USER_EXCLUSION_TEMPORARY = 1
+    USER_EXCLUSION_PERMANENT = 2
+
+
+class SessionCriteriaScoping(proto.Enum):
+    r"""Scoping specifies which events are considered when evaluating
+    if a session meets a criteria.
+    """
+    SESSION_CRITERIA_SCOPING_UNSPECIFIED = 0
+    SESSION_CRITERIA_WITHIN_SAME_EVENT = 1
+    SESSION_CRITERIA_WITHIN_SAME_SESSION = 2
+
+
+class SessionExclusionDuration(proto.Enum):
+    r"""Enumerates options for how long an exclusion will last if a session
+    matches the ``sessionExclusionCriteria``.
+    """
+    SESSION_EXCLUSION_DURATION_UNSPECIFIED = 0
+    SESSION_EXCLUSION_TEMPORARY = 1
+    SESSION_EXCLUSION_PERMANENT = 2
+
+
+class EventCriteriaScoping(proto.Enum):
+    r"""Scoping specifies which events are considered when evaluating
+    if an event meets a criteria.
+    """
+    EVENT_CRITERIA_SCOPING_UNSPECIFIED = 0
+    EVENT_CRITERIA_WITHIN_SAME_EVENT = 1
+
+
+class EventExclusionDuration(proto.Enum):
+    r"""Enumerates options for how long an exclusion will last if an event
+    matches the ``eventExclusionCriteria``.
+    """
+    EVENT_EXCLUSION_DURATION_UNSPECIFIED = 0
+    EVENT_EXCLUSION_PERMANENT = 1
 
 
 class MetricType(proto.Enum):
@@ -117,29 +197,11 @@ class DateRange(proto.Message):
     )
 
 
-class Entity(proto.Message):
-    r"""The unique identifier of the property whose events are
-    tracked.
-
-    Attributes:
-        property_id (str):
-            A Google Analytics GA4 property id. To learn more, see
-            `where to find your Property
-            ID <https://developers.google.com/analytics/devguides/reporting/data/v1/property-id>`__.
-    """
-
-    property_id = proto.Field(
-        proto.STRING,
-        number=1,
-    )
-
-
 class Dimension(proto.Message):
     r"""Dimensions are attributes of your data. For example, the
     dimension city indicates the city from which an event
     originates. Dimension values in report responses are strings;
-    for example, city could be "Paris" or "New York". Requests are
-    allowed up to 8 dimensions.
+    for example, the city could be "Paris" or "New York".
 
     Attributes:
         name (str):
@@ -148,9 +210,11 @@ class Dimension(proto.Message):
             for the list of dimension names.
 
             If ``dimensionExpression`` is specified, ``name`` can be any
-            string that you would like. For example if a
-            ``dimensionExpression`` concatenates ``country`` and
-            ``city``, you could call that dimension ``countryAndCity``.
+            string that you would like within the allowed character set.
+            For example if a ``dimensionExpression`` concatenates
+            ``country`` and ``city``, you could call that dimension
+            ``countryAndCity``. Dimension names that you choose must
+            match the regular expression ``^[a-zA-Z0-9_]$``.
 
             Dimensions are referenced by ``name`` in
             ``dimensionFilter``, ``orderBys``, ``dimensionExpression``,
@@ -180,21 +244,35 @@ class DimensionExpression(proto.Message):
     1) lower_case(dimension)
     2) concatenate(dimension1, symbol, dimension2).
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         lower_case (google.analytics.data_v1alpha.types.DimensionExpression.CaseExpression):
             Used to convert a dimension value to lower
             case.
+
+            This field is a member of `oneof`_ ``one_expression``.
         upper_case (google.analytics.data_v1alpha.types.DimensionExpression.CaseExpression):
             Used to convert a dimension value to upper
             case.
+
+            This field is a member of `oneof`_ ``one_expression``.
         concatenate (google.analytics.data_v1alpha.types.DimensionExpression.ConcatenateExpression):
             Used to combine dimension values to a single
             dimension. For example, dimension "country,
             city": concatenate(country, ", ", city).
+
+            This field is a member of `oneof`_ ``one_expression``.
     """
 
     class CaseExpression(proto.Message):
         r"""Used to convert a dimension value to a single case.
+
         Attributes:
             dimension_name (str):
                 Name of a dimension. The name must refer back
@@ -208,6 +286,7 @@ class DimensionExpression(proto.Message):
 
     class ConcatenateExpression(proto.Message):
         r"""Used to combine dimension values to a single dimension.
+
         Attributes:
             dimension_names (Sequence[str]):
                 Names of dimensions. The names must refer
@@ -253,65 +332,38 @@ class DimensionExpression(proto.Message):
     )
 
 
-class Metric(proto.Message):
-    r"""The quantitative measurements of a report. For example, the metric
-    ``eventCount`` is the total number of events. Requests are allowed
-    up to 10 metrics.
-
-    Attributes:
-        name (str):
-            The name of the metric. See the `API
-            Metrics <https://developers.google.com/analytics/devguides/reporting/data/v1/api-schema#metrics>`__
-            for the list of metric names.
-
-            If ``expression`` is specified, ``name`` can be any string
-            that you would like. For example if ``expression`` is
-            ``screenPageViews/sessions``, you could call that metric's
-            name = ``viewsPerSession``.
-
-            Metrics are referenced by ``name`` in ``metricFilter``,
-            ``orderBys``, and metric ``expression``.
-        expression (str):
-            A mathematical expression for derived metrics. For example,
-            the metric Event count per user is
-            ``eventCount/totalUsers``.
-        invisible (bool):
-            Indicates if a metric is invisible in the report response.
-            If a metric is invisible, the metric will not produce a
-            column in the response, but can be used in ``metricFilter``,
-            ``orderBys``, or a metric ``expression``.
-    """
-
-    name = proto.Field(
-        proto.STRING,
-        number=1,
-    )
-    expression = proto.Field(
-        proto.STRING,
-        number=2,
-    )
-    invisible = proto.Field(
-        proto.BOOL,
-        number=3,
-    )
-
-
 class FilterExpression(proto.Message):
-    r"""To express dimension or metric filters.
-    The fields in the same FilterExpression need to be either all
-    dimensions or all metrics.
+    r"""To express dimension or metric filters. The fields in the
+    same FilterExpression need to be either all dimensions or all
+    metrics.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         and_group (google.analytics.data_v1alpha.types.FilterExpressionList):
             The FilterExpressions in and_group have an AND relationship.
+
+            This field is a member of `oneof`_ ``expr``.
         or_group (google.analytics.data_v1alpha.types.FilterExpressionList):
             The FilterExpressions in or_group have an OR relationship.
+
+            This field is a member of `oneof`_ ``expr``.
         not_expression (google.analytics.data_v1alpha.types.FilterExpression):
             The FilterExpression is NOT of not_expression.
+
+            This field is a member of `oneof`_ ``expr``.
         filter (google.analytics.data_v1alpha.types.Filter):
-            A primitive filter.
-            All fields in filter in same FilterExpression
-            needs to be either all dimensions or metrics.
+            A primitive filter. In the same
+            FilterExpression, all of the filter's field
+            names need to be either all dimensions or all
+            metrics.
+
+            This field is a member of `oneof`_ ``expr``.
     """
 
     and_group = proto.Field(
@@ -342,6 +394,7 @@ class FilterExpression(proto.Message):
 
 class FilterExpressionList(proto.Message):
     r"""A list of filter expressions.
+
     Attributes:
         expressions (Sequence[google.analytics.data_v1alpha.types.FilterExpression]):
             A list of filter expressions.
@@ -356,563 +409,208 @@ class FilterExpressionList(proto.Message):
 
 class Filter(proto.Message):
     r"""An expression to filter dimension or metric values.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         field_name (str):
             The dimension name or metric name. Must be a
             name defined in dimensions or metrics.
-        null_filter (bool):
-            A filter for null values. If True, a null
-            dimension value is matched by this filter. Null
-            filter is commonly used inside a NOT filter
-            expression. For example, a NOT expression of a
-            null filter removes rows when a dimension is
-            null.
-        string_filter (google.analytics.data_v1alpha.types.Filter.StringFilter):
+        string_filter (google.analytics.data_v1alpha.types.StringFilter):
             Strings related filter.
-        in_list_filter (google.analytics.data_v1alpha.types.Filter.InListFilter):
+
+            This field is a member of `oneof`_ ``one_filter``.
+        in_list_filter (google.analytics.data_v1alpha.types.InListFilter):
             A filter for in list values.
-        numeric_filter (google.analytics.data_v1alpha.types.Filter.NumericFilter):
+
+            This field is a member of `oneof`_ ``one_filter``.
+        numeric_filter (google.analytics.data_v1alpha.types.NumericFilter):
             A filter for numeric or date values.
-        between_filter (google.analytics.data_v1alpha.types.Filter.BetweenFilter):
-            A filter for two values.
+
+            This field is a member of `oneof`_ ``one_filter``.
+        between_filter (google.analytics.data_v1alpha.types.BetweenFilter):
+            A filter for between two values.
+
+            This field is a member of `oneof`_ ``one_filter``.
     """
-
-    class StringFilter(proto.Message):
-        r"""The filter for string
-        Attributes:
-            match_type (google.analytics.data_v1alpha.types.Filter.StringFilter.MatchType):
-                The match type for this filter.
-            value (str):
-                The string value used for the matching.
-            case_sensitive (bool):
-                If true, the string value is case sensitive.
-        """
-
-        class MatchType(proto.Enum):
-            r"""The match type of a string filter"""
-            MATCH_TYPE_UNSPECIFIED = 0
-            EXACT = 1
-            BEGINS_WITH = 2
-            ENDS_WITH = 3
-            CONTAINS = 4
-            FULL_REGEXP = 5
-            PARTIAL_REGEXP = 6
-
-        match_type = proto.Field(
-            proto.ENUM,
-            number=1,
-            enum="Filter.StringFilter.MatchType",
-        )
-        value = proto.Field(
-            proto.STRING,
-            number=2,
-        )
-        case_sensitive = proto.Field(
-            proto.BOOL,
-            number=3,
-        )
-
-    class InListFilter(proto.Message):
-        r"""The result needs to be in a list of string values.
-        Attributes:
-            values (Sequence[str]):
-                The list of string values.
-                Must be non-empty.
-            case_sensitive (bool):
-                If true, the string value is case sensitive.
-        """
-
-        values = proto.RepeatedField(
-            proto.STRING,
-            number=1,
-        )
-        case_sensitive = proto.Field(
-            proto.BOOL,
-            number=2,
-        )
-
-    class NumericFilter(proto.Message):
-        r"""Filters for numeric or date values.
-        Attributes:
-            operation (google.analytics.data_v1alpha.types.Filter.NumericFilter.Operation):
-                The operation type for this filter.
-            value (google.analytics.data_v1alpha.types.NumericValue):
-                A numeric value or a date value.
-        """
-
-        class Operation(proto.Enum):
-            r"""The operation applied to a numeric filter"""
-            OPERATION_UNSPECIFIED = 0
-            EQUAL = 1
-            LESS_THAN = 2
-            LESS_THAN_OR_EQUAL = 3
-            GREATER_THAN = 4
-            GREATER_THAN_OR_EQUAL = 5
-
-        operation = proto.Field(
-            proto.ENUM,
-            number=1,
-            enum="Filter.NumericFilter.Operation",
-        )
-        value = proto.Field(
-            proto.MESSAGE,
-            number=2,
-            message="NumericValue",
-        )
-
-    class BetweenFilter(proto.Message):
-        r"""To express that the result needs to be between two numbers
-        (inclusive).
-
-        Attributes:
-            from_value (google.analytics.data_v1alpha.types.NumericValue):
-                Begins with this number.
-            to_value (google.analytics.data_v1alpha.types.NumericValue):
-                Ends with this number.
-        """
-
-        from_value = proto.Field(
-            proto.MESSAGE,
-            number=1,
-            message="NumericValue",
-        )
-        to_value = proto.Field(
-            proto.MESSAGE,
-            number=2,
-            message="NumericValue",
-        )
 
     field_name = proto.Field(
         proto.STRING,
         number=1,
     )
-    null_filter = proto.Field(
-        proto.BOOL,
-        number=2,
-        oneof="one_filter",
-    )
     string_filter = proto.Field(
         proto.MESSAGE,
-        number=3,
+        number=2,
         oneof="one_filter",
-        message=StringFilter,
+        message="StringFilter",
     )
     in_list_filter = proto.Field(
         proto.MESSAGE,
-        number=4,
+        number=3,
         oneof="one_filter",
-        message=InListFilter,
+        message="InListFilter",
     )
     numeric_filter = proto.Field(
         proto.MESSAGE,
-        number=5,
+        number=4,
         oneof="one_filter",
-        message=NumericFilter,
+        message="NumericFilter",
     )
     between_filter = proto.Field(
         proto.MESSAGE,
-        number=6,
-        oneof="one_filter",
-        message=BetweenFilter,
-    )
-
-
-class OrderBy(proto.Message):
-    r"""The sort options.
-    Attributes:
-        metric (google.analytics.data_v1alpha.types.OrderBy.MetricOrderBy):
-            Sorts results by a metric's values.
-        dimension (google.analytics.data_v1alpha.types.OrderBy.DimensionOrderBy):
-            Sorts results by a dimension's values.
-        pivot (google.analytics.data_v1alpha.types.OrderBy.PivotOrderBy):
-            Sorts results by a metric's values within a
-            pivot column group.
-        desc (bool):
-            If true, sorts by descending order.
-    """
-
-    class MetricOrderBy(proto.Message):
-        r"""Sorts by metric values.
-        Attributes:
-            metric_name (str):
-                A metric name in the request to order by.
-        """
-
-        metric_name = proto.Field(
-            proto.STRING,
-            number=1,
-        )
-
-    class DimensionOrderBy(proto.Message):
-        r"""Sorts by dimension values.
-        Attributes:
-            dimension_name (str):
-                A dimension name in the request to order by.
-            order_type (google.analytics.data_v1alpha.types.OrderBy.DimensionOrderBy.OrderType):
-                Controls the rule for dimension value
-                ordering.
-        """
-
-        class OrderType(proto.Enum):
-            r"""Rule to order the string dimension values by."""
-            ORDER_TYPE_UNSPECIFIED = 0
-            ALPHANUMERIC = 1
-            CASE_INSENSITIVE_ALPHANUMERIC = 2
-            NUMERIC = 3
-
-        dimension_name = proto.Field(
-            proto.STRING,
-            number=1,
-        )
-        order_type = proto.Field(
-            proto.ENUM,
-            number=2,
-            enum="OrderBy.DimensionOrderBy.OrderType",
-        )
-
-    class PivotOrderBy(proto.Message):
-        r"""Sorts by a pivot column group.
-        Attributes:
-            metric_name (str):
-                In the response to order by, order rows by
-                this column. Must be a metric name from the
-                request.
-            pivot_selections (Sequence[google.analytics.data_v1alpha.types.OrderBy.PivotOrderBy.PivotSelection]):
-                Used to select a dimension name and value
-                pivot. If multiple pivot selections are given,
-                the sort occurs on rows where all pivot
-                selection dimension name and value pairs match
-                the row's dimension name and value pair.
-        """
-
-        class PivotSelection(proto.Message):
-            r"""A pair of dimension names and values. Rows with this dimension pivot
-            pair are ordered by the metric's value.
-
-            For example if pivots = {{"browser", "Chrome"}} and metric_name =
-            "Sessions", then the rows will be sorted based on Sessions in
-            Chrome.
-
-            ::
-
-                ---------|----------|----------------|----------|----------------
-                         |  Chrome  |    Chrome      |  Safari  |     Safari
-                ---------|----------|----------------|----------|----------------
-                 Country | Sessions | Pages/Sessions | Sessions | Pages/Sessions
-                ---------|----------|----------------|----------|----------------
-                    US   |    2     |       2        |     3    |        1
-                ---------|----------|----------------|----------|----------------
-                  Canada |    3     |       1        |     4    |        1
-                ---------|----------|----------------|----------|----------------
-
-            Attributes:
-                dimension_name (str):
-                    Must be a dimension name from the request.
-                dimension_value (str):
-                    Order by only when the named dimension is
-                    this value.
-            """
-
-            dimension_name = proto.Field(
-                proto.STRING,
-                number=1,
-            )
-            dimension_value = proto.Field(
-                proto.STRING,
-                number=2,
-            )
-
-        metric_name = proto.Field(
-            proto.STRING,
-            number=1,
-        )
-        pivot_selections = proto.RepeatedField(
-            proto.MESSAGE,
-            number=2,
-            message="OrderBy.PivotOrderBy.PivotSelection",
-        )
-
-    metric = proto.Field(
-        proto.MESSAGE,
-        number=1,
-        oneof="one_order_by",
-        message=MetricOrderBy,
-    )
-    dimension = proto.Field(
-        proto.MESSAGE,
-        number=2,
-        oneof="one_order_by",
-        message=DimensionOrderBy,
-    )
-    pivot = proto.Field(
-        proto.MESSAGE,
-        number=3,
-        oneof="one_order_by",
-        message=PivotOrderBy,
-    )
-    desc = proto.Field(
-        proto.BOOL,
-        number=4,
-    )
-
-
-class Pivot(proto.Message):
-    r"""Describes the visible dimension columns and rows in the
-    report response.
-
-    Attributes:
-        field_names (Sequence[str]):
-            Dimension names for visible columns in the
-            report response. Including "dateRange" produces
-            a date range column; for each row in the
-            response, dimension values in the date range
-            column will indicate the corresponding date
-            range from the request.
-        order_bys (Sequence[google.analytics.data_v1alpha.types.OrderBy]):
-            Specifies how dimensions are ordered in the pivot. In the
-            first Pivot, the OrderBys determine Row and
-            PivotDimensionHeader ordering; in subsequent Pivots, the
-            OrderBys determine only PivotDimensionHeader ordering.
-            Dimensions specified in these OrderBys must be a subset of
-            Pivot.field_names.
-        offset (int):
-            The row count of the start row. The first row
-            is counted as row 0.
-        limit (int):
-            The number of rows to return in this pivot.
-            If unspecified, 10 rows are returned. If -1, all
-            rows are returned.
-        metric_aggregations (Sequence[google.analytics.data_v1alpha.types.MetricAggregation]):
-            Aggregate the metrics by dimensions in this pivot using the
-            specified metric_aggregations.
-    """
-
-    field_names = proto.RepeatedField(
-        proto.STRING,
-        number=1,
-    )
-    order_bys = proto.RepeatedField(
-        proto.MESSAGE,
-        number=2,
-        message="OrderBy",
-    )
-    offset = proto.Field(
-        proto.INT64,
-        number=3,
-    )
-    limit = proto.Field(
-        proto.INT64,
-        number=4,
-    )
-    metric_aggregations = proto.RepeatedField(
-        proto.ENUM,
         number=5,
-        enum="MetricAggregation",
+        oneof="one_filter",
+        message="BetweenFilter",
     )
 
 
-class CohortSpec(proto.Message):
-    r"""Specification of cohorts for a cohort report. Cohort reports can be
-    used for example to create a time series of user retention for the
-    cohort. For example, you could select the cohort of users that were
-    acquired in the first week of September and follow that cohort for
-    the next six weeks. Selecting the users acquired in the first week
-    of September cohort is specified in the ``cohort`` object. Following
-    that cohort for the next six weeks is specified in the
-    ``cohortsRange`` object.
-
-    The report response could show a weekly time series where say your
-    app has retained 60% of this cohort after three weeks and 25% of
-    this cohort after six weeks. These two percentages can be calculated
-    by the metric ``cohortActiveUsers/cohortTotalUsers`` and will be
-    separate rows in the report.
+class StringFilter(proto.Message):
+    r"""The filter for string
 
     Attributes:
-        cohorts (Sequence[google.analytics.data_v1alpha.types.Cohort]):
-            Defines the selection criteria to group users
-            into cohorts.
-            Most cohort reports define only a single cohort.
-            If multiple cohorts are specified, each cohort
-            can be recognized in the report by their name.
-        cohorts_range (google.analytics.data_v1alpha.types.CohortsRange):
-            Cohort reports follow cohorts over an
-            extended reporting date range. This range
-            specifies an offset duration to follow the
-            cohorts over.
-        cohort_report_settings (google.analytics.data_v1alpha.types.CohortReportSettings):
-            Optional settings for a cohort report.
+        match_type (google.analytics.data_v1alpha.types.StringFilter.MatchType):
+            The match type for this filter.
+        value (str):
+            The string value used for the matching.
+        case_sensitive (bool):
+            If true, the string value is case sensitive.
     """
 
-    cohorts = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message="Cohort",
-    )
-    cohorts_range = proto.Field(
-        proto.MESSAGE,
-        number=2,
-        message="CohortsRange",
-    )
-    cohort_report_settings = proto.Field(
-        proto.MESSAGE,
-        number=3,
-        message="CohortReportSettings",
-    )
+    class MatchType(proto.Enum):
+        r"""The match type of a string filter"""
+        MATCH_TYPE_UNSPECIFIED = 0
+        EXACT = 1
+        BEGINS_WITH = 2
+        ENDS_WITH = 3
+        CONTAINS = 4
+        FULL_REGEXP = 5
+        PARTIAL_REGEXP = 6
 
-
-class Cohort(proto.Message):
-    r"""Defines a cohort selection criteria. A cohort is a group of users
-    who share a common characteristic. For example, users with the same
-    ``firstTouchDate`` belong to the same cohort.
-
-    Attributes:
-        name (str):
-            Assigns a name to this cohort. The dimension ``cohort`` is
-            valued to this name in a report response. If set, cannot
-            begin with ``cohort_`` or ``RESERVED_``. If not set, cohorts
-            are named by their zero based index ``cohort_0``,
-            ``cohort_1``, etc.
-        dimension (str):
-            Dimension used by the cohort. Required and only supports
-            ``firstTouchDate``.
-        date_range (google.analytics.data_v1alpha.types.DateRange):
-            The cohort selects users whose first touch date is between
-            start date and end date defined in the ``dateRange``. This
-            ``dateRange`` does not specify the full date range of event
-            data that is present in a cohort report. In a cohort report,
-            this ``dateRange`` is extended by the granularity and offset
-            present in the ``cohortsRange``; event data for the extended
-            reporting date range is present in a cohort report.
-
-            In a cohort request, this ``dateRange`` is required and the
-            ``dateRanges`` in the ``RunReportRequest`` or
-            ``RunPivotReportRequest`` must be unspecified.
-
-            This ``dateRange`` should generally be aligned with the
-            cohort's granularity. If ``CohortsRange`` uses daily
-            granularity, this ``dateRange`` can be a single day. If
-            ``CohortsRange`` uses weekly granularity, this ``dateRange``
-            can be aligned to a week boundary, starting at Sunday and
-            ending Saturday. If ``CohortsRange`` uses monthly
-            granularity, this ``dateRange`` can be aligned to a month,
-            starting at the first and ending on the last day of the
-            month.
-    """
-
-    name = proto.Field(
-        proto.STRING,
-        number=1,
-    )
-    dimension = proto.Field(
-        proto.STRING,
-        number=2,
-    )
-    date_range = proto.Field(
-        proto.MESSAGE,
-        number=3,
-        message="DateRange",
-    )
-
-
-class CohortsRange(proto.Message):
-    r"""Configures the extended reporting date range for a cohort
-    report. Specifies an offset duration to follow the cohorts over.
-
-    Attributes:
-        granularity (google.analytics.data_v1alpha.types.CohortsRange.Granularity):
-            The granularity used to interpret the ``startOffset`` and
-            ``endOffset`` for the extended reporting date range for a
-            cohort report.
-        start_offset (int):
-            ``startOffset`` specifies the start date of the extended
-            reporting date range for a cohort report. ``startOffset`` is
-            commonly set to 0 so that reports contain data from the
-            acquisition of the cohort forward.
-
-            If ``granularity`` is ``DAILY``, the ``startDate`` of the
-            extended reporting date range is ``startDate`` of the cohort
-            plus ``startOffset`` days.
-
-            If ``granularity`` is ``WEEKLY``, the ``startDate`` of the
-            extended reporting date range is ``startDate`` of the cohort
-            plus ``startOffset * 7`` days.
-
-            If ``granularity`` is ``MONTHLY``, the ``startDate`` of the
-            extended reporting date range is ``startDate`` of the cohort
-            plus ``startOffset * 30`` days.
-        end_offset (int):
-            ``endOffset`` specifies the end date of the extended
-            reporting date range for a cohort report. ``endOffset`` can
-            be any positive integer but is commonly set to 5 to 10 so
-            that reports contain data on the cohort for the next several
-            granularity time periods.
-
-            If ``granularity`` is ``DAILY``, the ``endDate`` of the
-            extended reporting date range is ``endDate`` of the cohort
-            plus ``endOffset`` days.
-
-            If ``granularity`` is ``WEEKLY``, the ``endDate`` of the
-            extended reporting date range is ``endDate`` of the cohort
-            plus ``endOffset * 7`` days.
-
-            If ``granularity`` is ``MONTHLY``, the ``endDate`` of the
-            extended reporting date range is ``endDate`` of the cohort
-            plus ``endOffset * 30`` days.
-    """
-
-    class Granularity(proto.Enum):
-        r"""The granularity used to interpret the ``startOffset`` and
-        ``endOffset`` for the extended reporting date range for a cohort
-        report.
-        """
-        GRANULARITY_UNSPECIFIED = 0
-        DAILY = 1
-        WEEKLY = 2
-        MONTHLY = 3
-
-    granularity = proto.Field(
+    match_type = proto.Field(
         proto.ENUM,
         number=1,
-        enum=Granularity,
+        enum=MatchType,
     )
-    start_offset = proto.Field(
-        proto.INT32,
+    value = proto.Field(
+        proto.STRING,
         number=2,
     )
-    end_offset = proto.Field(
-        proto.INT32,
+    case_sensitive = proto.Field(
+        proto.BOOL,
         number=3,
     )
 
 
-class CohortReportSettings(proto.Message):
-    r"""Optional settings of a cohort report.
+class InListFilter(proto.Message):
+    r"""The result needs to be in a list of string values.
+
     Attributes:
-        accumulate (bool):
-            If true, accumulates the result from first touch day to the
-            end day. Not supported in ``RunReportRequest``.
+        values (Sequence[str]):
+            The list of string values.
+            Must be non-empty.
+        case_sensitive (bool):
+            If true, the string value is case sensitive.
     """
 
-    accumulate = proto.Field(
-        proto.BOOL,
+    values = proto.RepeatedField(
+        proto.STRING,
         number=1,
     )
+    case_sensitive = proto.Field(
+        proto.BOOL,
+        number=2,
+    )
 
 
-class ResponseMetaData(proto.Message):
-    r"""Response's metadata carrying additional information about the
-    report content.
+class NumericFilter(proto.Message):
+    r"""Filters for numeric or date values.
 
     Attributes:
-        data_loss_from_other_row (bool):
-            If true, indicates some buckets of dimension
-            combinations are rolled into "(other)" row. This
-            can happen for high cardinality reports.
+        operation (google.analytics.data_v1alpha.types.NumericFilter.Operation):
+            The operation type for this filter.
+        value (google.analytics.data_v1alpha.types.NumericValue):
+            A numeric value or a date value.
     """
 
-    data_loss_from_other_row = proto.Field(
-        proto.BOOL,
-        number=3,
+    class Operation(proto.Enum):
+        r"""The operation applied to a numeric filter"""
+        OPERATION_UNSPECIFIED = 0
+        EQUAL = 1
+        LESS_THAN = 2
+        LESS_THAN_OR_EQUAL = 3
+        GREATER_THAN = 4
+        GREATER_THAN_OR_EQUAL = 5
+
+    operation = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=Operation,
+    )
+    value = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="NumericValue",
+    )
+
+
+class BetweenFilter(proto.Message):
+    r"""To express that the result needs to be between two numbers
+    (inclusive).
+
+    Attributes:
+        from_value (google.analytics.data_v1alpha.types.NumericValue):
+            Begins with this number.
+        to_value (google.analytics.data_v1alpha.types.NumericValue):
+            Ends with this number.
+    """
+
+    from_value = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="NumericValue",
+    )
+    to_value = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="NumericValue",
+    )
+
+
+class NumericValue(proto.Message):
+    r"""To represent a number.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        int64_value (int):
+            Integer value
+
+            This field is a member of `oneof`_ ``one_value``.
+        double_value (float):
+            Double value
+
+            This field is a member of `oneof`_ ``one_value``.
+    """
+
+    int64_value = proto.Field(
+        proto.INT64,
+        number=1,
+        oneof="one_value",
+    )
+    double_value = proto.Field(
+        proto.DOUBLE,
+        number=2,
+        oneof="one_value",
     )
 
 
@@ -956,45 +654,6 @@ class MetricHeader(proto.Message):
         proto.ENUM,
         number=2,
         enum="MetricType",
-    )
-
-
-class PivotHeader(proto.Message):
-    r"""Dimensions' values in a single pivot.
-    Attributes:
-        pivot_dimension_headers (Sequence[google.analytics.data_v1alpha.types.PivotDimensionHeader]):
-            The size is the same as the cardinality of
-            the corresponding dimension combinations.
-        row_count (int):
-            The cardinality of the pivot as if offset = 0
-            and limit = -1. The total number of rows for
-            this pivot's fields regardless of how the
-            parameters offset and limit are specified in the
-            request.
-    """
-
-    pivot_dimension_headers = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message="PivotDimensionHeader",
-    )
-    row_count = proto.Field(
-        proto.INT32,
-        number=2,
-    )
-
-
-class PivotDimensionHeader(proto.Message):
-    r"""Summarizes dimension values from a row for this pivot.
-    Attributes:
-        dimension_values (Sequence[google.analytics.data_v1alpha.types.DimensionValue]):
-            Values of multiple dimensions in a pivot.
-    """
-
-    dimension_values = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message="DimensionValue",
     )
 
 
@@ -1059,10 +718,15 @@ class Row(proto.Message):
 
 class DimensionValue(proto.Message):
     r"""The value of a dimension.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         value (str):
             Value as a string if the dimension type is a
             string.
+
+            This field is a member of `oneof`_ ``one_value``.
     """
 
     value = proto.Field(
@@ -1074,35 +738,19 @@ class DimensionValue(proto.Message):
 
 class MetricValue(proto.Message):
     r"""The value of a metric.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         value (str):
             Measurement value. See MetricHeader for type.
+
+            This field is a member of `oneof`_ ``one_value``.
     """
 
     value = proto.Field(
         proto.STRING,
         number=4,
-        oneof="one_value",
-    )
-
-
-class NumericValue(proto.Message):
-    r"""To represent a number.
-    Attributes:
-        int64_value (int):
-            Integer value
-        double_value (float):
-            Double value
-    """
-
-    int64_value = proto.Field(
-        proto.INT64,
-        number=1,
-        oneof="one_value",
-    )
-    double_value = proto.Field(
-        proto.DOUBLE,
-        number=2,
         oneof="one_value",
     )
 
@@ -1120,8 +768,8 @@ class PropertyQuota(proto.Message):
             consume fewer than 10 tokens.
         tokens_per_hour (google.analytics.data_v1alpha.types.QuotaStatus):
             Standard Analytics Properties can use up to
-            5,000 tokens per day; Analytics 360 Properties
-            can use 50,000 tokens per day. An API request
+            5,000 tokens per hour; Analytics 360 Properties
+            can use 50,000 tokens per hour. An API request
             consumes a single number of tokens, and that
             number is deducted from both the hourly and
             daily quotas.
@@ -1135,6 +783,13 @@ class PropertyQuota(proto.Message):
             per hour; Analytics 360 Properties and cloud
             project pairs can have up to 50 server errors
             per hour.
+        potentially_thresholded_requests_per_hour (google.analytics.data_v1alpha.types.QuotaStatus):
+            Analytics Properties can send up to 120
+            requests with potentially thresholded dimensions
+            per hour. In a batch request, each report
+            request is individually counted for this quota
+            if the request contains potentially thresholded
+            dimensions.
     """
 
     tokens_per_day = proto.Field(
@@ -1157,10 +812,16 @@ class PropertyQuota(proto.Message):
         number=4,
         message="QuotaStatus",
     )
+    potentially_thresholded_requests_per_hour = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message="QuotaStatus",
+    )
 
 
 class QuotaStatus(proto.Message):
     r"""Current state for a particular quota group.
+
     Attributes:
         consumed (int):
             Quota consumed by this request.
@@ -1178,110 +839,1561 @@ class QuotaStatus(proto.Message):
     )
 
 
-class DimensionMetadata(proto.Message):
-    r"""Explains a dimension.
+class FunnelBreakdown(proto.Message):
+    r"""Breakdowns add a dimension to the funnel table sub report
+    response.
+
     Attributes:
-        api_name (str):
-            This dimension's name. Useable in
-            `Dimension <#Dimension>`__'s ``name``. For example,
-            ``eventName``.
-        ui_name (str):
-            This dimension's name within the Google Analytics user
-            interface. For example, ``Event name``.
-        description (str):
-            Description of how this dimension is used and
-            calculated.
-        deprecated_api_names (Sequence[str]):
-            Still usable but deprecated names for this dimension. If
-            populated, this dimension is available by either ``apiName``
-            or one of ``deprecatedApiNames`` for a period of time. After
-            the deprecation period, the dimension will be available only
-            by ``apiName``.
-        custom_definition (bool):
-            True if the dimension is a custom dimension
-            for this property.
+        breakdown_dimension (google.analytics.data_v1alpha.types.Dimension):
+            The dimension column added to the funnel table sub report
+            response. The breakdown dimension breaks down each funnel
+            step. A valid ``breakdownDimension`` is required if
+            ``funnelBreakdown`` is specified.
+        limit (int):
+            The maximum number of distinct values of the breakdown
+            dimension to return in the response. A ``limit`` of ``5`` is
+            used if limit is not specified. Limit must exceed zero and
+            cannot exceed 15.
+
+            This field is a member of `oneof`_ ``_limit``.
     """
 
-    api_name = proto.Field(
-        proto.STRING,
+    breakdown_dimension = proto.Field(
+        proto.MESSAGE,
         number=1,
+        message="Dimension",
     )
-    ui_name = proto.Field(
-        proto.STRING,
+    limit = proto.Field(
+        proto.INT64,
         number=2,
+        optional=True,
     )
-    description = proto.Field(
-        proto.STRING,
-        number=3,
+
+
+class FunnelNextAction(proto.Message):
+    r"""Next actions state the value for a dimension after the user has
+    achieved a step but before the same user has achieved the next step.
+    For example if the ``nextActionDimension`` is ``eventName``, then
+    ``nextActionDimension`` in the ``i``\ th funnel step row will return
+    first event after the event that qualified the user into the
+    ``i``\ th funnel step but before the user achieved the ``i+1``\ th
+    funnel step.
+
+    Attributes:
+        next_action_dimension (google.analytics.data_v1alpha.types.Dimension):
+            The dimension column added to the funnel visualization sub
+            report response. The next action dimension returns the next
+            dimension value of this dimension after the user has
+            attained the ``i``\ th funnel step. ``nextActionDimension``
+            currently only supports the ``eventName`` dimension.
+        limit (int):
+            The maximum number of distinct values of the breakdown
+            dimension to return in the response. A ``limit`` of ``5`` is
+            used if limit is not specified. Limit must exceed zero and
+            cannot exceed 5.
+
+            This field is a member of `oneof`_ ``_limit``.
+    """
+
+    next_action_dimension = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="Dimension",
     )
-    deprecated_api_names = proto.RepeatedField(
-        proto.STRING,
-        number=4,
+    limit = proto.Field(
+        proto.INT64,
+        number=2,
+        optional=True,
     )
-    custom_definition = proto.Field(
+
+
+class Funnel(proto.Message):
+    r"""Configures the funnel in a funnel report request. A funnel
+    reports on users as they pass through a sequence of steps.
+    Funnel exploration lets you visualize the steps your users take
+    to complete a task and quickly see how well they are succeeding
+    or failing at each step. For example, how do prospects become
+    shoppers and then become buyers? How do one time buyers become
+    repeat buyers? With this information, you can improve
+    inefficient or abandoned customer journeys.
+
+    Attributes:
+        is_open_funnel (bool):
+            In an open funnel, users can enter the funnel
+            in any step, and in a closed funnel, users must
+            enter the funnel in the first step. Optional. If
+            unspecified, a closed funnel is used.
+        steps (Sequence[google.analytics.data_v1alpha.types.FunnelStep]):
+            The sequential steps of this funnel.
+    """
+
+    is_open_funnel = proto.Field(
         proto.BOOL,
-        number=5,
+        number=1,
+    )
+    steps = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message="FunnelStep",
     )
 
 
-class MetricMetadata(proto.Message):
-    r"""Explains a metric.
+class FunnelStep(proto.Message):
+    r"""Steps define the user journey you want to measure. Steps
+    contain one or more conditions that your users must meet to be
+    included in that step of the funnel journey.
+
     Attributes:
-        api_name (str):
-            A metric name. Useable in `Metric <#Metric>`__'s ``name``.
-            For example, ``eventCount``.
-        ui_name (str):
-            This metric's name within the Google Analytics user
-            interface. For example, ``Event count``.
-        description (str):
-            Description of how this metric is used and
-            calculated.
-        deprecated_api_names (Sequence[str]):
-            Still usable but deprecated names for this metric. If
-            populated, this metric is available by either ``apiName`` or
-            one of ``deprecatedApiNames`` for a period of time. After
-            the deprecation period, the metric will be available only by
-            ``apiName``.
-        type_ (google.analytics.data_v1alpha.types.MetricType):
-            The type of this metric.
-        expression (str):
-            The mathematical expression for this derived metric. Can be
-            used in `Metric <#Metric>`__'s ``expression`` field for
-            equivalent reports. Most metrics are not expressions, and
-            for non-expressions, this field is empty.
-        custom_definition (bool):
-            True if the metric is a custom metric for
-            this property.
+        name (str):
+            The distinctive name for this step. If unspecified, steps
+            will be named by a 1 based indexed name (i.e. "0. ", "1. ",
+            etc.). This name defines string value returned by the
+            ``funnelStepName`` dimension. For example, specifying
+            ``name = Purchase`` in the request's third funnel step will
+            produce ``3. Purchase`` in the funnel report response.
+        is_directly_followed_by (bool):
+            If true, this step must directly follow the previous step.
+            If false, there can be events between the previous step and
+            this step. If unspecified, ``isDirectlyFollowedBy`` is
+            treated as false.
+        within_duration_from_prior_step (google.protobuf.duration_pb2.Duration):
+            If specified, this step must complete within this duration
+            of the completion of the prior step.
+            ``withinDurationFromPriorStep`` is inclusive of the endpoint
+            at the microsecond granularity. For example a duration of 5
+            seconds can be completed at 4.9 or 5.0 seconds, but not 5
+            seconds and 1 microsecond.
+
+            ``withinDurationFromPriorStep`` is optional, and if
+            unspecified, steps may be separated by any time duration.
+
+            This field is a member of `oneof`_ ``_within_duration_from_prior_step``.
+        filter_expression (google.analytics.data_v1alpha.types.FunnelFilterExpression):
+            The condition that your users must meet to be
+            included in this step of the funnel journey.
     """
 
-    api_name = proto.Field(
+    name = proto.Field(
         proto.STRING,
         number=1,
     )
-    ui_name = proto.Field(
-        proto.STRING,
+    is_directly_followed_by = proto.Field(
+        proto.BOOL,
         number=2,
     )
-    description = proto.Field(
-        proto.STRING,
+    within_duration_from_prior_step = proto.Field(
+        proto.MESSAGE,
         number=3,
+        optional=True,
+        message=duration_pb2.Duration,
     )
-    deprecated_api_names = proto.RepeatedField(
-        proto.STRING,
+    filter_expression = proto.Field(
+        proto.MESSAGE,
         number=4,
+        message="FunnelFilterExpression",
     )
-    type_ = proto.Field(
+
+
+class FunnelSubReport(proto.Message):
+    r"""Funnel sub reports contain the dimension and metric data
+    values. For example, 12 users reached the second step of the
+    funnel.
+
+    Attributes:
+        dimension_headers (Sequence[google.analytics.data_v1alpha.types.DimensionHeader]):
+            Describes dimension columns. Funnel reports
+            always include the funnel step dimension in sub
+            report responses. Additional dimensions like
+            breakdowns, dates, and next actions may be
+            present in the response if requested.
+        metric_headers (Sequence[google.analytics.data_v1alpha.types.MetricHeader]):
+            Describes metric columns. Funnel reports
+            always include active users in sub report
+            responses. The funnel table includes additional
+            metrics like completion rate, abandonments, and
+            abandonments rate.
+        rows (Sequence[google.analytics.data_v1alpha.types.Row]):
+            Rows of dimension value combinations and
+            metric values in the report.
+        metadata (google.analytics.data_v1alpha.types.FunnelResponseMetadata):
+            Metadata for the funnel report.
+    """
+
+    dimension_headers = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="DimensionHeader",
+    )
+    metric_headers = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message="MetricHeader",
+    )
+    rows = proto.RepeatedField(
+        proto.MESSAGE,
+        number=3,
+        message="Row",
+    )
+    metadata = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message="FunnelResponseMetadata",
+    )
+
+
+class UserSegment(proto.Message):
+    r"""User segments are subsets of users who engaged with your site
+    or app. For example, users who have previously purchased; users
+    who added items to their shopping carts, but didn’t complete a
+    purchase.
+
+    Attributes:
+        user_inclusion_criteria (google.analytics.data_v1alpha.types.UserSegmentCriteria):
+            Defines which users are included in this
+            segment. Optional.
+        exclusion (google.analytics.data_v1alpha.types.UserSegmentExclusion):
+            Defines which users are excluded in this
+            segment. Optional.
+    """
+
+    user_inclusion_criteria = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="UserSegmentCriteria",
+    )
+    exclusion = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="UserSegmentExclusion",
+    )
+
+
+class UserSegmentCriteria(proto.Message):
+    r"""A user matches a criteria if the user's events meet the
+    conditions in the criteria.
+
+    Attributes:
+        and_condition_groups (Sequence[google.analytics.data_v1alpha.types.UserSegmentConditionGroup]):
+            A user matches this criteria if the user matches each of
+            these ``andConditionGroups`` and each of the
+            ``andSequenceGroups``. ``andConditionGroups`` may be empty
+            if ``andSequenceGroups`` are specified.
+        and_sequence_groups (Sequence[google.analytics.data_v1alpha.types.UserSegmentSequenceGroup]):
+            A user matches this criteria if the user matches each of
+            these ``andSequenceGroups`` and each of the
+            ``andConditionGroups``. ``andSequenceGroups`` may be empty
+            if ``andConditionGroups`` are specified.
+    """
+
+    and_condition_groups = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="UserSegmentConditionGroup",
+    )
+    and_sequence_groups = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message="UserSegmentSequenceGroup",
+    )
+
+
+class UserSegmentConditionGroup(proto.Message):
+    r"""Conditions tell Analytics what data to include in or exclude
+    from the segment.
+
+    Attributes:
+        condition_scoping (google.analytics.data_v1alpha.types.UserCriteriaScoping):
+            Data is included or excluded from the segment based on if it
+            matches the condition group. This scoping defines how many
+            events the ``segmentFilterExpression`` is evaluated on
+            before the condition group is determined to be matched or
+            not. For example if
+            ``conditionScoping = USER_CRITERIA_WITHIN_SAME_SESSION``,
+            the expression is evaluated on all events in a session, and
+            then, the condition group is determined to be matched or not
+            for this user. For example if
+            ``conditionScoping = USER_CRITERIA_WITHIN_SAME_EVENT``, the
+            expression is evaluated on a single event, and then, the
+            condition group is determined to be matched or not for this
+            user.
+
+            Optional. If unspecified,
+            ``conditionScoping = ACROSS_ALL_SESSIONS`` is used.
+        segment_filter_expression (google.analytics.data_v1alpha.types.SegmentFilterExpression):
+            Data is included or excluded from the segment
+            based on if it matches this expression.
+            Expressions express criteria on dimension,
+            metrics, and/or parameters.
+    """
+
+    condition_scoping = proto.Field(
         proto.ENUM,
-        number=5,
-        enum="MetricType",
+        number=1,
+        enum="UserCriteriaScoping",
     )
-    expression = proto.Field(
-        proto.STRING,
-        number=6,
+    segment_filter_expression = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="SegmentFilterExpression",
     )
-    custom_definition = proto.Field(
+
+
+class UserSegmentSequenceGroup(proto.Message):
+    r"""Define conditions that must occur in a specific order for the
+    user to be a member of the segment.
+
+    Attributes:
+        sequence_scoping (google.analytics.data_v1alpha.types.UserCriteriaScoping):
+            All sequence steps must be satisfied in the scoping for the
+            user to match the sequence. For example if
+            ``sequenceScoping = USER_CRITERIA_WITHIN_SAME_SESSION``, all
+            sequence steps must complete within one session for the user
+            to match the sequence.
+            ``sequenceScoping = USER_CRITERIA_WITHIN_SAME_EVENT`` is not
+            supported.
+
+            Optional. If unspecified,
+            ``conditionScoping = ACROSS_ALL_SESSIONS`` is used.
+        sequence_maximum_duration (google.protobuf.duration_pb2.Duration):
+            Defines the time period in which the whole sequence must
+            occur; for example, 30 Minutes. ``sequenceMaximumDuration``
+            is inclusive of the endpoint at the microsecond granularity.
+            For example a sequence with a maximum duration of 5 seconds
+            can be completed at 4.9 or 5.0 seconds, but not 5 seconds
+            and 1 microsecond.
+
+            ``sequenceMaximumDuration`` is optional, and if unspecified,
+            sequences can be completed in any time duration.
+        user_sequence_steps (Sequence[google.analytics.data_v1alpha.types.UserSequenceStep]):
+            An ordered sequence of condition steps. A user's events must
+            complete each step in order for the user to match the
+            ``UserSegmentSequenceGroup``.
+    """
+
+    sequence_scoping = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum="UserCriteriaScoping",
+    )
+    sequence_maximum_duration = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=duration_pb2.Duration,
+    )
+    user_sequence_steps = proto.RepeatedField(
+        proto.MESSAGE,
+        number=3,
+        message="UserSequenceStep",
+    )
+
+
+class UserSequenceStep(proto.Message):
+    r"""A condition that must occur in the specified step order for
+    this user to match the sequence.
+
+    Attributes:
+        is_directly_followed_by (bool):
+            If true, the event satisfying this step must be the very
+            next event after the event satifying the last step. If
+            false, this step indirectly follows the prior step; for
+            example, there may be events between the prior step and this
+            step. ``isDirectlyFollowedBy`` must be false for the first
+            step.
+        step_scoping (google.analytics.data_v1alpha.types.UserCriteriaScoping):
+            This sequence step must be satisfied in the scoping for the
+            user to match the sequence. For example if
+            ``sequenceScoping = WITHIN_SAME_SESSION``, this sequence
+            steps must complete within one session for the user to match
+            the sequence. ``stepScoping = ACROSS_ALL_SESSIONS`` is only
+            allowed if the ``sequenceScoping = ACROSS_ALL_SESSIONS``.
+
+            Optional. If unspecified, ``stepScoping`` uses the same
+            ``UserCriteriaScoping`` as the ``sequenceScoping``.
+        segment_filter_expression (google.analytics.data_v1alpha.types.SegmentFilterExpression):
+            A user matches this sequence step if their
+            events match this expression. Expressions
+            express criteria on dimension, metrics, and/or
+            parameters.
+    """
+
+    is_directly_followed_by = proto.Field(
         proto.BOOL,
+        number=1,
+    )
+    step_scoping = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum="UserCriteriaScoping",
+    )
+    segment_filter_expression = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="SegmentFilterExpression",
+    )
+
+
+class UserSegmentExclusion(proto.Message):
+    r"""Specifies which users are excluded in this segment.
+
+    Attributes:
+        user_exclusion_duration (google.analytics.data_v1alpha.types.UserExclusionDuration):
+            Specifies how long an exclusion will last if a user matches
+            the ``userExclusionCriteria``.
+
+            Optional. If unspecified, ``userExclusionDuration`` of
+            ``USER_EXCLUSION_TEMPORARY`` is used.
+        user_exclusion_criteria (google.analytics.data_v1alpha.types.UserSegmentCriteria):
+            If a user meets this condition, the user is excluded from
+            membership in the segment for the ``userExclusionDuration``.
+    """
+
+    user_exclusion_duration = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum="UserExclusionDuration",
+    )
+    user_exclusion_criteria = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="UserSegmentCriteria",
+    )
+
+
+class SessionSegment(proto.Message):
+    r"""Session segments are subsets of the sessions that occurred on
+    your site or app: for example, all the sessions that originated
+    from a particular advertising campaign.
+
+    Attributes:
+        session_inclusion_criteria (google.analytics.data_v1alpha.types.SessionSegmentCriteria):
+            Defines which sessions are included in this
+            segment. Optional.
+        exclusion (google.analytics.data_v1alpha.types.SessionSegmentExclusion):
+            Defines which sessions are excluded in this
+            segment. Optional.
+    """
+
+    session_inclusion_criteria = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="SessionSegmentCriteria",
+    )
+    exclusion = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="SessionSegmentExclusion",
+    )
+
+
+class SessionSegmentCriteria(proto.Message):
+    r"""A session matches a criteria if the session's events meet the
+    conditions in the criteria.
+
+    Attributes:
+        and_condition_groups (Sequence[google.analytics.data_v1alpha.types.SessionSegmentConditionGroup]):
+            A session matches this criteria if the session matches each
+            of these ``andConditionGroups``.
+    """
+
+    and_condition_groups = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="SessionSegmentConditionGroup",
+    )
+
+
+class SessionSegmentConditionGroup(proto.Message):
+    r"""Conditions tell Analytics what data to include in or exclude
+    from the segment.
+
+    Attributes:
+        condition_scoping (google.analytics.data_v1alpha.types.SessionCriteriaScoping):
+            Data is included or excluded from the segment based on if it
+            matches the condition group. This scoping defines how many
+            events the ``segmentFilterExpression`` is evaluated on
+            before the condition group is determined to be matched or
+            not. For example if
+            ``conditionScoping = SESSION_CRITERIA_WITHIN_SAME_SESSION``,
+            the expression is evaluated on all events in a session, and
+            then, the condition group is determined to be matched or not
+            for this session. For example if
+            ``conditionScoping = SESSION_CRITERIA_WITHIN_SAME_EVENT``,
+            the expression is evaluated on a single event, and then, the
+            condition group is determined to be matched or not for this
+            session.
+
+            Optional. If unspecified, a ``conditionScoping`` of
+            ``WITHIN_SAME_SESSION`` is used.
+        segment_filter_expression (google.analytics.data_v1alpha.types.SegmentFilterExpression):
+            Data is included or excluded from the segment
+            based on if it matches this expression.
+            Expressions express criteria on dimension,
+            metrics, and/or parameters.
+    """
+
+    condition_scoping = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum="SessionCriteriaScoping",
+    )
+    segment_filter_expression = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="SegmentFilterExpression",
+    )
+
+
+class SessionSegmentExclusion(proto.Message):
+    r"""Specifies which sessions are excluded in this segment.
+
+    Attributes:
+        session_exclusion_duration (google.analytics.data_v1alpha.types.SessionExclusionDuration):
+            Specifies how long an exclusion will last if a session
+            matches the ``sessionExclusionCriteria``.
+
+            Optional. If unspecified, a ``sessionExclusionDuration`` of
+            ``SESSION_EXCLUSION_TEMPORARY`` is used.
+        session_exclusion_criteria (google.analytics.data_v1alpha.types.SessionSegmentCriteria):
+            If a session meets this condition, the session is excluded
+            from membership in the segment for the
+            ``sessionExclusionDuration``.
+    """
+
+    session_exclusion_duration = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum="SessionExclusionDuration",
+    )
+    session_exclusion_criteria = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="SessionSegmentCriteria",
+    )
+
+
+class EventSegment(proto.Message):
+    r"""Event segments are subsets of events that were triggered on your
+    site or app. for example, all purchase events made in a particular
+    location; app_exception events that occurred on a specific operating
+    system.
+
+    Attributes:
+        event_inclusion_criteria (google.analytics.data_v1alpha.types.EventSegmentCriteria):
+            Defines which events are included in this
+            segment. Optional.
+        exclusion (google.analytics.data_v1alpha.types.EventSegmentExclusion):
+            Defines which events are excluded in this
+            segment. Optional.
+    """
+
+    event_inclusion_criteria = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="EventSegmentCriteria",
+    )
+    exclusion = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="EventSegmentExclusion",
+    )
+
+
+class EventSegmentCriteria(proto.Message):
+    r"""An event matches a criteria if the event meet the conditions
+    in the criteria.
+
+    Attributes:
+        and_condition_groups (Sequence[google.analytics.data_v1alpha.types.EventSegmentConditionGroup]):
+            An event matches this criteria if the event matches each of
+            these ``andConditionGroups``.
+    """
+
+    and_condition_groups = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="EventSegmentConditionGroup",
+    )
+
+
+class EventSegmentConditionGroup(proto.Message):
+    r"""Conditions tell Analytics what data to include in or exclude
+    from the segment.
+
+    Attributes:
+        condition_scoping (google.analytics.data_v1alpha.types.EventCriteriaScoping):
+            ``conditionScoping`` should always be
+            ``EVENT_CRITERIA_WITHIN_SAME_EVENT``.
+
+            Optional. If unspecified, a ``conditionScoping`` of
+            ``EVENT_CRITERIA_WITHIN_SAME_EVENT`` is used.
+        segment_filter_expression (google.analytics.data_v1alpha.types.SegmentFilterExpression):
+            Data is included or excluded from the segment
+            based on if it matches this expression.
+            Expressions express criteria on dimension,
+            metrics, and/or parameters.
+    """
+
+    condition_scoping = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum="EventCriteriaScoping",
+    )
+    segment_filter_expression = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="SegmentFilterExpression",
+    )
+
+
+class EventSegmentExclusion(proto.Message):
+    r"""Specifies which events are excluded in this segment.
+
+    Attributes:
+        event_exclusion_duration (google.analytics.data_v1alpha.types.EventExclusionDuration):
+            ``eventExclusionDuration`` should always be
+            ``PERMANENTLY_EXCLUDE``.
+
+            Optional. If unspecified, an ``eventExclusionDuration`` of
+            ``EVENT_EXCLUSION_PERMANENT`` is used.
+        event_exclusion_criteria (google.analytics.data_v1alpha.types.EventSegmentCriteria):
+            If an event meets this condition, the event is excluded from
+            membership in the segment for the
+            ``eventExclusionDuration``.
+    """
+
+    event_exclusion_duration = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum="EventExclusionDuration",
+    )
+    event_exclusion_criteria = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="EventSegmentCriteria",
+    )
+
+
+class Segment(proto.Message):
+    r"""A segment is a subset of your Analytics data. For example, of your
+    entire set of users, one segment might be users from a particular
+    country or city. Another segment might be users who purchase a
+    particular line of products or who visit a specific part of your
+    site or trigger certain events in your app.
+
+    To learn more, see `GA4 Segment
+    Builder <https://support.google.com/analytics/answer/9304353>`__.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        name (str):
+            The name for this segment. If unspecified, segments are
+            named "Segment". This name defines string value returned by
+            the ``segment`` dimension. The ``segment`` dimension
+            prefixes segment names by the 1-based index number of the
+            segment in the request (i.e. "1. Segment", "2. Segment",
+            etc.).
+        user_segment (google.analytics.data_v1alpha.types.UserSegment):
+            User segments are subsets of users who
+            engaged with your site or app.
+
+            This field is a member of `oneof`_ ``one_segment_scope``.
+        session_segment (google.analytics.data_v1alpha.types.SessionSegment):
+            Session segments are subsets of the sessions
+            that occurred on your site or app.
+
+            This field is a member of `oneof`_ ``one_segment_scope``.
+        event_segment (google.analytics.data_v1alpha.types.EventSegment):
+            Event segments are subsets of events that
+            were triggered on your site or app.
+
+            This field is a member of `oneof`_ ``one_segment_scope``.
+    """
+
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    user_segment = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        oneof="one_segment_scope",
+        message="UserSegment",
+    )
+    session_segment = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        oneof="one_segment_scope",
+        message="SessionSegment",
+    )
+    event_segment = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        oneof="one_segment_scope",
+        message="EventSegment",
+    )
+
+
+class SegmentFilterExpression(proto.Message):
+    r"""Expresses combinations of segment filters.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        and_group (google.analytics.data_v1alpha.types.SegmentFilterExpressionList):
+            The SegmentFilterExpression in ``andGroup`` have an AND
+            relationship.
+
+            This field is a member of `oneof`_ ``expr``.
+        or_group (google.analytics.data_v1alpha.types.SegmentFilterExpressionList):
+            The SegmentFilterExpression in ``orGroup`` have an OR
+            relationship.
+
+            This field is a member of `oneof`_ ``expr``.
+        not_expression (google.analytics.data_v1alpha.types.SegmentFilterExpression):
+            The SegmentFilterExpression is NOT of ``notExpression``.
+
+            This field is a member of `oneof`_ ``expr``.
+        segment_filter (google.analytics.data_v1alpha.types.SegmentFilter):
+            A primitive segment filter.
+
+            This field is a member of `oneof`_ ``expr``.
+        segment_event_filter (google.analytics.data_v1alpha.types.SegmentEventFilter):
+            Creates a filter that matches events of a
+            single event name. If a parameter filter
+            expression is specified, only the subset of
+            events that match both the single event name and
+            the parameter filter expressions match this
+            event filter.
+
+            This field is a member of `oneof`_ ``expr``.
+    """
+
+    and_group = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        oneof="expr",
+        message="SegmentFilterExpressionList",
+    )
+    or_group = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        oneof="expr",
+        message="SegmentFilterExpressionList",
+    )
+    not_expression = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        oneof="expr",
+        message="SegmentFilterExpression",
+    )
+    segment_filter = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        oneof="expr",
+        message="SegmentFilter",
+    )
+    segment_event_filter = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        oneof="expr",
+        message="SegmentEventFilter",
+    )
+
+
+class SegmentFilterExpressionList(proto.Message):
+    r"""A list of segment filter expressions.
+
+    Attributes:
+        expressions (Sequence[google.analytics.data_v1alpha.types.SegmentFilterExpression]):
+            The list of segment filter expressions
+    """
+
+    expressions = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="SegmentFilterExpression",
+    )
+
+
+class SegmentFilter(proto.Message):
+    r"""An expression to filter dimension or metric values.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        field_name (str):
+            The dimension name or metric name.
+        string_filter (google.analytics.data_v1alpha.types.StringFilter):
+            Strings related filter.
+
+            This field is a member of `oneof`_ ``one_filter``.
+        in_list_filter (google.analytics.data_v1alpha.types.InListFilter):
+            A filter for in list values.
+
+            This field is a member of `oneof`_ ``one_filter``.
+        numeric_filter (google.analytics.data_v1alpha.types.NumericFilter):
+            A filter for numeric or date values.
+
+            This field is a member of `oneof`_ ``one_filter``.
+        between_filter (google.analytics.data_v1alpha.types.BetweenFilter):
+            A filter for between two values.
+
+            This field is a member of `oneof`_ ``one_filter``.
+        filter_scoping (google.analytics.data_v1alpha.types.SegmentFilterScoping):
+            Specifies the scope for the filter.
+    """
+
+    field_name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    string_filter = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        oneof="one_filter",
+        message="StringFilter",
+    )
+    in_list_filter = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        oneof="one_filter",
+        message="InListFilter",
+    )
+    numeric_filter = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        oneof="one_filter",
+        message="NumericFilter",
+    )
+    between_filter = proto.Field(
+        proto.MESSAGE,
         number=7,
+        oneof="one_filter",
+        message="BetweenFilter",
+    )
+    filter_scoping = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        message="SegmentFilterScoping",
+    )
+
+
+class SegmentFilterScoping(proto.Message):
+    r"""Scopings specify how the dimensions & metrics of multiple
+    events should be considered when evaluating a segment filter.
+
+    Attributes:
+        at_any_point_in_time (bool):
+            If ``atAnyPointInTime`` is true, this filter evaluates to
+            true for all events if it evaluates to true for any event in
+            the date range of the request.
+
+            This ``atAnyPointInTime`` parameter does not extend the date
+            range of events in the report. If ``atAnyPointInTime`` is
+            true, only events within the report's date range are
+            considered when evaluating this filter.
+
+            This ``atAnyPointInTime`` is only able to be specified if
+            the criteria scoping is ``ACROSS_ALL_SESSIONS`` and is not
+            able to be specified in sequences.
+
+            If the criteria scoping is ``ACROSS_ALL_SESSIONS``,
+            ``atAnyPointInTime`` = false is used if unspecified.
+
+            This field is a member of `oneof`_ ``_at_any_point_in_time``.
+    """
+
+    at_any_point_in_time = proto.Field(
+        proto.BOOL,
+        number=1,
+        optional=True,
+    )
+
+
+class SegmentEventFilter(proto.Message):
+    r"""Creates a filter that matches events of a single event name.
+    If a parameter filter expression is specified, only the subset
+    of events that match both the single event name and the
+    parameter filter expressions match this event filter.
+
+    Attributes:
+        event_name (str):
+            This filter matches events of this single
+            event name. Event name is required.
+
+            This field is a member of `oneof`_ ``_event_name``.
+        segment_parameter_filter_expression (google.analytics.data_v1alpha.types.SegmentParameterFilterExpression):
+            If specified, this filter matches events that
+            match both the single event name and the
+            parameter filter expressions.
+            Inside the parameter filter expression, only
+            parameter filters are available.
+
+            This field is a member of `oneof`_ ``_segment_parameter_filter_expression``.
+    """
+
+    event_name = proto.Field(
+        proto.STRING,
+        number=1,
+        optional=True,
+    )
+    segment_parameter_filter_expression = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        optional=True,
+        message="SegmentParameterFilterExpression",
+    )
+
+
+class SegmentParameterFilterExpression(proto.Message):
+    r"""Expresses combinations of segment filter on parameters.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        and_group (google.analytics.data_v1alpha.types.SegmentParameterFilterExpressionList):
+            The SegmentParameterFilterExpression in ``andGroup`` have an
+            AND relationship.
+
+            This field is a member of `oneof`_ ``expr``.
+        or_group (google.analytics.data_v1alpha.types.SegmentParameterFilterExpressionList):
+            The SegmentParameterFilterExpression in ``orGroup`` have an
+            OR relationship.
+
+            This field is a member of `oneof`_ ``expr``.
+        not_expression (google.analytics.data_v1alpha.types.SegmentParameterFilterExpression):
+            The SegmentParameterFilterExpression is NOT of
+            ``notExpression``.
+
+            This field is a member of `oneof`_ ``expr``.
+        segment_parameter_filter (google.analytics.data_v1alpha.types.SegmentParameterFilter):
+            A primitive segment parameter filter.
+
+            This field is a member of `oneof`_ ``expr``.
+    """
+
+    and_group = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        oneof="expr",
+        message="SegmentParameterFilterExpressionList",
+    )
+    or_group = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        oneof="expr",
+        message="SegmentParameterFilterExpressionList",
+    )
+    not_expression = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        oneof="expr",
+        message="SegmentParameterFilterExpression",
+    )
+    segment_parameter_filter = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        oneof="expr",
+        message="SegmentParameterFilter",
+    )
+
+
+class SegmentParameterFilterExpressionList(proto.Message):
+    r"""A list of segment parameter filter expressions.
+
+    Attributes:
+        expressions (Sequence[google.analytics.data_v1alpha.types.SegmentParameterFilterExpression]):
+            The list of segment parameter filter
+            expressions.
+    """
+
+    expressions = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="SegmentParameterFilterExpression",
+    )
+
+
+class SegmentParameterFilter(proto.Message):
+    r"""An expression to filter parameter values in a segment.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        event_parameter_name (str):
+            This filter will be evaluated on the specified event
+            parameter. Event parameters are logged as parameters of the
+            event. Event parameters include fields like
+            "firebase_screen" & "currency".
+
+            Event parameters can only be used in segments & funnels and
+            can only be used in a descendent filter from an EventFilter.
+            In a descendent filter from an EventFilter either event or
+            item parameters should be used.
+
+            This field is a member of `oneof`_ ``one_parameter``.
+        item_parameter_name (str):
+            This filter will be evaluated on the specified item
+            parameter. Item parameters are logged as parameters in the
+            item array. Item parameters include fields like "item_name"
+            & "item_category".
+
+            Item parameters can only be used in segments & funnels and
+            can only be used in a descendent filter from an EventFilter.
+            In a descendent filter from an EventFilter either event or
+            item parameters should be used.
+
+            Item parameters are only available in ecommerce events. To
+            learn more about ecommerce events, see the [Measure
+            ecommerce]
+            (https://developers.google.com/analytics/devguides/collection/ga4/ecommerce)
+            guide.
+
+            This field is a member of `oneof`_ ``one_parameter``.
+        string_filter (google.analytics.data_v1alpha.types.StringFilter):
+            Strings related filter.
+
+            This field is a member of `oneof`_ ``one_filter``.
+        in_list_filter (google.analytics.data_v1alpha.types.InListFilter):
+            A filter for in list values.
+
+            This field is a member of `oneof`_ ``one_filter``.
+        numeric_filter (google.analytics.data_v1alpha.types.NumericFilter):
+            A filter for numeric or date values.
+
+            This field is a member of `oneof`_ ``one_filter``.
+        between_filter (google.analytics.data_v1alpha.types.BetweenFilter):
+            A filter for between two values.
+
+            This field is a member of `oneof`_ ``one_filter``.
+        filter_scoping (google.analytics.data_v1alpha.types.SegmentParameterFilterScoping):
+            Specifies the scope for the filter.
+    """
+
+    event_parameter_name = proto.Field(
+        proto.STRING,
+        number=1,
+        oneof="one_parameter",
+    )
+    item_parameter_name = proto.Field(
+        proto.STRING,
+        number=2,
+        oneof="one_parameter",
+    )
+    string_filter = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        oneof="one_filter",
+        message="StringFilter",
+    )
+    in_list_filter = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        oneof="one_filter",
+        message="InListFilter",
+    )
+    numeric_filter = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        oneof="one_filter",
+        message="NumericFilter",
+    )
+    between_filter = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        oneof="one_filter",
+        message="BetweenFilter",
+    )
+    filter_scoping = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        message="SegmentParameterFilterScoping",
+    )
+
+
+class SegmentParameterFilterScoping(proto.Message):
+    r"""Scopings specify how multiple events should be considered
+    when evaluating a segment parameter filter.
+
+    Attributes:
+        in_any_n_day_period (int):
+            Accumulates the parameter over the specified period of days
+            before applying the filter. Only supported if criteria
+            scoping is ``ACROSS_ALL_SESSIONS`` or
+            ``WITHIN_SAME_SESSION``. Only supported if the parameter is
+            ``event_count``.
+
+            For example if ``inAnyNDayPeriod`` is 3, the event_name is
+            "purchase", the event parameter is "event_count", and the
+            Filter's criteria is greater than 5, this filter will
+            accumulate the event count of purchase events over every 3
+            consecutive day period in the report's date range; a user
+            will pass this Filter's criteria to be included in this
+            segment if their count of purchase events exceeds 5 in any 3
+            consecutive day period. For example, the periods 2021-11-01
+            to 2021-11-03, 2021-11-02 to 2021-11-04, 2021-11-03 to
+            2021-11-05, and etc. will be considered.
+
+            The date range is not extended for the purpose of having a
+            full N day window near the start of the date range. For
+            example if a report is for 2021-11-01 to 2021-11-10 and
+            ``inAnyNDayPeriod`` = 3, the first two day period will be
+            effectively shortened because no event data outside the
+            report's date range will be read. For example, the first
+            four periods will effectively be: 2021-11-01 to 2021-11-01,
+            2021-11-01 to 2021-11-02, 2021-11-01 to 2021-11-03, and
+            2021-11-02 to 2021-11-04.
+
+            ``inAnyNDayPeriod`` is optional. If not specified, the
+            ``segmentParameterFilter`` is applied to each event
+            individually.
+
+            This field is a member of `oneof`_ ``_in_any_n_day_period``.
+    """
+
+    in_any_n_day_period = proto.Field(
+        proto.INT64,
+        number=1,
+        optional=True,
+    )
+
+
+class FunnelFilterExpression(proto.Message):
+    r"""Expresses combinations of funnel filters.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        and_group (google.analytics.data_v1alpha.types.FunnelFilterExpressionList):
+            The FunnelFilterExpression in ``andGroup`` have an AND
+            relationship.
+
+            This field is a member of `oneof`_ ``expr``.
+        or_group (google.analytics.data_v1alpha.types.FunnelFilterExpressionList):
+            The FunnelFilterExpression in ``orGroup`` have an OR
+            relationship.
+
+            This field is a member of `oneof`_ ``expr``.
+        not_expression (google.analytics.data_v1alpha.types.FunnelFilterExpression):
+            The FunnelFilterExpression is NOT of ``notExpression``.
+
+            This field is a member of `oneof`_ ``expr``.
+        funnel_filter (google.analytics.data_v1alpha.types.FunnelFilter):
+            A primitive funnel filter.
+
+            This field is a member of `oneof`_ ``expr``.
+        funnel_event_filter (google.analytics.data_v1alpha.types.FunnelEventFilter):
+            Creates a filter that matches events of a
+            single event name. If a parameter filter
+            expression is specified, only the subset of
+            events that match both the single event name and
+            the parameter filter expressions match this
+            event filter.
+
+            This field is a member of `oneof`_ ``expr``.
+    """
+
+    and_group = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        oneof="expr",
+        message="FunnelFilterExpressionList",
+    )
+    or_group = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        oneof="expr",
+        message="FunnelFilterExpressionList",
+    )
+    not_expression = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        oneof="expr",
+        message="FunnelFilterExpression",
+    )
+    funnel_filter = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        oneof="expr",
+        message="FunnelFilter",
+    )
+    funnel_event_filter = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        oneof="expr",
+        message="FunnelEventFilter",
+    )
+
+
+class FunnelFilterExpressionList(proto.Message):
+    r"""A list of funnel filter expressions.
+
+    Attributes:
+        expressions (Sequence[google.analytics.data_v1alpha.types.FunnelFilterExpression]):
+            The list of funnel filter expressions.
+    """
+
+    expressions = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="FunnelFilterExpression",
+    )
+
+
+class FunnelFilter(proto.Message):
+    r"""An expression to filter dimension or metric values.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        field_name (str):
+            The dimension name or metric name.
+        string_filter (google.analytics.data_v1alpha.types.StringFilter):
+            Strings related filter.
+
+            This field is a member of `oneof`_ ``one_filter``.
+        in_list_filter (google.analytics.data_v1alpha.types.InListFilter):
+            A filter for in list values.
+
+            This field is a member of `oneof`_ ``one_filter``.
+        numeric_filter (google.analytics.data_v1alpha.types.NumericFilter):
+            A filter for numeric or date values.
+
+            This field is a member of `oneof`_ ``one_filter``.
+        between_filter (google.analytics.data_v1alpha.types.BetweenFilter):
+            A filter for between two values.
+
+            This field is a member of `oneof`_ ``one_filter``.
+    """
+
+    field_name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    string_filter = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        oneof="one_filter",
+        message="StringFilter",
+    )
+    in_list_filter = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        oneof="one_filter",
+        message="InListFilter",
+    )
+    numeric_filter = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        oneof="one_filter",
+        message="NumericFilter",
+    )
+    between_filter = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        oneof="one_filter",
+        message="BetweenFilter",
+    )
+
+
+class FunnelEventFilter(proto.Message):
+    r"""Creates a filter that matches events of a single event name.
+    If a parameter filter expression is specified, only the subset
+    of events that match both the single event name and the
+    parameter filter expressions match this event filter.
+
+    Attributes:
+        event_name (str):
+            This filter matches events of this single
+            event name. Event name is required.
+
+            This field is a member of `oneof`_ ``_event_name``.
+        funnel_parameter_filter_expression (google.analytics.data_v1alpha.types.FunnelParameterFilterExpression):
+            If specified, this filter matches events that
+            match both the single event name and the
+            parameter filter expressions.
+            Inside the parameter filter expression, only
+            parameter filters are available.
+
+            This field is a member of `oneof`_ ``_funnel_parameter_filter_expression``.
+    """
+
+    event_name = proto.Field(
+        proto.STRING,
+        number=1,
+        optional=True,
+    )
+    funnel_parameter_filter_expression = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        optional=True,
+        message="FunnelParameterFilterExpression",
+    )
+
+
+class FunnelParameterFilterExpression(proto.Message):
+    r"""Expresses combinations of funnel filters on parameters.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        and_group (google.analytics.data_v1alpha.types.FunnelParameterFilterExpressionList):
+            The FunnelParameterFilterExpression in ``andGroup`` have an
+            AND relationship.
+
+            This field is a member of `oneof`_ ``expr``.
+        or_group (google.analytics.data_v1alpha.types.FunnelParameterFilterExpressionList):
+            The FunnelParameterFilterExpression in ``orGroup`` have an
+            OR relationship.
+
+            This field is a member of `oneof`_ ``expr``.
+        not_expression (google.analytics.data_v1alpha.types.FunnelParameterFilterExpression):
+            The FunnelParameterFilterExpression is NOT of
+            ``notExpression``.
+
+            This field is a member of `oneof`_ ``expr``.
+        funnel_parameter_filter (google.analytics.data_v1alpha.types.FunnelParameterFilter):
+            A primitive funnel parameter filter.
+
+            This field is a member of `oneof`_ ``expr``.
+    """
+
+    and_group = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        oneof="expr",
+        message="FunnelParameterFilterExpressionList",
+    )
+    or_group = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        oneof="expr",
+        message="FunnelParameterFilterExpressionList",
+    )
+    not_expression = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        oneof="expr",
+        message="FunnelParameterFilterExpression",
+    )
+    funnel_parameter_filter = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        oneof="expr",
+        message="FunnelParameterFilter",
+    )
+
+
+class FunnelParameterFilterExpressionList(proto.Message):
+    r"""A list of funnel parameter filter expressions.
+
+    Attributes:
+        expressions (Sequence[google.analytics.data_v1alpha.types.FunnelParameterFilterExpression]):
+            The list of funnel parameter filter
+            expressions.
+    """
+
+    expressions = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="FunnelParameterFilterExpression",
+    )
+
+
+class FunnelParameterFilter(proto.Message):
+    r"""An expression to filter parameter values in a funnel.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        event_parameter_name (str):
+            This filter will be evaluated on the specified event
+            parameter. Event parameters are logged as parameters of the
+            event. Event parameters include fields like
+            "firebase_screen" & "currency".
+
+            Event parameters can only be used in segments & funnels and
+            can only be used in a descendent filter from an EventFilter.
+            In a descendent filter from an EventFilter either event or
+            item parameters should be used.
+
+            This field is a member of `oneof`_ ``one_parameter``.
+        item_parameter_name (str):
+            This filter will be evaluated on the specified item
+            parameter. Item parameters are logged as parameters in the
+            item array. Item parameters include fields like "item_name"
+            & "item_category".
+
+            Item parameters can only be used in segments & funnels and
+            can only be used in a descendent filter from an EventFilter.
+            In a descendent filter from an EventFilter either event or
+            item parameters should be used.
+
+            Item parameters are only available in ecommerce events. To
+            learn more about ecommerce events, see the [Measure
+            ecommerce]
+            (https://developers.google.com/analytics/devguides/collection/ga4/ecommerce)
+            guide.
+
+            This field is a member of `oneof`_ ``one_parameter``.
+        string_filter (google.analytics.data_v1alpha.types.StringFilter):
+            Strings related filter.
+
+            This field is a member of `oneof`_ ``one_filter``.
+        in_list_filter (google.analytics.data_v1alpha.types.InListFilter):
+            A filter for in list values.
+
+            This field is a member of `oneof`_ ``one_filter``.
+        numeric_filter (google.analytics.data_v1alpha.types.NumericFilter):
+            A filter for numeric or date values.
+
+            This field is a member of `oneof`_ ``one_filter``.
+        between_filter (google.analytics.data_v1alpha.types.BetweenFilter):
+            A filter for between two values.
+
+            This field is a member of `oneof`_ ``one_filter``.
+    """
+
+    event_parameter_name = proto.Field(
+        proto.STRING,
+        number=1,
+        oneof="one_parameter",
+    )
+    item_parameter_name = proto.Field(
+        proto.STRING,
+        number=2,
+        oneof="one_parameter",
+    )
+    string_filter = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        oneof="one_filter",
+        message="StringFilter",
+    )
+    in_list_filter = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        oneof="one_filter",
+        message="InListFilter",
+    )
+    numeric_filter = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        oneof="one_filter",
+        message="NumericFilter",
+    )
+    between_filter = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        oneof="one_filter",
+        message="BetweenFilter",
+    )
+
+
+class FunnelResponseMetadata(proto.Message):
+    r"""The funnel report's response metadata carries additional
+    information about the funnel report.
+
+    Attributes:
+        sampling_metadatas (Sequence[google.analytics.data_v1alpha.types.SamplingMetadata]):
+            If funnel report results are
+            `sampled <https://support.google.com/analytics/answer/2637192>`__,
+            this describes what percentage of events were used in this
+            funnel report. One ``samplingMetadatas`` is populated for
+            each date range. Each ``samplingMetadatas`` corresponds to a
+            date range in order that date ranges were specified in the
+            request.
+
+            However if the results are not sampled, this field will not
+            be defined.
+    """
+
+    sampling_metadatas = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="SamplingMetadata",
+    )
+
+
+class SamplingMetadata(proto.Message):
+    r"""If funnel report results are
+    `sampled <https://support.google.com/analytics/answer/2637192>`__,
+    this metadata describes what percentage of events were used in this
+    funnel report for a date range. Sampling is the practice of
+    analyzing a subset of all data in order to uncover the meaningful
+    information in the larger data set.
+
+    Attributes:
+        samples_read_count (int):
+            The total number of events read in this
+            sampled report for a date range. This is the
+            size of the subset this property's data that was
+            analyzed in this funnel report.
+        sampling_space_size (int):
+            The total number of events present in this property's data
+            that could have been analyzed in this funnel report for a
+            date range. Sampling uncovers the meaningful information
+            about the larger data set, and this is the size of the
+            larger data set.
+
+            To calculate the percentage of available data that was used
+            in this funnel report, compute
+            ``samplesReadCount/samplingSpaceSize``.
+    """
+
+    samples_read_count = proto.Field(
+        proto.INT64,
+        number=1,
+    )
+    sampling_space_size = proto.Field(
+        proto.INT64,
+        number=2,
     )
 
 

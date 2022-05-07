@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2020 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,15 +16,20 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
-import google.api_core.client_options as ClientOptions  # type: ignore
-from google.api_core import exceptions as core_exceptions  # type: ignore
-from google.api_core import gapic_v1  # type: ignore
-from google.api_core import retry as retries  # type: ignore
+from google.api_core.client_options import ClientOptions
+from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1
+from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
+try:
+    OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
+except AttributeError:  # pragma: NO COVER
+    OptionalRetry = Union[retries.Retry, object]  # type: ignore
 
 from google.analytics.data_v1alpha.types import analytics_data_api
 from google.analytics.data_v1alpha.types import data
@@ -41,8 +46,6 @@ class AlphaAnalyticsDataAsyncClient:
     DEFAULT_ENDPOINT = AlphaAnalyticsDataClient.DEFAULT_ENDPOINT
     DEFAULT_MTLS_ENDPOINT = AlphaAnalyticsDataClient.DEFAULT_MTLS_ENDPOINT
 
-    metadata_path = staticmethod(AlphaAnalyticsDataClient.metadata_path)
-    parse_metadata_path = staticmethod(AlphaAnalyticsDataClient.parse_metadata_path)
     common_billing_account_path = staticmethod(
         AlphaAnalyticsDataClient.common_billing_account_path
     )
@@ -100,6 +103,42 @@ class AlphaAnalyticsDataAsyncClient:
         return AlphaAnalyticsDataClient.from_service_account_file.__func__(AlphaAnalyticsDataAsyncClient, filename, *args, **kwargs)  # type: ignore
 
     from_service_account_json = from_service_account_file
+
+    @classmethod
+    def get_mtls_endpoint_and_cert_source(
+        cls, client_options: Optional[ClientOptions] = None
+    ):
+        """Return the API endpoint and client cert source for mutual TLS.
+
+        The client cert source is determined in the following order:
+        (1) if `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is not "true", the
+        client cert source is None.
+        (2) if `client_options.client_cert_source` is provided, use the provided one; if the
+        default client cert source exists, use the default one; otherwise the client cert
+        source is None.
+
+        The API endpoint is determined in the following order:
+        (1) if `client_options.api_endpoint` if provided, use the provided one.
+        (2) if `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is "always", use the
+        default mTLS endpoint; if the environment variabel is "never", use the default API
+        endpoint; otherwise if client cert source exists, use the default mTLS endpoint, otherwise
+        use the default API endpoint.
+
+        More details can be found at https://google.aip.dev/auth/4114.
+
+        Args:
+            client_options (google.api_core.client_options.ClientOptions): Custom options for the
+                client. Only the `api_endpoint` and `client_cert_source` properties may be used
+                in this method.
+
+        Returns:
+            Tuple[str, Callable[[], Tuple[bytes, bytes]]]: returns the API endpoint and the
+                client cert source to use.
+
+        Raises:
+            google.auth.exceptions.MutualTLSChannelError: If any errors happen.
+        """
+        return AlphaAnalyticsDataClient.get_mtls_endpoint_and_cert_source(client_options)  # type: ignore
 
     @property
     def transport(self) -> AlphaAnalyticsDataTransport:
@@ -162,27 +201,48 @@ class AlphaAnalyticsDataAsyncClient:
             client_info=client_info,
         )
 
-    async def run_report(
+    async def run_funnel_report(
         self,
-        request: analytics_data_api.RunReportRequest = None,
+        request: Union[analytics_data_api.RunFunnelReportRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> analytics_data_api.RunReportResponse:
-        r"""Returns a customized report of your Google Analytics
-        event data. Reports contain statistics derived from data
-        collected by the Google Analytics tracking code. The
-        data returned from the API is as a table with columns
-        for the requested dimensions and metrics. Metrics are
-        individual measurements of user activity on your
-        property, such as active users or event count.
-        Dimensions break down metrics across some common
-        criteria, such as country or event name.
+    ) -> analytics_data_api.RunFunnelReportResponse:
+        r"""Returns a customized funnel report of your Google Analytics
+        event data. The data returned from the API is as a table with
+        columns for the requested dimensions and metrics.
+
+        Funnel exploration lets you visualize the steps your users take
+        to complete a task and quickly see how well they are succeeding
+        or failing at each step. For example, how do prospects become
+        shoppers and then become buyers? How do one time buyers become
+        repeat buyers? With this information, you can improve
+        inefficient or abandoned customer journeys. To learn more, see
+        `GA4 Funnel
+        Explorations <https://support.google.com/analytics/answer/9327974>`__.
+
+        .. code-block:: python
+
+            from google.analytics import data_v1alpha
+
+            async def sample_run_funnel_report():
+                # Create a client
+                client = data_v1alpha.AlphaAnalyticsDataAsyncClient()
+
+                # Initialize request argument(s)
+                request = data_v1alpha.RunFunnelReportRequest(
+                )
+
+                # Make the request
+                response = await client.run_funnel_report(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
-            request (:class:`google.analytics.data_v1alpha.types.RunReportRequest`):
-                The request object. The request to generate a report.
+            request (Union[google.analytics.data_v1alpha.types.RunFunnelReportRequest, dict]):
+                The request object. The request for a funnel report.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -190,317 +250,21 @@ class AlphaAnalyticsDataAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            google.analytics.data_v1alpha.types.RunReportResponse:
-                The response report table
-                corresponding to a request.
+            google.analytics.data_v1alpha.types.RunFunnelReportResponse:
+                The funnel report response contains
+                two sub reports. The two sub reports are
+                different combinations of dimensions and
+                metrics.
 
         """
         # Create or coerce a protobuf request object.
-        request = analytics_data_api.RunReportRequest(request)
+        request = analytics_data_api.RunFunnelReportRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.run_report,
+            self._client._transport.run_funnel_report,
             default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
-
-        # Send the request.
-        response = await rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # Done; return the response.
-        return response
-
-    async def run_pivot_report(
-        self,
-        request: analytics_data_api.RunPivotReportRequest = None,
-        *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> analytics_data_api.RunPivotReportResponse:
-        r"""Returns a customized pivot report of your Google
-        Analytics event data. Pivot reports are more advanced
-        and expressive formats than regular reports. In a pivot
-        report, dimensions are only visible if they are included
-        in a pivot. Multiple pivots can be specified to further
-        dissect your data.
-
-        Args:
-            request (:class:`google.analytics.data_v1alpha.types.RunPivotReportRequest`):
-                The request object. The request to generate a pivot
-                report.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-
-        Returns:
-            google.analytics.data_v1alpha.types.RunPivotReportResponse:
-                The response pivot report table
-                corresponding to a pivot request.
-
-        """
-        # Create or coerce a protobuf request object.
-        request = analytics_data_api.RunPivotReportRequest(request)
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.run_pivot_report,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
-
-        # Send the request.
-        response = await rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # Done; return the response.
-        return response
-
-    async def batch_run_reports(
-        self,
-        request: analytics_data_api.BatchRunReportsRequest = None,
-        *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> analytics_data_api.BatchRunReportsResponse:
-        r"""Returns multiple reports in a batch. All reports must
-        be for the same Entity.
-
-        Args:
-            request (:class:`google.analytics.data_v1alpha.types.BatchRunReportsRequest`):
-                The request object. The batch request containing
-                multiple report requests.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-
-        Returns:
-            google.analytics.data_v1alpha.types.BatchRunReportsResponse:
-                The batch response containing
-                multiple reports.
-
-        """
-        # Create or coerce a protobuf request object.
-        request = analytics_data_api.BatchRunReportsRequest(request)
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.batch_run_reports,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
-
-        # Send the request.
-        response = await rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # Done; return the response.
-        return response
-
-    async def batch_run_pivot_reports(
-        self,
-        request: analytics_data_api.BatchRunPivotReportsRequest = None,
-        *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> analytics_data_api.BatchRunPivotReportsResponse:
-        r"""Returns multiple pivot reports in a batch. All
-        reports must be for the same Entity.
-
-        Args:
-            request (:class:`google.analytics.data_v1alpha.types.BatchRunPivotReportsRequest`):
-                The request object. The batch request containing
-                multiple pivot report requests.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-
-        Returns:
-            google.analytics.data_v1alpha.types.BatchRunPivotReportsResponse:
-                The batch response containing
-                multiple pivot reports.
-
-        """
-        # Create or coerce a protobuf request object.
-        request = analytics_data_api.BatchRunPivotReportsRequest(request)
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.batch_run_pivot_reports,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
-
-        # Send the request.
-        response = await rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # Done; return the response.
-        return response
-
-    async def get_metadata(
-        self,
-        request: analytics_data_api.GetMetadataRequest = None,
-        *,
-        name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> analytics_data_api.Metadata:
-        r"""Returns metadata for dimensions and metrics available in
-        reporting methods. Used to explore the dimensions and metrics.
-        In this method, a Google Analytics GA4 Property Identifier is
-        specified in the request, and the metadata response includes
-        Custom dimensions and metrics as well as Universal metadata.
-
-        For example if a custom metric with parameter name
-        ``levels_unlocked`` is registered to a property, the Metadata
-        response will contain ``customEvent:levels_unlocked``. Universal
-        metadata are dimensions and metrics applicable to any property
-        such as ``country`` and ``totalUsers``.
-
-        Args:
-            request (:class:`google.analytics.data_v1alpha.types.GetMetadataRequest`):
-                The request object. Request for a property's dimension
-                and metric metadata.
-            name (:class:`str`):
-                Required. The resource name of the metadata to retrieve.
-                This name field is specified in the URL path and not URL
-                parameters. Property is a numeric Google Analytics GA4
-                Property identifier. To learn more, see `where to find
-                your Property
-                ID <https://developers.google.com/analytics/devguides/reporting/data/v1/property-id>`__.
-
-                Example: properties/1234/metadata
-
-                Set the Property ID to 0 for dimensions and metrics
-                common to all properties. In this special mode, this
-                method will not return custom dimensions and metrics.
-
-                This corresponds to the ``name`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-
-        Returns:
-            google.analytics.data_v1alpha.types.Metadata:
-                The dimensions and metrics currently
-                accepted in reporting methods.
-
-        """
-        # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
-        has_flattened_params = any([name])
-        if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
-
-        request = analytics_data_api.GetMetadataRequest(request)
-
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
-        if name is not None:
-            request.name = name
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_metadata,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
-
-        # Send the request.
-        response = await rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # Done; return the response.
-        return response
-
-    async def run_realtime_report(
-        self,
-        request: analytics_data_api.RunRealtimeReportRequest = None,
-        *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> analytics_data_api.RunRealtimeReportResponse:
-        r"""The Google Analytics Realtime API returns a
-        customized report of realtime event data for your
-        property. These reports show events and usage from the
-        last 30 minutes.
-
-        Args:
-            request (:class:`google.analytics.data_v1alpha.types.RunRealtimeReportRequest`):
-                The request object. The request to generate a realtime
-                report.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-
-        Returns:
-            google.analytics.data_v1alpha.types.RunRealtimeReportResponse:
-                The response realtime report table
-                corresponding to a request.
-
-        """
-        # Create or coerce a protobuf request object.
-        request = analytics_data_api.RunRealtimeReportRequest(request)
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.run_realtime_report,
-            default_timeout=None,
             client_info=DEFAULT_CLIENT_INFO,
         )
 
@@ -520,6 +284,12 @@ class AlphaAnalyticsDataAsyncClient:
 
         # Done; return the response.
         return response
+
+    async def __aenter__(self):
+        return self
+
+    async def __aexit__(self, exc_type, exc, tb):
+        await self.transport.close()
 
 
 try:

@@ -10,34 +10,9 @@
         "grpc": {
           "libraryClient": "AlphaAnalyticsDataClient",
           "rpcs": {
-            "BatchRunPivotReports": {
+            "RunFunnelReport": {
               "methods": [
-                "batch_run_pivot_reports"
-              ]
-            },
-            "BatchRunReports": {
-              "methods": [
-                "batch_run_reports"
-              ]
-            },
-            "GetMetadata": {
-              "methods": [
-                "get_metadata"
-              ]
-            },
-            "RunPivotReport": {
-              "methods": [
-                "run_pivot_report"
-              ]
-            },
-            "RunRealtimeReport": {
-              "methods": [
-                "run_realtime_report"
-              ]
-            },
-            "RunReport": {
-              "methods": [
-                "run_report"
+                "run_funnel_report"
               ]
             }
           }
@@ -45,34 +20,9 @@
         "grpc-async": {
           "libraryClient": "AlphaAnalyticsDataAsyncClient",
           "rpcs": {
-            "BatchRunPivotReports": {
+            "RunFunnelReport": {
               "methods": [
-                "batch_run_pivot_reports"
-              ]
-            },
-            "BatchRunReports": {
-              "methods": [
-                "batch_run_reports"
-              ]
-            },
-            "GetMetadata": {
-              "methods": [
-                "get_metadata"
-              ]
-            },
-            "RunPivotReport": {
-              "methods": [
-                "run_pivot_report"
-              ]
-            },
-            "RunRealtimeReport": {
-              "methods": [
-                "run_realtime_report"
-              ]
-            },
-            "RunReport": {
-              "methods": [
-                "run_report"
+                "run_funnel_report"
               ]
             }
           }

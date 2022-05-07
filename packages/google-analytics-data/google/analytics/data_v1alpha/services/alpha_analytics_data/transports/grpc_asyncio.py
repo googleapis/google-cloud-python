@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2020 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,11 +16,10 @@
 import warnings
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1  # type: ignore
-from google.api_core import grpc_helpers_async  # type: ignore
+from google.api_core import gapic_v1
+from google.api_core import grpc_helpers_async
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
-import packaging.version
 
 import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
@@ -204,8 +203,11 @@ class AlphaAnalyticsDataGrpcAsyncIOTransport(AlphaAnalyticsDataTransport):
         if not self._grpc_channel:
             self._grpc_channel = type(self).create_channel(
                 self._host,
+                # use the credentials which are saved
                 credentials=self._credentials,
-                credentials_file=credentials_file,
+                # Set ``credentials_file`` to ``None`` here as
+                # the credentials that we saved earlier should be used.
+                credentials_file=None,
                 scopes=self._scopes,
                 ssl_credentials=self._ssl_channel_credentials,
                 quota_project_id=quota_project_id,
@@ -229,27 +231,30 @@ class AlphaAnalyticsDataGrpcAsyncIOTransport(AlphaAnalyticsDataTransport):
         return self._grpc_channel
 
     @property
-    def run_report(
+    def run_funnel_report(
         self,
     ) -> Callable[
-        [analytics_data_api.RunReportRequest],
-        Awaitable[analytics_data_api.RunReportResponse],
+        [analytics_data_api.RunFunnelReportRequest],
+        Awaitable[analytics_data_api.RunFunnelReportResponse],
     ]:
-        r"""Return a callable for the run report method over gRPC.
+        r"""Return a callable for the run funnel report method over gRPC.
 
-        Returns a customized report of your Google Analytics
-        event data. Reports contain statistics derived from data
-        collected by the Google Analytics tracking code. The
-        data returned from the API is as a table with columns
-        for the requested dimensions and metrics. Metrics are
-        individual measurements of user activity on your
-        property, such as active users or event count.
-        Dimensions break down metrics across some common
-        criteria, such as country or event name.
+        Returns a customized funnel report of your Google Analytics
+        event data. The data returned from the API is as a table with
+        columns for the requested dimensions and metrics.
+
+        Funnel exploration lets you visualize the steps your users take
+        to complete a task and quickly see how well they are succeeding
+        or failing at each step. For example, how do prospects become
+        shoppers and then become buyers? How do one time buyers become
+        repeat buyers? With this information, you can improve
+        inefficient or abandoned customer journeys. To learn more, see
+        `GA4 Funnel
+        Explorations <https://support.google.com/analytics/answer/9327974>`__.
 
         Returns:
-            Callable[[~.RunReportRequest],
-                    Awaitable[~.RunReportResponse]]:
+            Callable[[~.RunFunnelReportRequest],
+                    Awaitable[~.RunFunnelReportResponse]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -257,177 +262,16 @@ class AlphaAnalyticsDataGrpcAsyncIOTransport(AlphaAnalyticsDataTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "run_report" not in self._stubs:
-            self._stubs["run_report"] = self.grpc_channel.unary_unary(
-                "/google.analytics.data.v1alpha.AlphaAnalyticsData/RunReport",
-                request_serializer=analytics_data_api.RunReportRequest.serialize,
-                response_deserializer=analytics_data_api.RunReportResponse.deserialize,
+        if "run_funnel_report" not in self._stubs:
+            self._stubs["run_funnel_report"] = self.grpc_channel.unary_unary(
+                "/google.analytics.data.v1alpha.AlphaAnalyticsData/RunFunnelReport",
+                request_serializer=analytics_data_api.RunFunnelReportRequest.serialize,
+                response_deserializer=analytics_data_api.RunFunnelReportResponse.deserialize,
             )
-        return self._stubs["run_report"]
+        return self._stubs["run_funnel_report"]
 
-    @property
-    def run_pivot_report(
-        self,
-    ) -> Callable[
-        [analytics_data_api.RunPivotReportRequest],
-        Awaitable[analytics_data_api.RunPivotReportResponse],
-    ]:
-        r"""Return a callable for the run pivot report method over gRPC.
-
-        Returns a customized pivot report of your Google
-        Analytics event data. Pivot reports are more advanced
-        and expressive formats than regular reports. In a pivot
-        report, dimensions are only visible if they are included
-        in a pivot. Multiple pivots can be specified to further
-        dissect your data.
-
-        Returns:
-            Callable[[~.RunPivotReportRequest],
-                    Awaitable[~.RunPivotReportResponse]]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "run_pivot_report" not in self._stubs:
-            self._stubs["run_pivot_report"] = self.grpc_channel.unary_unary(
-                "/google.analytics.data.v1alpha.AlphaAnalyticsData/RunPivotReport",
-                request_serializer=analytics_data_api.RunPivotReportRequest.serialize,
-                response_deserializer=analytics_data_api.RunPivotReportResponse.deserialize,
-            )
-        return self._stubs["run_pivot_report"]
-
-    @property
-    def batch_run_reports(
-        self,
-    ) -> Callable[
-        [analytics_data_api.BatchRunReportsRequest],
-        Awaitable[analytics_data_api.BatchRunReportsResponse],
-    ]:
-        r"""Return a callable for the batch run reports method over gRPC.
-
-        Returns multiple reports in a batch. All reports must
-        be for the same Entity.
-
-        Returns:
-            Callable[[~.BatchRunReportsRequest],
-                    Awaitable[~.BatchRunReportsResponse]]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "batch_run_reports" not in self._stubs:
-            self._stubs["batch_run_reports"] = self.grpc_channel.unary_unary(
-                "/google.analytics.data.v1alpha.AlphaAnalyticsData/BatchRunReports",
-                request_serializer=analytics_data_api.BatchRunReportsRequest.serialize,
-                response_deserializer=analytics_data_api.BatchRunReportsResponse.deserialize,
-            )
-        return self._stubs["batch_run_reports"]
-
-    @property
-    def batch_run_pivot_reports(
-        self,
-    ) -> Callable[
-        [analytics_data_api.BatchRunPivotReportsRequest],
-        Awaitable[analytics_data_api.BatchRunPivotReportsResponse],
-    ]:
-        r"""Return a callable for the batch run pivot reports method over gRPC.
-
-        Returns multiple pivot reports in a batch. All
-        reports must be for the same Entity.
-
-        Returns:
-            Callable[[~.BatchRunPivotReportsRequest],
-                    Awaitable[~.BatchRunPivotReportsResponse]]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "batch_run_pivot_reports" not in self._stubs:
-            self._stubs["batch_run_pivot_reports"] = self.grpc_channel.unary_unary(
-                "/google.analytics.data.v1alpha.AlphaAnalyticsData/BatchRunPivotReports",
-                request_serializer=analytics_data_api.BatchRunPivotReportsRequest.serialize,
-                response_deserializer=analytics_data_api.BatchRunPivotReportsResponse.deserialize,
-            )
-        return self._stubs["batch_run_pivot_reports"]
-
-    @property
-    def get_metadata(
-        self,
-    ) -> Callable[
-        [analytics_data_api.GetMetadataRequest], Awaitable[analytics_data_api.Metadata]
-    ]:
-        r"""Return a callable for the get metadata method over gRPC.
-
-        Returns metadata for dimensions and metrics available in
-        reporting methods. Used to explore the dimensions and metrics.
-        In this method, a Google Analytics GA4 Property Identifier is
-        specified in the request, and the metadata response includes
-        Custom dimensions and metrics as well as Universal metadata.
-
-        For example if a custom metric with parameter name
-        ``levels_unlocked`` is registered to a property, the Metadata
-        response will contain ``customEvent:levels_unlocked``. Universal
-        metadata are dimensions and metrics applicable to any property
-        such as ``country`` and ``totalUsers``.
-
-        Returns:
-            Callable[[~.GetMetadataRequest],
-                    Awaitable[~.Metadata]]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "get_metadata" not in self._stubs:
-            self._stubs["get_metadata"] = self.grpc_channel.unary_unary(
-                "/google.analytics.data.v1alpha.AlphaAnalyticsData/GetMetadata",
-                request_serializer=analytics_data_api.GetMetadataRequest.serialize,
-                response_deserializer=analytics_data_api.Metadata.deserialize,
-            )
-        return self._stubs["get_metadata"]
-
-    @property
-    def run_realtime_report(
-        self,
-    ) -> Callable[
-        [analytics_data_api.RunRealtimeReportRequest],
-        Awaitable[analytics_data_api.RunRealtimeReportResponse],
-    ]:
-        r"""Return a callable for the run realtime report method over gRPC.
-
-        The Google Analytics Realtime API returns a
-        customized report of realtime event data for your
-        property. These reports show events and usage from the
-        last 30 minutes.
-
-        Returns:
-            Callable[[~.RunRealtimeReportRequest],
-                    Awaitable[~.RunRealtimeReportResponse]]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "run_realtime_report" not in self._stubs:
-            self._stubs["run_realtime_report"] = self.grpc_channel.unary_unary(
-                "/google.analytics.data.v1alpha.AlphaAnalyticsData/RunRealtimeReport",
-                request_serializer=analytics_data_api.RunRealtimeReportRequest.serialize,
-                response_deserializer=analytics_data_api.RunRealtimeReportResponse.deserialize,
-            )
-        return self._stubs["run_realtime_report"]
+    def close(self):
+        return self.grpc_channel.close()
 
 
 __all__ = ("AlphaAnalyticsDataGrpcAsyncIOTransport",)
