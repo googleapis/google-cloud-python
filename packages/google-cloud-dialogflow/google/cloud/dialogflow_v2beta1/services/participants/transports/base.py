@@ -159,6 +159,11 @@ class ParticipantsTransport(abc.ABC):
                 default_timeout=220.0,
                 client_info=client_info,
             ),
+            self.streaming_analyze_content: gapic_v1.method.wrap_method(
+                self.streaming_analyze_content,
+                default_timeout=220.0,
+                client_info=client_info,
+            ),
             self.suggest_articles: gapic_v1.method.wrap_method(
                 self.suggest_articles,
                 default_timeout=None,
@@ -242,6 +247,18 @@ class ParticipantsTransport(abc.ABC):
         Union[
             gcd_participant.AnalyzeContentResponse,
             Awaitable[gcd_participant.AnalyzeContentResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def streaming_analyze_content(
+        self,
+    ) -> Callable[
+        [participant.StreamingAnalyzeContentRequest],
+        Union[
+            participant.StreamingAnalyzeContentResponse,
+            Awaitable[participant.StreamingAnalyzeContentResponse],
         ],
     ]:
         raise NotImplementedError()

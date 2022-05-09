@@ -2105,6 +2105,83 @@ async def test_analyze_content_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
+        participant.StreamingAnalyzeContentRequest,
+        dict,
+    ],
+)
+def test_streaming_analyze_content(request_type, transport: str = "grpc"):
+    client = ParticipantsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+    requests = [request]
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.streaming_analyze_content), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = iter([participant.StreamingAnalyzeContentResponse()])
+        response = client.streaming_analyze_content(iter(requests))
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert next(args[0]) == request
+
+    # Establish that the response is the type that we expect.
+    for message in response:
+        assert isinstance(message, participant.StreamingAnalyzeContentResponse)
+
+
+@pytest.mark.asyncio
+async def test_streaming_analyze_content_async(
+    transport: str = "grpc_asyncio",
+    request_type=participant.StreamingAnalyzeContentRequest,
+):
+    client = ParticipantsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+    requests = [request]
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.streaming_analyze_content), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = mock.Mock(aio.StreamStreamCall, autospec=True)
+        call.return_value.read = mock.AsyncMock(
+            side_effect=[participant.StreamingAnalyzeContentResponse()]
+        )
+        response = await client.streaming_analyze_content(iter(requests))
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert next(args[0]) == request
+
+    # Establish that the response is the type that we expect.
+    message = await response.read()
+    assert isinstance(message, participant.StreamingAnalyzeContentResponse)
+
+
+@pytest.mark.asyncio
+async def test_streaming_analyze_content_async_from_dict():
+    await test_streaming_analyze_content_async(request_type=dict)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
         participant.SuggestArticlesRequest,
         dict,
     ],
@@ -3482,6 +3559,7 @@ def test_participants_base_transport():
         "list_participants",
         "update_participant",
         "analyze_content",
+        "streaming_analyze_content",
         "suggest_articles",
         "suggest_faq_answers",
         "suggest_smart_replies",

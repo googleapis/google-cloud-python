@@ -874,6 +874,11 @@
                 "list_suggestions"
               ]
             },
+            "StreamingAnalyzeContent": {
+              "methods": [
+                "streaming_analyze_content"
+              ]
+            },
             "SuggestArticles": {
               "methods": [
                 "suggest_articles"
@@ -927,6 +932,11 @@
             "ListSuggestions": {
               "methods": [
                 "list_suggestions"
+              ]
+            },
+            "StreamingAnalyzeContent": {
+              "methods": [
+                "streaming_analyze_content"
               ]
             },
             "SuggestArticles": {

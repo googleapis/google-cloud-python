@@ -15,7 +15,7 @@
 #
 import proto  # type: ignore
 
-from google.cloud.dialogflow_v2beta1.types import audio_config
+from google.cloud.dialogflow_v2beta1.types import audio_config as gcd_audio_config
 from google.cloud.dialogflow_v2beta1.types import session
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import struct_pb2  # type: ignore
@@ -40,6 +40,9 @@ __protobuf__ = proto.module(
         "AnalyzeContentRequest",
         "DtmfParameters",
         "AnalyzeContentResponse",
+        "InputTextConfig",
+        "StreamingAnalyzeContentRequest",
+        "StreamingAnalyzeContentResponse",
         "AnnotatedMessagePart",
         "MessageAnnotation",
         "ArticleAnswer",
@@ -374,7 +377,7 @@ class OutputAudio(proto.Message):
     config = proto.Field(
         proto.MESSAGE,
         number=1,
-        message=audio_config.OutputAudioConfig,
+        message=gcd_audio_config.OutputAudioConfig,
     )
     audio = proto.Field(
         proto.BYTES,
@@ -587,6 +590,14 @@ class AnalyzeContentRequest(proto.Message):
             query.
         assist_query_params (google.cloud.dialogflow_v2beta1.types.AssistQueryParameters):
             Parameters for a human assist query.
+        cx_parameters (google.protobuf.struct_pb2.Struct):
+            Additional parameters to be put into
+            Dialogflow CX session parameters. To remove a
+            parameter from the session, clients should
+            explicitly set the parameter value to null.
+
+            Note: this field should only be used if you are
+            connecting to a Dialogflow CX agent.
         message_send_time (google.protobuf.timestamp_pb2.Timestamp):
             Optional. The send time of the message from
             end user or human agent's perspective. It is
@@ -630,7 +641,7 @@ class AnalyzeContentRequest(proto.Message):
     reply_audio_config = proto.Field(
         proto.MESSAGE,
         number=5,
-        message=audio_config.OutputAudioConfig,
+        message=gcd_audio_config.OutputAudioConfig,
     )
     query_params = proto.Field(
         proto.MESSAGE,
@@ -641,6 +652,11 @@ class AnalyzeContentRequest(proto.Message):
         proto.MESSAGE,
         number=14,
         message="AssistQueryParameters",
+    )
+    cx_parameters = proto.Field(
+        proto.MESSAGE,
+        number=18,
+        message=struct_pb2.Struct,
     )
     message_send_time = proto.Field(
         proto.MESSAGE,
@@ -759,6 +775,310 @@ class AnalyzeContentResponse(proto.Message):
     dtmf_parameters = proto.Field(
         proto.MESSAGE,
         number=9,
+        message="DtmfParameters",
+    )
+
+
+class InputTextConfig(proto.Message):
+    r"""Defines the language used in the input text.
+
+    Attributes:
+        language_code (str):
+            Required. The language of this conversational query. See
+            `Language
+            Support <https://cloud.google.com/dialogflow/docs/reference/language>`__
+            for a list of the currently supported language codes.
+    """
+
+    language_code = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class StreamingAnalyzeContentRequest(proto.Message):
+    r"""The top-level message sent by the client to the
+    [Participants.StreamingAnalyzeContent][google.cloud.dialogflow.v2beta1.Participants.StreamingAnalyzeContent]
+    method.
+
+    Multiple request messages should be sent in order:
+
+    1. The first message must contain
+       [participant][google.cloud.dialogflow.v2beta1.StreamingAnalyzeContentRequest.participant],
+       [config][google.cloud.dialogflow.v2beta1.StreamingAnalyzeContentRequest.config]
+       and optionally
+       [query_params][google.cloud.dialogflow.v2beta1.StreamingAnalyzeContentRequest.query_params].
+       If you want to receive an audio response, it should also contain
+       [reply_audio_config][google.cloud.dialogflow.v2beta1.StreamingAnalyzeContentRequest.reply_audio_config].
+       The message must not contain
+       [input][google.cloud.dialogflow.v2beta1.StreamingAnalyzeContentRequest.input].
+
+    2. If
+       [config][google.cloud.dialogflow.v2beta1.StreamingAnalyzeContentRequest.config]
+       in the first message was set to
+       [audio_config][google.cloud.dialogflow.v2beta1.StreamingAnalyzeContentRequest.audio_config],
+       all subsequent messages must contain
+       [input_audio][google.cloud.dialogflow.v2beta1.StreamingAnalyzeContentRequest.input_audio]
+       to continue with Speech recognition. If you decide to rather
+       analyze text input after you already started Speech recognition,
+       please send a message with
+       [StreamingAnalyzeContentRequest.input_text][google.cloud.dialogflow.v2beta1.StreamingAnalyzeContentRequest.input_text].
+
+       However, note that:
+
+       -  Dialogflow will bill you for the audio so far.
+       -  Dialogflow discards all Speech recognition results in favor of
+          the text input.
+
+    3. If
+       [StreamingAnalyzeContentRequest.config][google.cloud.dialogflow.v2beta1.StreamingAnalyzeContentRequest.config]
+       in the first message was set to
+       [StreamingAnalyzeContentRequest.text_config][google.cloud.dialogflow.v2beta1.StreamingAnalyzeContentRequest.text_config],
+       then the second message must contain only
+       [input_text][google.cloud.dialogflow.v2beta1.StreamingAnalyzeContentRequest.input_text].
+       Moreover, you must not send more than two messages.
+
+    After you sent all input, you must half-close or abort the request
+    stream.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        participant (str):
+            Required. The name of the participant this text comes from.
+            Format:
+            ``projects/<Project ID>/locations/<Location ID>/conversations/<Conversation ID>/participants/<Participant ID>``.
+        audio_config (google.cloud.dialogflow_v2beta1.types.InputAudioConfig):
+            Instructs the speech recognizer how to
+            process the speech audio.
+
+            This field is a member of `oneof`_ ``config``.
+        text_config (google.cloud.dialogflow_v2beta1.types.InputTextConfig):
+            The natural language text to be processed.
+
+            This field is a member of `oneof`_ ``config``.
+        reply_audio_config (google.cloud.dialogflow_v2beta1.types.OutputAudioConfig):
+            Speech synthesis configuration.
+            The speech synthesis settings for a virtual
+            agent that may be configured for the associated
+            conversation profile are not used when calling
+            StreamingAnalyzeContent. If this configuration
+            is not supplied, speech synthesis is disabled.
+        input_audio (bytes):
+            The input audio content to be recognized. Must be sent if
+            ``audio_config`` is set in the first message. The complete
+            audio over all streaming messages must not exceed 1 minute.
+
+            This field is a member of `oneof`_ ``input``.
+        input_text (str):
+            The UTF-8 encoded natural language text to be processed.
+            Must be sent if ``text_config`` is set in the first message.
+            Text length must not exceed 256 bytes. The ``input_text``
+            field can be only sent once.
+
+            This field is a member of `oneof`_ ``input``.
+        input_dtmf (google.cloud.dialogflow_v2beta1.types.TelephonyDtmfEvents):
+            The DTMF digits used to invoke intent and
+            fill in parameter value.
+            This input is ignored if the previous response
+            indicated that DTMF input is not accepted.
+
+            This field is a member of `oneof`_ ``input``.
+        query_params (google.cloud.dialogflow_v2beta1.types.QueryParameters):
+            Parameters for a Dialogflow virtual-agent
+            query.
+        assist_query_params (google.cloud.dialogflow_v2beta1.types.AssistQueryParameters):
+            Parameters for a human assist query.
+        cx_parameters (google.protobuf.struct_pb2.Struct):
+            Additional parameters to be put into
+            Dialogflow CX session parameters. To remove a
+            parameter from the session, clients should
+            explicitly set the parameter value to null.
+
+            Note: this field should only be used if you are
+            connecting to a Dialogflow CX agent.
+        enable_partial_automated_agent_reply (bool):
+            Enable partial virtual agent responses. If this flag is not
+            enabled, response stream still contains only one final
+            response even if some ``Fulfillment``\ s in Dialogflow
+            virtual agent have been configured to return partial
+            responses.
+    """
+
+    participant = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    audio_config = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        oneof="config",
+        message=gcd_audio_config.InputAudioConfig,
+    )
+    text_config = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        oneof="config",
+        message="InputTextConfig",
+    )
+    reply_audio_config = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=gcd_audio_config.OutputAudioConfig,
+    )
+    input_audio = proto.Field(
+        proto.BYTES,
+        number=5,
+        oneof="input",
+    )
+    input_text = proto.Field(
+        proto.STRING,
+        number=6,
+        oneof="input",
+    )
+    input_dtmf = proto.Field(
+        proto.MESSAGE,
+        number=9,
+        oneof="input",
+        message=gcd_audio_config.TelephonyDtmfEvents,
+    )
+    query_params = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message=session.QueryParameters,
+    )
+    assist_query_params = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        message="AssistQueryParameters",
+    )
+    cx_parameters = proto.Field(
+        proto.MESSAGE,
+        number=13,
+        message=struct_pb2.Struct,
+    )
+    enable_partial_automated_agent_reply = proto.Field(
+        proto.BOOL,
+        number=12,
+    )
+
+
+class StreamingAnalyzeContentResponse(proto.Message):
+    r"""The top-level message returned from the ``StreamingAnalyzeContent``
+    method.
+
+    Multiple response messages can be returned in order:
+
+    1. If the input was set to streaming audio, the first one or more
+       messages contain ``recognition_result``. Each
+       ``recognition_result`` represents a more complete transcript of
+       what the user said. The last ``recognition_result`` has
+       ``is_final`` set to ``true``.
+
+    2. In virtual agent stage: if
+       ``enable_partial_automated_agent_reply`` is true, the following N
+       (currently 1 <= N <= 4) messages contain
+       ``automated_agent_reply`` and optionally ``reply_audio`` returned
+       by the virtual agent. The first (N-1)
+       ``automated_agent_reply``\ s will have
+       ``automated_agent_reply_type`` set to ``PARTIAL``. The last
+       ``automated_agent_reply`` has ``automated_agent_reply_type`` set
+       to ``FINAL``. If ``enable_partial_automated_agent_reply`` is not
+       enabled, response stream only contains the final reply.
+
+       In human assist stage: the following N (N >= 1) messages contain
+       ``human_agent_suggestion_results``,
+       ``end_user_suggestion_results`` or ``message``.
+
+    Attributes:
+        recognition_result (google.cloud.dialogflow_v2beta1.types.StreamingRecognitionResult):
+            The result of speech recognition.
+        reply_text (str):
+            Optional. The output text content.
+            This field is set if an automated agent
+            responded with a text for the user.
+        reply_audio (google.cloud.dialogflow_v2beta1.types.OutputAudio):
+            Optional. The audio data bytes encoded as specified in the
+            request. This field is set if:
+
+            -  The ``reply_audio_config`` field is specified in the
+               request.
+            -  The automated agent, which this output comes from,
+               responded with audio. In such case, the
+               ``reply_audio.config`` field contains settings used to
+               synthesize the speech.
+
+            In some scenarios, multiple output audio fields may be
+            present in the response structure. In these cases, only the
+            top-most-level audio output has content.
+        automated_agent_reply (google.cloud.dialogflow_v2beta1.types.AutomatedAgentReply):
+            Optional. Only set if a Dialogflow automated agent has
+            responded. Note that:
+            [AutomatedAgentReply.detect_intent_response.output_audio][]
+            and
+            [AutomatedAgentReply.detect_intent_response.output_audio_config][]
+            are always empty, use
+            [reply_audio][google.cloud.dialogflow.v2beta1.StreamingAnalyzeContentResponse.reply_audio]
+            instead.
+        message (google.cloud.dialogflow_v2beta1.types.Message):
+            Output only. Message analyzed by CCAI.
+        human_agent_suggestion_results (Sequence[google.cloud.dialogflow_v2beta1.types.SuggestionResult]):
+            The suggestions for most recent human agent. The order is
+            the same as
+            [HumanAgentAssistantConfig.SuggestionConfig.feature_configs][google.cloud.dialogflow.v2beta1.HumanAgentAssistantConfig.SuggestionConfig.feature_configs]
+            of
+            [HumanAgentAssistantConfig.human_agent_suggestion_config][google.cloud.dialogflow.v2beta1.HumanAgentAssistantConfig.human_agent_suggestion_config].
+        end_user_suggestion_results (Sequence[google.cloud.dialogflow_v2beta1.types.SuggestionResult]):
+            The suggestions for end user. The order is the same as
+            [HumanAgentAssistantConfig.SuggestionConfig.feature_configs][google.cloud.dialogflow.v2beta1.HumanAgentAssistantConfig.SuggestionConfig.feature_configs]
+            of
+            [HumanAgentAssistantConfig.end_user_suggestion_config][google.cloud.dialogflow.v2beta1.HumanAgentAssistantConfig.end_user_suggestion_config].
+        dtmf_parameters (google.cloud.dialogflow_v2beta1.types.DtmfParameters):
+            Indicates the parameters of DTMF.
+    """
+
+    recognition_result = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=session.StreamingRecognitionResult,
+    )
+    reply_text = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    reply_audio = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="OutputAudio",
+    )
+    automated_agent_reply = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message="AutomatedAgentReply",
+    )
+    message = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message="Message",
+    )
+    human_agent_suggestion_results = proto.RepeatedField(
+        proto.MESSAGE,
+        number=7,
+        message="SuggestionResult",
+    )
+    end_user_suggestion_results = proto.RepeatedField(
+        proto.MESSAGE,
+        number=8,
+        message="SuggestionResult",
+    )
+    dtmf_parameters = proto.Field(
+        proto.MESSAGE,
+        number=10,
         message="DtmfParameters",
     )
 
@@ -1603,6 +1923,12 @@ class ResponseMessage(proto.Message):
             the Dialogflow agent has ended.
 
             This field is a member of `oneof`_ ``message``.
+        mixed_audio (google.cloud.dialogflow_v2beta1.types.ResponseMessage.MixedAudio):
+            An audio response message composed of both
+            the synthesized Dialogflow agent responses and
+            the audios hosted in places known to the client.
+
+            This field is a member of `oneof`_ ``message``.
         telephony_transfer_call (google.cloud.dialogflow_v2beta1.types.ResponseMessage.TelephonyTransferCall):
             A signal that the client should transfer the
             phone call connected to this agent to a
@@ -1656,6 +1982,66 @@ class ResponseMessage(proto.Message):
         ended.
 
         """
+
+    class MixedAudio(proto.Message):
+        r"""Represents an audio message that is composed of both segments
+        synthesized from the Dialogflow agent prompts and ones hosted
+        externally at the specified URIs.
+
+        Attributes:
+            segments (Sequence[google.cloud.dialogflow_v2beta1.types.ResponseMessage.MixedAudio.Segment]):
+                Segments this audio response is composed of.
+        """
+
+        class Segment(proto.Message):
+            r"""Represents one segment of audio.
+
+            This message has `oneof`_ fields (mutually exclusive fields).
+            For each oneof, at most one member field can be set at the same time.
+            Setting any member of the oneof automatically clears all other
+            members.
+
+            .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+            Attributes:
+                audio (bytes):
+                    Raw audio synthesized from the Dialogflow
+                    agent's response using the output config
+                    specified in the request.
+
+                    This field is a member of `oneof`_ ``content``.
+                uri (str):
+                    Client-specific URI that points to an audio
+                    clip accessible to the client.
+
+                    This field is a member of `oneof`_ ``content``.
+                allow_playback_interruption (bool):
+                    Whether the playback of this segment can be
+                    interrupted by the end user's speech and the
+                    client should then start the next Dialogflow
+                    request.
+            """
+
+            audio = proto.Field(
+                proto.BYTES,
+                number=1,
+                oneof="content",
+            )
+            uri = proto.Field(
+                proto.STRING,
+                number=2,
+                oneof="content",
+            )
+            allow_playback_interruption = proto.Field(
+                proto.BOOL,
+                number=3,
+            )
+
+        segments = proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="ResponseMessage.MixedAudio.Segment",
+        )
 
     class TelephonyTransferCall(proto.Message):
         r"""Represents the signal that telles the client to transfer the
@@ -1714,6 +2100,12 @@ class ResponseMessage(proto.Message):
         number=4,
         oneof="message",
         message=EndInteraction,
+    )
+    mixed_audio = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        oneof="message",
+        message=MixedAudio,
     )
     telephony_transfer_call = proto.Field(
         proto.MESSAGE,
