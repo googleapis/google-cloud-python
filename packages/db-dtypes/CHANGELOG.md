@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.0.1](https://github.com/googleapis/python-db-dtypes-pandas/compare/v1.0.0...v1.0.1) (2022-05-07)
+
+
+### Bug Fixes
+
+* **deps:** allow pyarrow v8 ([#109](https://github.com/googleapis/python-db-dtypes-pandas/issues/109)) ([fb30adf](https://github.com/googleapis/python-db-dtypes-pandas/commit/fb30adfd427d3df9919df00b096210ba1eb1b91d))
+
 ## [1.0.0](https://github.com/googleapis/python-db-dtypes-pandas/compare/v0.4.0...v1.0.0) (2022-03-25)
 
 
