@@ -398,10 +398,6 @@ class RecognitionConfig(proto.Message):
                     <td>Best for short queries such as voice commands or voice search.</td>
                   </tr>
                   <tr>
-                    <td><code>command_and_search</code></td>
-                    <td>Best for short queries such as voice commands or voice search.</td>
-                  </tr>
-                  <tr>
                     <td><code>phone_call</code></td>
                     <td>Best for audio that originated from a phone call (typically
                     recorded at an 8khz sampling rate).</td>
@@ -418,6 +414,16 @@ class RecognitionConfig(proto.Message):
                     <td>Best for audio that is not one of the specific audio models.
                         For example, long-form audio. Ideally the audio is high-fidelity,
                         recorded at a 16khz or greater sampling rate.</td>
+                  </tr>
+                  <tr>
+                    <td><code>medical_conversation</code></td>
+                    <td>Best for audio that originated from a conversation between a
+                        medical provider and patient.</td>
+                  </tr>
+                  <tr>
+                    <td><code>medical_dictation</code></td>
+                    <td>Best for audio that originated from dictation notes by a medical
+                        provider.</td>
                   </tr>
                 </table>
         use_enhanced (bool):
@@ -1138,7 +1144,11 @@ class SpeechRecognitionAlternative(proto.Message):
     Attributes:
         transcript (str):
             Transcript text representing the words that
-            the user spoke.
+            the user spoke. In languages that use spaces to
+            separate words, the transcript might have a
+            leading space if it isn't the first result. You
+            can concatenate each result to obtain the full
+            transcript without using a separator.
         confidence (float):
             The confidence estimate between 0.0 and 1.0. A higher number
             indicates an estimated greater likelihood that the

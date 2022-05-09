@@ -14,6 +14,10 @@
 # limitations under the License.
 #
 
+from google.cloud.speech_v1.services.adaptation.client import AdaptationClient
+from google.cloud.speech_v1.services.adaptation.async_client import (
+    AdaptationAsyncClient,
+)
 from google.cloud.speech_v1 import SpeechClient
 from google.cloud.speech_v1.services.speech.async_client import SpeechAsyncClient
 
@@ -35,11 +39,35 @@ from google.cloud.speech_v1.types.cloud_speech import StreamingRecognizeRequest
 from google.cloud.speech_v1.types.cloud_speech import StreamingRecognizeResponse
 from google.cloud.speech_v1.types.cloud_speech import TranscriptOutputConfig
 from google.cloud.speech_v1.types.cloud_speech import WordInfo
+from google.cloud.speech_v1.types.cloud_speech_adaptation import (
+    CreateCustomClassRequest,
+)
+from google.cloud.speech_v1.types.cloud_speech_adaptation import CreatePhraseSetRequest
+from google.cloud.speech_v1.types.cloud_speech_adaptation import (
+    DeleteCustomClassRequest,
+)
+from google.cloud.speech_v1.types.cloud_speech_adaptation import DeletePhraseSetRequest
+from google.cloud.speech_v1.types.cloud_speech_adaptation import GetCustomClassRequest
+from google.cloud.speech_v1.types.cloud_speech_adaptation import GetPhraseSetRequest
+from google.cloud.speech_v1.types.cloud_speech_adaptation import (
+    ListCustomClassesRequest,
+)
+from google.cloud.speech_v1.types.cloud_speech_adaptation import (
+    ListCustomClassesResponse,
+)
+from google.cloud.speech_v1.types.cloud_speech_adaptation import ListPhraseSetRequest
+from google.cloud.speech_v1.types.cloud_speech_adaptation import ListPhraseSetResponse
+from google.cloud.speech_v1.types.cloud_speech_adaptation import (
+    UpdateCustomClassRequest,
+)
+from google.cloud.speech_v1.types.cloud_speech_adaptation import UpdatePhraseSetRequest
 from google.cloud.speech_v1.types.resource import CustomClass
 from google.cloud.speech_v1.types.resource import PhraseSet
 from google.cloud.speech_v1.types.resource import SpeechAdaptation
 
 __all__ = (
+    "AdaptationClient",
+    "AdaptationAsyncClient",
     "SpeechClient",
     "SpeechAsyncClient",
     "LongRunningRecognizeMetadata",
@@ -60,6 +88,18 @@ __all__ = (
     "StreamingRecognizeResponse",
     "TranscriptOutputConfig",
     "WordInfo",
+    "CreateCustomClassRequest",
+    "CreatePhraseSetRequest",
+    "DeleteCustomClassRequest",
+    "DeletePhraseSetRequest",
+    "GetCustomClassRequest",
+    "GetPhraseSetRequest",
+    "ListCustomClassesRequest",
+    "ListCustomClassesResponse",
+    "ListPhraseSetRequest",
+    "ListPhraseSetResponse",
+    "UpdateCustomClassRequest",
+    "UpdatePhraseSetRequest",
     "CustomClass",
     "PhraseSet",
     "SpeechAdaptation",
