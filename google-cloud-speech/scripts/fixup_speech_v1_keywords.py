@@ -39,9 +39,19 @@ def partition(
 class speechCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
+        'create_custom_class': ('parent', 'custom_class_id', 'custom_class', ),
+        'create_phrase_set': ('parent', 'phrase_set_id', 'phrase_set', ),
+        'delete_custom_class': ('name', ),
+        'delete_phrase_set': ('name', ),
+        'get_custom_class': ('name', ),
+        'get_phrase_set': ('name', ),
+        'list_custom_classes': ('parent', 'page_size', 'page_token', ),
+        'list_phrase_set': ('parent', 'page_size', 'page_token', ),
         'long_running_recognize': ('config', 'audio', 'output_config', ),
         'recognize': ('config', 'audio', ),
         'streaming_recognize': ('streaming_config', 'audio_content', ),
+        'update_custom_class': ('custom_class', 'update_mask', ),
+        'update_phrase_set': ('phrase_set', 'update_mask', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:
