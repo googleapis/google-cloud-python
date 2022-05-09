@@ -14,6 +14,8 @@
 # limitations under the License.
 #
 
+from .services.adaptation import AdaptationClient
+from .services.adaptation import AdaptationAsyncClient
 from .services.speech import SpeechClient
 from .services.speech import SpeechAsyncClient
 
@@ -35,6 +37,18 @@ from .types.cloud_speech import StreamingRecognizeRequest
 from .types.cloud_speech import StreamingRecognizeResponse
 from .types.cloud_speech import TranscriptOutputConfig
 from .types.cloud_speech import WordInfo
+from .types.cloud_speech_adaptation import CreateCustomClassRequest
+from .types.cloud_speech_adaptation import CreatePhraseSetRequest
+from .types.cloud_speech_adaptation import DeleteCustomClassRequest
+from .types.cloud_speech_adaptation import DeletePhraseSetRequest
+from .types.cloud_speech_adaptation import GetCustomClassRequest
+from .types.cloud_speech_adaptation import GetPhraseSetRequest
+from .types.cloud_speech_adaptation import ListCustomClassesRequest
+from .types.cloud_speech_adaptation import ListCustomClassesResponse
+from .types.cloud_speech_adaptation import ListPhraseSetRequest
+from .types.cloud_speech_adaptation import ListPhraseSetResponse
+from .types.cloud_speech_adaptation import UpdateCustomClassRequest
+from .types.cloud_speech_adaptation import UpdatePhraseSetRequest
 from .types.resource import CustomClass
 from .types.resource import PhraseSet
 from .types.resource import SpeechAdaptation
@@ -47,8 +61,20 @@ class SpeechClient(SpeechHelpers, SpeechClient):
 
 
 __all__ = (
+    "AdaptationAsyncClient",
     "SpeechAsyncClient",
+    "AdaptationClient",
+    "CreateCustomClassRequest",
+    "CreatePhraseSetRequest",
     "CustomClass",
+    "DeleteCustomClassRequest",
+    "DeletePhraseSetRequest",
+    "GetCustomClassRequest",
+    "GetPhraseSetRequest",
+    "ListCustomClassesRequest",
+    "ListCustomClassesResponse",
+    "ListPhraseSetRequest",
+    "ListPhraseSetResponse",
     "LongRunningRecognizeMetadata",
     "LongRunningRecognizeRequest",
     "LongRunningRecognizeResponse",
@@ -69,5 +95,7 @@ __all__ = (
     "StreamingRecognizeRequest",
     "StreamingRecognizeResponse",
     "TranscriptOutputConfig",
+    "UpdateCustomClassRequest",
+    "UpdatePhraseSetRequest",
     "WordInfo",
 )
