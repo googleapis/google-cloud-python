@@ -85,16 +85,6 @@ def blob_download_as_bytes(client, _preconditions, **resources):
     assert stored_contents == data.encode("utf-8")
 
 
-def blob_download_as_bytes_w_range(client, _preconditions, **resources):
-    bucket = resources.get("bucket")
-    file, data = resources.get("file_data")
-    blob = client.bucket(bucket.name).blob(file.name)
-    start_byte = 0
-    end_byte = 1000000
-    stored_contents = blob.download_as_bytes(start=start_byte, end=end_byte - 1)
-    assert stored_contents == data.encode("utf-8")[start_byte:end_byte]
-
-
 def blob_download_as_text(client, _preconditions, **resources):
     bucket = resources.get("bucket")
     file, data = resources.get("file_data")
@@ -767,7 +757,6 @@ method_mapping = {
         blob_download_to_filename,
         blob_download_to_filename_chunked,
         blob_download_as_bytes,
-        blob_download_as_bytes_w_range,
         blob_download_as_text,
         blobreader_read,
     ],

@@ -614,6 +614,11 @@ def test_blob_download_as_text(
     assert stored_contents == payload
     assert blob.etag == etag
 
+    # Test download with byte range
+    end_byte = 5
+    stored_contents = blob.download_as_text(start=0, end=end_byte - 1)
+    assert stored_contents == payload[0:end_byte]
+
 
 def test_blob_upload_w_gzip_encoded_download_raw(
     shared_bucket,
