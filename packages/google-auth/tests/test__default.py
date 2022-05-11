@@ -28,7 +28,6 @@ from google.auth import exceptions
 from google.auth import external_account
 from google.auth import identity_pool
 from google.auth import impersonated_credentials
-from google.auth import pluggable
 from google.oauth2 import gdch_credentials
 from google.oauth2 import service_account
 import google.oauth2.credentials
@@ -75,13 +74,6 @@ IDENTITY_POOL_DATA = {
     "subject_token_type": "urn:ietf:params:oauth:token-type:jwt",
     "token_url": TOKEN_URL,
     "credential_source": {"file": SUBJECT_TOKEN_TEXT_FILE},
-}
-PLUGGABLE_DATA = {
-    "type": "external_account",
-    "audience": AUDIENCE,
-    "subject_token_type": "urn:ietf:params:oauth:token-type:jwt",
-    "token_url": TOKEN_URL,
-    "credential_source": {"executable": {"command": "command"}},
 }
 AWS_DATA = {
     "type": "external_account",
@@ -1192,15 +1184,3 @@ def test_default_gdch_service_account_credentials(apply_quota_project_id, get_ad
     )
     assert credentials._ais_ca_cert_path == "./ais_ca_cert.pem"
     assert credentials._ais_token_endpoint == "https://ais_endpoint/sts/v1beta/token"
-
-
-@EXTERNAL_ACCOUNT_GET_PROJECT_ID_PATCH
-def test_load_credentials_from_external_account_pluggable(get_project_id, tmpdir):
-    config_file = tmpdir.join("config.json")
-    config_file.write(json.dumps(PLUGGABLE_DATA))
-    credentials, project_id = _default.load_credentials_from_file(str(config_file))
-
-    assert isinstance(credentials, pluggable.Credentials)
-    # Since no scopes are specified, the project ID cannot be determined.
-    assert project_id is None
-    assert get_project_id.called
