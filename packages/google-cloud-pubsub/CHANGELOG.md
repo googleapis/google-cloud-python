@@ -5,6 +5,21 @@
 [1]: https://pypi.org/project/google-cloud-pubsub/#history
 
 
+### [2.12.1](https://github.com/googleapis/python-pubsub/compare/v2.12.0...v2.12.1) (2022-05-11)
+
+
+### Bug Fixes
+
+* Add emulator support to schema service ([#658](https://github.com/googleapis/python-pubsub/issues/658)) ([1a07d7c](https://github.com/googleapis/python-pubsub/commit/1a07d7ce3b3580191f74b7895dd1b8afb13baccb))
+* Handle duplicate acks with streaming pull ([#662](https://github.com/googleapis/python-pubsub/issues/662)) ([219491e](https://github.com/googleapis/python-pubsub/commit/219491ea1e615f33e1955e3afc204a0281c525db))
+* set min snooze on lease management to .01 sec ([#678](https://github.com/googleapis/python-pubsub/issues/678)) ([91c6e69](https://github.com/googleapis/python-pubsub/commit/91c6e69e96953919bc86004692edd3a52c7b9796))
+
+
+### Documentation
+
+* fix project_path typo in UPGRADING.md ([#660](https://github.com/googleapis/python-pubsub/issues/660)) ([20d661c](https://github.com/googleapis/python-pubsub/commit/20d661c8562cc1f777ac7b3f1ba03dcad7a831c0))
+* mark eod as preview ([#657](https://github.com/googleapis/python-pubsub/issues/657)) ([418e1a3](https://github.com/googleapis/python-pubsub/commit/418e1a3783441469713ca8ec8776007ff0fdb15d))
+
 ## [2.12.0](https://github.com/googleapis/python-pubsub/compare/v2.11.0...v2.12.0) (2022-04-06)
 
 
