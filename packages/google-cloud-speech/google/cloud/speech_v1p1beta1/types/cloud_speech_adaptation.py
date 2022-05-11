@@ -55,12 +55,13 @@ class CreatePhraseSetRequest(proto.Message):
             endpoint <https://cloud.google.com/speech-to-text/docs/endpoints>`__
             with matching ``us`` or ``eu`` location value.
         phrase_set_id (str):
-            Required. The ID to use for the phrase set, which will
-            become the final component of the phrase set's resource
-            name.
-
-            This value should be 4-63 characters, and valid characters
-            are /[a-z][0-9]-/.
+            Required. The ID to use for the phrase set,
+            which will become the final component of the
+            phrase set's resource name.
+            This value should restrict to letters, numbers,
+            and hyphens, with the first character a letter,
+            the last a letter or a number, and be 4-63
+            characters.
         phrase_set (google.cloud.speech_v1p1beta1.types.PhraseSet):
             Required. The phrase set to create.
     """
@@ -242,12 +243,13 @@ class CreateCustomClassRequest(proto.Message):
             endpoint <https://cloud.google.com/speech-to-text/docs/endpoints>`__
             with matching ``us`` or ``eu`` location value.
         custom_class_id (str):
-            Required. The ID to use for the custom class, which will
-            become the final component of the custom class' resource
-            name.
-
-            This value should be 4-63 characters, and valid characters
-            are /[a-z][0-9]-/.
+            Required. The ID to use for the custom class,
+            which will become the final component of the
+            custom class' resource name.
+            This value should restrict to letters, numbers,
+            and hyphens, with the first character a letter,
+            the last a letter or a number, and be 4-63
+            characters.
         custom_class (google.cloud.speech_v1p1beta1.types.CustomClass):
             Required. The custom class to create.
     """

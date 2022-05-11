@@ -263,12 +263,14 @@ class AdaptationAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             phrase_set_id (:class:`str`):
-                Required. The ID to use for the phrase set, which will
-                become the final component of the phrase set's resource
+                Required. The ID to use for the
+                phrase set, which will become the final
+                component of the phrase set's resource
                 name.
-
-                This value should be 4-63 characters, and valid
-                characters are /[a-z][0-9]-/.
+                This value should restrict to letters,
+                numbers, and hyphens, with the first
+                character a letter, the last a letter or
+                a number, and be 4-63 characters.
 
                 This corresponds to the ``phrase_set_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -817,12 +819,14 @@ class AdaptationAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             custom_class_id (:class:`str`):
-                Required. The ID to use for the custom class, which will
-                become the final component of the custom class' resource
-                name.
-
-                This value should be 4-63 characters, and valid
-                characters are /[a-z][0-9]-/.
+                Required. The ID to use for the
+                custom class, which will become the
+                final component of the custom class'
+                resource name.
+                This value should restrict to letters,
+                numbers, and hyphens, with the first
+                character a letter, the last a letter or
+                a number, and be 4-63 characters.
 
                 This corresponds to the ``custom_class_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
