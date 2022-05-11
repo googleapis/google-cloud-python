@@ -28,6 +28,9 @@ from google.api_core.retry import exponential_sleep_generator
 
 from google.cloud.pubsub_v1.subscriber._protocol import helper_threads
 from google.cloud.pubsub_v1.subscriber._protocol import requests
+from google.cloud.pubsub_v1.subscriber.exceptions import (
+    AcknowledgeStatus,
+)
 
 if typing.TYPE_CHECKING:  # pragma: NO COVER
     import queue
@@ -128,17 +131,50 @@ class Dispatcher(object):
         nack_requests: List[requests.NackRequest] = []
         drop_requests: List[requests.DropRequest] = []
 
+        lease_ids = set()
+        modack_ids = set()
+        ack_ids = set()
+        nack_ids = set()
+        drop_ids = set()
+        exactly_once_delivery_enabled = self._manager._exactly_once_delivery_enabled()
+
         for item in items:
             if isinstance(item, requests.LeaseRequest):
-                lease_requests.append(item)
+                if (
+                    item.ack_id not in lease_ids
+                ):  # LeaseRequests have no futures to handle.
+                    lease_ids.add(item.ack_id)
+                    lease_requests.append(item)
             elif isinstance(item, requests.ModAckRequest):
-                modack_requests.append(item)
+                if item.ack_id in modack_ids:
+                    self._handle_duplicate_request_future(
+                        exactly_once_delivery_enabled, item
+                    )
+                else:
+                    modack_ids.add(item.ack_id)
+                    modack_requests.append(item)
             elif isinstance(item, requests.AckRequest):
-                ack_requests.append(item)
+                if item.ack_id in ack_ids:
+                    self._handle_duplicate_request_future(
+                        exactly_once_delivery_enabled, item
+                    )
+                else:
+                    ack_ids.add(item.ack_id)
+                    ack_requests.append(item)
             elif isinstance(item, requests.NackRequest):
-                nack_requests.append(item)
+                if item.ack_id in nack_ids:
+                    self._handle_duplicate_request_future(
+                        exactly_once_delivery_enabled, item
+                    )
+                else:
+                    nack_ids.add(item.ack_id)
+                    nack_requests.append(item)
             elif isinstance(item, requests.DropRequest):
-                drop_requests.append(item)
+                if (
+                    item.ack_id not in drop_ids
+                ):  # DropRequests have no futures to handle.
+                    drop_ids.add(item.ack_id)
+                    drop_requests.append(item)
             else:
                 warnings.warn(
                     f'Skipping unknown request item of type "{type(item)}"',
@@ -163,6 +199,29 @@ class Dispatcher(object):
 
         if drop_requests:
             self.drop(drop_requests)
+
+    def _handle_duplicate_request_future(
+        self,
+        exactly_once_delivery_enabled: bool,
+        item: Union[requests.AckRequest, requests.ModAckRequest, requests.NackRequest],
+    ) -> None:
+        _LOGGER.debug(
+            "This is a duplicate %s with the same ack_id: %s.",
+            type(item),
+            item.ack_id,
+        )
+        if item.future:
+            if exactly_once_delivery_enabled:
+                item.future.set_exception(
+                    ValueError(f"Duplicate ack_id for {type(item)}")
+                )
+                # Futures may be present even with exactly-once delivery
+                # disabled, in transition periods after the setting is changed on
+                # the subscription.
+            else:
+                # When exactly-once delivery is NOT enabled, acks/modacks are considered
+                # best-effort, so the future should succeed even though this is a duplicate.
+                item.future.set_result(AcknowledgeStatus.SUCCESS)
 
     def ack(self, items: Sequence[requests.AckRequest]) -> None:
         """Acknowledge the given messages.
