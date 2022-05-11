@@ -432,6 +432,16 @@ class RecognitionConfig(proto.Message):
                         For example, long-form audio. Ideally the audio is high-fidelity,
                         recorded at a 16khz or greater sampling rate.</td>
                   </tr>
+                  <tr>
+                    <td><code>medical_conversation</code></td>
+                    <td>Best for audio that originated from a conversation between a
+                        medical provider and patient.</td>
+                  </tr>
+                  <tr>
+                    <td><code>medical_dictation</code></td>
+                    <td>Best for audio that originated from dictation notes by a medical
+                        provider.</td>
+                  </tr>
                 </table>
         use_enhanced (bool):
             Set to true to use an enhanced model for speech recognition.
@@ -1182,7 +1192,11 @@ class SpeechRecognitionAlternative(proto.Message):
     Attributes:
         transcript (str):
             Transcript text representing the words that
-            the user spoke.
+            the user spoke. In languages that use spaces to
+            separate words, the transcript might have a
+            leading space if it isn't the first result. You
+            can concatenate each result to obtain the full
+            transcript without using a separator.
         confidence (float):
             The confidence estimate between 0.0 and 1.0. A higher number
             indicates an estimated greater likelihood that the
