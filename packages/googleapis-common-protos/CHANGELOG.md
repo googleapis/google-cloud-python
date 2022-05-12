@@ -1,5 +1,14 @@
 # Changelog
 
+### [1.56.1](https://github.com/googleapis/python-api-common-protos/compare/v1.56.0...v1.56.1) (2022-05-05)
+
+
+### Bug Fixes
+
+* **deps:** require protobuf >=1.15.0 ([f04ed64](https://github.com/googleapis/python-api-common-protos/commit/f04ed64b233e1ff95370ef412ad5ecb92cb5780e))
+* include tests directory ([#103](https://github.com/googleapis/python-api-common-protos/issues/103)) ([72e5df1](https://github.com/googleapis/python-api-common-protos/commit/72e5df15ce63012f7d5c7781a51687e85a2cf63c))
+* regenerate pb2 files using the latest version of grpcio-tools ([f04ed64](https://github.com/googleapis/python-api-common-protos/commit/f04ed64b233e1ff95370ef412ad5ecb92cb5780e))
+
 ## [1.56.0](https://github.com/googleapis/python-api-common-protos/compare/v1.55.0...v1.56.0) (2022-03-17)
 
 
