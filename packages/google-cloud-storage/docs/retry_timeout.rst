@@ -142,11 +142,3 @@ explicit policy in your code.
    my_cond_policy = ConditionalRetryPolicy(
        my_retry_policy, conditional_predicate=is_etag_in_data)
    bucket = client.get_bucket(BUCKET_NAME, retry=my_cond_policy)
-
-
-Retry Module API
-----------------
-
-.. automodule:: google.cloud.storage.retry
-  :members:
-  :show-inheritance:

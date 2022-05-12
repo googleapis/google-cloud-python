@@ -18,9 +18,11 @@ API Reference
   buckets
   acl
   batch
+  fileio
   constants
   hmac_key
   notification
+  retry
   retry_timeout
   generation_metageneration
 
