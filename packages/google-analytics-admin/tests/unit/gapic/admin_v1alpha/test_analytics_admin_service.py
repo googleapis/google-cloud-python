@@ -20860,16 +20860,21 @@ def test_parse_conversion_event_path():
 
 def test_custom_dimension_path():
     property = "winkle"
-    expected = "properties/{property}/customDimensions".format(
+    custom_dimension = "nautilus"
+    expected = "properties/{property}/customDimensions/{custom_dimension}".format(
         property=property,
+        custom_dimension=custom_dimension,
     )
-    actual = AnalyticsAdminServiceClient.custom_dimension_path(property)
+    actual = AnalyticsAdminServiceClient.custom_dimension_path(
+        property, custom_dimension
+    )
     assert expected == actual
 
 
 def test_parse_custom_dimension_path():
     expected = {
-        "property": "nautilus",
+        "property": "scallop",
+        "custom_dimension": "abalone",
     }
     path = AnalyticsAdminServiceClient.custom_dimension_path(**expected)
 
@@ -20879,17 +20884,20 @@ def test_parse_custom_dimension_path():
 
 
 def test_custom_metric_path():
-    property = "scallop"
-    expected = "properties/{property}/customMetrics".format(
+    property = "squid"
+    custom_metric = "clam"
+    expected = "properties/{property}/customMetrics/{custom_metric}".format(
         property=property,
+        custom_metric=custom_metric,
     )
-    actual = AnalyticsAdminServiceClient.custom_metric_path(property)
+    actual = AnalyticsAdminServiceClient.custom_metric_path(property, custom_metric)
     assert expected == actual
 
 
 def test_parse_custom_metric_path():
     expected = {
-        "property": "abalone",
+        "property": "whelk",
+        "custom_metric": "octopus",
     }
     path = AnalyticsAdminServiceClient.custom_metric_path(**expected)
 
@@ -20899,7 +20907,7 @@ def test_parse_custom_metric_path():
 
 
 def test_data_retention_settings_path():
-    property = "squid"
+    property = "oyster"
     expected = "properties/{property}/dataRetentionSettings".format(
         property=property,
     )
@@ -20909,7 +20917,7 @@ def test_data_retention_settings_path():
 
 def test_parse_data_retention_settings_path():
     expected = {
-        "property": "clam",
+        "property": "nudibranch",
     }
     path = AnalyticsAdminServiceClient.data_retention_settings_path(**expected)
 
@@ -20919,7 +20927,7 @@ def test_parse_data_retention_settings_path():
 
 
 def test_data_sharing_settings_path():
-    account = "whelk"
+    account = "cuttlefish"
     expected = "accounts/{account}/dataSharingSettings".format(
         account=account,
     )
@@ -20929,7 +20937,7 @@ def test_data_sharing_settings_path():
 
 def test_parse_data_sharing_settings_path():
     expected = {
-        "account": "octopus",
+        "account": "mussel",
     }
     path = AnalyticsAdminServiceClient.data_sharing_settings_path(**expected)
 
@@ -20939,8 +20947,8 @@ def test_parse_data_sharing_settings_path():
 
 
 def test_data_stream_path():
-    property = "oyster"
-    data_stream = "nudibranch"
+    property = "winkle"
+    data_stream = "nautilus"
     expected = "properties/{property}/dataStreams/{data_stream}".format(
         property=property,
         data_stream=data_stream,
@@ -20951,8 +20959,8 @@ def test_data_stream_path():
 
 def test_parse_data_stream_path():
     expected = {
-        "property": "cuttlefish",
-        "data_stream": "mussel",
+        "property": "scallop",
+        "data_stream": "abalone",
     }
     path = AnalyticsAdminServiceClient.data_stream_path(**expected)
 
@@ -20962,8 +20970,8 @@ def test_parse_data_stream_path():
 
 
 def test_display_video360_advertiser_link_path():
-    property = "winkle"
-    display_video_360_advertiser_link = "nautilus"
+    property = "squid"
+    display_video_360_advertiser_link = "clam"
     expected = "properties/{property}/displayVideo360AdvertiserLinks/{display_video_360_advertiser_link}".format(
         property=property,
         display_video_360_advertiser_link=display_video_360_advertiser_link,
@@ -20976,8 +20984,8 @@ def test_display_video360_advertiser_link_path():
 
 def test_parse_display_video360_advertiser_link_path():
     expected = {
-        "property": "scallop",
-        "display_video_360_advertiser_link": "abalone",
+        "property": "whelk",
+        "display_video_360_advertiser_link": "octopus",
     }
     path = AnalyticsAdminServiceClient.display_video360_advertiser_link_path(**expected)
 
@@ -20989,8 +20997,8 @@ def test_parse_display_video360_advertiser_link_path():
 
 
 def test_display_video360_advertiser_link_proposal_path():
-    property = "squid"
-    display_video_360_advertiser_link_proposal = "clam"
+    property = "oyster"
+    display_video_360_advertiser_link_proposal = "nudibranch"
     expected = "properties/{property}/displayVideo360AdvertiserLinkProposals/{display_video_360_advertiser_link_proposal}".format(
         property=property,
         display_video_360_advertiser_link_proposal=display_video_360_advertiser_link_proposal,
@@ -21003,8 +21011,8 @@ def test_display_video360_advertiser_link_proposal_path():
 
 def test_parse_display_video360_advertiser_link_proposal_path():
     expected = {
-        "property": "whelk",
-        "display_video_360_advertiser_link_proposal": "octopus",
+        "property": "cuttlefish",
+        "display_video_360_advertiser_link_proposal": "mussel",
     }
     path = AnalyticsAdminServiceClient.display_video360_advertiser_link_proposal_path(
         **expected
@@ -21018,8 +21026,8 @@ def test_parse_display_video360_advertiser_link_proposal_path():
 
 
 def test_firebase_link_path():
-    property = "oyster"
-    firebase_link = "nudibranch"
+    property = "winkle"
+    firebase_link = "nautilus"
     expected = "properties/{property}/firebaseLinks/{firebase_link}".format(
         property=property,
         firebase_link=firebase_link,
@@ -21030,8 +21038,8 @@ def test_firebase_link_path():
 
 def test_parse_firebase_link_path():
     expected = {
-        "property": "cuttlefish",
-        "firebase_link": "mussel",
+        "property": "scallop",
+        "firebase_link": "abalone",
     }
     path = AnalyticsAdminServiceClient.firebase_link_path(**expected)
 
@@ -21041,8 +21049,8 @@ def test_parse_firebase_link_path():
 
 
 def test_global_site_tag_path():
-    property = "winkle"
-    data_stream = "nautilus"
+    property = "squid"
+    data_stream = "clam"
     expected = "properties/{property}/dataStreams/{data_stream}/globalSiteTag".format(
         property=property,
         data_stream=data_stream,
@@ -21053,8 +21061,8 @@ def test_global_site_tag_path():
 
 def test_parse_global_site_tag_path():
     expected = {
-        "property": "scallop",
-        "data_stream": "abalone",
+        "property": "whelk",
+        "data_stream": "octopus",
     }
     path = AnalyticsAdminServiceClient.global_site_tag_path(**expected)
 
@@ -21064,8 +21072,8 @@ def test_parse_global_site_tag_path():
 
 
 def test_google_ads_link_path():
-    property = "squid"
-    google_ads_link = "clam"
+    property = "oyster"
+    google_ads_link = "nudibranch"
     expected = "properties/{property}/googleAdsLinks/{google_ads_link}".format(
         property=property,
         google_ads_link=google_ads_link,
@@ -21076,8 +21084,8 @@ def test_google_ads_link_path():
 
 def test_parse_google_ads_link_path():
     expected = {
-        "property": "whelk",
-        "google_ads_link": "octopus",
+        "property": "cuttlefish",
+        "google_ads_link": "mussel",
     }
     path = AnalyticsAdminServiceClient.google_ads_link_path(**expected)
 
@@ -21087,7 +21095,7 @@ def test_parse_google_ads_link_path():
 
 
 def test_google_signals_settings_path():
-    property = "oyster"
+    property = "winkle"
     expected = "properties/{property}/googleSignalsSettings".format(
         property=property,
     )
@@ -21097,7 +21105,7 @@ def test_google_signals_settings_path():
 
 def test_parse_google_signals_settings_path():
     expected = {
-        "property": "nudibranch",
+        "property": "nautilus",
     }
     path = AnalyticsAdminServiceClient.google_signals_settings_path(**expected)
 
@@ -21107,9 +21115,9 @@ def test_parse_google_signals_settings_path():
 
 
 def test_measurement_protocol_secret_path():
-    property = "cuttlefish"
-    data_stream = "mussel"
-    measurement_protocol_secret = "winkle"
+    property = "scallop"
+    data_stream = "abalone"
+    measurement_protocol_secret = "squid"
     expected = "properties/{property}/dataStreams/{data_stream}/measurementProtocolSecrets/{measurement_protocol_secret}".format(
         property=property,
         data_stream=data_stream,
@@ -21123,9 +21131,9 @@ def test_measurement_protocol_secret_path():
 
 def test_parse_measurement_protocol_secret_path():
     expected = {
-        "property": "nautilus",
-        "data_stream": "scallop",
-        "measurement_protocol_secret": "abalone",
+        "property": "clam",
+        "data_stream": "whelk",
+        "measurement_protocol_secret": "octopus",
     }
     path = AnalyticsAdminServiceClient.measurement_protocol_secret_path(**expected)
 
@@ -21135,7 +21143,7 @@ def test_parse_measurement_protocol_secret_path():
 
 
 def test_property_path():
-    property = "squid"
+    property = "oyster"
     expected = "properties/{property}".format(
         property=property,
     )
@@ -21145,7 +21153,7 @@ def test_property_path():
 
 def test_parse_property_path():
     expected = {
-        "property": "clam",
+        "property": "nudibranch",
     }
     path = AnalyticsAdminServiceClient.property_path(**expected)
 
@@ -21155,8 +21163,8 @@ def test_parse_property_path():
 
 
 def test_user_link_path():
-    account = "whelk"
-    user_link = "octopus"
+    account = "cuttlefish"
+    user_link = "mussel"
     expected = "accounts/{account}/userLinks/{user_link}".format(
         account=account,
         user_link=user_link,
@@ -21167,8 +21175,8 @@ def test_user_link_path():
 
 def test_parse_user_link_path():
     expected = {
-        "account": "oyster",
-        "user_link": "nudibranch",
+        "account": "winkle",
+        "user_link": "nautilus",
     }
     path = AnalyticsAdminServiceClient.user_link_path(**expected)
 
@@ -21178,7 +21186,7 @@ def test_parse_user_link_path():
 
 
 def test_common_billing_account_path():
-    billing_account = "cuttlefish"
+    billing_account = "scallop"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -21188,7 +21196,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "mussel",
+        "billing_account": "abalone",
     }
     path = AnalyticsAdminServiceClient.common_billing_account_path(**expected)
 
@@ -21198,7 +21206,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "winkle"
+    folder = "squid"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -21208,7 +21216,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "nautilus",
+        "folder": "clam",
     }
     path = AnalyticsAdminServiceClient.common_folder_path(**expected)
 
@@ -21218,7 +21226,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "scallop"
+    organization = "whelk"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -21228,7 +21236,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "abalone",
+        "organization": "octopus",
     }
     path = AnalyticsAdminServiceClient.common_organization_path(**expected)
 
@@ -21238,7 +21246,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "squid"
+    project = "oyster"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -21248,7 +21256,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "clam",
+        "project": "nudibranch",
     }
     path = AnalyticsAdminServiceClient.common_project_path(**expected)
 
@@ -21258,8 +21266,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "whelk"
-    location = "octopus"
+    project = "cuttlefish"
+    location = "mussel"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -21270,8 +21278,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "oyster",
-        "location": "nudibranch",
+        "project": "winkle",
+        "location": "nautilus",
     }
     path = AnalyticsAdminServiceClient.common_location_path(**expected)
 

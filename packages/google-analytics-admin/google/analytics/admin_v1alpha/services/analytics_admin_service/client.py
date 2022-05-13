@@ -220,31 +220,40 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
     @staticmethod
     def custom_dimension_path(
         property: str,
+        custom_dimension: str,
     ) -> str:
         """Returns a fully-qualified custom_dimension string."""
-        return "properties/{property}/customDimensions".format(
+        return "properties/{property}/customDimensions/{custom_dimension}".format(
             property=property,
+            custom_dimension=custom_dimension,
         )
 
     @staticmethod
     def parse_custom_dimension_path(path: str) -> Dict[str, str]:
         """Parses a custom_dimension path into its component segments."""
-        m = re.match(r"^properties/(?P<property>.+?)/customDimensions$", path)
+        m = re.match(
+            r"^properties/(?P<property>.+?)/customDimensions/(?P<custom_dimension>.+?)$",
+            path,
+        )
         return m.groupdict() if m else {}
 
     @staticmethod
     def custom_metric_path(
         property: str,
+        custom_metric: str,
     ) -> str:
         """Returns a fully-qualified custom_metric string."""
-        return "properties/{property}/customMetrics".format(
+        return "properties/{property}/customMetrics/{custom_metric}".format(
             property=property,
+            custom_metric=custom_metric,
         )
 
     @staticmethod
     def parse_custom_metric_path(path: str) -> Dict[str, str]:
         """Parses a custom_metric path into its component segments."""
-        m = re.match(r"^properties/(?P<property>.+?)/customMetrics$", path)
+        m = re.match(
+            r"^properties/(?P<property>.+?)/customMetrics/(?P<custom_metric>.+?)$", path
+        )
         return m.groupdict() if m else {}
 
     @staticmethod
