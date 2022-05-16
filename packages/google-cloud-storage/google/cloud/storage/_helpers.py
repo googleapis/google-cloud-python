@@ -519,14 +519,12 @@ def _raise_if_more_than_one_set(**kwargs):
     :raises: :class:`~ValueError` containing the fields that were set
     """
     if sum(arg is not None for arg in kwargs.values()) > 1:
-        escaped_keys = ["'%s'" % name for name in kwargs.keys()]
+        escaped_keys = [f"'{name}'" for name in kwargs.keys()]
 
         keys_but_last = ", ".join(escaped_keys[:-1])
         last_key = escaped_keys[-1]
 
-        msg = "Pass at most one of {keys_but_last} and {last_key}".format(
-            keys_but_last=keys_but_last, last_key=last_key
-        )
+        msg = f"Pass at most one of {keys_but_last} and {last_key}"
 
         raise ValueError(msg)
 
@@ -548,7 +546,7 @@ def _bucket_bound_hostname_url(host, scheme=None):
     if url_parts.scheme and url_parts.netloc:
         return host
 
-    return "{scheme}://{host}/".format(scheme=scheme, host=host)
+    return f"{scheme}://{host}/"
 
 
 def _api_core_retry_to_resumable_media_retry(retry, num_retries=None):

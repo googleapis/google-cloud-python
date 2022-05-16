@@ -153,7 +153,7 @@ def test_bucket_get_set_iam_policy(
     policy = bucket.get_iam_policy(requested_policy_version=3)
     assert policy == policy_no_version
 
-    member = "serviceAccount:{}".format(storage_client.get_service_account_email())
+    member = f"serviceAccount:{storage_client.get_service_account_email()}"
 
     binding_w_condition = {
         "role": STORAGE_OBJECT_VIEWER_ROLE,

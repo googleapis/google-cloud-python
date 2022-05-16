@@ -371,7 +371,7 @@ class TestClient(unittest.TestCase):
         )
         _, kwargs = http.request.call_args
         scheme, netloc, path, qs, _ = urllib.parse.urlsplit(kwargs.get("url"))
-        self.assertEqual("%s://%s" % (scheme, netloc), client._connection.API_BASE_URL)
+        self.assertEqual(f"{scheme}://{netloc}", client._connection.API_BASE_URL)
         self.assertEqual(
             path,
             "/".join(
@@ -409,7 +409,7 @@ class TestClient(unittest.TestCase):
         )
         _, kwargs = http.request.call_args
         scheme, netloc, path, qs, _ = urllib.parse.urlsplit(kwargs.get("url"))
-        self.assertEqual("%s://%s" % (scheme, netloc), client._connection.API_BASE_URL)
+        self.assertEqual(f"{scheme}://{netloc}", client._connection.API_BASE_URL)
         self.assertEqual(
             path,
             "/".join(
@@ -899,7 +899,7 @@ class TestClient(unittest.TestCase):
         with self.assertRaises(NotFound):
             client.get_bucket(bucket_name)
 
-        expected_path = "/b/%s" % (bucket_name,)
+        expected_path = f"/b/{bucket_name}"
         expected_query_params = {"projection": "noAcl"}
         expected_headers = {}
         client._get_resource.assert_called_once_with(
@@ -931,7 +931,7 @@ class TestClient(unittest.TestCase):
         self.assertIsInstance(bucket, Bucket)
         self.assertEqual(bucket.name, bucket_name)
 
-        expected_path = "/b/%s" % (bucket_name,)
+        expected_path = f"/b/{bucket_name}"
         expected_query_params = {"projection": "noAcl"}
         expected_headers = {}
         client._get_resource.assert_called_once_with(
@@ -961,7 +961,7 @@ class TestClient(unittest.TestCase):
         self.assertIsInstance(bucket, Bucket)
         self.assertEqual(bucket.name, bucket_name)
 
-        expected_path = "/b/%s" % (bucket_name,)
+        expected_path = f"/b/{bucket_name}"
         expected_query_params = {
             "projection": "noAcl",
             "ifMetagenerationMatch": metageneration_number,
@@ -991,7 +991,7 @@ class TestClient(unittest.TestCase):
         with self.assertRaises(NotFound):
             client.get_bucket(bucket_obj, retry=retry)
 
-        expected_path = "/b/%s" % (bucket_name,)
+        expected_path = f"/b/{bucket_name}"
         expected_query_params = {"projection": "noAcl"}
         expected_headers = {}
         client._get_resource.assert_called_once_with(
@@ -1023,7 +1023,7 @@ class TestClient(unittest.TestCase):
         self.assertIsInstance(bucket, Bucket)
         self.assertEqual(bucket.name, bucket_name)
 
-        expected_path = "/b/%s" % (bucket_name,)
+        expected_path = f"/b/{bucket_name}"
         expected_query_params = {"projection": "noAcl"}
         expected_headers = {}
         client._get_resource.assert_called_once_with(
@@ -1051,7 +1051,7 @@ class TestClient(unittest.TestCase):
         self.assertIsInstance(bucket, Bucket)
         self.assertEqual(bucket.name, bucket_name)
 
-        expected_path = "/b/%s" % (bucket_name,)
+        expected_path = f"/b/{bucket_name}"
         expected_query_params = {"projection": "noAcl"}
         expected_headers = {}
         client._get_resource.assert_called_once_with(
@@ -1077,7 +1077,7 @@ class TestClient(unittest.TestCase):
 
         self.assertIsNone(bucket)
 
-        expected_path = "/b/%s" % (bucket_name,)
+        expected_path = f"/b/{bucket_name}"
         expected_query_params = {"projection": "noAcl"}
         expected_headers = {}
         client._get_resource.assert_called_once_with(
@@ -1109,7 +1109,7 @@ class TestClient(unittest.TestCase):
         self.assertIsInstance(bucket, Bucket)
         self.assertEqual(bucket.name, bucket_name)
 
-        expected_path = "/b/%s" % (bucket_name,)
+        expected_path = f"/b/{bucket_name}"
         expected_query_params = {"projection": "noAcl"}
         expected_headers = {}
         client._get_resource.assert_called_once_with(
@@ -1139,7 +1139,7 @@ class TestClient(unittest.TestCase):
         self.assertIsInstance(bucket, Bucket)
         self.assertEqual(bucket.name, bucket_name)
 
-        expected_path = "/b/%s" % (bucket_name,)
+        expected_path = f"/b/{bucket_name}"
         expected_query_params = {
             "projection": "noAcl",
             "ifMetagenerationMatch": metageneration_number,
@@ -1170,7 +1170,7 @@ class TestClient(unittest.TestCase):
         self.assertIsInstance(bucket, Bucket)
         self.assertEqual(bucket.name, bucket_name)
 
-        expected_path = "/b/%s" % (bucket_name,)
+        expected_path = f"/b/{bucket_name}"
         expected_query_params = {"projection": "noAcl"}
         expected_headers = {}
         client._get_resource.assert_called_once_with(
@@ -1811,7 +1811,7 @@ class TestClient(unittest.TestCase):
         self.assertIs(iterator.bucket, bucket)
         self.assertEqual(iterator.prefixes, set())
 
-        expected_path = "/b/{}/o".format(bucket_name)
+        expected_path = f"/b/{bucket_name}/o"
         expected_item_to_value = _item_to_blob
         expected_page_token = None
         expected_max_results = None
@@ -1855,7 +1855,7 @@ class TestClient(unittest.TestCase):
         bucket = client._bucket_arg_to_bucket.return_value = mock.Mock(
             spec=["path", "user_project"],
         )
-        bucket.path = "/b/{}".format(bucket_name)
+        bucket.path = f"/b/{bucket_name}"
         bucket.user_project = user_project
         timeout = 42
         retry = mock.Mock(spec=[])
@@ -1881,7 +1881,7 @@ class TestClient(unittest.TestCase):
         self.assertIs(iterator.bucket, bucket)
         self.assertEqual(iterator.prefixes, set())
 
-        expected_path = "/b/{}/o".format(bucket_name)
+        expected_path = f"/b/{bucket_name}/o"
         expected_item_to_value = _item_to_blob
         expected_page_token = page_token
         expected_max_results = max_results
@@ -2119,7 +2119,7 @@ class TestClient(unittest.TestCase):
         email = "storage-user-123@example.com"
         secret = "a" * 40
         now = datetime.datetime.utcnow().replace(tzinfo=UTC)
-        now_stamp = "{}Z".format(now.isoformat())
+        now_stamp = f"{now.isoformat()}Z"
 
         if explicit_project is not None:
             expected_project = explicit_project
@@ -2131,7 +2131,7 @@ class TestClient(unittest.TestCase):
             "metadata": {
                 "accessId": access_id,
                 "etag": "ETAG",
-                "id": "projects/{}/hmacKeys/{}".format(project, access_id),
+                "id": f"projects/{project}/hmacKeys/{access_id}",
                 "project": expected_project,
                 "state": "ACTIVE",
                 "serviceAccountEmail": email,
@@ -2170,7 +2170,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(metadata._properties, api_response["metadata"])
         self.assertEqual(secret, api_response["secret"])
 
-        expected_path = "/projects/{}/hmacKeys".format(expected_project)
+        expected_path = f"/projects/{expected_project}/hmacKeys"
         expected_data = None
         expected_query_params = {"serviceAccountEmail": email}
 
@@ -2212,7 +2212,7 @@ class TestClient(unittest.TestCase):
 
         self.assertIs(iterator, client._list_resource.return_value)
 
-        expected_path = "/projects/{}/hmacKeys".format(project)
+        expected_path = f"/projects/{project}/hmacKeys"
         expected_item_to_value = _item_to_hmac_key_metadata
         expected_max_results = None
         expected_extra_params = {}
@@ -2252,7 +2252,7 @@ class TestClient(unittest.TestCase):
 
         self.assertIs(iterator, client._list_resource.return_value)
 
-        expected_path = "/projects/{}/hmacKeys".format(other_project)
+        expected_path = f"/projects/{other_project}/hmacKeys"
         expected_item_to_value = _item_to_hmac_key_metadata
         expected_max_results = max_results
         expected_extra_params = {
@@ -2300,7 +2300,7 @@ class TestClient(unittest.TestCase):
         )
         _, kwargs = http.request.call_args
         scheme, netloc, path, qs, _ = urllib.parse.urlsplit(kwargs.get("url"))
-        self.assertEqual("%s://%s" % (scheme, netloc), client._connection.API_BASE_URL)
+        self.assertEqual(f"{scheme}://{netloc}", client._connection.API_BASE_URL)
         self.assertEqual(
             path,
             "/".join(
@@ -2355,7 +2355,7 @@ class TestClient(unittest.TestCase):
         )
         _, kwargs = http.request.call_args
         scheme, netloc, path, qs, _ = urllib.parse.urlsplit(kwargs.get("url"))
-        self.assertEqual("%s://%s" % (scheme, netloc), client._connection.API_BASE_URL)
+        self.assertEqual(f"{scheme}://{netloc}", client._connection.API_BASE_URL)
         self.assertEqual(
             path,
             "/".join(
@@ -2515,7 +2515,7 @@ class TestClient(unittest.TestCase):
                 credentials=_create_signing_credentials(),
             )
         self.assertEqual(
-            policy["url"], "https://{}.storage.googleapis.com/".format(BUCKET_NAME)
+            policy["url"], f"https://{BUCKET_NAME}.storage.googleapis.com/"
         )
 
     def test_get_signed_policy_v4_bucket_bound_hostname(self):

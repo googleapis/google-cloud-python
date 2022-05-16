@@ -54,7 +54,7 @@ def topic_name():
 
 @pytest.fixture(scope="session")
 def topic_path(storage_client, topic_name):
-    return "projects/{}/topics/{}".format(storage_client.project, topic_name)
+    return f"projects/{storage_client.project}/topics/{topic_name}"
 
 
 @pytest.fixture(scope="session")
@@ -64,7 +64,7 @@ def notification_topic(storage_client, publisher_client, topic_path, no_mtls):
     binding = policy.bindings.add()
     binding.role = "roles/pubsub.publisher"
     binding.members.append(
-        "serviceAccount:{}".format(storage_client.get_service_account_email())
+        f"serviceAccount:{storage_client.get_service_account_email()}"
     )
     publisher_client.set_iam_policy(topic_path, policy)
 

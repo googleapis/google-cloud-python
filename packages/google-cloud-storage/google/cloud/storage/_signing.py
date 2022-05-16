@@ -157,9 +157,7 @@ def get_expiration_seconds_v4(expiration):
         seconds = int(expiration.total_seconds())
 
     if seconds > SEVEN_DAYS:
-        raise ValueError(
-            "Max allowed expiration interval is seven days {}".format(SEVEN_DAYS)
-        )
+        raise ValueError(f"Max allowed expiration interval is seven days {SEVEN_DAYS}")
 
     return seconds
 
@@ -252,7 +250,7 @@ def canonicalize_v2(method, resource, query_parameters, headers):
         for key, value in query_parameters.items()
     )
     encoded_qp = urllib.parse.urlencode(normalized_qp)
-    canonical_resource = "{}?{}".format(resource, encoded_qp)
+    canonical_resource = f"{resource}?{encoded_qp}"
     return _Canonical(method, canonical_resource, normalized_qp, headers)
 
 
@@ -550,8 +548,8 @@ def generate_signed_url_v4(
         ensure_signed_credentials(credentials)
         client_email = credentials.signer_email
 
-    credential_scope = "{}/auto/storage/goog4_request".format(datestamp)
-    credential = "{}/{}".format(client_email, credential_scope)
+    credential_scope = f"{datestamp}/auto/storage/goog4_request"
+    credential = f"{client_email}/{credential_scope}"
 
     if headers is None:
         headers = {}
@@ -689,7 +687,7 @@ def _sign_message(message, access_token, service_account_email):
 
     if response.status != http.client.OK:
         raise exceptions.TransportError(
-            "Error calling the IAM signBytes API: {}".format(response.data)
+            f"Error calling the IAM signBytes API: {response.data}"
         )
 
     data = json.loads(response.data.decode("utf-8"))
@@ -706,7 +704,7 @@ def _url_encode(query_params):
     :returns: URL encoded query params.
     """
     params = [
-        "{}={}".format(_quote_param(name), _quote_param(value))
+        f"{_quote_param(name)}={_quote_param(value)}"
         for name, value in query_params.items()
     ]
 

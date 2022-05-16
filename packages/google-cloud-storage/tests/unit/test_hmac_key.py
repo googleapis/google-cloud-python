@@ -177,7 +177,7 @@ class TestHMACKeyMetadata(unittest.TestCase):
 
         metadata = self._make_one()
         now = datetime.datetime.utcnow()
-        now_stamp = "{}Z".format(now.isoformat())
+        now_stamp = f"{now.isoformat()}Z"
         metadata._properties["timeCreated"] = now_stamp
         self.assertEqual(metadata.time_created, now.replace(tzinfo=UTC))
 
@@ -187,7 +187,7 @@ class TestHMACKeyMetadata(unittest.TestCase):
 
         metadata = self._make_one()
         now = datetime.datetime.utcnow()
-        now_stamp = "{}Z".format(now.isoformat())
+        now_stamp = f"{now.isoformat()}Z"
         metadata._properties["updated"] = now_stamp
         self.assertEqual(metadata.updated, now.replace(tzinfo=UTC))
 
@@ -203,9 +203,7 @@ class TestHMACKeyMetadata(unittest.TestCase):
         metadata = self._make_one()
         metadata._properties["accessId"] = access_id
 
-        expected_path = "/projects/{}/hmacKeys/{}".format(
-            client.DEFAULT_PROJECT, access_id
-        )
+        expected_path = f"/projects/{client.DEFAULT_PROJECT}/hmacKeys/{access_id}"
         self.assertEqual(metadata.path, expected_path)
 
     def test_path_w_access_id_w_explicit_project(self):
@@ -215,7 +213,7 @@ class TestHMACKeyMetadata(unittest.TestCase):
         metadata._properties["accessId"] = access_id
         metadata._properties["projectId"] = project
 
-        expected_path = "/projects/{}/hmacKeys/{}".format(project, access_id)
+        expected_path = f"/projects/{project}/hmacKeys/{access_id}"
         self.assertEqual(metadata.path, expected_path)
 
     def test_exists_miss_w_defaults(self):
@@ -231,7 +229,7 @@ class TestHMACKeyMetadata(unittest.TestCase):
 
         self.assertFalse(metadata.exists())
 
-        expected_path = "/projects/{}/hmacKeys/{}".format(project, access_id)
+        expected_path = f"/projects/{project}/hmacKeys/{access_id}"
         expected_query_params = {}
         client._get_resource.assert_called_once_with(
             expected_path,
@@ -260,7 +258,7 @@ class TestHMACKeyMetadata(unittest.TestCase):
 
         self.assertTrue(metadata.exists(timeout=timeout, retry=retry))
 
-        expected_path = "/projects/{}/hmacKeys/{}".format(project, access_id)
+        expected_path = f"/projects/{project}/hmacKeys/{access_id}"
         expected_query_params = {"userProject": user_project}
         client._get_resource.assert_called_once_with(
             expected_path,
@@ -283,7 +281,7 @@ class TestHMACKeyMetadata(unittest.TestCase):
         with self.assertRaises(NotFound):
             metadata.reload()
 
-        expected_path = "/projects/{}/hmacKeys/{}".format(project, access_id)
+        expected_path = f"/projects/{project}/hmacKeys/{access_id}"
         expected_query_params = {}
         client._get_resource.assert_called_once_with(
             expected_path,
@@ -314,7 +312,7 @@ class TestHMACKeyMetadata(unittest.TestCase):
 
         self.assertEqual(metadata._properties, resource)
 
-        expected_path = "/projects/{}/hmacKeys/{}".format(project, access_id)
+        expected_path = f"/projects/{project}/hmacKeys/{access_id}"
         expected_query_params = {"userProject": user_project}
         client._get_resource.assert_called_once_with(
             expected_path,
@@ -338,7 +336,7 @@ class TestHMACKeyMetadata(unittest.TestCase):
         with self.assertRaises(NotFound):
             metadata.update()
 
-        expected_path = "/projects/{}/hmacKeys/{}".format(project, access_id)
+        expected_path = f"/projects/{project}/hmacKeys/{access_id}"
         expected_data = {"state": "INACTIVE"}
         expected_query_params = {}
         client._put_resource.assert_called_once_with(
@@ -373,7 +371,7 @@ class TestHMACKeyMetadata(unittest.TestCase):
 
         self.assertEqual(metadata._properties, resource)
 
-        expected_path = "/projects/{}/hmacKeys/{}".format(project, access_id)
+        expected_path = f"/projects/{project}/hmacKeys/{access_id}"
         expected_data = {"state": "ACTIVE"}
         expected_query_params = {"userProject": user_project}
         client._put_resource.assert_called_once_with(
@@ -411,7 +409,7 @@ class TestHMACKeyMetadata(unittest.TestCase):
         with self.assertRaises(NotFound):
             metadata.delete()
 
-        expected_path = "/projects/{}/hmacKeys/{}".format(client.project, access_id)
+        expected_path = f"/projects/{client.project}/hmacKeys/{access_id}"
         expected_query_params = {}
         client._delete_resource.assert_called_once_with(
             expected_path,
@@ -436,7 +434,7 @@ class TestHMACKeyMetadata(unittest.TestCase):
 
         metadata.delete(timeout=timeout, retry=retry)
 
-        expected_path = "/projects/{}/hmacKeys/{}".format(project, access_id)
+        expected_path = f"/projects/{project}/hmacKeys/{access_id}"
         expected_query_params = {"userProject": user_project}
         client._delete_resource.assert_called_once_with(
             expected_path,

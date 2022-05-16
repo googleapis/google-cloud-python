@@ -260,9 +260,7 @@ def policy_document(client):
 
     # Generate an upload form using the form fields.
     policy_fields = "".join(
-        '<input type="hidden" name="{key}" value="{value}">'.format(
-            key=key, value=value
-        )
+        f'<input type="hidden" name="{key}" value="{value}">'
         for key, value in policy.items()
     )
 
@@ -301,13 +299,15 @@ def main():
     client = storage.Client()
     for example in _find_examples():
         to_delete = []
-        print("%-25s: %s" % _name_and_doc(example))
+        name, doc = _name_and_doc(example)
+        print(f"{name:>25}: {doc}")
+
         try:
             example(client, to_delete)
         except AssertionError as failure:
-            print("   FAIL: %s" % (failure,))
+            print(f"   FAIL: {failure}")
         except Exception as error:  # pylint: disable=broad-except
-            print("  ERROR: %r" % (error,))
+            print(f"  ERROR: {error!r}")
         for item in to_delete:
             item.delete()
 

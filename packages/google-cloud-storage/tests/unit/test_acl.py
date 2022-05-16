@@ -56,7 +56,7 @@ class Test_ACLEntity(unittest.TestCase):
         TYPE = "type"
         ID = "id"
         entity = self._make_one(TYPE, ID)
-        self.assertEqual(str(entity), "%s-%s" % (TYPE, ID))
+        self.assertEqual(str(entity), f"{TYPE}-{ID}")
 
     def test_grant_simple(self):
         TYPE = "type"
@@ -229,7 +229,7 @@ class Test_ACL(unittest.TestCase):
         acl.loaded = True
         entity = acl.entity(TYPE, ID)
         entity.grant(ROLE)
-        self.assertEqual(list(acl), [{"entity": "%s-%s" % (TYPE, ID), "role": ROLE}])
+        self.assertEqual(list(acl), [{"entity": f"{TYPE}-{ID}", "role": ROLE}])
 
     def test___iter___non_empty_w_empty_role(self):
         TYPE = "type"
@@ -313,7 +313,7 @@ class Test_ACL(unittest.TestCase):
         acl = self._make_one()
         acl.loaded = True
         acl.entity(TYPE, ID)
-        self.assertTrue(acl.has_entity("%s-%s" % (TYPE, ID)))
+        self.assertTrue(acl.has_entity(f"{TYPE}-{ID}"))
 
     def test_has_entity_hit_entity(self):
         TYPE = "type"
@@ -371,7 +371,7 @@ class Test_ACL(unittest.TestCase):
         acl = self._make_one()
         acl.loaded = True
         acl.entity(TYPE, ID)
-        self.assertTrue(acl.has_entity("%s-%s" % (TYPE, ID)))
+        self.assertTrue(acl.has_entity(f"{TYPE}-{ID}"))
 
     def test_get_entity_hit_entity(self):
         TYPE = "type"
@@ -422,7 +422,7 @@ class Test_ACL(unittest.TestCase):
 
         TYPE = "type"
         ID = "id"
-        ENTITY_VAL = "%s-%s" % (TYPE, ID)
+        ENTITY_VAL = f"{TYPE}-{ID}"
         ROLE = "role"
         entity = _ACLEntity(TYPE, ID)
         entity.grant(ROLE)
@@ -470,7 +470,7 @@ class Test_ACL(unittest.TestCase):
         entity.grant(ROLE)
         self.assertEqual(entity.type, "user")
         self.assertEqual(entity.identifier, ID)
-        self.assertEqual(list(acl), [{"entity": "user-%s" % ID, "role": ROLE}])
+        self.assertEqual(list(acl), [{"entity": f"user-{ID}", "role": ROLE}])
 
     def test_group(self):
         ID = "id"
@@ -481,7 +481,7 @@ class Test_ACL(unittest.TestCase):
         entity.grant(ROLE)
         self.assertEqual(entity.type, "group")
         self.assertEqual(entity.identifier, ID)
-        self.assertEqual(list(acl), [{"entity": "group-%s" % ID, "role": ROLE}])
+        self.assertEqual(list(acl), [{"entity": f"group-{ID}", "role": ROLE}])
 
     def test_domain(self):
         ID = "id"
@@ -492,7 +492,7 @@ class Test_ACL(unittest.TestCase):
         entity.grant(ROLE)
         self.assertEqual(entity.type, "domain")
         self.assertEqual(entity.identifier, ID)
-        self.assertEqual(list(acl), [{"entity": "domain-%s" % ID, "role": ROLE}])
+        self.assertEqual(list(acl), [{"entity": f"domain-{ID}", "role": ROLE}])
 
     def test_all(self):
         ROLE = "role"
@@ -1003,8 +1003,8 @@ class Test_BucketACL(unittest.TestCase):
         self.assertEqual(acl.entities, {})
         self.assertFalse(acl.loaded)
         self.assertIs(acl.bucket, bucket)
-        self.assertEqual(acl.reload_path, "/b/%s/acl" % NAME)
-        self.assertEqual(acl.save_path, "/b/%s" % NAME)
+        self.assertEqual(acl.reload_path, f"/b/{NAME}/acl")
+        self.assertEqual(acl.save_path, f"/b/{NAME}")
 
     def test_user_project(self):
         NAME = "name"
@@ -1033,8 +1033,8 @@ class Test_DefaultObjectACL(unittest.TestCase):
         self.assertEqual(acl.entities, {})
         self.assertFalse(acl.loaded)
         self.assertIs(acl.bucket, bucket)
-        self.assertEqual(acl.reload_path, "/b/%s/defaultObjectAcl" % NAME)
-        self.assertEqual(acl.save_path, "/b/%s" % NAME)
+        self.assertEqual(acl.reload_path, f"/b/{NAME}/defaultObjectAcl")
+        self.assertEqual(acl.save_path, f"/b/{NAME}")
 
 
 class Test_ObjectACL(unittest.TestCase):
@@ -1056,8 +1056,8 @@ class Test_ObjectACL(unittest.TestCase):
         self.assertEqual(acl.entities, {})
         self.assertFalse(acl.loaded)
         self.assertIs(acl.blob, blob)
-        self.assertEqual(acl.reload_path, "/b/%s/o/%s/acl" % (NAME, BLOB_NAME))
-        self.assertEqual(acl.save_path, "/b/%s/o/%s" % (NAME, BLOB_NAME))
+        self.assertEqual(acl.reload_path, f"/b/{NAME}/o/{BLOB_NAME}/acl")
+        self.assertEqual(acl.save_path, f"/b/{NAME}/o/{BLOB_NAME}")
 
     def test_user_project(self):
         NAME = "name"
@@ -1081,7 +1081,7 @@ class _Blob(object):
 
     @property
     def path(self):
-        return "%s/o/%s" % (self.bucket.path, self.blob)
+        return f"{self.bucket.path}/o/{self.blob}"
 
 
 class _Bucket(object):
@@ -1093,4 +1093,4 @@ class _Bucket(object):
 
     @property
     def path(self):
-        return "/b/%s" % self.name
+        return f"/b/{self.name}"

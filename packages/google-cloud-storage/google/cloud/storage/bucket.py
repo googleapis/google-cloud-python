@@ -647,7 +647,7 @@ class Bucket(_PropertyMixin):
         self._user_project = user_project
 
     def __repr__(self):
-        return "<Bucket: %s>" % (self.name,)
+        return f"<Bucket: {self.name}>"
 
     @property
     def client(self):
@@ -1166,7 +1166,7 @@ class Bucket(_PropertyMixin):
         if_metageneration_not_match=None,
         timeout=_DEFAULT_TIMEOUT,
         retry=DEFAULT_RETRY,
-        **kwargs
+        **kwargs,
     ):
         """Get a blob object by name.
 
@@ -1241,7 +1241,7 @@ class Bucket(_PropertyMixin):
             name=blob_name,
             encryption_key=encryption_key,
             generation=generation,
-            **kwargs
+            **kwargs,
         )
         try:
             # NOTE: This will not fail immediately in a batch. However, when
@@ -2600,7 +2600,7 @@ class Bucket(_PropertyMixin):
             :attr:`~google.cloud.storage.constants.DURABLE_REDUCED_AVAILABILITY_LEGACY_STORAGE_CLASS`,
         """
         if value not in self.STORAGE_CLASSES:
-            raise ValueError("Invalid storage class: %s" % (value,))
+            raise ValueError(f"Invalid storage class: {value}")
         self._patch_property("storageClass", value)
 
     @property
@@ -2801,7 +2801,7 @@ class Bucket(_PropertyMixin):
             query_params["optionsRequestedPolicyVersion"] = requested_policy_version
 
         info = client._get_resource(
-            "%s/iam" % (self.path,),
+            f"{self.path}/iam",
             query_params=query_params,
             timeout=timeout,
             retry=retry,
@@ -2850,7 +2850,7 @@ class Bucket(_PropertyMixin):
         if self.user_project is not None:
             query_params["userProject"] = self.user_project
 
-        path = "{}/iam".format(self.path)
+        path = f"{self.path}/iam"
         resource = policy.to_api_repr()
         resource["resourceId"] = self.path
 
@@ -2902,7 +2902,7 @@ class Bucket(_PropertyMixin):
         if self.user_project is not None:
             query_params["userProject"] = self.user_project
 
-        path = "%s/iam/testPermissions" % (self.path,)
+        path = f"{self.path}/iam/testPermissions"
         resp = client._get_resource(
             path,
             query_params=query_params,
@@ -3207,7 +3207,7 @@ class Bucket(_PropertyMixin):
         if self.user_project is not None:
             query_params["userProject"] = self.user_project
 
-        path = "/b/{}/lockRetentionPolicy".format(self.name)
+        path = f"/b/{self.name}/lockRetentionPolicy"
         api_response = client._post_resource(
             path,
             None,
@@ -3341,15 +3341,13 @@ class Bucket(_PropertyMixin):
             raise ValueError("'version' must be either 'v2' or 'v4'")
 
         if virtual_hosted_style:
-            api_access_endpoint = "https://{bucket_name}.storage.googleapis.com".format(
-                bucket_name=self.name
-            )
+            api_access_endpoint = f"https://{self.name}.storage.googleapis.com"
         elif bucket_bound_hostname:
             api_access_endpoint = _bucket_bound_hostname_url(
                 bucket_bound_hostname, scheme
             )
         else:
-            resource = "/{bucket_name}".format(bucket_name=self.name)
+            resource = f"/{self.name}"
 
         if virtual_hosted_style or bucket_bound_hostname:
             resource = "/"
@@ -3389,6 +3387,4 @@ def _raise_if_len_differs(expected_len, **generation_match_args):
     """
     for name, value in generation_match_args.items():
         if value is not None and len(value) != expected_len:
-            raise ValueError(
-                "'{}' length must be the same as 'blobs' length".format(name)
-            )
+            raise ValueError(f"'{name}' length must be the same as 'blobs' length")

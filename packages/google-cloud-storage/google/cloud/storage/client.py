@@ -272,7 +272,7 @@ class Client(ClientWithProject):
         if project is None:
             project = self.project
 
-        path = "/projects/%s/serviceAccount" % (project,)
+        path = f"/projects/{project}/serviceAccount"
         api_response = self._get_resource(path, timeout=timeout, retry=retry)
         return api_response["email_address"]
 
@@ -1471,7 +1471,7 @@ class Client(ClientWithProject):
         if project_id is None:
             project_id = self.project
 
-        path = "/projects/{}/hmacKeys".format(project_id)
+        path = f"/projects/{project_id}/hmacKeys"
         qs_params = {"serviceAccountEmail": service_account_email}
 
         if user_project is not None:
@@ -1537,7 +1537,7 @@ class Client(ClientWithProject):
         if project_id is None:
             project_id = self.project
 
-        path = "/projects/{}/hmacKeys".format(project_id)
+        path = f"/projects/{project_id}/hmacKeys"
         extra_params = {}
 
         if service_account_email is not None:
@@ -1747,11 +1747,11 @@ class Client(ClientWithProject):
         )
         # designate URL
         if virtual_hosted_style:
-            url = "https://{}.storage.googleapis.com/".format(bucket_name)
+            url = f"https://{bucket_name}.storage.googleapis.com/"
         elif bucket_bound_hostname:
             url = _bucket_bound_hostname_url(bucket_bound_hostname, scheme)
         else:
-            url = "https://storage.googleapis.com/{}/".format(bucket_name)
+            url = f"https://storage.googleapis.com/{bucket_name}/"
 
         return {"url": url, "fields": policy_fields}
 

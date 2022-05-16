@@ -106,7 +106,7 @@ class BlobReader(io.BufferedIOBase):
         for kwarg in download_kwargs:
             if kwarg not in VALID_DOWNLOAD_KWARGS:
                 raise ValueError(
-                    "BlobReader does not support keyword argument {}.".format(kwarg)
+                    f"BlobReader does not support keyword argument {kwarg}."
                 )
 
         self._blob = blob
@@ -144,7 +144,7 @@ class BlobReader(io.BufferedIOBase):
                     end=fetch_end,
                     checksum=None,
                     retry=self._retry,
-                    **self._download_kwargs
+                    **self._download_kwargs,
                 )
             except RequestRangeNotSatisfiable:
                 # We've reached the end of the file. Python file objects should
@@ -299,12 +299,12 @@ class BlobWriter(io.BufferedIOBase):
         text_mode=False,
         ignore_flush=False,
         retry=DEFAULT_RETRY_IF_GENERATION_SPECIFIED,
-        **upload_kwargs
+        **upload_kwargs,
     ):
         for kwarg in upload_kwargs:
             if kwarg not in VALID_UPLOAD_KWARGS:
                 raise ValueError(
-                    "BlobWriter does not support keyword argument {}.".format(kwarg)
+                    f"BlobWriter does not support keyword argument {kwarg}."
                 )
         self._blob = blob
         self._buffer = SlidingBuffer()
@@ -390,7 +390,7 @@ class BlobWriter(io.BufferedIOBase):
             num_retries,
             chunk_size=self._chunk_size,
             retry=retry,
-            **self._upload_kwargs
+            **self._upload_kwargs,
         )
 
     def _upload_chunks_from_buffer(self, num_chunks):

@@ -133,9 +133,7 @@ class HMACKeyMetadata(object):
     def state(self, value):
         if value not in self._SETTABLE_STATES:
             raise ValueError(
-                "State may only be set to one of: {}".format(
-                    ", ".join(self._SETTABLE_STATES)
-                )
+                f"State may only be set to one of: {', '.join(self._SETTABLE_STATES)}"
             )
 
         self._properties["state"] = value
@@ -177,7 +175,7 @@ class HMACKeyMetadata(object):
         if project is None:
             project = self._client.project
 
-        return "/projects/{}/hmacKeys/{}".format(project, self.access_id)
+        return f"/projects/{project}/hmacKeys/{self.access_id}"
 
     @property
     def user_project(self):

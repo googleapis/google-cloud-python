@@ -33,10 +33,8 @@ class TestBucketNotification(unittest.TestCase):
     NOTIFICATION_ID = "123"
     SELF_LINK = "https://example.com/notification/123"
     ETAG = "DEADBEEF"
-    CREATE_PATH = "/b/{}/notificationConfigs".format(BUCKET_NAME)
-    NOTIFICATION_PATH = "/b/{}/notificationConfigs/{}".format(
-        BUCKET_NAME, NOTIFICATION_ID
-    )
+    CREATE_PATH = f"/b/{BUCKET_NAME}/notificationConfigs"
+    NOTIFICATION_PATH = f"/b/{BUCKET_NAME}/notificationConfigs/{NOTIFICATION_ID}"
 
     @staticmethod
     def event_types():

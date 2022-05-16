@@ -42,9 +42,9 @@ _PORT = urllib.parse.urlsplit(_HOST).port
 """The storage testbench docker image info and commands."""
 _DEFAULT_IMAGE_NAME = "gcr.io/cloud-devrel-public-resources/storage-testbench"
 _DEFAULT_IMAGE_TAG = "latest"
-_DOCKER_IMAGE = "{}:{}".format(_DEFAULT_IMAGE_NAME, _DEFAULT_IMAGE_TAG)
+_DOCKER_IMAGE = f"{_DEFAULT_IMAGE_NAME}:{_DEFAULT_IMAGE_TAG}"
 _PULL_CMD = ["docker", "pull", _DOCKER_IMAGE]
-_RUN_CMD = ["docker", "run", "--rm", "-d", "-p", "{}:9000".format(_PORT), _DOCKER_IMAGE]
+_RUN_CMD = ["docker", "run", "--rm", "-d", "-p", f"{_PORT}:9000", _DOCKER_IMAGE]
 
 _CONF_TEST_PROJECT_ID = "my-project-id"
 _CONF_TEST_SERVICE_ACCOUNT_EMAIL = (
@@ -846,9 +846,7 @@ def _get_retry_test(host, id):
     instructions, and a boolean status "completed". This can be used to verify
     if all instructions were used as expected.
     """
-    get_retry_test_uri = "{base}{retry}/{id}".format(
-        base=host, retry="/retry_test", id=id
-    )
+    get_retry_test_uri = f"{host}/retry_test/{id}"
     r = requests.get(get_retry_test_uri)
     return r.json()
 
@@ -892,9 +890,7 @@ def _delete_retry_test(host, id):
     """
     Delete the Retry Test resource by id.
     """
-    get_retry_test_uri = "{base}{retry}/{id}".format(
-        base=host, retry="/retry_test", id=id
-    )
+    get_retry_test_uri = f"{host}/retry_test/{id}"
     requests.delete(get_retry_test_uri)
 
 
@@ -926,7 +922,7 @@ def run_test_case(
         id = r["id"]
     except Exception as e:
         raise Exception(
-            "Error creating retry test for {}: {}".format(method_name, e)
+            f"Error creating retry test for {method_name}: {e}"
         ).with_traceback(e.__traceback__)
 
     # Run retry tests on library methods.
@@ -943,9 +939,7 @@ def run_test_case(
             file_data,
         )
     except Exception as e:
-        logging.exception(
-            "Caught an exception while running retry instructions\n {}".format(e)
-        )
+        logging.exception(f"Caught an exception while running retry instructions\n {e}")
         success_results = False
     else:
         success_results = True
@@ -990,13 +984,11 @@ with subprocess.Popen(_RUN_CMD) as proc:
                 method_name = m["name"]
                 method_group = m["group"] if m.get("group", None) else m["name"]
                 if method_group not in method_mapping:
-                    logging.info("No tests for operation {}".format(method_name))
+                    logging.info(f"No tests for operation {method_name}")
                     continue
 
                 for lib_func in method_mapping[method_group]:
-                    test_name = "test-S{}-{}-{}-{}".format(
-                        id, method_name, lib_func.__name__, i
-                    )
+                    test_name = f"test-S{id}-{method_name}-{lib_func.__name__}-{i}"
                     globals()[test_name] = functools.partial(
                         run_test_case, id, m, c, lib_func, _HOST
                     )

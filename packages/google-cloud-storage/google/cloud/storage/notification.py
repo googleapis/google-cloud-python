@@ -202,9 +202,7 @@ class BucketNotification(object):
     @property
     def path(self):
         """The URL path for this notification."""
-        return "/b/{}/notificationConfigs/{}".format(
-            self.bucket.name, self.notification_id
-        )
+        return f"/b/{self.bucket.name}/notificationConfigs/{self.notification_id}"
 
     def _require_client(self, client):
         """Check client or verify over-ride.
@@ -254,7 +252,7 @@ class BucketNotification(object):
         """
         if self.notification_id is not None:
             raise ValueError(
-                "Notification already exists w/ id: {}".format(self.notification_id)
+                f"Notification already exists w/ id: {self.notification_id}"
             )
 
         client = self._require_client(client)
@@ -263,7 +261,7 @@ class BucketNotification(object):
         if self.bucket.user_project is not None:
             query_params["userProject"] = self.bucket.user_project
 
-        path = "/b/{}/notificationConfigs".format(self.bucket.name)
+        path = f"/b/{self.bucket.name}/notificationConfigs"
         properties = self._properties.copy()
 
         if self.topic_name is None:
