@@ -31,6 +31,7 @@ import pytest
 
 import schema
 
+# This uuid is shared across tests which run in parallel.
 UUID = uuid.uuid4().hex
 try:
     PROJECT_ID = os.environ["GOOGLE_CLOUD_PROJECT"]
@@ -44,6 +45,10 @@ AVRO_SCHEMA_ID = f"schema-test-avro-schema-{UUID}"
 PROTO_SCHEMA_ID = f"schema-test-proto-schema-{UUID}"
 AVSC_FILE = "resources/us-states.avsc"
 PROTO_FILE = "resources/us-states.proto"
+
+# These tests run in parallel if pytest-parallel is installed.
+# Avoid modifying resources that are shared across tests,
+# as this results in test flake.
 
 
 @pytest.fixture(scope="module")

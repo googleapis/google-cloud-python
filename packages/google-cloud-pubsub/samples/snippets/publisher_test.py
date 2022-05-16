@@ -28,12 +28,17 @@ import pytest
 import publisher
 
 
+# This uuid is shared across tests which run in parallel.
 UUID = uuid.uuid4().hex
 PROJECT_ID = os.environ["GOOGLE_CLOUD_PROJECT"]
 TOPIC_ID = "publisher-test-topic-" + UUID
 SUBSCRIPTION_ID = "publisher-test-subscription-" + UUID
 # Allow 60s for tests to finish.
 MAX_TIME = 60
+
+# These tests run in parallel if pytest-parallel is installed.
+# Avoid modifying resources that are shared across tests,
+# as this results in test flake.
 
 if typing.TYPE_CHECKING:
     from unittest.mock import AsyncMock, MagicMock
