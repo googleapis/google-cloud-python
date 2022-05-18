@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-api-core/#history
 
+## [2.8.0](https://github.com/googleapis/python-api-core/compare/v2.7.3...v2.8.0) (2022-05-18)
+
+
+### Features
+
+* adds support for audience in client_options ([#379](https://github.com/googleapis/python-api-core/issues/379)) ([c97c498](https://github.com/googleapis/python-api-core/commit/c97c4980125a86f384cdf12720df7bb1a2adf9d2))
+* adds support for audience in client_options. ([c97c498](https://github.com/googleapis/python-api-core/commit/c97c4980125a86f384cdf12720df7bb1a2adf9d2))
+
 ### [2.7.3](https://github.com/googleapis/python-api-core/compare/v2.7.2...v2.7.3) (2022-04-29)
 
 
