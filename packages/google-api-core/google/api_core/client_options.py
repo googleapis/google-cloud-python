@@ -70,6 +70,11 @@ class ClientOptions(object):
         scopes (Optional[Sequence[str]]): OAuth access token override scopes.
         api_key (Optional[str]): Google API key. ``credentials_file`` and
             ``api_key`` are mutually exclusive.
+        api_audience (Optional[str]): The intended audience for the API calls
+            to the service that will be set when using certain 3rd party
+            authentication flows. Audience is typically a resource identifier.
+            If not set, the service endpoint value will be used as a default.
+            An example of a valid ``api_audience`` is: "https://language.googleapis.com".
 
     Raises:
         ValueError: If both ``client_cert_source`` and ``client_encrypted_cert_source``
@@ -85,6 +90,7 @@ class ClientOptions(object):
         credentials_file=None,
         scopes=None,
         api_key=None,
+        api_audience=None,
     ):
         if client_cert_source and client_encrypted_cert_source:
             raise ValueError(
@@ -99,6 +105,7 @@ class ClientOptions(object):
         self.credentials_file = credentials_file
         self.scopes = scopes
         self.api_key = api_key
+        self.api_audience = api_audience
 
     def __repr__(self):
         return "ClientOptions: " + repr(self.__dict__)
