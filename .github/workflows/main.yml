@@ -43,7 +43,7 @@ jobs:
         run: python3 scripts/updateapilist.py
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - uses: googleapis/code-suggester@v2
+      - uses: googleapis/code-suggester@v3
         env:
           ACCESS_TOKEN: ${{ secrets.YOSHI_CODE_BOT_TOKEN }}
         with:
