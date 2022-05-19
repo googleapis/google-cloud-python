@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.7.0](https://github.com/googleapis/python-recaptcha-enterprise/compare/v1.6.1...v1.7.0) (2022-05-19)
+
+
+### Features
+
+* Add support for Password Check through the private_password_leak_verification field in Assessment ([#233](https://github.com/googleapis/python-recaptcha-enterprise/issues/233)) ([38c7a96](https://github.com/googleapis/python-recaptcha-enterprise/commit/38c7a9685437b4503e16b0a7b3db0b8d3063709d))
+* introduced WafSettings ([86096a4](https://github.com/googleapis/python-recaptcha-enterprise/commit/86096a4edab2304edd469cbd2049f466a009ef2f))
+
+
+### Bug Fixes
+
+* rename parent to project in SearchRelatedAccountGroupMembershipsRequest ([#227](https://github.com/googleapis/python-recaptcha-enterprise/issues/227)) ([86096a4](https://github.com/googleapis/python-recaptcha-enterprise/commit/86096a4edab2304edd469cbd2049f466a009ef2f))
+
 ### [1.6.1](https://github.com/googleapis/python-recaptcha-enterprise/compare/v1.6.0...v1.6.1) (2022-03-05)
 
 
