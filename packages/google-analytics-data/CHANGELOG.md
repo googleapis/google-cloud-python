@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.12.0](https://github.com/googleapis/python-analytics-data/compare/v0.11.2...v0.12.0) (2022-05-07)
+
+
+### Features
+
+* **v1alpha:** add analytics admin v1alpha ([#239](https://github.com/googleapis/python-analytics-data/issues/239)) ([383e896](https://github.com/googleapis/python-analytics-data/commit/383e89613010bd9a5941b425a78b63dab8eb7deb))
+
+
+### Documentation
+
+* clarify start_minutes_ago and end_minutes_ago ([#235](https://github.com/googleapis/python-analytics-data/issues/235)) ([45dd51e](https://github.com/googleapis/python-analytics-data/commit/45dd51e7eb9d627064e72159716b72bcd68a9c48))
+* fix typo in get_common_metadata.py sample ([#224](https://github.com/googleapis/python-analytics-data/issues/224)) ([7234e84](https://github.com/googleapis/python-analytics-data/commit/7234e84c4a2130b8a6055765867467920debfd8a))
+* fixes incorrect comment in python sample ([#220](https://github.com/googleapis/python-analytics-data/issues/220)) ([749e8f2](https://github.com/googleapis/python-analytics-data/commit/749e8f21431dd355bf4547d26b206ecfcf56c509))
+* removes unnecessary period in python sample description ([#225](https://github.com/googleapis/python-analytics-data/issues/225)) ([5e363e4](https://github.com/googleapis/python-analytics-data/commit/5e363e4250587cae7601fa90604274d0bf86a1f1))
+
 ### [0.11.2](https://github.com/googleapis/python-analytics-data/compare/v0.11.1...v0.11.2) (2022-04-01)
 
 
