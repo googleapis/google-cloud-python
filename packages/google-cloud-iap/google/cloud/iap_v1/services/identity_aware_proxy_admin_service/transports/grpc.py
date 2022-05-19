@@ -22,6 +22,7 @@ from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
+from google.protobuf import empty_pb2  # type: ignore
 import grpc  # type: ignore
 
 from google.cloud.iap_v1.types import service
@@ -373,6 +374,140 @@ class IdentityAwareProxyAdminServiceGrpcTransport(
                 response_deserializer=service.IapSettings.deserialize,
             )
         return self._stubs["update_iap_settings"]
+
+    @property
+    def list_tunnel_dest_groups(
+        self,
+    ) -> Callable[
+        [service.ListTunnelDestGroupsRequest], service.ListTunnelDestGroupsResponse
+    ]:
+        r"""Return a callable for the list tunnel dest groups method over gRPC.
+
+        Lists the existing TunnelDestGroups. To group across all
+        locations, use a ``-`` as the location ID. For example:
+        ``/v1/projects/123/iap_tunnel/locations/-/destGroups``
+
+        Returns:
+            Callable[[~.ListTunnelDestGroupsRequest],
+                    ~.ListTunnelDestGroupsResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_tunnel_dest_groups" not in self._stubs:
+            self._stubs["list_tunnel_dest_groups"] = self.grpc_channel.unary_unary(
+                "/google.cloud.iap.v1.IdentityAwareProxyAdminService/ListTunnelDestGroups",
+                request_serializer=service.ListTunnelDestGroupsRequest.serialize,
+                response_deserializer=service.ListTunnelDestGroupsResponse.deserialize,
+            )
+        return self._stubs["list_tunnel_dest_groups"]
+
+    @property
+    def create_tunnel_dest_group(
+        self,
+    ) -> Callable[[service.CreateTunnelDestGroupRequest], service.TunnelDestGroup]:
+        r"""Return a callable for the create tunnel dest group method over gRPC.
+
+        Creates a new TunnelDestGroup.
+
+        Returns:
+            Callable[[~.CreateTunnelDestGroupRequest],
+                    ~.TunnelDestGroup]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_tunnel_dest_group" not in self._stubs:
+            self._stubs["create_tunnel_dest_group"] = self.grpc_channel.unary_unary(
+                "/google.cloud.iap.v1.IdentityAwareProxyAdminService/CreateTunnelDestGroup",
+                request_serializer=service.CreateTunnelDestGroupRequest.serialize,
+                response_deserializer=service.TunnelDestGroup.deserialize,
+            )
+        return self._stubs["create_tunnel_dest_group"]
+
+    @property
+    def get_tunnel_dest_group(
+        self,
+    ) -> Callable[[service.GetTunnelDestGroupRequest], service.TunnelDestGroup]:
+        r"""Return a callable for the get tunnel dest group method over gRPC.
+
+        Retrieves an existing TunnelDestGroup.
+
+        Returns:
+            Callable[[~.GetTunnelDestGroupRequest],
+                    ~.TunnelDestGroup]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_tunnel_dest_group" not in self._stubs:
+            self._stubs["get_tunnel_dest_group"] = self.grpc_channel.unary_unary(
+                "/google.cloud.iap.v1.IdentityAwareProxyAdminService/GetTunnelDestGroup",
+                request_serializer=service.GetTunnelDestGroupRequest.serialize,
+                response_deserializer=service.TunnelDestGroup.deserialize,
+            )
+        return self._stubs["get_tunnel_dest_group"]
+
+    @property
+    def delete_tunnel_dest_group(
+        self,
+    ) -> Callable[[service.DeleteTunnelDestGroupRequest], empty_pb2.Empty]:
+        r"""Return a callable for the delete tunnel dest group method over gRPC.
+
+        Deletes a TunnelDestGroup.
+
+        Returns:
+            Callable[[~.DeleteTunnelDestGroupRequest],
+                    ~.Empty]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_tunnel_dest_group" not in self._stubs:
+            self._stubs["delete_tunnel_dest_group"] = self.grpc_channel.unary_unary(
+                "/google.cloud.iap.v1.IdentityAwareProxyAdminService/DeleteTunnelDestGroup",
+                request_serializer=service.DeleteTunnelDestGroupRequest.serialize,
+                response_deserializer=empty_pb2.Empty.FromString,
+            )
+        return self._stubs["delete_tunnel_dest_group"]
+
+    @property
+    def update_tunnel_dest_group(
+        self,
+    ) -> Callable[[service.UpdateTunnelDestGroupRequest], service.TunnelDestGroup]:
+        r"""Return a callable for the update tunnel dest group method over gRPC.
+
+        Updates a TunnelDestGroup.
+
+        Returns:
+            Callable[[~.UpdateTunnelDestGroupRequest],
+                    ~.TunnelDestGroup]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_tunnel_dest_group" not in self._stubs:
+            self._stubs["update_tunnel_dest_group"] = self.grpc_channel.unary_unary(
+                "/google.cloud.iap.v1.IdentityAwareProxyAdminService/UpdateTunnelDestGroup",
+                request_serializer=service.UpdateTunnelDestGroupRequest.serialize,
+                response_deserializer=service.TunnelDestGroup.deserialize,
+            )
+        return self._stubs["update_tunnel_dest_group"]
 
     def close(self):
         self.grpc_channel.close()

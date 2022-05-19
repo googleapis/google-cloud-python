@@ -33,7 +33,9 @@ except AttributeError:  # pragma: NO COVER
 
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
+from google.protobuf import field_mask_pb2  # type: ignore
 
+from google.cloud.iap_v1.services.identity_aware_proxy_admin_service import pagers
 from google.cloud.iap_v1.types import service
 
 from .client import IdentityAwareProxyAdminServiceClient
@@ -52,6 +54,18 @@ class IdentityAwareProxyAdminServiceAsyncClient:
     DEFAULT_ENDPOINT = IdentityAwareProxyAdminServiceClient.DEFAULT_ENDPOINT
     DEFAULT_MTLS_ENDPOINT = IdentityAwareProxyAdminServiceClient.DEFAULT_MTLS_ENDPOINT
 
+    tunnel_dest_group_path = staticmethod(
+        IdentityAwareProxyAdminServiceClient.tunnel_dest_group_path
+    )
+    parse_tunnel_dest_group_path = staticmethod(
+        IdentityAwareProxyAdminServiceClient.parse_tunnel_dest_group_path
+    )
+    tunnel_location_path = staticmethod(
+        IdentityAwareProxyAdminServiceClient.tunnel_location_path
+    )
+    parse_tunnel_location_path = staticmethod(
+        IdentityAwareProxyAdminServiceClient.parse_tunnel_location_path
+    )
     common_billing_account_path = staticmethod(
         IdentityAwareProxyAdminServiceClient.common_billing_account_path
     )
@@ -704,6 +718,527 @@ class IdentityAwareProxyAdminServiceAsyncClient:
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata(
                 (("iap_settings.name", request.iap_settings.name),)
+            ),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def list_tunnel_dest_groups(
+        self,
+        request: Union[service.ListTunnelDestGroupsRequest, dict] = None,
+        *,
+        parent: str = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListTunnelDestGroupsAsyncPager:
+        r"""Lists the existing TunnelDestGroups. To group across all
+        locations, use a ``-`` as the location ID. For example:
+        ``/v1/projects/123/iap_tunnel/locations/-/destGroups``
+
+        .. code-block:: python
+
+            from google.cloud import iap_v1
+
+            async def sample_list_tunnel_dest_groups():
+                # Create a client
+                client = iap_v1.IdentityAwareProxyAdminServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = iap_v1.ListTunnelDestGroupsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_tunnel_dest_groups(request=request)
+
+                # Handle the response
+                async for response in page_result:
+                    print(response)
+
+        Args:
+            request (Union[google.cloud.iap_v1.types.ListTunnelDestGroupsRequest, dict]):
+                The request object. The request to ListTunnelDestGroups.
+            parent (:class:`str`):
+                Required. Google Cloud Project ID and location. In the
+                following format:
+                ``projects/{project_number/id}/iap_tunnel/locations/{location}``.
+                A ``-`` can be used for the location to group across all
+                locations.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.iap_v1.services.identity_aware_proxy_admin_service.pagers.ListTunnelDestGroupsAsyncPager:
+                The response from
+                ListTunnelDestGroups.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = service.ListTunnelDestGroupsRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.list_tunnel_dest_groups,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__aiter__` convenience method.
+        response = pagers.ListTunnelDestGroupsAsyncPager(
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def create_tunnel_dest_group(
+        self,
+        request: Union[service.CreateTunnelDestGroupRequest, dict] = None,
+        *,
+        parent: str = None,
+        tunnel_dest_group: service.TunnelDestGroup = None,
+        tunnel_dest_group_id: str = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> service.TunnelDestGroup:
+        r"""Creates a new TunnelDestGroup.
+
+        .. code-block:: python
+
+            from google.cloud import iap_v1
+
+            async def sample_create_tunnel_dest_group():
+                # Create a client
+                client = iap_v1.IdentityAwareProxyAdminServiceAsyncClient()
+
+                # Initialize request argument(s)
+                tunnel_dest_group = iap_v1.TunnelDestGroup()
+                tunnel_dest_group.name = "name_value"
+
+                request = iap_v1.CreateTunnelDestGroupRequest(
+                    parent="parent_value",
+                    tunnel_dest_group=tunnel_dest_group,
+                    tunnel_dest_group_id="tunnel_dest_group_id_value",
+                )
+
+                # Make the request
+                response = await client.create_tunnel_dest_group(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.iap_v1.types.CreateTunnelDestGroupRequest, dict]):
+                The request object. The request to
+                CreateTunnelDestGroup.
+            parent (:class:`str`):
+                Required. Google Cloud Project ID and location. In the
+                following format:
+                ``projects/{project_number/id}/iap_tunnel/locations/{location}``.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            tunnel_dest_group (:class:`google.cloud.iap_v1.types.TunnelDestGroup`):
+                Required. The TunnelDestGroup to
+                create.
+
+                This corresponds to the ``tunnel_dest_group`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            tunnel_dest_group_id (:class:`str`):
+                Required. The ID to use for the TunnelDestGroup, which
+                becomes the final component of the resource name.
+
+                This value must be 4-63 characters, and valid characters
+                are ``[a-z][0-9]-``.
+
+                This corresponds to the ``tunnel_dest_group_id`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.iap_v1.types.TunnelDestGroup:
+                A TunnelDestGroup.
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent, tunnel_dest_group, tunnel_dest_group_id])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = service.CreateTunnelDestGroupRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+        if tunnel_dest_group is not None:
+            request.tunnel_dest_group = tunnel_dest_group
+        if tunnel_dest_group_id is not None:
+            request.tunnel_dest_group_id = tunnel_dest_group_id
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.create_tunnel_dest_group,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def get_tunnel_dest_group(
+        self,
+        request: Union[service.GetTunnelDestGroupRequest, dict] = None,
+        *,
+        name: str = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> service.TunnelDestGroup:
+        r"""Retrieves an existing TunnelDestGroup.
+
+        .. code-block:: python
+
+            from google.cloud import iap_v1
+
+            async def sample_get_tunnel_dest_group():
+                # Create a client
+                client = iap_v1.IdentityAwareProxyAdminServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = iap_v1.GetTunnelDestGroupRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = await client.get_tunnel_dest_group(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.iap_v1.types.GetTunnelDestGroupRequest, dict]):
+                The request object. The request to GetTunnelDestGroup.
+            name (:class:`str`):
+                Required. Name of the TunnelDestGroup to be fetched. In
+                the following format:
+                ``projects/{project_number/id}/iap_tunnel/locations/{location}/destGroups/{dest_group}``.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.iap_v1.types.TunnelDestGroup:
+                A TunnelDestGroup.
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = service.GetTunnelDestGroupRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.get_tunnel_dest_group,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def delete_tunnel_dest_group(
+        self,
+        request: Union[service.DeleteTunnelDestGroupRequest, dict] = None,
+        *,
+        name: str = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> None:
+        r"""Deletes a TunnelDestGroup.
+
+        .. code-block:: python
+
+            from google.cloud import iap_v1
+
+            async def sample_delete_tunnel_dest_group():
+                # Create a client
+                client = iap_v1.IdentityAwareProxyAdminServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = iap_v1.DeleteTunnelDestGroupRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                await client.delete_tunnel_dest_group(request=request)
+
+        Args:
+            request (Union[google.cloud.iap_v1.types.DeleteTunnelDestGroupRequest, dict]):
+                The request object. The request to
+                DeleteTunnelDestGroup.
+            name (:class:`str`):
+                Required. Name of the TunnelDestGroup to delete. In the
+                following format:
+                ``projects/{project_number/id}/iap_tunnel/locations/{location}/destGroups/{dest_group}``.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = service.DeleteTunnelDestGroupRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.delete_tunnel_dest_group,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+    async def update_tunnel_dest_group(
+        self,
+        request: Union[service.UpdateTunnelDestGroupRequest, dict] = None,
+        *,
+        tunnel_dest_group: service.TunnelDestGroup = None,
+        update_mask: field_mask_pb2.FieldMask = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> service.TunnelDestGroup:
+        r"""Updates a TunnelDestGroup.
+
+        .. code-block:: python
+
+            from google.cloud import iap_v1
+
+            async def sample_update_tunnel_dest_group():
+                # Create a client
+                client = iap_v1.IdentityAwareProxyAdminServiceAsyncClient()
+
+                # Initialize request argument(s)
+                tunnel_dest_group = iap_v1.TunnelDestGroup()
+                tunnel_dest_group.name = "name_value"
+
+                request = iap_v1.UpdateTunnelDestGroupRequest(
+                    tunnel_dest_group=tunnel_dest_group,
+                )
+
+                # Make the request
+                response = await client.update_tunnel_dest_group(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.iap_v1.types.UpdateTunnelDestGroupRequest, dict]):
+                The request object. The request to
+                UpdateTunnelDestGroup.
+            tunnel_dest_group (:class:`google.cloud.iap_v1.types.TunnelDestGroup`):
+                Required. The new values for the
+                TunnelDestGroup.
+
+                This corresponds to the ``tunnel_dest_group`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
+                A field mask that specifies which IAP
+                settings to update. If omitted, then all
+                of the settings are updated. See
+                https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#fieldmask
+
+                This corresponds to the ``update_mask`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.iap_v1.types.TunnelDestGroup:
+                A TunnelDestGroup.
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([tunnel_dest_group, update_mask])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = service.UpdateTunnelDestGroupRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if tunnel_dest_group is not None:
+            request.tunnel_dest_group = tunnel_dest_group
+        if update_mask is not None:
+            request.update_mask = update_mask
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.update_tunnel_dest_group,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("tunnel_dest_group.name", request.tunnel_dest_group.name),)
             ),
         )
 

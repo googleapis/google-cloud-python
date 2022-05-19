@@ -10,6 +10,16 @@
         "grpc": {
           "libraryClient": "IdentityAwareProxyAdminServiceClient",
           "rpcs": {
+            "CreateTunnelDestGroup": {
+              "methods": [
+                "create_tunnel_dest_group"
+              ]
+            },
+            "DeleteTunnelDestGroup": {
+              "methods": [
+                "delete_tunnel_dest_group"
+              ]
+            },
             "GetIamPolicy": {
               "methods": [
                 "get_iam_policy"
@@ -18,6 +28,16 @@
             "GetIapSettings": {
               "methods": [
                 "get_iap_settings"
+              ]
+            },
+            "GetTunnelDestGroup": {
+              "methods": [
+                "get_tunnel_dest_group"
+              ]
+            },
+            "ListTunnelDestGroups": {
+              "methods": [
+                "list_tunnel_dest_groups"
               ]
             },
             "SetIamPolicy": {
@@ -33,6 +53,11 @@
             "UpdateIapSettings": {
               "methods": [
                 "update_iap_settings"
+              ]
+            },
+            "UpdateTunnelDestGroup": {
+              "methods": [
+                "update_tunnel_dest_group"
               ]
             }
           }
@@ -40,6 +65,16 @@
         "grpc-async": {
           "libraryClient": "IdentityAwareProxyAdminServiceAsyncClient",
           "rpcs": {
+            "CreateTunnelDestGroup": {
+              "methods": [
+                "create_tunnel_dest_group"
+              ]
+            },
+            "DeleteTunnelDestGroup": {
+              "methods": [
+                "delete_tunnel_dest_group"
+              ]
+            },
             "GetIamPolicy": {
               "methods": [
                 "get_iam_policy"
@@ -48,6 +83,16 @@
             "GetIapSettings": {
               "methods": [
                 "get_iap_settings"
+              ]
+            },
+            "GetTunnelDestGroup": {
+              "methods": [
+                "get_tunnel_dest_group"
+              ]
+            },
+            "ListTunnelDestGroups": {
+              "methods": [
+                "list_tunnel_dest_groups"
               ]
             },
             "SetIamPolicy": {
@@ -63,6 +108,11 @@
             "UpdateIapSettings": {
               "methods": [
                 "update_iap_settings"
+              ]
+            },
+            "UpdateTunnelDestGroup": {
+              "methods": [
+                "update_tunnel_dest_group"
               ]
             }
           }

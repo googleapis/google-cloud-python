@@ -41,17 +41,22 @@ class iapCallTransformer(cst.CSTTransformer):
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
         'create_brand': ('parent', 'brand', ),
         'create_identity_aware_proxy_client': ('parent', 'identity_aware_proxy_client', ),
+        'create_tunnel_dest_group': ('parent', 'tunnel_dest_group', 'tunnel_dest_group_id', ),
         'delete_identity_aware_proxy_client': ('name', ),
+        'delete_tunnel_dest_group': ('name', ),
         'get_brand': ('name', ),
         'get_iam_policy': ('resource', 'options', ),
         'get_iap_settings': ('name', ),
         'get_identity_aware_proxy_client': ('name', ),
+        'get_tunnel_dest_group': ('name', ),
         'list_brands': ('parent', ),
         'list_identity_aware_proxy_clients': ('parent', 'page_size', 'page_token', ),
+        'list_tunnel_dest_groups': ('parent', 'page_size', 'page_token', ),
         'reset_identity_aware_proxy_client_secret': ('name', ),
         'set_iam_policy': ('resource', 'policy', 'update_mask', ),
         'test_iam_permissions': ('resource', 'permissions', ),
         'update_iap_settings': ('iap_settings', 'update_mask', ),
+        'update_tunnel_dest_group': ('tunnel_dest_group', 'update_mask', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:

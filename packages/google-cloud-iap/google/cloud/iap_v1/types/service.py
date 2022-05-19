@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import wrappers_pb2  # type: ignore
 import proto  # type: ignore
@@ -20,6 +21,13 @@ import proto  # type: ignore
 __protobuf__ = proto.module(
     package="google.cloud.iap.v1",
     manifest={
+        "ListTunnelDestGroupsRequest",
+        "ListTunnelDestGroupsResponse",
+        "CreateTunnelDestGroupRequest",
+        "GetTunnelDestGroupRequest",
+        "DeleteTunnelDestGroupRequest",
+        "UpdateTunnelDestGroupRequest",
+        "TunnelDestGroup",
         "GetIapSettingsRequest",
         "UpdateIapSettingsRequest",
         "IapSettings",
@@ -27,6 +35,7 @@ __protobuf__ = proto.module(
         "GcipSettings",
         "CorsSettings",
         "OAuthSettings",
+        "ReauthSettings",
         "ApplicationSettings",
         "CsmSettings",
         "AccessDeniedPageSettings",
@@ -44,6 +53,194 @@ __protobuf__ = proto.module(
         "IdentityAwareProxyClient",
     },
 )
+
+
+class ListTunnelDestGroupsRequest(proto.Message):
+    r"""The request to ListTunnelDestGroups.
+
+    Attributes:
+        parent (str):
+            Required. Google Cloud Project ID and location. In the
+            following format:
+            ``projects/{project_number/id}/iap_tunnel/locations/{location}``.
+            A ``-`` can be used for the location to group across all
+            locations.
+        page_size (int):
+            The maximum number of groups to return. The
+            service might return fewer than this value.
+            If unspecified, at most 100 groups are returned.
+            The maximum value is 1000; values above 1000 are
+            coerced to 1000.
+        page_token (str):
+            A page token, received from a previous
+            ``ListTunnelDestGroups`` call. Provide this to retrieve the
+            subsequent page.
+
+            When paginating, all other parameters provided to
+            ``ListTunnelDestGroups`` must match the call that provided
+            the page token.
+    """
+
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class ListTunnelDestGroupsResponse(proto.Message):
+    r"""The response from ListTunnelDestGroups.
+
+    Attributes:
+        tunnel_dest_groups (Sequence[google.cloud.iap_v1.types.TunnelDestGroup]):
+            TunnelDestGroup existing in the project.
+        next_page_token (str):
+            A token that you can send as ``page_token`` to retrieve the
+            next page. If this field is omitted, there are no subsequent
+            pages.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    tunnel_dest_groups = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="TunnelDestGroup",
+    )
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class CreateTunnelDestGroupRequest(proto.Message):
+    r"""The request to CreateTunnelDestGroup.
+
+    Attributes:
+        parent (str):
+            Required. Google Cloud Project ID and location. In the
+            following format:
+            ``projects/{project_number/id}/iap_tunnel/locations/{location}``.
+        tunnel_dest_group (google.cloud.iap_v1.types.TunnelDestGroup):
+            Required. The TunnelDestGroup to create.
+        tunnel_dest_group_id (str):
+            Required. The ID to use for the TunnelDestGroup, which
+            becomes the final component of the resource name.
+
+            This value must be 4-63 characters, and valid characters are
+            ``[a-z][0-9]-``.
+    """
+
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    tunnel_dest_group = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="TunnelDestGroup",
+    )
+    tunnel_dest_group_id = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class GetTunnelDestGroupRequest(proto.Message):
+    r"""The request to GetTunnelDestGroup.
+
+    Attributes:
+        name (str):
+            Required. Name of the TunnelDestGroup to be fetched. In the
+            following format:
+            ``projects/{project_number/id}/iap_tunnel/locations/{location}/destGroups/{dest_group}``.
+    """
+
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class DeleteTunnelDestGroupRequest(proto.Message):
+    r"""The request to DeleteTunnelDestGroup.
+
+    Attributes:
+        name (str):
+            Required. Name of the TunnelDestGroup to delete. In the
+            following format:
+            ``projects/{project_number/id}/iap_tunnel/locations/{location}/destGroups/{dest_group}``.
+    """
+
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class UpdateTunnelDestGroupRequest(proto.Message):
+    r"""The request to UpdateTunnelDestGroup.
+
+    Attributes:
+        tunnel_dest_group (google.cloud.iap_v1.types.TunnelDestGroup):
+            Required. The new values for the
+            TunnelDestGroup.
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            A field mask that specifies which IAP
+            settings to update. If omitted, then all of the
+            settings are updated. See
+            https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#fieldmask
+    """
+
+    tunnel_dest_group = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="TunnelDestGroup",
+    )
+    update_mask = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
+    )
+
+
+class TunnelDestGroup(proto.Message):
+    r"""A TunnelDestGroup.
+
+    Attributes:
+        name (str):
+            Required. Immutable. Identifier for the
+            TunnelDestGroup. Must be unique within the
+            project.
+        cidrs (Sequence[str]):
+            null List of CIDRs that this group applies
+            to.
+        fqdns (Sequence[str]):
+            null List of FQDNs that this group applies
+            to.
+    """
+
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    cidrs = proto.RepeatedField(
+        proto.STRING,
+        number=2,
+    )
+    fqdns = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
 
 
 class GetIapSettingsRequest(proto.Message):
@@ -132,6 +329,9 @@ class AccessSettings(proto.Message):
             via IAP.
         oauth_settings (google.cloud.iap_v1.types.OAuthSettings):
             Settings to configure IAP's OAuth behavior.
+        reauth_settings (google.cloud.iap_v1.types.ReauthSettings):
+            Settings to configure reauthentication
+            policies in IAP.
     """
 
     gcip_settings = proto.Field(
@@ -148,6 +348,11 @@ class AccessSettings(proto.Message):
         proto.MESSAGE,
         number=3,
         message="OAuthSettings",
+    )
+    reauth_settings = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message="ReauthSettings",
     )
 
 
@@ -220,6 +425,52 @@ class OAuthSettings(proto.Message):
         proto.MESSAGE,
         number=2,
         message=wrappers_pb2.StringValue,
+    )
+
+
+class ReauthSettings(proto.Message):
+    r"""Configuration for IAP reauthentication policies.
+
+    Attributes:
+        method (google.cloud.iap_v1.types.ReauthSettings.Method):
+            Reauth method required by the policy.
+        max_age (google.protobuf.duration_pb2.Duration):
+            Reauth session lifetime, how long before a
+            user has to reauthenticate again.
+        policy_type (google.cloud.iap_v1.types.ReauthSettings.PolicyType):
+            How IAP determines the effective policy in
+            cases of hierarchial policies. Policies are
+            merged from higher in the hierarchy to lower in
+            the hierarchy.
+    """
+
+    class Method(proto.Enum):
+        r"""Types of reauthentication methods supported by IAP."""
+        METHOD_UNSPECIFIED = 0
+        LOGIN = 1
+        PASSWORD = 2
+        SECURE_KEY = 3
+
+    class PolicyType(proto.Enum):
+        r"""Type of policy in the case of hierarchial policies."""
+        POLICY_TYPE_UNSPECIFIED = 0
+        MINIMUM = 1
+        DEFAULT = 2
+
+    method = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=Method,
+    )
+    max_age = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=duration_pb2.Duration,
+    )
+    policy_type = proto.Field(
+        proto.ENUM,
+        number=3,
+        enum=PolicyType,
     )
 
 

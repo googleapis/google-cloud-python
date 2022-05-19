@@ -26,6 +26,7 @@ from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import options_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
 from google.oauth2 import service_account
+from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import wrappers_pb2  # type: ignore
 from google.type import expr_pb2  # type: ignore
@@ -38,6 +39,7 @@ import pytest
 from google.cloud.iap_v1.services.identity_aware_proxy_admin_service import (
     IdentityAwareProxyAdminServiceAsyncClient,
     IdentityAwareProxyAdminServiceClient,
+    pagers,
     transports,
 )
 from google.cloud.iap_v1.types import service
@@ -1509,6 +1511,1474 @@ async def test_update_iap_settings_field_headers_async():
     ) in kw["metadata"]
 
 
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.ListTunnelDestGroupsRequest,
+        dict,
+    ],
+)
+def test_list_tunnel_dest_groups(request_type, transport: str = "grpc"):
+    client = IdentityAwareProxyAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_tunnel_dest_groups), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = service.ListTunnelDestGroupsResponse(
+            next_page_token="next_page_token_value",
+        )
+        response = client.list_tunnel_dest_groups(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.ListTunnelDestGroupsRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListTunnelDestGroupsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_tunnel_dest_groups_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = IdentityAwareProxyAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_tunnel_dest_groups), "__call__"
+    ) as call:
+        client.list_tunnel_dest_groups()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.ListTunnelDestGroupsRequest()
+
+
+@pytest.mark.asyncio
+async def test_list_tunnel_dest_groups_async(
+    transport: str = "grpc_asyncio", request_type=service.ListTunnelDestGroupsRequest
+):
+    client = IdentityAwareProxyAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_tunnel_dest_groups), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service.ListTunnelDestGroupsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_tunnel_dest_groups(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.ListTunnelDestGroupsRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListTunnelDestGroupsAsyncPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.asyncio
+async def test_list_tunnel_dest_groups_async_from_dict():
+    await test_list_tunnel_dest_groups_async(request_type=dict)
+
+
+def test_list_tunnel_dest_groups_field_headers():
+    client = IdentityAwareProxyAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = service.ListTunnelDestGroupsRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_tunnel_dest_groups), "__call__"
+    ) as call:
+        call.return_value = service.ListTunnelDestGroupsResponse()
+        client.list_tunnel_dest_groups(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_list_tunnel_dest_groups_field_headers_async():
+    client = IdentityAwareProxyAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = service.ListTunnelDestGroupsRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_tunnel_dest_groups), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service.ListTunnelDestGroupsResponse()
+        )
+        await client.list_tunnel_dest_groups(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+def test_list_tunnel_dest_groups_flattened():
+    client = IdentityAwareProxyAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_tunnel_dest_groups), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = service.ListTunnelDestGroupsResponse()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.list_tunnel_dest_groups(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+def test_list_tunnel_dest_groups_flattened_error():
+    client = IdentityAwareProxyAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_tunnel_dest_groups(
+            service.ListTunnelDestGroupsRequest(),
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_tunnel_dest_groups_flattened_async():
+    client = IdentityAwareProxyAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_tunnel_dest_groups), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = service.ListTunnelDestGroupsResponse()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service.ListTunnelDestGroupsResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.list_tunnel_dest_groups(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_list_tunnel_dest_groups_flattened_error_async():
+    client = IdentityAwareProxyAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.list_tunnel_dest_groups(
+            service.ListTunnelDestGroupsRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_tunnel_dest_groups_pager(transport_name: str = "grpc"):
+    client = IdentityAwareProxyAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_tunnel_dest_groups), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            service.ListTunnelDestGroupsResponse(
+                tunnel_dest_groups=[
+                    service.TunnelDestGroup(),
+                    service.TunnelDestGroup(),
+                    service.TunnelDestGroup(),
+                ],
+                next_page_token="abc",
+            ),
+            service.ListTunnelDestGroupsResponse(
+                tunnel_dest_groups=[],
+                next_page_token="def",
+            ),
+            service.ListTunnelDestGroupsResponse(
+                tunnel_dest_groups=[
+                    service.TunnelDestGroup(),
+                ],
+                next_page_token="ghi",
+            ),
+            service.ListTunnelDestGroupsResponse(
+                tunnel_dest_groups=[
+                    service.TunnelDestGroup(),
+                    service.TunnelDestGroup(),
+                ],
+            ),
+            RuntimeError,
+        )
+
+        metadata = ()
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
+        )
+        pager = client.list_tunnel_dest_groups(request={})
+
+        assert pager._metadata == metadata
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, service.TunnelDestGroup) for i in results)
+
+
+def test_list_tunnel_dest_groups_pages(transport_name: str = "grpc"):
+    client = IdentityAwareProxyAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_tunnel_dest_groups), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            service.ListTunnelDestGroupsResponse(
+                tunnel_dest_groups=[
+                    service.TunnelDestGroup(),
+                    service.TunnelDestGroup(),
+                    service.TunnelDestGroup(),
+                ],
+                next_page_token="abc",
+            ),
+            service.ListTunnelDestGroupsResponse(
+                tunnel_dest_groups=[],
+                next_page_token="def",
+            ),
+            service.ListTunnelDestGroupsResponse(
+                tunnel_dest_groups=[
+                    service.TunnelDestGroup(),
+                ],
+                next_page_token="ghi",
+            ),
+            service.ListTunnelDestGroupsResponse(
+                tunnel_dest_groups=[
+                    service.TunnelDestGroup(),
+                    service.TunnelDestGroup(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = list(client.list_tunnel_dest_groups(request={}).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.asyncio
+async def test_list_tunnel_dest_groups_async_pager():
+    client = IdentityAwareProxyAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_tunnel_dest_groups),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            service.ListTunnelDestGroupsResponse(
+                tunnel_dest_groups=[
+                    service.TunnelDestGroup(),
+                    service.TunnelDestGroup(),
+                    service.TunnelDestGroup(),
+                ],
+                next_page_token="abc",
+            ),
+            service.ListTunnelDestGroupsResponse(
+                tunnel_dest_groups=[],
+                next_page_token="def",
+            ),
+            service.ListTunnelDestGroupsResponse(
+                tunnel_dest_groups=[
+                    service.TunnelDestGroup(),
+                ],
+                next_page_token="ghi",
+            ),
+            service.ListTunnelDestGroupsResponse(
+                tunnel_dest_groups=[
+                    service.TunnelDestGroup(),
+                    service.TunnelDestGroup(),
+                ],
+            ),
+            RuntimeError,
+        )
+        async_pager = await client.list_tunnel_dest_groups(
+            request={},
+        )
+        assert async_pager.next_page_token == "abc"
+        responses = []
+        async for response in async_pager:  # pragma: no branch
+            responses.append(response)
+
+        assert len(responses) == 6
+        assert all(isinstance(i, service.TunnelDestGroup) for i in responses)
+
+
+@pytest.mark.asyncio
+async def test_list_tunnel_dest_groups_async_pages():
+    client = IdentityAwareProxyAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_tunnel_dest_groups),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            service.ListTunnelDestGroupsResponse(
+                tunnel_dest_groups=[
+                    service.TunnelDestGroup(),
+                    service.TunnelDestGroup(),
+                    service.TunnelDestGroup(),
+                ],
+                next_page_token="abc",
+            ),
+            service.ListTunnelDestGroupsResponse(
+                tunnel_dest_groups=[],
+                next_page_token="def",
+            ),
+            service.ListTunnelDestGroupsResponse(
+                tunnel_dest_groups=[
+                    service.TunnelDestGroup(),
+                ],
+                next_page_token="ghi",
+            ),
+            service.ListTunnelDestGroupsResponse(
+                tunnel_dest_groups=[
+                    service.TunnelDestGroup(),
+                    service.TunnelDestGroup(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = []
+        async for page_ in (
+            await client.list_tunnel_dest_groups(request={})
+        ).pages:  # pragma: no branch
+            pages.append(page_)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.CreateTunnelDestGroupRequest,
+        dict,
+    ],
+)
+def test_create_tunnel_dest_group(request_type, transport: str = "grpc"):
+    client = IdentityAwareProxyAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_tunnel_dest_group), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = service.TunnelDestGroup(
+            name="name_value",
+            cidrs=["cidrs_value"],
+            fqdns=["fqdns_value"],
+        )
+        response = client.create_tunnel_dest_group(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.CreateTunnelDestGroupRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, service.TunnelDestGroup)
+    assert response.name == "name_value"
+    assert response.cidrs == ["cidrs_value"]
+    assert response.fqdns == ["fqdns_value"]
+
+
+def test_create_tunnel_dest_group_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = IdentityAwareProxyAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_tunnel_dest_group), "__call__"
+    ) as call:
+        client.create_tunnel_dest_group()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.CreateTunnelDestGroupRequest()
+
+
+@pytest.mark.asyncio
+async def test_create_tunnel_dest_group_async(
+    transport: str = "grpc_asyncio", request_type=service.CreateTunnelDestGroupRequest
+):
+    client = IdentityAwareProxyAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_tunnel_dest_group), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service.TunnelDestGroup(
+                name="name_value",
+                cidrs=["cidrs_value"],
+                fqdns=["fqdns_value"],
+            )
+        )
+        response = await client.create_tunnel_dest_group(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.CreateTunnelDestGroupRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, service.TunnelDestGroup)
+    assert response.name == "name_value"
+    assert response.cidrs == ["cidrs_value"]
+    assert response.fqdns == ["fqdns_value"]
+
+
+@pytest.mark.asyncio
+async def test_create_tunnel_dest_group_async_from_dict():
+    await test_create_tunnel_dest_group_async(request_type=dict)
+
+
+def test_create_tunnel_dest_group_field_headers():
+    client = IdentityAwareProxyAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = service.CreateTunnelDestGroupRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_tunnel_dest_group), "__call__"
+    ) as call:
+        call.return_value = service.TunnelDestGroup()
+        client.create_tunnel_dest_group(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_create_tunnel_dest_group_field_headers_async():
+    client = IdentityAwareProxyAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = service.CreateTunnelDestGroupRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_tunnel_dest_group), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service.TunnelDestGroup()
+        )
+        await client.create_tunnel_dest_group(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+def test_create_tunnel_dest_group_flattened():
+    client = IdentityAwareProxyAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_tunnel_dest_group), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = service.TunnelDestGroup()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.create_tunnel_dest_group(
+            parent="parent_value",
+            tunnel_dest_group=service.TunnelDestGroup(name="name_value"),
+            tunnel_dest_group_id="tunnel_dest_group_id_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].tunnel_dest_group
+        mock_val = service.TunnelDestGroup(name="name_value")
+        assert arg == mock_val
+        arg = args[0].tunnel_dest_group_id
+        mock_val = "tunnel_dest_group_id_value"
+        assert arg == mock_val
+
+
+def test_create_tunnel_dest_group_flattened_error():
+    client = IdentityAwareProxyAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_tunnel_dest_group(
+            service.CreateTunnelDestGroupRequest(),
+            parent="parent_value",
+            tunnel_dest_group=service.TunnelDestGroup(name="name_value"),
+            tunnel_dest_group_id="tunnel_dest_group_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_tunnel_dest_group_flattened_async():
+    client = IdentityAwareProxyAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_tunnel_dest_group), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = service.TunnelDestGroup()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service.TunnelDestGroup()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.create_tunnel_dest_group(
+            parent="parent_value",
+            tunnel_dest_group=service.TunnelDestGroup(name="name_value"),
+            tunnel_dest_group_id="tunnel_dest_group_id_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].tunnel_dest_group
+        mock_val = service.TunnelDestGroup(name="name_value")
+        assert arg == mock_val
+        arg = args[0].tunnel_dest_group_id
+        mock_val = "tunnel_dest_group_id_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_create_tunnel_dest_group_flattened_error_async():
+    client = IdentityAwareProxyAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.create_tunnel_dest_group(
+            service.CreateTunnelDestGroupRequest(),
+            parent="parent_value",
+            tunnel_dest_group=service.TunnelDestGroup(name="name_value"),
+            tunnel_dest_group_id="tunnel_dest_group_id_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.GetTunnelDestGroupRequest,
+        dict,
+    ],
+)
+def test_get_tunnel_dest_group(request_type, transport: str = "grpc"):
+    client = IdentityAwareProxyAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_tunnel_dest_group), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = service.TunnelDestGroup(
+            name="name_value",
+            cidrs=["cidrs_value"],
+            fqdns=["fqdns_value"],
+        )
+        response = client.get_tunnel_dest_group(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.GetTunnelDestGroupRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, service.TunnelDestGroup)
+    assert response.name == "name_value"
+    assert response.cidrs == ["cidrs_value"]
+    assert response.fqdns == ["fqdns_value"]
+
+
+def test_get_tunnel_dest_group_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = IdentityAwareProxyAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_tunnel_dest_group), "__call__"
+    ) as call:
+        client.get_tunnel_dest_group()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.GetTunnelDestGroupRequest()
+
+
+@pytest.mark.asyncio
+async def test_get_tunnel_dest_group_async(
+    transport: str = "grpc_asyncio", request_type=service.GetTunnelDestGroupRequest
+):
+    client = IdentityAwareProxyAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_tunnel_dest_group), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service.TunnelDestGroup(
+                name="name_value",
+                cidrs=["cidrs_value"],
+                fqdns=["fqdns_value"],
+            )
+        )
+        response = await client.get_tunnel_dest_group(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.GetTunnelDestGroupRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, service.TunnelDestGroup)
+    assert response.name == "name_value"
+    assert response.cidrs == ["cidrs_value"]
+    assert response.fqdns == ["fqdns_value"]
+
+
+@pytest.mark.asyncio
+async def test_get_tunnel_dest_group_async_from_dict():
+    await test_get_tunnel_dest_group_async(request_type=dict)
+
+
+def test_get_tunnel_dest_group_field_headers():
+    client = IdentityAwareProxyAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = service.GetTunnelDestGroupRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_tunnel_dest_group), "__call__"
+    ) as call:
+        call.return_value = service.TunnelDestGroup()
+        client.get_tunnel_dest_group(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_get_tunnel_dest_group_field_headers_async():
+    client = IdentityAwareProxyAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = service.GetTunnelDestGroupRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_tunnel_dest_group), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service.TunnelDestGroup()
+        )
+        await client.get_tunnel_dest_group(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_get_tunnel_dest_group_flattened():
+    client = IdentityAwareProxyAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_tunnel_dest_group), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = service.TunnelDestGroup()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.get_tunnel_dest_group(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_get_tunnel_dest_group_flattened_error():
+    client = IdentityAwareProxyAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_tunnel_dest_group(
+            service.GetTunnelDestGroupRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_tunnel_dest_group_flattened_async():
+    client = IdentityAwareProxyAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_tunnel_dest_group), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = service.TunnelDestGroup()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service.TunnelDestGroup()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.get_tunnel_dest_group(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_get_tunnel_dest_group_flattened_error_async():
+    client = IdentityAwareProxyAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.get_tunnel_dest_group(
+            service.GetTunnelDestGroupRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.DeleteTunnelDestGroupRequest,
+        dict,
+    ],
+)
+def test_delete_tunnel_dest_group(request_type, transport: str = "grpc"):
+    client = IdentityAwareProxyAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_tunnel_dest_group), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+        response = client.delete_tunnel_dest_group(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.DeleteTunnelDestGroupRequest()
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_delete_tunnel_dest_group_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = IdentityAwareProxyAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_tunnel_dest_group), "__call__"
+    ) as call:
+        client.delete_tunnel_dest_group()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.DeleteTunnelDestGroupRequest()
+
+
+@pytest.mark.asyncio
+async def test_delete_tunnel_dest_group_async(
+    transport: str = "grpc_asyncio", request_type=service.DeleteTunnelDestGroupRequest
+):
+    client = IdentityAwareProxyAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_tunnel_dest_group), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_tunnel_dest_group(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.DeleteTunnelDestGroupRequest()
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+@pytest.mark.asyncio
+async def test_delete_tunnel_dest_group_async_from_dict():
+    await test_delete_tunnel_dest_group_async(request_type=dict)
+
+
+def test_delete_tunnel_dest_group_field_headers():
+    client = IdentityAwareProxyAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = service.DeleteTunnelDestGroupRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_tunnel_dest_group), "__call__"
+    ) as call:
+        call.return_value = None
+        client.delete_tunnel_dest_group(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_delete_tunnel_dest_group_field_headers_async():
+    client = IdentityAwareProxyAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = service.DeleteTunnelDestGroupRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_tunnel_dest_group), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.delete_tunnel_dest_group(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_delete_tunnel_dest_group_flattened():
+    client = IdentityAwareProxyAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_tunnel_dest_group), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.delete_tunnel_dest_group(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_delete_tunnel_dest_group_flattened_error():
+    client = IdentityAwareProxyAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_tunnel_dest_group(
+            service.DeleteTunnelDestGroupRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_tunnel_dest_group_flattened_async():
+    client = IdentityAwareProxyAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_tunnel_dest_group), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.delete_tunnel_dest_group(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_delete_tunnel_dest_group_flattened_error_async():
+    client = IdentityAwareProxyAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.delete_tunnel_dest_group(
+            service.DeleteTunnelDestGroupRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.UpdateTunnelDestGroupRequest,
+        dict,
+    ],
+)
+def test_update_tunnel_dest_group(request_type, transport: str = "grpc"):
+    client = IdentityAwareProxyAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_tunnel_dest_group), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = service.TunnelDestGroup(
+            name="name_value",
+            cidrs=["cidrs_value"],
+            fqdns=["fqdns_value"],
+        )
+        response = client.update_tunnel_dest_group(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.UpdateTunnelDestGroupRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, service.TunnelDestGroup)
+    assert response.name == "name_value"
+    assert response.cidrs == ["cidrs_value"]
+    assert response.fqdns == ["fqdns_value"]
+
+
+def test_update_tunnel_dest_group_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = IdentityAwareProxyAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_tunnel_dest_group), "__call__"
+    ) as call:
+        client.update_tunnel_dest_group()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.UpdateTunnelDestGroupRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_tunnel_dest_group_async(
+    transport: str = "grpc_asyncio", request_type=service.UpdateTunnelDestGroupRequest
+):
+    client = IdentityAwareProxyAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_tunnel_dest_group), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service.TunnelDestGroup(
+                name="name_value",
+                cidrs=["cidrs_value"],
+                fqdns=["fqdns_value"],
+            )
+        )
+        response = await client.update_tunnel_dest_group(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.UpdateTunnelDestGroupRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, service.TunnelDestGroup)
+    assert response.name == "name_value"
+    assert response.cidrs == ["cidrs_value"]
+    assert response.fqdns == ["fqdns_value"]
+
+
+@pytest.mark.asyncio
+async def test_update_tunnel_dest_group_async_from_dict():
+    await test_update_tunnel_dest_group_async(request_type=dict)
+
+
+def test_update_tunnel_dest_group_field_headers():
+    client = IdentityAwareProxyAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = service.UpdateTunnelDestGroupRequest()
+
+    request.tunnel_dest_group.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_tunnel_dest_group), "__call__"
+    ) as call:
+        call.return_value = service.TunnelDestGroup()
+        client.update_tunnel_dest_group(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "tunnel_dest_group.name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_update_tunnel_dest_group_field_headers_async():
+    client = IdentityAwareProxyAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = service.UpdateTunnelDestGroupRequest()
+
+    request.tunnel_dest_group.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_tunnel_dest_group), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service.TunnelDestGroup()
+        )
+        await client.update_tunnel_dest_group(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "tunnel_dest_group.name=name_value",
+    ) in kw["metadata"]
+
+
+def test_update_tunnel_dest_group_flattened():
+    client = IdentityAwareProxyAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_tunnel_dest_group), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = service.TunnelDestGroup()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.update_tunnel_dest_group(
+            tunnel_dest_group=service.TunnelDestGroup(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].tunnel_dest_group
+        mock_val = service.TunnelDestGroup(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
+
+
+def test_update_tunnel_dest_group_flattened_error():
+    client = IdentityAwareProxyAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_tunnel_dest_group(
+            service.UpdateTunnelDestGroupRequest(),
+            tunnel_dest_group=service.TunnelDestGroup(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+@pytest.mark.asyncio
+async def test_update_tunnel_dest_group_flattened_async():
+    client = IdentityAwareProxyAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_tunnel_dest_group), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = service.TunnelDestGroup()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service.TunnelDestGroup()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.update_tunnel_dest_group(
+            tunnel_dest_group=service.TunnelDestGroup(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].tunnel_dest_group
+        mock_val = service.TunnelDestGroup(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_update_tunnel_dest_group_flattened_error_async():
+    client = IdentityAwareProxyAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.update_tunnel_dest_group(
+            service.UpdateTunnelDestGroupRequest(),
+            tunnel_dest_group=service.TunnelDestGroup(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.IdentityAwareProxyAdminServiceGrpcTransport(
@@ -1653,6 +3123,11 @@ def test_identity_aware_proxy_admin_service_base_transport():
         "test_iam_permissions",
         "get_iap_settings",
         "update_iap_settings",
+        "list_tunnel_dest_groups",
+        "create_tunnel_dest_group",
+        "get_tunnel_dest_group",
+        "delete_tunnel_dest_group",
+        "update_tunnel_dest_group",
     )
     for method in methods:
         with pytest.raises(NotImplementedError):
@@ -1983,8 +3458,61 @@ def test_identity_aware_proxy_admin_service_transport_channel_mtls_with_adc(
             assert transport.grpc_channel == mock_grpc_channel
 
 
+def test_tunnel_dest_group_path():
+    project = "squid"
+    location = "clam"
+    dest_group = "whelk"
+    expected = "projects/{project}/iap_tunnel/locations/{location}/destGroups/{dest_group}".format(
+        project=project,
+        location=location,
+        dest_group=dest_group,
+    )
+    actual = IdentityAwareProxyAdminServiceClient.tunnel_dest_group_path(
+        project, location, dest_group
+    )
+    assert expected == actual
+
+
+def test_parse_tunnel_dest_group_path():
+    expected = {
+        "project": "octopus",
+        "location": "oyster",
+        "dest_group": "nudibranch",
+    }
+    path = IdentityAwareProxyAdminServiceClient.tunnel_dest_group_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = IdentityAwareProxyAdminServiceClient.parse_tunnel_dest_group_path(path)
+    assert expected == actual
+
+
+def test_tunnel_location_path():
+    project = "cuttlefish"
+    location = "mussel"
+    expected = "projects/{project}/iap_tunnel/locations/{location}".format(
+        project=project,
+        location=location,
+    )
+    actual = IdentityAwareProxyAdminServiceClient.tunnel_location_path(
+        project, location
+    )
+    assert expected == actual
+
+
+def test_parse_tunnel_location_path():
+    expected = {
+        "project": "winkle",
+        "location": "nautilus",
+    }
+    path = IdentityAwareProxyAdminServiceClient.tunnel_location_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = IdentityAwareProxyAdminServiceClient.parse_tunnel_location_path(path)
+    assert expected == actual
+
+
 def test_common_billing_account_path():
-    billing_account = "squid"
+    billing_account = "scallop"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -1996,7 +3524,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "clam",
+        "billing_account": "abalone",
     }
     path = IdentityAwareProxyAdminServiceClient.common_billing_account_path(**expected)
 
@@ -2008,7 +3536,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "whelk"
+    folder = "squid"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -2018,7 +3546,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "octopus",
+        "folder": "clam",
     }
     path = IdentityAwareProxyAdminServiceClient.common_folder_path(**expected)
 
@@ -2028,7 +3556,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "oyster"
+    organization = "whelk"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -2038,7 +3566,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "nudibranch",
+        "organization": "octopus",
     }
     path = IdentityAwareProxyAdminServiceClient.common_organization_path(**expected)
 
@@ -2048,7 +3576,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "cuttlefish"
+    project = "oyster"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -2058,7 +3586,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "mussel",
+        "project": "nudibranch",
     }
     path = IdentityAwareProxyAdminServiceClient.common_project_path(**expected)
 
@@ -2068,8 +3596,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "winkle"
-    location = "nautilus"
+    project = "cuttlefish"
+    location = "mussel"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -2082,8 +3610,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "scallop",
-        "location": "abalone",
+        "project": "winkle",
+        "location": "nautilus",
     }
     path = IdentityAwareProxyAdminServiceClient.common_location_path(**expected)
 

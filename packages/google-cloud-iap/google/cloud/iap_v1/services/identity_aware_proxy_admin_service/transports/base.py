@@ -25,6 +25,7 @@ from google.auth import credentials as ga_credentials  # type: ignore
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+from google.protobuf import empty_pb2  # type: ignore
 import pkg_resources
 
 from google.cloud.iap_v1.types import service
@@ -148,6 +149,31 @@ class IdentityAwareProxyAdminServiceTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.list_tunnel_dest_groups: gapic_v1.method.wrap_method(
+                self.list_tunnel_dest_groups,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.create_tunnel_dest_group: gapic_v1.method.wrap_method(
+                self.create_tunnel_dest_group,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_tunnel_dest_group: gapic_v1.method.wrap_method(
+                self.get_tunnel_dest_group,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_tunnel_dest_group: gapic_v1.method.wrap_method(
+                self.delete_tunnel_dest_group,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_tunnel_dest_group: gapic_v1.method.wrap_method(
+                self.update_tunnel_dest_group,
+                default_timeout=None,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -204,6 +230,54 @@ class IdentityAwareProxyAdminServiceTransport(abc.ABC):
     ) -> Callable[
         [service.UpdateIapSettingsRequest],
         Union[service.IapSettings, Awaitable[service.IapSettings]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_tunnel_dest_groups(
+        self,
+    ) -> Callable[
+        [service.ListTunnelDestGroupsRequest],
+        Union[
+            service.ListTunnelDestGroupsResponse,
+            Awaitable[service.ListTunnelDestGroupsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_tunnel_dest_group(
+        self,
+    ) -> Callable[
+        [service.CreateTunnelDestGroupRequest],
+        Union[service.TunnelDestGroup, Awaitable[service.TunnelDestGroup]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_tunnel_dest_group(
+        self,
+    ) -> Callable[
+        [service.GetTunnelDestGroupRequest],
+        Union[service.TunnelDestGroup, Awaitable[service.TunnelDestGroup]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_tunnel_dest_group(
+        self,
+    ) -> Callable[
+        [service.DeleteTunnelDestGroupRequest],
+        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_tunnel_dest_group(
+        self,
+    ) -> Callable[
+        [service.UpdateTunnelDestGroupRequest],
+        Union[service.TunnelDestGroup, Awaitable[service.TunnelDestGroup]],
     ]:
         raise NotImplementedError()
 
