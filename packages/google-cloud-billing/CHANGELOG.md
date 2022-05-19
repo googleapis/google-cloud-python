@@ -1,5 +1,22 @@
 # Changelog
 
+## [1.6.0](https://github.com/googleapis/python-billing/compare/v1.5.1...v1.6.0) (2022-05-05)
+
+
+### Features
+
+* AuditConfig for IAM v1 ([6ce587c](https://github.com/googleapis/python-billing/commit/6ce587c58fb76d0f2f2ff5c9bcfc25a8f307071d))
+
+
+### Bug Fixes
+
+* **deps:** require grpc-google-iam-v1 >=0.12.4 ([6ce587c](https://github.com/googleapis/python-billing/commit/6ce587c58fb76d0f2f2ff5c9bcfc25a8f307071d))
+
+
+### Documentation
+
+* fix type in docstring for map fields ([6ce587c](https://github.com/googleapis/python-billing/commit/6ce587c58fb76d0f2f2ff5c9bcfc25a8f307071d))
+
 ### [1.5.1](https://github.com/googleapis/python-billing/compare/v1.5.0...v1.5.1) (2022-03-05)
 
 
