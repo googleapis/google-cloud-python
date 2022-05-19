@@ -39,6 +39,8 @@ from google.api_core import operation_async  # type: ignore
 from google.cloud.asset_v1.services.asset_service import pagers
 from google.cloud.asset_v1.types import asset_service
 from google.cloud.asset_v1.types import assets
+from google.protobuf import field_mask_pb2  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
 from google.type import expr_pb2  # type: ignore
 from .transports.base import AssetServiceTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc import AssetServiceGrpcTransport
@@ -240,6 +242,25 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         m = re.match(
             r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/instances/(?P<instance>.+?)/inventory$",
             path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def saved_query_path(
+        project: str,
+        saved_query: str,
+    ) -> str:
+        """Returns a fully-qualified saved_query string."""
+        return "projects/{project}/savedQueries/{saved_query}".format(
+            project=project,
+            saved_query=saved_query,
+        )
+
+    @staticmethod
+    def parse_saved_query_path(path: str) -> Dict[str, str]:
+        """Parses a saved_query path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/savedQueries/(?P<saved_query>.+?)$", path
         )
         return m.groupdict() if m else {}
 
@@ -519,10 +540,10 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         line represents a
         [google.cloud.asset.v1.Asset][google.cloud.asset.v1.Asset] in
         the JSON format; for BigQuery table destinations, the output
-        table stores the fields in asset proto as columns. This API
+        table stores the fields in asset Protobuf as columns. This API
         implements the
-        [google.longrunning.Operation][google.longrunning.Operation] API
-        , which allows you to keep track of the export. We recommend
+        [google.longrunning.Operation][google.longrunning.Operation]
+        API, which allows you to keep track of the export. We recommend
         intervals of at least 2 seconds with exponential retry to poll
         the export operation result. For regular-size resource parent,
         the export operation usually finishes within 5 minutes.
@@ -647,11 +668,13 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
             request (Union[google.cloud.asset_v1.types.ListAssetsRequest, dict]):
                 The request object. ListAssets request.
             parent (str):
-                Required. Name of the organization or project the assets
-                belong to. Format: "organizations/[organization-number]"
-                (such as "organizations/123"), "projects/[project-id]"
-                (such as "projects/my-project-id"), or
-                "projects/[project-number]" (such as "projects/12345").
+                Required. Name of the organization, folder, or project
+                the assets belong to. Format:
+                "organizations/[organization-number]" (such as
+                "organizations/123"), "projects/[project-id]" (such as
+                "projects/my-project-id"), "projects/[project-number]"
+                (such as "projects/12345"), or "folders/[folder-number]"
+                (such as "folders/12345").
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1564,10 +1587,10 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
                 search all the IAM policies within the specified
                 ``scope``. Note that the query string is compared
                 against each Cloud IAM policy binding, including its
-                members, roles, and Cloud IAM conditions. The returned
-                Cloud IAM policies will only contain the bindings that
-                match your query. To learn more about the IAM policy
-                structure, see `IAM policy
+                principals, roles, and Cloud IAM conditions. The
+                returned Cloud IAM policies will only contain the
+                bindings that match your query. To learn more about the
+                IAM policy structure, see `IAM policy
                 doc <https://cloud.google.com/iam/docs/policies#structure>`__.
 
                 Examples:
@@ -1609,7 +1632,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
                 -  ``roles:roles/compute.admin`` to find IAM policy
                    bindings that specify the Compute Admin role.
                 -  ``memberTypes:user`` to find IAM policy bindings that
-                   contain the "user" member type.
+                   contain the principal type "user".
 
                 This corresponds to the ``query`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1727,7 +1750,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         Returns:
             google.cloud.asset_v1.types.AnalyzeIamPolicyResponse:
                 A response message for
-                [AssetService.AnalyzeIamPolicy][google.cloud.asset.v1.AssetService.AnalyzeIamPolicy].
+                   [AssetService.AnalyzeIamPolicy][google.cloud.asset.v1.AssetService.AnalyzeIamPolicy].
 
         """
         # Create or coerce a protobuf request object.
@@ -1826,10 +1849,8 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
             google.api_core.operation.Operation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be
-                :class:`google.cloud.asset_v1.types.AnalyzeIamPolicyLongrunningResponse`
-                A response message for
-                [AssetService.AnalyzeIamPolicyLongrunning][google.cloud.asset.v1.AssetService.AnalyzeIamPolicyLongrunning].
+                The result type for the operation will be :class:`google.cloud.asset_v1.types.AnalyzeIamPolicyLongrunningResponse` A response message for
+                   [AssetService.AnalyzeIamPolicyLongrunning][google.cloud.asset.v1.AssetService.AnalyzeIamPolicyLongrunning].
 
         """
         # Create or coerce a protobuf request object.
@@ -1941,6 +1962,619 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def create_saved_query(
+        self,
+        request: Union[asset_service.CreateSavedQueryRequest, dict] = None,
+        *,
+        parent: str = None,
+        saved_query: asset_service.SavedQuery = None,
+        saved_query_id: str = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> asset_service.SavedQuery:
+        r"""Creates a saved query in a parent
+        project/folder/organization.
+
+        .. code-block:: python
+
+            from google.cloud import asset_v1
+
+            def sample_create_saved_query():
+                # Create a client
+                client = asset_v1.AssetServiceClient()
+
+                # Initialize request argument(s)
+                request = asset_v1.CreateSavedQueryRequest(
+                    parent="parent_value",
+                    saved_query_id="saved_query_id_value",
+                )
+
+                # Make the request
+                response = client.create_saved_query(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.asset_v1.types.CreateSavedQueryRequest, dict]):
+                The request object. Request to create a saved query.
+            parent (str):
+                Required. The name of the project/folder/organization
+                where this saved_query should be created in. It can only
+                be an organization number (such as "organizations/123"),
+                a folder number (such as "folders/123"), a project ID
+                (such as "projects/my-project-id")", or a project number
+                (such as "projects/12345").
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            saved_query (google.cloud.asset_v1.types.SavedQuery):
+                Required. The saved_query details. The ``name`` field
+                must be empty as it will be generated based on the
+                parent and saved_query_id.
+
+                This corresponds to the ``saved_query`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            saved_query_id (str):
+                Required. The ID to use for the saved query, which must
+                be unique in the specified parent. It will become the
+                final component of the saved query's resource name.
+
+                This value should be 4-63 characters, and valid
+                characters are /[a-z][0-9]-/.
+
+                Notice that this field is required in the saved query
+                creation, and the ``name`` field of the ``saved_query``
+                will be ignored.
+
+                This corresponds to the ``saved_query_id`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.asset_v1.types.SavedQuery:
+                A saved query which can be shared
+                with others or used later.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent, saved_query, saved_query_id])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a asset_service.CreateSavedQueryRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, asset_service.CreateSavedQueryRequest):
+            request = asset_service.CreateSavedQueryRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+            if saved_query is not None:
+                request.saved_query = saved_query
+            if saved_query_id is not None:
+                request.saved_query_id = saved_query_id
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.create_saved_query]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def get_saved_query(
+        self,
+        request: Union[asset_service.GetSavedQueryRequest, dict] = None,
+        *,
+        name: str = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> asset_service.SavedQuery:
+        r"""Gets details about a saved query.
+
+        .. code-block:: python
+
+            from google.cloud import asset_v1
+
+            def sample_get_saved_query():
+                # Create a client
+                client = asset_v1.AssetServiceClient()
+
+                # Initialize request argument(s)
+                request = asset_v1.GetSavedQueryRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_saved_query(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.asset_v1.types.GetSavedQueryRequest, dict]):
+                The request object. Request to get a saved query.
+            name (str):
+                Required. The name of the saved query and it must be in
+                the format of:
+
+                -  projects/project_number/savedQueries/saved_query_id
+                -  folders/folder_number/savedQueries/saved_query_id
+                -  organizations/organization_number/savedQueries/saved_query_id
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.asset_v1.types.SavedQuery:
+                A saved query which can be shared
+                with others or used later.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a asset_service.GetSavedQueryRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, asset_service.GetSavedQueryRequest):
+            request = asset_service.GetSavedQueryRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.get_saved_query]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def list_saved_queries(
+        self,
+        request: Union[asset_service.ListSavedQueriesRequest, dict] = None,
+        *,
+        parent: str = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListSavedQueriesPager:
+        r"""Lists all saved queries in a parent
+        project/folder/organization.
+
+        .. code-block:: python
+
+            from google.cloud import asset_v1
+
+            def sample_list_saved_queries():
+                # Create a client
+                client = asset_v1.AssetServiceClient()
+
+                # Initialize request argument(s)
+                request = asset_v1.ListSavedQueriesRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_saved_queries(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
+        Args:
+            request (Union[google.cloud.asset_v1.types.ListSavedQueriesRequest, dict]):
+                The request object. Request to list saved queries.
+            parent (str):
+                Required. The parent
+                project/folder/organization whose
+                savedQueries are to be listed. It can
+                only be using
+                project/folder/organization number (such
+                as "folders/12345")", or a project ID
+                (such as "projects/my-project-id").
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.asset_v1.services.asset_service.pagers.ListSavedQueriesPager:
+                Response of listing saved queries.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a asset_service.ListSavedQueriesRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, asset_service.ListSavedQueriesRequest):
+            request = asset_service.ListSavedQueriesRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.list_saved_queries]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.ListSavedQueriesPager(
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def update_saved_query(
+        self,
+        request: Union[asset_service.UpdateSavedQueryRequest, dict] = None,
+        *,
+        saved_query: asset_service.SavedQuery = None,
+        update_mask: field_mask_pb2.FieldMask = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> asset_service.SavedQuery:
+        r"""Updates a saved query.
+
+        .. code-block:: python
+
+            from google.cloud import asset_v1
+
+            def sample_update_saved_query():
+                # Create a client
+                client = asset_v1.AssetServiceClient()
+
+                # Initialize request argument(s)
+                request = asset_v1.UpdateSavedQueryRequest(
+                )
+
+                # Make the request
+                response = client.update_saved_query(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.asset_v1.types.UpdateSavedQueryRequest, dict]):
+                The request object. Request to update a saved query.
+            saved_query (google.cloud.asset_v1.types.SavedQuery):
+                Required. The saved query to update.
+
+                The saved query's ``name`` field is used to identify the
+                one to update, which has format as below:
+
+                -  projects/project_number/savedQueries/saved_query_id
+                -  folders/folder_number/savedQueries/saved_query_id
+                -  organizations/organization_number/savedQueries/saved_query_id
+
+                This corresponds to the ``saved_query`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            update_mask (google.protobuf.field_mask_pb2.FieldMask):
+                Required. The list of fields to
+                update.
+
+                This corresponds to the ``update_mask`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.asset_v1.types.SavedQuery:
+                A saved query which can be shared
+                with others or used later.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([saved_query, update_mask])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a asset_service.UpdateSavedQueryRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, asset_service.UpdateSavedQueryRequest):
+            request = asset_service.UpdateSavedQueryRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if saved_query is not None:
+                request.saved_query = saved_query
+            if update_mask is not None:
+                request.update_mask = update_mask
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.update_saved_query]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("saved_query.name", request.saved_query.name),)
+            ),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def delete_saved_query(
+        self,
+        request: Union[asset_service.DeleteSavedQueryRequest, dict] = None,
+        *,
+        name: str = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> None:
+        r"""Deletes a saved query.
+
+        .. code-block:: python
+
+            from google.cloud import asset_v1
+
+            def sample_delete_saved_query():
+                # Create a client
+                client = asset_v1.AssetServiceClient()
+
+                # Initialize request argument(s)
+                request = asset_v1.DeleteSavedQueryRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                client.delete_saved_query(request=request)
+
+        Args:
+            request (Union[google.cloud.asset_v1.types.DeleteSavedQueryRequest, dict]):
+                The request object. Request to delete a saved query.
+            name (str):
+                Required. The name of the saved query to delete. It must
+                be in the format of:
+
+                -  projects/project_number/savedQueries/saved_query_id
+                -  folders/folder_number/savedQueries/saved_query_id
+                -  organizations/organization_number/savedQueries/saved_query_id
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a asset_service.DeleteSavedQueryRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, asset_service.DeleteSavedQueryRequest):
+            request = asset_service.DeleteSavedQueryRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.delete_saved_query]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+    def batch_get_effective_iam_policies(
+        self,
+        request: Union[asset_service.BatchGetEffectiveIamPoliciesRequest, dict] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> asset_service.BatchGetEffectiveIamPoliciesResponse:
+        r"""Gets effective IAM policies for a batch of resources.
+
+        .. code-block:: python
+
+            from google.cloud import asset_v1
+
+            def sample_batch_get_effective_iam_policies():
+                # Create a client
+                client = asset_v1.AssetServiceClient()
+
+                # Initialize request argument(s)
+                request = asset_v1.BatchGetEffectiveIamPoliciesRequest(
+                    scope="scope_value",
+                    names=['names_value_1', 'names_value_2'],
+                )
+
+                # Make the request
+                response = client.batch_get_effective_iam_policies(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.asset_v1.types.BatchGetEffectiveIamPoliciesRequest, dict]):
+                The request object. A request message for
+                [AssetService.BatchGetEffectiveIamPolicies][google.cloud.asset.v1.AssetService.BatchGetEffectiveIamPolicies].
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.asset_v1.types.BatchGetEffectiveIamPoliciesResponse:
+                A response message for
+                   [AssetService.BatchGetEffectiveIamPolicies][google.cloud.asset.v1.AssetService.BatchGetEffectiveIamPolicies].
+
+        """
+        # Create or coerce a protobuf request object.
+        # Minor optimization to avoid making a copy if the user passes
+        # in a asset_service.BatchGetEffectiveIamPoliciesRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, asset_service.BatchGetEffectiveIamPoliciesRequest):
+            request = asset_service.BatchGetEffectiveIamPoliciesRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[
+            self._transport.batch_get_effective_iam_policies
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("scope", request.scope),)),
         )
 
         # Send the request.

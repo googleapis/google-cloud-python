@@ -204,9 +204,14 @@ class Asset(proto.Message):
             topic <https://cloud.google.com/compute/docs/instances/os-inventory-management>`__
             for more information.
         related_assets (google.cloud.asset_v1.types.RelatedAssets):
+            DEPRECATED. This field only presents for the
+            purpose of backward-compatibility. The server
+            will never generate responses with this field.
             The related assets of the asset of one
             relationship type. One asset only represents one
             type of relationship.
+        related_asset (google.cloud.asset_v1.types.RelatedAsset):
+            One related asset of the current asset.
         ancestors (Sequence[str]):
             The ancestry path of an asset in Google Cloud `resource
             hierarchy <https://cloud.google.com/resource-manager/docs/cloud-platform-resource-hierarchy>`__,
@@ -275,6 +280,11 @@ class Asset(proto.Message):
         proto.MESSAGE,
         number=13,
         message="RelatedAssets",
+    )
+    related_asset = proto.Field(
+        proto.MESSAGE,
+        number=15,
+        message="RelatedAsset",
     )
     ancestors = proto.RepeatedField(
         proto.STRING,
@@ -363,7 +373,10 @@ class Resource(proto.Message):
 
 
 class RelatedAssets(proto.Message):
-    r"""The detailed related assets with the ``relationship_type``.
+    r"""DEPRECATED. This message only presents for the purpose of
+    backward-compatibility. The server will never populate this message
+    in responses. The detailed related assets with the
+    ``relationship_type``.
 
     Attributes:
         relationship_attributes (google.cloud.asset_v1.types.RelationshipAttributes):
@@ -385,7 +398,9 @@ class RelatedAssets(proto.Message):
 
 
 class RelationshipAttributes(proto.Message):
-    r"""The relationship attributes which include ``type``,
+    r"""DEPRECATED. This message only presents for the purpose of
+    backward-compatibility. The server will never populate this message
+    in responses. The relationship attributes which include ``type``,
     ``source_resource_type``, ``target_resource_type`` and ``action``.
 
     Attributes:
@@ -422,8 +437,8 @@ class RelationshipAttributes(proto.Message):
 
 
 class RelatedAsset(proto.Message):
-    r"""An asset identify in Google Cloud which contains its name, type and
-    ancestors. An asset can be any resource in the Google Cloud
+    r"""An asset identifier in Google Cloud which contains its name, type
+    and ancestors. An asset can be any resource in the Google Cloud
     `resource
     hierarchy <https://cloud.google.com/resource-manager/docs/cloud-platform-resource-hierarchy>`__,
     a resource outside the Google Cloud resource hierarchy (such as
@@ -456,6 +471,9 @@ class RelatedAsset(proto.Message):
 
             Example:
             ``["projects/123456789", "folders/5432", "organizations/1234"]``
+        relationship_type (str):
+            The unique identifier of the relationship type. Example:
+            ``INSTANCE_TO_INSTANCEGROUP``
     """
 
     asset = proto.Field(
@@ -469,6 +487,10 @@ class RelatedAsset(proto.Message):
     ancestors = proto.RepeatedField(
         proto.STRING,
         number=3,
+    )
+    relationship_type = proto.Field(
+        proto.STRING,
+        number=4,
     )
 
 
@@ -530,7 +552,7 @@ class ResourceSearchResult(proto.Message):
                search request.
         display_name (str):
             The display name of this resource. This field is available
-            only when the resource's proto contains it.
+            only when the resource's Protobuf contains it.
 
             To search against the ``display_name``:
 
@@ -539,7 +561,7 @@ class ResourceSearchResult(proto.Message):
         description (str):
             One or more paragraphs of text description of this resource.
             Maximum length could be up to 1M bytes. This field is
-            available only when the resource's proto contains it.
+            available only when the resource's Protobuf contains it.
 
             To search against the ``description``:
 
@@ -549,7 +571,7 @@ class ResourceSearchResult(proto.Message):
         location (str):
             Location can be ``global``, regional like ``us-east1``, or
             zonal like ``us-west1-b``. This field is available only when
-            the resource's proto contains it.
+            the resource's Protobuf contains it.
 
             To search against the ``location``:
 
@@ -560,7 +582,7 @@ class ResourceSearchResult(proto.Message):
             grouping GCP
             resources <https://cloud.google.com/blog/products/gcp/labelling-and-grouping-your-google-cloud-platform-resources>`__
             for more information. This field is available only when the
-            resource's proto contains it.
+            resource's Protobuf contains it.
 
             To search against the ``labels``:
 
@@ -579,7 +601,7 @@ class ResourceSearchResult(proto.Message):
             resources. See `Labelling GCP
             resources <https://cloud.google.com/blog/products/gcp/labelling-and-grouping-your-google-cloud-platform-resources>`__
             for more information. This field is available only when the
-            resource's proto contains it.
+            resource's Protobuf contains it.
 
             To search against the ``network_tags``:
 
@@ -587,11 +609,11 @@ class ResourceSearchResult(proto.Message):
             -  use a free text query. Example: ``internal``
         kms_key (str):
             The Cloud KMS
-            `CryptoKey <https://cloud.google.com/kms/docs/reference/rest/v1/projects.locations.keyRings.cryptoKeys?hl=en>`__
+            `CryptoKey <https://cloud.google.com/kms/docs/reference/rest/v1/projects.locations.keyRings.cryptoKeys>`__
             name or
-            `CryptoKeyVersion <https://cloud.google.com/kms/docs/reference/rest/v1/projects.locations.keyRings.cryptoKeys.cryptoKeyVersions?hl=en>`__
-            name. This field is available only when the resource's proto
-            contains it.
+            `CryptoKeyVersion <https://cloud.google.com/kms/docs/reference/rest/v1/projects.locations.keyRings.cryptoKeys.cryptoKeyVersions>`__
+            name. This field is available only when the resource's
+            Protobuf contains it.
 
             To search against the ``kms_key``:
 
@@ -601,7 +623,7 @@ class ResourceSearchResult(proto.Message):
             The create timestamp of this resource, at which the resource
             was created. The granularity is in seconds. Timestamp.nanos
             will always be 0. This field is available only when the
-            resource's proto contains it.
+            resource's Protobuf contains it.
 
             To search against ``create_time``:
 
@@ -617,7 +639,7 @@ class ResourceSearchResult(proto.Message):
             The last update timestamp of this resource, at which the
             resource was last modified or deleted. The granularity is in
             seconds. Timestamp.nanos will always be 0. This field is
-            available only when the resource's proto contains it.
+            available only when the resource's Protobuf contains it.
 
             To search against ``update_time``:
 
@@ -633,7 +655,7 @@ class ResourceSearchResult(proto.Message):
             The state of this resource. Different resources types have
             different state definitions that are mapped from various
             fields of different resource types. This field is available
-            only when the resource's proto contains it.
+            only when the resource's Protobuf contains it.
 
             Example: If the resource is an instance provided by Compute
             Engine, its state will include PROVISIONING, STAGING,
@@ -705,6 +727,47 @@ class ResourceSearchResult(proto.Message):
             ``DISK_TO_INSTANCE``, ``DISK_TO_NETWORK``,
             ``INSTANCE_TO_INSTANCEGROUP``. See `supported relationship
             types <https://cloud.google.com/asset-inventory/docs/supported-asset-types#supported_relationship_types>`__.
+        tag_keys (Sequence[str]):
+            TagKey namespaced names, in the format of
+            {ORG_ID}/{TAG_KEY_SHORT_NAME}. To search against the
+            ``tagKeys``:
+
+            -  use a field query. Example:
+
+               -  ``tagKeys:"123456789/env*"``
+               -  ``tagKeys="123456789/env"``
+               -  ``tagKeys:"env"``
+
+            -  use a free text query. Example:
+
+               -  ``env``
+        tag_values (Sequence[str]):
+            TagValue namespaced names, in the format of
+            {ORG_ID}/{TAG_KEY_SHORT_NAME}/{TAG_VALUE_SHORT_NAME}. To
+            search against the ``tagValues``:
+
+            -  use a field query. Example:
+
+               -  ``tagValues:"env"``
+               -  ``tagValues:"env/prod"``
+               -  ``tagValues:"123456789/env/prod*"``
+               -  ``tagValues="123456789/env/prod"``
+
+            -  use a free text query. Example:
+
+               -  ``prod``
+        tag_value_ids (Sequence[str]):
+            TagValue IDs, in the format of tagValues/{TAG_VALUE_ID}. To
+            search against the ``tagValueIds``:
+
+            -  use a field query. Example:
+
+               -  ``tagValueIds:"456"``
+               -  ``tagValueIds="tagValues/456"``
+
+            -  use a free text query. Example:
+
+               -  ``456``
         parent_asset_type (str):
             The type of this resource's immediate parent, if there is
             one.
@@ -800,6 +863,18 @@ class ResourceSearchResult(proto.Message):
         proto.MESSAGE,
         number=21,
         message="RelatedResources",
+    )
+    tag_keys = proto.RepeatedField(
+        proto.STRING,
+        number=23,
+    )
+    tag_values = proto.RepeatedField(
+        proto.STRING,
+        number=25,
+    )
+    tag_value_ids = proto.RepeatedField(
+        proto.STRING,
+        number=26,
     )
     parent_asset_type = proto.Field(
         proto.STRING,

@@ -16,6 +16,7 @@
 import proto  # type: ignore
 
 from google.cloud.asset_v1.types import assets as gca_assets
+from google.iam.v1 import policy_pb2  # type: ignore
 from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
@@ -59,11 +60,20 @@ __protobuf__ = proto.module(
         "IamPolicyAnalysisOutputConfig",
         "AnalyzeIamPolicyLongrunningRequest",
         "AnalyzeIamPolicyLongrunningResponse",
+        "SavedQuery",
+        "CreateSavedQueryRequest",
+        "GetSavedQueryRequest",
+        "ListSavedQueriesRequest",
+        "ListSavedQueriesResponse",
+        "UpdateSavedQueryRequest",
+        "DeleteSavedQueryRequest",
         "AnalyzeMoveRequest",
         "AnalyzeMoveResponse",
         "MoveAnalysis",
         "MoveAnalysisResult",
         "MoveImpact",
+        "BatchGetEffectiveIamPoliciesRequest",
+        "BatchGetEffectiveIamPoliciesResponse",
     },
 )
 
@@ -237,11 +247,13 @@ class ListAssetsRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. Name of the organization or project the assets
-            belong to. Format: "organizations/[organization-number]"
-            (such as "organizations/123"), "projects/[project-id]" (such
-            as "projects/my-project-id"), or "projects/[project-number]"
-            (such as "projects/12345").
+            Required. Name of the organization, folder, or project the
+            assets belong to. Format:
+            "organizations/[organization-number]" (such as
+            "organizations/123"), "projects/[project-id]" (such as
+            "projects/my-project-id"), "projects/[project-number]" (such
+            as "projects/12345"), or "folders/[folder-number]" (such as
+            "folders/12345").
         read_time (google.protobuf.timestamp_pb2.Timestamp):
             Timestamp to take an asset snapshot. This can
             only be set to a timestamp between the current
@@ -614,8 +626,8 @@ class OutputConfig(proto.Message):
             This field is a member of `oneof`_ ``destination``.
         bigquery_destination (google.cloud.asset_v1.types.BigQueryDestination):
             Destination on BigQuery. The output table
-            stores the fields in asset proto as columns in
-            BigQuery.
+            stores the fields in asset Protobuf as columns
+            in BigQuery.
 
             This field is a member of `oneof`_ ``destination``.
     """
@@ -728,6 +740,12 @@ class BigQueryDestination(proto.Message):
             "projects/projectId/datasets/datasetId", to which the
             snapshot result should be exported. If this dataset does not
             exist, the export call returns an INVALID_ARGUMENT error.
+            Setting the ``contentType`` for ``exportAssets`` determines
+            the
+            `schema </asset-inventory/docs/exporting-to-bigquery#bigquery-schema>`__
+            of the BigQuery table. Setting
+            ``separateTablesPerAssetType`` to ``TRUE`` also influences
+            the schema.
         table (str):
             Required. The BigQuery table to which the
             snapshot result should be written. If this table
@@ -908,9 +926,9 @@ class Feed(proto.Message):
             asset_names or asset_types are exported to the feed.
             Example:
             ``//compute.googleapis.com/projects/my_project_123/zones/zone1/instances/instance1``.
-            See `Resource
-            Names <https://cloud.google.com/apis/design/resource_names#full_resource_name>`__
-            for more info.
+            For a list of the full names for supported asset types, see
+            `Resource name
+            format </asset-inventory/docs/resource-name-format>`__.
         asset_types (Sequence[str]):
             A list of types of the assets to receive updates. You must
             specify either or both of asset_names and asset_types. Only
@@ -918,9 +936,9 @@ class Feed(proto.Message):
             are exported to the feed. Example:
             ``"compute.googleapis.com/Disk"``
 
-            See `this
-            topic <https://cloud.google.com/asset-inventory/docs/supported-asset-types>`__
-            for a list of all supported asset types.
+            For a list of all supported asset types, see `Supported
+            asset
+            types </asset-inventory/docs/supported-asset-types>`__.
         content_type (google.cloud.asset_v1.types.ContentType):
             Asset content type. If not specified, no
             content but the asset name and type will be
@@ -1132,6 +1150,9 @@ class SearchAllResourcesRequest(proto.Message):
             -  displayName
             -  description
             -  location
+            -  tagKeys
+            -  tagValues
+            -  tagValueIds
             -  labels
             -  networkTags
             -  kmsKey
@@ -1233,10 +1254,10 @@ class SearchAllIamPoliciesRequest(proto.Message):
             for more information. If not specified or empty, it will
             search all the IAM policies within the specified ``scope``.
             Note that the query string is compared against each Cloud
-            IAM policy binding, including its members, roles, and Cloud
-            IAM conditions. The returned Cloud IAM policies will only
-            contain the bindings that match your query. To learn more
-            about the IAM policy structure, see `IAM policy
+            IAM policy binding, including its principals, roles, and
+            Cloud IAM conditions. The returned Cloud IAM policies will
+            only contain the bindings that match your query. To learn
+            more about the IAM policy structure, see `IAM policy
             doc <https://cloud.google.com/iam/docs/policies#structure>`__.
 
             Examples:
@@ -1273,7 +1294,7 @@ class SearchAllIamPoliciesRequest(proto.Message):
             -  ``roles:roles/compute.admin`` to find IAM policy bindings
                that specify the Compute Admin role.
             -  ``memberTypes:user`` to find IAM policy bindings that
-               contain the "user" member type.
+               contain the principal type "user".
         page_size (int):
             Optional. The page size for search result pagination. Page
             size is capped at 500 even if a larger value is given. If
@@ -1379,7 +1400,7 @@ class SearchAllIamPoliciesResponse(proto.Message):
 
 
 class IamPolicyAnalysisQuery(proto.Message):
-    r"""## IAM policy analysis query message.
+    r"""IAM policy analysis query message.
 
     Attributes:
         scope (str):
@@ -1437,8 +1458,8 @@ class IamPolicyAnalysisQuery(proto.Message):
 
         Attributes:
             identity (str):
-                Required. The identity appear in the form of members in `IAM
-                policy
+                Required. The identity appear in the form of principals in
+                `IAM policy
                 binding <https://cloud.google.com/iam/reference/rest/v1/Binding>`__.
 
                 The examples of supported forms are:
@@ -1492,6 +1513,9 @@ class IamPolicyAnalysisQuery(proto.Message):
                 is specified, the identity in the result will be determined
                 by the selector, and this flag is not allowed to set.
 
+                If true, the default max expansion per group is 1000 for
+                AssetService.AnalyzeIamPolicy][].
+
                 Default is false.
             expand_roles (bool):
                 Optional. If true, the access section of result will expand
@@ -1530,17 +1554,20 @@ class IamPolicyAnalysisQuery(proto.Message):
                 results will include all users who have permission P on that
                 project or any lower resource.
 
+                If true, the default max expansion per resource is 1000 for
+                AssetService.AnalyzeIamPolicy][] and 100000 for
+                AssetService.AnalyzeIamPolicyLongrunning][].
+
                 Default is false.
             output_resource_edges (bool):
-                Optional. If true, the result will output
-                resource edges, starting from the policy
-                attached resource, to any expanded resources.
-                Default is false.
+                Optional. If true, the result will output the
+                relevant parent/child relationships between
+                resources. Default is false.
             output_group_edges (bool):
-                Optional. If true, the result will output
-                group identity edges, starting from the
-                binding's group members, to any expanded
-                identities. Default is false.
+                Optional. If true, the result will output the
+                relevant membership relationships between groups
+                and other groups, and between groups and
+                principals. Default is false.
             analyze_service_account_impersonation (bool):
                 Optional. If true, the response will include access analysis
                 from identities to resources via service account
@@ -1567,6 +1594,16 @@ class IamPolicyAnalysisQuery(proto.Message):
                 then user A potentially has access to the GCP folder F. And
                 those advanced analysis results will be included in
                 [AnalyzeIamPolicyResponse.service_account_impersonation_analysis][google.cloud.asset.v1.AnalyzeIamPolicyResponse.service_account_impersonation_analysis].
+
+                Only the following permissions are considered in this
+                analysis:
+
+                -  ``iam.serviceAccounts.actAs``
+                -  ``iam.serviceAccounts.signBlob``
+                -  ``iam.serviceAccounts.signJwt``
+                -  ``iam.serviceAccounts.getAccessToken``
+                -  ``iam.serviceAccounts.getOpenIdToken``
+                -  ``iam.serviceAccounts.implicitDelegation``
 
                 Default is false.
         """
@@ -1656,6 +1693,25 @@ class AnalyzeIamPolicyRequest(proto.Message):
     Attributes:
         analysis_query (google.cloud.asset_v1.types.IamPolicyAnalysisQuery):
             Required. The request query.
+        saved_analysis_query (str):
+            Optional. The name of a saved query, which must be in the
+            format of:
+
+            -  projects/project_number/savedQueries/saved_query_id
+            -  folders/folder_number/savedQueries/saved_query_id
+            -  organizations/organization_number/savedQueries/saved_query_id
+
+            If both ``analysis_query`` and ``saved_analysis_query`` are
+            provided, they will be merged together with the
+            ``saved_analysis_query`` as base and the ``analysis_query``
+            as overrides. For more details of the merge behavior, please
+            refer to the
+            `MergeFrom <https://developers.google.com/protocol-buffers/docs/reference/cpp/google.protobuf.message#Message.MergeFrom.details>`__
+            page.
+
+            Note that you cannot override primitive fields with default
+            value, such as 0 or empty string, etc., because we use
+            proto3, which doesn't support field presence yet.
         execution_timeout (google.protobuf.duration_pb2.Duration):
             Optional. Amount of time executable has to complete. See
             JSON representation of
@@ -1675,6 +1731,10 @@ class AnalyzeIamPolicyRequest(proto.Message):
         proto.MESSAGE,
         number=1,
         message="IamPolicyAnalysisQuery",
+    )
+    saved_analysis_query = proto.Field(
+        proto.STRING,
+        number=3,
     )
     execution_timeout = proto.Field(
         proto.MESSAGE,
@@ -1897,6 +1957,25 @@ class AnalyzeIamPolicyLongrunningRequest(proto.Message):
     Attributes:
         analysis_query (google.cloud.asset_v1.types.IamPolicyAnalysisQuery):
             Required. The request query.
+        saved_analysis_query (str):
+            Optional. The name of a saved query, which must be in the
+            format of:
+
+            -  projects/project_number/savedQueries/saved_query_id
+            -  folders/folder_number/savedQueries/saved_query_id
+            -  organizations/organization_number/savedQueries/saved_query_id
+
+            If both ``analysis_query`` and ``saved_analysis_query`` are
+            provided, they will be merged together with the
+            ``saved_analysis_query`` as base and the ``analysis_query``
+            as overrides. For more details of the merge behavior, please
+            refer to the
+            `MergeFrom <https://developers.google.com/protocol-buffers/docs/reference/cpp/google.protobuf.message#Message.MergeFrom.details>`__
+            doc.
+
+            Note that you cannot override primitive fields with default
+            value, such as 0 or empty string, etc., because we use
+            proto3, which doesn't support field presence yet.
         output_config (google.cloud.asset_v1.types.IamPolicyAnalysisOutputConfig):
             Required. Output configuration indicating
             where the results will be output to.
@@ -1906,6 +1985,10 @@ class AnalyzeIamPolicyLongrunningRequest(proto.Message):
         proto.MESSAGE,
         number=1,
         message="IamPolicyAnalysisQuery",
+    )
+    saved_analysis_query = proto.Field(
+        proto.STRING,
+        number=3,
     )
     output_config = proto.Field(
         proto.MESSAGE,
@@ -1919,6 +2002,294 @@ class AnalyzeIamPolicyLongrunningResponse(proto.Message):
     [AssetService.AnalyzeIamPolicyLongrunning][google.cloud.asset.v1.AssetService.AnalyzeIamPolicyLongrunning].
 
     """
+
+
+class SavedQuery(proto.Message):
+    r"""A saved query which can be shared with others or used later.
+
+    Attributes:
+        name (str):
+            The resource name of the saved query. The format must be:
+
+            -  projects/project_number/savedQueries/saved_query_id
+            -  folders/folder_number/savedQueries/saved_query_id
+            -  organizations/organization_number/savedQueries/saved_query_id
+        description (str):
+            The description of this saved query. This
+            value should be fewer than 255 characters.
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The create time of this saved
+            query.
+        creator (str):
+            Output only. The account's email address who
+            has created this saved query.
+        last_update_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The last update time of this
+            saved query.
+        last_updater (str):
+            Output only. The account's email address who
+            has updated this saved query most recently.
+        labels (Mapping[str, str]):
+            Labels applied on the resource.
+            This value should not contain more than 10
+            entries. The key and value of each entry must be
+            non-empty and fewer than 64 characters.
+        content (google.cloud.asset_v1.types.SavedQuery.QueryContent):
+            The query content.
+    """
+
+    class QueryContent(proto.Message):
+        r"""The query content.
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+        Attributes:
+            iam_policy_analysis_query (google.cloud.asset_v1.types.IamPolicyAnalysisQuery):
+                An IAM Policy Analysis query, which could be used in the
+                [AssetService.AnalyzeIamPolicy][google.cloud.asset.v1.AssetService.AnalyzeIamPolicy]
+                rpc or the
+                [AssetService.AnalyzeIamPolicyLongrunning][google.cloud.asset.v1.AssetService.AnalyzeIamPolicyLongrunning]
+                rpc.
+
+                This field is a member of `oneof`_ ``query_content``.
+        """
+
+        iam_policy_analysis_query = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            oneof="query_content",
+            message="IamPolicyAnalysisQuery",
+        )
+
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    description = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
+    )
+    creator = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    last_update_time = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=timestamp_pb2.Timestamp,
+    )
+    last_updater = proto.Field(
+        proto.STRING,
+        number=6,
+    )
+    labels = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=7,
+    )
+    content = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        message=QueryContent,
+    )
+
+
+class CreateSavedQueryRequest(proto.Message):
+    r"""Request to create a saved query.
+
+    Attributes:
+        parent (str):
+            Required. The name of the project/folder/organization where
+            this saved_query should be created in. It can only be an
+            organization number (such as "organizations/123"), a folder
+            number (such as "folders/123"), a project ID (such as
+            "projects/my-project-id")", or a project number (such as
+            "projects/12345").
+        saved_query (google.cloud.asset_v1.types.SavedQuery):
+            Required. The saved_query details. The ``name`` field must
+            be empty as it will be generated based on the parent and
+            saved_query_id.
+        saved_query_id (str):
+            Required. The ID to use for the saved query, which must be
+            unique in the specified parent. It will become the final
+            component of the saved query's resource name.
+
+            This value should be 4-63 characters, and valid characters
+            are /[a-z][0-9]-/.
+
+            Notice that this field is required in the saved query
+            creation, and the ``name`` field of the ``saved_query`` will
+            be ignored.
+    """
+
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    saved_query = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="SavedQuery",
+    )
+    saved_query_id = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class GetSavedQueryRequest(proto.Message):
+    r"""Request to get a saved query.
+
+    Attributes:
+        name (str):
+            Required. The name of the saved query and it must be in the
+            format of:
+
+            -  projects/project_number/savedQueries/saved_query_id
+            -  folders/folder_number/savedQueries/saved_query_id
+            -  organizations/organization_number/savedQueries/saved_query_id
+    """
+
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class ListSavedQueriesRequest(proto.Message):
+    r"""Request to list saved queries.
+
+    Attributes:
+        parent (str):
+            Required. The parent
+            project/folder/organization whose savedQueries
+            are to be listed. It can only be using
+            project/folder/organization number (such as
+            "folders/12345")", or a project ID (such as
+            "projects/my-project-id").
+        filter (str):
+            Optional. The expression to filter resources. The expression
+            is a list of zero or more restrictions combined via logical
+            operators ``AND`` and ``OR``. When ``AND`` and ``OR`` are
+            both used in the expression, parentheses must be
+            appropriately used to group the combinations. The expression
+            may also contain regular expressions.
+
+            See https://google.aip.dev/160 for more information on the
+            grammar.
+        page_size (int):
+            Optional. The maximum number of saved queries
+            to return per page. The service may return fewer
+            than this value. If unspecified, at most 50 will
+            be returned.
+             The maximum value is 1000; values above 1000
+            will be coerced to 1000.
+        page_token (str):
+            Optional. A page token, received from a previous
+            ``ListSavedQueries`` call. Provide this to retrieve the
+            subsequent page.
+
+            When paginating, all other parameters provided to
+            ``ListSavedQueries`` must match the call that provided the
+            page token.
+    """
+
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    filter = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class ListSavedQueriesResponse(proto.Message):
+    r"""Response of listing saved queries.
+
+    Attributes:
+        saved_queries (Sequence[google.cloud.asset_v1.types.SavedQuery]):
+            A list of savedQueries.
+        next_page_token (str):
+            A token, which can be sent as ``page_token`` to retrieve the
+            next page. If this field is omitted, there are no subsequent
+            pages.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    saved_queries = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="SavedQuery",
+    )
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class UpdateSavedQueryRequest(proto.Message):
+    r"""Request to update a saved query.
+
+    Attributes:
+        saved_query (google.cloud.asset_v1.types.SavedQuery):
+            Required. The saved query to update.
+
+            The saved query's ``name`` field is used to identify the one
+            to update, which has format as below:
+
+            -  projects/project_number/savedQueries/saved_query_id
+            -  folders/folder_number/savedQueries/saved_query_id
+            -  organizations/organization_number/savedQueries/saved_query_id
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            Required. The list of fields to update.
+    """
+
+    saved_query = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="SavedQuery",
+    )
+    update_mask = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
+    )
+
+
+class DeleteSavedQueryRequest(proto.Message):
+    r"""Request to delete a saved query.
+
+    Attributes:
+        name (str):
+            Required. The name of the saved query to delete. It must be
+            in the format of:
+
+            -  projects/project_number/savedQueries/saved_query_id
+            -  folders/folder_number/savedQueries/saved_query_id
+            -  organizations/organization_number/savedQueries/saved_query_id
+    """
+
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class AnalyzeMoveRequest(proto.Message):
@@ -2068,6 +2439,134 @@ class MoveImpact(proto.Message):
     detail = proto.Field(
         proto.STRING,
         number=1,
+    )
+
+
+class BatchGetEffectiveIamPoliciesRequest(proto.Message):
+    r"""A request message for
+    [AssetService.BatchGetEffectiveIamPolicies][google.cloud.asset.v1.AssetService.BatchGetEffectiveIamPolicies].
+
+    Attributes:
+        scope (str):
+            Required. Only IAM policies on or below the scope will be
+            returned.
+
+            This can only be an organization number (such as
+            "organizations/123"), a folder number (such as
+            "folders/123"), a project ID (such as
+            "projects/my-project-id"), or a project number (such as
+            "projects/12345").
+
+            To know how to get organization id, visit
+            `here <https://cloud.google.com/resource-manager/docs/creating-managing-organization#retrieving_your_organization_id>`__.
+
+            To know how to get folder or project id, visit
+            `here <https://cloud.google.com/resource-manager/docs/creating-managing-folders#viewing_or_listing_folders_and_projects>`__.
+        names (Sequence[str]):
+            Required. The names refer to the [full_resource_names]
+            (https://cloud.google.com/asset-inventory/docs/resource-name-format)
+            of `searchable asset
+            types <https://cloud.google.com/asset-inventory/docs/supported-asset-types#searchable_asset_types>`__.
+            A maximum of 20 resources' effective policies can be
+            retrieved in a batch.
+    """
+
+    scope = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    names = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
+
+
+class BatchGetEffectiveIamPoliciesResponse(proto.Message):
+    r"""A response message for
+    [AssetService.BatchGetEffectiveIamPolicies][google.cloud.asset.v1.AssetService.BatchGetEffectiveIamPolicies].
+
+    Attributes:
+        policy_results (Sequence[google.cloud.asset_v1.types.BatchGetEffectiveIamPoliciesResponse.EffectiveIamPolicy]):
+            The effective policies for a batch of resources. Note that
+            the results order is the same as the order of
+            [BatchGetEffectiveIamPoliciesRequest.names][google.cloud.asset.v1.BatchGetEffectiveIamPoliciesRequest.names].
+            When a resource does not have any effective IAM policies,
+            its corresponding policy_result will contain empty
+            [EffectiveIamPolicy.policies][google.cloud.asset.v1.BatchGetEffectiveIamPoliciesResponse.EffectiveIamPolicy.policies].
+    """
+
+    class EffectiveIamPolicy(proto.Message):
+        r"""The effective IAM policies on one resource.
+
+        Attributes:
+            full_resource_name (str):
+                The [full_resource_name]
+                (https://cloud.google.com/asset-inventory/docs/resource-name-format)
+                for which the
+                [policies][google.cloud.asset.v1.BatchGetEffectiveIamPoliciesResponse.EffectiveIamPolicy.policies]
+                are computed. This is one of the
+                [BatchGetEffectiveIamPoliciesRequest.names][google.cloud.asset.v1.BatchGetEffectiveIamPoliciesRequest.names]
+                the caller provides in the request.
+            policies (Sequence[google.cloud.asset_v1.types.BatchGetEffectiveIamPoliciesResponse.EffectiveIamPolicy.PolicyInfo]):
+                The effective policies for the
+                [full_resource_name][google.cloud.asset.v1.BatchGetEffectiveIamPoliciesResponse.EffectiveIamPolicy.full_resource_name].
+
+                These policies include the policy set on the
+                [full_resource_name][google.cloud.asset.v1.BatchGetEffectiveIamPoliciesResponse.EffectiveIamPolicy.full_resource_name]
+                and those set on its parents and ancestors up to the
+                [BatchGetEffectiveIamPoliciesRequest.scope][google.cloud.asset.v1.BatchGetEffectiveIamPoliciesRequest.scope].
+                Note that these policies are not filtered according to the
+                resource type of the
+                [full_resource_name][google.cloud.asset.v1.BatchGetEffectiveIamPoliciesResponse.EffectiveIamPolicy.full_resource_name].
+
+                These policies are hierarchically ordered by
+                [PolicyInfo.attached_resource][google.cloud.asset.v1.BatchGetEffectiveIamPoliciesResponse.EffectiveIamPolicy.PolicyInfo.attached_resource]
+                starting from
+                [full_resource_name][google.cloud.asset.v1.BatchGetEffectiveIamPoliciesResponse.EffectiveIamPolicy.full_resource_name]
+                itself to its parents and ancestors, such that policies[i]'s
+                [PolicyInfo.attached_resource][google.cloud.asset.v1.BatchGetEffectiveIamPoliciesResponse.EffectiveIamPolicy.PolicyInfo.attached_resource]
+                is the child of policies[i+1]'s
+                [PolicyInfo.attached_resource][google.cloud.asset.v1.BatchGetEffectiveIamPoliciesResponse.EffectiveIamPolicy.PolicyInfo.attached_resource],
+                if policies[i+1] exists.
+        """
+
+        class PolicyInfo(proto.Message):
+            r"""The IAM policy and its attached resource.
+
+            Attributes:
+                attached_resource (str):
+                    The full resource name the
+                    [policy][google.cloud.asset.v1.BatchGetEffectiveIamPoliciesResponse.EffectiveIamPolicy.PolicyInfo.policy]
+                    is directly attached to.
+                policy (google.iam.v1.policy_pb2.Policy):
+                    The IAM policy that's directly attached to the
+                    [attached_resource][google.cloud.asset.v1.BatchGetEffectiveIamPoliciesResponse.EffectiveIamPolicy.PolicyInfo.attached_resource].
+            """
+
+            attached_resource = proto.Field(
+                proto.STRING,
+                number=1,
+            )
+            policy = proto.Field(
+                proto.MESSAGE,
+                number=2,
+                message=policy_pb2.Policy,
+            )
+
+        full_resource_name = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        policies = proto.RepeatedField(
+            proto.MESSAGE,
+            number=2,
+            message="BatchGetEffectiveIamPoliciesResponse.EffectiveIamPolicy.PolicyInfo",
+        )
+
+    policy_results = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message=EffectiveIamPolicy,
     )
 
 

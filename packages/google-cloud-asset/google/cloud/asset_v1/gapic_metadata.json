@@ -30,14 +30,29 @@
                 "batch_get_assets_history"
               ]
             },
+            "BatchGetEffectiveIamPolicies": {
+              "methods": [
+                "batch_get_effective_iam_policies"
+              ]
+            },
             "CreateFeed": {
               "methods": [
                 "create_feed"
               ]
             },
+            "CreateSavedQuery": {
+              "methods": [
+                "create_saved_query"
+              ]
+            },
             "DeleteFeed": {
               "methods": [
                 "delete_feed"
+              ]
+            },
+            "DeleteSavedQuery": {
+              "methods": [
+                "delete_saved_query"
               ]
             },
             "ExportAssets": {
@@ -50,6 +65,11 @@
                 "get_feed"
               ]
             },
+            "GetSavedQuery": {
+              "methods": [
+                "get_saved_query"
+              ]
+            },
             "ListAssets": {
               "methods": [
                 "list_assets"
@@ -58,6 +78,11 @@
             "ListFeeds": {
               "methods": [
                 "list_feeds"
+              ]
+            },
+            "ListSavedQueries": {
+              "methods": [
+                "list_saved_queries"
               ]
             },
             "SearchAllIamPolicies": {
@@ -73,6 +98,11 @@
             "UpdateFeed": {
               "methods": [
                 "update_feed"
+              ]
+            },
+            "UpdateSavedQuery": {
+              "methods": [
+                "update_saved_query"
               ]
             }
           }
@@ -100,14 +130,29 @@
                 "batch_get_assets_history"
               ]
             },
+            "BatchGetEffectiveIamPolicies": {
+              "methods": [
+                "batch_get_effective_iam_policies"
+              ]
+            },
             "CreateFeed": {
               "methods": [
                 "create_feed"
               ]
             },
+            "CreateSavedQuery": {
+              "methods": [
+                "create_saved_query"
+              ]
+            },
             "DeleteFeed": {
               "methods": [
                 "delete_feed"
+              ]
+            },
+            "DeleteSavedQuery": {
+              "methods": [
+                "delete_saved_query"
               ]
             },
             "ExportAssets": {
@@ -120,6 +165,11 @@
                 "get_feed"
               ]
             },
+            "GetSavedQuery": {
+              "methods": [
+                "get_saved_query"
+              ]
+            },
             "ListAssets": {
               "methods": [
                 "list_assets"
@@ -128,6 +178,11 @@
             "ListFeeds": {
               "methods": [
                 "list_feeds"
+              ]
+            },
+            "ListSavedQueries": {
+              "methods": [
+                "list_saved_queries"
               ]
             },
             "SearchAllIamPolicies": {
@@ -143,6 +198,11 @@
             "UpdateFeed": {
               "methods": [
                 "update_feed"
+              ]
+            },
+            "UpdateSavedQuery": {
+              "methods": [
+                "update_saved_query"
               ]
             }
           }

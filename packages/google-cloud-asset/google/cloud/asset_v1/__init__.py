@@ -26,9 +26,13 @@ from .types.asset_service import AnalyzeMoveRequest
 from .types.asset_service import AnalyzeMoveResponse
 from .types.asset_service import BatchGetAssetsHistoryRequest
 from .types.asset_service import BatchGetAssetsHistoryResponse
+from .types.asset_service import BatchGetEffectiveIamPoliciesRequest
+from .types.asset_service import BatchGetEffectiveIamPoliciesResponse
 from .types.asset_service import BigQueryDestination
 from .types.asset_service import CreateFeedRequest
+from .types.asset_service import CreateSavedQueryRequest
 from .types.asset_service import DeleteFeedRequest
+from .types.asset_service import DeleteSavedQueryRequest
 from .types.asset_service import ExportAssetsRequest
 from .types.asset_service import ExportAssetsResponse
 from .types.asset_service import Feed
@@ -36,12 +40,15 @@ from .types.asset_service import FeedOutputConfig
 from .types.asset_service import GcsDestination
 from .types.asset_service import GcsOutputResult
 from .types.asset_service import GetFeedRequest
+from .types.asset_service import GetSavedQueryRequest
 from .types.asset_service import IamPolicyAnalysisOutputConfig
 from .types.asset_service import IamPolicyAnalysisQuery
 from .types.asset_service import ListAssetsRequest
 from .types.asset_service import ListAssetsResponse
 from .types.asset_service import ListFeedsRequest
 from .types.asset_service import ListFeedsResponse
+from .types.asset_service import ListSavedQueriesRequest
+from .types.asset_service import ListSavedQueriesResponse
 from .types.asset_service import MoveAnalysis
 from .types.asset_service import MoveAnalysisResult
 from .types.asset_service import MoveImpact
@@ -49,11 +56,13 @@ from .types.asset_service import OutputConfig
 from .types.asset_service import OutputResult
 from .types.asset_service import PartitionSpec
 from .types.asset_service import PubsubDestination
+from .types.asset_service import SavedQuery
 from .types.asset_service import SearchAllIamPoliciesRequest
 from .types.asset_service import SearchAllIamPoliciesResponse
 from .types.asset_service import SearchAllResourcesRequest
 from .types.asset_service import SearchAllResourcesResponse
 from .types.asset_service import UpdateFeedRequest
+from .types.asset_service import UpdateSavedQueryRequest
 from .types.asset_service import ContentType
 from .types.assets import Asset
 from .types.assets import AttachedResource
@@ -86,11 +95,15 @@ __all__ = (
     "AttachedResource",
     "BatchGetAssetsHistoryRequest",
     "BatchGetAssetsHistoryResponse",
+    "BatchGetEffectiveIamPoliciesRequest",
+    "BatchGetEffectiveIamPoliciesResponse",
     "BigQueryDestination",
     "ConditionEvaluation",
     "ContentType",
     "CreateFeedRequest",
+    "CreateSavedQueryRequest",
     "DeleteFeedRequest",
+    "DeleteSavedQueryRequest",
     "ExportAssetsRequest",
     "ExportAssetsResponse",
     "Feed",
@@ -98,6 +111,7 @@ __all__ = (
     "GcsDestination",
     "GcsOutputResult",
     "GetFeedRequest",
+    "GetSavedQueryRequest",
     "IamPolicyAnalysisOutputConfig",
     "IamPolicyAnalysisQuery",
     "IamPolicyAnalysisResult",
@@ -107,6 +121,8 @@ __all__ = (
     "ListAssetsResponse",
     "ListFeedsRequest",
     "ListFeedsResponse",
+    "ListSavedQueriesRequest",
+    "ListSavedQueriesResponse",
     "MoveAnalysis",
     "MoveAnalysisResult",
     "MoveImpact",
@@ -121,6 +137,7 @@ __all__ = (
     "RelationshipAttributes",
     "Resource",
     "ResourceSearchResult",
+    "SavedQuery",
     "SearchAllIamPoliciesRequest",
     "SearchAllIamPoliciesResponse",
     "SearchAllResourcesRequest",
@@ -128,5 +145,6 @@ __all__ = (
     "TemporalAsset",
     "TimeWindow",
     "UpdateFeedRequest",
+    "UpdateSavedQueryRequest",
     "VersionedResource",
 )

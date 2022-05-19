@@ -266,6 +266,36 @@ class AssetServiceTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.create_saved_query: gapic_v1.method.wrap_method(
+                self.create_saved_query,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_saved_query: gapic_v1.method.wrap_method(
+                self.get_saved_query,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_saved_queries: gapic_v1.method.wrap_method(
+                self.list_saved_queries,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_saved_query: gapic_v1.method.wrap_method(
+                self.update_saved_query,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_saved_query: gapic_v1.method.wrap_method(
+                self.delete_saved_query,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.batch_get_effective_iam_policies: gapic_v1.method.wrap_method(
+                self.batch_get_effective_iam_policies,
+                default_timeout=None,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -415,6 +445,66 @@ class AssetServiceTransport(abc.ABC):
         Union[
             asset_service.AnalyzeMoveResponse,
             Awaitable[asset_service.AnalyzeMoveResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_saved_query(
+        self,
+    ) -> Callable[
+        [asset_service.CreateSavedQueryRequest],
+        Union[asset_service.SavedQuery, Awaitable[asset_service.SavedQuery]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_saved_query(
+        self,
+    ) -> Callable[
+        [asset_service.GetSavedQueryRequest],
+        Union[asset_service.SavedQuery, Awaitable[asset_service.SavedQuery]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_saved_queries(
+        self,
+    ) -> Callable[
+        [asset_service.ListSavedQueriesRequest],
+        Union[
+            asset_service.ListSavedQueriesResponse,
+            Awaitable[asset_service.ListSavedQueriesResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_saved_query(
+        self,
+    ) -> Callable[
+        [asset_service.UpdateSavedQueryRequest],
+        Union[asset_service.SavedQuery, Awaitable[asset_service.SavedQuery]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_saved_query(
+        self,
+    ) -> Callable[
+        [asset_service.DeleteSavedQueryRequest],
+        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def batch_get_effective_iam_policies(
+        self,
+    ) -> Callable[
+        [asset_service.BatchGetEffectiveIamPoliciesRequest],
+        Union[
+            asset_service.BatchGetEffectiveIamPoliciesResponse,
+            Awaitable[asset_service.BatchGetEffectiveIamPoliciesResponse],
         ],
     ]:
         raise NotImplementedError()

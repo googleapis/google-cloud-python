@@ -39,19 +39,25 @@ def partition(
 class assetCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
-        'analyze_iam_policy': ('analysis_query', 'execution_timeout', ),
-        'analyze_iam_policy_longrunning': ('analysis_query', 'output_config', ),
+        'analyze_iam_policy': ('analysis_query', 'saved_analysis_query', 'execution_timeout', ),
+        'analyze_iam_policy_longrunning': ('analysis_query', 'output_config', 'saved_analysis_query', ),
         'analyze_move': ('resource', 'destination_parent', 'view', ),
         'batch_get_assets_history': ('parent', 'asset_names', 'content_type', 'read_time_window', 'relationship_types', ),
+        'batch_get_effective_iam_policies': ('scope', 'names', ),
         'create_feed': ('parent', 'feed_id', 'feed', ),
+        'create_saved_query': ('parent', 'saved_query', 'saved_query_id', ),
         'delete_feed': ('name', ),
+        'delete_saved_query': ('name', ),
         'export_assets': ('parent', 'output_config', 'read_time', 'asset_types', 'content_type', 'relationship_types', ),
         'get_feed': ('name', ),
+        'get_saved_query': ('name', ),
         'list_assets': ('parent', 'read_time', 'asset_types', 'content_type', 'page_size', 'page_token', 'relationship_types', ),
         'list_feeds': ('parent', ),
+        'list_saved_queries': ('parent', 'filter', 'page_size', 'page_token', ),
         'search_all_iam_policies': ('scope', 'query', 'page_size', 'page_token', 'asset_types', 'order_by', ),
         'search_all_resources': ('scope', 'query', 'asset_types', 'page_size', 'page_token', 'order_by', 'read_mask', ),
         'update_feed': ('feed', 'update_mask', ),
+        'update_saved_query': ('saved_query', 'update_mask', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:

@@ -32,9 +32,17 @@ from google.cloud.asset_v1.types.asset_service import AnalyzeMoveRequest
 from google.cloud.asset_v1.types.asset_service import AnalyzeMoveResponse
 from google.cloud.asset_v1.types.asset_service import BatchGetAssetsHistoryRequest
 from google.cloud.asset_v1.types.asset_service import BatchGetAssetsHistoryResponse
+from google.cloud.asset_v1.types.asset_service import (
+    BatchGetEffectiveIamPoliciesRequest,
+)
+from google.cloud.asset_v1.types.asset_service import (
+    BatchGetEffectiveIamPoliciesResponse,
+)
 from google.cloud.asset_v1.types.asset_service import BigQueryDestination
 from google.cloud.asset_v1.types.asset_service import CreateFeedRequest
+from google.cloud.asset_v1.types.asset_service import CreateSavedQueryRequest
 from google.cloud.asset_v1.types.asset_service import DeleteFeedRequest
+from google.cloud.asset_v1.types.asset_service import DeleteSavedQueryRequest
 from google.cloud.asset_v1.types.asset_service import ExportAssetsRequest
 from google.cloud.asset_v1.types.asset_service import ExportAssetsResponse
 from google.cloud.asset_v1.types.asset_service import Feed
@@ -42,12 +50,15 @@ from google.cloud.asset_v1.types.asset_service import FeedOutputConfig
 from google.cloud.asset_v1.types.asset_service import GcsDestination
 from google.cloud.asset_v1.types.asset_service import GcsOutputResult
 from google.cloud.asset_v1.types.asset_service import GetFeedRequest
+from google.cloud.asset_v1.types.asset_service import GetSavedQueryRequest
 from google.cloud.asset_v1.types.asset_service import IamPolicyAnalysisOutputConfig
 from google.cloud.asset_v1.types.asset_service import IamPolicyAnalysisQuery
 from google.cloud.asset_v1.types.asset_service import ListAssetsRequest
 from google.cloud.asset_v1.types.asset_service import ListAssetsResponse
 from google.cloud.asset_v1.types.asset_service import ListFeedsRequest
 from google.cloud.asset_v1.types.asset_service import ListFeedsResponse
+from google.cloud.asset_v1.types.asset_service import ListSavedQueriesRequest
+from google.cloud.asset_v1.types.asset_service import ListSavedQueriesResponse
 from google.cloud.asset_v1.types.asset_service import MoveAnalysis
 from google.cloud.asset_v1.types.asset_service import MoveAnalysisResult
 from google.cloud.asset_v1.types.asset_service import MoveImpact
@@ -55,11 +66,13 @@ from google.cloud.asset_v1.types.asset_service import OutputConfig
 from google.cloud.asset_v1.types.asset_service import OutputResult
 from google.cloud.asset_v1.types.asset_service import PartitionSpec
 from google.cloud.asset_v1.types.asset_service import PubsubDestination
+from google.cloud.asset_v1.types.asset_service import SavedQuery
 from google.cloud.asset_v1.types.asset_service import SearchAllIamPoliciesRequest
 from google.cloud.asset_v1.types.asset_service import SearchAllIamPoliciesResponse
 from google.cloud.asset_v1.types.asset_service import SearchAllResourcesRequest
 from google.cloud.asset_v1.types.asset_service import SearchAllResourcesResponse
 from google.cloud.asset_v1.types.asset_service import UpdateFeedRequest
+from google.cloud.asset_v1.types.asset_service import UpdateSavedQueryRequest
 from google.cloud.asset_v1.types.asset_service import ContentType
 from google.cloud.asset_v1.types.assets import Asset
 from google.cloud.asset_v1.types.assets import AttachedResource
@@ -90,9 +103,13 @@ __all__ = (
     "AnalyzeMoveResponse",
     "BatchGetAssetsHistoryRequest",
     "BatchGetAssetsHistoryResponse",
+    "BatchGetEffectiveIamPoliciesRequest",
+    "BatchGetEffectiveIamPoliciesResponse",
     "BigQueryDestination",
     "CreateFeedRequest",
+    "CreateSavedQueryRequest",
     "DeleteFeedRequest",
+    "DeleteSavedQueryRequest",
     "ExportAssetsRequest",
     "ExportAssetsResponse",
     "Feed",
@@ -100,12 +117,15 @@ __all__ = (
     "GcsDestination",
     "GcsOutputResult",
     "GetFeedRequest",
+    "GetSavedQueryRequest",
     "IamPolicyAnalysisOutputConfig",
     "IamPolicyAnalysisQuery",
     "ListAssetsRequest",
     "ListAssetsResponse",
     "ListFeedsRequest",
     "ListFeedsResponse",
+    "ListSavedQueriesRequest",
+    "ListSavedQueriesResponse",
     "MoveAnalysis",
     "MoveAnalysisResult",
     "MoveImpact",
@@ -113,11 +133,13 @@ __all__ = (
     "OutputResult",
     "PartitionSpec",
     "PubsubDestination",
+    "SavedQuery",
     "SearchAllIamPoliciesRequest",
     "SearchAllIamPoliciesResponse",
     "SearchAllResourcesRequest",
     "SearchAllResourcesResponse",
     "UpdateFeedRequest",
+    "UpdateSavedQueryRequest",
     "ContentType",
     "Asset",
     "AttachedResource",
