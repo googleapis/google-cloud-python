@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-translate/#history
 
+### [3.7.3](https://github.com/googleapis/python-translate/compare/v3.7.2...v3.7.3) (2022-05-19)
+
+
+### Documentation
+
+* fix type in docstring for map fields ([3b845d6](https://github.com/googleapis/python-translate/commit/3b845d68eddd852c2d65bb852de6c5c4b4d096ad))
+
 ### [3.7.2](https://github.com/googleapis/python-translate/compare/v3.7.1...v3.7.2) (2022-03-05)
 
 
