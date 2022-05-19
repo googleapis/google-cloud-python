@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-datastore/#history
 
+## [2.6.0](https://github.com/googleapis/python-datastore/compare/v2.5.1...v2.6.0) (2022-05-05)
+
+
+### Features
+
+* expose new read_time API fields, currently only available in private preview ([8d2bd17](https://github.com/googleapis/python-datastore/commit/8d2bd1788d8dc7da57ab9272b274a29082878ece))
+
+
+### Documentation
+
+* fix type in docstring for map fields ([8d2bd17](https://github.com/googleapis/python-datastore/commit/8d2bd1788d8dc7da57ab9272b274a29082878ece))
+
 ### [2.5.1](https://github.com/googleapis/python-datastore/compare/v2.5.0...v2.5.1) (2022-03-05)
 
 
