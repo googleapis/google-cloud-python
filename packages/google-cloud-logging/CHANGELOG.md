@@ -4,6 +4,34 @@
 
 [1]: https://pypi.org/project/google-cloud-logging/#history
 
+## [3.1.0](https://github.com/googleapis/python-logging/compare/v3.0.0...v3.1.0) (2022-05-08)
+
+
+### Features
+
+* KMS configuration in settings ([#489](https://github.com/googleapis/python-logging/issues/489)) ([6699f8c](https://github.com/googleapis/python-logging/commit/6699f8c545d1a9904a945a9d789d7220da9433bf))
+* Update Logging API with latest changes ([6699f8c](https://github.com/googleapis/python-logging/commit/6699f8c545d1a9904a945a9d789d7220da9433bf))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.31.5, >=2.3.2 ([#494](https://github.com/googleapis/python-logging/issues/494)) ([ab14563](https://github.com/googleapis/python-logging/commit/ab145630ffbb25a88cc058569b9e425e62b32ced))
+* fix system test for mtls ([#485](https://github.com/googleapis/python-logging/issues/485)) ([96bb6f7](https://github.com/googleapis/python-logging/commit/96bb6f786c91656b52624fbbf52e036b1a908d53))
+* Reenable staleness bot ([#535](https://github.com/googleapis/python-logging/issues/535)) ([1595e42](https://github.com/googleapis/python-logging/commit/1595e4203faeb3d46b28a7d98f68761998e3aa26))
+* remove unnecessary detect_resource calls from CloudLoggingHandler ([#484](https://github.com/googleapis/python-logging/issues/484)) ([def7440](https://github.com/googleapis/python-logging/commit/def7440ac6964451f3202b5117e3060ec62045b0))
+* resolve DuplicateCredentialArgs error when using credentials_file ([265061e](https://github.com/googleapis/python-logging/commit/265061eae8396caaef3fdfeae80e0a120f9a5cda))
+
+
+### Dependencies
+
+* Pin jinja2 version to fix CI ([#522](https://github.com/googleapis/python-logging/issues/522)) ([383f2f0](https://github.com/googleapis/python-logging/commit/383f2f0062d3703dfc7e2c331562fb88327cdf38))
+
+
+### Documentation
+
+* add generated snippets ([6699f8c](https://github.com/googleapis/python-logging/commit/6699f8c545d1a9904a945a9d789d7220da9433bf))
+* Add link to interactive walkthrough ([#541](https://github.com/googleapis/python-logging/issues/541)) ([422a77d](https://github.com/googleapis/python-logging/commit/422a77d93655fba3406ecf397cf417ad37dd1ce1))
+
 ## [3.0.0](https://github.com/googleapis/python-logging/compare/v2.7.0...v3.0.0) (2022-01-27)
 
 
