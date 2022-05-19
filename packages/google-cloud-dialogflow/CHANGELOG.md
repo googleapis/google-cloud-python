@@ -4,6 +4,25 @@
 
 [1]: https://pypi.org/project/dialogflow/#history
 
+## [2.14.0](https://github.com/googleapis/python-dialogflow/compare/v2.13.0...v2.14.0) (2022-05-09)
+
+
+### Features
+
+* added HUMAN_INTERVENTION_NEEDED type in ConversationEvent ([#488](https://github.com/googleapis/python-dialogflow/issues/488)) ([fa5fd8b](https://github.com/googleapis/python-dialogflow/commit/fa5fd8ba4356051776b8828cef2bae59da5b4993))
+* **v2beta1:** add the API of StreamingAnalyzeContent ([#520](https://github.com/googleapis/python-dialogflow/issues/520)) ([0d3b413](https://github.com/googleapis/python-dialogflow/commit/0d3b41353e7171783a44bbd996de95c9bdb1ae34))
+
+
+### Bug Fixes
+
+* correct broken ConversationModelEvaluation resource pattern ([#509](https://github.com/googleapis/python-dialogflow/issues/509)) ([cd4a93b](https://github.com/googleapis/python-dialogflow/commit/cd4a93b44b9b09d0a7cb71e32686337f504ef0ce))
+
+
+### Documentation
+
+* add the fields for setting CX virtual agent session parameters ([#519](https://github.com/googleapis/python-dialogflow/issues/519)) ([347e03f](https://github.com/googleapis/python-dialogflow/commit/347e03f07b55216dd1cc62ee3e3c04b509968c5b))
+* added explanation for SuggestionResult ([#490](https://github.com/googleapis/python-dialogflow/issues/490)) ([0c210be](https://github.com/googleapis/python-dialogflow/commit/0c210bef1dec9c7014f1ae791523f6b60aa8034e))
+
 ## [2.13.0](https://github.com/googleapis/python-dialogflow/compare/v2.12.0...v2.13.0) (2022-03-08)
 
 
