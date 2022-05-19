@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.6.0](https://github.com/googleapis/python-monitoring-dashboards/compare/v2.5.1...v2.6.0) (2022-05-05)
+
+
+### Features
+
+* add CollapsibleGroup, DashboardFilter, LogsPanel, TableDisplayOptions, TimeSeriesTable ([#175](https://github.com/googleapis/python-monitoring-dashboards/issues/175)) ([a721b72](https://github.com/googleapis/python-monitoring-dashboards/commit/a721b720ea9f2af3da069fb5a0a6cb7488a25cea))
+
 ### [2.5.1](https://github.com/googleapis/python-monitoring-dashboards/compare/v2.5.0...v2.5.1) (2022-03-05)
 
 
