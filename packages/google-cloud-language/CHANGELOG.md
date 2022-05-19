@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-language/#history
 
+### [2.4.2](https://github.com/googleapis/python-language/compare/v2.4.1...v2.4.2) (2022-05-17)
+
+
+### Documentation
+
+* fix type in docstring for map fields ([41c28cd](https://github.com/googleapis/python-language/commit/41c28cd35b91adcbe3221a898419c323875b5cfd))
+
 ### [2.4.1](https://github.com/googleapis/python-language/compare/v2.4.0...v2.4.1) (2022-03-05)
 
 
