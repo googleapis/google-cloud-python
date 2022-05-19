@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-dlp/#history
 
+## [3.7.0](https://github.com/googleapis/python-dlp/compare/v3.6.2...v3.7.0) (2022-05-12)
+
+
+### Features
+
+* add DataProfilePubSubMessage supporting pub/sub integration ([#363](https://github.com/googleapis/python-dlp/issues/363)) ([15a4653](https://github.com/googleapis/python-dlp/commit/15a4653426b2a614a22152ca0a4b457fd8696d3a))
+* new Bytes and File types POWERPOINT and EXCEL ([#355](https://github.com/googleapis/python-dlp/issues/355)) ([be8c8b1](https://github.com/googleapis/python-dlp/commit/be8c8b145d8ecad24a9c56f4ab26520700b157a8))
+
 ### [3.6.2](https://github.com/googleapis/python-dlp/compare/v3.6.1...v3.6.2) (2022-03-05)
 
 
