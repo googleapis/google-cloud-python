@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.0](https://github.com/googleapis/python-deploy/compare/v1.1.1...v1.2.0) (2022-05-06)
+
+
+### Features
+
+* Add support for Anthos worker pool ([#61](https://github.com/googleapis/python-deploy/issues/61)) ([f5105a4](https://github.com/googleapis/python-deploy/commit/f5105a425f4f164aa7db948b3c82e2aa59dd64ce))
+
 ### [1.1.1](https://github.com/googleapis/python-deploy/compare/v1.1.0...v1.1.1) (2022-03-05)
 
 
