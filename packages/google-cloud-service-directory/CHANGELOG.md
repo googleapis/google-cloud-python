@@ -1,5 +1,22 @@
 # Changelog
 
+## [1.4.0](https://github.com/googleapis/python-service-directory/compare/v1.3.1...v1.4.0) (2022-05-05)
+
+
+### Features
+
+* AuditConfig for IAM v1 ([ab48a2a](https://github.com/googleapis/python-service-directory/commit/ab48a2a2f2dddfaf9bc18b53f99b379ad66098d2))
+
+
+### Bug Fixes
+
+* **deps:** require grpc-google-iam-v1 >=0.12.4 ([ab48a2a](https://github.com/googleapis/python-service-directory/commit/ab48a2a2f2dddfaf9bc18b53f99b379ad66098d2))
+
+
+### Documentation
+
+* fix type in docstring for map fields ([ab48a2a](https://github.com/googleapis/python-service-directory/commit/ab48a2a2f2dddfaf9bc18b53f99b379ad66098d2))
+
 ### [1.3.1](https://github.com/googleapis/python-service-directory/compare/v1.3.0...v1.3.1) (2022-03-05)
 
 
