@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.4.1](https://github.com/googleapis/python-bigquery-migration/compare/v0.4.0...v0.4.1) (2022-05-05)
+
+
+### Documentation
+
+* fix type in docstring for map fields ([6c5982b](https://github.com/googleapis/python-bigquery-migration/commit/6c5982bf2fcc0d90d6a6951a7dd676e9b7974627))
+
 ## [0.4.0](https://github.com/googleapis/python-bigquery-migration/compare/v0.3.1...v0.4.0) (2022-04-03)
 
 
