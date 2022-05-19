@@ -578,8 +578,9 @@ class SubscriberClient(metaclass=SubscriberClientMeta):
                 should not be set.
             push_config (google.pubsub_v1.types.PushConfig):
                 If push delivery is used with this subscription, this
-                field is used to configure it. An empty ``pushConfig``
-                signifies that the subscriber will pull and ack messages
+                field is used to configure it. Either ``pushConfig`` or
+                ``bigQueryConfig`` can be set, but not both. If both are
+                empty, then the subscriber will pull and ack messages
                 using API methods.
 
                 This corresponds to the ``push_config`` field

@@ -22,6 +22,7 @@ from .services.subscriber import SubscriberClient
 from .services.subscriber import SubscriberAsyncClient
 
 from .types.pubsub import AcknowledgeRequest
+from .types.pubsub import BigQueryConfig
 from .types.pubsub import CreateSnapshotRequest
 from .types.pubsub import DeadLetterPolicy
 from .types.pubsub import DeleteSnapshotRequest
@@ -83,6 +84,7 @@ __all__ = (
     "SchemaServiceAsyncClient",
     "SubscriberAsyncClient",
     "AcknowledgeRequest",
+    "BigQueryConfig",
     "CreateSchemaRequest",
     "CreateSnapshotRequest",
     "DeadLetterPolicy",

@@ -46,6 +46,7 @@ __protobuf__ = proto.module(
         "DeadLetterPolicy",
         "ExpirationPolicy",
         "PushConfig",
+        "BigQueryConfig",
         "ReceivedMessage",
         "GetSubscriptionRequest",
         "UpdateSubscriptionRequest",
@@ -581,9 +582,16 @@ class Subscription(proto.Message):
             deleted.
         push_config (google.pubsub_v1.types.PushConfig):
             If push delivery is used with this subscription, this field
-            is used to configure it. An empty ``pushConfig`` signifies
-            that the subscriber will pull and ack messages using API
-            methods.
+            is used to configure it. Either ``pushConfig`` or
+            ``bigQueryConfig`` can be set, but not both. If both are
+            empty, then the subscriber will pull and ack messages using
+            API methods.
+        bigquery_config (google.pubsub_v1.types.BigQueryConfig):
+            If delivery to BigQuery is used with this subscription, this
+            field is used to configure it. Either ``pushConfig`` or
+            ``bigQueryConfig`` can be set, but not both. If both are
+            empty, then the subscriber will pull and ack messages using
+            API methods.
         ack_deadline_seconds (int):
             The approximate amount of time (on a best-effort basis)
             Pub/Sub waits for the subscriber to acknowledge receipt
@@ -700,7 +708,17 @@ class Subscription(proto.Message):
             subscribers. See the ``message_retention_duration`` field in
             ``Topic``. This field is set only in responses from the
             server; it is ignored if it is set in any requests.
+        state (google.pubsub_v1.types.Subscription.State):
+            Output only. An output-only field indicating
+            whether or not the subscription can receive
+            messages.
     """
+
+    class State(proto.Enum):
+        r"""Possible states for a subscription."""
+        STATE_UNSPECIFIED = 0
+        ACTIVE = 1
+        RESOURCE_ERROR = 2
 
     name = proto.Field(
         proto.STRING,
@@ -714,6 +732,11 @@ class Subscription(proto.Message):
         proto.MESSAGE,
         number=4,
         message="PushConfig",
+    )
+    bigquery_config = proto.Field(
+        proto.MESSAGE,
+        number=18,
+        message="BigQueryConfig",
     )
     ack_deadline_seconds = proto.Field(
         proto.INT32,
@@ -768,6 +791,11 @@ class Subscription(proto.Message):
         proto.MESSAGE,
         number=17,
         message=duration_pb2.Duration,
+    )
+    state = proto.Field(
+        proto.ENUM,
+        number=19,
+        enum=State,
     )
 
 
@@ -977,6 +1005,67 @@ class PushConfig(proto.Message):
         number=3,
         oneof="authentication_method",
         message=OidcToken,
+    )
+
+
+class BigQueryConfig(proto.Message):
+    r"""Configuration for a BigQuery subscription.
+
+    Attributes:
+        table (str):
+            The name of the table to which to write data,
+            of the form {projectId}:{datasetId}.{tableId}
+        use_topic_schema (bool):
+            When true, use the topic's schema as the
+            columns to write to in BigQuery, if it exists.
+        write_metadata (bool):
+            When true, write the subscription name, message_id,
+            publish_time, attributes, and ordering_key to additional
+            columns in the table. The subscription name, message_id, and
+            publish_time fields are put in their own columns while all
+            other message properties (other than data) are written to a
+            JSON object in the attributes column.
+        drop_unknown_fields (bool):
+            When true and use_topic_schema is true, any fields that are
+            a part of the topic schema that are not part of the BigQuery
+            table schema are dropped when writing to BigQuery.
+            Otherwise, the schemas must be kept in sync and any messages
+            with extra fields are not written and remain in the
+            subscription's backlog.
+        state (google.pubsub_v1.types.BigQueryConfig.State):
+            Output only. An output-only field that
+            indicates whether or not the subscription can
+            receive messages.
+    """
+
+    class State(proto.Enum):
+        r"""Possible states for a BigQuery subscription."""
+        STATE_UNSPECIFIED = 0
+        ACTIVE = 1
+        PERMISSION_DENIED = 2
+        NOT_FOUND = 3
+        SCHEMA_MISMATCH = 4
+
+    table = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    use_topic_schema = proto.Field(
+        proto.BOOL,
+        number=2,
+    )
+    write_metadata = proto.Field(
+        proto.BOOL,
+        number=3,
+    )
+    drop_unknown_fields = proto.Field(
+        proto.BOOL,
+        number=4,
+    )
+    state = proto.Field(
+        proto.ENUM,
+        number=5,
+        enum=State,
     )
 
 

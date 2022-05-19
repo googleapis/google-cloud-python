@@ -665,6 +665,7 @@ def test_create_subscription(request_type, transport: str = "grpc"):
             filter="filter_value",
             detached=True,
             enable_exactly_once_delivery=True,
+            state=pubsub.Subscription.State.ACTIVE,
         )
         response = client.create_subscription(request)
 
@@ -683,6 +684,7 @@ def test_create_subscription(request_type, transport: str = "grpc"):
     assert response.filter == "filter_value"
     assert response.detached is True
     assert response.enable_exactly_once_delivery is True
+    assert response.state == pubsub.Subscription.State.ACTIVE
 
 
 def test_create_subscription_empty_call():
@@ -731,6 +733,7 @@ async def test_create_subscription_async(
                 filter="filter_value",
                 detached=True,
                 enable_exactly_once_delivery=True,
+                state=pubsub.Subscription.State.ACTIVE,
             )
         )
         response = await client.create_subscription(request)
@@ -750,6 +753,7 @@ async def test_create_subscription_async(
     assert response.filter == "filter_value"
     assert response.detached is True
     assert response.enable_exactly_once_delivery is True
+    assert response.state == pubsub.Subscription.State.ACTIVE
 
 
 @pytest.mark.asyncio
@@ -963,6 +967,7 @@ def test_get_subscription(request_type, transport: str = "grpc"):
             filter="filter_value",
             detached=True,
             enable_exactly_once_delivery=True,
+            state=pubsub.Subscription.State.ACTIVE,
         )
         response = client.get_subscription(request)
 
@@ -981,6 +986,7 @@ def test_get_subscription(request_type, transport: str = "grpc"):
     assert response.filter == "filter_value"
     assert response.detached is True
     assert response.enable_exactly_once_delivery is True
+    assert response.state == pubsub.Subscription.State.ACTIVE
 
 
 def test_get_subscription_empty_call():
@@ -1025,6 +1031,7 @@ async def test_get_subscription_async(
                 filter="filter_value",
                 detached=True,
                 enable_exactly_once_delivery=True,
+                state=pubsub.Subscription.State.ACTIVE,
             )
         )
         response = await client.get_subscription(request)
@@ -1044,6 +1051,7 @@ async def test_get_subscription_async(
     assert response.filter == "filter_value"
     assert response.detached is True
     assert response.enable_exactly_once_delivery is True
+    assert response.state == pubsub.Subscription.State.ACTIVE
 
 
 @pytest.mark.asyncio
@@ -1221,6 +1229,7 @@ def test_update_subscription(request_type, transport: str = "grpc"):
             filter="filter_value",
             detached=True,
             enable_exactly_once_delivery=True,
+            state=pubsub.Subscription.State.ACTIVE,
         )
         response = client.update_subscription(request)
 
@@ -1239,6 +1248,7 @@ def test_update_subscription(request_type, transport: str = "grpc"):
     assert response.filter == "filter_value"
     assert response.detached is True
     assert response.enable_exactly_once_delivery is True
+    assert response.state == pubsub.Subscription.State.ACTIVE
 
 
 def test_update_subscription_empty_call():
@@ -1287,6 +1297,7 @@ async def test_update_subscription_async(
                 filter="filter_value",
                 detached=True,
                 enable_exactly_once_delivery=True,
+                state=pubsub.Subscription.State.ACTIVE,
             )
         )
         response = await client.update_subscription(request)
@@ -1306,6 +1317,7 @@ async def test_update_subscription_async(
     assert response.filter == "filter_value"
     assert response.detached is True
     assert response.enable_exactly_once_delivery is True
+    assert response.state == pubsub.Subscription.State.ACTIVE
 
 
 @pytest.mark.asyncio
