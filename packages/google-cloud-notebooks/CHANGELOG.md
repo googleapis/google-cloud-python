@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.3.1](https://github.com/googleapis/python-notebooks/compare/v1.3.0...v1.3.1) (2022-05-05)
+
+
+### Documentation
+
+* modify the project ID pattern in comment for VmImage ([#162](https://github.com/googleapis/python-notebooks/issues/162)) ([1750ae6](https://github.com/googleapis/python-notebooks/commit/1750ae63d05d58e4bc0801bdc57709151bbac100))
+
 ## [1.3.0](https://github.com/googleapis/python-notebooks/compare/v1.2.1...v1.3.0) (2022-04-21)
 
 
