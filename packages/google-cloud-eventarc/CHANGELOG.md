@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.0](https://github.com/googleapis/python-eventarc/compare/v1.4.2...v1.5.0) (2022-05-19)
+
+
+### Features
+
+* Add Provider resources ([#109](https://github.com/googleapis/python-eventarc/issues/109)) ([11be2a5](https://github.com/googleapis/python-eventarc/commit/11be2a5ee982a01ee974cb19f8efc9aa8e90be93))
+
 ### [1.4.2](https://github.com/googleapis/python-eventarc/compare/v1.4.1...v1.4.2) (2022-04-14)
 
 
