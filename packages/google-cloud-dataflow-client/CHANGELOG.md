@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.5.1](https://github.com/googleapis/python-dataflow-client/compare/v0.5.0...v0.5.1) (2022-05-05)
+
+
+### Documentation
+
+* fix type in docstring for map fields ([e775e1f](https://github.com/googleapis/python-dataflow-client/commit/e775e1fce9eeed9c8614c61892c8b987facd5c66))
+
 ## [0.5.0](https://github.com/googleapis/python-dataflow-client/compare/v0.4.1...v0.5.0) (2022-03-16)
 
 
