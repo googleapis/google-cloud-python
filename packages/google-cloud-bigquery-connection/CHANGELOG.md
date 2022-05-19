@@ -1,5 +1,23 @@
 # Changelog
 
+## [1.5.0](https://github.com/googleapis/python-bigquery-connection/compare/v1.4.0...v1.5.0) (2022-05-05)
+
+
+### Features
+
+* AuditConfig for IAM v1 ([#194](https://github.com/googleapis/python-bigquery-connection/issues/194)) ([d350b94](https://github.com/googleapis/python-bigquery-connection/commit/d350b947b3cfbb1aede8638c518eac2e8ba5495d))
+
+
+### Bug Fixes
+
+* **deps:** require grpc-google-iam-v1 >=0.12.4 ([d350b94](https://github.com/googleapis/python-bigquery-connection/commit/d350b947b3cfbb1aede8638c518eac2e8ba5495d))
+* region tags in create_mysql_connection.py ([#205](https://github.com/googleapis/python-bigquery-connection/issues/205)) ([f082fd2](https://github.com/googleapis/python-bigquery-connection/commit/f082fd246495cd6f874e6ac85655d27d594ab786))
+
+
+### Documentation
+
+* **samples:** create connection sample for MySQL instance ([#147](https://github.com/googleapis/python-bigquery-connection/issues/147)) ([8e664be](https://github.com/googleapis/python-bigquery-connection/commit/8e664bea488183d1132a61cb1ab7a912dde48b43))
+
 ## [1.4.0](https://github.com/googleapis/python-bigquery-connection/compare/v1.3.4...v1.4.0) (2022-03-08)
 
 
