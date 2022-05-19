@@ -1,5 +1,15 @@
 # Changelog
 
+### [1.3.1](https://github.com/googleapis/python-compute/compare/v1.3.0...v1.3.1) (2022-05-05)
+
+
+### Documentation
+
+* **samples:** Adding samples for image creation and deletion ([#270](https://github.com/googleapis/python-compute/issues/270)) ([89ab205](https://github.com/googleapis/python-compute/commit/89ab205ced84e876372d7ab1e2ac300227935079))
+* **samples:** Adding samples for image related operations ([#277](https://github.com/googleapis/python-compute/issues/277)) ([35c548e](https://github.com/googleapis/python-compute/commit/35c548ec8f5833148200bf0f333eb6c088147864))
+* **samples:** Adding Windows server samples ([#274](https://github.com/googleapis/python-compute/issues/274)) ([06291b5](https://github.com/googleapis/python-compute/commit/06291b5dabe42b47955e36f9e9e2e651b5512d75))
+* **samples:** Improving snapshot samples ([#276](https://github.com/googleapis/python-compute/issues/276)) ([343be37](https://github.com/googleapis/python-compute/commit/343be37bea8f032bfb5cd5f3ca99e9b003d02a7d))
+
 ## [1.3.0](https://github.com/googleapis/python-compute/compare/v1.2.0...v1.3.0) (2022-04-21)
 
 
