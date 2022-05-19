@@ -4,6 +4,20 @@
 
 [1]: https://pypi.org/project/google-cloud-speech/#history
 
+## [2.14.0](https://github.com/googleapis/python-speech/compare/v2.13.1...v2.14.0) (2022-05-11)
+
+
+### Features
+
+* Add adaptation proto for v1 api ([#371](https://github.com/googleapis/python-speech/issues/371)) ([c03a6cc](https://github.com/googleapis/python-speech/commit/c03a6cc6f15a8c67a0e89c2433299601c5de73ce))
+
+
+### Documentation
+
+* Add documentation for latest models to RecognitionConfig ([#368](https://github.com/googleapis/python-speech/issues/368)) ([75b8379](https://github.com/googleapis/python-speech/commit/75b8379e97fa43f880e5e7de4404f0f8af4345f1))
+* Update client libraries for v1p1beta1 api ([#372](https://github.com/googleapis/python-speech/issues/372)) ([39b0a2c](https://github.com/googleapis/python-speech/commit/39b0a2cc2f0735cf02fc02982827f4a8c7aada0b))
+* update docstrings to use absolute links ([#355](https://github.com/googleapis/python-speech/issues/355)) ([e36910b](https://github.com/googleapis/python-speech/commit/e36910b24ab69b134338a8b64fe4c6edad350514))
+
 ### [2.13.1](https://github.com/googleapis/python-speech/compare/v2.13.0...v2.13.1) (2022-03-05)
 
 
