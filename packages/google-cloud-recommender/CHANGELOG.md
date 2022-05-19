@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-recommender/#history
 
+### [2.7.3](https://github.com/googleapis/python-recommender/compare/v2.7.2...v2.7.3) (2022-05-05)
+
+
+### Documentation
+
+* fix type in docstring for map fields ([9749c44](https://github.com/googleapis/python-recommender/commit/9749c447bbe823ef33b5805a21c2c8a5b0615abb))
+
 ### [2.7.2](https://github.com/googleapis/python-recommender/compare/v2.7.1...v2.7.2) (2022-03-05)
 
 
