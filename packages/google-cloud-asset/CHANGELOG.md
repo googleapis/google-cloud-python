@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-asset/#history
 
+## [3.9.0](https://github.com/googleapis/python-asset/compare/v3.8.1...v3.9.0) (2022-05-19)
+
+
+### Features
+
+* Add SavedQuery CURD support ([#425](https://github.com/googleapis/python-asset/issues/425)) ([b3e5650](https://github.com/googleapis/python-asset/commit/b3e5650732e46c4c6ee7835cdfa38c1232efb3b9))
+
 ### [3.8.1](https://github.com/googleapis/python-asset/compare/v3.8.0...v3.8.1) (2022-03-05)
 
 
