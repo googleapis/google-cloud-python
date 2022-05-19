@@ -4,6 +4,25 @@
 
 [1]: https://pypi.org/project/google-cloud-datacatalog/#history
 
+## [3.8.0](https://github.com/googleapis/python-datacatalog/compare/v3.7.1...v3.8.0) (2022-05-09)
+
+
+### Features
+
+* added Dataplex specific fields ([9e33102](https://github.com/googleapis/python-datacatalog/commit/9e331027aa40dcbe4e7880d18043d89aa6af6b2a))
+* AuditConfig for IAM v1 ([9e33102](https://github.com/googleapis/python-datacatalog/commit/9e331027aa40dcbe4e7880d18043d89aa6af6b2a))
+
+
+### Bug Fixes
+
+* **deps:** require grpc-google-iam-v1 >=0.12.4 ([9e33102](https://github.com/googleapis/python-datacatalog/commit/9e331027aa40dcbe4e7880d18043d89aa6af6b2a))
+
+
+### Documentation
+
+* fix type in docstring for map fields ([9e33102](https://github.com/googleapis/python-datacatalog/commit/9e331027aa40dcbe4e7880d18043d89aa6af6b2a))
+* update taxonomy display_name comment ([#338](https://github.com/googleapis/python-datacatalog/issues/338)) ([9e33102](https://github.com/googleapis/python-datacatalog/commit/9e331027aa40dcbe4e7880d18043d89aa6af6b2a))
+
 ### [3.7.1](https://github.com/googleapis/python-datacatalog/compare/v3.7.0...v3.7.1) (2022-03-05)
 
 
