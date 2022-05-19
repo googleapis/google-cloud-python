@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.4.0](https://github.com/googleapis/python-iap/compare/v1.3.1...v1.4.0) (2022-05-19)
+
+
+### Features
+
+* add ReauthSettings to the UpdateIapSettingsRequest ([36c1866](https://github.com/googleapis/python-iap/commit/36c1866e605e4e880e65eb44a7d4dc49389f92f3))
+* add the TunnelDestGroup-related methods and types ([#93](https://github.com/googleapis/python-iap/issues/93)) ([36c1866](https://github.com/googleapis/python-iap/commit/36c1866e605e4e880e65eb44a7d4dc49389f92f3))
+* AuditConfig for IAM v1 ([49dc9c7](https://github.com/googleapis/python-iap/commit/49dc9c7162e956c684892bdf866f20b47e3b27d2))
+
+
+### Bug Fixes
+
+* **deps:** require grpc-google-iam-v1 >=0.12.4 ([49dc9c7](https://github.com/googleapis/python-iap/commit/49dc9c7162e956c684892bdf866f20b47e3b27d2))
+
 ### [1.3.1](https://github.com/googleapis/python-iap/compare/v1.3.0...v1.3.1) (2022-03-05)
 
 
