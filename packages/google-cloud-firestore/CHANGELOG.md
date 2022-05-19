@@ -5,6 +5,19 @@
 [1]: https://pypi.org/project/google-cloud-firestore/#history
 
 
+## [2.5.0](https://github.com/googleapis/python-firestore/compare/v2.4.0...v2.5.0) (2022-05-05)
+
+
+### Features
+
+* Enable RunQueryResponse.done ([#572](https://github.com/googleapis/python-firestore/issues/572)) ([3ec13da](https://github.com/googleapis/python-firestore/commit/3ec13dac8eb72dd5d5314528956a5aa8218fd5ba))
+
+
+### Documentation
+
+* clarifications for filters ([4d054b0](https://github.com/googleapis/python-firestore/commit/4d054b0f1323e1564eaa9f11326129707b1b1872))
+* fix type in docstring for map fields ([4d054b0](https://github.com/googleapis/python-firestore/commit/4d054b0f1323e1564eaa9f11326129707b1b1872))
+
 ## [2.4.0](https://github.com/googleapis/python-firestore/compare/v2.3.4...v2.4.0) (2022-03-08)
 
 
