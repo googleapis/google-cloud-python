@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.4.2](https://github.com/googleapis/python-gke-hub/compare/v1.4.1...v1.4.2) (2022-05-05)
+
+
+### Documentation
+
+* fix type in docstring for map fields ([d6acb71](https://github.com/googleapis/python-gke-hub/commit/d6acb71fd8763ab581cc698713e0dc188a333bd6))
+
 ### [1.4.1](https://github.com/googleapis/python-gke-hub/compare/v1.4.0...v1.4.1) (2022-03-05)
 
 
