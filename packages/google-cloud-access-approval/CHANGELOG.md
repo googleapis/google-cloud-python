@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.6.0](https://github.com/googleapis/python-access-approval/compare/v1.5.1...v1.6.0) (2022-05-19)
+
+
+### Features
+
+* update protos to include InvalidateApprovalRequest and GetAccessApprovalServiceAccount APIs ([#199](https://github.com/googleapis/python-access-approval/issues/199)) ([908cdc3](https://github.com/googleapis/python-access-approval/commit/908cdc31d1625a5bc66a3623ea11e76acddb4f62))
+
 ### [1.5.1](https://github.com/googleapis/python-access-approval/compare/v1.5.0...v1.5.1) (2022-03-05)
 
 
