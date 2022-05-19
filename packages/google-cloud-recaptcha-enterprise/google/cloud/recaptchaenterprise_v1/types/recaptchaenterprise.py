@@ -28,6 +28,7 @@ __protobuf__ = proto.module(
         "RiskAnalysis",
         "TokenProperties",
         "AccountDefenderAssessment",
+        "PrivatePasswordLeakVerification",
         "CreateKeyRequest",
         "ListKeysRequest",
         "ListKeysResponse",
@@ -173,6 +174,8 @@ class Assessment(proto.Message):
         account_defender_assessment (google.cloud.recaptchaenterprise_v1.types.AccountDefenderAssessment):
             Assessment returned by Account Defender when a
             hashed_account_id is provided.
+        private_password_leak_verification (google.cloud.recaptchaenterprise_v1.types.PrivatePasswordLeakVerification):
+            Password leak verification info.
     """
 
     name = proto.Field(
@@ -198,6 +201,11 @@ class Assessment(proto.Message):
         proto.MESSAGE,
         number=6,
         message="AccountDefenderAssessment",
+    )
+    private_password_leak_verification = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message="PrivatePasswordLeakVerification",
     )
 
 
@@ -370,6 +378,49 @@ class AccountDefenderAssessment(proto.Message):
         proto.ENUM,
         number=1,
         enum=AccountDefenderLabel,
+    )
+
+
+class PrivatePasswordLeakVerification(proto.Message):
+    r"""Private password leak verification info.
+
+    Attributes:
+        lookup_hash_prefix (bytes):
+            Exactly 26-bit prefix of the SHA-256 hash of
+            the canonicalized username. It is used to look
+            up password leaks associated with that hash
+            prefix.
+        encrypted_user_credentials_hash (bytes):
+            Encrypted Scrypt hash of the canonicalized
+            username+password. It is re-encrypted by the server and
+            returned through ``reencrypted_user_credentials_hash``.
+        encrypted_leak_match_prefixes (Sequence[bytes]):
+            List of prefixes of the encrypted potential password leaks
+            that matched the given parameters. They should be compared
+            with the client-side decryption prefix of
+            ``reencrypted_user_credentials_hash``
+        reencrypted_user_credentials_hash (bytes):
+            Corresponds to the re-encryption of the
+            ``encrypted_user_credentials_hash`` field. Used to match
+            potential password leaks within
+            ``encrypted_leak_match_prefixes``.
+    """
+
+    lookup_hash_prefix = proto.Field(
+        proto.BYTES,
+        number=1,
+    )
+    encrypted_user_credentials_hash = proto.Field(
+        proto.BYTES,
+        number=2,
+    )
+    encrypted_leak_match_prefixes = proto.RepeatedField(
+        proto.BYTES,
+        number=3,
+    )
+    reencrypted_user_credentials_hash = proto.Field(
+        proto.BYTES,
+        number=4,
     )
 
 
