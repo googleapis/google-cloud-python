@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.6.0](https://github.com/googleapis/python-retail/compare/v1.5.0...v1.6.0) (2022-05-19)
+
+
+### Features
+
+* generate v2alpha/v2beta ([#226](https://github.com/googleapis/python-retail/issues/226)) ([78953f8](https://github.com/googleapis/python-retail/commit/78953f820669aaf9afe592e5c7fc8bed8b5f5e7e))
+
+
+### Documentation
+
+* fix type in docstring for map fields ([#210](https://github.com/googleapis/python-retail/issues/210)) ([b9f4020](https://github.com/googleapis/python-retail/commit/b9f40205d76962408aa0ae492bd5ed3f5ef07790))
+* **samples:** improve the setup scripts ([#207](https://github.com/googleapis/python-retail/issues/207)) ([17dee11](https://github.com/googleapis/python-retail/commit/17dee1119a94392a845cd9855922b6228d25f5d1))
+
 ## [1.5.0](https://github.com/googleapis/python-retail/compare/v1.4.1...v1.5.0) (2022-03-30)
 
 
