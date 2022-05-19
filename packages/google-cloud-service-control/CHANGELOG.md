@@ -1,5 +1,13 @@
 # Changelog
 
+### [1.4.1](https://github.com/googleapis/python-service-control/compare/v1.4.0...v1.4.1) (2022-05-05)
+
+
+### Documentation
+
+* fix relative and broken links ([#122](https://github.com/googleapis/python-service-control/issues/122)) ([8c864f9](https://github.com/googleapis/python-service-control/commit/8c864f9dbdecac487a45aa9630113d526d9e8d97))
+* fix type in docstring for map fields ([3ce7908](https://github.com/googleapis/python-service-control/commit/3ce7908d3f0f0e4060dd2c24f071bbf583e91f5e))
+
 ## [1.4.0](https://github.com/googleapis/python-service-control/compare/v1.3.1...v1.4.0) (2022-03-08)
 
 
