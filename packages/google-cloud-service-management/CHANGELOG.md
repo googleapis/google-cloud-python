@@ -1,5 +1,13 @@
 # Changelog
 
+### [1.2.2](https://github.com/googleapis/python-service-management/compare/v1.2.1...v1.2.2) (2022-05-05)
+
+
+### Documentation
+
+* fix broken links ([#121](https://github.com/googleapis/python-service-management/issues/121)) ([f67944e](https://github.com/googleapis/python-service-management/commit/f67944e9c1865447b452bca6d852879e90664ab2))
+* fix broken links ([#126](https://github.com/googleapis/python-service-management/issues/126)) ([1988c2d](https://github.com/googleapis/python-service-management/commit/1988c2ddf9b9c9929ea263246a98cbfb8d4c7980))
+
 ### [1.2.1](https://github.com/googleapis/python-service-management/compare/v1.2.0...v1.2.1) (2022-03-05)
 
 
