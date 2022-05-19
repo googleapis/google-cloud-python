@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.3.3](https://github.com/googleapis/python-tpu/compare/v1.3.2...v1.3.3) (2022-05-05)
+
+
+### Documentation
+
+* fix docstring for map fields ([5c230d6](https://github.com/googleapis/python-tpu/commit/5c230d6ff4533f572c6315889ca0ff7d5f6a0882))
+
 ### [1.3.2](https://github.com/googleapis/python-tpu/compare/v1.3.1...v1.3.2) (2022-03-05)
 
 
