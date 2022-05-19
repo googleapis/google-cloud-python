@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.1.2](https://github.com/googleapis/python-domains/compare/v1.1.1...v1.1.2) (2022-05-05)
+
+
+### Documentation
+
+* fix type in docstring for map fields ([b12a2cd](https://github.com/googleapis/python-domains/commit/b12a2cdfb0906232f035bafbabedfecb0d24a815))
+
 ### [1.1.1](https://github.com/googleapis/python-domains/compare/v1.1.0...v1.1.1) (2022-03-05)
 
 
