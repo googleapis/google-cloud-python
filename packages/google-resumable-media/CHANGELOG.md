@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-resumable-media/#history
 
+### [2.3.3](https://github.com/googleapis/google-resumable-media-python/compare/v2.3.2...v2.3.3) (2022-05-05)
+
+
+### Bug Fixes
+
+* retry client side requests timeout ([#319](https://github.com/googleapis/google-resumable-media-python/issues/319)) ([d0649c7](https://github.com/googleapis/google-resumable-media-python/commit/d0649c7509f4a45623d8676cbc37690864e1ca2f))
+
 ### [2.3.2](https://github.com/googleapis/google-resumable-media-python/compare/v2.3.1...v2.3.2) (2022-03-08)
 
 
