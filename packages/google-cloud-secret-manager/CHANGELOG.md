@@ -1,5 +1,22 @@
 # Changelog
 
+## [2.11.0](https://github.com/googleapis/python-secret-manager/compare/v2.10.0...v2.11.0) (2022-05-05)
+
+
+### Features
+
+* AuditConfig for IAM v1 ([d7742de](https://github.com/googleapis/python-secret-manager/commit/d7742de4ae8594d34385ac273b5b19a1c0edb079))
+
+
+### Bug Fixes
+
+* **deps:** require grpc-google-iam-v1 >=0.12.4 ([d7742de](https://github.com/googleapis/python-secret-manager/commit/d7742de4ae8594d34385ac273b5b19a1c0edb079))
+
+
+### Documentation
+
+* fix type in docstring for map fields ([d7742de](https://github.com/googleapis/python-secret-manager/commit/d7742de4ae8594d34385ac273b5b19a1c0edb079))
+
 ## [2.10.0](https://github.com/googleapis/python-secret-manager/compare/v2.9.2...v2.10.0) (2022-04-04)
 
 
