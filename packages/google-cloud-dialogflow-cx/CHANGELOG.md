@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.12.0](https://github.com/googleapis/python-dialogflow-cx/compare/v1.11.0...v1.12.0) (2022-05-09)
+
+
+### Features
+
+* **v3beta1:** added audio_export_settings ([#311](https://github.com/googleapis/python-dialogflow-cx/issues/311)) ([228ae83](https://github.com/googleapis/python-dialogflow-cx/commit/228ae8310b71412c1636a5ef214f62dad6473e40))
+
+
+### Documentation
+
+* **v3:** update the doc on diagnostic info ([#314](https://github.com/googleapis/python-dialogflow-cx/issues/314)) ([6109b64](https://github.com/googleapis/python-dialogflow-cx/commit/6109b64efb85480fdd9793476db14e65c40a0333))
+
 ## [1.11.0](https://github.com/googleapis/python-dialogflow-cx/compare/v1.10.0...v1.11.0) (2022-05-03)
 
 
