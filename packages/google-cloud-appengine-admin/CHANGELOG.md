@@ -1,5 +1,16 @@
 # Changelog
 
+## [1.4.0](https://github.com/googleapis/python-appengine-admin/compare/v1.3.3...v1.4.0) (2022-05-05)
+
+
+### Features
+
+* add Application.service_account ([#134](https://github.com/googleapis/python-appengine-admin/issues/134)) ([595a87c](https://github.com/googleapis/python-appengine-admin/commit/595a87cd561cf26da72599adc6750fdf20a2f1b5))
+* add client library method signature to retrieve Application by name ([595a87c](https://github.com/googleapis/python-appengine-admin/commit/595a87cd561cf26da72599adc6750fdf20a2f1b5))
+* add Service.labels ([595a87c](https://github.com/googleapis/python-appengine-admin/commit/595a87cd561cf26da72599adc6750fdf20a2f1b5))
+* add Version.app_engine_apis ([595a87c](https://github.com/googleapis/python-appengine-admin/commit/595a87cd561cf26da72599adc6750fdf20a2f1b5))
+* add VpcAccessConnector.egress_setting ([595a87c](https://github.com/googleapis/python-appengine-admin/commit/595a87cd561cf26da72599adc6750fdf20a2f1b5))
+
 ### [1.3.3](https://github.com/googleapis/python-appengine-admin/compare/v1.3.2...v1.3.3) (2022-04-14)
 
 
