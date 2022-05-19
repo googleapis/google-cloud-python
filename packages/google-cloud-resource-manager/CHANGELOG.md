@@ -4,6 +4,24 @@
 
 [1]: https://pypi.org/project/google-cloud-resource-manager/#history
 
+## [1.5.0](https://github.com/googleapis/python-resource-manager/compare/v1.4.1...v1.5.0) (2022-05-05)
+
+
+### Features
+
+* AuditConfig for IAM v1 ([8f4c7ff](https://github.com/googleapis/python-resource-manager/commit/8f4c7ffdb19ab14c47b8bdf3b421c1a7efdbbc36))
+
+
+### Bug Fixes
+
+* **deps:** require grpc-google-iam-v1 >=0.12.4 ([8f4c7ff](https://github.com/googleapis/python-resource-manager/commit/8f4c7ffdb19ab14c47b8bdf3b421c1a7efdbbc36))
+* don't package tests ([#193](https://github.com/googleapis/python-resource-manager/issues/193)) ([be8ecab](https://github.com/googleapis/python-resource-manager/commit/be8ecab98554b00567659b94adb912336f6cc943))
+
+
+### Documentation
+
+* fix type in docstring for map fields ([8f4c7ff](https://github.com/googleapis/python-resource-manager/commit/8f4c7ffdb19ab14c47b8bdf3b421c1a7efdbbc36))
+
 ### [1.4.1](https://github.com/googleapis/python-resource-manager/compare/v1.4.0...v1.4.1) (2022-03-05)
 
 
