@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.3.2](https://github.com/googleapis/python-network-management/compare/v1.3.1...v1.3.2) (2022-05-05)
+
+
+### Documentation
+
+* fix type in docstring for map fields ([3c71bcc](https://github.com/googleapis/python-network-management/commit/3c71bcc656d1d8a1a916caf4cf0854db48eb460f))
+
 ### [1.3.1](https://github.com/googleapis/python-network-management/compare/v1.3.0...v1.3.1) (2022-03-05)
 
 
