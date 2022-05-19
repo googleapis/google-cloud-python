@@ -26,6 +26,7 @@ from typing import (
 
 from google.cloud.eventarc_v1.types import channel
 from google.cloud.eventarc_v1.types import channel_connection
+from google.cloud.eventarc_v1.types import discovery
 from google.cloud.eventarc_v1.types import eventarc
 from google.cloud.eventarc_v1.types import trigger
 
@@ -278,6 +279,134 @@ class ListChannelsAsyncPager:
         async def async_generator():
             async for page in self.pages:
                 for response in page.channels:
+                    yield response
+
+        return async_generator()
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListProvidersPager:
+    """A pager for iterating through ``list_providers`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.eventarc_v1.types.ListProvidersResponse` object, and
+    provides an ``__iter__`` method to iterate through its
+    ``providers`` field.
+
+    If there are more pages, the ``__iter__`` method will make additional
+    ``ListProviders`` requests and continue to iterate
+    through the ``providers`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.eventarc_v1.types.ListProvidersResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., eventarc.ListProvidersResponse],
+        request: eventarc.ListProvidersRequest,
+        response: eventarc.ListProvidersResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.eventarc_v1.types.ListProvidersRequest):
+                The initial request object.
+            response (google.cloud.eventarc_v1.types.ListProvidersResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = eventarc.ListProvidersRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    def pages(self) -> Iterator[eventarc.ListProvidersResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __iter__(self) -> Iterator[discovery.Provider]:
+        for page in self.pages:
+            yield from page.providers
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListProvidersAsyncPager:
+    """A pager for iterating through ``list_providers`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.eventarc_v1.types.ListProvidersResponse` object, and
+    provides an ``__aiter__`` method to iterate through its
+    ``providers`` field.
+
+    If there are more pages, the ``__aiter__`` method will make additional
+    ``ListProviders`` requests and continue to iterate
+    through the ``providers`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.eventarc_v1.types.ListProvidersResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., Awaitable[eventarc.ListProvidersResponse]],
+        request: eventarc.ListProvidersRequest,
+        response: eventarc.ListProvidersResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiates the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.eventarc_v1.types.ListProvidersRequest):
+                The initial request object.
+            response (google.cloud.eventarc_v1.types.ListProvidersResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = eventarc.ListProvidersRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    async def pages(self) -> AsyncIterator[eventarc.ListProvidersResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = await self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __aiter__(self) -> AsyncIterator[discovery.Provider]:
+        async def async_generator():
+            async for page in self.pages:
+                for response in page.providers:
                     yield response
 
         return async_generator()

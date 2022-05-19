@@ -38,6 +38,7 @@ from google.cloud.eventarc_v1.types import channel
 from google.cloud.eventarc_v1.types import channel as gce_channel
 from google.cloud.eventarc_v1.types import channel_connection
 from google.cloud.eventarc_v1.types import channel_connection as gce_channel_connection
+from google.cloud.eventarc_v1.types import discovery
 from google.cloud.eventarc_v1.types import eventarc
 from google.cloud.eventarc_v1.types import trigger
 from google.cloud.eventarc_v1.types import trigger as gce_trigger
@@ -67,6 +68,8 @@ class EventarcAsyncClient:
     )
     cloud_function_path = staticmethod(EventarcClient.cloud_function_path)
     parse_cloud_function_path = staticmethod(EventarcClient.parse_cloud_function_path)
+    provider_path = staticmethod(EventarcClient.provider_path)
+    parse_provider_path = staticmethod(EventarcClient.parse_provider_path)
     service_path = staticmethod(EventarcClient.service_path)
 
     service_account_path = staticmethod(EventarcClient.service_account_path)
@@ -1397,6 +1400,208 @@ class EventarcAsyncClient:
             self._client._transport.operations_client,
             channel.Channel,
             metadata_type=eventarc.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def get_provider(
+        self,
+        request: Union[eventarc.GetProviderRequest, dict] = None,
+        *,
+        name: str = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> discovery.Provider:
+        r"""Get a single Provider.
+
+        .. code-block:: python
+
+            from google.cloud import eventarc_v1
+
+            async def sample_get_provider():
+                # Create a client
+                client = eventarc_v1.EventarcAsyncClient()
+
+                # Initialize request argument(s)
+                request = eventarc_v1.GetProviderRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = await client.get_provider(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.eventarc_v1.types.GetProviderRequest, dict]):
+                The request object. The request message for the
+                GetProvider method.
+            name (:class:`str`):
+                Required. The name of the provider to
+                get.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.eventarc_v1.types.Provider:
+                A representation of the Provider
+                resource.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = eventarc.GetProviderRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.get_provider,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def list_providers(
+        self,
+        request: Union[eventarc.ListProvidersRequest, dict] = None,
+        *,
+        parent: str = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListProvidersAsyncPager:
+        r"""List providers.
+
+        .. code-block:: python
+
+            from google.cloud import eventarc_v1
+
+            async def sample_list_providers():
+                # Create a client
+                client = eventarc_v1.EventarcAsyncClient()
+
+                # Initialize request argument(s)
+                request = eventarc_v1.ListProvidersRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_providers(request=request)
+
+                # Handle the response
+                async for response in page_result:
+                    print(response)
+
+        Args:
+            request (Union[google.cloud.eventarc_v1.types.ListProvidersRequest, dict]):
+                The request object. The request message for the
+                ListProviders method.
+            parent (:class:`str`):
+                Required. The parent of the provider
+                to get.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.eventarc_v1.services.eventarc.pagers.ListProvidersAsyncPager:
+                The response message for the ListProviders method.
+
+                Iterating over this object will yield results and
+                resolve additional pages automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = eventarc.ListProvidersRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.list_providers,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__aiter__` convenience method.
+        response = pagers.ListProvidersAsyncPager(
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.

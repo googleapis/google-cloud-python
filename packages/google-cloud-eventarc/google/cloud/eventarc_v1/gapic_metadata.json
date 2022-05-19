@@ -50,6 +50,11 @@
                 "get_channel_connection"
               ]
             },
+            "GetProvider": {
+              "methods": [
+                "get_provider"
+              ]
+            },
             "GetTrigger": {
               "methods": [
                 "get_trigger"
@@ -63,6 +68,11 @@
             "ListChannels": {
               "methods": [
                 "list_channels"
+              ]
+            },
+            "ListProviders": {
+              "methods": [
+                "list_providers"
               ]
             },
             "ListTriggers": {
@@ -125,6 +135,11 @@
                 "get_channel_connection"
               ]
             },
+            "GetProvider": {
+              "methods": [
+                "get_provider"
+              ]
+            },
             "GetTrigger": {
               "methods": [
                 "get_trigger"
@@ -138,6 +153,11 @@
             "ListChannels": {
               "methods": [
                 "list_channels"
+              ]
+            },
+            "ListProviders": {
+              "methods": [
+                "list_providers"
               ]
             },
             "ListTriggers": {

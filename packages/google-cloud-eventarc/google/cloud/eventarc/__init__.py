@@ -19,6 +19,9 @@ from google.cloud.eventarc_v1.services.eventarc.async_client import EventarcAsyn
 
 from google.cloud.eventarc_v1.types.channel import Channel
 from google.cloud.eventarc_v1.types.channel_connection import ChannelConnection
+from google.cloud.eventarc_v1.types.discovery import EventType
+from google.cloud.eventarc_v1.types.discovery import FilteringAttribute
+from google.cloud.eventarc_v1.types.discovery import Provider
 from google.cloud.eventarc_v1.types.eventarc import CreateChannelConnectionRequest
 from google.cloud.eventarc_v1.types.eventarc import CreateChannelRequest
 from google.cloud.eventarc_v1.types.eventarc import CreateTriggerRequest
@@ -27,11 +30,14 @@ from google.cloud.eventarc_v1.types.eventarc import DeleteChannelRequest
 from google.cloud.eventarc_v1.types.eventarc import DeleteTriggerRequest
 from google.cloud.eventarc_v1.types.eventarc import GetChannelConnectionRequest
 from google.cloud.eventarc_v1.types.eventarc import GetChannelRequest
+from google.cloud.eventarc_v1.types.eventarc import GetProviderRequest
 from google.cloud.eventarc_v1.types.eventarc import GetTriggerRequest
 from google.cloud.eventarc_v1.types.eventarc import ListChannelConnectionsRequest
 from google.cloud.eventarc_v1.types.eventarc import ListChannelConnectionsResponse
 from google.cloud.eventarc_v1.types.eventarc import ListChannelsRequest
 from google.cloud.eventarc_v1.types.eventarc import ListChannelsResponse
+from google.cloud.eventarc_v1.types.eventarc import ListProvidersRequest
+from google.cloud.eventarc_v1.types.eventarc import ListProvidersResponse
 from google.cloud.eventarc_v1.types.eventarc import ListTriggersRequest
 from google.cloud.eventarc_v1.types.eventarc import ListTriggersResponse
 from google.cloud.eventarc_v1.types.eventarc import OperationMetadata
@@ -50,6 +56,9 @@ __all__ = (
     "EventarcAsyncClient",
     "Channel",
     "ChannelConnection",
+    "EventType",
+    "FilteringAttribute",
+    "Provider",
     "CreateChannelConnectionRequest",
     "CreateChannelRequest",
     "CreateTriggerRequest",
@@ -58,11 +67,14 @@ __all__ = (
     "DeleteTriggerRequest",
     "GetChannelConnectionRequest",
     "GetChannelRequest",
+    "GetProviderRequest",
     "GetTriggerRequest",
     "ListChannelConnectionsRequest",
     "ListChannelConnectionsResponse",
     "ListChannelsRequest",
     "ListChannelsResponse",
+    "ListProvidersRequest",
+    "ListProvidersResponse",
     "ListTriggersRequest",
     "ListTriggersResponse",
     "OperationMetadata",

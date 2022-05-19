@@ -17,6 +17,7 @@ import proto  # type: ignore
 
 from google.cloud.eventarc_v1.types import channel as gce_channel
 from google.cloud.eventarc_v1.types import channel_connection as gce_channel_connection
+from google.cloud.eventarc_v1.types import discovery
 from google.cloud.eventarc_v1.types import trigger as gce_trigger
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
@@ -37,6 +38,9 @@ __protobuf__ = proto.module(
         "CreateChannelRequest",
         "UpdateChannelRequest",
         "DeleteChannelRequest",
+        "GetProviderRequest",
+        "ListProvidersRequest",
+        "ListProvidersResponse",
         "GetChannelConnectionRequest",
         "ListChannelConnectionsRequest",
         "ListChannelConnectionsResponse",
@@ -432,6 +436,103 @@ class DeleteChannelRequest(proto.Message):
     validate_only = proto.Field(
         proto.BOOL,
         number=2,
+    )
+
+
+class GetProviderRequest(proto.Message):
+    r"""The request message for the GetProvider method.
+
+    Attributes:
+        name (str):
+            Required. The name of the provider to get.
+    """
+
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class ListProvidersRequest(proto.Message):
+    r"""The request message for the ListProviders method.
+
+    Attributes:
+        parent (str):
+            Required. The parent of the provider to get.
+        page_size (int):
+            The maximum number of providers to return on
+            each page.
+        page_token (str):
+            The page token; provide the value from the
+            ``next_page_token`` field in a previous ``ListProviders``
+            call to retrieve the subsequent page.
+
+            When paginating, all other parameters provided to
+            ``ListProviders`` must match the call that provided the page
+            token.
+        order_by (str):
+            The sorting order of the resources returned. Value should be
+            a comma-separated list of fields. The default sorting oder
+            is ascending. To specify descending order for a field,
+            append a ``desc`` suffix; for example: ``name desc, _id``.
+        filter (str):
+            The filter field that the list request will
+            filter on.
+    """
+
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    order_by = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    filter = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+
+
+class ListProvidersResponse(proto.Message):
+    r"""The response message for the ``ListProviders`` method.
+
+    Attributes:
+        providers (Sequence[google.cloud.eventarc_v1.types.Provider]):
+            The requested providers, up to the number specified in
+            ``page_size``.
+        next_page_token (str):
+            A page token that can be sent to
+            ListProviders to request the next page. If this
+            is empty, then there are no more pages.
+        unreachable (Sequence[str]):
+            Unreachable resources, if any.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    providers = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=discovery.Provider,
+    )
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    unreachable = proto.RepeatedField(
+        proto.STRING,
+        number=3,
     )
 
 

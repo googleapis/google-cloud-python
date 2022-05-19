@@ -27,6 +27,7 @@ import grpc  # type: ignore
 
 from google.cloud.eventarc_v1.types import channel
 from google.cloud.eventarc_v1.types import channel_connection
+from google.cloud.eventarc_v1.types import discovery
 from google.cloud.eventarc_v1.types import eventarc
 from google.cloud.eventarc_v1.types import trigger
 from google.longrunning import operations_pb2  # type: ignore
@@ -506,6 +507,58 @@ class EventarcGrpcTransport(EventarcTransport):
                 response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["delete_channel"]
+
+    @property
+    def get_provider(
+        self,
+    ) -> Callable[[eventarc.GetProviderRequest], discovery.Provider]:
+        r"""Return a callable for the get provider method over gRPC.
+
+        Get a single Provider.
+
+        Returns:
+            Callable[[~.GetProviderRequest],
+                    ~.Provider]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_provider" not in self._stubs:
+            self._stubs["get_provider"] = self.grpc_channel.unary_unary(
+                "/google.cloud.eventarc.v1.Eventarc/GetProvider",
+                request_serializer=eventarc.GetProviderRequest.serialize,
+                response_deserializer=discovery.Provider.deserialize,
+            )
+        return self._stubs["get_provider"]
+
+    @property
+    def list_providers(
+        self,
+    ) -> Callable[[eventarc.ListProvidersRequest], eventarc.ListProvidersResponse]:
+        r"""Return a callable for the list providers method over gRPC.
+
+        List providers.
+
+        Returns:
+            Callable[[~.ListProvidersRequest],
+                    ~.ListProvidersResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_providers" not in self._stubs:
+            self._stubs["list_providers"] = self.grpc_channel.unary_unary(
+                "/google.cloud.eventarc.v1.Eventarc/ListProviders",
+                request_serializer=eventarc.ListProvidersRequest.serialize,
+                response_deserializer=eventarc.ListProvidersResponse.deserialize,
+            )
+        return self._stubs["list_providers"]
 
     @property
     def get_channel_connection(

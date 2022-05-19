@@ -19,6 +19,11 @@ from .channel import (
 from .channel_connection import (
     ChannelConnection,
 )
+from .discovery import (
+    EventType,
+    FilteringAttribute,
+    Provider,
+)
 from .eventarc import (
     CreateChannelConnectionRequest,
     CreateChannelRequest,
@@ -28,11 +33,14 @@ from .eventarc import (
     DeleteTriggerRequest,
     GetChannelConnectionRequest,
     GetChannelRequest,
+    GetProviderRequest,
     GetTriggerRequest,
     ListChannelConnectionsRequest,
     ListChannelConnectionsResponse,
     ListChannelsRequest,
     ListChannelsResponse,
+    ListProvidersRequest,
+    ListProvidersResponse,
     ListTriggersRequest,
     ListTriggersResponse,
     OperationMetadata,
@@ -52,6 +60,9 @@ from .trigger import (
 __all__ = (
     "Channel",
     "ChannelConnection",
+    "EventType",
+    "FilteringAttribute",
+    "Provider",
     "CreateChannelConnectionRequest",
     "CreateChannelRequest",
     "CreateTriggerRequest",
@@ -60,11 +71,14 @@ __all__ = (
     "DeleteTriggerRequest",
     "GetChannelConnectionRequest",
     "GetChannelRequest",
+    "GetProviderRequest",
     "GetTriggerRequest",
     "ListChannelConnectionsRequest",
     "ListChannelConnectionsResponse",
     "ListChannelsRequest",
     "ListChannelsResponse",
+    "ListProvidersRequest",
+    "ListProvidersResponse",
     "ListTriggersRequest",
     "ListTriggersResponse",
     "OperationMetadata",

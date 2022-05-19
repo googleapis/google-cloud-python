@@ -19,6 +19,9 @@ from .services.eventarc import EventarcAsyncClient
 
 from .types.channel import Channel
 from .types.channel_connection import ChannelConnection
+from .types.discovery import EventType
+from .types.discovery import FilteringAttribute
+from .types.discovery import Provider
 from .types.eventarc import CreateChannelConnectionRequest
 from .types.eventarc import CreateChannelRequest
 from .types.eventarc import CreateTriggerRequest
@@ -27,11 +30,14 @@ from .types.eventarc import DeleteChannelRequest
 from .types.eventarc import DeleteTriggerRequest
 from .types.eventarc import GetChannelConnectionRequest
 from .types.eventarc import GetChannelRequest
+from .types.eventarc import GetProviderRequest
 from .types.eventarc import GetTriggerRequest
 from .types.eventarc import ListChannelConnectionsRequest
 from .types.eventarc import ListChannelConnectionsResponse
 from .types.eventarc import ListChannelsRequest
 from .types.eventarc import ListChannelsResponse
+from .types.eventarc import ListProvidersRequest
+from .types.eventarc import ListProvidersResponse
 from .types.eventarc import ListTriggersRequest
 from .types.eventarc import ListTriggersResponse
 from .types.eventarc import OperationMetadata
@@ -58,18 +64,24 @@ __all__ = (
     "DeleteTriggerRequest",
     "Destination",
     "EventFilter",
+    "EventType",
     "EventarcClient",
+    "FilteringAttribute",
     "GKE",
     "GetChannelConnectionRequest",
     "GetChannelRequest",
+    "GetProviderRequest",
     "GetTriggerRequest",
     "ListChannelConnectionsRequest",
     "ListChannelConnectionsResponse",
     "ListChannelsRequest",
     "ListChannelsResponse",
+    "ListProvidersRequest",
+    "ListProvidersResponse",
     "ListTriggersRequest",
     "ListTriggersResponse",
     "OperationMetadata",
+    "Provider",
     "Pubsub",
     "Transport",
     "Trigger",

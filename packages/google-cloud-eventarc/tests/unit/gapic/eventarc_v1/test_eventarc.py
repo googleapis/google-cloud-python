@@ -43,6 +43,7 @@ from google.cloud.eventarc_v1.types import channel
 from google.cloud.eventarc_v1.types import channel as gce_channel
 from google.cloud.eventarc_v1.types import channel_connection
 from google.cloud.eventarc_v1.types import channel_connection as gce_channel_connection
+from google.cloud.eventarc_v1.types import discovery
 from google.cloud.eventarc_v1.types import eventarc
 from google.cloud.eventarc_v1.types import trigger
 from google.cloud.eventarc_v1.types import trigger as gce_trigger
@@ -3399,6 +3400,662 @@ async def test_delete_channel_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
+        eventarc.GetProviderRequest,
+        dict,
+    ],
+)
+def test_get_provider(request_type, transport: str = "grpc"):
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_provider), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = discovery.Provider(
+            name="name_value",
+            display_name="display_name_value",
+        )
+        response = client.get_provider(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == eventarc.GetProviderRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, discovery.Provider)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+
+
+def test_get_provider_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_provider), "__call__") as call:
+        client.get_provider()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == eventarc.GetProviderRequest()
+
+
+@pytest.mark.asyncio
+async def test_get_provider_async(
+    transport: str = "grpc_asyncio", request_type=eventarc.GetProviderRequest
+):
+    client = EventarcAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_provider), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            discovery.Provider(
+                name="name_value",
+                display_name="display_name_value",
+            )
+        )
+        response = await client.get_provider(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == eventarc.GetProviderRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, discovery.Provider)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+
+
+@pytest.mark.asyncio
+async def test_get_provider_async_from_dict():
+    await test_get_provider_async(request_type=dict)
+
+
+def test_get_provider_field_headers():
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = eventarc.GetProviderRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_provider), "__call__") as call:
+        call.return_value = discovery.Provider()
+        client.get_provider(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_get_provider_field_headers_async():
+    client = EventarcAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = eventarc.GetProviderRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_provider), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(discovery.Provider())
+        await client.get_provider(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_get_provider_flattened():
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_provider), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = discovery.Provider()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.get_provider(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_get_provider_flattened_error():
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_provider(
+            eventarc.GetProviderRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_provider_flattened_async():
+    client = EventarcAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_provider), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = discovery.Provider()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(discovery.Provider())
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.get_provider(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_get_provider_flattened_error_async():
+    client = EventarcAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.get_provider(
+            eventarc.GetProviderRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        eventarc.ListProvidersRequest,
+        dict,
+    ],
+)
+def test_list_providers(request_type, transport: str = "grpc"):
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_providers), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = eventarc.ListProvidersResponse(
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
+        )
+        response = client.list_providers(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == eventarc.ListProvidersRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListProvidersPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
+
+
+def test_list_providers_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_providers), "__call__") as call:
+        client.list_providers()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == eventarc.ListProvidersRequest()
+
+
+@pytest.mark.asyncio
+async def test_list_providers_async(
+    transport: str = "grpc_asyncio", request_type=eventarc.ListProvidersRequest
+):
+    client = EventarcAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_providers), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            eventarc.ListProvidersResponse(
+                next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
+            )
+        )
+        response = await client.list_providers(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == eventarc.ListProvidersRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListProvidersAsyncPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
+
+
+@pytest.mark.asyncio
+async def test_list_providers_async_from_dict():
+    await test_list_providers_async(request_type=dict)
+
+
+def test_list_providers_field_headers():
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = eventarc.ListProvidersRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_providers), "__call__") as call:
+        call.return_value = eventarc.ListProvidersResponse()
+        client.list_providers(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_list_providers_field_headers_async():
+    client = EventarcAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = eventarc.ListProvidersRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_providers), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            eventarc.ListProvidersResponse()
+        )
+        await client.list_providers(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+def test_list_providers_flattened():
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_providers), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = eventarc.ListProvidersResponse()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.list_providers(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+def test_list_providers_flattened_error():
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_providers(
+            eventarc.ListProvidersRequest(),
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_providers_flattened_async():
+    client = EventarcAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_providers), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = eventarc.ListProvidersResponse()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            eventarc.ListProvidersResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.list_providers(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_list_providers_flattened_error_async():
+    client = EventarcAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.list_providers(
+            eventarc.ListProvidersRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_providers_pager(transport_name: str = "grpc"):
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_providers), "__call__") as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            eventarc.ListProvidersResponse(
+                providers=[
+                    discovery.Provider(),
+                    discovery.Provider(),
+                    discovery.Provider(),
+                ],
+                next_page_token="abc",
+            ),
+            eventarc.ListProvidersResponse(
+                providers=[],
+                next_page_token="def",
+            ),
+            eventarc.ListProvidersResponse(
+                providers=[
+                    discovery.Provider(),
+                ],
+                next_page_token="ghi",
+            ),
+            eventarc.ListProvidersResponse(
+                providers=[
+                    discovery.Provider(),
+                    discovery.Provider(),
+                ],
+            ),
+            RuntimeError,
+        )
+
+        metadata = ()
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
+        )
+        pager = client.list_providers(request={})
+
+        assert pager._metadata == metadata
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, discovery.Provider) for i in results)
+
+
+def test_list_providers_pages(transport_name: str = "grpc"):
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_providers), "__call__") as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            eventarc.ListProvidersResponse(
+                providers=[
+                    discovery.Provider(),
+                    discovery.Provider(),
+                    discovery.Provider(),
+                ],
+                next_page_token="abc",
+            ),
+            eventarc.ListProvidersResponse(
+                providers=[],
+                next_page_token="def",
+            ),
+            eventarc.ListProvidersResponse(
+                providers=[
+                    discovery.Provider(),
+                ],
+                next_page_token="ghi",
+            ),
+            eventarc.ListProvidersResponse(
+                providers=[
+                    discovery.Provider(),
+                    discovery.Provider(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = list(client.list_providers(request={}).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.asyncio
+async def test_list_providers_async_pager():
+    client = EventarcAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_providers), "__call__", new_callable=mock.AsyncMock
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            eventarc.ListProvidersResponse(
+                providers=[
+                    discovery.Provider(),
+                    discovery.Provider(),
+                    discovery.Provider(),
+                ],
+                next_page_token="abc",
+            ),
+            eventarc.ListProvidersResponse(
+                providers=[],
+                next_page_token="def",
+            ),
+            eventarc.ListProvidersResponse(
+                providers=[
+                    discovery.Provider(),
+                ],
+                next_page_token="ghi",
+            ),
+            eventarc.ListProvidersResponse(
+                providers=[
+                    discovery.Provider(),
+                    discovery.Provider(),
+                ],
+            ),
+            RuntimeError,
+        )
+        async_pager = await client.list_providers(
+            request={},
+        )
+        assert async_pager.next_page_token == "abc"
+        responses = []
+        async for response in async_pager:  # pragma: no branch
+            responses.append(response)
+
+        assert len(responses) == 6
+        assert all(isinstance(i, discovery.Provider) for i in responses)
+
+
+@pytest.mark.asyncio
+async def test_list_providers_async_pages():
+    client = EventarcAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_providers), "__call__", new_callable=mock.AsyncMock
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            eventarc.ListProvidersResponse(
+                providers=[
+                    discovery.Provider(),
+                    discovery.Provider(),
+                    discovery.Provider(),
+                ],
+                next_page_token="abc",
+            ),
+            eventarc.ListProvidersResponse(
+                providers=[],
+                next_page_token="def",
+            ),
+            eventarc.ListProvidersResponse(
+                providers=[
+                    discovery.Provider(),
+                ],
+                next_page_token="ghi",
+            ),
+            eventarc.ListProvidersResponse(
+                providers=[
+                    discovery.Provider(),
+                    discovery.Provider(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = []
+        async for page_ in (
+            await client.list_providers(request={})
+        ).pages:  # pragma: no branch
+            pages.append(page_)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
         eventarc.GetChannelConnectionRequest,
         dict,
     ],
@@ -4759,6 +5416,8 @@ def test_eventarc_base_transport():
         "create_channel_",
         "update_channel",
         "delete_channel",
+        "get_provider",
+        "list_providers",
         "get_channel_connection",
         "list_channel_connections",
         "create_channel_connection",
@@ -5194,6 +5853,32 @@ def test_parse_cloud_function_path():
     assert expected == actual
 
 
+def test_provider_path():
+    project = "cuttlefish"
+    location = "mussel"
+    provider = "winkle"
+    expected = "projects/{project}/locations/{location}/providers/{provider}".format(
+        project=project,
+        location=location,
+        provider=provider,
+    )
+    actual = EventarcClient.provider_path(project, location, provider)
+    assert expected == actual
+
+
+def test_parse_provider_path():
+    expected = {
+        "project": "nautilus",
+        "location": "scallop",
+        "provider": "abalone",
+    }
+    path = EventarcClient.provider_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = EventarcClient.parse_provider_path(path)
+    assert expected == actual
+
+
 def test_service_path():
     expected = "*".format()
     actual = EventarcClient.service_path()
@@ -5201,8 +5886,8 @@ def test_service_path():
 
 
 def test_service_account_path():
-    project = "cuttlefish"
-    service_account = "mussel"
+    project = "squid"
+    service_account = "clam"
     expected = "projects/{project}/serviceAccounts/{service_account}".format(
         project=project,
         service_account=service_account,
@@ -5213,8 +5898,8 @@ def test_service_account_path():
 
 def test_parse_service_account_path():
     expected = {
-        "project": "winkle",
-        "service_account": "nautilus",
+        "project": "whelk",
+        "service_account": "octopus",
     }
     path = EventarcClient.service_account_path(**expected)
 
@@ -5224,9 +5909,9 @@ def test_parse_service_account_path():
 
 
 def test_trigger_path():
-    project = "scallop"
-    location = "abalone"
-    trigger = "squid"
+    project = "oyster"
+    location = "nudibranch"
+    trigger = "cuttlefish"
     expected = "projects/{project}/locations/{location}/triggers/{trigger}".format(
         project=project,
         location=location,
@@ -5238,9 +5923,9 @@ def test_trigger_path():
 
 def test_parse_trigger_path():
     expected = {
-        "project": "clam",
-        "location": "whelk",
-        "trigger": "octopus",
+        "project": "mussel",
+        "location": "winkle",
+        "trigger": "nautilus",
     }
     path = EventarcClient.trigger_path(**expected)
 
@@ -5250,7 +5935,7 @@ def test_parse_trigger_path():
 
 
 def test_common_billing_account_path():
-    billing_account = "oyster"
+    billing_account = "scallop"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -5260,7 +5945,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "nudibranch",
+        "billing_account": "abalone",
     }
     path = EventarcClient.common_billing_account_path(**expected)
 
@@ -5270,7 +5955,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "cuttlefish"
+    folder = "squid"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -5280,7 +5965,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "mussel",
+        "folder": "clam",
     }
     path = EventarcClient.common_folder_path(**expected)
 
@@ -5290,7 +5975,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "winkle"
+    organization = "whelk"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -5300,7 +5985,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "nautilus",
+        "organization": "octopus",
     }
     path = EventarcClient.common_organization_path(**expected)
 
@@ -5310,7 +5995,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "scallop"
+    project = "oyster"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -5320,7 +6005,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "abalone",
+        "project": "nudibranch",
     }
     path = EventarcClient.common_project_path(**expected)
 
@@ -5330,8 +6015,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "squid"
-    location = "clam"
+    project = "cuttlefish"
+    location = "mussel"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -5342,8 +6027,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "whelk",
-        "location": "octopus",
+        "project": "winkle",
+        "location": "nautilus",
     }
     path = EventarcClient.common_location_path(**expected)
 

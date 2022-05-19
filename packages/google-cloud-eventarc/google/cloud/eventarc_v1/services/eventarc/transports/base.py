@@ -28,6 +28,7 @@ from google.oauth2 import service_account  # type: ignore
 
 from google.cloud.eventarc_v1.types import channel
 from google.cloud.eventarc_v1.types import channel_connection
+from google.cloud.eventarc_v1.types import discovery
 from google.cloud.eventarc_v1.types import eventarc
 from google.cloud.eventarc_v1.types import trigger
 from google.longrunning import operations_pb2  # type: ignore
@@ -176,6 +177,16 @@ class EventarcTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.get_provider: gapic_v1.method.wrap_method(
+                self.get_provider,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_providers: gapic_v1.method.wrap_method(
+                self.list_providers,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.get_channel_connection: gapic_v1.method.wrap_method(
                 self.get_channel_connection,
                 default_timeout=None,
@@ -297,6 +308,26 @@ class EventarcTransport(abc.ABC):
     ) -> Callable[
         [eventarc.DeleteChannelRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_provider(
+        self,
+    ) -> Callable[
+        [eventarc.GetProviderRequest],
+        Union[discovery.Provider, Awaitable[discovery.Provider]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_providers(
+        self,
+    ) -> Callable[
+        [eventarc.ListProvidersRequest],
+        Union[
+            eventarc.ListProvidersResponse, Awaitable[eventarc.ListProvidersResponse]
+        ],
     ]:
         raise NotImplementedError()
 
