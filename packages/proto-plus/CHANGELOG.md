@@ -1,5 +1,13 @@
 # Changelog
 
+### [1.20.4](https://github.com/googleapis/proto-plus-python/compare/v1.20.3...v1.20.4) (2022-05-02)
+
+
+### Bug Fixes
+
+* default proto package name is the module name, not "" ([#309](https://github.com/googleapis/proto-plus-python/issues/309)) ([3148a1c](https://github.com/googleapis/proto-plus-python/commit/3148a1c287eb69b397c940119cd44e5067357e17))
+* lookup attribute instead of performing a deepcopy ([#226](https://github.com/googleapis/proto-plus-python/issues/226)) ([e469059](https://github.com/googleapis/proto-plus-python/commit/e469059d70bab4c2b0a38dd52c4451b3c61bf470))
+
 ### [1.20.3](https://github.com/googleapis/proto-plus-python/compare/v1.20.2...v1.20.3) (2022-02-18)
 
 
