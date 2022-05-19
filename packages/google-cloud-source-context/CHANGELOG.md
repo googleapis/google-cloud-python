@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.2.3](https://github.com/googleapis/python-source-context/compare/v1.2.2...v1.2.3) (2022-05-05)
+
+
+### Documentation
+
+* fix docstring for map fields ([614c640](https://github.com/googleapis/python-source-context/commit/614c640a224c6fcf0c1fd4656d871b3799508314))
+
 ### [1.2.2](https://github.com/googleapis/python-source-context/compare/v1.2.1...v1.2.2) (2022-03-05)
 
 
