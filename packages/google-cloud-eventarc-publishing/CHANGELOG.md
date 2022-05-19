@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.0](https://github.com/googleapis/python-eventarc-publishing/compare/v0.1.1...v0.2.0) (2022-05-06)
+
+
+### Features
+
+* Add publishing methods for channel resources ([#28](https://github.com/googleapis/python-eventarc-publishing/issues/28)) ([87d1e7b](https://github.com/googleapis/python-eventarc-publishing/commit/87d1e7bf20407dce888778454893b74640addf80))
+
 ### [0.1.1](https://github.com/googleapis/python-eventarc-publishing/compare/v0.1.0...v0.1.1) (2022-03-05)
 
 
