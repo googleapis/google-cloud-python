@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.3.1](https://github.com/googleapis/python-security-private-ca/compare/v1.3.0...v1.3.1) (2022-05-05)
+
+
+### Documentation
+
+* fix type in docstring for map fields ([#210](https://github.com/googleapis/python-security-private-ca/issues/210)) ([0694e75](https://github.com/googleapis/python-security-private-ca/commit/0694e752875266a134e66435179f45a624d70db3))
+
 ## [1.3.0](https://github.com/googleapis/python-security-private-ca/compare/v1.2.4...v1.3.0) (2022-03-10)
 
 
