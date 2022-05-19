@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.8.1](https://github.com/googleapis/python-analytics-admin/compare/v0.8.0...v0.8.1) (2022-05-13)
+
+
+### Bug Fixes
+
+* CustomDimension and CustomMetric resource configuration ([#222](https://github.com/googleapis/python-analytics-admin/issues/222)) ([79470bd](https://github.com/googleapis/python-analytics-admin/commit/79470bdd437d3fe45cdcf1e89b13f6e1b289bd24))
+
 ## [0.8.0](https://github.com/googleapis/python-analytics-admin/compare/v0.7.2...v0.8.0) (2022-03-07)
 
 
