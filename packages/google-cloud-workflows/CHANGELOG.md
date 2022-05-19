@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.6.2](https://github.com/googleapis/python-workflows/compare/v1.6.1...v1.6.2) (2022-05-05)
+
+
+### Documentation
+
+* fix type in docstring for map fields ([f3ec9da](https://github.com/googleapis/python-workflows/commit/f3ec9dadea8a3574a5413c635288242014b1a5ae))
+
 ### [1.6.1](https://github.com/googleapis/python-workflows/compare/v1.6.0...v1.6.1) (2022-03-05)
 
 
