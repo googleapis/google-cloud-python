@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.0.1](https://github.com/googleapis/python-datastream/compare/v1.0.0...v1.0.1) (2022-05-06)
+
+
+### Documentation
+
+* fix type in docstring for map fields ([cb7249d](https://github.com/googleapis/python-datastream/commit/cb7249d165c28d6c4005313759282ce4f78966c8))
+
 ## [1.0.0](https://github.com/googleapis/python-datastream/compare/v0.4.2...v1.0.0) (2022-03-15)
 
 
