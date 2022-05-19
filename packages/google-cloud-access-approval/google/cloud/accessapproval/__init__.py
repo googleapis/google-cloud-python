@@ -21,6 +21,7 @@ from google.cloud.accessapproval_v1.services.access_approval.client import (
     AccessApprovalClient,
 )
 from google.cloud.accessapproval_v1.types.accessapproval import (
+    AccessApprovalServiceAccount,
     AccessApprovalSettings,
     AccessLocations,
     AccessReason,
@@ -32,17 +33,21 @@ from google.cloud.accessapproval_v1.types.accessapproval import (
     DismissDecision,
     EnrolledService,
     EnrollmentLevel,
+    GetAccessApprovalServiceAccountMessage,
     GetAccessApprovalSettingsMessage,
     GetApprovalRequestMessage,
+    InvalidateApprovalRequestMessage,
     ListApprovalRequestsMessage,
     ListApprovalRequestsResponse,
     ResourceProperties,
+    SignatureInfo,
     UpdateAccessApprovalSettingsMessage,
 )
 
 __all__ = (
     "AccessApprovalClient",
     "AccessApprovalAsyncClient",
+    "AccessApprovalServiceAccount",
     "AccessApprovalSettings",
     "AccessLocations",
     "AccessReason",
@@ -53,11 +58,14 @@ __all__ = (
     "DismissApprovalRequestMessage",
     "DismissDecision",
     "EnrolledService",
+    "GetAccessApprovalServiceAccountMessage",
     "GetAccessApprovalSettingsMessage",
     "GetApprovalRequestMessage",
+    "InvalidateApprovalRequestMessage",
     "ListApprovalRequestsMessage",
     "ListApprovalRequestsResponse",
     "ResourceProperties",
+    "SignatureInfo",
     "UpdateAccessApprovalSettingsMessage",
     "EnrollmentLevel",
 )

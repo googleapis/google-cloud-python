@@ -202,6 +202,21 @@ class AccessApprovalClient(metaclass=AccessApprovalClientMeta):
         return self._transport
 
     @staticmethod
+    def access_approval_service_account_path(
+        project: str,
+    ) -> str:
+        """Returns a fully-qualified access_approval_service_account string."""
+        return "projects/{project}/serviceAccount".format(
+            project=project,
+        )
+
+    @staticmethod
+    def parse_access_approval_service_account_path(path: str) -> Dict[str, str]:
+        """Parses a access_approval_service_account path into its component segments."""
+        m = re.match(r"^projects/(?P<project>.+?)/serviceAccount$", path)
+        return m.groupdict() if m else {}
+
+    @staticmethod
     def access_approval_settings_path(
         project: str,
     ) -> str:
@@ -842,6 +857,89 @@ class AccessApprovalClient(metaclass=AccessApprovalClientMeta):
         # Done; return the response.
         return response
 
+    def invalidate_approval_request(
+        self,
+        request: Union[accessapproval.InvalidateApprovalRequestMessage, dict] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> accessapproval.ApprovalRequest:
+        r"""Invalidates an existing ApprovalRequest. Returns the updated
+        ApprovalRequest.
+
+        NOTE: This does not deny access to the resource if another
+        request has been made and approved. It only invalidates a single
+        approval.
+
+        Returns FAILED_PRECONDITION if the request exists but is not in
+        an approved state.
+
+        .. code-block:: python
+
+            from google.cloud import accessapproval_v1
+
+            def sample_invalidate_approval_request():
+                # Create a client
+                client = accessapproval_v1.AccessApprovalClient()
+
+                # Initialize request argument(s)
+                request = accessapproval_v1.InvalidateApprovalRequestMessage(
+                )
+
+                # Make the request
+                response = client.invalidate_approval_request(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.accessapproval_v1.types.InvalidateApprovalRequestMessage, dict]):
+                The request object. Request to invalidate an existing
+                approval.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.accessapproval_v1.types.ApprovalRequest:
+                A request for the customer to approve
+                access to a resource.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Minor optimization to avoid making a copy if the user passes
+        # in a accessapproval.InvalidateApprovalRequestMessage.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, accessapproval.InvalidateApprovalRequestMessage):
+            request = accessapproval.InvalidateApprovalRequestMessage(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[
+            self._transport.invalidate_approval_request
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
     def get_access_approval_settings(
         self,
         request: Union[accessapproval.GetAccessApprovalSettingsMessage, dict] = None,
@@ -1149,6 +1247,110 @@ class AccessApprovalClient(metaclass=AccessApprovalClientMeta):
             timeout=timeout,
             metadata=metadata,
         )
+
+    def get_access_approval_service_account(
+        self,
+        request: Union[
+            accessapproval.GetAccessApprovalServiceAccountMessage, dict
+        ] = None,
+        *,
+        name: str = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> accessapproval.AccessApprovalServiceAccount:
+        r"""Retrieves the service account that is used by Access
+        Approval to access KMS keys for signing approved
+        approval requests.
+
+        .. code-block:: python
+
+            from google.cloud import accessapproval_v1
+
+            def sample_get_access_approval_service_account():
+                # Create a client
+                client = accessapproval_v1.AccessApprovalClient()
+
+                # Initialize request argument(s)
+                request = accessapproval_v1.GetAccessApprovalServiceAccountMessage(
+                )
+
+                # Make the request
+                response = client.get_access_approval_service_account(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.accessapproval_v1.types.GetAccessApprovalServiceAccountMessage, dict]):
+                The request object. Request to get an Access Approval
+                service account.
+            name (str):
+                Name of the
+                AccessApprovalServiceAccount to
+                retrieve.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.accessapproval_v1.types.AccessApprovalServiceAccount:
+                Access Approval service account
+                related to a
+                project/folder/organization.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a accessapproval.GetAccessApprovalServiceAccountMessage.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(
+            request, accessapproval.GetAccessApprovalServiceAccountMessage
+        ):
+            request = accessapproval.GetAccessApprovalServiceAccountMessage(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[
+            self._transport.get_access_approval_service_account
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
 
     def __enter__(self):
         return self

@@ -14,6 +14,7 @@
 # limitations under the License.
 #
 from .accessapproval import (
+    AccessApprovalServiceAccount,
     AccessApprovalSettings,
     AccessLocations,
     AccessReason,
@@ -25,15 +26,19 @@ from .accessapproval import (
     DismissDecision,
     EnrolledService,
     EnrollmentLevel,
+    GetAccessApprovalServiceAccountMessage,
     GetAccessApprovalSettingsMessage,
     GetApprovalRequestMessage,
+    InvalidateApprovalRequestMessage,
     ListApprovalRequestsMessage,
     ListApprovalRequestsResponse,
     ResourceProperties,
+    SignatureInfo,
     UpdateAccessApprovalSettingsMessage,
 )
 
 __all__ = (
+    "AccessApprovalServiceAccount",
     "AccessApprovalSettings",
     "AccessLocations",
     "AccessReason",
@@ -44,11 +49,14 @@ __all__ = (
     "DismissApprovalRequestMessage",
     "DismissDecision",
     "EnrolledService",
+    "GetAccessApprovalServiceAccountMessage",
     "GetAccessApprovalSettingsMessage",
     "GetApprovalRequestMessage",
+    "InvalidateApprovalRequestMessage",
     "ListApprovalRequestsMessage",
     "ListApprovalRequestsResponse",
     "ResourceProperties",
+    "SignatureInfo",
     "UpdateAccessApprovalSettingsMessage",
     "EnrollmentLevel",
 )

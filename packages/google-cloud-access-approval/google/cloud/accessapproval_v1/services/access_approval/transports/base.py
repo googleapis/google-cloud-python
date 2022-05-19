@@ -160,6 +160,11 @@ class AccessApprovalTransport(abc.ABC):
                 default_timeout=600.0,
                 client_info=client_info,
             ),
+            self.invalidate_approval_request: gapic_v1.method.wrap_method(
+                self.invalidate_approval_request,
+                default_timeout=600.0,
+                client_info=client_info,
+            ),
             self.get_access_approval_settings: gapic_v1.method.wrap_method(
                 self.get_access_approval_settings,
                 default_retry=retries.Retry(
@@ -182,6 +187,11 @@ class AccessApprovalTransport(abc.ABC):
             self.delete_access_approval_settings: gapic_v1.method.wrap_method(
                 self.delete_access_approval_settings,
                 default_timeout=600.0,
+                client_info=client_info,
+            ),
+            self.get_access_approval_service_account: gapic_v1.method.wrap_method(
+                self.get_access_approval_service_account,
+                default_timeout=None,
                 client_info=client_info,
             ),
         }
@@ -241,6 +251,17 @@ class AccessApprovalTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
+    def invalidate_approval_request(
+        self,
+    ) -> Callable[
+        [accessapproval.InvalidateApprovalRequestMessage],
+        Union[
+            accessapproval.ApprovalRequest, Awaitable[accessapproval.ApprovalRequest]
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
     def get_access_approval_settings(
         self,
     ) -> Callable[
@@ -270,6 +291,18 @@ class AccessApprovalTransport(abc.ABC):
     ) -> Callable[
         [accessapproval.DeleteAccessApprovalSettingsMessage],
         Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_access_approval_service_account(
+        self,
+    ) -> Callable[
+        [accessapproval.GetAccessApprovalServiceAccountMessage],
+        Union[
+            accessapproval.AccessApprovalServiceAccount,
+            Awaitable[accessapproval.AccessApprovalServiceAccount],
+        ],
     ]:
         raise NotImplementedError()
 

@@ -23,20 +23,24 @@ __protobuf__ = proto.module(
         "EnrollmentLevel",
         "AccessLocations",
         "AccessReason",
+        "SignatureInfo",
         "ApproveDecision",
         "DismissDecision",
         "ResourceProperties",
         "ApprovalRequest",
         "EnrolledService",
         "AccessApprovalSettings",
+        "AccessApprovalServiceAccount",
         "ListApprovalRequestsMessage",
         "ListApprovalRequestsResponse",
         "GetApprovalRequestMessage",
         "ApproveApprovalRequestMessage",
         "DismissApprovalRequestMessage",
+        "InvalidateApprovalRequestMessage",
         "GetAccessApprovalSettingsMessage",
         "UpdateAccessApprovalSettingsMessage",
         "DeleteAccessApprovalSettingsMessage",
+        "GetAccessApprovalServiceAccountMessage",
     },
 )
 
@@ -112,6 +116,8 @@ class AccessReason(proto.Message):
         CUSTOMER_INITIATED_SUPPORT = 1
         GOOGLE_INITIATED_SERVICE = 2
         GOOGLE_INITIATED_REVIEW = 3
+        THIRD_PARTY_DATA_REQUEST = 4
+        GOOGLE_RESPONSE_TO_PRODUCTION_ALERT = 5
 
     type_ = proto.Field(
         proto.ENUM,
@@ -124,6 +130,49 @@ class AccessReason(proto.Message):
     )
 
 
+class SignatureInfo(proto.Message):
+    r"""Information about the digital signature of the resource.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        signature (bytes):
+            The digital signature.
+        google_public_key_pem (str):
+            The public key for the Google default
+            signing, encoded in PEM format. The signature
+            was created using a private key which may be
+            verified using this public key.
+
+            This field is a member of `oneof`_ ``verification_info``.
+        customer_kms_key_version (str):
+            The resource name of the customer
+            CryptoKeyVersion used for signing.
+
+            This field is a member of `oneof`_ ``verification_info``.
+    """
+
+    signature = proto.Field(
+        proto.BYTES,
+        number=1,
+    )
+    google_public_key_pem = proto.Field(
+        proto.STRING,
+        number=2,
+        oneof="verification_info",
+    )
+    customer_kms_key_version = proto.Field(
+        proto.STRING,
+        number=3,
+        oneof="verification_info",
+    )
+
+
 class ApproveDecision(proto.Message):
     r"""A decision that has been made to approve access to a
     resource.
@@ -133,6 +182,14 @@ class ApproveDecision(proto.Message):
             The time at which approval was granted.
         expire_time (google.protobuf.timestamp_pb2.Timestamp):
             The time at which the approval expires.
+        invalidate_time (google.protobuf.timestamp_pb2.Timestamp):
+            If set, denotes the timestamp at which the
+            approval is invalidated.
+        signature_info (google.cloud.accessapproval_v1.types.SignatureInfo):
+            The signature for the ApprovalRequest and
+            details on how it was signed.
+        auto_approved (bool):
+            True when the request has been auto-approved.
     """
 
     approve_time = proto.Field(
@@ -145,6 +202,20 @@ class ApproveDecision(proto.Message):
         number=2,
         message=timestamp_pb2.Timestamp,
     )
+    invalidate_time = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
+    )
+    signature_info = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message="SignatureInfo",
+    )
+    auto_approved = proto.Field(
+        proto.BOOL,
+        number=5,
+    )
 
 
 class DismissDecision(proto.Message):
@@ -156,7 +227,7 @@ class DismissDecision(proto.Message):
             dismissed.
         implicit (bool):
             This field will be true if the
-            ApprovalRequest was implcitly dismissed due to
+            ApprovalRequest was implicitly dismissed due to
             inaction by the access approval approvers (the
             request is not acted on by the approvers before
             the exiration time).
@@ -404,6 +475,29 @@ class AccessApprovalSettings(proto.Message):
             or Folder (this field will always be unset for
             the organization since organizations do not have
             ancestors).
+        active_key_version (str):
+            The asymmetric crypto key version to use for signing
+            approval requests. Empty active_key_version indicates that a
+            Google-managed key should be used for signing. This property
+            will be ignored if set by an ancestor of this resource, and
+            new non-empty values may not be set.
+        ancestor_has_active_key_version (bool):
+            Output only. This field is read only (not settable via
+            UpdateAccessApprovalSettings method). If the field is true,
+            that indicates that an ancestor of this Project or Folder
+            has set active_key_version (this field will always be unset
+            for the organization since organizations do not have
+            ancestors).
+        invalid_key_version (bool):
+            Output only. This field is read only (not settable via
+            UpdateAccessApprovalSettings method). If the field is true,
+            that indicates that there is some configuration issue with
+            the active_key_version configured at this level in the
+            resource hierarchy (e.g. it doesn't exist or the Access
+            Approval service account doesn't have the correct
+            permissions on it, etc.) This key version is not necessarily
+            the effective key version at this level, as key versions are
+            inherited top-down.
     """
 
     name = proto.Field(
@@ -422,6 +516,44 @@ class AccessApprovalSettings(proto.Message):
     enrolled_ancestor = proto.Field(
         proto.BOOL,
         number=4,
+    )
+    active_key_version = proto.Field(
+        proto.STRING,
+        number=6,
+    )
+    ancestor_has_active_key_version = proto.Field(
+        proto.BOOL,
+        number=7,
+    )
+    invalid_key_version = proto.Field(
+        proto.BOOL,
+        number=8,
+    )
+
+
+class AccessApprovalServiceAccount(proto.Message):
+    r"""Access Approval service account related to a
+    project/folder/organization.
+
+    Attributes:
+        name (str):
+            The resource name of the Access Approval service account.
+            Format is one of:
+
+            -  "projects/{project}/serviceAccount"
+            -  "folders/{folder}/serviceAccount"
+            -  "organizations/{organization}/serviceAccount".
+        account_email (str):
+            Email address of the service account.
+    """
+
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    account_email = proto.Field(
+        proto.STRING,
+        number=2,
     )
 
 
@@ -548,6 +680,20 @@ class DismissApprovalRequestMessage(proto.Message):
     )
 
 
+class InvalidateApprovalRequestMessage(proto.Message):
+    r"""Request to invalidate an existing approval.
+
+    Attributes:
+        name (str):
+            Name of the ApprovalRequest to invalidate.
+    """
+
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
 class GetAccessApprovalSettingsMessage(proto.Message):
     r"""Request to get access approval settings.
 
@@ -601,6 +747,21 @@ class DeleteAccessApprovalSettingsMessage(proto.Message):
     Attributes:
         name (str):
             Name of the AccessApprovalSettings to delete.
+    """
+
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class GetAccessApprovalServiceAccountMessage(proto.Message):
+    r"""Request to get an Access Approval service account.
+
+    Attributes:
+        name (str):
+            Name of the AccessApprovalServiceAccount to
+            retrieve.
     """
 
     name = proto.Field(

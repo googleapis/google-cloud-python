@@ -1681,6 +1681,174 @@ async def test_dismiss_approval_request_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
+        accessapproval.InvalidateApprovalRequestMessage,
+        dict,
+    ],
+)
+def test_invalidate_approval_request(request_type, transport: str = "grpc"):
+    client = AccessApprovalClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.invalidate_approval_request), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = accessapproval.ApprovalRequest(
+            name="name_value",
+            requested_resource_name="requested_resource_name_value",
+            approve=accessapproval.ApproveDecision(
+                approve_time=timestamp_pb2.Timestamp(seconds=751)
+            ),
+        )
+        response = client.invalidate_approval_request(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == accessapproval.InvalidateApprovalRequestMessage()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, accessapproval.ApprovalRequest)
+    assert response.name == "name_value"
+    assert response.requested_resource_name == "requested_resource_name_value"
+
+
+def test_invalidate_approval_request_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AccessApprovalClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.invalidate_approval_request), "__call__"
+    ) as call:
+        client.invalidate_approval_request()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == accessapproval.InvalidateApprovalRequestMessage()
+
+
+@pytest.mark.asyncio
+async def test_invalidate_approval_request_async(
+    transport: str = "grpc_asyncio",
+    request_type=accessapproval.InvalidateApprovalRequestMessage,
+):
+    client = AccessApprovalAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.invalidate_approval_request), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            accessapproval.ApprovalRequest(
+                name="name_value",
+                requested_resource_name="requested_resource_name_value",
+            )
+        )
+        response = await client.invalidate_approval_request(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == accessapproval.InvalidateApprovalRequestMessage()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, accessapproval.ApprovalRequest)
+    assert response.name == "name_value"
+    assert response.requested_resource_name == "requested_resource_name_value"
+
+
+@pytest.mark.asyncio
+async def test_invalidate_approval_request_async_from_dict():
+    await test_invalidate_approval_request_async(request_type=dict)
+
+
+def test_invalidate_approval_request_field_headers():
+    client = AccessApprovalClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = accessapproval.InvalidateApprovalRequestMessage()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.invalidate_approval_request), "__call__"
+    ) as call:
+        call.return_value = accessapproval.ApprovalRequest()
+        client.invalidate_approval_request(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_invalidate_approval_request_field_headers_async():
+    client = AccessApprovalAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = accessapproval.InvalidateApprovalRequestMessage()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.invalidate_approval_request), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            accessapproval.ApprovalRequest()
+        )
+        await client.invalidate_approval_request(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
         accessapproval.GetAccessApprovalSettingsMessage,
         dict,
     ],
@@ -1704,6 +1872,9 @@ def test_get_access_approval_settings(request_type, transport: str = "grpc"):
             name="name_value",
             notification_emails=["notification_emails_value"],
             enrolled_ancestor=True,
+            active_key_version="active_key_version_value",
+            ancestor_has_active_key_version=True,
+            invalid_key_version=True,
         )
         response = client.get_access_approval_settings(request)
 
@@ -1717,6 +1888,9 @@ def test_get_access_approval_settings(request_type, transport: str = "grpc"):
     assert response.name == "name_value"
     assert response.notification_emails == ["notification_emails_value"]
     assert response.enrolled_ancestor is True
+    assert response.active_key_version == "active_key_version_value"
+    assert response.ancestor_has_active_key_version is True
+    assert response.invalid_key_version is True
 
 
 def test_get_access_approval_settings_empty_call():
@@ -1761,6 +1935,9 @@ async def test_get_access_approval_settings_async(
                 name="name_value",
                 notification_emails=["notification_emails_value"],
                 enrolled_ancestor=True,
+                active_key_version="active_key_version_value",
+                ancestor_has_active_key_version=True,
+                invalid_key_version=True,
             )
         )
         response = await client.get_access_approval_settings(request)
@@ -1775,6 +1952,9 @@ async def test_get_access_approval_settings_async(
     assert response.name == "name_value"
     assert response.notification_emails == ["notification_emails_value"]
     assert response.enrolled_ancestor is True
+    assert response.active_key_version == "active_key_version_value"
+    assert response.ancestor_has_active_key_version is True
+    assert response.invalid_key_version is True
 
 
 @pytest.mark.asyncio
@@ -1959,6 +2139,9 @@ def test_update_access_approval_settings(request_type, transport: str = "grpc"):
             name="name_value",
             notification_emails=["notification_emails_value"],
             enrolled_ancestor=True,
+            active_key_version="active_key_version_value",
+            ancestor_has_active_key_version=True,
+            invalid_key_version=True,
         )
         response = client.update_access_approval_settings(request)
 
@@ -1972,6 +2155,9 @@ def test_update_access_approval_settings(request_type, transport: str = "grpc"):
     assert response.name == "name_value"
     assert response.notification_emails == ["notification_emails_value"]
     assert response.enrolled_ancestor is True
+    assert response.active_key_version == "active_key_version_value"
+    assert response.ancestor_has_active_key_version is True
+    assert response.invalid_key_version is True
 
 
 def test_update_access_approval_settings_empty_call():
@@ -2016,6 +2202,9 @@ async def test_update_access_approval_settings_async(
                 name="name_value",
                 notification_emails=["notification_emails_value"],
                 enrolled_ancestor=True,
+                active_key_version="active_key_version_value",
+                ancestor_has_active_key_version=True,
+                invalid_key_version=True,
             )
         )
         response = await client.update_access_approval_settings(request)
@@ -2030,6 +2219,9 @@ async def test_update_access_approval_settings_async(
     assert response.name == "name_value"
     assert response.notification_emails == ["notification_emails_value"]
     assert response.enrolled_ancestor is True
+    assert response.active_key_version == "active_key_version_value"
+    assert response.ancestor_has_active_key_version is True
+    assert response.invalid_key_version is True
 
 
 @pytest.mark.asyncio
@@ -2433,6 +2625,257 @@ async def test_delete_access_approval_settings_flattened_error_async():
         )
 
 
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        accessapproval.GetAccessApprovalServiceAccountMessage,
+        dict,
+    ],
+)
+def test_get_access_approval_service_account(request_type, transport: str = "grpc"):
+    client = AccessApprovalClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_access_approval_service_account), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = accessapproval.AccessApprovalServiceAccount(
+            name="name_value",
+            account_email="account_email_value",
+        )
+        response = client.get_access_approval_service_account(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == accessapproval.GetAccessApprovalServiceAccountMessage()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, accessapproval.AccessApprovalServiceAccount)
+    assert response.name == "name_value"
+    assert response.account_email == "account_email_value"
+
+
+def test_get_access_approval_service_account_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AccessApprovalClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_access_approval_service_account), "__call__"
+    ) as call:
+        client.get_access_approval_service_account()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == accessapproval.GetAccessApprovalServiceAccountMessage()
+
+
+@pytest.mark.asyncio
+async def test_get_access_approval_service_account_async(
+    transport: str = "grpc_asyncio",
+    request_type=accessapproval.GetAccessApprovalServiceAccountMessage,
+):
+    client = AccessApprovalAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_access_approval_service_account), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            accessapproval.AccessApprovalServiceAccount(
+                name="name_value",
+                account_email="account_email_value",
+            )
+        )
+        response = await client.get_access_approval_service_account(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == accessapproval.GetAccessApprovalServiceAccountMessage()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, accessapproval.AccessApprovalServiceAccount)
+    assert response.name == "name_value"
+    assert response.account_email == "account_email_value"
+
+
+@pytest.mark.asyncio
+async def test_get_access_approval_service_account_async_from_dict():
+    await test_get_access_approval_service_account_async(request_type=dict)
+
+
+def test_get_access_approval_service_account_field_headers():
+    client = AccessApprovalClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = accessapproval.GetAccessApprovalServiceAccountMessage()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_access_approval_service_account), "__call__"
+    ) as call:
+        call.return_value = accessapproval.AccessApprovalServiceAccount()
+        client.get_access_approval_service_account(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_get_access_approval_service_account_field_headers_async():
+    client = AccessApprovalAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = accessapproval.GetAccessApprovalServiceAccountMessage()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_access_approval_service_account), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            accessapproval.AccessApprovalServiceAccount()
+        )
+        await client.get_access_approval_service_account(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_get_access_approval_service_account_flattened():
+    client = AccessApprovalClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_access_approval_service_account), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = accessapproval.AccessApprovalServiceAccount()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.get_access_approval_service_account(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_get_access_approval_service_account_flattened_error():
+    client = AccessApprovalClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_access_approval_service_account(
+            accessapproval.GetAccessApprovalServiceAccountMessage(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_access_approval_service_account_flattened_async():
+    client = AccessApprovalAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_access_approval_service_account), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = accessapproval.AccessApprovalServiceAccount()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            accessapproval.AccessApprovalServiceAccount()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.get_access_approval_service_account(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_get_access_approval_service_account_flattened_error_async():
+    client = AccessApprovalAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.get_access_approval_service_account(
+            accessapproval.GetAccessApprovalServiceAccountMessage(),
+            name="name_value",
+        )
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.AccessApprovalGrpcTransport(
@@ -2574,9 +3017,11 @@ def test_access_approval_base_transport():
         "get_approval_request",
         "approve_approval_request",
         "dismiss_approval_request",
+        "invalidate_approval_request",
         "get_access_approval_settings",
         "update_access_approval_settings",
         "delete_access_approval_settings",
+        "get_access_approval_service_account",
     )
     for method in methods:
         with pytest.raises(NotImplementedError):
@@ -2900,8 +3345,28 @@ def test_access_approval_transport_channel_mtls_with_adc(transport_class):
             assert transport.grpc_channel == mock_grpc_channel
 
 
-def test_access_approval_settings_path():
+def test_access_approval_service_account_path():
     project = "squid"
+    expected = "projects/{project}/serviceAccount".format(
+        project=project,
+    )
+    actual = AccessApprovalClient.access_approval_service_account_path(project)
+    assert expected == actual
+
+
+def test_parse_access_approval_service_account_path():
+    expected = {
+        "project": "clam",
+    }
+    path = AccessApprovalClient.access_approval_service_account_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = AccessApprovalClient.parse_access_approval_service_account_path(path)
+    assert expected == actual
+
+
+def test_access_approval_settings_path():
+    project = "whelk"
     expected = "projects/{project}/accessApprovalSettings".format(
         project=project,
     )
@@ -2911,7 +3376,7 @@ def test_access_approval_settings_path():
 
 def test_parse_access_approval_settings_path():
     expected = {
-        "project": "clam",
+        "project": "octopus",
     }
     path = AccessApprovalClient.access_approval_settings_path(**expected)
 
@@ -2921,8 +3386,8 @@ def test_parse_access_approval_settings_path():
 
 
 def test_approval_request_path():
-    project = "whelk"
-    approval_request = "octopus"
+    project = "oyster"
+    approval_request = "nudibranch"
     expected = "projects/{project}/approvalRequests/{approval_request}".format(
         project=project,
         approval_request=approval_request,
@@ -2933,8 +3398,8 @@ def test_approval_request_path():
 
 def test_parse_approval_request_path():
     expected = {
-        "project": "oyster",
-        "approval_request": "nudibranch",
+        "project": "cuttlefish",
+        "approval_request": "mussel",
     }
     path = AccessApprovalClient.approval_request_path(**expected)
 
@@ -2944,7 +3409,7 @@ def test_parse_approval_request_path():
 
 
 def test_common_billing_account_path():
-    billing_account = "cuttlefish"
+    billing_account = "winkle"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -2954,7 +3419,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "mussel",
+        "billing_account": "nautilus",
     }
     path = AccessApprovalClient.common_billing_account_path(**expected)
 
@@ -2964,7 +3429,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "winkle"
+    folder = "scallop"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -2974,7 +3439,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "nautilus",
+        "folder": "abalone",
     }
     path = AccessApprovalClient.common_folder_path(**expected)
 
@@ -2984,7 +3449,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "scallop"
+    organization = "squid"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -2994,7 +3459,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "abalone",
+        "organization": "clam",
     }
     path = AccessApprovalClient.common_organization_path(**expected)
 
@@ -3004,7 +3469,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "squid"
+    project = "whelk"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -3014,7 +3479,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "clam",
+        "project": "octopus",
     }
     path = AccessApprovalClient.common_project_path(**expected)
 
@@ -3024,8 +3489,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "whelk"
-    location = "octopus"
+    project = "oyster"
+    location = "nudibranch"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -3036,8 +3501,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "oyster",
-        "location": "nudibranch",
+        "project": "cuttlefish",
+        "location": "mussel",
     }
     path = AccessApprovalClient.common_location_path(**expected)
 

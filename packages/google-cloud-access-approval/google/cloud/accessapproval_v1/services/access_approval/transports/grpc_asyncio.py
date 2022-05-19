@@ -398,6 +398,43 @@ class AccessApprovalGrpcAsyncIOTransport(AccessApprovalTransport):
         return self._stubs["dismiss_approval_request"]
 
     @property
+    def invalidate_approval_request(
+        self,
+    ) -> Callable[
+        [accessapproval.InvalidateApprovalRequestMessage],
+        Awaitable[accessapproval.ApprovalRequest],
+    ]:
+        r"""Return a callable for the invalidate approval request method over gRPC.
+
+        Invalidates an existing ApprovalRequest. Returns the updated
+        ApprovalRequest.
+
+        NOTE: This does not deny access to the resource if another
+        request has been made and approved. It only invalidates a single
+        approval.
+
+        Returns FAILED_PRECONDITION if the request exists but is not in
+        an approved state.
+
+        Returns:
+            Callable[[~.InvalidateApprovalRequestMessage],
+                    Awaitable[~.ApprovalRequest]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "invalidate_approval_request" not in self._stubs:
+            self._stubs["invalidate_approval_request"] = self.grpc_channel.unary_unary(
+                "/google.cloud.accessapproval.v1.AccessApproval/InvalidateApprovalRequest",
+                request_serializer=accessapproval.InvalidateApprovalRequestMessage.serialize,
+                response_deserializer=accessapproval.ApprovalRequest.deserialize,
+            )
+        return self._stubs["invalidate_approval_request"]
+
+    @property
     def get_access_approval_settings(
         self,
     ) -> Callable[
@@ -498,6 +535,40 @@ class AccessApprovalGrpcAsyncIOTransport(AccessApprovalTransport):
                 response_deserializer=empty_pb2.Empty.FromString,
             )
         return self._stubs["delete_access_approval_settings"]
+
+    @property
+    def get_access_approval_service_account(
+        self,
+    ) -> Callable[
+        [accessapproval.GetAccessApprovalServiceAccountMessage],
+        Awaitable[accessapproval.AccessApprovalServiceAccount],
+    ]:
+        r"""Return a callable for the get access approval service
+        account method over gRPC.
+
+        Retrieves the service account that is used by Access
+        Approval to access KMS keys for signing approved
+        approval requests.
+
+        Returns:
+            Callable[[~.GetAccessApprovalServiceAccountMessage],
+                    Awaitable[~.AccessApprovalServiceAccount]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_access_approval_service_account" not in self._stubs:
+            self._stubs[
+                "get_access_approval_service_account"
+            ] = self.grpc_channel.unary_unary(
+                "/google.cloud.accessapproval.v1.AccessApproval/GetAccessApprovalServiceAccount",
+                request_serializer=accessapproval.GetAccessApprovalServiceAccountMessage.serialize,
+                response_deserializer=accessapproval.AccessApprovalServiceAccount.deserialize,
+            )
+        return self._stubs["get_access_approval_service_account"]
 
     def close(self):
         return self.grpc_channel.close()

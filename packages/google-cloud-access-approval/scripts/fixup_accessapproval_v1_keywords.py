@@ -42,8 +42,10 @@ class accessapprovalCallTransformer(cst.CSTTransformer):
         'approve_approval_request': ('name', 'expire_time', ),
         'delete_access_approval_settings': ('name', ),
         'dismiss_approval_request': ('name', ),
+        'get_access_approval_service_account': ('name', ),
         'get_access_approval_settings': ('name', ),
         'get_approval_request': ('name', ),
+        'invalidate_approval_request': ('name', ),
         'list_approval_requests': ('parent', 'filter', 'page_size', 'page_token', ),
         'update_access_approval_settings': ('settings', 'update_mask', ),
     }

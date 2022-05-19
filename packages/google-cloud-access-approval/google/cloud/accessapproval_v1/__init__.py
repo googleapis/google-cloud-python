@@ -16,6 +16,7 @@
 
 from .services.access_approval import AccessApprovalAsyncClient, AccessApprovalClient
 from .types.accessapproval import (
+    AccessApprovalServiceAccount,
     AccessApprovalSettings,
     AccessLocations,
     AccessReason,
@@ -27,17 +28,21 @@ from .types.accessapproval import (
     DismissDecision,
     EnrolledService,
     EnrollmentLevel,
+    GetAccessApprovalServiceAccountMessage,
     GetAccessApprovalSettingsMessage,
     GetApprovalRequestMessage,
+    InvalidateApprovalRequestMessage,
     ListApprovalRequestsMessage,
     ListApprovalRequestsResponse,
     ResourceProperties,
+    SignatureInfo,
     UpdateAccessApprovalSettingsMessage,
 )
 
 __all__ = (
     "AccessApprovalAsyncClient",
     "AccessApprovalClient",
+    "AccessApprovalServiceAccount",
     "AccessApprovalSettings",
     "AccessLocations",
     "AccessReason",
@@ -49,10 +54,13 @@ __all__ = (
     "DismissDecision",
     "EnrolledService",
     "EnrollmentLevel",
+    "GetAccessApprovalServiceAccountMessage",
     "GetAccessApprovalSettingsMessage",
     "GetApprovalRequestMessage",
+    "InvalidateApprovalRequestMessage",
     "ListApprovalRequestsMessage",
     "ListApprovalRequestsResponse",
     "ResourceProperties",
+    "SignatureInfo",
     "UpdateAccessApprovalSettingsMessage",
 )

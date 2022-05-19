@@ -25,6 +25,11 @@
                 "dismiss_approval_request"
               ]
             },
+            "GetAccessApprovalServiceAccount": {
+              "methods": [
+                "get_access_approval_service_account"
+              ]
+            },
             "GetAccessApprovalSettings": {
               "methods": [
                 "get_access_approval_settings"
@@ -33,6 +38,11 @@
             "GetApprovalRequest": {
               "methods": [
                 "get_approval_request"
+              ]
+            },
+            "InvalidateApprovalRequest": {
+              "methods": [
+                "invalidate_approval_request"
               ]
             },
             "ListApprovalRequests": {
@@ -65,6 +75,11 @@
                 "dismiss_approval_request"
               ]
             },
+            "GetAccessApprovalServiceAccount": {
+              "methods": [
+                "get_access_approval_service_account"
+              ]
+            },
             "GetAccessApprovalSettings": {
               "methods": [
                 "get_access_approval_settings"
@@ -73,6 +88,11 @@
             "GetApprovalRequest": {
               "methods": [
                 "get_approval_request"
+              ]
+            },
+            "InvalidateApprovalRequest": {
+              "methods": [
+                "invalidate_approval_request"
               ]
             },
             "ListApprovalRequests": {
