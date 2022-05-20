@@ -356,6 +356,7 @@ class Table(_TableBase):
         "time_partitioning": "timePartitioning",
         "schema": "schema",
         "snapshot_definition": "snapshotDefinition",
+        "clone_definition": "cloneDefinition",
         "streaming_buffer": "streamingBuffer",
         "self_link": "selfLink",
         "time_partitioning": "timePartitioning",
@@ -929,6 +930,19 @@ class Table(_TableBase):
             snapshot_info = SnapshotDefinition(snapshot_info)
         return snapshot_info
 
+    @property
+    def clone_definition(self) -> Optional["CloneDefinition"]:
+        """Information about the clone. This value is set via clone creation.
+
+        See: https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#Table.FIELDS.clone_definition
+        """
+        clone_info = self._properties.get(
+            self._PROPERTY_TO_API_FIELD["clone_definition"]
+        )
+        if clone_info is not None:
+            clone_info = CloneDefinition(clone_info)
+        return clone_info
+
     @classmethod
     def from_string(cls, full_table_id: str) -> "Table":
         """Construct a table from fully-qualified table ID.
@@ -1301,6 +1315,29 @@ class SnapshotDefinition:
         if "snapshotTime" in resource:
             self.snapshot_time = google.cloud._helpers._rfc3339_to_datetime(
                 resource["snapshotTime"]
+            )
+
+
+class CloneDefinition:
+    """Information about base table and clone time of the clone.
+
+    See https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#clonedefinition
+
+    Args:
+        resource: Clone definition representation returned from the API.
+    """
+
+    def __init__(self, resource: Dict[str, Any]):
+        self.base_table_reference = None
+        if "baseTableReference" in resource:
+            self.base_table_reference = TableReference.from_api_repr(
+                resource["baseTableReference"]
+            )
+
+        self.clone_time = None
+        if "cloneTime" in resource:
+            self.clone_time = google.cloud._helpers._rfc3339_to_datetime(
+                resource["cloneTime"]
             )
 
 

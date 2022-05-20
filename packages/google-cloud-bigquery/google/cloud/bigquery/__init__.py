@@ -101,6 +101,7 @@ from google.cloud.bigquery.table import PartitionRange
 from google.cloud.bigquery.table import RangePartitioning
 from google.cloud.bigquery.table import Row
 from google.cloud.bigquery.table import SnapshotDefinition
+from google.cloud.bigquery.table import CloneDefinition
 from google.cloud.bigquery.table import Table
 from google.cloud.bigquery.table import TableReference
 from google.cloud.bigquery.table import TimePartitioningType
@@ -132,6 +133,7 @@ __all__ = [
     "RangePartitioning",
     "Row",
     "SnapshotDefinition",
+    "CloneDefinition",
     "TimePartitioning",
     "TimePartitioningType",
     # Jobs

@@ -40,6 +40,9 @@ class OperationType:
     SNAPSHOT = "SNAPSHOT"
     """The source table type is TABLE and the destination table type is SNAPSHOT."""
 
+    CLONE = "CLONE"
+    """The source table type is TABLE and the destination table type is CLONE."""
+
     RESTORE = "RESTORE"
     """The source table type is SNAPSHOT and the destination table type is TABLE."""
 

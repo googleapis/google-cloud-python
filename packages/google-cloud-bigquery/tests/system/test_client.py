@@ -2190,3 +2190,57 @@ def test_table_snapshots(dataset_id):
     rows_iter = client.list_rows(source_table_path)
     rows = sorted(row.values() for row in rows_iter)
     assert rows == [(1, "one"), (2, "two")]
+
+
+def test_table_clones(dataset_id):
+    from google.cloud.bigquery import CopyJobConfig
+    from google.cloud.bigquery import OperationType
+
+    client = Config.CLIENT
+
+    table_path_source = f"{client.project}.{dataset_id}.test_table_clone"
+    clone_table_path = f"{table_path_source}_clone"
+
+    # Create the table before loading so that the column order is predictable.
+    schema = [
+        bigquery.SchemaField("foo", "INTEGER"),
+        bigquery.SchemaField("bar", "STRING"),
+    ]
+    source_table = helpers.retry_403(Config.CLIENT.create_table)(
+        Table(table_path_source, schema=schema)
+    )
+
+    # Populate the table with initial data.
+    rows = [{"foo": 1, "bar": "one"}, {"foo": 2, "bar": "two"}]
+    load_job = Config.CLIENT.load_table_from_json(rows, source_table)
+    load_job.result()
+
+    # Now create a clone before modifying the original table data.
+    copy_config = CopyJobConfig()
+    copy_config.operation_type = OperationType.CLONE
+    copy_config.write_disposition = bigquery.WriteDisposition.WRITE_TRUNCATE
+
+    copy_job = client.copy_table(
+        sources=table_path_source,
+        destination=clone_table_path,
+        job_config=copy_config,
+    )
+    copy_job.result()
+
+    # List rows from the source table and compare them to rows from the clone.
+    rows_iter = client.list_rows(table_path_source)
+    rows = sorted(row.values() for row in rows_iter)
+    assert rows == [(1, "one"), (2, "two")]
+
+    rows_iter = client.list_rows(clone_table_path)
+    rows = sorted(row.values() for row in rows_iter)
+    assert rows == [(1, "one"), (2, "two")]
+
+    # Compare properties of the source and clone table.
+    source_table_props = client.get_table(table_path_source)
+    clone_table_props = client.get_table(clone_table_path)
+
+    assert source_table_props.schema == clone_table_props.schema
+    assert source_table_props.num_bytes == clone_table_props.num_bytes
+    assert source_table_props.num_rows == clone_table_props.num_rows
+    assert source_table_props.description == clone_table_props.description

@@ -841,6 +841,40 @@ class TestTable(unittest.TestCase, _SchemaBase):
             2010, 9, 28, 10, 20, 30, 123000, tzinfo=UTC
         )
 
+    def test_clone_definition_not_set(self):
+        dataset = DatasetReference(self.PROJECT, self.DS_ID)
+        table_ref = dataset.table(self.TABLE_NAME)
+        table = self._make_one(table_ref)
+
+        assert table.clone_definition is None
+
+    def test_clone_definition_set(self):
+        from google.cloud._helpers import UTC
+        from google.cloud.bigquery.table import CloneDefinition
+
+        dataset = DatasetReference(self.PROJECT, self.DS_ID)
+        table_ref = dataset.table(self.TABLE_NAME)
+        table = self._make_one(table_ref)
+
+        table._properties["cloneDefinition"] = {
+            "baseTableReference": {
+                "projectId": "project_x",
+                "datasetId": "dataset_y",
+                "tableId": "table_z",
+            },
+            "cloneTime": "2010-09-28T10:20:30.123Z",
+        }
+
+        clone = table.clone_definition
+
+        assert isinstance(clone, CloneDefinition)
+        assert clone.base_table_reference.path == (
+            "/projects/project_x/datasets/dataset_y/tables/table_z"
+        )
+        assert clone.clone_time == datetime.datetime(
+            2010, 9, 28, 10, 20, 30, 123000, tzinfo=UTC
+        )
+
     def test_description_setter_bad_value(self):
         dataset = DatasetReference(self.PROJECT, self.DS_ID)
         table_ref = dataset.table(self.TABLE_NAME)
@@ -1787,6 +1821,46 @@ class TestSnapshotDefinition:
 
         expected_time = datetime.datetime(2005, 6, 7, 19, 35, 2, 123000, tzinfo=UTC)
         assert instance.snapshot_time == expected_time
+
+
+class TestCloneDefinition:
+    @staticmethod
+    def _get_target_class():
+        from google.cloud.bigquery.table import CloneDefinition
+
+        return CloneDefinition
+
+    @classmethod
+    def _make_one(cls, *args, **kwargs):
+        klass = cls._get_target_class()
+        return klass(*args, **kwargs)
+
+    def test_ctor_empty_resource(self):
+        instance = self._make_one(resource={})
+        assert instance.base_table_reference is None
+        assert instance.clone_time is None
+
+    def test_ctor_full_resource(self):
+        from google.cloud._helpers import UTC
+        from google.cloud.bigquery.table import TableReference
+
+        resource = {
+            "baseTableReference": {
+                "projectId": "my-project",
+                "datasetId": "your-dataset",
+                "tableId": "our-table",
+            },
+            "cloneTime": "2005-06-07T19:35:02.123Z",
+        }
+        instance = self._make_one(resource)
+
+        expected_table_ref = TableReference.from_string(
+            "my-project.your-dataset.our-table"
+        )
+        assert instance.base_table_reference == expected_table_ref
+
+        expected_time = datetime.datetime(2005, 6, 7, 19, 35, 2, 123000, tzinfo=UTC)
+        assert instance.clone_time == expected_time
 
 
 class TestRow(unittest.TestCase):
