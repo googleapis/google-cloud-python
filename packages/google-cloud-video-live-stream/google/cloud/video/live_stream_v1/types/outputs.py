@@ -157,7 +157,7 @@ class Manifest(proto.Message):
             number of segments, whenever a new segment is
             added to the manifest, the oldest segment will
             be removed from the manifest. The minimum value
-            is 1 and the default value is 5.
+            is 3 and the default value is 5.
         segment_keep_duration (google.protobuf.duration_pb2.Duration):
             How long to keep a segment on the output Google Cloud
             Storage bucket after it is removed from the manifest. This

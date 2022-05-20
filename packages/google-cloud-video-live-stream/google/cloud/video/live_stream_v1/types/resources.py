@@ -571,6 +571,7 @@ class Event(proto.Message):
         SUCCEEDED = 3
         FAILED = 4
         PENDING = 5
+        STOPPED = 6
 
     class AdBreakTask(proto.Message):
         r"""Inserts a new ad opportunity.
