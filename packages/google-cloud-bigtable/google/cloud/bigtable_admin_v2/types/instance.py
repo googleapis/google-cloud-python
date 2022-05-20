@@ -169,13 +169,14 @@ class Cluster(proto.Message):
             The unique name of the cluster. Values are of the form
             ``projects/{project}/instances/{instance}/clusters/[a-z][-a-z0-9]*``.
         location (str):
-            (``CreationOnly``) The location where this cluster's nodes
-            and storage reside. For best performance, clients should be
+            Immutable. The location where this cluster's nodes and
+            storage reside. For best performance, clients should be
             located as close as possible to this cluster. Currently only
             zones are supported, so values should be of the form
             ``projects/{project}/locations/{zone}``.
         state (google.cloud.bigtable_admin_v2.types.Cluster.State):
-            The current state of the cluster.
+            Output only. The current state of the
+            cluster.
         serve_nodes (int):
             The number of nodes allocated to this
             cluster. More nodes enable higher throughput and
@@ -185,9 +186,9 @@ class Cluster(proto.Message):
 
             This field is a member of `oneof`_ ``config``.
         default_storage_type (google.cloud.bigtable_admin_v2.types.StorageType):
-            (``CreationOnly``) The type of storage used by this cluster
-            to serve its parent instance's tables, unless explicitly
-            overridden.
+            Immutable. The type of storage used by this
+            cluster to serve its parent instance's tables,
+            unless explicitly overridden.
         encryption_config (google.cloud.bigtable_admin_v2.types.Cluster.EncryptionConfig):
             Immutable. The encryption configuration for
             CMEK-protected clusters.
@@ -254,6 +255,9 @@ class Cluster(proto.Message):
                    key.
                 2) Only regional keys can be used and the region of the CMEK
                    key must match the region of the cluster.
+                3) All clusters within an instance must use the same CMEK
+                   key. Values are of the form
+                   ``projects/{project}/locations/{location}/keyRings/{keyring}/cryptoKeys/{key}``
         """
 
         kms_key_name = proto.Field(
@@ -309,8 +313,7 @@ class AppProfile(proto.Message):
 
     Attributes:
         name (str):
-            (``OutputOnly``) The unique name of the app profile. Values
-            are of the form
+            The unique name of the app profile. Values are of the form
             ``projects/{project}/instances/{instance}/appProfiles/[_a-zA-Z0-9][-_.a-zA-Z0-9]*``.
         etag (str):
             Strongly validated etag for optimistic concurrency control.
@@ -324,8 +327,8 @@ class AppProfile(proto.Message):
             7232 <https://tools.ietf.org/html/rfc7232#section-2.3>`__
             for more details.
         description (str):
-            Optional long form description of the use
-            case for this AppProfile.
+            Long form description of the use case for
+            this AppProfile.
         multi_cluster_routing_use_any (google.cloud.bigtable_admin_v2.types.AppProfile.MultiClusterRoutingUseAny):
             Use a multi-cluster routing policy.
 

@@ -89,14 +89,13 @@ class Table(proto.Message):
             with UNKNOWN ``replication_status``. Views:
             ``REPLICATION_VIEW``, ``ENCRYPTION_VIEW``, ``FULL``
         column_families (Mapping[str, google.cloud.bigtable_admin_v2.types.ColumnFamily]):
-            (``CreationOnly``) The column families configured for this
-            table, mapped by column family ID. Views: ``SCHEMA_VIEW``,
-            ``FULL``
+            The column families configured for this table, mapped by
+            column family ID. Views: ``SCHEMA_VIEW``, ``FULL``
         granularity (google.cloud.bigtable_admin_v2.types.Table.TimestampGranularity):
-            (``CreationOnly``) The granularity (i.e. ``MILLIS``) at
-            which timestamps are stored in this table. Timestamps not
-            matching the granularity will be rejected. If unspecified at
-            creation time, the value will be set to ``MILLIS``. Views:
+            Immutable. The granularity (i.e. ``MILLIS``) at which
+            timestamps are stored in this table. Timestamps not matching
+            the granularity will be rejected. If unspecified at creation
+            time, the value will be set to ``MILLIS``. Views:
             ``SCHEMA_VIEW``, ``FULL``.
         restore_info (google.cloud.bigtable_admin_v2.types.RestoreInfo):
             Output only. If this table was restored from
@@ -427,8 +426,8 @@ class Backup(proto.Message):
 
     Attributes:
         name (str):
-            Output only. A globally unique identifier for the backup
-            which cannot be changed. Values are of the form
+            A globally unique identifier for the backup which cannot be
+            changed. Values are of the form
             ``projects/{project}/instances/{instance}/clusters/{cluster}/ backups/[_a-zA-Z0-9][-_.a-zA-Z0-9]*``
             The final segment of the name must be between 1 and 50
             characters in length.

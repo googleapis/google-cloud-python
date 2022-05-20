@@ -415,7 +415,53 @@ class CreateClusterMetadata(proto.Message):
         finish_time (google.protobuf.timestamp_pb2.Timestamp):
             The time at which the operation failed or was
             completed successfully.
+        tables (Mapping[str, google.cloud.bigtable_admin_v2.types.CreateClusterMetadata.TableProgress]):
+            Keys: the full ``name`` of each table that existed in the
+            instance when CreateCluster was first called, i.e.
+            ``projects/<project>/instances/<instance>/tables/<table>``.
+            Any table added to the instance by a later API call will be
+            created in the new cluster by that API call, not this one.
+
+            Values: information on how much of a table's data has been
+            copied to the newly-created cluster so far.
     """
+
+    class TableProgress(proto.Message):
+        r"""Progress info for copying a table's data to the new cluster.
+
+        Attributes:
+            estimated_size_bytes (int):
+                Estimate of the size of the table to be
+                copied.
+            estimated_copied_bytes (int):
+                Estimate of the number of bytes copied so far for this
+                table. This will eventually reach 'estimated_size_bytes'
+                unless the table copy is CANCELLED.
+            state (google.cloud.bigtable_admin_v2.types.CreateClusterMetadata.TableProgress.State):
+
+        """
+
+        class State(proto.Enum):
+            r""""""
+            STATE_UNSPECIFIED = 0
+            PENDING = 1
+            COPYING = 2
+            COMPLETED = 3
+            CANCELLED = 4
+
+        estimated_size_bytes = proto.Field(
+            proto.INT64,
+            number=2,
+        )
+        estimated_copied_bytes = proto.Field(
+            proto.INT64,
+            number=3,
+        )
+        state = proto.Field(
+            proto.ENUM,
+            number=4,
+            enum="CreateClusterMetadata.TableProgress.State",
+        )
 
     original_request = proto.Field(
         proto.MESSAGE,
@@ -431,6 +477,12 @@ class CreateClusterMetadata(proto.Message):
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
+    )
+    tables = proto.MapField(
+        proto.STRING,
+        proto.MESSAGE,
+        number=4,
+        message=TableProgress,
     )
 
 
