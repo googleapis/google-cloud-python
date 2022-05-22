@@ -55,7 +55,7 @@ nox.sessions = [
 def unit(session):
     """Run the unit test suite."""
 
-    session.install('coverage', 'pytest', 'pytest-cov', 'asyncmock', 'pytest-asyncio')
+    session.install('coverage', 'pytest', 'pytest-cov', 'pytest-asyncio', 'asyncmock; python_version < "3.8"')
     session.install('-e', '.')
 
     session.run(

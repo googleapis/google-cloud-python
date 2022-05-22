@@ -14,7 +14,6 @@
 
 import collections
 
-from typing import Sequence
 from unittest import mock
 
 import pytest

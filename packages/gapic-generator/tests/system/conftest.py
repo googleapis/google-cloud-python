@@ -14,7 +14,7 @@
 
 import collections
 import grpc
-import mock
+from unittest import mock
 import os
 import pytest
 
