@@ -36,11 +36,10 @@ In order to use this library, you first need to go through the following steps:
 
 For an interactive walkthrough on how to use this library in a python application, click the Guide Me button below:
 
-.. raw:: html
-   
-   <a href ="https://console.cloud.google.com/?walkthrough_id=logging__logging-python">
-      <img src="docs/_static/guide-me.svg">
-   </a>
+|guide|
+
+.. |guide| image:: _static/guide-me.png
+   :target: https://console.cloud.google.com/?walkthrough_id=logging__logging-python
 
 Installation
 ~~~~~~~~~~~~
