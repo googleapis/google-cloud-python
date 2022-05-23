@@ -27,5 +27,3 @@ class TestAppEngineStandard(Common, unittest.TestCase):
 
     monitored_resource_name = "gae_app"
     monitored_resource_labels = ["project_id", "module_id", "version_id", "zone"]
-
-

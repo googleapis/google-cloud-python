@@ -32,4 +32,3 @@ class TestCloudFunctions(Common, unittest.TestCase):
         "function_name",
         "project_id",
     ]
-

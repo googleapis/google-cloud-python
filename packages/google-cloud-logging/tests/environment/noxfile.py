@@ -88,10 +88,14 @@ def lint(session):
             f"{target}/{path}" for path in os.listdir(target) if path.endswith(".py")
         ]
     session.run(
-        "black", "--check", *black_files,
+        "black",
+        "--check",
+        *black_files,
     )
     session.run(
-        "flake8", "--exclude=deployable/python/python-logging", *BLACK_PATHS,
+        "flake8",
+        "--exclude=deployable/python/python-logging",
+        *BLACK_PATHS,
     )
 
 

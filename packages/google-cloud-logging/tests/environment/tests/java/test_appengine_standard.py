@@ -17,6 +17,7 @@ import unittest
 
 from ..common.common import Common
 
+
 class TestAppEngineStandard(Common, unittest.TestCase):
 
     environment = "appengine_standard"

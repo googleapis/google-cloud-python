@@ -160,9 +160,16 @@ def pylogging_flask(
 
     app = flask.Flask(__name__)
     with app.test_request_context(
-        path, base_url, headers={"User-Agent": agent, "X_CLOUD_TRACE_CONTEXT": trace, "TRACEPARENT":traceparent}
+        path,
+        base_url,
+        headers={
+            "User-Agent": agent,
+            "X_CLOUD_TRACE_CONTEXT": trace,
+            "TRACEPARENT": traceparent,
+        },
     ):
         logging.info(log_text)
+
 
 def pylogging_pandas(log_text="pylogging_pandas", **kwargs):
     """
@@ -170,15 +177,20 @@ def pylogging_pandas(log_text="pylogging_pandas", **kwargs):
     https://github.com/googleapis/python-logging/issues/409
     """
     import pandas as pd
-    df = pd.DataFrame(columns=['log_text'])
+
+    df = pd.DataFrame(columns=["log_text"])
     df = df.append({"log_text": log_text}, ignore_index=True)
     logging.error(df)
 
-def pylogging_exception(log_text="pylogging_exception", exception_text="Test", **kwargs):
+
+def pylogging_exception(
+    log_text="pylogging_exception", exception_text="Test", **kwargs
+):
     try:
         raise Exception(exception_text)
     except Exception:
         logging.exception(log_text)
+
 
 def print_handlers(**kwargs):
     root_logger = logging.getLogger()

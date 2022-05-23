@@ -317,13 +317,16 @@ class CommonPython:
     def test_pylogging_exception(self):
         log_text = f"{inspect.currentframe().f_code.co_name}"
         exception_text = "test_exception"
-        log_list = self.trigger_and_retrieve(log_text, "pylogging_exception",
-                exception_text=exception_text)
+        log_list = self.trigger_and_retrieve(
+            log_text, "pylogging_exception", exception_text=exception_text
+        )
         found_log = log_list[-1]
 
-        message = (found_log.payload.get("message", None)
-                    if isinstance(found_log.payload, dict)
-                    else str(found_log.payload))
+        message = (
+            found_log.payload.get("message", None)
+            if isinstance(found_log.payload, dict)
+            else str(found_log.payload)
+        )
 
         self.assertIn(log_text, message)
         self.assertIn(f"Exception: {exception_text}", message)
@@ -335,16 +338,21 @@ class CommonPython:
         https://github.com/googleapis/python-logging/issues/409
         """
         import pandas as pd
+
         log_text = f"{inspect.currentframe().f_code.co_name} {str(uuid.uuid1())[-10:]}"
 
-        log_list = self.trigger_and_retrieve(log_text, "pylogging_pandas", append_uuid=False)
+        log_list = self.trigger_and_retrieve(
+            log_text, "pylogging_pandas", append_uuid=False
+        )
         found_log = log_list[-1]
 
-        message = (found_log.payload.get("message", None)
-                    if isinstance(found_log.payload, dict)
-                    else str(found_log.payload))
+        message = (
+            found_log.payload.get("message", None)
+            if isinstance(found_log.payload, dict)
+            else str(found_log.payload)
+        )
 
-        df = pd.DataFrame(columns=['log_text'])
+        df = pd.DataFrame(columns=["log_text"])
         df = df.append({"log_text": log_text}, ignore_index=True)
 
         self.assertEqual(str(df), message)

@@ -20,6 +20,7 @@ import google.cloud.logging
 
 from ..common.common import Common
 
+
 class TestKubernetesEngine(Common, unittest.TestCase):
 
     environment = "kubernetes"
@@ -33,4 +34,3 @@ class TestKubernetesEngine(Common, unittest.TestCase):
         "pod_name",
         "namespace_name",
     ]
-

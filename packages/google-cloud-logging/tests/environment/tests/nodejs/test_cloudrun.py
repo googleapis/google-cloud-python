@@ -22,6 +22,7 @@ from google.cloud.logging_v2.resource import Resource
 
 from ..common.common import Common
 
+
 class TestCloudRun(Common, unittest.TestCase):
 
     environment = "cloudrun"
@@ -36,4 +37,3 @@ class TestCloudRun(Common, unittest.TestCase):
         "location",
         "configuration_name",
     ]
-
