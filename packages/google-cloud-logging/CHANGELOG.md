@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-logging/#history
 
+### [3.1.1](https://github.com/googleapis/python-logging/compare/v3.1.0...v3.1.1) (2022-05-23)
+
+
+### Documentation
+
+* Change button in README to .png file ([#554](https://github.com/googleapis/python-logging/issues/554)) ([e297747](https://github.com/googleapis/python-logging/commit/e2977477f97469671b8cbfc920f39743cf2f7c80))
+
 ## [3.1.0](https://github.com/googleapis/python-logging/compare/v3.0.0...v3.1.0) (2022-05-08)
 
 
