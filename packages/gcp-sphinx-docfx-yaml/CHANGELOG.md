@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.4.8](https://github.com/googleapis/sphinx-docfx-yaml/compare/v1.4.7...v1.4.8) (2022-05-24)
+
+
+### Bug Fixes
+
+* add hardcoded IAM references temporarily ([#209](https://github.com/googleapis/sphinx-docfx-yaml/issues/209)) ([5dc99d2](https://github.com/googleapis/sphinx-docfx-yaml/commit/5dc99d25532e668d5bf5fc1402b93ed5f189655e))
+
 ### [1.4.7](https://github.com/googleapis/sphinx-docfx-yaml/compare/v1.4.6...v1.4.7) (2022-04-12)
 
 
