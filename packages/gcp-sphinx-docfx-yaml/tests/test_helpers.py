@@ -1,5 +1,6 @@
 from docfx_yaml.extension import extract_keyword
 from docfx_yaml.extension import indent_code_left
+from docfx_yaml.extension import find_uid_to_convert
 from docfx_yaml.extension import convert_cross_references
 from docfx_yaml.extension import search_cross_references
 from docfx_yaml.extension import format_code
@@ -115,16 +116,29 @@ for i in range(10):
             "Response message for google.cloud.bigquery_storage_v1.types.SplitReadStreamResponse.",
             "Response message for <xref uid=\"google.cloud.bigquery_storage_v1.types.SplitReadStreamResponse\">google.cloud.bigquery_storage_v1.types.SplitReadStreamResponse</xref>."
         ],
+        # Testing for cross reference to not be converted for its own object.
+        [
+            "Response message for google.cloud.bigquery_storage_v1.types.SplitResponse.",
+            "Response message for google.cloud.bigquery_storage_v1.types.SplitResponse."
+        ],
+        # TODO(https://github.com/googleapis/sphinx-docfx-yaml/issues/208):
+        # remove this when it is not needed anymore.
+        # Testing for hardcoded reference.
+        [
+            "google.iam.v1.iam_policy_pb2.GetIamPolicyRequest",
+            "<a href=\"http://github.com/googleapis/python-grpc-google-iam-v1/blob/8e73b45993f030f521c0169b380d0fbafe66630b/google/iam/v1/iam_policy_pb2_grpc.py#L111-L118\">google.iam.v1.iam_policy_pb2.GetIamPolicyRequest</a>"
+        ]
     ]
     @parameterized.expand(cross_references_testdata)
     def test_convert_cross_references(self, content, content_want):
         # Check that entries correctly turns into cross references.
         keyword_map = [
-            "google.cloud.bigquery_storage_v1.types.SplitReadStreamResponse"
+            "google.cloud.bigquery_storage_v1.types.SplitReadStreamResponse",
+            "google.cloud.bigquery_storage_v1.types.SplitResponse"
         ]
-        current_name = "SplitRepsonse"
+        current_object_name = "google.cloud.bigquery_storage_v1.types.SplitResponse"
 
-        content_got = convert_cross_references(content, current_name, keyword_map)
+        content_got = convert_cross_references(content, current_object_name, keyword_map)
         self.assertEqual(content_got, content_want)
 
 
@@ -294,6 +308,59 @@ for i in range(10):
 
             with open(want_filename) as mdfile_want:
                 self.assertEqual(test_file.read(), mdfile_want.read())
+
+
+    test_reference_params = [
+        [
+            # If no reference keyword is found, check for None
+            "google.cloud.resourcemanager_v3.ProjectsClient",
+            ["google.cloud.resourcemanager_v1.ProjectsClient"],
+            ["The", "following", "constraints", "apply", "when", "using"],
+            None
+        ],
+        [
+            # If keyword reference is found, validate proper cross reference
+            "google.cloud.resourcemanager_v3.set_iam_policy",
+            ["google.cloud.resourcemanager_v3.set_iam_policy"],
+            ["A", "Policy", "is", "a", "collection", "of", "bindings", "from"],
+            "google.cloud.resourcemanager_v3.set_iam_policy"
+        ],
+        [
+            # If keyword reference has already been converted, do not convert
+            # again.
+            "uid=\"google.cloud.resourcemanager_v3.set_iam_policy\">documentation</xref>",
+            ["google.cloud.resourcemanager_v3.set_iam_policy"],
+            ["Take", "a", "look", "at", "<xref"],
+            None
+        ],
+        [
+            # If no reference keyword is found, check for None
+            "google.cloud.resourcemanager_v3.ProjectsClient",
+            ["google.cloud.resourcemanager_v3.ProjectsClient"],
+            ["The", "following", "constraints", "apply", "when", "using"],
+            None
+        ],
+    ]
+    @parameterized.expand(test_reference_params)
+    def test_find_uid_to_convert(self, current_word, uids, visited_words, cross_reference_want):
+        current_object_name = "google.cloud.resourcemanager_v3.ProjectsClient"
+        content ="""Sets the IAM access control policy for the specified project.
+
+The following constraints apply when using google.cloud.resourcemanager_v3.ProjectsClient
+
+A Policy is a collection of bindings from google.cloud.resourcemanager_v3.set_iam_policy
+
+Take a look at <xref uid="google.cloud.resourcemanager_v3.set_iam_policy">documentation</xref> for more information.
+"""
+        # Break up the paragraph into sanitized list of words as shown in Sphinx.
+        words = " ".join(content.split("\n")).split(" ")
+
+        index = words.index(current_word)
+
+        cross_reference_got = find_uid_to_convert(
+            current_word, words, index, uids, current_object_name, visited_words
+        )
+        self.assertEqual(cross_reference_got, cross_reference_want)
 
 
 if __name__ == '__main__':
