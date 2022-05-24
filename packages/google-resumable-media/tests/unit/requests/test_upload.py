@@ -16,7 +16,7 @@ import http.client
 import io
 import json
 
-import mock
+from unittest import mock
 
 import google.resumable_media.requests.upload as upload_mod
 

@@ -15,7 +15,7 @@
 import http.client
 import io
 
-import mock
+from unittest import mock
 import pytest  # type: ignore
 
 from google.resumable_media import common

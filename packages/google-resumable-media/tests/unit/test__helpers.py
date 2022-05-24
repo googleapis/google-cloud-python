@@ -17,7 +17,7 @@ from __future__ import absolute_import
 import hashlib
 import http.client
 
-import mock
+from unittest import mock
 import pytest  # type: ignore
 
 from google.resumable_media import _helpers

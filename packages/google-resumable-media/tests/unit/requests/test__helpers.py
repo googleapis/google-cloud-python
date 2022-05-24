@@ -14,7 +14,7 @@
 
 import http.client
 
-import mock
+from unittest import mock
 import pytest  # type: ignore
 
 import requests.exceptions
