@@ -12,6 +12,7 @@ Using the API
   app-profile
   backup
   column-family
+  encryption-info
   row
   row-data
   row-filters
