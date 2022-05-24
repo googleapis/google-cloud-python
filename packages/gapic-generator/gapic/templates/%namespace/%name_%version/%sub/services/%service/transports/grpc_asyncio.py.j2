@@ -28,6 +28,9 @@ from google.iam.v1 import policy_pb2  # type: ignore
 {% if api.has_location_mixin %}
 from google.cloud.location import locations_pb2 # type: ignore
 {% endif %}
+{% if api.has_operations_mixin %}
+from google.longrunning import operations_pb2
+{% endif %}
 {% endfilter %}
 from .base import {{ service.name }}Transport, DEFAULT_CLIENT_INFO
 from .grpc import {{ service.name }}GrpcTransport

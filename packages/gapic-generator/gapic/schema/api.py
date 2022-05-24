@@ -524,7 +524,9 @@ class API:
         if not self._has_iam_overrides and self.has_iam_mixin:
             methods = {**methods, **
                 self._get_methods_from_service(iam_policy_pb2)}
-        # For LRO, expose operations client instead.
+        if self.has_operations_mixin:
+            methods = {**methods, **
+                self._get_methods_from_service(operations_pb2)}
         return methods
 
     @cached_property

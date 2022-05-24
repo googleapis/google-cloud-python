@@ -2275,3 +2275,84 @@ def test_mixin_api_methods_iam_overrides():
     })
     api_schema = api.API.build(fd, 'google.example.v1', opts=opts)
     assert api_schema.mixin_api_methods == {}
+
+
+def test_mixin_api_methods_lro():
+    fd = (
+        make_file_pb2(
+            name='example.proto',
+            package='google.example.v1',
+            messages=(make_message_pb2(name='ExampleRequest', fields=()),
+            make_message_pb2(name='ExampleResponse', fields=()),
+                      ),
+            services=(descriptor_pb2.ServiceDescriptorProto(
+                name='FooService',
+                method=(
+                    descriptor_pb2.MethodDescriptorProto(
+                        name='FooMethod',
+                        # Input and output types don't matter.
+                        input_type='google.example.v1.ExampleRequest',
+                        output_type='google.example.v1.ExampleResponse',
+                    ),
+                ),
+            ),),
+        ),
+    )
+    r1 = {
+        'selector': 'google.longrunning.Operations.CancelOperation',
+        'post': '/v1/{name=examples/*}/*',
+        'body': '*'
+    }
+    r2 = {
+        'selector': 'google.longrunning.Operations.DeleteOperation',
+        'get': '/v1/{name=examples/*}/*',
+        'body': '*'
+    }
+    r3 = {
+        'selector': 'google.longrunning.Operations.WaitOperation',
+        'post': '/v1/{name=examples/*}/*',
+        'body': '*'
+    }
+    r4 = {
+        'selector': 'google.longrunning.Operations.GetOperation',
+        'post': '/v1/{name=examples/*}/*',
+        'body': '*'
+    }
+    opts = Options(service_yaml_config={
+        'apis': [
+            {
+                'name': 'google.longrunning.Operations'
+            }
+        ],
+        'http': {
+            'rules': [r1, r2, r3, r4]
+        }
+    })
+
+    ms = methods_from_service(operations_pb2, 'Operations')
+    assert len(ms) == 5
+    m1 = ms['CancelOperation']
+    m1.options.ClearExtension(annotations_pb2.http)
+    m1.options.Extensions[annotations_pb2.http].selector = r1['selector']
+    m1.options.Extensions[annotations_pb2.http].post = r1['post']
+    m1.options.Extensions[annotations_pb2.http].body = r1['body']
+    m2 = ms['DeleteOperation']
+    m2.options.ClearExtension(annotations_pb2.http)
+    m2.options.Extensions[annotations_pb2.http].selector = r2['selector']
+    m2.options.Extensions[annotations_pb2.http].get = r2['get']
+    m2.options.Extensions[annotations_pb2.http].body = r2['body']
+    m3 = ms['WaitOperation']
+    m3.options.ClearExtension(annotations_pb2.http)
+    m3.options.Extensions[annotations_pb2.http].selector = r3['selector']
+    m3.options.Extensions[annotations_pb2.http].post = r3['post']
+    m3.options.Extensions[annotations_pb2.http].body = r3['body']
+    m4 = ms['GetOperation']
+    m4.options.ClearExtension(annotations_pb2.http)
+    m4.options.Extensions[annotations_pb2.http].selector = r4['selector']
+    m4.options.Extensions[annotations_pb2.http].post = r4['post']
+    m4.options.Extensions[annotations_pb2.http].body = r4['body']
+
+    api_schema = api.API.build(fd, 'google.example.v1', opts=opts)
+    assert api_schema.mixin_api_methods == {
+        'CancelOperation': m1, 'DeleteOperation': m2, 'WaitOperation': m3,
+        'GetOperation': m4}

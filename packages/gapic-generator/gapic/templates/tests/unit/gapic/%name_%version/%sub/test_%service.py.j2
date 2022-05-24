@@ -58,6 +58,9 @@ from google.protobuf import json_format
 {% if api.has_location_mixin %}
 from google.cloud.location import locations_pb2
 {% endif %}
+{% if api.has_operations_mixin %}
+from google.longrunning import operations_pb2
+{% endif %}
 from google.api_core import gapic_v1
 {% for method in service.methods.values() %}
 {% for ref_type in method.ref_types
@@ -767,14 +770,46 @@ def test_{{ service.name|snake_case }}_base_transport():
         '{{ method.transport_safe_name|snake_case }}',
         {% endfor %}
         {# TODO: Remove after https://github.com/googleapis/gapic-generator-python/pull/1240 is merged. #}
-        {% if opts.add_iam_methods or api.has_iam_mixin %}
+        {% if opts.add_iam_methods %}
         'set_iam_policy',
         'get_iam_policy',
         'test_iam_permissions',
         {% endif %}
+        {% if not opts.add_iam_methods and api.has_iam_mixin %}
+        {% if "SetIamPolicy" in api.mixin_api_methods %}
+        'set_iam_policy',
+        {% endif %}
+        {% if "GetIamPolicy" in api.mixin_api_methods %}
+        'get_iam_policy',
+        {% endif %}
+        {% if "TestIamPermissions" in api.mixin_api_methods %}
+        'test_iam_permissions',
+        {% endif %}
+        {% endif %}
         {% if api.has_location_mixin %}
+        {% if "GetLocation" in api.mixin_api_methods %}
         'get_location',
+        {% endif %}
+        {% if "ListLocations" in api.mixin_api_methods %}
         'list_locations',
+        {% endif %}
+        {% endif %}
+        {% if api.has_operations_mixin %}
+        {% if "GetOperation" in api.mixin_api_methods %}
+        'get_operation',
+        {% endif %}
+        {% if "WaitOperation" in api.mixin_api_methods %}
+        'wait_operation',
+        {% endif %}
+        {% if "CancelOperation" in api.mixin_api_methods %}
+        'cancel_operation',
+        {% endif %}
+        {% if "DeleteOperation" in api.mixin_api_methods %}
+        'delete_operation',
+        {% endif %}
+        {% if "ListOperations" in api.mixin_api_methods %}
+        'list_operations',
+        {% endif %}
         {% endif %}
     )
     for method in methods:

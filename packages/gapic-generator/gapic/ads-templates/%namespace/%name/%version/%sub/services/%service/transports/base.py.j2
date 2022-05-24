@@ -29,6 +29,9 @@ from google.iam.v1 import policy_pb2  # type: ignore
 {% if api.has_location_mixin %}
 from google.cloud.location import locations_pb2 # type: ignore
 {% endif %}
+{% if api.has_operations_mixin %}
+from google.longrunning import operations_pb2
+{% endif %}
 {% endfilter %}
 
 try:
@@ -171,6 +174,63 @@ class {{ service.name }}Transport(abc.ABC):
             ]]:
         raise NotImplementedError()
     {% endfor %}
+
+    {% if api.has_operations_mixin %}
+    {% if "ListOperations" in api.mixin_api_methods %}
+    @property
+    def list_operations(
+        self,
+    ) -> Callable[
+        [operations_pb2.ListOperationsRequest],
+        Union[operations_pb2.ListOperationsResponse, Awaitable[operations_pb2.ListOperationsResponse]],
+    ]:
+        raise NotImplementedError()
+    {% endif %}
+
+    {% if "GetOperation" in api.mixin_api_methods %}
+    @property
+    def get_operation(
+        self,
+    ) -> Callable[
+        [operations_pb2.GetOperationRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+    {% endif %}
+
+    {% if "CancelOperation" in api.mixin_api_methods %}
+    @property
+    def cancel_operation(
+        self,
+    ) -> Callable[
+        [operations_pb2.CancelOperationRequest],
+        None,
+    ]:
+        raise NotImplementedError()
+    {% endif %}
+
+    {% if "DeleteOperation" in api.mixin_api_methods %}
+    @property
+    def delete_operation(
+        self,
+    ) -> Callable[
+        [operations_pb2.DeleteOperationRequest],
+        None,
+    ]:
+        raise NotImplementedError()
+    {% endif %}
+
+    {% if "WaitOperation" in api.mixin_api_methods %}
+    @property
+    def wait_operation(
+        self,
+    ) -> Callable[
+        [operations_pb2.WaitOperationRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+    {% endif %}
+    {% endif %}
 
     {# TODO: Remove after https://github.com/googleapis/gapic-generator-python/pull/1240 is merged. #}
     {% if not opts.add_iam_methods and api.has_iam_mixin %}
