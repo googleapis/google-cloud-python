@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.4.2](https://github.com/googleapis/python-bigquery-migration/compare/v0.4.1...v0.4.2) (2022-05-22)
+
+
+### Documentation
+
+* **samples:** add create_migration_workflow snippet ([#71](https://github.com/googleapis/python-bigquery-migration/issues/71)) ([761b5f5](https://github.com/googleapis/python-bigquery-migration/commit/761b5f5045edbe8c81a31f501bf3b14de7dffe20))
+
 ### [0.4.1](https://github.com/googleapis/python-bigquery-migration/compare/v0.4.0...v0.4.1) (2022-05-05)
 
 
