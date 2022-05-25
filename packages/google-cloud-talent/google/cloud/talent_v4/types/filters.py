@@ -110,14 +110,22 @@ class JobQuery(proto.Message):
             This filter specifies the company
             [Company.display_name][google.cloud.talent.v4.Company.display_name]
             of the jobs to search against. The company name must match
-            the value exactly (case sensitive).
+            the value exactly.
 
-            Alternatively, if the value being searched for is wrapped in
-            ``SUBSTRING_MATCH([value])``, the company name must contain
-            a case insensitive substring match of the value. Using this
+            Alternatively, the value being searched for can be wrapped
+            in different match operators. ``SUBSTRING_MATCH([value])``
+            The company name must contain a case insensitive substring
+            match of the value. Using this function may increase
+            latency.
+
+            Sample Value: ``SUBSTRING_MATCH(google)``
+
+            ``MULTI_WORD_TOKEN_MATCH([value])`` The value will be
+            treated as a multi word token and the company name must
+            contain a case insensitive match of the value. Using this
             function may increase latency.
 
-            Sample Values: ``["Google LLC", "SUBSTRING_MATCH(google)"]``
+            Sample Value: ``MULTI_WORD_TOKEN_MATCH(google)``
 
             If a value isn't specified, jobs within the search results
             are associated with any company.
@@ -301,7 +309,7 @@ class LocationFilter(proto.Message):
         telecommute_preference (google.cloud.talent_v4.types.LocationFilter.TelecommutePreference):
             Allows the client to return jobs without a set location,
             specifically, telecommuting jobs (telecommuting is
-            considered by the service as a special location.
+            considered by the service as a special location).
             [Job.posting_region][google.cloud.talent.v4.Job.posting_region]
             indicates if a job permits telecommuting. If this field is
             set to
@@ -336,6 +344,7 @@ class LocationFilter(proto.Message):
         TELECOMMUTE_PREFERENCE_UNSPECIFIED = 0
         TELECOMMUTE_EXCLUDED = 1
         TELECOMMUTE_ALLOWED = 2
+        TELECOMMUTE_JOBS_EXCLUDED = 3
 
     address = proto.Field(
         proto.STRING,
