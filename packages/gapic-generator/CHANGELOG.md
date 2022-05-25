@@ -1,6 +1,14 @@
 # Changelog
 
 
+## [1.0.0](https://github.com/googleapis/gapic-generator-python/compare/v0.65.3...v1.0.0) (2022-05-24)
+
+
+### Features
+
+* adds LRO mixin. ([#1304](https://github.com/googleapis/gapic-generator-python/issues/1304)) ([18af90a](https://github.com/googleapis/gapic-generator-python/commit/18af90a8b51159da85f3f93bd37248a58ede4ab3))
+* release as stable ([767aaba](https://github.com/googleapis/gapic-generator-python/commit/767aaba6d623fab2af972140ffd4de3b43a92439))
+
 ### [0.65.3](https://github.com/googleapis/gapic-generator-python/compare/v0.65.2...v0.65.3) (2022-05-03)
 
 
