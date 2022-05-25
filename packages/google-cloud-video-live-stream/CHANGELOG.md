@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.1.4](https://github.com/googleapis/python-video-live-stream/compare/v0.1.3...v0.1.4) (2022-05-22)
+
+
+### Documentation
+
+* updated comments to match API behaviors ([#45](https://github.com/googleapis/python-video-live-stream/issues/45)) ([bdc9463](https://github.com/googleapis/python-video-live-stream/commit/bdc9463156a63439ef41621405394042d01f3cb9))
+
 ### [0.1.3](https://github.com/googleapis/python-video-live-stream/compare/v0.1.2...v0.1.3) (2022-05-03)
 
 
