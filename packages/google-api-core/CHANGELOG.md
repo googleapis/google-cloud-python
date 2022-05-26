@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-api-core/#history
 
+### [2.8.1](https://github.com/googleapis/python-api-core/compare/v2.8.0...v2.8.1) (2022-05-26)
+
+
+### Bug Fixes
+
+* **deps:** require googleapis-common-protos >= 1.56.2 ([d84d66c](https://github.com/googleapis/python-api-core/commit/d84d66c2a4107f5f9a20c53e870a27fb1250ea3d))
+* **deps:** require protobuf>= 3.15.0, <4.0.0dev ([#385](https://github.com/googleapis/python-api-core/issues/385)) ([d84d66c](https://github.com/googleapis/python-api-core/commit/d84d66c2a4107f5f9a20c53e870a27fb1250ea3d))
+
 ## [2.8.0](https://github.com/googleapis/python-api-core/compare/v2.7.3...v2.8.0) (2022-05-18)
 
 
