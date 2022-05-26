@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.1.11](https://github.com/googleapis/python-access-context-manager/compare/v0.1.10...v0.1.11) (2022-05-26)
+
+
+### Bug Fixes
+
+* **deps:** require protobuf>= 3.12.0, <4.0.0dev ([#124](https://github.com/googleapis/python-access-context-manager/issues/124)) ([5c7837e](https://github.com/googleapis/python-access-context-manager/commit/5c7837eca6e49f465df306275f96ebece076364b))
+
 ### [0.1.10](https://github.com/googleapis/python-access-context-manager/compare/v0.1.9...v0.1.10) (2022-03-04)
 
 
