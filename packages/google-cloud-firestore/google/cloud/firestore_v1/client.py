@@ -325,7 +325,7 @@ class Client(BaseClient):
 
         """
         if bulk_writer is None:
-            bulk_writer or self.bulk_writer()
+            bulk_writer = self.bulk_writer()
 
         return self._recursive_delete(
             reference,
