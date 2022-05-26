@@ -368,7 +368,9 @@ intersphinx_mapping = {
     "grpc": ("https://grpc.github.io/grpc/python/", None),
     "proto-plus": ("https://proto-plus-python.readthedocs.io/en/latest/", None),
     "protobuf": ("https://googleapis.dev/python/protobuf/latest/", None),
-    "requests": ("https://docs.python-requests.org/en/master/", None),
+    # python-requests url temporary change related to
+    # https://github.com/psf/requests/issues/6140#issuecomment-1135071992
+    "python-requests": ("https://requests.readthedocs.io/en/stable/", None),
 }
 
 

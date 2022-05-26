@@ -47,7 +47,7 @@ in your code, using one of three forms:
 
 See also:
 
-  :ref:`Timeouts in requests <requests:timeouts>`
+  `Timeouts in requests <https://requests.readthedocs.io/en/latest/user/advanced/#timeouts>`_
 
 
 .. _configuring_retries:
