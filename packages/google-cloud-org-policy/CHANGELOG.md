@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.3.2](https://github.com/googleapis/python-org-policy/compare/v1.3.1...v1.3.2) (2022-05-26)
+
+
+### Bug Fixes
+
+* regenerate pb2 files using grpcio-tools ([#152](https://github.com/googleapis/python-org-policy/issues/152)) ([e88e34c](https://github.com/googleapis/python-org-policy/commit/e88e34cbd3edfd918d71aed25290ae0df4e471db))
+
 ### [1.3.1](https://github.com/googleapis/python-org-policy/compare/v1.3.0...v1.3.1) (2022-03-05)
 
 
