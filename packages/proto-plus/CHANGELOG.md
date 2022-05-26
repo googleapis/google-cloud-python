@@ -1,5 +1,13 @@
 # Changelog
 
+### [1.20.5](https://github.com/googleapis/proto-plus-python/compare/v1.20.4...v1.20.5) (2022-05-26)
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core[grpc] >= 1.31.5 ([1d13c41](https://github.com/googleapis/proto-plus-python/commit/1d13c415df457a87153a6fca202003fa83e56093))
+* **deps:** require protobuf>= 3.15.0, <4.0.0dev ([#315](https://github.com/googleapis/proto-plus-python/issues/315)) ([1d13c41](https://github.com/googleapis/proto-plus-python/commit/1d13c415df457a87153a6fca202003fa83e56093))
+
 ### [1.20.4](https://github.com/googleapis/proto-plus-python/compare/v1.20.3...v1.20.4) (2022-05-02)
 
 
