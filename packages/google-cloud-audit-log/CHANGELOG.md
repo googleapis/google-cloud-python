@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.2.2](https://github.com/googleapis/python-audit-log/compare/v0.2.1...v0.2.2) (2022-05-26)
+
+
+### Bug Fixes
+
+* regenerate pb2 files using grpcio-tools ([#57](https://github.com/googleapis/python-audit-log/issues/57)) ([7058ada](https://github.com/googleapis/python-audit-log/commit/7058ada0cc89cac453b6d55d6a1529d7274784fd))
+
 ### [0.2.1](https://github.com/googleapis/python-audit-log/compare/v0.2.0...v0.2.1) (2022-05-26)
 
 
