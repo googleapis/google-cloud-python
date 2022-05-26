@@ -63,7 +63,6 @@ nox.options.sessions = [
     "system",
     "lint",
     "test",
-    "generate_protos",
     "lint_setup_py",
     "blacken",
     "docs",
@@ -257,24 +256,10 @@ def generate_protos(session):
     session.install("grpcio-tools")
     protos = [str(p) for p in (pathlib.Path(".").glob("google/**/*.proto"))]
 
-    # Clone googleapis/api-common-protos
-    api_common_protos = "api-common-protos"
-    try:
-        session.run("git", "-C", api_common_protos, "pull", external=True)
-    except nox.command.CommandFailed:
-        session.run(
-            "git",
-            "clone",
-            "--single-branch",
-            f"https://github.com/googleapis/{api_common_protos}",
-            external=True,
-        )
-
     session.run(
         "python",
         "-m",
         "grpc_tools.protoc",
-        "--proto_path=api-common-protos",
         "--proto_path=.",
         "--python_out=.",
         *protos,
