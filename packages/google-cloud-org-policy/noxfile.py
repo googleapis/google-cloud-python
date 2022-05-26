@@ -85,18 +85,15 @@ def generate_protos(session):
        If a new subdirectory is added, you will need to create more `__init__.py`
        files.
 
-    NOTE: This is a hack and only runnable locally. You will need to have
-    the api-common-protos repo cloned. This should be migrated to use
-    bazel in the future.
+    NOTE: This should be migrated to use bazel in the future.
     """
     session.install("grpcio-tools")
-    protos = [str(p) for p in (Path(".").glob("google/**/*.proto"))]
+    protos = [str(p) for p in (pathlib.Path(".").glob("google/**/*.proto"))]
 
     session.run(
         "python",
         "-m",
         "grpc_tools.protoc",
-        "--proto_path=../api-common-protos",
         "--proto_path=.",
         "--python_out=.",
         *protos,
