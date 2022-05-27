@@ -1041,8 +1041,8 @@ class Blob(_PropertyMixin):
         encryption key:
 
          .. literalinclude:: snippets.py
-            :start-after: [START download_to_file]
-            :end-before: [END download_to_file]
+            :start-after: START download_to_file
+            :end-before: END download_to_file
             :dedent: 4
 
         The ``encryption_key`` should be a str or bytes with a length of at
@@ -2438,8 +2438,8 @@ class Blob(_PropertyMixin):
         [`customer-supplied`](https://cloud.google.com/storage/docs/encryption#customer-supplied) encryption key:
 
         .. literalinclude:: snippets.py
-            :start-after: [START upload_from_file]
-            :end-before: [END upload_from_file]
+            :start-after: START upload_from_file
+            :end-before: END upload_from_file
             :dedent: 4
 
         The ``encryption_key`` should be a str or bytes with a length of at

@@ -12,77 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Manipulate access control lists that Cloud Storage provides.
-
-:class:`google.cloud.storage.bucket.Bucket` has a getting method that creates
-an ACL object under the hood, and you can interact with that using
-:func:`google.cloud.storage.bucket.Bucket.acl`:
-
-.. literalinclude:: snippets.py
-    :start-after: [START client_bucket_acl]
-    :end-before: [END client_bucket_acl]
-    :dedent: 4
-
-
-Adding and removing permissions can be done with the following methods
-(in increasing order of granularity):
-
-- :func:`ACL.all`
-  corresponds to access for all users.
-- :func:`ACL.all_authenticated` corresponds
-  to access for all users that are signed into a Google account.
-- :func:`ACL.domain` corresponds to access on a
-  per Google Apps domain (ie, ``example.com``).
-- :func:`ACL.group` corresponds to access on a
-  per group basis (either by ID or e-mail address).
-- :func:`ACL.user` corresponds to access on a
-  per user basis (either by ID or e-mail address).
-
-And you are able to ``grant`` and ``revoke`` the following roles:
-
-- **Reading**:
-  :func:`_ACLEntity.grant_read` and :func:`_ACLEntity.revoke_read`
-- **Writing**:
-  :func:`_ACLEntity.grant_write` and :func:`_ACLEntity.revoke_write`
-- **Owning**:
-  :func:`_ACLEntity.grant_owner` and :func:`_ACLEntity.revoke_owner`
-
-You can use any of these like any other factory method (these happen to
-be :class:`_ACLEntity` factories):
-
-.. literalinclude:: snippets.py
-   :start-after: [START acl_user_settings]
-   :end-before: [END acl_user_settings]
-   :dedent: 4
-
-After that, you can save any changes you make with the
-:func:`google.cloud.storage.acl.ACL.save` method:
-
-.. literalinclude:: snippets.py
-   :start-after: [START acl_save]
-   :end-before: [END acl_save]
-   :dedent: 4
-
-You can alternatively save any existing :class:`google.cloud.storage.acl.ACL`
-object (whether it was created by a factory method or not) from a
-:class:`google.cloud.storage.bucket.Bucket`:
-
-.. literalinclude:: snippets.py
-   :start-after: [START acl_save_bucket]
-   :end-before: [END acl_save_bucket]
-   :dedent: 4
-
-To get the list of ``entity`` and ``role`` for each unique pair, the
-:class:`ACL` class is iterable:
-
-.. literalinclude:: snippets.py
-   :start-after: [START acl_print]
-   :end-before: [END acl_print]
-   :dedent: 4
-
-This list of tuples can be used as the ``entity`` and ``role`` fields
-when sending metadata for ACLs to the API.
-"""
+"""Manage access to objects and buckets."""
 
 from google.cloud.storage._helpers import _add_generation_match_parameters
 from google.cloud.storage.constants import _DEFAULT_TIMEOUT

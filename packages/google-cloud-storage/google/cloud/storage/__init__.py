@@ -17,8 +17,8 @@
 You'll typically use these to get started with the API:
 
 .. literalinclude:: snippets.py
-    :start-after: [START storage_get_started]
-    :end-before: [END storage_get_started]
+    :start-after: START storage_get_started
+    :end-before: END storage_get_started
     :dedent: 4
 
 The main concepts with this API are:

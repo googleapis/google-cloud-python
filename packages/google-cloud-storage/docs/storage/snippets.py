@@ -34,7 +34,7 @@ def snippet(func):
 
 @snippet
 def storage_get_started(to_delete):
-    # [START storage_get_started]
+    # START storage_get_started
     client = storage.Client()
     bucket = client.get_bucket("bucket-id-here")
     # Then do other things...
@@ -43,7 +43,7 @@ def storage_get_started(to_delete):
     blob.upload_from_string("New contents!")
     blob2 = bucket.blob("/remote/path/storage.txt")
     blob2.upload_from_filename(filename="/local/path.txt")
-    # [END storage_get_started]
+    # END storage_get_started
 
     to_delete.append(bucket)
 
@@ -53,40 +53,40 @@ def client_bucket_acl(client, to_delete):
     bucket_name = "system-test-bucket"
     client.create_bucket(bucket_name)
 
-    # [START client_bucket_acl]
+    # START client_bucket_acl
     client = storage.Client()
     bucket = client.get_bucket(bucket_name)
     acl = bucket.acl
-    # [END client_bucket_acl]
+    # END client_bucket_acl
     to_delete.append(bucket)
 
-    # [START acl_user_settings]
+    # START acl_user_settings
     acl.user("me@example.org").grant_read()
     acl.all_authenticated().grant_write()
-    # [END acl_user_settings]
+    # END acl_user_settings
 
-    # [START acl_save]
+    # START acl_save
     acl.save()
-    # [END acl_save]
+    # END acl_save
 
-    # [START acl_revoke_write]
+    # START acl_revoke_write
     acl.all().grant_read()
     acl.all().revoke_write()
-    # [END acl_revoke_write]
+    # END acl_revoke_write
 
-    # [START acl_save_bucket]
+    # START acl_save_bucket
     bucket.acl.save(acl=acl)
-    # [END acl_save_bucket]
+    # END acl_save_bucket
 
-    # [START acl_print]
+    # START acl_print
     print(list(acl))
     # [{'role': 'OWNER', 'entity': 'allUsers'}, ...]
-    # [END acl_print]
+    # END acl_print
 
 
 @snippet
 def download_to_file(to_delete):
-    # [START download_to_file]
+    # START download_to_file
     from google.cloud.storage import Blob
 
     client = storage.Client(project="my-project")
@@ -96,14 +96,14 @@ def download_to_file(to_delete):
     blob.upload_from_string("my secret message.")
     with open("/tmp/my-secure-file", "wb") as file_obj:
         client.download_to_file(blob, file_obj)
-    # [END download_to_file]
+    # END download_to_file
 
     to_delete.append(blob)
 
 
 @snippet
 def upload_from_file(to_delete):
-    # [START upload_from_file]
+    # START upload_from_file
     from google.cloud.storage import Blob
 
     client = storage.Client(project="my-project")
@@ -112,7 +112,7 @@ def upload_from_file(to_delete):
     blob = Blob("secure-data", bucket, encryption_key=encryption_key)
     with open("my-file", "rb") as my_file:
         blob.upload_from_file(my_file)
-    # [END upload_from_file]
+    # END upload_from_file
 
     to_delete.append(blob)
 
@@ -121,21 +121,21 @@ def upload_from_file(to_delete):
 def get_blob(to_delete):
     from google.cloud.storage.blob import Blob
 
-    # [START get_blob]
+    # START get_blob
     client = storage.Client()
     bucket = client.get_bucket("my-bucket")
     assert isinstance(bucket.get_blob("/path/to/blob.txt"), Blob)
     # <Blob: my-bucket, /path/to/blob.txt>
     assert not bucket.get_blob("/does-not-exist.txt")
     # None
-    # [END get_blob]
+    # END get_blob
 
     to_delete.append(bucket)
 
 
 @snippet
 def delete_blob(to_delete):
-    # [START delete_blob]
+    # START delete_blob
     from google.cloud.exceptions import NotFound
 
     client = storage.Client()
@@ -148,12 +148,12 @@ def delete_blob(to_delete):
         bucket.delete_blob("doesnt-exist")
     except NotFound:
         pass
-    # [END delete_blob]
+    # END delete_blob
 
     blob = None
-    # [START delete_blobs]
+    # START delete_blobs
     bucket.delete_blobs([blob], on_error=lambda blob: None)
-    # [END delete_blobs]
+    # END delete_blobs
 
     to_delete.append(bucket)
 
@@ -161,15 +161,15 @@ def delete_blob(to_delete):
 @snippet
 def configure_website(to_delete):
     bucket_name = "test-bucket"
-    # [START configure_website]
+    # START configure_website
     client = storage.Client()
     bucket = client.get_bucket(bucket_name)
     bucket.configure_website("index.html", "404.html")
-    # [END configure_website]
+    # END configure_website
 
-    # [START make_public]
+    # START make_public
     bucket.make_public(recursive=True, future=True)
-    # [END make_public]
+    # END make_public
 
     to_delete.append(bucket)
 
@@ -178,34 +178,34 @@ def configure_website(to_delete):
 def get_bucket(client, to_delete):
     import google
 
-    # [START get_bucket]
+    # START get_bucket
     try:
         bucket = client.get_bucket("my-bucket")
     except google.cloud.exceptions.NotFound:
         print("Sorry, that bucket does not exist!")
-    # [END get_bucket]
+    # END get_bucket
     to_delete.append(bucket)
 
 
 @snippet
 def add_lifecycle_delete_rule(client, to_delete):
-    # [START add_lifecycle_delete_rule]
+    # START add_lifecycle_delete_rule
     bucket = client.get_bucket("my-bucket")
     bucket.add_lifecycle_delete_rule(age=2)
     bucket.patch()
-    # [END add_lifecycle_delete_rule]
+    # END add_lifecycle_delete_rule
     to_delete.append(bucket)
 
 
 @snippet
 def add_lifecycle_set_storage_class_rule(client, to_delete):
-    # [START add_lifecycle_set_storage_class_rule]
+    # START add_lifecycle_set_storage_class_rule
     bucket = client.get_bucket("my-bucket")
     bucket.add_lifecycle_set_storage_class_rule(
         "COLD_LINE", matches_storage_class=["NEARLINE"]
     )
     bucket.patch()
-    # [END add_lifecycle_set_storage_class_rule]
+    # END add_lifecycle_set_storage_class_rule
     to_delete.append(bucket)
 
 
@@ -213,14 +213,14 @@ def add_lifecycle_set_storage_class_rule(client, to_delete):
 def lookup_bucket(client, to_delete):
     from google.cloud.storage.bucket import Bucket
 
-    # [START lookup_bucket]
+    # START lookup_bucket
     bucket = client.lookup_bucket("doesnt-exist")
     assert not bucket
     # None
     bucket = client.lookup_bucket("my-bucket")
     assert isinstance(bucket, Bucket)
     # <Bucket: my-bucket>
-    # [END lookup_bucket]
+    # END lookup_bucket
 
     to_delete.append(bucket)
 
@@ -229,21 +229,21 @@ def lookup_bucket(client, to_delete):
 def create_bucket(client, to_delete):
     from google.cloud.storage import Bucket
 
-    # [START create_bucket]
+    # START create_bucket
     bucket = client.create_bucket("my-bucket")
     assert isinstance(bucket, Bucket)
     # <Bucket: my-bucket>
-    # [END create_bucket]
+    # END create_bucket
 
     to_delete.append(bucket)
 
 
 @snippet
 def list_buckets(client, to_delete):
-    # [START list_buckets]
+    # START list_buckets
     for bucket in client.list_buckets():
         print(bucket)
-    # [END list_buckets]
+    # END list_buckets
 
     for bucket in client.list_buckets():
         to_delete.append(bucket)
@@ -252,7 +252,7 @@ def list_buckets(client, to_delete):
 @snippet
 def policy_document(client):
     # pylint: disable=unused-argument
-    # [START policy_document]
+    # START policy_document
     bucket = client.bucket("my-bucket")
     conditions = [["starts-with", "$key", ""], {"acl": "public-read"}]
 
@@ -277,7 +277,7 @@ def policy_document(client):
     ).format(bucket_name=bucket.name, policy_fields=policy_fields)
 
     print(upload_form)
-    # [END policy_document]
+    # END policy_document
 
 
 def _line_no(func):
