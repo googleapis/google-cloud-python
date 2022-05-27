@@ -68,7 +68,7 @@ Path = _reflection.GeneratedProtocolMessageType(
 _sym_db.RegisterMessage(Path)
 _sym_db.RegisterMessage(Path.Element)
 
-if _descriptor._USE_C_DESCRIPTORS == False:
+if _descriptor._USE_C_DESCRIPTORS == False:  # pragma: NO COVER
 
     DESCRIPTOR._options = None
     _REFERENCE._serialized_start = 48

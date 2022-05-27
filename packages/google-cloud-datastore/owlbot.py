@@ -99,7 +99,7 @@ templated_files = common.py_library(
     microgenerator=True,
     split_system_tests=True,
     unit_test_python_versions=["3.6", "3.7", "3.8", "3.9", "3.10"],
-    cov_level=99,
+    cov_level=100,
 )
 s.move(
     templated_files,
