@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-datastore/#history
 
+### [2.6.1](https://github.com/googleapis/python-datastore/compare/v2.6.0...v2.6.1) (2022-05-27)
+
+
+### Bug Fixes
+
+* regenerate pb2 file with grpcio-tools ([#314](https://github.com/googleapis/python-datastore/issues/314)) ([0412cd5](https://github.com/googleapis/python-datastore/commit/0412cd5dbcb8e4042b2ad300e35dd6797710072a))
+
 ## [2.6.0](https://github.com/googleapis/python-datastore/compare/v2.5.1...v2.6.0) (2022-05-05)
 
 
