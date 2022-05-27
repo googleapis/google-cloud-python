@@ -33,7 +33,7 @@ dependencies = [
     # Until this issue is closed
     # https://github.com/googleapis/google-cloud-python/issues/10566
     "google-cloud-core >= 1.4.1, <3.0.0dev",
-    "proto-plus >= 1.10.0",
+    "proto-plus >= 1.20.5, <2.0.0dev",
 ]
 extras = {}
 

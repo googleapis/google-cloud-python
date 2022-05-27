@@ -1209,7 +1209,7 @@ def deserialize_bundle(
             bundle_element: BundleElement = BundleElement.from_json(json.dumps(data))  # type: ignore
         except AttributeError as e:
             # Some bad serialization formats cannot be universally deserialized.
-            if e.args[0] == "'dict' object has no attribute 'find'":
+            if e.args[0] == "'dict' object has no attribute 'find'":  # pragma: NO COVER
                 raise ValueError(
                     "Invalid serialization of datetimes. "
                     "Cannot deserialize Bundles created from the NodeJS SDK."

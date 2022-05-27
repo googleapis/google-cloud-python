@@ -7,5 +7,5 @@
 # Then this file should have foo==1.14.0
 google-api-core==1.31.5
 google-cloud-core==1.4.1
-proto-plus==1.10.0
-protobuf==3.12.0  # transitive from `google-api-core`
+proto-plus==1.20.5
+protobuf==3.19.0  # transitive from `google-api-core`
