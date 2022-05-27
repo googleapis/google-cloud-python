@@ -33,9 +33,8 @@ dependencies = [
     "google-cloud-core >= 2.3.0, < 3.0dev",
     "google-resumable-media >= 2.3.2",
     "requests >= 2.18.0, < 3.0.0dev",
-    "protobuf",
 ]
-extras = {}
+extras = {"protobuf": ["protobuf<5.0.0dev"]}
 
 
 # Setup boilerplate below this line.
