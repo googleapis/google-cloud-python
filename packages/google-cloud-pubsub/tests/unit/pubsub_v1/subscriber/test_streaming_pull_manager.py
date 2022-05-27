@@ -1035,7 +1035,8 @@ def test_heartbeat_inactive():
     assert not result
 
 
-def test_heartbeat_stream_ack_deadline_seconds():
+def test_heartbeat_stream_ack_deadline_seconds(caplog):
+    caplog.set_level(logging.INFO)
     manager = make_manager()
     manager._rpc = mock.create_autospec(bidi.BidiRpc, instance=True)
     manager._rpc.is_active = True
@@ -1050,6 +1051,7 @@ def test_heartbeat_stream_ack_deadline_seconds():
     assert result
     # Set to false after a send is initiated.
     assert not manager._send_new_ack_deadline
+    assert "Sending new ack_deadline of 10 seconds." in caplog.text
 
 
 @mock.patch("google.api_core.bidi.ResumableBidiRpc", autospec=True)

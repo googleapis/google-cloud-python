@@ -743,6 +743,9 @@ class StreamingPullManager(object):
                 request = gapic_types.StreamingPullRequest(
                     stream_ack_deadline_seconds=self.ack_deadline
                 )
+                _LOGGER.info(
+                    "Sending new ack_deadline of %d seconds.", self.ack_deadline
+                )
             else:
                 request = gapic_types.StreamingPullRequest()
 
