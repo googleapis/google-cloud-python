@@ -13,7 +13,6 @@
 # limitations under the License.
 
 from google.cloud.spanner_dbapi.parse_utils import get_param_types
-from google.cloud.spanner_dbapi.parse_utils import parse_insert
 from google.cloud.spanner_dbapi.parse_utils import sql_pyformat_args_to_spanner
 from google.cloud.spanner_v1 import param_types
 
@@ -51,44 +50,13 @@ CODE_TO_DISPLAY_SIZE = {
 def _execute_insert_heterogenous(transaction, sql_params_list):
     for sql, params in sql_params_list:
         sql, params = sql_pyformat_args_to_spanner(sql, params)
-        param_types = get_param_types(params)
-        transaction.execute_update(sql, params=params, param_types=param_types)
-
-
-def _execute_insert_homogenous(transaction, parts):
-    # Perform an insert in one shot.
-    return transaction.insert(
-        parts.get("table"), parts.get("columns"), parts.get("values")
-    )
+        transaction.execute_update(sql, params, get_param_types(params))
 
 
 def handle_insert(connection, sql, params):
-    parts = parse_insert(sql, params)
-
-    # The split between the two styles exists because:
-    # in the common case of multiple values being passed
-    # with simple pyformat arguments,
-    #   SQL: INSERT INTO T (f1, f2) VALUES (%s, %s, %s)
-    #   Params:   [(1, 2, 3, 4, 5, 6, 7, 8, 9, 10,)]
-    # we can take advantage of a single RPC with:
-    #       transaction.insert(table, columns, values)
-    # instead of invoking:
-    #   with transaction:
-    #       for sql, params in sql_params_list:
-    #           transaction.execute_sql(sql, params, param_types)
-    # which invokes more RPCs and is more costly.
-
-    if parts.get("homogenous"):
-        # The common case of multiple values being passed in
-        # non-complex pyformat args and need to be uploaded in one RPC.
-        return connection.database.run_in_transaction(_execute_insert_homogenous, parts)
-    else:
-        # All the other cases that are esoteric and need
-        #   transaction.execute_sql
-        sql_params_list = parts.get("sql_params_list")
-        return connection.database.run_in_transaction(
-            _execute_insert_heterogenous, sql_params_list
-        )
+    return connection.database.run_in_transaction(
+        _execute_insert_heterogenous, ((sql, params),)
+    )
 
 
 class ColumnInfo:

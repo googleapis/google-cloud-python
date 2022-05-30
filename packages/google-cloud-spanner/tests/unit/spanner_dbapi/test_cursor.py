@@ -564,7 +564,7 @@ class TestCursor(unittest.TestCase):
 
         transaction1 = mock.Mock(committed=False, rolled_back=False)
         transaction1.batch_update = mock.Mock(
-            side_effect=[(mock.Mock(code=ABORTED, details=err_details), [])]
+            side_effect=[(mock.Mock(code=ABORTED, message=err_details), [])]
         )
 
         transaction2 = self._transaction_mock()
@@ -731,15 +731,6 @@ class TestCursor(unittest.TestCase):
         cursor.close()
         with self.assertRaises(exceptions.InterfaceError):
             cursor.setoutputsize(size=None)
-
-    # def test_handle_insert(self):
-    #     pass
-    #
-    # def test_do_execute_insert_heterogenous(self):
-    #     pass
-    #
-    # def test_do_execute_insert_homogenous(self):
-    #     pass
 
     def test_handle_dql(self):
         from google.cloud.spanner_dbapi import utils

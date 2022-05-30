@@ -32,23 +32,37 @@ class TestHelpers(unittest.TestCase):
                 "google.cloud.spanner_dbapi._helpers.get_param_types", return_value=None
             ) as mock_param_types:
                 transaction = mock.MagicMock()
-                transaction.execute_update = mock_execute = mock.MagicMock()
-                _helpers._execute_insert_heterogenous(transaction, [params])
+                transaction.execute_update = mock_update = mock.MagicMock()
+                _helpers._execute_insert_heterogenous(transaction, (params,))
 
                 mock_pyformat.assert_called_once_with(params[0], params[1])
                 mock_param_types.assert_called_once_with(None)
-                mock_execute.assert_called_once_with(sql, params=None, param_types=None)
+                mock_update.assert_called_once_with(sql, None, None)
 
-    def test__execute_insert_homogenous(self):
+    def test__execute_insert_heterogenous_error(self):
         from google.cloud.spanner_dbapi import _helpers
+        from google.api_core.exceptions import Unknown
 
-        transaction = mock.MagicMock()
-        transaction.insert = mock.MagicMock()
-        parts = mock.MagicMock()
-        parts.get = mock.MagicMock(return_value=0)
+        sql = "sql"
+        params = (sql, None)
+        with mock.patch(
+            "google.cloud.spanner_dbapi._helpers.sql_pyformat_args_to_spanner",
+            return_value=params,
+        ) as mock_pyformat:
+            with mock.patch(
+                "google.cloud.spanner_dbapi._helpers.get_param_types", return_value=None
+            ) as mock_param_types:
+                transaction = mock.MagicMock()
+                transaction.execute_update = mock_update = mock.MagicMock(
+                    side_effect=Unknown("Unknown")
+                )
 
-        _helpers._execute_insert_homogenous(transaction, parts)
-        transaction.insert.assert_called_once_with(0, 0, 0)
+                with self.assertRaises(Unknown):
+                    _helpers._execute_insert_heterogenous(transaction, (params,))
+
+                mock_pyformat.assert_called_once_with(params[0], params[1])
+                mock_param_types.assert_called_once_with(None)
+                mock_update.assert_called_once_with(sql, None, None)
 
     def test_handle_insert(self):
         from google.cloud.spanner_dbapi import _helpers
@@ -56,19 +70,13 @@ class TestHelpers(unittest.TestCase):
         connection = mock.MagicMock()
         connection.database.run_in_transaction = mock_run_in = mock.MagicMock()
         sql = "sql"
-        parts = mock.MagicMock()
-        with mock.patch(
-            "google.cloud.spanner_dbapi._helpers.parse_insert", return_value=parts
-        ):
-            parts.get = mock.MagicMock(return_value=True)
-            mock_run_in.return_value = 0
-            result = _helpers.handle_insert(connection, sql, None)
-            self.assertEqual(result, 0)
+        mock_run_in.return_value = 0
+        result = _helpers.handle_insert(connection, sql, None)
+        self.assertEqual(result, 0)
 
-            parts.get = mock.MagicMock(return_value=False)
-            mock_run_in.return_value = 1
-            result = _helpers.handle_insert(connection, sql, None)
-            self.assertEqual(result, 1)
+        mock_run_in.return_value = 1
+        result = _helpers.handle_insert(connection, sql, None)
+        self.assertEqual(result, 1)
 
 
 class TestColumnInfo(unittest.TestCase):
