@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-bigtable/#history
 
+## [2.10.0](https://github.com/googleapis/python-bigtable/compare/v2.9.0...v2.10.0) (2022-05-30)
+
+
+### Features
+
+* refreshes Bigtable Admin API(s) protos ([#589](https://github.com/googleapis/python-bigtable/issues/589)) ([b508e33](https://github.com/googleapis/python-bigtable/commit/b508e3321937850d65242283e82f5413feb6081a))
+
+
+### Documentation
+
+* Add EncryptionInfo documentation ([#588](https://github.com/googleapis/python-bigtable/issues/588)) ([bedbf1b](https://github.com/googleapis/python-bigtable/commit/bedbf1b1bb304ff45f31ad20004ff96041ce716c))
+
 ## [2.9.0](https://github.com/googleapis/python-bigtable/compare/v2.8.1...v2.9.0) (2022-04-14)
 
 
