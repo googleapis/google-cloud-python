@@ -5,6 +5,14 @@
 [1]: https://pypi.org/project/google-cloud-firestore/#history
 
 
+## [2.5.1](https://github.com/googleapis/python-firestore/compare/v2.5.0...v2.5.1) (2022-05-30)
+
+
+### Bug Fixes
+
+* bulk_writer default assignment ([#565](https://github.com/googleapis/python-firestore/issues/565)) ([843c278](https://github.com/googleapis/python-firestore/commit/843c27816e97f38de2d37277f65b4428362ef661))
+* **deps:** Require proto-plus >=1.20.5 ([#593](https://github.com/googleapis/python-firestore/issues/593)) ([2281290](https://github.com/googleapis/python-firestore/commit/2281290b153bc6eadfe6e539ac5638a57f073990)), closes [#592](https://github.com/googleapis/python-firestore/issues/592)
+
 ## [2.5.0](https://github.com/googleapis/python-firestore/compare/v2.4.0...v2.5.0) (2022-05-05)
 
 
