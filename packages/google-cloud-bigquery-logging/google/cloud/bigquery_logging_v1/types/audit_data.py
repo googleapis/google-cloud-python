@@ -730,7 +730,7 @@ class TableInfo(proto.Message):
             A long description, perhaps several
             paragraphs, describing the table contents in
             detail.
-        labels (Sequence[google.cloud.bigquery_logging_v1.types.TableInfo.LabelsEntry]):
+        labels (Mapping[str, str]):
             Labels provided for the table.
     """
 
@@ -829,7 +829,7 @@ class DatasetInfo(proto.Message):
             A long description, perhaps several
             paragraphs, describing the dataset contents in
             detail.
-        labels (Sequence[google.cloud.bigquery_logging_v1.types.DatasetInfo.LabelsEntry]):
+        labels (Mapping[str, str]):
             Labels provided for the dataset.
     """
 
@@ -980,7 +980,7 @@ class JobConfiguration(proto.Message):
         dry_run (bool):
             If true, don't actually run the job. Just
             check that it would run.
-        labels (Sequence[google.cloud.bigquery_logging_v1.types.JobConfiguration.LabelsEntry]):
+        labels (Mapping[str, str]):
             Labels provided for the job.
     """
 
