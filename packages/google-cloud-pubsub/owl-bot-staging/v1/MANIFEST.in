@@ -1,0 +1,2 @@
+recursive-include google/pubsub *.py
+recursive-include google/pubsub_v1 *.py
