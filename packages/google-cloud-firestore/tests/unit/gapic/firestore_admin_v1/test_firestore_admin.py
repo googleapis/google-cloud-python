@@ -14,7 +14,13 @@
 # limitations under the License.
 #
 import os
-import mock
+
+# try/except added for compatibility with python < 3.8
+try:
+    from unittest import mock
+    from unittest.mock import AsyncMock
+except ImportError:
+    import mock
 
 import grpc
 from grpc.experimental import aio
@@ -3128,6 +3134,8 @@ def test_get_database(request_type, transport: str = "grpc"):
             location_id="location_id_value",
             type_=database.Database.DatabaseType.FIRESTORE_NATIVE,
             concurrency_mode=database.Database.ConcurrencyMode.OPTIMISTIC,
+            app_engine_integration_mode=database.Database.AppEngineIntegrationMode.ENABLED,
+            key_prefix="key_prefix_value",
             etag="etag_value",
         )
         response = client.get_database(request)
@@ -3143,6 +3151,11 @@ def test_get_database(request_type, transport: str = "grpc"):
     assert response.location_id == "location_id_value"
     assert response.type_ == database.Database.DatabaseType.FIRESTORE_NATIVE
     assert response.concurrency_mode == database.Database.ConcurrencyMode.OPTIMISTIC
+    assert (
+        response.app_engine_integration_mode
+        == database.Database.AppEngineIntegrationMode.ENABLED
+    )
+    assert response.key_prefix == "key_prefix_value"
     assert response.etag == "etag_value"
 
 
@@ -3184,6 +3197,8 @@ async def test_get_database_async(
                 location_id="location_id_value",
                 type_=database.Database.DatabaseType.FIRESTORE_NATIVE,
                 concurrency_mode=database.Database.ConcurrencyMode.OPTIMISTIC,
+                app_engine_integration_mode=database.Database.AppEngineIntegrationMode.ENABLED,
+                key_prefix="key_prefix_value",
                 etag="etag_value",
             )
         )
@@ -3200,6 +3215,11 @@ async def test_get_database_async(
     assert response.location_id == "location_id_value"
     assert response.type_ == database.Database.DatabaseType.FIRESTORE_NATIVE
     assert response.concurrency_mode == database.Database.ConcurrencyMode.OPTIMISTIC
+    assert (
+        response.app_engine_integration_mode
+        == database.Database.AppEngineIntegrationMode.ENABLED
+    )
+    assert response.key_prefix == "key_prefix_value"
     assert response.etag == "etag_value"
 
 

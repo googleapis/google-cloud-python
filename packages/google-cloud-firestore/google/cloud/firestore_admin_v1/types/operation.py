@@ -128,6 +128,8 @@ class FieldOperationMetadata(proto.Message):
             operation.
         progress_bytes (google.cloud.firestore_admin_v1.types.Progress):
             The progress, in bytes, of this operation.
+        ttl_config_delta (google.cloud.firestore_admin_v1.types.FieldOperationMetadata.TtlConfigDelta):
+            Describes the deltas of TTL configuration.
     """
 
     class IndexConfigDelta(proto.Message):
@@ -155,6 +157,27 @@ class FieldOperationMetadata(proto.Message):
             proto.MESSAGE,
             number=2,
             message=gfa_index.Index,
+        )
+
+    class TtlConfigDelta(proto.Message):
+        r"""Information about an TTL configuration change.
+
+        Attributes:
+            change_type (google.cloud.firestore_admin_v1.types.FieldOperationMetadata.TtlConfigDelta.ChangeType):
+                Specifies how the TTL configuration is
+                changing.
+        """
+
+        class ChangeType(proto.Enum):
+            r"""Specifies how the TTL config is changing."""
+            CHANGE_TYPE_UNSPECIFIED = 0
+            ADD = 1
+            REMOVE = 2
+
+        change_type = proto.Field(
+            proto.ENUM,
+            number=1,
+            enum="FieldOperationMetadata.TtlConfigDelta.ChangeType",
         )
 
     start_time = proto.Field(
@@ -190,6 +213,11 @@ class FieldOperationMetadata(proto.Message):
         proto.MESSAGE,
         number=7,
         message="Progress",
+    )
+    ttl_config_delta = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        message=TtlConfigDelta,
     )
 
 

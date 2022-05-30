@@ -45,6 +45,19 @@ class Database(proto.Message):
         concurrency_mode (google.cloud.firestore_admin_v1.types.Database.ConcurrencyMode):
             The concurrency control mode to use for this
             database.
+        app_engine_integration_mode (google.cloud.firestore_admin_v1.types.Database.AppEngineIntegrationMode):
+            The App Engine integration mode to use for
+            this database.
+        key_prefix (str):
+            Output only. The key_prefix for this database. This
+            key_prefix is used, in combination with the project id ("~")
+            to construct the application id that is returned from the
+            Cloud Datastore APIs in Google App Engine first generation
+            runtimes.
+
+            This value may be empty in which case the appid to use for
+            URL-encoded keys is the project_id (eg: foo instead of
+            v~foo).
         etag (str):
             This checksum is computed by the server based
             on the value of other fields, and may be sent on
@@ -57,6 +70,8 @@ class Database(proto.Message):
         See
         https://cloud.google.com/datastore/docs/firestore-or-datastore
         for information about how to choose.
+
+        Mode changes are only allowed if the database is empty.
         """
         DATABASE_TYPE_UNSPECIFIED = 0
         FIRESTORE_NATIVE = 1
@@ -68,6 +83,12 @@ class Database(proto.Message):
         OPTIMISTIC = 1
         PESSIMISTIC = 2
         OPTIMISTIC_WITH_ENTITY_GROUPS = 3
+
+    class AppEngineIntegrationMode(proto.Enum):
+        r"""The type of App Engine integration mode."""
+        APP_ENGINE_INTEGRATION_MODE_UNSPECIFIED = 0
+        ENABLED = 1
+        DISABLED = 2
 
     name = proto.Field(
         proto.STRING,
@@ -86,6 +107,15 @@ class Database(proto.Message):
         proto.ENUM,
         number=15,
         enum=ConcurrencyMode,
+    )
+    app_engine_integration_mode = proto.Field(
+        proto.ENUM,
+        number=19,
+        enum=AppEngineIntegrationMode,
+    )
+    key_prefix = proto.Field(
+        proto.STRING,
+        number=20,
     )
     etag = proto.Field(
         proto.STRING,

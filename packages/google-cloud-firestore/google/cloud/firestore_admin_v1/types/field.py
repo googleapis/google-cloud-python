@@ -63,6 +63,10 @@ class Field(proto.Message):
             ``ancestor_field``. To explicitly remove all indexes for
             this field, specify an index config with an empty list of
             indexes.
+        ttl_config (google.cloud.firestore_admin_v1.types.Field.TtlConfig):
+            The TTL configuration for this ``Field``. Setting or
+            unsetting this will enable or disable the TTL for documents
+            that have this ``Field``.
     """
 
     class IndexConfig(proto.Message):
@@ -109,6 +113,32 @@ class Field(proto.Message):
             number=4,
         )
 
+    class TtlConfig(proto.Message):
+        r"""The TTL (time-to-live) configuration for documents that have this
+        ``Field`` set. Storing a timestamp value into a TTL-enabled field
+        will be treated as the document's absolute expiration time. Using
+        any other data type or leaving the field absent will disable the TTL
+        for the individual document.
+
+        Attributes:
+            state (google.cloud.firestore_admin_v1.types.Field.TtlConfig.State):
+                Output only. The state of the TTL
+                configuration.
+        """
+
+        class State(proto.Enum):
+            r"""The state of applying the TTL configuration to all documents."""
+            STATE_UNSPECIFIED = 0
+            CREATING = 1
+            ACTIVE = 2
+            NEEDS_REPAIR = 3
+
+        state = proto.Field(
+            proto.ENUM,
+            number=1,
+            enum="Field.TtlConfig.State",
+        )
+
     name = proto.Field(
         proto.STRING,
         number=1,
@@ -117,6 +147,11 @@ class Field(proto.Message):
         proto.MESSAGE,
         number=2,
         message=IndexConfig,
+    )
+    ttl_config = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=TtlConfig,
     )
 
 
