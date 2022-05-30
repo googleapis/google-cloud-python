@@ -13,8 +13,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import math
 import os
+
+# try/except added for compatibility with python < 3.8
+try:
+    from unittest import mock
+    from unittest.mock import AsyncMock
+except ImportError:
+    import mock
+
+import math
 
 from google.api_core import (
     future,
@@ -35,7 +43,6 @@ from google.longrunning import operations_pb2
 from google.oauth2 import service_account
 import grpc
 from grpc.experimental import aio
-import mock
 from proto.marshal.rules.dates import DurationRule, TimestampRule
 import pytest
 
