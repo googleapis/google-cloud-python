@@ -36,7 +36,7 @@ for library in s.get_staging_dirs(default_version):
         "google-cloud-org-policy"
     )
 
-    s.move(library, excludes=["setup.py", "README.rst", "docs/index.rst"])
+    s.move(library, excludes=["setup.py", "README.rst", "docs/index.rst", "noxfile.py"])
 
 s.remove_staging_dirs()
 
