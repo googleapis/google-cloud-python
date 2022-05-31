@@ -4,7 +4,7 @@
 
 [1]: https://pypi.org/project/google-cloud-datastore/#history
 
-### [2.6.1](https://github.com/googleapis/python-datastore/compare/v2.6.0...v2.6.1) (2022-05-27)
+## [2.6.1](https://github.com/googleapis/python-datastore/compare/v2.6.0...v2.6.1) (2022-05-27)
 
 
 ### Bug Fixes
@@ -23,7 +23,7 @@
 
 * fix type in docstring for map fields ([8d2bd17](https://github.com/googleapis/python-datastore/commit/8d2bd1788d8dc7da57ab9272b274a29082878ece))
 
-### [2.5.1](https://github.com/googleapis/python-datastore/compare/v2.5.0...v2.5.1) (2022-03-05)
+## [2.5.1](https://github.com/googleapis/python-datastore/compare/v2.5.0...v2.5.1) (2022-03-05)
 
 
 ### Bug Fixes
@@ -90,7 +90,7 @@
 
 * add support for Python 3.10 ([#233](https://www.github.com/googleapis/python-datastore/issues/233)) ([f524c40](https://www.github.com/googleapis/python-datastore/commit/f524c40e8251c2b716ea87cd512404f0d6f1b019))
 
-### [2.1.6](https://www.github.com/googleapis/python-datastore/compare/v2.1.5...v2.1.6) (2021-07-26)
+## [2.1.6](https://www.github.com/googleapis/python-datastore/compare/v2.1.5...v2.1.6) (2021-07-26)
 
 
 ### Documentation
@@ -98,14 +98,14 @@
 * add Samples section to CONTRIBUTING.rst ([#195](https://www.github.com/googleapis/python-datastore/issues/195)) ([f607fb5](https://www.github.com/googleapis/python-datastore/commit/f607fb544a2f7279267e5a5a534fc31e573b6b74))
 
 
-### [2.1.5](https://www.github.com/googleapis/python-datastore/compare/v2.1.4...v2.1.5) (2021-07-20)
+## [2.1.5](https://www.github.com/googleapis/python-datastore/compare/v2.1.4...v2.1.5) (2021-07-20)
 
 
 ### Bug Fixes
 
 * **deps:** pin 'google-{api,cloud}-core', 'google-auth' to allow 2.x versions ([#194](https://www.github.com/googleapis/python-datastore/issues/194)) ([e94f97c](https://www.github.com/googleapis/python-datastore/commit/e94f97ce42b04ba76766737eb69cdaf92bc2ac05))
 
-### [2.1.4](https://www.github.com/googleapis/python-datastore/compare/v2.1.3...v2.1.4) (2021-07-09)
+## [2.1.4](https://www.github.com/googleapis/python-datastore/compare/v2.1.3...v2.1.4) (2021-07-09)
 
 
 ### Performance Improvements
@@ -117,14 +117,14 @@
 
 * omit mention of Python 2.7 in 'CONTRIBUTING.rst' ([#1127](https://www.github.com/googleapis/python-datastore/issues/1127)) ([#181](https://www.github.com/googleapis/python-datastore/issues/181)) ([6efde70](https://www.github.com/googleapis/python-datastore/commit/6efde70db751bf708091b24a932ab8571bd981a6))
 
-### [2.1.3](https://www.github.com/googleapis/python-datastore/compare/v2.1.2...v2.1.3) (2021-05-25)
+## [2.1.3](https://www.github.com/googleapis/python-datastore/compare/v2.1.2...v2.1.3) (2021-05-25)
 
 
 ### Bug Fixes
 
 * **perf:** improve performance unmarshalling entities from protobuf2 ([#175](https://www.github.com/googleapis/python-datastore/issues/175)) ([0e5b718](https://www.github.com/googleapis/python-datastore/commit/0e5b718a70368f656ede3a27174ef74ca324ab65))
 
-### [2.1.2](https://www.github.com/googleapis/python-datastore/compare/v2.1.1...v2.1.2) (2021-05-03)
+## [2.1.2](https://www.github.com/googleapis/python-datastore/compare/v2.1.1...v2.1.2) (2021-05-03)
 
 
 ### Bug Fixes
@@ -136,7 +136,7 @@
 
 * update intersphinx URLs for grpc and auth ([#93](https://www.github.com/googleapis/python-datastore/issues/93)) ([4f90d04](https://www.github.com/googleapis/python-datastore/commit/4f90d04c81aacdbaf83f5a9dc996898fa9c7ba26))
 
-### [2.1.1](https://www.github.com/googleapis/python-datastore/compare/v2.1.0...v2.1.1) (2021-04-20)
+## [2.1.1](https://www.github.com/googleapis/python-datastore/compare/v2.1.0...v2.1.1) (2021-04-20)
 
 
 ### Bug Fixes
@@ -155,7 +155,7 @@
 
 * remove six dependency ([#120](https://www.github.com/googleapis/python-datastore/issues/120)) ([b1715e5](https://www.github.com/googleapis/python-datastore/commit/b1715e500f870fd5292bb84232b0039c2ac6be85))
 
-### [2.0.1](https://www.github.com/googleapis/python-datastore/compare/v2.0.0...v2.0.1) (2020-11-13)
+## [2.0.1](https://www.github.com/googleapis/python-datastore/compare/v2.0.0...v2.0.1) (2020-11-13)
 
 
 ### Bug Fixes
@@ -191,28 +191,28 @@
 
 * Leverage new generator, proto-plus, for google-cloud-datastore ([#104](https://www.github.com/googleapis/python-datastore/issues/104)) ([1723a26](https://www.github.com/googleapis/python-datastore/commit/1723a268a6f647d1c798deb076c038f7af9b16c9))
 
-### [1.15.3](https://www.github.com/googleapis/python-datastore/compare/v1.15.2...v1.15.3) (2020-10-06)
+## [1.15.3](https://www.github.com/googleapis/python-datastore/compare/v1.15.2...v1.15.3) (2020-10-06)
 
 
 ### Bug Fixes
 
 * use full path and os.path to version.py in setup.py ([#97](https://www.github.com/googleapis/python-datastore/issues/97)) ([0f5506f](https://www.github.com/googleapis/python-datastore/commit/0f5506fe8bcb899e64cc7c1cf881edc3d3aaead8))
 
-### [1.15.2](https://www.github.com/googleapis/python-datastore/compare/v1.15.1...v1.15.2) (2020-10-06)
+## [1.15.2](https://www.github.com/googleapis/python-datastore/compare/v1.15.1...v1.15.2) (2020-10-06)
 
 
 ### Bug Fixes
 
 * use version.py instead of pkg_resources.get_distribution ([#94](https://www.github.com/googleapis/python-datastore/issues/94)) ([ea77534](https://www.github.com/googleapis/python-datastore/commit/ea77534bc973e22894357a81420dd17ed8db0027))
 
-### [1.15.2](https://www.github.com/googleapis/python-datastore/compare/v1.15.1...v1.15.2) (2020-10-06)
+## [1.15.2](https://www.github.com/googleapis/python-datastore/compare/v1.15.1...v1.15.2) (2020-10-06)
 
 
 ### Bug Fixes
 
 * use version.py instead of pkg_resources.get_distribution ([#94](https://www.github.com/googleapis/python-datastore/issues/94)) ([ea77534](https://www.github.com/googleapis/python-datastore/commit/ea77534bc973e22894357a81420dd17ed8db0027))
 
-### [1.15.1](https://www.github.com/googleapis/python-datastore/compare/v1.15.0...v1.15.1) (2020-09-23)
+## [1.15.1](https://www.github.com/googleapis/python-datastore/compare/v1.15.0...v1.15.1) (2020-09-23)
 
 
 ### Bug Fixes
@@ -255,14 +255,14 @@
 * correct semantics of 'complete_key' arg to 'Client.reserve_ids' ([#36](https://www.github.com/googleapis/python-datastore/issues/36)) ([50ed945](https://www.github.com/googleapis/python-datastore/commit/50ed94503da244434df0be58098a0ccf2da54b16))
 * update docs build (via synth) ([#58](https://www.github.com/googleapis/python-datastore/issues/58)) ([5bdacd4](https://www.github.com/googleapis/python-datastore/commit/5bdacd4785f3d433e6e7302fc6839a3c5a3314b4)), closes [#700](https://www.github.com/googleapis/python-datastore/issues/700)
 
-### [1.13.2](https://www.github.com/googleapis/python-datastore/compare/v1.13.1...v1.13.2) (2020-07-17)
+## [1.13.2](https://www.github.com/googleapis/python-datastore/compare/v1.13.1...v1.13.2) (2020-07-17)
 
 
 ### Bug Fixes
 
 * modify admin pkg name in gapic ([#47](https://www.github.com/googleapis/python-datastore/issues/47)) ([5b5011d](https://www.github.com/googleapis/python-datastore/commit/5b5011daf74133ecdd579bf19bbcf356e6f40dad))
 
-### [1.13.1](https://www.github.com/googleapis/python-datastore/compare/v1.13.0...v1.13.1) (2020-07-13)
+## [1.13.1](https://www.github.com/googleapis/python-datastore/compare/v1.13.0...v1.13.1) (2020-07-13)
 
 
 ### Bug Fixes
