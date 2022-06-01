@@ -38,7 +38,7 @@ For an interactive walkthrough on how to use this library in a python applicatio
 
 |guide|
 
-.. |guide| image:: _static/guide-me.png
+.. |guide| image:: https://raw.githubusercontent.com/googleapis/python-logging/main/_static/guide-me.png
    :target: https://console.cloud.google.com/?walkthrough_id=logging__logging-python
 
 Installation
