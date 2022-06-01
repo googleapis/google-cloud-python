@@ -4,14 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-error-reporting/#history
 
-### [1.5.2](https://github.com/googleapis/python-error-reporting/compare/v1.5.1...v1.5.2) (2022-04-16)
+## [1.5.2](https://github.com/googleapis/python-error-reporting/compare/v1.5.1...v1.5.2) (2022-04-16)
 
 
 ### Bug Fixes
 
 * Reenable staleness bot ([#264](https://github.com/googleapis/python-error-reporting/issues/264)) ([393141a](https://github.com/googleapis/python-error-reporting/commit/393141ac2c661485fdafb8f21fe13a6b2c854d07))
 
-### [1.5.1](https://github.com/googleapis/python-error-reporting/compare/v1.5.0...v1.5.1) (2022-03-07)
+## [1.5.1](https://github.com/googleapis/python-error-reporting/compare/v1.5.0...v1.5.1) (2022-03-07)
 
 
 ### Bug Fixes
@@ -32,7 +32,7 @@
 
 * resolve DuplicateCredentialArgs error when using credentials_file ([f0afcae](https://github.com/googleapis/python-error-reporting/commit/f0afcae54c834872d1e40d1f5c948c1e0c299b85))
 
-### [1.4.1](https://www.github.com/googleapis/python-error-reporting/compare/v1.4.0...v1.4.1) (2021-11-01)
+## [1.4.1](https://www.github.com/googleapis/python-error-reporting/compare/v1.4.0...v1.4.1) (2021-11-01)
 
 
 ### Bug Fixes
@@ -65,14 +65,14 @@
 * exception thrown when grpc is disabled ([#190](https://www.github.com/googleapis/python-error-reporting/issues/190)) ([929e293](https://www.github.com/googleapis/python-error-reporting/commit/929e293a479dea3059bfca152b93d7740348fc39))
 * improper types in pagers generation ([18c93a9](https://www.github.com/googleapis/python-error-reporting/commit/18c93a99a967b6d86e7409f4e26ff56f1c9788de))
 
-### [1.2.3](https://www.github.com/googleapis/python-error-reporting/compare/v1.2.2...v1.2.3) (2021-09-24)
+## [1.2.3](https://www.github.com/googleapis/python-error-reporting/compare/v1.2.2...v1.2.3) (2021-09-24)
 
 
 ### Bug Fixes
 
 * add 'dict' annotation type to 'request' ([253a66f](https://www.github.com/googleapis/python-error-reporting/commit/253a66f5f606f722bf5401cdd678989b9d2baa98))
 
-### [1.2.2](https://www.github.com/googleapis/python-error-reporting/compare/v1.2.1...v1.2.2) (2021-07-28)
+## [1.2.2](https://www.github.com/googleapis/python-error-reporting/compare/v1.2.1...v1.2.2) (2021-07-28)
 
 
 ### Bug Fixes
@@ -89,7 +89,7 @@
 
 * release as 1.2.2 ([#157](https://www.github.com/googleapis/python-error-reporting/issues/157)) ([ea26377](https://www.github.com/googleapis/python-error-reporting/commit/ea2637721efac36b122edc499da08c12ae894d28))
 
-### [1.2.1](https://www.github.com/googleapis/python-error-reporting/compare/v1.2.0...v1.2.1) (2021-07-20)
+## [1.2.1](https://www.github.com/googleapis/python-error-reporting/compare/v1.2.0...v1.2.1) (2021-07-20)
 
 
 ### Bug Fixes
@@ -116,14 +116,14 @@
 
 * omit mention of Python 2.7 in 'CONTRIBUTING.rst' ([#1127](https://www.github.com/googleapis/python-error-reporting/issues/1127)) ([#137](https://www.github.com/googleapis/python-error-reporting/issues/137)) ([0ca7d43](https://www.github.com/googleapis/python-error-reporting/commit/0ca7d4385de86e7ff462322807a717345774c017))
 
-### [1.1.2](https://www.github.com/googleapis/python-error-reporting/compare/v1.1.1...v1.1.2) (2021-04-05)
+## [1.1.2](https://www.github.com/googleapis/python-error-reporting/compare/v1.1.1...v1.1.2) (2021-04-05)
 
 
 ### Dependencies
 
 * upgrade sphinx ([#99](https://www.github.com/googleapis/python-error-reporting/issues/99)) ([a118123](https://www.github.com/googleapis/python-error-reporting/commit/a118123cbfe8b5dd2a7ba260631b248c351cb116))
 
-### [1.1.1](https://www.github.com/googleapis/python-error-reporting/compare/v1.1.0...v1.1.1) (2021-02-25)
+## [1.1.1](https://www.github.com/googleapis/python-error-reporting/compare/v1.1.0...v1.1.1) (2021-02-25)
 
 
 ### Bug Fixes
