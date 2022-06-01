@@ -26,7 +26,7 @@
 
 * updated variable typo in comment in code sample ([#1239](https://github.com/googleapis/python-bigquery/issues/1239)) ([e420112](https://github.com/googleapis/python-bigquery/commit/e4201128bdb7f49cb732e12609448bbdbc122736))
 
-### [3.0.1](https://github.com/googleapis/python-bigquery/compare/v3.0.0...v3.0.1) (2022-03-30)
+## [3.0.1](https://github.com/googleapis/python-bigquery/compare/v3.0.0...v3.0.1) (2022-03-30)
 
 
 ### Bug Fixes
@@ -75,14 +75,14 @@
 
 * BigQuery Storage and pyarrow are required dependencies ([#776](https://github.com/googleapis/python-bigquery/issues/776)) ([76d88fb](https://github.com/googleapis/python-bigquery/commit/76d88fbb1316317a61fa1a63c101bc6f42f23af8))
 
-### [2.34.3](https://github.com/googleapis/python-bigquery/compare/v2.34.2...v2.34.3) (2022-03-29)
+## [2.34.3](https://github.com/googleapis/python-bigquery/compare/v2.34.2...v2.34.3) (2022-03-29)
 
 
 ### Bug Fixes
 
 * update content-type header ([#1171](https://github.com/googleapis/python-bigquery/issues/1171)) ([921b440](https://github.com/googleapis/python-bigquery/commit/921b440fdd151e88ee5b3e0d9fb90177877dc11a))
 
-### [2.34.2](https://github.com/googleapis/python-bigquery/compare/v2.34.1...v2.34.2) (2022-03-05)
+## [2.34.2](https://github.com/googleapis/python-bigquery/compare/v2.34.1...v2.34.2) (2022-03-05)
 
 
 ### Bug Fixes
@@ -90,7 +90,7 @@
 * **deps:** require google-api-core>=1.31.5, >=2.3.2 ([#1157](https://github.com/googleapis/python-bigquery/issues/1157)) ([0c15790](https://github.com/googleapis/python-bigquery/commit/0c15790720ff573a501cfe760dd74ee166e1a353))
 * **deps:** require proto-plus>=1.15.0 ([0c15790](https://github.com/googleapis/python-bigquery/commit/0c15790720ff573a501cfe760dd74ee166e1a353))
 
-### [2.34.1](https://github.com/googleapis/python-bigquery/compare/v2.34.0...v2.34.1) (2022-03-02)
+## [2.34.1](https://github.com/googleapis/python-bigquery/compare/v2.34.0...v2.34.1) (2022-03-02)
 
 
 ### Dependencies
@@ -153,7 +153,7 @@
 
 * support OpenTelemetry >= 1.1.0 ([#1050](https://www.github.com/googleapis/python-bigquery/issues/1050)) ([4616cd5](https://www.github.com/googleapis/python-bigquery/commit/4616cd58d3c6da641fb881ce99a87dcdedc20ba2))
 
-### [2.30.1](https://www.github.com/googleapis/python-bigquery/compare/v2.30.0...v2.30.1) (2021-11-04)
+## [2.30.1](https://www.github.com/googleapis/python-bigquery/compare/v2.30.0...v2.30.1) (2021-11-04)
 
 
 ### Bug Fixes
@@ -201,7 +201,7 @@
 
 * allow pyarrow 6.x ([#1031](https://www.github.com/googleapis/python-bigquery/issues/1031)) ([1c2de74](https://www.github.com/googleapis/python-bigquery/commit/1c2de74a55046a343bcf9474f67100a82fb05401))
 
-### [2.28.1](https://www.github.com/googleapis/python-bigquery/compare/v2.28.0...v2.28.1) (2021-10-07)
+## [2.28.1](https://www.github.com/googleapis/python-bigquery/compare/v2.28.0...v2.28.1) (2021-10-07)
 
 
 ### Bug Fixes
@@ -220,7 +220,7 @@
 
 * link to stable pandas docs ([#990](https://www.github.com/googleapis/python-bigquery/issues/990)) ([ea50e80](https://www.github.com/googleapis/python-bigquery/commit/ea50e8031fc035b3772a338bc00982de263cefad))
 
-### [2.27.1](https://www.github.com/googleapis/python-bigquery/compare/v2.27.0...v2.27.1) (2021-09-27)
+## [2.27.1](https://www.github.com/googleapis/python-bigquery/compare/v2.27.0...v2.27.1) (2021-09-27)
 
 
 ### Bug Fixes
@@ -259,7 +259,7 @@
 
 * guard imports against unsupported pyarrow versions ([#934](https://www.github.com/googleapis/python-bigquery/issues/934)) ([b289076](https://www.github.com/googleapis/python-bigquery/commit/b28907693bbe889becc1b9c8963f0a7e1ee6c35a))
 
-### [2.25.2](https://www.github.com/googleapis/python-bigquery/compare/v2.25.1...v2.25.2) (2021-08-31)
+## [2.25.2](https://www.github.com/googleapis/python-bigquery/compare/v2.25.1...v2.25.2) (2021-08-31)
 
 
 ### Bug Fixes
@@ -272,7 +272,7 @@
 
 * update docstring for bigquery_create_routine sample ([#883](https://www.github.com/googleapis/python-bigquery/issues/883)) ([#917](https://www.github.com/googleapis/python-bigquery/issues/917)) ([e2d12b7](https://www.github.com/googleapis/python-bigquery/commit/e2d12b795ef2dc51b0ee36f1b3000edb1e64ce05))
 
-### [2.25.1](https://www.github.com/googleapis/python-bigquery/compare/v2.25.0...v2.25.1) (2021-08-25)
+## [2.25.1](https://www.github.com/googleapis/python-bigquery/compare/v2.25.0...v2.25.1) (2021-08-25)
 
 
 ### Bug Fixes
@@ -287,7 +287,7 @@
 
 * Support using GeoPandas for GEOGRAPHY columns ([#848](https://www.github.com/googleapis/python-bigquery/issues/848)) ([16f65e6](https://www.github.com/googleapis/python-bigquery/commit/16f65e6ae15979217ceea6c6d398c9057a363a13))
 
-### [2.24.1](https://www.github.com/googleapis/python-bigquery/compare/v2.24.0...v2.24.1) (2021-08-13)
+## [2.24.1](https://www.github.com/googleapis/python-bigquery/compare/v2.24.0...v2.24.1) (2021-08-13)
 
 
 ### Bug Fixes
@@ -309,21 +309,21 @@
 
 * make unicode characters working well in load_table_from_json ([#865](https://www.github.com/googleapis/python-bigquery/issues/865)) ([ad9c802](https://www.github.com/googleapis/python-bigquery/commit/ad9c8026f0e667f13dd754279f9dc40d06f4fa78))
 
-### [2.23.3](https://www.github.com/googleapis/python-bigquery/compare/v2.23.2...v2.23.3) (2021-08-06)
+## [2.23.3](https://www.github.com/googleapis/python-bigquery/compare/v2.23.2...v2.23.3) (2021-08-06)
 
 
 ### Bug Fixes
 
 * increase default retry deadline to 10 minutes ([#859](https://www.github.com/googleapis/python-bigquery/issues/859)) ([30770fd](https://www.github.com/googleapis/python-bigquery/commit/30770fd0575fbd5aaa70c14196a4cc54627aecd2))
 
-### [2.23.2](https://www.github.com/googleapis/python-bigquery/compare/v2.23.1...v2.23.2) (2021-07-29)
+## [2.23.2](https://www.github.com/googleapis/python-bigquery/compare/v2.23.1...v2.23.2) (2021-07-29)
 
 
 ### Dependencies
 
 * expand pyarrow pins to support 5.x releases ([#833](https://www.github.com/googleapis/python-bigquery/issues/833)) ([80e3a61](https://www.github.com/googleapis/python-bigquery/commit/80e3a61c60419fb19b70b664c6415cd01ba82f5b))
 
-### [2.23.1](https://www.github.com/googleapis/python-bigquery/compare/v2.23.0...v2.23.1) (2021-07-28)
+## [2.23.1](https://www.github.com/googleapis/python-bigquery/compare/v2.23.0...v2.23.1) (2021-07-28)
 
 
 ### Bug Fixes
@@ -348,7 +348,7 @@
 
 * correct docs for `LoadJobConfig.destination_table_description` ([#810](https://www.github.com/googleapis/python-bigquery/issues/810)) ([da87fd9](https://www.github.com/googleapis/python-bigquery/commit/da87fd921cc8067b187d7985c978aac8eb58d107))
 
-### [2.22.1](https://www.github.com/googleapis/python-bigquery/compare/v2.22.0...v2.22.1) (2021-07-22)
+## [2.22.1](https://www.github.com/googleapis/python-bigquery/compare/v2.22.0...v2.22.1) (2021-07-22)
 
 
 ### Bug Fixes
@@ -445,7 +445,7 @@
 
 * **tests:** invalid path to strptime() ([#672](https://www.github.com/googleapis/python-bigquery/issues/672)) ([591cdd8](https://www.github.com/googleapis/python-bigquery/commit/591cdd851bb1321b048a05a378a0ef48d3ade462))
 
-### [2.16.1](https://www.github.com/googleapis/python-bigquery/compare/v2.16.0...v2.16.1) (2021-05-12)
+## [2.16.1](https://www.github.com/googleapis/python-bigquery/compare/v2.16.0...v2.16.1) (2021-05-12)
 
 
 ### Bug Fixes
@@ -504,7 +504,7 @@
 * add sample to run DML query ([#591](https://www.github.com/googleapis/python-bigquery/issues/591)) ([ff2ec3a](https://www.github.com/googleapis/python-bigquery/commit/ff2ec3abe418a443cd07751c08e654f94e8b3155))
 * update the description of the return value of `_QueryResults.rows()` ([#594](https://www.github.com/googleapis/python-bigquery/issues/594)) ([8f4c0b8](https://www.github.com/googleapis/python-bigquery/commit/8f4c0b84dac3840532d7865247b8ad94b625b897))
 
-### [2.13.1](https://www.github.com/googleapis/python-bigquery/compare/v2.13.0...v2.13.1) (2021-03-23)
+## [2.13.1](https://www.github.com/googleapis/python-bigquery/compare/v2.13.0...v2.13.1) (2021-03-23)
 
 
 ### Bug Fixes
@@ -602,7 +602,7 @@
 
 * declare support for Python 3.9 ([#488](https://www.github.com/googleapis/python-bigquery/issues/488)) ([55daa7d](https://www.github.com/googleapis/python-bigquery/commit/55daa7da9857a8a2fb14a80a4efa3f466386a85f))
 
-### [2.6.2](https://www.github.com/googleapis/python-bigquery/compare/v2.6.1...v2.6.2) (2021-01-11)
+## [2.6.2](https://www.github.com/googleapis/python-bigquery/compare/v2.6.1...v2.6.2) (2021-01-11)
 
 
 ### Bug Fixes
@@ -617,7 +617,7 @@
 * fix Shapely import in GEOGRAPHY sample ([#431](https://www.github.com/googleapis/python-bigquery/issues/431)) ([96a1c5b](https://www.github.com/googleapis/python-bigquery/commit/96a1c5b3c72855ba6ae8c88dfd0cdb02d2faf909))
 * move and refresh view samples ([#420](https://www.github.com/googleapis/python-bigquery/issues/420)) ([079b6a1](https://www.github.com/googleapis/python-bigquery/commit/079b6a162f6929bf801366d92f8daeb3318426c4))
 
-### [2.6.1](https://www.github.com/googleapis/python-bigquery/compare/v2.6.0...v2.6.1) (2020-12-09)
+## [2.6.1](https://www.github.com/googleapis/python-bigquery/compare/v2.6.0...v2.6.1) (2020-12-09)
 
 
 ### Bug Fixes
@@ -831,14 +831,14 @@
 
 * recommend insert_rows_json to avoid call to tables.get ([#258](https://www.github.com/googleapis/python-bigquery/issues/258)) ([ae647eb](https://www.github.com/googleapis/python-bigquery/commit/ae647ebd68deff6e30ca2cffb5b7422c6de4940b))
 
-### [1.27.2](https://www.github.com/googleapis/python-bigquery/compare/v1.27.1...v1.27.2) (2020-08-18)
+## [1.27.2](https://www.github.com/googleapis/python-bigquery/compare/v1.27.1...v1.27.2) (2020-08-18)
 
 
 ### Bug Fixes
 
 * rationalize platform constraints for 'pyarrow' extra ([#235](https://www.github.com/googleapis/python-bigquery/issues/235)) ([c9a0567](https://www.github.com/googleapis/python-bigquery/commit/c9a0567f59491b769a9e2fd535430423e39d4fa8))
 
-### [1.27.1](https://www.github.com/googleapis/python-bigquery/compare/v1.27.0...v1.27.1) (2020-08-18)
+## [1.27.1](https://www.github.com/googleapis/python-bigquery/compare/v1.27.0...v1.27.1) (2020-08-18)
 
 
 ### Bug Fixes
@@ -860,7 +860,7 @@
 * converting to dataframe with out of bounds timestamps ([#209](https://www.github.com/googleapis/python-bigquery/issues/209)) ([8209203](https://www.github.com/googleapis/python-bigquery/commit/8209203e967f0624ad306166c0af6f6f1027c550)), closes [#168](https://www.github.com/googleapis/python-bigquery/issues/168)
 * raise error if inserting rows with unknown fields ([#163](https://www.github.com/googleapis/python-bigquery/issues/163)) ([8fe7254](https://www.github.com/googleapis/python-bigquery/commit/8fe725429541eed34ddc01cffc8b1ee846c14162))
 
-### [1.26.1](https://www.github.com/googleapis/python-bigquery/compare/v1.26.0...v1.26.1) (2020-07-25)
+## [1.26.1](https://www.github.com/googleapis/python-bigquery/compare/v1.26.0...v1.26.1) (2020-07-25)
 
 ### Documentation
 
