@@ -5,7 +5,7 @@
 [1]: https://pypi.org/project/google-cloud-pubsub/#history
 
 
-### [2.12.1](https://github.com/googleapis/python-pubsub/compare/v2.12.0...v2.12.1) (2022-05-11)
+## [2.12.1](https://github.com/googleapis/python-pubsub/compare/v2.12.0...v2.12.1) (2022-05-11)
 
 
 ### Bug Fixes
@@ -112,7 +112,7 @@
 
 * clarify the types of Message parameters ([#486](https://www.github.com/googleapis/python-pubsub/issues/486)) ([633e91b](https://www.github.com/googleapis/python-pubsub/commit/633e91bbfc0a8f4f484089acff6812b754f40c75))
 
-### [2.7.1](https://www.github.com/googleapis/python-pubsub/compare/v2.7.0...v2.7.1) (2021-08-13)
+## [2.7.1](https://www.github.com/googleapis/python-pubsub/compare/v2.7.0...v2.7.1) (2021-08-13)
 
 
 ### Bug Fixes
