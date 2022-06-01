@@ -4,7 +4,7 @@
 
 [1]: https://pypi.org/project/google-cloud-logging/#history
 
-### [3.1.1](https://github.com/googleapis/python-logging/compare/v3.1.0...v3.1.1) (2022-05-23)
+## [3.1.1](https://github.com/googleapis/python-logging/compare/v3.1.0...v3.1.1) (2022-05-23)
 
 
 ### Documentation
@@ -159,7 +159,7 @@
 * improve API compatibility for next release ([#292](https://www.github.com/googleapis/python-logging/issues/292)) ([1f9517d](https://www.github.com/googleapis/python-logging/commit/1f9517da7302e19198e598d452df58238d4e6306))
 * remove noisy logs ([#290](https://www.github.com/googleapis/python-logging/issues/290)) ([bdf8273](https://www.github.com/googleapis/python-logging/commit/bdf827358de5935f736ecd73ab10b2d861daf690))
 
-### [2.3.1](https://www.github.com/googleapis/python-logging/compare/v2.3.0...v2.3.1) (2021-03-24)
+## [2.3.1](https://www.github.com/googleapis/python-logging/compare/v2.3.0...v2.3.1) (2021-03-24)
 
 
 ### Bug Fixes
@@ -199,7 +199,7 @@
 * django content length extraction bug ([#160](https://www.github.com/googleapis/python-logging/issues/160)) ([93eeaef](https://www.github.com/googleapis/python-logging/commit/93eeaef1cce286aa8aa830d2369212b912d184b6))
 * fix sphinx identifiers ([a9ff2b7](https://www.github.com/googleapis/python-logging/commit/a9ff2b7984a54542963fc8d52864365ef1562f57))
 
-### [2.1.1](https://www.github.com/googleapis/python-logging/compare/v2.1.0...v2.1.1) (2021-01-14)
+## [2.1.1](https://www.github.com/googleapis/python-logging/compare/v2.1.0...v2.1.1) (2021-01-14)
 
 
 ### Bug Fixes
@@ -224,7 +224,7 @@
 
 * fix usage guide ([#140](https://www.github.com/googleapis/python-logging/issues/140)) ([1ca3981](https://www.github.com/googleapis/python-logging/commit/1ca398103fdfefb5576d6ef2ba20cfa4bd4ab252))
 
-### [2.0.2](https://www.github.com/googleapis/python-logging/compare/v2.0.1...v2.0.2) (2020-12-14)
+## [2.0.2](https://www.github.com/googleapis/python-logging/compare/v2.0.1...v2.0.2) (2020-12-14)
 
 
 ### Bug Fixes
@@ -233,7 +233,7 @@
 * remove client recv msg limit fix: add enums to `types/__init__.py` ([#131](https://www.github.com/googleapis/python-logging/issues/131)) ([6349b89](https://www.github.com/googleapis/python-logging/commit/6349b899811cbb16f5548df0b77564b46666c4e7))
 * Remove keyword only argument for RequestsMiddleware ([#113](https://www.github.com/googleapis/python-logging/issues/113)) ([e704f28](https://www.github.com/googleapis/python-logging/commit/e704f287a40db38d0da42fa5e21e7a9ef73922ec))
 
-### [2.0.1](https://www.github.com/googleapis/python-logging/compare/v2.0.0...v2.0.1) (2020-12-02)
+## [2.0.1](https://www.github.com/googleapis/python-logging/compare/v2.0.0...v2.0.1) (2020-12-02)
 
 
 ### Bug Fixes
@@ -274,7 +274,7 @@
 
 * update docs ([#77](https://www.github.com/googleapis/python-logging/issues/77)) ([bdd9c44](https://www.github.com/googleapis/python-logging/commit/bdd9c440f29d1fcd6fb9545d8465c63efa6c0cea))
 
-### [1.15.1](https://www.github.com/googleapis/python-logging/compare/v1.15.0...v1.15.1) (2020-07-01)
+## [1.15.1](https://www.github.com/googleapis/python-logging/compare/v1.15.0...v1.15.1) (2020-07-01)
 
 
 ### Documentation
