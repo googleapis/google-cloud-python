@@ -10,3 +10,4 @@ grpc-google-iam-v1==0.12.4
 proto-plus==1.15.0
 libcst==0.2.5
 grafeas==1.4.1
+protobuf==3.19.0
