@@ -34,7 +34,9 @@ templated_files = common.py_library(
         "google-cloud-kms < 2.0dev",
     ],
     intersphinx_dependencies={
-        "requests": "https://docs.python-requests.org/en/master/"
+        # python-requests url temporary change related to
+        # https://github.com/psf/requests/issues/6140#issuecomment-1135071992
+        "requests": "https://requests.readthedocs.io/en/stable/"
     },
 )
 
