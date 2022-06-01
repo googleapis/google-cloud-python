@@ -8,3 +8,4 @@
 google-api-core==2.7.0
 proto-plus==1.19.7
 dataclasses==0.6.0
+protobuf==3.19.0
