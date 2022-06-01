@@ -1,6 +1,6 @@
 # Changelog
 
-### [1.0.1](https://github.com/googleapis/python-db-dtypes-pandas/compare/v1.0.0...v1.0.1) (2022-05-07)
+## [1.0.1](https://github.com/googleapis/python-db-dtypes-pandas/compare/v1.0.0...v1.0.1) (2022-05-07)
 
 
 ### Bug Fixes
@@ -43,7 +43,7 @@
 * add dbtime compliance tests ([#90](https://github.com/googleapis/python-db-dtypes-pandas/issues/90)) ([f14fb2b](https://github.com/googleapis/python-db-dtypes-pandas/commit/f14fb2bf78d8427b9546db4cdad1d893c1b1e5e1))
 * add final dbdate compliance tests and sort ([#89](https://github.com/googleapis/python-db-dtypes-pandas/issues/89)) ([efe7e6d](https://github.com/googleapis/python-db-dtypes-pandas/commit/efe7e6d8953ebf8d2b4d9468c7c92638ea2ec9f9))
 
-### [0.3.1](https://www.github.com/googleapis/python-db-dtypes-pandas/compare/v0.3.0...v0.3.1) (2021-12-04)
+## [0.3.1](https://www.github.com/googleapis/python-db-dtypes-pandas/compare/v0.3.0...v0.3.1) (2021-12-04)
 
 
 ### Bug Fixes
@@ -70,7 +70,7 @@
 
 * add how-to guide and include API reference ([#33](https://www.github.com/googleapis/python-db-dtypes-pandas/issues/33)) ([878dce4](https://www.github.com/googleapis/python-db-dtypes-pandas/commit/878dce48bd6714706a2a829775ce00e61724fc7a))
 
-### [0.1.1](https://www.github.com/googleapis/python-db-dtypes-pandas/compare/v0.1.0...v0.1.1) (2021-10-04)
+## [0.1.1](https://www.github.com/googleapis/python-db-dtypes-pandas/compare/v0.1.0...v0.1.1) (2021-10-04)
 
 
 ### Bug Fixes
