@@ -63,14 +63,14 @@
 * clarify docstring in RunQueryRequest/RunQueryResponse ([#544](https://github.com/googleapis/python-firestore/issues/544)) ([d17febb](https://github.com/googleapis/python-firestore/commit/d17febb44fabc6b56c14cfd61238d157925c4a4a))
 * list oneofs in docstring ([6b5a779](https://github.com/googleapis/python-firestore/commit/6b5a7795bb2827b65f8015fcef6663880a29a65d))
 
-### [2.3.4](https://www.github.com/googleapis/python-firestore/compare/v2.3.3...v2.3.4) (2021-09-30)
+## [2.3.4](https://www.github.com/googleapis/python-firestore/compare/v2.3.3...v2.3.4) (2021-09-30)
 
 
 ### Bug Fixes
 
 * improper types in pagers generation ([4434415](https://www.github.com/googleapis/python-firestore/commit/4434415ef5b4aef81fe2a8ec9469ebaaa2a19d1b))
 
-### [2.3.3](https://www.github.com/googleapis/python-firestore/compare/v2.3.2...v2.3.3) (2021-09-24)
+## [2.3.3](https://www.github.com/googleapis/python-firestore/compare/v2.3.2...v2.3.3) (2021-09-24)
 
 
 ### Bug Fixes
@@ -84,14 +84,14 @@
 
 * strip proto wrappers in '_helpers.decode_{value,dict}' ([#458](https://www.github.com/googleapis/python-firestore/issues/458)) ([335e2c4](https://www.github.com/googleapis/python-firestore/commit/335e2c432e3d5377c2e5fb504ff8d4a319dec63c))
 
-### [2.3.2](https://www.github.com/googleapis/python-firestore/compare/v2.3.1...v2.3.2) (2021-09-09)
+## [2.3.2](https://www.github.com/googleapis/python-firestore/compare/v2.3.1...v2.3.2) (2021-09-09)
 
 
 ### Bug Fixes
 
 * treat None cursors as a no-op. ([#440](https://www.github.com/googleapis/python-firestore/issues/440)) ([e7aed0f](https://www.github.com/googleapis/python-firestore/commit/e7aed0f585a59e877223a15a3c2fc7f0f49105ee))
 
-### [2.3.1](https://www.github.com/googleapis/python-firestore/compare/v2.3.0...v2.3.1) (2021-08-30)
+## [2.3.1](https://www.github.com/googleapis/python-firestore/compare/v2.3.0...v2.3.1) (2021-08-30)
 
 
 ### Bug Fixes
@@ -140,21 +140,21 @@
 * omit mention of Python 2.7 in `CONTRIBUTING.rst`([#377](https://www.github.com/googleapis/python-firestore/issues/377)) ([23ec468](https://www.github.com/googleapis/python-firestore/commit/23ec468bfc615dc2967022dd0ea689a94bc66aa9))
 * add "Samples" section to `CONTRIBUTING.rst` ([#401](https://www.github.com/googleapis/python-firestore/issues/401)) ([0f9184d](https://www.github.com/googleapis/python-firestore/commit/0f9184de72a39ba19e29e888ca6c44be5d21c043))
 
-### [2.1.3](https://www.github.com/googleapis/python-firestore/compare/v2.1.2...v2.1.3) (2021-06-15)
+## [2.1.3](https://www.github.com/googleapis/python-firestore/compare/v2.1.2...v2.1.3) (2021-06-15)
 
 
 ### Bug Fixes
 
 * add 'packaging' dependency ([#372](https://www.github.com/googleapis/python-firestore/issues/372)) ([9623a51](https://www.github.com/googleapis/python-firestore/commit/9623a51e099f4f01013a6074f2a1ecc4a47db9d6)), closes [#371](https://www.github.com/googleapis/python-firestore/issues/371)
 
-### [2.1.2](https://www.github.com/googleapis/python-firestore/compare/v2.1.1...v2.1.2) (2021-06-14)
+## [2.1.2](https://www.github.com/googleapis/python-firestore/compare/v2.1.1...v2.1.2) (2021-06-14)
 
 
 ### Documentation
 
 * fix broken links in multiprocessing.rst ([#360](https://www.github.com/googleapis/python-firestore/issues/360)) ([6e2c899](https://www.github.com/googleapis/python-firestore/commit/6e2c89989c73ece393c9d23c87f1fc67b500e079))
 
-### [2.1.1](https://www.github.com/googleapis/python-firestore/compare/v2.1.0...v2.1.1) (2021-05-03)
+## [2.1.1](https://www.github.com/googleapis/python-firestore/compare/v2.1.0...v2.1.1) (2021-05-03)
 
 
 ### Bug Fixes
@@ -188,14 +188,14 @@
 * trailing whitespace ([#310](https://www.github.com/googleapis/python-firestore/issues/310)) ([b8192f0](https://www.github.com/googleapis/python-firestore/commit/b8192f018ef53f93a75d3623045e3fd356fba17f))
 * update intersphinx for grpc and auth ([#261](https://www.github.com/googleapis/python-firestore/issues/261)) ([1bbd3a0](https://www.github.com/googleapis/python-firestore/commit/1bbd3a0dca43714289f741e759d8aaa40e3ef600))
 
-### [2.0.2](https://www.github.com/googleapis/python-firestore/compare/v2.0.1...v2.0.2) (2020-12-05)
+## [2.0.2](https://www.github.com/googleapis/python-firestore/compare/v2.0.1...v2.0.2) (2020-12-05)
 
 
 ### Bug Fixes
 
 * request and flattened params are exclusive, surface transport in generated layer ([#256](https://www.github.com/googleapis/python-firestore/issues/256)) ([386e85e](https://www.github.com/googleapis/python-firestore/commit/386e85ecf704e1168b0deb4ee9e6c2105a9040a9)), closes [#251](https://www.github.com/googleapis/python-firestore/issues/251) [#252](https://www.github.com/googleapis/python-firestore/issues/252)
 
-### [2.0.1](https://www.github.com/googleapis/python-firestore/compare/v2.0.0...v2.0.1) (2020-11-12)
+## [2.0.1](https://www.github.com/googleapis/python-firestore/compare/v2.0.0...v2.0.1) (2020-11-12)
 
 
 ### Bug Fixes
@@ -411,7 +411,7 @@
 * **firestore:** add client_options to base class ([#148](https://www.github.com/googleapis/python-firestore/issues/148)) ([91d6580](https://www.github.com/googleapis/python-firestore/commit/91d6580e2903ab55798d66bc53541faa86ca76fe))
 
 
-### [1.8.1](https://www.github.com/googleapis/python-firestore/compare/v1.8.0...v1.8.1) (2020-07-07)
+## [1.8.1](https://www.github.com/googleapis/python-firestore/compare/v1.8.0...v1.8.1) (2020-07-07)
 
 
 ### Bug Fixes
@@ -455,7 +455,7 @@
 * Update team to be in correct org ([#43](https://www.github.com/googleapis/python-firestore/issues/43)) ([bef5a3a](https://www.github.com/googleapis/python-firestore/commit/bef5a3af4613b5f9d753bb6f45275e480e4bb301))
 * **firestore:** fix lint ([#48](https://www.github.com/googleapis/python-firestore/issues/48)) ([7fa00c4](https://www.github.com/googleapis/python-firestore/commit/7fa00c49dc3fab1d687fff9246f3e5ff0682cac0))
 
-### [1.6.2](https://www.github.com/googleapis/python-firestore/compare/v1.6.1...v1.6.2) (2020-01-31)
+## [1.6.2](https://www.github.com/googleapis/python-firestore/compare/v1.6.1...v1.6.2) (2020-01-31)
 
 
 ### Bug Fixes
