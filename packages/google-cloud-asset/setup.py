@@ -32,11 +32,12 @@ dependencies = [
     # Until this issue is closed
     # https://github.com/googleapis/google-cloud-python/issues/10566
     "google-api-core[grpc] >= 1.31.5, <3.0.0dev,!=2.0.*,!=2.1.*,!=2.2.*,!=2.3.0",
-    "grpc-google-iam-v1 >= 0.12.3, < 0.13dev",
-    "google-cloud-access-context-manager >= 0.1.2, < 0.2.0dev",
+    "grpc-google-iam-v1 >=0.12.4, <1.0.0dev",
+    "google-cloud-access-context-manager >= 0.1.2, <1.0.0dev",
     "google-cloud-org-policy>=0.1.2, <2.0.0",
     "google-cloud-os-config >= 1.0.0, <2.0.0dev",
-    "proto-plus >= 1.15.0",
+    "proto-plus >= 1.15.0, <2.0.0dev",
+    "protobuf >= 3.19.0, <4.0.0dev",
 ]
 
 extras = {"libcst": "libcst >= 0.2.5"}
