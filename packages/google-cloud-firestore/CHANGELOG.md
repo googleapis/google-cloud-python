@@ -5,6 +5,13 @@
 [1]: https://pypi.org/project/google-cloud-firestore/#history
 
 
+## [2.5.3](https://github.com/googleapis/python-firestore/compare/v2.5.2...v2.5.3) (2022-06-02)
+
+
+### Documentation
+
+* fix changelog header to consistent size ([#597](https://github.com/googleapis/python-firestore/issues/597)) ([0aca503](https://github.com/googleapis/python-firestore/commit/0aca503d5f8186e1366dd0e28023ae65ccfe9b8b))
+
 ## [2.5.2](https://github.com/googleapis/python-firestore/compare/v2.5.1...v2.5.2) (2022-06-01)
 
 
