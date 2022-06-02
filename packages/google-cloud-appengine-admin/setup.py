@@ -29,9 +29,9 @@ dependencies = [
     # Until this issue is closed
     # https://github.com/googleapis/google-cloud-python/issues/10566
     "google-api-core[grpc] >= 1.31.5, <3.0.0dev,!=2.0.*,!=2.1.*,!=2.2.*,!=2.3.0",
-    "proto-plus >= 1.18.1",
-    "grpc-google-iam-v1",
-    "six",
+    "proto-plus >= 1.18.1, <2.0.0dev",
+    "protobuf >= 3.19.0, <4.0.0dev",
+    "grpc-google-iam-v1 >=0.12.4, <1.0.0dev",
 ]
 
 package_root = os.path.abspath(os.path.dirname(__file__))
