@@ -34,7 +34,7 @@
 
 * fix type in docstring for map fields ([4e50278](https://github.com/googleapis/python-bigtable/commit/4e50278c73f608a7c493692d8d17e7dd2aa7ba44))
 
-### [2.8.1](https://github.com/googleapis/python-bigtable/compare/v2.8.0...v2.8.1) (2022-04-07)
+## [2.8.1](https://github.com/googleapis/python-bigtable/compare/v2.8.0...v2.8.1) (2022-04-07)
 
 
 ### Bug Fixes
@@ -55,7 +55,7 @@
 * Remove the limitation that all clusters in a CMEK instance must use the same key ([f008eea](https://github.com/googleapis/python-bigtable/commit/f008eea69a6c7c1a027cefc7f16d46042b524db1))
 * Update `cpu_utilization_percent` limit ([#547](https://github.com/googleapis/python-bigtable/issues/547)) ([f008eea](https://github.com/googleapis/python-bigtable/commit/f008eea69a6c7c1a027cefc7f16d46042b524db1))
 
-### [2.7.1](https://github.com/googleapis/python-bigtable/compare/v2.7.0...v2.7.1) (2022-03-17)
+## [2.7.1](https://github.com/googleapis/python-bigtable/compare/v2.7.0...v2.7.1) (2022-03-17)
 
 
 ### Bug Fixes
@@ -82,14 +82,14 @@
 
 * add WarmAndPing request for channel priming ([#504](https://github.com/googleapis/python-bigtable/issues/504)) ([df5fc1f](https://github.com/googleapis/python-bigtable/commit/df5fc1f7d6ded88d9bce67f7cc6989981745931f))
 
-### [2.5.2](https://github.com/googleapis/python-bigtable/compare/v2.5.1...v2.5.2) (2022-02-24)
+## [2.5.2](https://github.com/googleapis/python-bigtable/compare/v2.5.1...v2.5.2) (2022-02-24)
 
 
 ### Bug Fixes
 
 * Pass app_profile_id when building updated request ([#512](https://github.com/googleapis/python-bigtable/issues/512)) ([2f8ba7a](https://github.com/googleapis/python-bigtable/commit/2f8ba7a4801b17b5afb6180a7ace1327a2d05a52))
 
-### [2.5.1](https://github.com/googleapis/python-bigtable/compare/v2.5.0...v2.5.1) (2022-02-17)
+## [2.5.1](https://github.com/googleapis/python-bigtable/compare/v2.5.0...v2.5.1) (2022-02-17)
 
 
 ### Bug Fixes
@@ -134,14 +134,14 @@
 
 * add 'dict' annotation type to 'request' ([160bfd3](https://www.github.com/googleapis/python-bigtable/commit/160bfd317a83561821acc0212d3514701a031ac6))
 
-### [2.3.3](https://www.github.com/googleapis/python-bigtable/compare/v2.3.2...v2.3.3) (2021-07-24)
+## [2.3.3](https://www.github.com/googleapis/python-bigtable/compare/v2.3.2...v2.3.3) (2021-07-24)
 
 
 ### Bug Fixes
 
 * enable self signed jwt for grpc ([#397](https://www.github.com/googleapis/python-bigtable/issues/397)) ([9d43a38](https://www.github.com/googleapis/python-bigtable/commit/9d43a388470746608d324ca8d72f41bb3a4492b7))
 
-### [2.3.2](https://www.github.com/googleapis/python-bigtable/compare/v2.3.1...v2.3.2) (2021-07-20)
+## [2.3.2](https://www.github.com/googleapis/python-bigtable/compare/v2.3.1...v2.3.2) (2021-07-20)
 
 
 ### Bug Fixes
@@ -149,7 +149,7 @@
 * **deps:** pin 'google-{api,cloud}-core', 'google-auth' to allow 2.x versions ([#379](https://www.github.com/googleapis/python-bigtable/issues/379)) ([95b2e13](https://www.github.com/googleapis/python-bigtable/commit/95b2e13b776dca4a6998313c41aa960ffe2e47e9))
 * directly append to pb for beter read row performance ([#382](https://www.github.com/googleapis/python-bigtable/issues/382)) ([7040e11](https://www.github.com/googleapis/python-bigtable/commit/7040e113b93bb2e0625c054486305235d8f14c2a))
 
-### [2.3.1](https://www.github.com/googleapis/python-bigtable/compare/v2.3.0...v2.3.1) (2021-07-13)
+## [2.3.1](https://www.github.com/googleapis/python-bigtable/compare/v2.3.0...v2.3.1) (2021-07-13)
 
 
 ### Bug Fixes
@@ -256,7 +256,7 @@
 
 * update python contributing guide ([#206](https://www.github.com/googleapis/python-bigtable/issues/206)) ([e301ac3](https://www.github.com/googleapis/python-bigtable/commit/e301ac3b61364d779fdb50a57ae8e2cb9952df9e))
 
-### [1.6.1](https://www.github.com/googleapis/python-bigtable/compare/v1.6.0...v1.6.1) (2020-12-01)
+## [1.6.1](https://www.github.com/googleapis/python-bigtable/compare/v1.6.0...v1.6.1) (2020-12-01)
 
 
 ### Documentation
@@ -271,7 +271,7 @@
 * add 'timeout' arg to 'Table.mutate_rows' ([#157](https://www.github.com/googleapis/python-bigtable/issues/157)) ([6d597a1](https://www.github.com/googleapis/python-bigtable/commit/6d597a1e5be05c993c9f86beca4c1486342caf94)), closes [/github.com/googleapis/python-bigtable/issues/7#issuecomment-715538708](https://www.github.com/googleapis//github.com/googleapis/python-bigtable/issues/7/issues/issuecomment-715538708) [#7](https://www.github.com/googleapis/python-bigtable/issues/7)
 * Backup Level IAM ([#160](https://www.github.com/googleapis/python-bigtable/issues/160)) ([44932cb](https://www.github.com/googleapis/python-bigtable/commit/44932cb8710e12279dbd4e9271577f8bee238980))
 
-### [1.5.1](https://www.github.com/googleapis/python-bigtable/compare/v1.5.0...v1.5.1) (2020-10-06)
+## [1.5.1](https://www.github.com/googleapis/python-bigtable/compare/v1.5.0...v1.5.1) (2020-10-06)
 
 
 ### Bug Fixes
