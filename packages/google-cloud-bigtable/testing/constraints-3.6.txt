@@ -10,3 +10,4 @@ google-cloud-core==1.4.1
 grpc-google-iam-v1==0.12.4
 proto-plus==1.18.0
 libcst==0.2.5
+protobuf==3.19.0
