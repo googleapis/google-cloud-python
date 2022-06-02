@@ -364,7 +364,7 @@ class ResumableBidiRpc(BidiRpc):
         def should_recover(exc):
             return (
                 isinstance(exc, grpc.RpcError) and
-                exc.code() == grpc.StatusCode.UNVAILABLE)
+                exc.code() == grpc.StatusCode.UNAVAILABLE)
 
         initial_request = example_pb2.StreamingRpcRequest(
             setting='example')
@@ -589,7 +589,7 @@ class BackgroundConsumer(object):
         def should_recover(exc):
             return (
                 isinstance(exc, grpc.RpcError) and
-                exc.code() == grpc.StatusCode.UNVAILABLE)
+                exc.code() == grpc.StatusCode.UNAVAILABLE)
 
         initial_request = example_pb2.StreamingRpcRequest(
             setting='example')
