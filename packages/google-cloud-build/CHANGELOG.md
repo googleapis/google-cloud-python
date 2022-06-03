@@ -4,14 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-build/#history
 
-### [3.8.2](https://github.com/googleapis/python-cloudbuild/compare/v3.8.1...v3.8.2) (2022-05-05)
+## [3.8.2](https://github.com/googleapis/python-cloudbuild/compare/v3.8.1...v3.8.2) (2022-05-05)
 
 
 ### Documentation
 
 * fix type in docstring for map fields ([3a4be49](https://github.com/googleapis/python-cloudbuild/commit/3a4be49489628fd07a7377085d90e4ec6b06d76a))
 
-### [3.8.1](https://github.com/googleapis/python-cloudbuild/compare/v3.8.0...v3.8.1) (2022-03-05)
+## [3.8.1](https://github.com/googleapis/python-cloudbuild/compare/v3.8.0...v3.8.1) (2022-03-05)
 
 
 ### Bug Fixes
@@ -31,7 +31,7 @@
 
 * resolve DuplicateCredentialArgs error when using credentials_file ([2af2b18](https://github.com/googleapis/python-cloudbuild/commit/2af2b18e87de591b72ee9279a8a3cd54171cb725))
 
-### [3.7.1](https://www.github.com/googleapis/python-cloudbuild/compare/v3.7.0...v3.7.1) (2021-11-05)
+## [3.7.1](https://www.github.com/googleapis/python-cloudbuild/compare/v3.7.0...v3.7.1) (2021-11-05)
 
 
 ### Bug Fixes
@@ -57,14 +57,14 @@
 
 * add context manager support in client ([#184](https://www.github.com/googleapis/python-cloudbuild/issues/184)) ([7ac092c](https://www.github.com/googleapis/python-cloudbuild/commit/7ac092ce44f5884bdf2990a7dbd61dd72e1991d3))
 
-### [3.5.2](https://www.github.com/googleapis/python-cloudbuild/compare/v3.5.1...v3.5.2) (2021-09-30)
+## [3.5.2](https://www.github.com/googleapis/python-cloudbuild/compare/v3.5.1...v3.5.2) (2021-09-30)
 
 
 ### Bug Fixes
 
 * improper types in pagers generation ([f56eed5](https://www.github.com/googleapis/python-cloudbuild/commit/f56eed5376f66a9ce5f9c1ca21f2b5b9b6d5779b))
 
-### [3.5.1](https://www.github.com/googleapis/python-cloudbuild/compare/v3.5.0...v3.5.1) (2021-09-24)
+## [3.5.1](https://www.github.com/googleapis/python-cloudbuild/compare/v3.5.0...v3.5.1) (2021-09-24)
 
 
 ### Bug Fixes
@@ -86,14 +86,14 @@
 
 * Add ability to configure BuildTriggers to create Builds that require approval before executing and ApproveBuild API to approve or reject pending Builds ([#147](https://www.github.com/googleapis/python-cloudbuild/issues/147)) ([0ba4e0d](https://www.github.com/googleapis/python-cloudbuild/commit/0ba4e0d5f44897abf70427d54d152fe265698d91))
 
-### [3.3.2](https://www.github.com/googleapis/python-cloudbuild/compare/v3.3.1...v3.3.2) (2021-07-28)
+## [3.3.2](https://www.github.com/googleapis/python-cloudbuild/compare/v3.3.1...v3.3.2) (2021-07-28)
 
 
 ### Documentation
 
 * Add a new build phase `SETUPBUILD` for timing information ([#142](https://www.github.com/googleapis/python-cloudbuild/issues/142)) ([eb23c8d](https://www.github.com/googleapis/python-cloudbuild/commit/eb23c8dbc35dc45b228a1536f8143b8a291bcd87))
 
-### [3.3.1](https://www.github.com/googleapis/python-cloudbuild/compare/v3.3.0...v3.3.1) (2021-07-24)
+## [3.3.1](https://www.github.com/googleapis/python-cloudbuild/compare/v3.3.0...v3.3.1) (2021-07-24)
 
 
 ### Features
@@ -130,7 +130,7 @@
 
 * omit mention of Python 2.7 in 'CONTRIBUTING.rst' ([#1127](https://www.github.com/googleapis/python-cloudbuild/issues/1127)) ([#112](https://www.github.com/googleapis/python-cloudbuild/issues/112)) ([e2420f8](https://www.github.com/googleapis/python-cloudbuild/commit/e2420f8ad5630aedff0d52e3cc4facbb11300b72)), closes [#1126](https://www.github.com/googleapis/python-cloudbuild/issues/1126)
 
-### [3.2.1](https://www.github.com/googleapis/python-cloudbuild/compare/v3.2.0...v3.2.1) (2021-05-16)
+## [3.2.1](https://www.github.com/googleapis/python-cloudbuild/compare/v3.2.0...v3.2.1) (2021-05-16)
 
 
 ### Bug Fixes
@@ -159,7 +159,7 @@
 * Clarify lifetime/expiration behavior around `ListBuilds` page tokens. ([df8ddd0](https://www.github.com/googleapis/python-cloudbuild/commit/df8ddd0e691101077784a5272fd27b9d7bd86938))
 * Update field docs on required-ness behavior and fix typos. ([df8ddd0](https://www.github.com/googleapis/python-cloudbuild/commit/df8ddd0e691101077784a5272fd27b9d7bd86938))
 
-### [3.1.1](https://www.github.com/googleapis/python-cloudbuild/compare/v3.1.0...v3.1.1) (2021-03-26)
+## [3.1.1](https://www.github.com/googleapis/python-cloudbuild/compare/v3.1.0...v3.1.1) (2021-03-26)
 
 
 ### Documentation
@@ -173,14 +173,14 @@
 
 * add `from_service_account_info` ([#52](https://www.github.com/googleapis/python-cloudbuild/issues/52)) ([580a959](https://www.github.com/googleapis/python-cloudbuild/commit/580a95925651c8478a47fd588540088104bb9a12))
 
-### [3.0.2](https://www.github.com/googleapis/python-cloudbuild/compare/v3.0.1...v3.0.2) (2021-02-19)
+## [3.0.2](https://www.github.com/googleapis/python-cloudbuild/compare/v3.0.1...v3.0.2) (2021-02-19)
 
 
 ### Documentation
 
 * update python contributing guide ([#63](https://www.github.com/googleapis/python-cloudbuild/issues/63)) ([f199171](https://www.github.com/googleapis/python-cloudbuild/commit/f199171267bcec8cbddf5aa5be420647370dadee))
 
-### [3.0.1](https://www.github.com/googleapis/python-cloudbuild/compare/v3.0.0...v3.0.1) (2021-02-08)
+## [3.0.1](https://www.github.com/googleapis/python-cloudbuild/compare/v3.0.0...v3.0.1) (2021-02-08)
 
 
 ### Bug Fixes
