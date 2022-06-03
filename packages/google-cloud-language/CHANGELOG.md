@@ -4,14 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-language/#history
 
-### [2.4.2](https://github.com/googleapis/python-language/compare/v2.4.1...v2.4.2) (2022-05-17)
+## [2.4.2](https://github.com/googleapis/python-language/compare/v2.4.1...v2.4.2) (2022-05-17)
 
 
 ### Documentation
 
 * fix type in docstring for map fields ([41c28cd](https://github.com/googleapis/python-language/commit/41c28cd35b91adcbe3221a898419c323875b5cfd))
 
-### [2.4.1](https://github.com/googleapis/python-language/compare/v2.4.0...v2.4.1) (2022-03-05)
+## [2.4.1](https://github.com/googleapis/python-language/compare/v2.4.0...v2.4.1) (2022-03-05)
 
 
 ### Bug Fixes
@@ -31,14 +31,14 @@
 
 * resolve DuplicateCredentialArgs error when using credentials_file ([3e7c964](https://github.com/googleapis/python-language/commit/3e7c96410914d9080ecd0325c61bdc624adf08e1))
 
-### [2.3.2](https://github.com/googleapis/python-language/compare/v2.3.1...v2.3.2) (2022-01-20)
+## [2.3.2](https://github.com/googleapis/python-language/compare/v2.3.1...v2.3.2) (2022-01-20)
 
 
 ### Documentation
 
 * **samples:** Document -> types.Document ([#227](https://github.com/googleapis/python-language/issues/227)) ([01367d7](https://github.com/googleapis/python-language/commit/01367d7b1e0ddba6e6b920f125730aa97d51ada0))
 
-### [2.3.1](https://www.github.com/googleapis/python-language/compare/v2.3.0...v2.3.1) (2021-11-01)
+## [2.3.1](https://www.github.com/googleapis/python-language/compare/v2.3.0...v2.3.1) (2021-11-01)
 
 
 ### Bug Fixes
@@ -58,7 +58,7 @@
 
 * add context manager support in client ([#203](https://www.github.com/googleapis/python-language/issues/203)) ([91d48a8](https://www.github.com/googleapis/python-language/commit/91d48a8fee63b8279b235b70921d018206084b50))
 
-### [2.2.2](https://www.github.com/googleapis/python-language/compare/v2.2.1...v2.2.2) (2021-07-28)
+## [2.2.2](https://www.github.com/googleapis/python-language/compare/v2.2.1...v2.2.2) (2021-07-28)
 
 
 ### Bug Fixes
@@ -75,7 +75,7 @@
 
 * release as 2.2.2 ([#170](https://www.github.com/googleapis/python-language/issues/170)) ([4d40053](https://www.github.com/googleapis/python-language/commit/4d400539508ec81cbc76e3f6166e3ec86054ed65))
 
-### [2.2.1](https://www.github.com/googleapis/python-language/compare/v2.2.0...v2.2.1) (2021-07-20)
+## [2.2.1](https://www.github.com/googleapis/python-language/compare/v2.2.0...v2.2.1) (2021-07-20)
 
 
 ### Bug Fixes
