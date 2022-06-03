@@ -7,7 +7,7 @@
 
 * bump release level to production/stable  ([b13ce8f](https://github.com/googleapis/python-dataplex/commit/b13ce8f2fda0dc60e8d1ed88e846fd8c027546e0))
 
-### [0.2.1](https://github.com/googleapis/python-dataplex/compare/v0.2.0...v0.2.1) (2022-03-05)
+## [0.2.1](https://github.com/googleapis/python-dataplex/compare/v0.2.0...v0.2.1) (2022-03-05)
 
 
 ### Bug Fixes
