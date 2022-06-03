@@ -4,7 +4,7 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery-storage/#history
 
-### [2.13.1](https://github.com/googleapis/python-bigquery-storage/compare/v2.13.0...v2.13.1) (2022-04-04)
+## [2.13.1](https://github.com/googleapis/python-bigquery-storage/compare/v2.13.0...v2.13.1) (2022-04-04)
 
 
 ### Bug Fixes
@@ -58,7 +58,7 @@
 * add `write_mode` property to BigQuery Storage Write API v1 ([#360](https://github.com/googleapis/python-bigquery-storage/issues/360)) ([aa9740d](https://github.com/googleapis/python-bigquery-storage/commit/aa9740d352b2359171a3a99811f88e24ae927189))
 * retryable resource exhausted handling ([#366](https://github.com/googleapis/python-bigquery-storage/issues/366)) ([33757d8](https://github.com/googleapis/python-bigquery-storage/commit/33757d88c968fef65332f5ebe0b876758f978ab0))
 
-### [2.10.1](https://www.github.com/googleapis/python-bigquery-storage/compare/v2.10.0...v2.10.1) (2021-11-11)
+## [2.10.1](https://www.github.com/googleapis/python-bigquery-storage/compare/v2.10.0...v2.10.1) (2021-11-11)
 
 
 ### Documentation
@@ -83,7 +83,7 @@
 
 * list oneofs in docstring ([5390146](https://www.github.com/googleapis/python-bigquery-storage/commit/5390146e7bf83038a55755f53b119504ce000d62))
 
-### [2.9.1](https://www.github.com/googleapis/python-bigquery-storage/compare/v2.9.0...v2.9.1) (2021-10-06)
+## [2.9.1](https://www.github.com/googleapis/python-bigquery-storage/compare/v2.9.0...v2.9.1) (2021-10-06)
 
 
 ### Documentation
@@ -125,14 +125,14 @@
 
 * **v1beta2:** Align session length with public documentation ([43e36a1](https://www.github.com/googleapis/python-bigquery-storage/commit/43e36a13ece8d876763d88bad0252a1b2421c52a))
 
-### [2.6.3](https://www.github.com/googleapis/python-bigquery-storage/compare/v2.6.2...v2.6.3) (2021-08-06)
+## [2.6.3](https://www.github.com/googleapis/python-bigquery-storage/compare/v2.6.2...v2.6.3) (2021-08-06)
 
 
 ### Bug Fixes
 
 * resume read stream on `Unknown` transport-layer exception ([#263](https://www.github.com/googleapis/python-bigquery-storage/issues/263)) ([127caa0](https://www.github.com/googleapis/python-bigquery-storage/commit/127caa06144b9cec04b23914b561be6a264bcb36))
 
-### [2.6.2](https://www.github.com/googleapis/python-bigquery-storage/compare/v2.6.1...v2.6.2) (2021-07-28)
+## [2.6.2](https://www.github.com/googleapis/python-bigquery-storage/compare/v2.6.1...v2.6.2) (2021-07-28)
 
 
 ### Bug Fixes
@@ -146,7 +146,7 @@
 * add Samples section to CONTRIBUTING.rst ([#241](https://www.github.com/googleapis/python-bigquery-storage/issues/241)) ([5d02358](https://www.github.com/googleapis/python-bigquery-storage/commit/5d02358fbd397cafcc1169d829859fe2dd568645))
 
 
-### [2.6.1](https://www.github.com/googleapis/python-bigquery-storage/compare/v2.6.0...v2.6.1) (2021-07-20)
+## [2.6.1](https://www.github.com/googleapis/python-bigquery-storage/compare/v2.6.0...v2.6.1) (2021-07-20)
 
 
 ### Bug Fixes
@@ -219,7 +219,7 @@
 
 * update python contributing guide ([#140](https://www.github.com/googleapis/python-bigquery-storage/issues/140)) ([1671056](https://www.github.com/googleapis/python-bigquery-storage/commit/1671056bfe181660440b1bf4415005e3eed01eb2))
 
-### [2.2.1](https://www.github.com/googleapis/python-bigquery-storage/compare/v2.2.0...v2.2.1) (2021-01-25)
+## [2.2.1](https://www.github.com/googleapis/python-bigquery-storage/compare/v2.2.0...v2.2.1) (2021-01-25)
 
 
 ### Documentation
@@ -258,7 +258,7 @@
 * add intersphinx to proto-plus library ([#86](https://www.github.com/googleapis/python-bigquery-storage/issues/86)) ([4cd35d2](https://www.github.com/googleapis/python-bigquery-storage/commit/4cd35d21de4486f659b7efc4ff4dcb9b4eee6c9e))
 * show inheritance in types reference ([#91](https://www.github.com/googleapis/python-bigquery-storage/issues/91)) ([e5fd4e6](https://www.github.com/googleapis/python-bigquery-storage/commit/e5fd4e62de2768a49d633dc3a81e03d64df9fe1f))
 
-### [2.0.1](https://www.github.com/googleapis/python-bigquery-storage/compare/v2.0.0...v2.0.1) (2020-10-21)
+## [2.0.1](https://www.github.com/googleapis/python-bigquery-storage/compare/v2.0.0...v2.0.1) (2020-10-21)
 
 
 ### Bug Fixes
