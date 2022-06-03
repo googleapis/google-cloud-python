@@ -1,6 +1,6 @@
 # Changelog
 
-### [1.0.1](https://github.com/googleapis/python-datastream/compare/v1.0.0...v1.0.1) (2022-05-06)
+## [1.0.1](https://github.com/googleapis/python-datastream/compare/v1.0.0...v1.0.1) (2022-05-06)
 
 
 ### Documentation
@@ -14,14 +14,14 @@
 
 * bump release level to production/stable ([05b5c87](https://github.com/googleapis/python-datastream/commit/05b5c875df8b6be6d5e9c6a89ffca017e0b5a160))
 
-### [0.4.2](https://github.com/googleapis/python-datastream/compare/v0.4.1...v0.4.2) (2022-03-05)
+## [0.4.2](https://github.com/googleapis/python-datastream/compare/v0.4.1...v0.4.2) (2022-03-05)
 
 
 ### Bug Fixes
 
 * **deps:** require google-api-core>=1.31.5, >=2.3.2 ([#76](https://github.com/googleapis/python-datastream/issues/76)) ([f29eba0](https://github.com/googleapis/python-datastream/commit/f29eba05290746af2cb84463ad505eb427e36d98))
 
-### [0.4.1](https://github.com/googleapis/python-datastream/compare/v0.4.0...v0.4.1) (2022-02-26)
+## [0.4.1](https://github.com/googleapis/python-datastream/compare/v0.4.0...v0.4.1) (2022-02-26)
 
 
 ### Documentation
@@ -43,7 +43,7 @@
 * remove `GcsFileFormat` and `SchemaFileFormat` ([28dab85](https://github.com/googleapis/python-datastream/commit/28dab85bf3b4ad937760d5219623793936e39731))
 * remove `NoConnectivitySettings` ([28dab85](https://github.com/googleapis/python-datastream/commit/28dab85bf3b4ad937760d5219623793936e39731))
 
-### [0.3.1](https://www.github.com/googleapis/python-datastream/compare/v0.3.0...v0.3.1) (2021-11-01)
+## [0.3.1](https://www.github.com/googleapis/python-datastream/compare/v0.3.0...v0.3.1) (2021-11-01)
 
 
 ### Bug Fixes
@@ -76,14 +76,14 @@
 * add 'dict' annotation type to 'request' ([973c851](https://www.github.com/googleapis/python-datastream/commit/973c851b750768b8405c97d33ed4cfdd66d39d9a))
 * improper types in pagers generation ([09eaafd](https://www.github.com/googleapis/python-datastream/commit/09eaafd1b695b10bfc2bb212974eff11da76782c))
 
-### [0.1.3](https://www.github.com/googleapis/python-datastream/compare/v0.1.2...v0.1.3) (2021-08-30)
+## [0.1.3](https://www.github.com/googleapis/python-datastream/compare/v0.1.2...v0.1.3) (2021-08-30)
 
 
 ### Bug Fixes
 
 * **datastream:** Change a few resource pattern variables from camelCase to snake_case ([#20](https://www.github.com/googleapis/python-datastream/issues/20)) ([296962a](https://www.github.com/googleapis/python-datastream/commit/296962abf8d0b8cda4f3e1e978262c8628f4b31e))
 
-### [0.1.2](https://www.github.com/googleapis/python-datastream/compare/v0.1.1...v0.1.2) (2021-07-29)
+## [0.1.2](https://www.github.com/googleapis/python-datastream/compare/v0.1.1...v0.1.2) (2021-07-29)
 
 
 ### Bug Fixes
@@ -100,7 +100,7 @@
 
 * release as 0.1.2 ([#12](https://www.github.com/googleapis/python-datastream/issues/12)) ([15998c2](https://www.github.com/googleapis/python-datastream/commit/15998c223864ac8d6b2442f66ed42f19e1dc62ea))
 
-### [0.1.1](https://www.github.com/googleapis/python-datastream/compare/v0.1.0...v0.1.1) (2021-07-21)
+## [0.1.1](https://www.github.com/googleapis/python-datastream/compare/v0.1.0...v0.1.1) (2021-07-21)
 
 
 ### Bug Fixes
