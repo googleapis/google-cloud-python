@@ -4,7 +4,7 @@
 
 [1]: https://pypi.org/project/google-cloud-trace/#history
 
-### [1.6.1](https://github.com/googleapis/python-trace/compare/v1.6.0...v1.6.1) (2022-03-05)
+## [1.6.1](https://github.com/googleapis/python-trace/compare/v1.6.0...v1.6.1) (2022-03-05)
 
 
 ### Bug Fixes
@@ -24,7 +24,7 @@
 
 * resolve DuplicateCredentialArgs error when using credentials_file ([e0294af](https://github.com/googleapis/python-trace/commit/e0294af5d06c22a8739e9d50f514e4bbe85e8463))
 
-### [1.5.1](https://www.github.com/googleapis/python-trace/compare/v1.5.0...v1.5.1) (2021-11-01)
+## [1.5.1](https://www.github.com/googleapis/python-trace/compare/v1.5.0...v1.5.1) (2021-11-01)
 
 
 ### Bug Fixes
@@ -51,21 +51,21 @@
 
 * add context manager support in client ([#141](https://www.github.com/googleapis/python-trace/issues/141)) ([2bf8ab7](https://www.github.com/googleapis/python-trace/commit/2bf8ab7c0ac288feb63cbd84ed1826f996136200))
 
-### [1.3.4](https://www.github.com/googleapis/python-trace/compare/v1.3.3...v1.3.4) (2021-09-30)
+## [1.3.4](https://www.github.com/googleapis/python-trace/compare/v1.3.3...v1.3.4) (2021-09-30)
 
 
 ### Bug Fixes
 
 * improper types in pagers generation ([cb38c20](https://www.github.com/googleapis/python-trace/commit/cb38c2000d9edf20943cb8c6a5ed98e6aa2a57b6))
 
-### [1.3.3](https://www.github.com/googleapis/python-trace/compare/v1.3.2...v1.3.3) (2021-09-24)
+## [1.3.3](https://www.github.com/googleapis/python-trace/compare/v1.3.2...v1.3.3) (2021-09-24)
 
 
 ### Bug Fixes
 
 * add 'dict' annotation type to 'request' ([4a5ed62](https://www.github.com/googleapis/python-trace/commit/4a5ed6283a9ed3ed7732117023d362c20d031c16))
 
-### [1.3.2](https://www.github.com/googleapis/python-trace/compare/v1.3.1...v1.3.2) (2021-07-28)
+## [1.3.2](https://www.github.com/googleapis/python-trace/compare/v1.3.1...v1.3.2) (2021-07-28)
 
 
 ### Bug Fixes
@@ -82,7 +82,7 @@
 
 * release as 1.3.2 ([#114](https://www.github.com/googleapis/python-trace/issues/114)) ([57d63cd](https://www.github.com/googleapis/python-trace/commit/57d63cdb6b6e2eae77d4bda07749546c1ab65611))
 
-### [1.3.1](https://www.github.com/googleapis/python-trace/compare/v1.3.0...v1.3.1) (2021-07-20)
+## [1.3.1](https://www.github.com/googleapis/python-trace/compare/v1.3.0...v1.3.1) (2021-07-20)
 
 
 ### Bug Fixes
