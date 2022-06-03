@@ -1,6 +1,6 @@
 # Changelog
 
-### [1.3.1](https://github.com/googleapis/python-contact-center-insights/compare/v1.3.0...v1.3.1) (2022-03-07)
+## [1.3.1](https://github.com/googleapis/python-contact-center-insights/compare/v1.3.0...v1.3.1) (2022-03-07)
 
 
 ### Bug Fixes
@@ -19,7 +19,7 @@
 
 * resolve DuplicateCredentialArgs error when using credentials_file ([02ad5e1](https://github.com/googleapis/python-contact-center-insights/commit/02ad5e18a4e95e6c4d57e2dbc823e9c9505f19fd))
 
-### [1.2.1](https://github.com/googleapis/python-contact-center-insights/compare/v1.2.0...v1.2.1) (2022-01-20)
+## [1.2.1](https://github.com/googleapis/python-contact-center-insights/compare/v1.2.0...v1.2.1) (2022-01-20)
 
 
 ### Documentation
@@ -50,7 +50,7 @@
 
 * bump release level to production/stable ([#89](https://www.github.com/googleapis/python-contact-center-insights/issues/89)) ([d93e829](https://www.github.com/googleapis/python-contact-center-insights/commit/d93e829c10a39c67970edb4f89e55bb39f5ae5a0))
 
-### [0.6.1](https://www.github.com/googleapis/python-contact-center-insights/compare/v0.6.0...v0.6.1) (2021-11-02)
+## [0.6.1](https://www.github.com/googleapis/python-contact-center-insights/compare/v0.6.0...v0.6.1) (2021-11-02)
 
 
 ### Bug Fixes
@@ -91,7 +91,7 @@
 * add obfuscated if from dialogflow ([ef575cf](https://www.github.com/googleapis/python-contact-center-insights/commit/ef575cf076376261c784b9c3332ef2befa1a11d9))
 * add sentiment data for transcript segment ([ef575cf](https://www.github.com/googleapis/python-contact-center-insights/commit/ef575cf076376261c784b9c3332ef2befa1a11d9))
 
-### [0.3.1](https://www.github.com/googleapis/python-contact-center-insights/compare/v0.3.0...v0.3.1) (2021-09-24)
+## [0.3.1](https://www.github.com/googleapis/python-contact-center-insights/compare/v0.3.0...v0.3.1) (2021-09-24)
 
 
 ### Bug Fixes
@@ -133,7 +133,7 @@
 * add Samples section to CONTRIBUTING.rst ([#4](https://www.github.com/googleapis/python-contact-center-insights/issues/4)) ([6dcbc56](https://www.github.com/googleapis/python-contact-center-insights/commit/6dcbc567aad97661de34237c8e96f4412bb18223))
 
 
-### [0.1.1](https://www.github.com/googleapis/python-contact-center-insights/compare/v0.1.0...v0.1.1) (2021-07-21)
+## [0.1.1](https://www.github.com/googleapis/python-contact-center-insights/compare/v0.1.0...v0.1.1) (2021-07-21)
 
 
 ### Bug Fixes
