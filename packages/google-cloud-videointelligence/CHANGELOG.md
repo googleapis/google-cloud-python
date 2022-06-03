@@ -11,7 +11,7 @@
 
 * field ObjectTrackingAnnotation.segment moved into oneof, added track_id ([#318](https://github.com/googleapis/python-videointelligence/issues/318)) ([f1f88d4](https://github.com/googleapis/python-videointelligence/commit/f1f88d4eef49927d8822f90af154cdc2f582c471))
 
-### [2.6.1](https://github.com/googleapis/python-videointelligence/compare/v2.6.0...v2.6.1) (2022-03-05)
+## [2.6.1](https://github.com/googleapis/python-videointelligence/compare/v2.6.0...v2.6.1) (2022-03-05)
 
 
 ### Bug Fixes
@@ -36,7 +36,7 @@
 
 * add generated snippets ([#273](https://github.com/googleapis/python-videointelligence/issues/273)) ([f0cc364](https://github.com/googleapis/python-videointelligence/commit/f0cc36444044b971b43362915e7d8d0e9bef62bf))
 
-### [2.5.1](https://www.github.com/googleapis/python-videointelligence/compare/v2.5.0...v2.5.1) (2021-11-01)
+## [2.5.1](https://www.github.com/googleapis/python-videointelligence/compare/v2.5.0...v2.5.1) (2021-11-01)
 
 
 ### Bug Fixes
@@ -63,14 +63,14 @@
 
 * add context manager support in client ([#229](https://www.github.com/googleapis/python-videointelligence/issues/229)) ([ac75850](https://www.github.com/googleapis/python-videointelligence/commit/ac75850925ac29bd3ad238bebd48cbedfe638942))
 
-### [2.3.3](https://www.github.com/googleapis/python-videointelligence/compare/v2.3.2...v2.3.3) (2021-09-24)
+## [2.3.3](https://www.github.com/googleapis/python-videointelligence/compare/v2.3.2...v2.3.3) (2021-09-24)
 
 
 ### Bug Fixes
 
 * add 'dict' annotation type to 'request' ([ec86dc6](https://www.github.com/googleapis/python-videointelligence/commit/ec86dc6211a2b5be69c2b74dd65ea4968f89f244))
 
-### [2.3.2](https://www.github.com/googleapis/python-videointelligence/compare/v2.3.1...v2.3.2) (2021-07-26)
+## [2.3.2](https://www.github.com/googleapis/python-videointelligence/compare/v2.3.1...v2.3.2) (2021-07-26)
 
 
 ### Bug Fixes
@@ -82,7 +82,7 @@
 
 * add Samples section to CONTRIBUTING.rst ([#190](https://www.github.com/googleapis/python-videointelligence/issues/190)) ([bed1899](https://www.github.com/googleapis/python-videointelligence/commit/bed1899b6f31e4fd29cbdebbe21b0dea587ce483))
 
-### [2.3.1](https://www.github.com/googleapis/python-videointelligence/compare/v2.3.0...v2.3.1) (2021-07-20)
+## [2.3.1](https://www.github.com/googleapis/python-videointelligence/compare/v2.3.0...v2.3.1) (2021-07-20)
 
 
 ### Bug Fixes
@@ -138,7 +138,7 @@
 
 * use microgenerator ([#76](https://www.github.com/googleapis/python-videointelligence/issues/76))
 
-### [1.16.1](https://www.github.com/googleapis/python-videointelligence/compare/v1.16.0...v1.16.1) (2020-11-18)
+## [1.16.1](https://www.github.com/googleapis/python-videointelligence/compare/v1.16.0...v1.16.1) (2020-11-18)
 
 
 ### Documentation
