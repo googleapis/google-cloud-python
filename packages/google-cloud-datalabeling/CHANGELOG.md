@@ -4,7 +4,7 @@
 
 [1]: https://pypi.org/project/google-cloud-datalabeling/#history
 
-### [1.5.1](https://github.com/googleapis/python-datalabeling/compare/v1.5.0...v1.5.1) (2022-03-05)
+## [1.5.1](https://github.com/googleapis/python-datalabeling/compare/v1.5.0...v1.5.1) (2022-03-05)
 
 
 ### Bug Fixes
@@ -50,21 +50,21 @@
 
 * add context manager support in client ([#156](https://www.github.com/googleapis/python-datalabeling/issues/156)) ([4332378](https://www.github.com/googleapis/python-datalabeling/commit/43323787435fb3c9e0722f98deec47c81c4de90d))
 
-### [1.2.4](https://www.github.com/googleapis/python-datalabeling/compare/v1.2.3...v1.2.4) (2021-09-30)
+## [1.2.4](https://www.github.com/googleapis/python-datalabeling/compare/v1.2.3...v1.2.4) (2021-09-30)
 
 
 ### Bug Fixes
 
 * improper types in pagers generation ([b2cefef](https://www.github.com/googleapis/python-datalabeling/commit/b2cefef2c320f7d80b56dfe2e0419a1a78f4222e))
 
-### [1.2.3](https://www.github.com/googleapis/python-datalabeling/compare/v1.2.2...v1.2.3) (2021-09-24)
+## [1.2.3](https://www.github.com/googleapis/python-datalabeling/compare/v1.2.2...v1.2.3) (2021-09-24)
 
 
 ### Bug Fixes
 
 * add 'dict' annotation type to 'request' ([41ccc9a](https://www.github.com/googleapis/python-datalabeling/commit/41ccc9abe59315b9f3794bb264f6dbc4251488bc))
 
-### [1.2.2](https://www.github.com/googleapis/python-datalabeling/compare/v1.2.1...v1.2.2) (2021-07-27)
+## [1.2.2](https://www.github.com/googleapis/python-datalabeling/compare/v1.2.1...v1.2.2) (2021-07-27)
 
 
 ### Bug Fixes
@@ -81,7 +81,7 @@
 
 * release as 1.2.2 ([#130](https://www.github.com/googleapis/python-datalabeling/issues/130)) ([b8d85c1](https://www.github.com/googleapis/python-datalabeling/commit/b8d85c11e01fcfbdc1b8abe2aeb94b0d82b09e01))
 
-### [1.2.1](https://www.github.com/googleapis/python-datalabeling/compare/v1.2.0...v1.2.1) (2021-07-20)
+## [1.2.1](https://www.github.com/googleapis/python-datalabeling/compare/v1.2.0...v1.2.1) (2021-07-20)
 
 
 ### Bug Fixes
@@ -132,7 +132,7 @@
 
 * migrate to use microgen ([#34](https://www.github.com/googleapis/python-datalabeling/issues/34)) ([465eb36](https://www.github.com/googleapis/python-datalabeling/commit/465eb361d39d08029f30b36c769252c9f83e7949))
 
-### [0.4.1](https://www.github.com/googleapis/python-datalabeling/compare/v0.4.0...v0.4.1) (2020-08-07)
+## [0.4.1](https://www.github.com/googleapis/python-datalabeling/compare/v0.4.0...v0.4.1) (2020-08-07)
 
 
 ### Bug Fixes
