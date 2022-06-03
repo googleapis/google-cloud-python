@@ -1,6 +1,6 @@
 # Changelog
 
-### [1.3.1](https://www.github.com/googleapis/python-test-utils/compare/v1.3.0...v1.3.1) (2021-12-07)
+## [1.3.1](https://www.github.com/googleapis/python-test-utils/compare/v1.3.0...v1.3.1) (2021-12-07)
 
 
 ### Bug Fixes
@@ -42,7 +42,7 @@
 
 * add Prefixer class to generate and parse resource names ([#39](https://www.github.com/googleapis/python-test-utils/issues/39)) ([865480b](https://www.github.com/googleapis/python-test-utils/commit/865480b5f62bf0db3b14000019a276aea102299d))
 
-### [0.2.1](https://www.github.com/googleapis/python-test-utils/compare/v0.2.0...v0.2.1) (2021-06-29)
+## [0.2.1](https://www.github.com/googleapis/python-test-utils/compare/v0.2.0...v0.2.1) (2021-06-29)
 
 
 ### Bug Fixes
