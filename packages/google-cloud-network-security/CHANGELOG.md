@@ -1,6 +1,6 @@
 # Changelog
 
-### [0.4.1](https://github.com/googleapis/python-network-security/compare/v0.4.0...v0.4.1) (2022-03-05)
+## [0.4.1](https://github.com/googleapis/python-network-security/compare/v0.4.0...v0.4.1) (2022-03-05)
 
 
 ### Bug Fixes
@@ -19,14 +19,14 @@
 
 * resolve DuplicateCredentialArgs error when using credentials_file ([a531e63](https://github.com/googleapis/python-network-security/commit/a531e6371651a5036afbc82d6ee10c1bc50e7610))
 
-### [0.3.2](https://www.github.com/googleapis/python-network-security/compare/v0.3.1...v0.3.2) (2022-01-09)
+## [0.3.2](https://www.github.com/googleapis/python-network-security/compare/v0.3.1...v0.3.2) (2022-01-09)
 
 
 ### Bug Fixes
 
 * updating metadata messages for all long running operations ([#57](https://www.github.com/googleapis/python-network-security/issues/57)) ([7adc601](https://www.github.com/googleapis/python-network-security/commit/7adc601de611fe0323185b2747c98a620e21a38f))
 
-### [0.3.1](https://www.github.com/googleapis/python-network-security/compare/v0.3.0...v0.3.1) (2021-11-02)
+## [0.3.1](https://www.github.com/googleapis/python-network-security/compare/v0.3.0...v0.3.1) (2021-11-02)
 
 
 ### Bug Fixes
@@ -53,21 +53,21 @@
 
 * add context manager support in client ([#37](https://www.github.com/googleapis/python-network-security/issues/37)) ([173b3db](https://www.github.com/googleapis/python-network-security/commit/173b3dbd36c5118853b8d93dcb32635d64208876))
 
-### [0.1.5](https://www.github.com/googleapis/python-network-security/compare/v0.1.4...v0.1.5) (2021-09-30)
+## [0.1.5](https://www.github.com/googleapis/python-network-security/compare/v0.1.4...v0.1.5) (2021-09-30)
 
 
 ### Bug Fixes
 
 * improper types in pagers generation ([90b83d6](https://www.github.com/googleapis/python-network-security/commit/90b83d6282d8b68890eed8e81013766763ec6648))
 
-### [0.1.4](https://www.github.com/googleapis/python-network-security/compare/v0.1.3...v0.1.4) (2021-09-24)
+## [0.1.4](https://www.github.com/googleapis/python-network-security/compare/v0.1.3...v0.1.4) (2021-09-24)
 
 
 ### Bug Fixes
 
 * add 'dict' annotation type to 'request' ([dcefd7e](https://www.github.com/googleapis/python-network-security/commit/dcefd7e92f08e12c868fee114c73075e8ba356a5))
 
-### [0.1.3](https://www.github.com/googleapis/python-network-security/compare/v0.1.2...v0.1.3) (2021-07-29)
+## [0.1.3](https://www.github.com/googleapis/python-network-security/compare/v0.1.2...v0.1.3) (2021-07-29)
 
 
 ### Bug Fixes
@@ -84,14 +84,14 @@
 
 * release as 0.1.3 ([#16](https://www.github.com/googleapis/python-network-security/issues/16)) ([7d742bc](https://www.github.com/googleapis/python-network-security/commit/7d742bc40d857c796074442438696f805af38cde))
 
-### [0.1.2](https://www.github.com/googleapis/python-network-security/compare/v0.1.1...v0.1.2) (2021-07-21)
+## [0.1.2](https://www.github.com/googleapis/python-network-security/compare/v0.1.1...v0.1.2) (2021-07-21)
 
 
 ### Bug Fixes
 
 * **deps:** pin 'google-{api,cloud}-core', 'google-auth' to allow 2.x versions ([#10](https://www.github.com/googleapis/python-network-security/issues/10)) ([070273d](https://www.github.com/googleapis/python-network-security/commit/070273d863029e31a01ed754f7e56561d83430b9))
 
-### [0.1.1](https://www.github.com/googleapis/python-network-security/compare/v0.1.0...v0.1.1) (2021-07-14)
+## [0.1.1](https://www.github.com/googleapis/python-network-security/compare/v0.1.0...v0.1.1) (2021-07-14)
 
 
 ### Bug Fixes
