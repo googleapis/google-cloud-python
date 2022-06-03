@@ -12,14 +12,14 @@
 * add DataProfilePubSubMessage supporting pub/sub integration ([#363](https://github.com/googleapis/python-dlp/issues/363)) ([15a4653](https://github.com/googleapis/python-dlp/commit/15a4653426b2a614a22152ca0a4b457fd8696d3a))
 * new Bytes and File types POWERPOINT and EXCEL ([#355](https://github.com/googleapis/python-dlp/issues/355)) ([be8c8b1](https://github.com/googleapis/python-dlp/commit/be8c8b145d8ecad24a9c56f4ab26520700b157a8))
 
-### [3.6.2](https://github.com/googleapis/python-dlp/compare/v3.6.1...v3.6.2) (2022-03-05)
+## [3.6.2](https://github.com/googleapis/python-dlp/compare/v3.6.1...v3.6.2) (2022-03-05)
 
 
 ### Bug Fixes
 
 * **deps:** require proto-plus>=1.15.0 ([#342](https://github.com/googleapis/python-dlp/issues/342)) ([81ae7b6](https://github.com/googleapis/python-dlp/commit/81ae7b6c25071f18c356b62d2df4234f43fe1fec))
 
-### [3.6.1](https://github.com/googleapis/python-dlp/compare/v3.6.0...v3.6.1) (2022-02-26)
+## [3.6.1](https://github.com/googleapis/python-dlp/compare/v3.6.0...v3.6.1) (2022-02-26)
 
 
 ### Bug Fixes
@@ -59,7 +59,7 @@
 * added field for BigQuery inspect template inclusion lists ([63e9661](https://www.github.com/googleapis/python-dlp/commit/63e96614ba72e4ae8e0eafe4139d5329e75a3c18))
 * added field to support infotype versioning ([63e9661](https://www.github.com/googleapis/python-dlp/commit/63e96614ba72e4ae8e0eafe4139d5329e75a3c18))
 
-### [3.3.1](https://www.github.com/googleapis/python-dlp/compare/v3.3.0...v3.3.1) (2021-11-05)
+## [3.3.1](https://www.github.com/googleapis/python-dlp/compare/v3.3.0...v3.3.1) (2021-11-05)
 
 
 ### Bug Fixes
@@ -80,21 +80,21 @@
 
 * add context manager support in client ([#272](https://www.github.com/googleapis/python-dlp/issues/272)) ([c0ba4eb](https://www.github.com/googleapis/python-dlp/commit/c0ba4eb27304c4e216864f6707693b27dc22c214))
 
-### [3.2.4](https://www.github.com/googleapis/python-dlp/compare/v3.2.3...v3.2.4) (2021-10-05)
+## [3.2.4](https://www.github.com/googleapis/python-dlp/compare/v3.2.3...v3.2.4) (2021-10-05)
 
 
 ### Bug Fixes
 
 * improper types in pagers generation ([164977f](https://www.github.com/googleapis/python-dlp/commit/164977fda1fff85a245869ff197c3ca9f200f544))
 
-### [3.2.3](https://www.github.com/googleapis/python-dlp/compare/v3.2.2...v3.2.3) (2021-09-24)
+## [3.2.3](https://www.github.com/googleapis/python-dlp/compare/v3.2.2...v3.2.3) (2021-09-24)
 
 
 ### Bug Fixes
 
 * add 'dict' annotation type to 'request' ([ff98215](https://www.github.com/googleapis/python-dlp/commit/ff98215e7dc3fc6a2e8b04e3b8e570cd72556f4f))
 
-### [3.2.2](https://www.github.com/googleapis/python-dlp/compare/v3.2.1...v3.2.2) (2021-07-27)
+## [3.2.2](https://www.github.com/googleapis/python-dlp/compare/v3.2.1...v3.2.2) (2021-07-27)
 
 
 ### Bug Fixes
@@ -111,7 +111,7 @@
 
 * release as 3.2.2 ([#219](https://www.github.com/googleapis/python-dlp/issues/219)) ([5618115](https://www.github.com/googleapis/python-dlp/commit/56181152dbc1e48a70583e81dbe0fc089725f463))
 
-### [3.2.1](https://www.github.com/googleapis/python-dlp/compare/v3.2.0...v3.2.1) (2021-07-21)
+## [3.2.1](https://www.github.com/googleapis/python-dlp/compare/v3.2.0...v3.2.1) (2021-07-21)
 
 
 ### Bug Fixes
@@ -135,7 +135,7 @@
 
 * omit mention of Python 2.7 in 'CONTRIBUTING.rst' ([#1127](https://www.github.com/googleapis/python-dlp/issues/1127)) ([#166](https://www.github.com/googleapis/python-dlp/issues/166)) ([e2e1c90](https://www.github.com/googleapis/python-dlp/commit/e2e1c90d65a2e2e9c1be1ed7921e138059401519))
 
-### [3.1.1](https://www.github.com/googleapis/python-dlp/compare/v3.1.0...v3.1.1) (2021-06-16)
+## [3.1.1](https://www.github.com/googleapis/python-dlp/compare/v3.1.0...v3.1.1) (2021-06-16)
 
 
 ### Bug Fixes
@@ -157,7 +157,7 @@
 * require google-api-core>=1.22.2 ([d146cf5](https://www.github.com/googleapis/python-dlp/commit/d146cf59db14b3c3afbef72d7a86419532ad347e))
 * use correct retry deadlines ([#96](https://www.github.com/googleapis/python-dlp/issues/96)) ([d146cf5](https://www.github.com/googleapis/python-dlp/commit/d146cf59db14b3c3afbef72d7a86419532ad347e))
 
-### [3.0.1](https://www.github.com/googleapis/python-dlp/compare/v3.0.0...v3.0.1) (2021-01-28)
+## [3.0.1](https://www.github.com/googleapis/python-dlp/compare/v3.0.0...v3.0.1) (2021-01-28)
 
 
 ### Bug Fixes
