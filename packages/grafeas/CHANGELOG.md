@@ -4,14 +4,14 @@
 
 [1]: https://pypi.org/project/grafeas/#history
 
-### [1.4.4](https://github.com/googleapis/python-grafeas/compare/v1.4.3...v1.4.4) (2022-05-05)
+## [1.4.4](https://github.com/googleapis/python-grafeas/compare/v1.4.3...v1.4.4) (2022-05-05)
 
 
 ### Documentation
 
 * fix type in docstring for map fields ([30b3cba](https://github.com/googleapis/python-grafeas/commit/30b3cba74aec079cd7ac29d08b55dae7caaf8018))
 
-### [1.4.3](https://github.com/googleapis/python-grafeas/compare/v1.4.2...v1.4.3) (2022-03-04)
+## [1.4.3](https://github.com/googleapis/python-grafeas/compare/v1.4.2...v1.4.3) (2022-03-04)
 
 
 ### Bug Fixes
@@ -19,7 +19,7 @@
 * **deps:** require google-api-core>=1.31.5, >=2.3.2 ([#150](https://github.com/googleapis/python-grafeas/issues/150)) ([86c3ea1](https://github.com/googleapis/python-grafeas/commit/86c3ea1f23d518a56c350cb5f26b8c651d38c1e4))
 * **deps:** require proto-plus>=1.15.0 ([86c3ea1](https://github.com/googleapis/python-grafeas/commit/86c3ea1f23d518a56c350cb5f26b8c651d38c1e4))
 
-### [1.4.2](https://github.com/googleapis/python-grafeas/compare/v1.4.1...v1.4.2) (2022-02-26)
+## [1.4.2](https://github.com/googleapis/python-grafeas/compare/v1.4.1...v1.4.2) (2022-02-26)
 
 
 ### Bug Fixes
@@ -31,7 +31,7 @@
 
 * add generated snippets ([#147](https://github.com/googleapis/python-grafeas/issues/147)) ([6fcc520](https://github.com/googleapis/python-grafeas/commit/6fcc52016e3feca62b171ea4e6c70644302263c9))
 
-### [1.4.1](https://github.com/googleapis/python-grafeas/compare/v1.4.0...v1.4.1) (2022-01-11)
+## [1.4.1](https://github.com/googleapis/python-grafeas/compare/v1.4.0...v1.4.1) (2022-01-11)
 
 
 ### Bug Fixes
@@ -45,7 +45,7 @@
 
 * Add compliance and intoto attestation protos ([#123](https://www.github.com/googleapis/python-grafeas/issues/123)) ([ff88a63](https://www.github.com/googleapis/python-grafeas/commit/ff88a6388c1117d17f5e33e28aa1c7e090b34659))
 
-### [1.3.1](https://www.github.com/googleapis/python-grafeas/compare/v1.3.0...v1.3.1) (2021-11-01)
+## [1.3.1](https://www.github.com/googleapis/python-grafeas/compare/v1.3.0...v1.3.1) (2021-11-01)
 
 
 ### Bug Fixes
@@ -72,21 +72,21 @@
 
 * add context manager support in client ([#114](https://www.github.com/googleapis/python-grafeas/issues/114)) ([13240ae](https://www.github.com/googleapis/python-grafeas/commit/13240ae230782816916edda9e665c9457620a094))
 
-### [1.1.4](https://www.github.com/googleapis/python-grafeas/compare/v1.1.3...v1.1.4) (2021-09-30)
+## [1.1.4](https://www.github.com/googleapis/python-grafeas/compare/v1.1.3...v1.1.4) (2021-09-30)
 
 
 ### Bug Fixes
 
 * improper types in pagers generation ([ce7afa0](https://www.github.com/googleapis/python-grafeas/commit/ce7afa03c39588832beaa9a0307b79ba1fac88f6))
 
-### [1.1.3](https://www.github.com/googleapis/python-grafeas/compare/v1.1.2...v1.1.3) (2021-09-24)
+## [1.1.3](https://www.github.com/googleapis/python-grafeas/compare/v1.1.2...v1.1.3) (2021-09-24)
 
 
 ### Bug Fixes
 
 * add 'dict' annotation type to 'request' ([594f8d1](https://www.github.com/googleapis/python-grafeas/commit/594f8d19b3515c1cadab9fdacbba4317d4b43b29))
 
-### [1.1.2](https://www.github.com/googleapis/python-grafeas/compare/v1.1.1...v1.1.2) (2021-07-28)
+## [1.1.2](https://www.github.com/googleapis/python-grafeas/compare/v1.1.1...v1.1.2) (2021-07-28)
 
 
 ### Bug Fixes
@@ -103,7 +103,7 @@
 
 * release as 1.1.2 ([#89](https://www.github.com/googleapis/python-grafeas/issues/89)) ([508aa4d](https://www.github.com/googleapis/python-grafeas/commit/508aa4dc1c61dfc4cb12ed16c062977ed3f324ba))
 
-### [1.1.1](https://www.github.com/googleapis/python-grafeas/compare/v1.1.0...v1.1.1) (2021-07-20)
+## [1.1.1](https://www.github.com/googleapis/python-grafeas/compare/v1.1.0...v1.1.1) (2021-07-20)
 
 
 ### Bug Fixes
@@ -117,7 +117,7 @@
 
 * bump release level to production/stable ([#71](https://www.github.com/googleapis/python-grafeas/issues/71)) ([53bd8a5](https://www.github.com/googleapis/python-grafeas/commit/53bd8a50ab731cf43d0c789198d221c7fbff6fb6))
 
-### [1.0.1](https://www.github.com/googleapis/python-grafeas/compare/v1.0.0...v1.0.1) (2020-08-12)
+## [1.0.1](https://www.github.com/googleapis/python-grafeas/compare/v1.0.0...v1.0.1) (2020-08-12)
 
 
 ### Bug Fixes
@@ -135,7 +135,7 @@
 
 * generate with microgenerator ([#36](https://www.github.com/googleapis/python-grafeas/issues/36)) ([2785cc2](https://www.github.com/googleapis/python-grafeas/commit/2785cc23c3c59457d9f42a9ef1321c2ad0fade47))
 
-### [0.4.1](https://www.github.com/googleapis/python-grafeas/compare/v0.4.0...v0.4.1) (2020-06-25)
+## [0.4.1](https://www.github.com/googleapis/python-grafeas/compare/v0.4.0...v0.4.1) (2020-06-25)
 
 
 ### Bug Fixes
