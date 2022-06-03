@@ -73,7 +73,8 @@ for each method, base on its semantics:
   the same "generation", the library uses its
   :data:`~google.cloud.storage.retry.DEFAULT_RETRY_IF_GENERATION_SPECIFIED`
   policy, which retries API requests which returns a "transient" error,
-  but only if the original request includes an ``ifGenerationMatch`` header.
+  but only if the original request includes a ``generation`` or
+  ``ifGenerationMatch`` header.
 
 - For API requests which are idempotent only if the bucket or blob has
   the same "metageneration", the library uses its
@@ -98,6 +99,20 @@ explicit policy in your code.
 .. code-block:: python
 
    bucket = client.get_bucket(BUCKET_NAME, retry=None)
+
+- You can modify the default retry behavior and create a copy of :data:`~google.cloud.storage.retry.DEFAULT_RETRY`
+  by calling it with a ``with_XXX`` method. E.g.:
+
+.. code-block:: python
+
+   from google.cloud.storage.retry import DEFAULT_RETRY
+
+   # Customize retry with a deadline of 500 seconds (default=120 seconds).
+   modified_retry = DEFAULT_RETRY.with_deadline(500.0)
+   # Customize retry with an initial wait time of 1.5 (default=1.0).
+   # Customize retry with a wait time multiplier per iteration of 1.2 (default=2.0).
+   # Customize retry with a maximum wait time of 45.0 (default=60.0).
+   modified_retry = modified_retry.with_delay(initial=1.5, multiplier=1.2, maximum=45.0)
 
 - You can pass an instance of :class:`google.api_core.retry.Retry` to enable
   retries;  the passed object will define retriable response codes and errors,
@@ -140,5 +155,5 @@ explicit policy in your code.
 
    my_retry_policy = Retry(predicate=is_retryable)
    my_cond_policy = ConditionalRetryPolicy(
-       my_retry_policy, conditional_predicate=is_etag_in_data)
+       my_retry_policy, conditional_predicate=is_etag_in_data, ["query_params"])
    bucket = client.get_bucket(BUCKET_NAME, retry=my_cond_policy)

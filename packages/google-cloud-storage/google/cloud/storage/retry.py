@@ -88,7 +88,8 @@ class ConditionalRetryPolicy(object):
     :type required_kwargs: list(str)
     :param required_kwargs:
         A list of keyword argument keys that will be extracted from the API call
-        and passed into the ``conditional predicate`` in order.
+        and passed into the ``conditional predicate`` in order. For example,
+        ``["query_params"]`` is commmonly used for preconditions in query_params.
     """
 
     def __init__(self, retry_policy, conditional_predicate, required_kwargs):
