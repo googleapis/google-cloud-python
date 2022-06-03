@@ -1,6 +1,6 @@
 # Changelog
 
-### [1.3.1](https://github.com/googleapis/python-compute/compare/v1.3.0...v1.3.1) (2022-05-05)
+## [1.3.1](https://github.com/googleapis/python-compute/compare/v1.3.0...v1.3.1) (2022-05-05)
 
 
 ### Documentation
@@ -165,7 +165,7 @@
 
 * release as 0.4.3 ([#89](https://www.github.com/googleapis/python-compute/issues/89)) ([fbc1a28](https://www.github.com/googleapis/python-compute/commit/fbc1a2869932883d0e7e8e498e16d2273fb25048))
 
-### [0.4.2](https://www.github.com/googleapis/python-compute/compare/v0.4.1...v0.4.2) (2021-07-26)
+## [0.4.2](https://www.github.com/googleapis/python-compute/compare/v0.4.1...v0.4.2) (2021-07-26)
 
 ### Bug Fixes
 
@@ -184,7 +184,7 @@
 * Kokoro uses separate project for concurent tests. ([#83](https://www.github.com/googleapis/python-compute/issues/83)) ([40afb33](https://www.github.com/googleapis/python-compute/commit/40afb333a963717853f70410a7a08eda5492418c))
 
 
-### [0.4.1](https://www.github.com/googleapis/python-compute/compare/v0.4.0...v0.4.1) (2021-06-16)
+## [0.4.1](https://www.github.com/googleapis/python-compute/compare/v0.4.0...v0.4.1) (2021-06-16)
 
 
 ### Bug Fixes
@@ -208,7 +208,7 @@
 
 * Regenerate newest version of python-compute with field presence support ([#49](https://www.github.com/googleapis/python-compute/issues/49)) ([6181460](https://www.github.com/googleapis/python-compute/commit/61814609cdd8f9d26ba2b4f121e91dab4c565849))
 
-### [0.2.1](https://www.github.com/googleapis/python-compute/compare/v0.2.0...v0.2.1) (2021-02-26)
+## [0.2.1](https://www.github.com/googleapis/python-compute/compare/v0.2.0...v0.2.1) (2021-02-26)
 
 
 ### Bug Fixes
