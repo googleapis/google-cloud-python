@@ -4,7 +4,7 @@
 
 [1]: https://pypi.org/project/google-cloud-monitoring/#history
 
-### [2.9.1](https://github.com/googleapis/python-monitoring/compare/v2.9.0...v2.9.1) (2022-03-05)
+## [2.9.1](https://github.com/googleapis/python-monitoring/compare/v2.9.0...v2.9.1) (2022-03-05)
 
 
 ### Bug Fixes
@@ -88,14 +88,14 @@
 
 * add context manager support in client ([#230](https://www.github.com/googleapis/python-monitoring/issues/230)) ([954dd18](https://www.github.com/googleapis/python-monitoring/commit/954dd18966520dbc623470ef528166d83d3e19ba))
 
-### [2.5.2](https://www.github.com/googleapis/python-monitoring/compare/v2.5.1...v2.5.2) (2021-09-30)
+## [2.5.2](https://www.github.com/googleapis/python-monitoring/compare/v2.5.1...v2.5.2) (2021-09-30)
 
 
 ### Bug Fixes
 
 * improper types in pagers generation ([4a8b823](https://www.github.com/googleapis/python-monitoring/commit/4a8b823061a03fd0e5c385c1fa0ac964b9a5597a))
 
-### [2.5.1](https://www.github.com/googleapis/python-monitoring/compare/v2.5.0...v2.5.1) (2021-09-24)
+## [2.5.1](https://www.github.com/googleapis/python-monitoring/compare/v2.5.0...v2.5.1) (2021-09-24)
 
 
 ### Bug Fixes
@@ -121,7 +121,7 @@
 
 * **samples:** include example writing of label data ([#202](https://www.github.com/googleapis/python-monitoring/issues/202)) ([f5e8cf8](https://www.github.com/googleapis/python-monitoring/commit/f5e8cf8b51812b9e79bb5312f84e29b3f8c2c81e))
 
-### [2.4.2](https://www.github.com/googleapis/python-monitoring/compare/v2.4.1...v2.4.2) (2021-07-28)
+## [2.4.2](https://www.github.com/googleapis/python-monitoring/compare/v2.4.1...v2.4.2) (2021-07-28)
 
 
 ### Bug Fixes
@@ -138,7 +138,7 @@
 
 * release as 2.4.2 ([#191](https://www.github.com/googleapis/python-monitoring/issues/191)) ([6f183dd](https://www.github.com/googleapis/python-monitoring/commit/6f183ddeef540be4f47ee553e2b2ee8424508968))
 
-### [2.4.1](https://www.github.com/googleapis/python-monitoring/compare/v2.4.0...v2.4.1) (2021-07-20)
+## [2.4.1](https://www.github.com/googleapis/python-monitoring/compare/v2.4.0...v2.4.1) (2021-07-20)
 
 
 ### Bug Fixes
@@ -174,7 +174,7 @@
 
 * add async client to %name_%version/init.py ([ffa4b1f](https://www.github.com/googleapis/python-monitoring/commit/ffa4b1fb529824a5c408880ca5d1e80149bb5a8c))
 
-### [2.2.1](https://www.github.com/googleapis/python-monitoring/compare/v2.2.0...v2.2.1) (2021-03-29)
+## [2.2.1](https://www.github.com/googleapis/python-monitoring/compare/v2.2.0...v2.2.1) (2021-03-29)
 
 
 ### Bug Fixes
@@ -220,7 +220,7 @@
 
 * remove code snippet and 'Stackdriver' ([#71](https://www.github.com/googleapis/python-monitoring/issues/71)) ([4cdb1ff](https://www.github.com/googleapis/python-monitoring/commit/4cdb1ff439154409c94e347dd5f3b6e2bc40e998))
 
-### [2.0.1](https://www.github.com/googleapis/python-monitoring/compare/v2.0.0...v2.0.1) (2021-02-18)
+## [2.0.1](https://www.github.com/googleapis/python-monitoring/compare/v2.0.0...v2.0.1) (2021-02-18)
 
 
 ### Bug Fixes
