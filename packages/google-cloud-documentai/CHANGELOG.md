@@ -1,6 +1,6 @@
 # Changelog
 
-### [1.4.1](https://github.com/googleapis/python-documentai/compare/v1.4.0...v1.4.1) (2022-04-28)
+## [1.4.1](https://github.com/googleapis/python-documentai/compare/v1.4.0...v1.4.1) (2022-04-28)
 
 
 ### Bug Fixes
@@ -33,7 +33,7 @@
 * remove libcst from setup_requires ([#276](https://github.com/googleapis/python-documentai/issues/276)) ([56c96e4](https://github.com/googleapis/python-documentai/commit/56c96e4cd3427321dac0e8c979aa4e34eefa0b12))
 * resolve DuplicateCredentialArgs error when using credentials_file ([530f2ba](https://github.com/googleapis/python-documentai/commit/530f2ba88cc5abc8f888722246a3610adca001a9))
 
-### [1.2.1](https://github.com/googleapis/python-documentai/compare/v1.2.0...v1.2.1) (2022-01-17)
+## [1.2.1](https://github.com/googleapis/python-documentai/compare/v1.2.0...v1.2.1) (2022-01-17)
 
 
 ### Bug Fixes
