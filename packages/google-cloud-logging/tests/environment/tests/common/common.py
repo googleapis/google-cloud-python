@@ -100,7 +100,7 @@ class Common:
         snippet,
         append_uuid=True,
         ignore_protos=True,
-        max_tries=3,
+        max_tries=5,
         **kwargs,
     ):
         """
@@ -138,10 +138,10 @@ class Common:
             except RpcError as e:
                 print(f"RPC error: {e}")
                 # most RpcErrors come from exceeding the reads per minute quota
-                # wait at least 60 seconds
+                # wait between 5-15 minutes
                 # use a randomized backoff so parallel runs don't start up at
                 # the same time again
-                sleep(random.randint(60, 300))
+                sleep(random.randint(300, 900))
                 tries += 1
             except LogsNotFound as e:
                 print("logs not found...")

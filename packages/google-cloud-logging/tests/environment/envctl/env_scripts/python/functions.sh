@@ -52,7 +52,8 @@ deploy() {
   # set up deployment directory
   # copy over local copy of library
   pushd $SUPERREPO_ROOT
-    tar -cvf $TMP_DIR/lib.tar --exclude tests --exclude .nox --exclude samples --exclude docs --exclude __pycache__ .
+    tar -cvf $TMP_DIR/lib.tar --exclude tests --exclude .nox --exclude samples \
+      --exclude docs --exclude __pycache__ --exclude .git --exclude .github --exclude dist .
   popd
   mkdir $TMP_DIR/python-logging
   tar -xvf $TMP_DIR/lib.tar --directory $TMP_DIR/python-logging
