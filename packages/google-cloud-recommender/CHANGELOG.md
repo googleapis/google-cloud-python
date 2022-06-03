@@ -4,14 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-recommender/#history
 
-### [2.7.3](https://github.com/googleapis/python-recommender/compare/v2.7.2...v2.7.3) (2022-05-05)
+## [2.7.3](https://github.com/googleapis/python-recommender/compare/v2.7.2...v2.7.3) (2022-05-05)
 
 
 ### Documentation
 
 * fix type in docstring for map fields ([9749c44](https://github.com/googleapis/python-recommender/commit/9749c447bbe823ef33b5805a21c2c8a5b0615abb))
 
-### [2.7.2](https://github.com/googleapis/python-recommender/compare/v2.7.1...v2.7.2) (2022-03-05)
+## [2.7.2](https://github.com/googleapis/python-recommender/compare/v2.7.1...v2.7.2) (2022-03-05)
 
 
 ### Bug Fixes
@@ -19,7 +19,7 @@
 * **deps:** require google-api-core>=1.31.5, >=2.3.2 ([#180](https://github.com/googleapis/python-recommender/issues/180)) ([9e4b8fb](https://github.com/googleapis/python-recommender/commit/9e4b8fb88041afe079962cfea7fa3410094e22b2))
 * **deps:** require proto-plus>=1.15.0 ([9e4b8fb](https://github.com/googleapis/python-recommender/commit/9e4b8fb88041afe079962cfea7fa3410094e22b2))
 
-### [2.7.1](https://github.com/googleapis/python-recommender/compare/v2.7.0...v2.7.1) (2022-02-11)
+## [2.7.1](https://github.com/googleapis/python-recommender/compare/v2.7.0...v2.7.1) (2022-02-11)
 
 
 ### Bug Fixes
@@ -46,7 +46,7 @@
 * add recommendation security projection ([9157aed](https://github.com/googleapis/python-recommender/commit/9157aeda086c2cdabd1730cc74834a09bab3162e))
 * add recommendation xor_group_id ([9157aed](https://github.com/googleapis/python-recommender/commit/9157aeda086c2cdabd1730cc74834a09bab3162e))
 
-### [2.5.1](https://www.github.com/googleapis/python-recommender/compare/v2.5.0...v2.5.1) (2021-11-02)
+## [2.5.1](https://www.github.com/googleapis/python-recommender/compare/v2.5.0...v2.5.1) (2021-11-02)
 
 
 ### Bug Fixes
@@ -74,21 +74,21 @@
 
 * add context manager support in client ([#136](https://www.github.com/googleapis/python-recommender/issues/136)) ([815739b](https://www.github.com/googleapis/python-recommender/commit/815739b3bbe435be5b21732c84d3ada1007ab0ad))
 
-### [2.3.4](https://www.github.com/googleapis/python-recommender/compare/v2.3.3...v2.3.4) (2021-09-30)
+## [2.3.4](https://www.github.com/googleapis/python-recommender/compare/v2.3.3...v2.3.4) (2021-09-30)
 
 
 ### Bug Fixes
 
 * improper types in pagers generation ([a9bba5f](https://www.github.com/googleapis/python-recommender/commit/a9bba5f68d7510fec7e50efb59a3f7b8317e7984))
 
-### [2.3.3](https://www.github.com/googleapis/python-recommender/compare/v2.3.2...v2.3.3) (2021-09-24)
+## [2.3.3](https://www.github.com/googleapis/python-recommender/compare/v2.3.2...v2.3.3) (2021-09-24)
 
 
 ### Bug Fixes
 
 * add 'dict' annotation type to 'request' ([99b111d](https://www.github.com/googleapis/python-recommender/commit/99b111d12987d6a79c96294971747cb092bb381d))
 
-### [2.3.2](https://www.github.com/googleapis/python-recommender/compare/v2.3.1...v2.3.2) (2021-07-28)
+## [2.3.2](https://www.github.com/googleapis/python-recommender/compare/v2.3.1...v2.3.2) (2021-07-28)
 
 
 ### Bug Fixes
@@ -105,7 +105,7 @@
 
 * release as 2.3.2 ([#115](https://www.github.com/googleapis/python-recommender/issues/115)) ([6e177d4](https://www.github.com/googleapis/python-recommender/commit/6e177d4790a2074d035516ada6b27c66315aa44c))
 
-### [2.3.1](https://www.github.com/googleapis/python-recommender/compare/v2.3.0...v2.3.1) (2021-07-20)
+## [2.3.1](https://www.github.com/googleapis/python-recommender/compare/v2.3.0...v2.3.1) (2021-07-20)
 
 
 ### Bug Fixes
@@ -170,7 +170,7 @@
 
 * use microgenerator ([#54](https://www.github.com/googleapis/python-recommender/issues/54)) ([63b8a43](https://www.github.com/googleapis/python-recommender/commit/63b8a43ce25a5305664424fa247ad82595c4342f)). See [Migration Guide](https://github.com/googleapis/python-recommender/blob/main/UPGRADING.md).
 
-### [1.1.1](https://www.github.com/googleapis/python-recommender/compare/v1.1.0...v1.1.1) (2020-10-29)
+## [1.1.1](https://www.github.com/googleapis/python-recommender/compare/v1.1.0...v1.1.1) (2020-10-29)
 
 
 ### Bug Fixes
