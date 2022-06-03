@@ -18,7 +18,7 @@
 * Update client libraries for v1p1beta1 api ([#372](https://github.com/googleapis/python-speech/issues/372)) ([39b0a2c](https://github.com/googleapis/python-speech/commit/39b0a2cc2f0735cf02fc02982827f4a8c7aada0b))
 * update docstrings to use absolute links ([#355](https://github.com/googleapis/python-speech/issues/355)) ([e36910b](https://github.com/googleapis/python-speech/commit/e36910b24ab69b134338a8b64fe4c6edad350514))
 
-### [2.13.1](https://github.com/googleapis/python-speech/compare/v2.13.0...v2.13.1) (2022-03-05)
+## [2.13.1](https://github.com/googleapis/python-speech/compare/v2.13.0...v2.13.1) (2022-03-05)
 
 
 ### Bug Fixes
@@ -57,7 +57,7 @@
 * add word confidence ([3fdef1f](https://github.com/googleapis/python-speech/commit/3fdef1f6057a67c21ef738f4a2e843c8e97274b4))
 * added alternative_language_codes to RecognitionConfig ([#290](https://github.com/googleapis/python-speech/issues/290)) ([3fdef1f](https://github.com/googleapis/python-speech/commit/3fdef1f6057a67c21ef738f4a2e843c8e97274b4))
 
-### [2.11.1](https://www.github.com/googleapis/python-speech/compare/v2.11.0...v2.11.1) (2021-11-01)
+## [2.11.1](https://www.github.com/googleapis/python-speech/compare/v2.11.0...v2.11.1) (2021-11-01)
 
 
 ### Bug Fixes
@@ -84,21 +84,21 @@
 
 * add context manager support in client ([#268](https://www.github.com/googleapis/python-speech/issues/268)) ([a5e2005](https://www.github.com/googleapis/python-speech/commit/a5e200515c621695c8c8ed76f739e0b744f32382))
 
-### [2.9.3](https://www.github.com/googleapis/python-speech/compare/v2.9.2...v2.9.3) (2021-10-04)
+## [2.9.3](https://www.github.com/googleapis/python-speech/compare/v2.9.2...v2.9.3) (2021-10-04)
 
 
 ### Documentation
 
 * **samples:** Remove reference to deprecated message "diarization_speaker_count" in favor of diarization_config ([#264](https://www.github.com/googleapis/python-speech/issues/264)) ([c1f7f35](https://www.github.com/googleapis/python-speech/commit/c1f7f357fe8367dafcdcb3d42e04a2619de2de62))
 
-### [2.9.2](https://www.github.com/googleapis/python-speech/compare/v2.9.1...v2.9.2) (2021-09-30)
+## [2.9.2](https://www.github.com/googleapis/python-speech/compare/v2.9.1...v2.9.2) (2021-09-30)
 
 
 ### Bug Fixes
 
 * improper types in pagers generation ([a0bac07](https://www.github.com/googleapis/python-speech/commit/a0bac07de9f4e89c41d34a47d9e35ec6fd7edac3))
 
-### [2.9.1](https://www.github.com/googleapis/python-speech/compare/v2.9.0...v2.9.1) (2021-09-24)
+## [2.9.1](https://www.github.com/googleapis/python-speech/compare/v2.9.0...v2.9.1) (2021-09-24)
 
 
 ### Bug Fixes
@@ -156,7 +156,7 @@
 * **samples:** Add Spoken Punctuation and Emojis code samples ([#155](https://www.github.com/googleapis/python-speech/issues/155)) ([cc6b234](https://www.github.com/googleapis/python-speech/commit/cc6b2341cde1fec270afd500c8c5fe2b9023b346))
 * add Samples section to CONTRIBUTING.rst ([#211](https://www.github.com/googleapis/python-speech/issues/211)) ([4b7e4c4](https://www.github.com/googleapis/python-speech/commit/4b7e4c46b57585f5db4adceca6ba5717d02ebb64))
 
-### [2.5.1](https://www.github.com/googleapis/python-speech/compare/v2.5.0...v2.5.1) (2021-07-21)
+## [2.5.1](https://www.github.com/googleapis/python-speech/compare/v2.5.0...v2.5.1) (2021-07-21)
 
 
 ### Bug Fixes
@@ -170,7 +170,7 @@
 
 * add always_use_jwt_access ([#191](https://www.github.com/googleapis/python-speech/issues/191)) ([0d84445](https://www.github.com/googleapis/python-speech/commit/0d8444543138f45445fc7995eccd5655376e0bfc))
 
-### [2.4.1](https://www.github.com/googleapis/python-speech/compare/v2.4.0...v2.4.1) (2021-06-21)
+## [2.4.1](https://www.github.com/googleapis/python-speech/compare/v2.4.0...v2.4.1) (2021-06-21)
 
 
 ### Documentation
@@ -197,7 +197,7 @@
 
 * Support for spoken punctuation and spoken emojis ([#143](https://www.github.com/googleapis/python-speech/issues/143)) ([b6bddbe](https://www.github.com/googleapis/python-speech/commit/b6bddbe46172debd962c3d8e566a7c410fb4f279))
 
-### [2.2.1](https://www.github.com/googleapis/python-speech/compare/v2.2.0...v2.2.1) (2021-03-31)
+## [2.2.1](https://www.github.com/googleapis/python-speech/compare/v2.2.0...v2.2.1) (2021-03-31)
 
 
 ### Bug Fixes
@@ -233,7 +233,7 @@
 * fix sphinx identifiers ([3bed0b4](https://www.github.com/googleapis/python-speech/commit/3bed0b43c75be649e29475240c7f486fc9cd63dc))
 * updated setup documentation to point to python-speech instead of python-docs-samples ([#89](https://www.github.com/googleapis/python-speech/issues/89)) ([722e86e](https://www.github.com/googleapis/python-speech/commit/722e86e726831f7e44dbc8f0fb620a1ccd45f116))
 
-### [2.0.1](https://www.github.com/googleapis/python-speech/compare/v2.0.0...v2.0.1) (2020-11-16)
+## [2.0.1](https://www.github.com/googleapis/python-speech/compare/v2.0.0...v2.0.1) (2020-11-16)
 
 
 ### Bug Fixes
@@ -257,7 +257,7 @@
 
 * remove example usage from READMe ([#46](https://www.github.com/googleapis/python-speech/issues/46)) ([4214630](https://www.github.com/googleapis/python-speech/commit/4214630c3318e6c9bc0a5156e20344956faf7d52))
 
-### [1.3.2](https://www.github.com/googleapis/python-speech/compare/v1.3.1...v1.3.2) (2020-02-03)
+## [1.3.2](https://www.github.com/googleapis/python-speech/compare/v1.3.1...v1.3.2) (2020-02-03)
 
 
 ### Bug Fixes
