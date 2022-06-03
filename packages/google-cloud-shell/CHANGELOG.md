@@ -1,13 +1,13 @@
 # Changelog
 
-### [1.3.2](https://github.com/googleapis/python-shell/compare/v1.3.1...v1.3.2) (2022-03-05)
+## [1.3.2](https://github.com/googleapis/python-shell/compare/v1.3.1...v1.3.2) (2022-03-05)
 
 
 ### Bug Fixes
 
 * **deps:** require google-api-core>=1.31.5, >=2.3.2 ([#85](https://github.com/googleapis/python-shell/issues/85)) ([b3271c5](https://github.com/googleapis/python-shell/commit/b3271c5f07fc1326a614ab8fb365cc9b7c46c897))
 
-### [1.3.1](https://github.com/googleapis/python-shell/compare/v1.3.0...v1.3.1) (2022-02-11)
+## [1.3.1](https://github.com/googleapis/python-shell/compare/v1.3.0...v1.3.1) (2022-02-11)
 
 
 ### Bug Fixes
@@ -21,14 +21,14 @@
 
 * add api key support ([#70](https://github.com/googleapis/python-shell/issues/70)) ([3e91fb8](https://github.com/googleapis/python-shell/commit/3e91fb8bacf28a19e167a357829ffcbb9e0e02c9))
 
-### [1.2.2](https://www.github.com/googleapis/python-shell/compare/v1.2.1...v1.2.2) (2022-01-07)
+## [1.2.2](https://www.github.com/googleapis/python-shell/compare/v1.2.1...v1.2.2) (2022-01-07)
 
 
 ### Bug Fixes
 
 * provide appropriate mock values for message body fields ([24cf144](https://www.github.com/googleapis/python-shell/commit/24cf144d17b64dc71a5182d1ccbc44444bd68450))
 
-### [1.2.1](https://www.github.com/googleapis/python-shell/compare/v1.2.0...v1.2.1) (2021-11-01)
+## [1.2.1](https://www.github.com/googleapis/python-shell/compare/v1.2.0...v1.2.1) (2021-11-01)
 
 
 ### Bug Fixes
@@ -55,7 +55,7 @@
 
 * add context manager support in client ([#41](https://www.github.com/googleapis/python-shell/issues/41)) ([33eb545](https://www.github.com/googleapis/python-shell/commit/33eb545715c52bb3e8e04cba07ee84466ace672e))
 
-### [1.0.1](https://www.github.com/googleapis/python-shell/compare/v1.0.0...v1.0.1) (2021-09-24)
+## [1.0.1](https://www.github.com/googleapis/python-shell/compare/v1.0.0...v1.0.1) (2021-09-24)
 
 
 ### Bug Fixes
@@ -69,7 +69,7 @@
 
 * bump release level to production/stable ([#25](https://www.github.com/googleapis/python-shell/issues/25)) ([9a1a44e](https://www.github.com/googleapis/python-shell/commit/9a1a44e65f4c9adc16bce134046752e10d04ce4b))
 
-### [0.2.2](https://www.github.com/googleapis/python-shell/compare/v0.2.1...v0.2.2) (2021-07-30)
+## [0.2.2](https://www.github.com/googleapis/python-shell/compare/v0.2.1...v0.2.2) (2021-07-30)
 
 
 ### Features
@@ -86,7 +86,7 @@
 
 * release as 0.2.2 ([#22](https://www.github.com/googleapis/python-shell/issues/22)) ([d3b208a](https://www.github.com/googleapis/python-shell/commit/d3b208aa33932c1008c5627d61bcd8dcf67aa85a))
 
-### [0.2.1](https://www.github.com/googleapis/python-shell/compare/v0.2.0...v0.2.1) (2021-07-21)
+## [0.2.1](https://www.github.com/googleapis/python-shell/compare/v0.2.0...v0.2.1) (2021-07-21)
 
 
 ### Bug Fixes
