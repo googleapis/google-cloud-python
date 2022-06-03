@@ -11,7 +11,7 @@
 
 * promote CustomVoiceParams to v1 ([#266](https://github.com/googleapis/python-texttospeech/issues/266)) ([f484e7f](https://github.com/googleapis/python-texttospeech/commit/f484e7fe036fe57a4f432bf30c6421a6541ea486))
 
-### [2.10.2](https://github.com/googleapis/python-texttospeech/compare/v2.10.1...v2.10.2) (2022-03-05)
+## [2.10.2](https://github.com/googleapis/python-texttospeech/compare/v2.10.1...v2.10.2) (2022-03-05)
 
 
 ### Bug Fixes
@@ -19,7 +19,7 @@
 * **deps:** require google-api-core>=1.31.5, >=2.3.2 ([#261](https://github.com/googleapis/python-texttospeech/issues/261)) ([f993058](https://github.com/googleapis/python-texttospeech/commit/f993058b1535e8cc0c71877b8dca9beae3dffb1b))
 * **deps:** require proto-plus>=1.15.0 ([f993058](https://github.com/googleapis/python-texttospeech/commit/f993058b1535e8cc0c71877b8dca9beae3dffb1b))
 
-### [2.10.1](https://github.com/googleapis/python-texttospeech/compare/v2.10.0...v2.10.1) (2022-02-26)
+## [2.10.1](https://github.com/googleapis/python-texttospeech/compare/v2.10.0...v2.10.1) (2022-02-26)
 
 
 ### Documentation
@@ -43,7 +43,7 @@
 
 * update comments for ListVoicesRequest ([#244](https://github.com/googleapis/python-texttospeech/issues/244)) ([bc5b73f](https://github.com/googleapis/python-texttospeech/commit/bc5b73fbc62900f89a01486c6e8d42d459c34fd6))
 
-### [2.9.1](https://www.github.com/googleapis/python-texttospeech/compare/v2.9.0...v2.9.1) (2022-01-08)
+## [2.9.1](https://www.github.com/googleapis/python-texttospeech/compare/v2.9.0...v2.9.1) (2022-01-08)
 
 
 ### Documentation
@@ -70,7 +70,7 @@
 
 * fix docstring formatting ([#218](https://www.github.com/googleapis/python-texttospeech/issues/218)) ([2c57f95](https://www.github.com/googleapis/python-texttospeech/commit/2c57f95a1af747b49dac41628bd43d485a68583e))
 
-### [2.7.1](https://www.github.com/googleapis/python-texttospeech/compare/v2.7.0...v2.7.1) (2021-11-01)
+## [2.7.1](https://www.github.com/googleapis/python-texttospeech/compare/v2.7.0...v2.7.1) (2021-11-01)
 
 
 ### Bug Fixes
@@ -97,14 +97,14 @@
 
 * add context manager support in client ([#196](https://www.github.com/googleapis/python-texttospeech/issues/196)) ([73d9290](https://www.github.com/googleapis/python-texttospeech/commit/73d9290cdea69a00ba317ae017a1d07bcf734989))
 
-### [2.5.3](https://www.github.com/googleapis/python-texttospeech/compare/v2.5.2...v2.5.3) (2021-09-24)
+## [2.5.3](https://www.github.com/googleapis/python-texttospeech/compare/v2.5.2...v2.5.3) (2021-09-24)
 
 
 ### Bug Fixes
 
 * add 'dict' annotation type to 'request' ([e74b994](https://www.github.com/googleapis/python-texttospeech/commit/e74b9942d480bf7e360bc61ff183909873fc20a6))
 
-### [2.5.2](https://www.github.com/googleapis/python-texttospeech/compare/v2.5.1...v2.5.2) (2021-07-28)
+## [2.5.2](https://www.github.com/googleapis/python-texttospeech/compare/v2.5.1...v2.5.2) (2021-07-28)
 
 
 ### Bug Fixes
@@ -121,7 +121,7 @@
 
 * release as 2.5.2 ([#172](https://www.github.com/googleapis/python-texttospeech/issues/172)) ([3804727](https://www.github.com/googleapis/python-texttospeech/commit/3804727995d0357fa0c4c5c246210768e0ce7124))
 
-### [2.5.1](https://www.github.com/googleapis/python-texttospeech/compare/v2.5.0...v2.5.1) (2021-07-20)
+## [2.5.1](https://www.github.com/googleapis/python-texttospeech/compare/v2.5.0...v2.5.1) (2021-07-20)
 
 
 ### Bug Fixes
@@ -216,7 +216,7 @@
 
 * address PR comments ([65f903b](https://www.github.com/googleapis/python-texttospeech/commit/65f903b00395716fad272ca4fc973755735e1e20))
 
-### [1.0.1](https://www.github.com/googleapis/python-texttospeech/compare/v1.0.0...v1.0.1) (2020-02-28)
+## [1.0.1](https://www.github.com/googleapis/python-texttospeech/compare/v1.0.0...v1.0.1) (2020-02-28)
 
 
 ### Bug Fixes
