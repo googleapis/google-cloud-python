@@ -4,14 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-vision/#history
 
-### [2.7.2](https://github.com/googleapis/python-vision/compare/v2.7.1...v2.7.2) (2022-03-25)
+## [2.7.2](https://github.com/googleapis/python-vision/compare/v2.7.1...v2.7.2) (2022-03-25)
 
 
 ### Documentation
 
 * fixed 'annotate an image' ([#330](https://github.com/googleapis/python-vision/issues/330)) ([1019f29](https://github.com/googleapis/python-vision/commit/1019f2920b065359306f654cf864d9f27a90cf9d))
 
-### [2.7.1](https://github.com/googleapis/python-vision/compare/v2.7.0...v2.7.1) (2022-03-05)
+## [2.7.1](https://github.com/googleapis/python-vision/compare/v2.7.0...v2.7.1) (2022-03-05)
 
 
 ### Bug Fixes
@@ -35,7 +35,7 @@
 
 * add auto-generated samples ([#309](https://github.com/googleapis/python-vision/issues/309)) ([efc022d](https://github.com/googleapis/python-vision/commit/efc022d6b850dffbb621c066aa8fd1ff69cb0519))
 
-### [2.6.3](https://www.github.com/googleapis/python-vision/compare/v2.6.2...v2.6.3) (2021-12-12)
+## [2.6.3](https://www.github.com/googleapis/python-vision/compare/v2.6.2...v2.6.3) (2021-12-12)
 
 
 ### Documentation
@@ -43,7 +43,7 @@
 * Add example of how to use max_results ([#277](https://www.github.com/googleapis/python-vision/issues/277)) ([cf4dafe](https://www.github.com/googleapis/python-vision/commit/cf4dafe7c716c8091efd3bcc5a6fa5729c72fed3))
 * Update doctext sample to include method signature ([#275](https://www.github.com/googleapis/python-vision/issues/275)) ([b059f3a](https://www.github.com/googleapis/python-vision/commit/b059f3a7b39a6f17c0086e18fc69776265de18d7))
 
-### [2.6.2](https://www.github.com/googleapis/python-vision/compare/v2.6.1...v2.6.2) (2021-11-01)
+## [2.6.2](https://www.github.com/googleapis/python-vision/compare/v2.6.1...v2.6.2) (2021-11-01)
 
 
 ### Bug Fixes
@@ -56,7 +56,7 @@
 
 * list oneofs in docstring ([b6bf6ab](https://www.github.com/googleapis/python-vision/commit/b6bf6abb9114ffbf426ad3aca49d76190a421e3e))
 
-### [2.6.1](https://www.github.com/googleapis/python-vision/compare/v2.6.0...v2.6.1) (2021-10-26)
+## [2.6.1](https://www.github.com/googleapis/python-vision/compare/v2.6.0...v2.6.1) (2021-10-26)
 
 
 ### Documentation
@@ -82,21 +82,21 @@
 
 * add context manager support in client ([#247](https://www.github.com/googleapis/python-vision/issues/247)) ([629365f](https://www.github.com/googleapis/python-vision/commit/629365f32d67bf3a6863615832e5443e185b8e3b))
 
-### [2.4.4](https://www.github.com/googleapis/python-vision/compare/v2.4.3...v2.4.4) (2021-09-30)
+## [2.4.4](https://www.github.com/googleapis/python-vision/compare/v2.4.3...v2.4.4) (2021-09-30)
 
 
 ### Bug Fixes
 
 * improper types in pagers generation ([29b57f6](https://www.github.com/googleapis/python-vision/commit/29b57f6ef6506ba36c66e18d46781e6a15e872b2))
 
-### [2.4.3](https://www.github.com/googleapis/python-vision/compare/v2.4.2...v2.4.3) (2021-09-27)
+## [2.4.3](https://www.github.com/googleapis/python-vision/compare/v2.4.2...v2.4.3) (2021-09-27)
 
 
 ### Bug Fixes
 
 * add 'dict' annotation type to 'request' ([87ad0ea](https://www.github.com/googleapis/python-vision/commit/87ad0eabbba08754320fd836c5e76fba48222b5c))
 
-### [2.4.2](https://www.github.com/googleapis/python-vision/compare/v2.4.1...v2.4.2) (2021-07-29)
+## [2.4.2](https://www.github.com/googleapis/python-vision/compare/v2.4.1...v2.4.2) (2021-07-29)
 
 
 ### Bug Fixes
@@ -113,7 +113,7 @@
 
 * release as 2.4.2 ([#209](https://www.github.com/googleapis/python-vision/issues/209)) ([8d48b1b](https://www.github.com/googleapis/python-vision/commit/8d48b1b2284da8eff95190478292f5422d59a2f1))
 
-### [2.4.1](https://www.github.com/googleapis/python-vision/compare/v2.4.0...v2.4.1) (2021-07-21)
+## [2.4.1](https://www.github.com/googleapis/python-vision/compare/v2.4.0...v2.4.1) (2021-07-21)
 
 
 ### Bug Fixes
@@ -138,14 +138,14 @@
 
 * omit mention of Python 2.7 in 'CONTRIBUTING.rst' ([#1127](https://www.github.com/googleapis/python-vision/issues/1127)) ([#161](https://www.github.com/googleapis/python-vision/issues/161)) ([78740ad](https://www.github.com/googleapis/python-vision/commit/78740ade95bf3eb7a2c613383e6ed602dfd1f1db)), closes [#1126](https://www.github.com/googleapis/python-vision/issues/1126)
 
-### [2.3.2](https://www.github.com/googleapis/python-vision/compare/v2.3.1...v2.3.2) (2021-06-02)
+## [2.3.2](https://www.github.com/googleapis/python-vision/compare/v2.3.1...v2.3.2) (2021-06-02)
 
 
 ### Bug Fixes
 
 * **deps:** add packaging requirement ([#147](https://www.github.com/googleapis/python-vision/issues/147)) ([41b88bd](https://www.github.com/googleapis/python-vision/commit/41b88bd482d4d6ec76fc6efc99aa9343496faf72))
 
-### [2.3.1](https://www.github.com/googleapis/python-vision/compare/v2.3.0...v2.3.1) (2021-04-13)
+## [2.3.1](https://www.github.com/googleapis/python-vision/compare/v2.3.0...v2.3.1) (2021-04-13)
 
 
 ### Documentation
