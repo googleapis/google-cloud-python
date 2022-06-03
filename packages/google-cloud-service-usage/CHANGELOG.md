@@ -1,6 +1,6 @@
 # Changelog
 
-### [1.3.1](https://github.com/googleapis/python-service-usage/compare/v1.3.0...v1.3.1) (2022-03-05)
+## [1.3.1](https://github.com/googleapis/python-service-usage/compare/v1.3.0...v1.3.1) (2022-03-05)
 
 
 ### Bug Fixes
@@ -24,7 +24,7 @@
 
 * add generated snippets ([#79](https://github.com/googleapis/python-service-usage/issues/79)) ([dee08f1](https://github.com/googleapis/python-service-usage/commit/dee08f1d654cb5e04955ca51c824f77b13c000b9))
 
-### [1.2.1](https://www.github.com/googleapis/python-service-usage/compare/v1.2.0...v1.2.1) (2021-11-01)
+## [1.2.1](https://www.github.com/googleapis/python-service-usage/compare/v1.2.0...v1.2.1) (2021-11-01)
 
 
 ### Bug Fixes
@@ -56,7 +56,7 @@
 
 * improper types in pagers generation ([b230f5f](https://www.github.com/googleapis/python-service-usage/commit/b230f5fd83f21b7ac86bb01dac85ce403d694228))
 
-### [1.0.1](https://www.github.com/googleapis/python-service-usage/compare/v1.0.0...v1.0.1) (2021-09-24)
+## [1.0.1](https://www.github.com/googleapis/python-service-usage/compare/v1.0.0...v1.0.1) (2021-09-24)
 
 
 ### Bug Fixes
@@ -70,7 +70,7 @@
 
 * bump release level to production/stable ([#28](https://www.github.com/googleapis/python-service-usage/issues/28)) ([6627d2d](https://www.github.com/googleapis/python-service-usage/commit/6627d2dddf686a6ecc355891989928ca33003f00))
 
-### [0.2.2](https://www.github.com/googleapis/python-service-usage/compare/v0.2.1...v0.2.2) (2021-07-29)
+## [0.2.2](https://www.github.com/googleapis/python-service-usage/compare/v0.2.1...v0.2.2) (2021-07-29)
 
 
 ### Bug Fixes
@@ -87,7 +87,7 @@
 
 * release as 0.2.2 ([#25](https://www.github.com/googleapis/python-service-usage/issues/25)) ([4f1ab38](https://www.github.com/googleapis/python-service-usage/commit/4f1ab3848cf43ae7385ebf5c4dcb5f1b9057f14d))
 
-### [0.2.1](https://www.github.com/googleapis/python-service-usage/compare/v0.2.0...v0.2.1) (2021-07-21)
+## [0.2.1](https://www.github.com/googleapis/python-service-usage/compare/v0.2.0...v0.2.1) (2021-07-21)
 
 
 ### Bug Fixes
