@@ -7,7 +7,7 @@
 
 * Add support for Anthos worker pool ([#61](https://github.com/googleapis/python-deploy/issues/61)) ([f5105a4](https://github.com/googleapis/python-deploy/commit/f5105a425f4f164aa7db948b3c82e2aa59dd64ce))
 
-### [1.1.1](https://github.com/googleapis/python-deploy/compare/v1.1.0...v1.1.1) (2022-03-05)
+## [1.1.1](https://github.com/googleapis/python-deploy/compare/v1.1.0...v1.1.1) (2022-03-05)
 
 
 ### Bug Fixes
@@ -63,7 +63,7 @@
 
 * add context manager support in client ([#9](https://www.github.com/googleapis/python-deploy/issues/9)) ([bdcf454](https://www.github.com/googleapis/python-deploy/commit/bdcf454b8d976004caa7ef5bcccf9f928cfbfe63))
 
-### [0.1.1](https://www.github.com/googleapis/python-deploy/compare/v0.1.0...v0.1.1) (2021-09-30)
+## [0.1.1](https://www.github.com/googleapis/python-deploy/compare/v0.1.0...v0.1.1) (2021-09-30)
 
 
 ### Bug Fixes
