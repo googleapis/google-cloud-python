@@ -21,7 +21,7 @@
 
 * fix type in docstring for map fields ([7b7a294](https://github.com/googleapis/python-tasks/commit/7b7a2946a8554a06d8fdc57b13c2726c5d8a443b))
 
-### [2.8.1](https://github.com/googleapis/python-tasks/compare/v2.8.0...v2.8.1) (2022-03-05)
+## [2.8.1](https://github.com/googleapis/python-tasks/compare/v2.8.0...v2.8.1) (2022-03-05)
 
 
 ### Bug Fixes
@@ -41,14 +41,14 @@
 
 * resolve DuplicateCredentialArgs error when using credentials_file ([8dd8aec](https://github.com/googleapis/python-tasks/commit/8dd8aec79d2302007e3f9511daeab817f05d2aa6))
 
-### [2.7.2](https://www.github.com/googleapis/python-tasks/compare/v2.7.1...v2.7.2) (2022-01-08)
+## [2.7.2](https://www.github.com/googleapis/python-tasks/compare/v2.7.1...v2.7.2) (2022-01-08)
 
 
 ### Documentation
 
 * fix docstring formatting ([#196](https://www.github.com/googleapis/python-tasks/issues/196)) ([e7a3461](https://www.github.com/googleapis/python-tasks/commit/e7a3461a34229c210e63590370fa6eee4d06630a))
 
-### [2.7.1](https://www.github.com/googleapis/python-tasks/compare/v2.7.0...v2.7.1) (2021-11-01)
+## [2.7.1](https://www.github.com/googleapis/python-tasks/compare/v2.7.0...v2.7.1) (2021-11-01)
 
 
 ### Bug Fixes
@@ -82,21 +82,21 @@
 
 * add context manager support in client ([#173](https://www.github.com/googleapis/python-tasks/issues/173)) ([ceec8f1](https://www.github.com/googleapis/python-tasks/commit/ceec8f173af696d26cf367af2d969bf98987df2a))
 
-### [2.5.3](https://www.github.com/googleapis/python-tasks/compare/v2.5.2...v2.5.3) (2021-09-30)
+## [2.5.3](https://www.github.com/googleapis/python-tasks/compare/v2.5.2...v2.5.3) (2021-09-30)
 
 
 ### Bug Fixes
 
 * improper types in pagers generation ([0feec1e](https://www.github.com/googleapis/python-tasks/commit/0feec1e0d1e4847e2722920c8afdc597ecd92e3f))
 
-### [2.5.2](https://www.github.com/googleapis/python-tasks/compare/v2.5.1...v2.5.2) (2021-09-24)
+## [2.5.2](https://www.github.com/googleapis/python-tasks/compare/v2.5.1...v2.5.2) (2021-09-24)
 
 
 ### Bug Fixes
 
 * add 'dict' annotation type to 'request' ([42d768b](https://www.github.com/googleapis/python-tasks/commit/42d768b9f302aef3258f4abc413199070bcd2a8d))
 
-### [2.5.1](https://www.github.com/googleapis/python-tasks/compare/v2.5.0...v2.5.1) (2021-07-28)
+## [2.5.1](https://www.github.com/googleapis/python-tasks/compare/v2.5.0...v2.5.1) (2021-07-28)
 
 
 ### Bug Fixes
