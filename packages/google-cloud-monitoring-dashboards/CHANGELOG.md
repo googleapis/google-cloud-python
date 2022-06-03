@@ -7,7 +7,7 @@
 
 * add CollapsibleGroup, DashboardFilter, LogsPanel, TableDisplayOptions, TimeSeriesTable ([#175](https://github.com/googleapis/python-monitoring-dashboards/issues/175)) ([a721b72](https://github.com/googleapis/python-monitoring-dashboards/commit/a721b720ea9f2af3da069fb5a0a6cb7488a25cea))
 
-### [2.5.1](https://github.com/googleapis/python-monitoring-dashboards/compare/v2.5.0...v2.5.1) (2022-03-05)
+## [2.5.1](https://github.com/googleapis/python-monitoring-dashboards/compare/v2.5.0...v2.5.1) (2022-03-05)
 
 
 ### Bug Fixes
@@ -33,7 +33,7 @@
 
 * add generated snippets ([#151](https://github.com/googleapis/python-monitoring-dashboards/issues/151)) ([cfd3240](https://github.com/googleapis/python-monitoring-dashboards/commit/cfd3240d2a0ba95723c5130b684c57c5e39745bf))
 
-### [2.4.1](https://www.github.com/googleapis/python-monitoring-dashboards/compare/v2.4.0...v2.4.1) (2021-11-01)
+## [2.4.1](https://www.github.com/googleapis/python-monitoring-dashboards/compare/v2.4.0...v2.4.1) (2021-11-01)
 
 
 ### Bug Fixes
@@ -60,21 +60,21 @@
 
 * add context manager support in client ([#120](https://www.github.com/googleapis/python-monitoring-dashboards/issues/120)) ([05d1e87](https://www.github.com/googleapis/python-monitoring-dashboards/commit/05d1e873eeb2e5c1ee3f98f627d55066dda38b46))
 
-### [2.2.4](https://www.github.com/googleapis/python-monitoring-dashboards/compare/v2.2.3...v2.2.4) (2021-09-30)
+## [2.2.4](https://www.github.com/googleapis/python-monitoring-dashboards/compare/v2.2.3...v2.2.4) (2021-09-30)
 
 
 ### Bug Fixes
 
 * improper types in pagers generation ([df79ab3](https://www.github.com/googleapis/python-monitoring-dashboards/commit/df79ab3e27b77186313e829c95e4a780bd2fb127))
 
-### [2.2.3](https://www.github.com/googleapis/python-monitoring-dashboards/compare/v2.2.2...v2.2.3) (2021-09-24)
+## [2.2.3](https://www.github.com/googleapis/python-monitoring-dashboards/compare/v2.2.2...v2.2.3) (2021-09-24)
 
 
 ### Bug Fixes
 
 * add 'dict' annotation type to 'request' ([4084ab2](https://www.github.com/googleapis/python-monitoring-dashboards/commit/4084ab2a7185b69561d1708f136d05a121ced2f8))
 
-### [2.2.2](https://www.github.com/googleapis/python-monitoring-dashboards/compare/v2.2.1...v2.2.2) (2021-07-26)
+## [2.2.2](https://www.github.com/googleapis/python-monitoring-dashboards/compare/v2.2.1...v2.2.2) (2021-07-26)
 
 
 ### Bug Fixes
@@ -92,7 +92,7 @@
 
 * release as 2.2.2 ([#98](https://www.github.com/googleapis/python-monitoring-dashboards/issues/98)) ([3266da2](https://www.github.com/googleapis/python-monitoring-dashboards/commit/3266da2924b0b56ef7892c78700ccf7242efab0a))
 
-### [2.2.1](https://www.github.com/googleapis/python-monitoring-dashboards/compare/v2.2.0...v2.2.1) (2021-07-14)
+## [2.2.1](https://www.github.com/googleapis/python-monitoring-dashboards/compare/v2.2.0...v2.2.1) (2021-07-14)
 
 
 ### Documentation
