@@ -15,14 +15,14 @@
 * fixes incorrect comment in python sample ([#220](https://github.com/googleapis/python-analytics-data/issues/220)) ([749e8f2](https://github.com/googleapis/python-analytics-data/commit/749e8f21431dd355bf4547d26b206ecfcf56c509))
 * removes unnecessary period in python sample description ([#225](https://github.com/googleapis/python-analytics-data/issues/225)) ([5e363e4](https://github.com/googleapis/python-analytics-data/commit/5e363e4250587cae7601fa90604274d0bf86a1f1))
 
-### [0.11.2](https://github.com/googleapis/python-analytics-data/compare/v0.11.1...v0.11.2) (2022-04-01)
+## [0.11.2](https://github.com/googleapis/python-analytics-data/compare/v0.11.1...v0.11.2) (2022-04-01)
 
 
 ### Documentation
 
 * fixes typo in python sample ([#214](https://github.com/googleapis/python-analytics-data/issues/214)) ([8978387](https://github.com/googleapis/python-analytics-data/commit/8978387b7781439df13db666f0af112ac517144e))
 
-### [0.11.1](https://github.com/googleapis/python-analytics-data/compare/v0.11.0...v0.11.1) (2022-03-05)
+## [0.11.1](https://github.com/googleapis/python-analytics-data/compare/v0.11.0...v0.11.1) (2022-03-05)
 
 
 ### Bug Fixes
@@ -76,7 +76,7 @@
 * add context manager support in client ([#147](https://www.github.com/googleapis/python-analytics-data/issues/147)) ([4773796](https://www.github.com/googleapis/python-analytics-data/commit/4773796b8f645e26d60b097d7c52c3c84549a759))
 * add trove classifier for python 3.9 and python 3.10 ([#150](https://www.github.com/googleapis/python-analytics-data/issues/150)) ([199ab6f](https://www.github.com/googleapis/python-analytics-data/commit/199ab6f2fac2fe4729a2fba36cce2cc5d5ec7bc4))
 
-### [0.8.1](https://www.github.com/googleapis/python-analytics-data/compare/v0.8.0...v0.8.1) (2021-09-24)
+## [0.8.1](https://www.github.com/googleapis/python-analytics-data/compare/v0.8.0...v0.8.1) (2021-09-24)
 
 
 ### Bug Fixes
@@ -92,7 +92,7 @@
 * add `CheckCompatibility` method to the API ([#131](https://www.github.com/googleapis/python-analytics-data/issues/131)) ([81c2eea](https://www.github.com/googleapis/python-analytics-data/commit/81c2eeaf88f8fc5a15a1df13e3fef02437a23bb7))
 * add `DimensionCompatibility`, `MetricCompatibility`, `Compatibility` types to the API ([81c2eea](https://www.github.com/googleapis/python-analytics-data/commit/81c2eeaf88f8fc5a15a1df13e3fef02437a23bb7))
 
-### [0.7.2](https://www.github.com/googleapis/python-analytics-data/compare/v0.7.1...v0.7.2) (2021-07-27)
+## [0.7.2](https://www.github.com/googleapis/python-analytics-data/compare/v0.7.1...v0.7.2) (2021-07-27)
 
 
 ### Bug Fixes
@@ -109,7 +109,7 @@
 
 * release as 0.7.2 ([#115](https://www.github.com/googleapis/python-analytics-data/issues/115)) ([3b9e48b](https://www.github.com/googleapis/python-analytics-data/commit/3b9e48bd25a8370c83d6dd82cc406acbfa7cdc2d))
 
-### [0.7.1](https://www.github.com/googleapis/python-analytics-data/compare/v0.7.0...v0.7.1) (2021-07-20)
+## [0.7.1](https://www.github.com/googleapis/python-analytics-data/compare/v0.7.0...v0.7.1) (2021-07-20)
 
 
 ### Bug Fixes
@@ -135,7 +135,7 @@
 * document the increase of the number of allowed dimensions in a report query ([8523e6a](https://www.github.com/googleapis/python-analytics-data/commit/8523e6ad87f126766576d71b05d68478960bd10b))
 * omit mention of Python 2.7 in 'CONTRIBUTING.rst' ([#1127](https://www.github.com/googleapis/python-analytics-data/issues/1127)) ([#87](https://www.github.com/googleapis/python-analytics-data/issues/87)) ([6e30719](https://www.github.com/googleapis/python-analytics-data/commit/6e30719c4158c0e2e7580bff373e94cf7dd91475)), closes [#1126](https://www.github.com/googleapis/python-analytics-data/issues/1126)
 
-### [0.6.1](https://www.github.com/googleapis/python-analytics-data/compare/v0.6.0...v0.6.1) (2021-06-16)
+## [0.6.1](https://www.github.com/googleapis/python-analytics-data/compare/v0.6.0...v0.6.1) (2021-06-16)
 
 
 ### Bug Fixes
@@ -154,7 +154,7 @@
 
 * add async client to %name_%version/init.py ([ff2beb8](https://www.github.com/googleapis/python-analytics-data/commit/ff2beb8f923570a78772712dc140fc7ba99148d6))
 
-### [0.5.1](https://www.github.com/googleapis/python-analytics-data/compare/v0.5.0...v0.5.1) (2021-05-28)
+## [0.5.1](https://www.github.com/googleapis/python-analytics-data/compare/v0.5.0...v0.5.1) (2021-05-28)
 
 
 ### Bug Fixes
@@ -180,7 +180,7 @@
 * update quickstart samples to support the Data API v1 beta ([#50](https://www.github.com/googleapis/python-analytics-data/issues/50)) ([ad51cf2](https://www.github.com/googleapis/python-analytics-data/commit/ad51cf28f6c3e306780ca48eb26299b4158068ad))
 * update region tag names to match the convention ([#55](https://www.github.com/googleapis/python-analytics-data/issues/55)) ([747f551](https://www.github.com/googleapis/python-analytics-data/commit/747f551c4b3a2f5b3d4602788b8f9c19cbd9904b))
 
-### [0.4.1](https://www.github.com/googleapis/python-analytics-data/compare/v0.4.0...v0.4.1) (2021-03-16)
+## [0.4.1](https://www.github.com/googleapis/python-analytics-data/compare/v0.4.0...v0.4.1) (2021-03-16)
 
 
 ### Bug Fixes
