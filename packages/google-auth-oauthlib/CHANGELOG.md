@@ -4,7 +4,7 @@
 
 [1]: https://pypi.org/project/google-auth-oauthlib/#history
 
-### [0.5.1](https://github.com/googleapis/google-auth-library-python-oauthlib/compare/v0.5.0...v0.5.1) (2022-03-15)
+## [0.5.1](https://github.com/googleapis/google-auth-library-python-oauthlib/compare/v0.5.0...v0.5.1) (2022-03-15)
 
 
 ### Bug Fixes
@@ -18,14 +18,14 @@
 
 * deprecate OAuth out-of-band flow ([#175](https://github.com/googleapis/google-auth-library-python-oauthlib/issues/175)) ([1fb16be](https://github.com/googleapis/google-auth-library-python-oauthlib/commit/1fb16be1bad9050ee29293541be44e41e82defd7))
 
-### [0.4.6](https://www.github.com/googleapis/google-auth-library-python-oauthlib/compare/v0.4.5...v0.4.6) (2021-08-30)
+## [0.4.6](https://www.github.com/googleapis/google-auth-library-python-oauthlib/compare/v0.4.5...v0.4.6) (2021-08-30)
 
 
 ### Bug Fixes
 
 * remove dependency on `six` ([#146](https://www.github.com/googleapis/google-auth-library-python-oauthlib/issues/146)) ([c338733](https://www.github.com/googleapis/google-auth-library-python-oauthlib/commit/c3387335c49597870b437a9130aed92dca6571f2)), closes [#145](https://www.github.com/googleapis/google-auth-library-python-oauthlib/issues/145)
 
-### [0.4.5](https://www.github.com/googleapis/google-auth-library-python-oauthlib/compare/v0.4.4...v0.4.5) (2021-07-26)
+## [0.4.5](https://www.github.com/googleapis/google-auth-library-python-oauthlib/compare/v0.4.4...v0.4.5) (2021-07-26)
 
 
 ### Documentation
@@ -39,14 +39,14 @@
 
 * release as 0.4.5 ([#137](https://www.github.com/googleapis/google-auth-library-python-oauthlib/issues/137)) ([a54f283](https://www.github.com/googleapis/google-auth-library-python-oauthlib/commit/a54f283ee7854367ff289ee863a7404692f31099))
 
-### [0.4.4](https://www.github.com/googleapis/google-auth-library-python-oauthlib/compare/v0.4.3...v0.4.4) (2021-03-29)
+## [0.4.4](https://www.github.com/googleapis/google-auth-library-python-oauthlib/compare/v0.4.3...v0.4.4) (2021-03-29)
 
 
 ### Bug Fixes
 
 * add redirect_uri_trailing slash param to run_local_server ([#111](https://www.github.com/googleapis/google-auth-library-python-oauthlib/issues/111)) ([666863a](https://www.github.com/googleapis/google-auth-library-python-oauthlib/commit/666863aeabb8d6b3608ea95edce09fe69a5f2679))
 
-### [0.4.3](https://www.github.com/googleapis/google-auth-library-python-oauthlib/compare/v0.4.2...v0.4.3) (2021-02-12)
+## [0.4.3](https://www.github.com/googleapis/google-auth-library-python-oauthlib/compare/v0.4.2...v0.4.3) (2021-02-12)
 
 
 ### Bug Fixes
@@ -54,7 +54,7 @@
 * add `charset-utf-8` to response header ([#104](https://www.github.com/googleapis/google-auth-library-python-oauthlib/issues/104)) ([53e31e2](https://www.github.com/googleapis/google-auth-library-python-oauthlib/commit/53e31e2d03b315c12670370f67bdca29b1cd5422))
 * **deps:** add lower bounds to all dependencies ([#99](https://www.github.com/googleapis/google-auth-library-python-oauthlib/issues/99)) ([5587c6a](https://www.github.com/googleapis/google-auth-library-python-oauthlib/commit/5587c6a72547742986e363e1f5ef6bcabd93bb02))
 
-### [0.4.2](https://www.github.com/googleapis/google-auth-library-python-oauthlib/compare/v0.4.1...v0.4.2) (2020-10-28)
+## [0.4.2](https://www.github.com/googleapis/google-auth-library-python-oauthlib/compare/v0.4.1...v0.4.2) (2020-10-28)
 
 
 ### Bug Fixes
