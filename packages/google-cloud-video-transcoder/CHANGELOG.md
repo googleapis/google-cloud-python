@@ -1,6 +1,6 @@
 # Changelog
 
-### [1.3.1](https://github.com/googleapis/python-video-transcoder/compare/v1.3.0...v1.3.1) (2022-03-05)
+## [1.3.1](https://github.com/googleapis/python-video-transcoder/compare/v1.3.0...v1.3.1) (2022-03-05)
 
 
 ### Bug Fixes
@@ -30,7 +30,7 @@
 * **samples:** update samples to use mapping_ attribute of AudioStream ([#142](https://github.com/googleapis/python-video-transcoder/issues/142)) ([7fbc619](https://github.com/googleapis/python-video-transcoder/commit/7fbc61917562c269439828df82b474700c95ea23))
 * **samples:** add samples and tests for adding captions to a job ([#131](https://github.com/googleapis/python-video-transcoder/issues/131)) ([e30431f](https://github.com/googleapis/python-video-transcoder/commit/e30431fec7c15666afbb5bc975f7077389aac06d))
 
-### [1.2.1](https://www.github.com/googleapis/python-video-transcoder/compare/v1.2.0...v1.2.1) (2021-11-04)
+## [1.2.1](https://www.github.com/googleapis/python-video-transcoder/compare/v1.2.0...v1.2.1) (2021-11-04)
 
 
 ### Bug Fixes
@@ -62,7 +62,7 @@
 
 * remove Encryption settings that were published erroneously ([#102](https://www.github.com/googleapis/python-video-transcoder/issues/102)) ([824009a](https://www.github.com/googleapis/python-video-transcoder/commit/824009ac01700341071b50af2741ef6493dcbcf5))
 
-### [1.0.1](https://www.github.com/googleapis/python-video-transcoder/compare/v1.0.0...v1.0.1) (2021-09-30)
+## [1.0.1](https://www.github.com/googleapis/python-video-transcoder/compare/v1.0.0...v1.0.1) (2021-09-30)
 
 
 ### Bug Fixes
@@ -76,7 +76,7 @@
 
 * bump release level to production/stable ([#79](https://www.github.com/googleapis/python-video-transcoder/issues/79)) ([45ba870](https://www.github.com/googleapis/python-video-transcoder/commit/45ba87048ef73c666c00248c6da3637fd418d70a))
 
-### [0.5.1](https://www.github.com/googleapis/python-video-transcoder/compare/v0.5.0...v0.5.1) (2021-09-24)
+## [0.5.1](https://www.github.com/googleapis/python-video-transcoder/compare/v0.5.0...v0.5.1) (2021-09-24)
 
 
 ### Bug Fixes
@@ -98,7 +98,7 @@
 * Indicate v1beta1 deprecation ([d862900](https://www.github.com/googleapis/python-video-transcoder/commit/d86290047e9464e4026c264a6dfea51936b21c2c))
 * Update proto documentation ([d862900](https://www.github.com/googleapis/python-video-transcoder/commit/d86290047e9464e4026c264a6dfea51936b21c2c))
 
-### [0.4.1](https://www.github.com/googleapis/python-video-transcoder/compare/v0.4.0...v0.4.1) (2021-07-27)
+## [0.4.1](https://www.github.com/googleapis/python-video-transcoder/compare/v0.4.0...v0.4.1) (2021-07-27)
 
 
 ### Bug Fixes
@@ -134,7 +134,7 @@
 
 * omit mention of Python 2.7 in 'CONTRIBUTING.rst' ([#1127](https://www.github.com/googleapis/python-video-transcoder/issues/1127)) ([#58](https://www.github.com/googleapis/python-video-transcoder/issues/58)) ([1659ce8](https://www.github.com/googleapis/python-video-transcoder/commit/1659ce88ef94139a271be9719a4adaf4e3a600c0)), closes [#1126](https://www.github.com/googleapis/python-video-transcoder/issues/1126)
 
-### [0.3.1](https://www.github.com/googleapis/python-video-transcoder/compare/v0.3.0...v0.3.1) (2021-05-28)
+## [0.3.1](https://www.github.com/googleapis/python-video-transcoder/compare/v0.3.0...v0.3.1) (2021-05-28)
 
 
 ### Bug Fixes
@@ -148,7 +148,7 @@
 
 * add `from_service_account_info` ([#32](https://www.github.com/googleapis/python-video-transcoder/issues/32)) ([4076914](https://www.github.com/googleapis/python-video-transcoder/commit/4076914adfde514417b5a39a0e5fcd905e5f6e8f))
 
-### [0.2.1](https://www.github.com/googleapis/python-video-transcoder/compare/v0.2.0...v0.2.1) (2021-02-12)
+## [0.2.1](https://www.github.com/googleapis/python-video-transcoder/compare/v0.2.0...v0.2.1) (2021-02-12)
 
 
 ### Bug Fixes
