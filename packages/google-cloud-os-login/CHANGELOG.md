@@ -4,7 +4,7 @@
 
 [1]: https://pypi.org/project/google-cloud-oslogin/#history
 
-### [2.6.1](https://github.com/googleapis/python-oslogin/compare/v2.6.0...v2.6.1) (2022-03-05)
+## [2.6.1](https://github.com/googleapis/python-oslogin/compare/v2.6.0...v2.6.1) (2022-03-05)
 
 
 ### Bug Fixes
@@ -25,7 +25,7 @@
 * **deps:** move libcst to extras ([#151](https://github.com/googleapis/python-oslogin/issues/151)) ([ff0b7be](https://github.com/googleapis/python-oslogin/commit/ff0b7be858c400247056a53efb19b9d520611a34))
 * resolve DuplicateCredentialArgs error when using credentials_file ([757c2c7](https://github.com/googleapis/python-oslogin/commit/757c2c749d709150d15a703bca230126594aa4ef))
 
-### [2.5.1](https://www.github.com/googleapis/python-oslogin/compare/v2.5.0...v2.5.1) (2021-11-01)
+## [2.5.1](https://www.github.com/googleapis/python-oslogin/compare/v2.5.0...v2.5.1) (2021-11-01)
 
 
 ### Bug Fixes
@@ -52,14 +52,14 @@
 
 * add context manager support in client ([#121](https://www.github.com/googleapis/python-oslogin/issues/121)) ([8118ca8](https://www.github.com/googleapis/python-oslogin/commit/8118ca84de385fe3f8a673fbee596be33352eeb5))
 
-### [2.3.2](https://www.github.com/googleapis/python-oslogin/compare/v2.3.1...v2.3.2) (2021-09-24)
+## [2.3.2](https://www.github.com/googleapis/python-oslogin/compare/v2.3.1...v2.3.2) (2021-09-24)
 
 
 ### Bug Fixes
 
 * add 'dict' annotation type to 'request' ([eb11483](https://www.github.com/googleapis/python-oslogin/commit/eb11483cf6f2ce80b931f31634d6b1ebd1b03b02))
 
-### [2.3.1](https://www.github.com/googleapis/python-oslogin/compare/v2.3.0...v2.3.1) (2021-07-26)
+## [2.3.1](https://www.github.com/googleapis/python-oslogin/compare/v2.3.0...v2.3.1) (2021-07-26)
 
 
 ### Bug Fixes
@@ -94,7 +94,7 @@
 
 * omit mention of Python 2.7 in 'CONTRIBUTING.rst' ([#1127](https://www.github.com/googleapis/python-oslogin/issues/1127)) ([#83](https://www.github.com/googleapis/python-oslogin/issues/83)) ([c50d994](https://www.github.com/googleapis/python-oslogin/commit/c50d994a860cd008bc13b92c00076af2c482b5f6)), closes [#1126](https://www.github.com/googleapis/python-oslogin/issues/1126)
 
-### [2.2.1](https://www.github.com/googleapis/python-oslogin/compare/v2.2.0...v2.2.1) (2021-06-02)
+## [2.2.1](https://www.github.com/googleapis/python-oslogin/compare/v2.2.0...v2.2.1) (2021-06-02)
 
 
 ### Documentation
