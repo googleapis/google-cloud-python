@@ -1,6 +1,6 @@
 # Changelog
 
-### [0.5.1](https://github.com/googleapis/python-private-catalog/compare/v0.5.0...v0.5.1) (2022-03-05)
+## [0.5.1](https://github.com/googleapis/python-private-catalog/compare/v0.5.0...v0.5.1) (2022-03-05)
 
 
 ### Bug Fixes
@@ -20,7 +20,7 @@
 
 * resolve DuplicateCredentialArgs error when using credentials_file ([7b23ed1](https://github.com/googleapis/python-private-catalog/commit/7b23ed16f57006fab1b51bd5471ac038ee4a3aff))
 
-### [0.4.1](https://www.github.com/googleapis/python-private-catalog/compare/v0.4.0...v0.4.1) (2021-11-01)
+## [0.4.1](https://www.github.com/googleapis/python-private-catalog/compare/v0.4.0...v0.4.1) (2021-11-01)
 
 
 ### Bug Fixes
@@ -47,21 +47,21 @@
 
 * add context manager support in client ([#51](https://www.github.com/googleapis/python-private-catalog/issues/51)) ([6ce5227](https://www.github.com/googleapis/python-private-catalog/commit/6ce5227eec47542014817ce912e64c39e6723676))
 
-### [0.2.4](https://www.github.com/googleapis/python-private-catalog/compare/v0.2.3...v0.2.4) (2021-09-30)
+## [0.2.4](https://www.github.com/googleapis/python-private-catalog/compare/v0.2.3...v0.2.4) (2021-09-30)
 
 
 ### Bug Fixes
 
 * improper types in pagers generation ([98d65c5](https://www.github.com/googleapis/python-private-catalog/commit/98d65c5d61a55d6cd550a7e079eb3c41156076c7))
 
-### [0.2.3](https://www.github.com/googleapis/python-private-catalog/compare/v0.2.2...v0.2.3) (2021-09-24)
+## [0.2.3](https://www.github.com/googleapis/python-private-catalog/compare/v0.2.2...v0.2.3) (2021-09-24)
 
 
 ### Bug Fixes
 
 * add 'dict' annotation type to 'request' ([b9ce54a](https://www.github.com/googleapis/python-private-catalog/commit/b9ce54ad72ffa6be7319ed17d81441117c24b9ec))
 
-### [0.2.2](https://www.github.com/googleapis/python-private-catalog/compare/v0.2.1...v0.2.2) (2021-07-29)
+## [0.2.2](https://www.github.com/googleapis/python-private-catalog/compare/v0.2.1...v0.2.2) (2021-07-29)
 
 
 ### Bug Fixes
@@ -78,7 +78,7 @@
 
 * release as 0.2.2 ([#27](https://www.github.com/googleapis/python-private-catalog/issues/27)) ([3685d39](https://www.github.com/googleapis/python-private-catalog/commit/3685d391170f9f10958a024fa7d86de6b7104492))
 
-### [0.2.1](https://www.github.com/googleapis/python-private-catalog/compare/v0.2.0...v0.2.1) (2021-07-21)
+## [0.2.1](https://www.github.com/googleapis/python-private-catalog/compare/v0.2.0...v0.2.1) (2021-07-21)
 
 
 ### Bug Fixes
@@ -103,7 +103,7 @@
 
 * omit mention of Python 2.7 in 'CONTRIBUTING.rst' ([#1127](https://www.github.com/googleapis/python-private-catalog/issues/1127)) ([#8](https://www.github.com/googleapis/python-private-catalog/issues/8)) ([9852586](https://www.github.com/googleapis/python-private-catalog/commit/98525867b5958ce8bf52ff2998ccff4583be14d3)), closes [#1126](https://www.github.com/googleapis/python-private-catalog/issues/1126)
 
-### [0.1.1](https://www.github.com/googleapis/python-private-catalog/compare/v0.1.0...v0.1.1) (2021-06-16)
+## [0.1.1](https://www.github.com/googleapis/python-private-catalog/compare/v0.1.0...v0.1.1) (2021-06-16)
 
 
 ### Bug Fixes
