@@ -17,7 +17,7 @@
 
 * fix type in docstring for map fields ([ab48a2a](https://github.com/googleapis/python-service-directory/commit/ab48a2a2f2dddfaf9bc18b53f99b379ad66098d2))
 
-### [1.3.1](https://github.com/googleapis/python-service-directory/compare/v1.3.0...v1.3.1) (2022-03-05)
+## [1.3.1](https://github.com/googleapis/python-service-directory/compare/v1.3.0...v1.3.1) (2022-03-05)
 
 
 ### Bug Fixes
@@ -37,7 +37,7 @@
 
 * resolve DuplicateCredentialArgs error when using credentials_file ([55c52b5](https://github.com/googleapis/python-service-directory/commit/55c52b5b67891ac723a34fae22040feb5b5fcf15))
 
-### [1.2.1](https://www.github.com/googleapis/python-service-directory/compare/v1.2.0...v1.2.1) (2021-11-01)
+## [1.2.1](https://www.github.com/googleapis/python-service-directory/compare/v1.2.0...v1.2.1) (2021-11-01)
 
 
 ### Bug Fixes
@@ -69,21 +69,21 @@
 
 * add context manager support in client ([#122](https://www.github.com/googleapis/python-service-directory/issues/122)) ([59229eb](https://www.github.com/googleapis/python-service-directory/commit/59229ebe9f17be35cb39119cbae2e19e7a4c8732))
 
-### [1.0.4](https://www.github.com/googleapis/python-service-directory/compare/v1.0.3...v1.0.4) (2021-09-30)
+## [1.0.4](https://www.github.com/googleapis/python-service-directory/compare/v1.0.3...v1.0.4) (2021-09-30)
 
 
 ### Bug Fixes
 
 * improper types in pagers generation ([1b0841d](https://www.github.com/googleapis/python-service-directory/commit/1b0841dec49d193c777601ff16ee0706395349b3))
 
-### [1.0.3](https://www.github.com/googleapis/python-service-directory/compare/v1.0.2...v1.0.3) (2021-09-24)
+## [1.0.3](https://www.github.com/googleapis/python-service-directory/compare/v1.0.2...v1.0.3) (2021-09-24)
 
 
 ### Bug Fixes
 
 * add 'dict' annotation type to 'request' ([b1982e1](https://www.github.com/googleapis/python-service-directory/commit/b1982e1e3d9214c93b59dbbb1f9ff00532fc6120))
 
-### [1.0.2](https://www.github.com/googleapis/python-service-directory/compare/v1.0.1...v1.0.2) (2021-07-28)
+## [1.0.2](https://www.github.com/googleapis/python-service-directory/compare/v1.0.1...v1.0.2) (2021-07-28)
 
 
 ### Bug Fixes
@@ -100,7 +100,7 @@
 
 * release as 1.0.2 ([#102](https://www.github.com/googleapis/python-service-directory/issues/102)) ([47caf13](https://www.github.com/googleapis/python-service-directory/commit/47caf1346029bc6d017a1498f3a9b97e396ef667))
 
-### [1.0.1](https://www.github.com/googleapis/python-service-directory/compare/v1.0.0...v1.0.1) (2021-07-20)
+## [1.0.1](https://www.github.com/googleapis/python-service-directory/compare/v1.0.0...v1.0.1) (2021-07-20)
 
 
 ### Bug Fixes
@@ -141,7 +141,7 @@
 
 * add `from_service_account_info` ([#45](https://www.github.com/googleapis/python-service-directory/issues/45)) ([db77e88](https://www.github.com/googleapis/python-service-directory/commit/db77e88a44ffdabd284d61775960079309071617))
 
-### [0.4.1](https://www.github.com/googleapis/python-service-directory/compare/v0.4.0...v0.4.1) (2021-02-11)
+## [0.4.1](https://www.github.com/googleapis/python-service-directory/compare/v0.4.0...v0.4.1) (2021-02-11)
 
 
 ### Bug Fixes
@@ -174,7 +174,7 @@
 
 * fix docs link ([#9](https://www.github.com/googleapis/python-service-directory/issues/9)) ([0f73da9](https://www.github.com/googleapis/python-service-directory/commit/0f73da9722e3e0c943b67063af4a7f9d0fc1f9e4))
 
-### [0.1.1](https://www.github.com/googleapis/python-service-directory/compare/v0.1.0...v0.1.1) (2020-04-17)
+## [0.1.1](https://www.github.com/googleapis/python-service-directory/compare/v0.1.0...v0.1.1) (2020-04-17)
 
 
 ### Bug Fixes
