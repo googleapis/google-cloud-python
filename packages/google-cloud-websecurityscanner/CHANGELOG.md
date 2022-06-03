@@ -4,7 +4,7 @@
 
 [1]: https://pypi.org/project/google-cloud-websecurityscanner/#history
 
-### [1.7.1](https://github.com/googleapis/python-websecurityscanner/compare/v1.7.0...v1.7.1) (2022-03-06)
+## [1.7.1](https://github.com/googleapis/python-websecurityscanner/compare/v1.7.0...v1.7.1) (2022-03-06)
 
 
 ### Bug Fixes
@@ -23,7 +23,7 @@
 
 * resolve DuplicateCredentialArgs error when using credentials_file ([61f51e6](https://github.com/googleapis/python-websecurityscanner/commit/61f51e651d7e91c669a38ac130162262320ccbf6))
 
-### [1.6.1](https://www.github.com/googleapis/python-websecurityscanner/compare/v1.6.0...v1.6.1) (2021-11-01)
+## [1.6.1](https://www.github.com/googleapis/python-websecurityscanner/compare/v1.6.0...v1.6.1) (2021-11-01)
 
 
 ### Bug Fixes
@@ -50,21 +50,21 @@
 
 * add context manager support in client ([#114](https://www.github.com/googleapis/python-websecurityscanner/issues/114)) ([7210ecd](https://www.github.com/googleapis/python-websecurityscanner/commit/7210ecdcf196a10d6ac26b3d039857c9e958f2bb))
 
-### [1.4.3](https://www.github.com/googleapis/python-websecurityscanner/compare/v1.4.2...v1.4.3) (2021-09-30)
+## [1.4.3](https://www.github.com/googleapis/python-websecurityscanner/compare/v1.4.2...v1.4.3) (2021-09-30)
 
 
 ### Bug Fixes
 
 * improper types in pagers generation ([cc27745](https://www.github.com/googleapis/python-websecurityscanner/commit/cc27745090362ba6197b51dfb6d7313fa2c917a1))
 
-### [1.4.2](https://www.github.com/googleapis/python-websecurityscanner/compare/v1.4.1...v1.4.2) (2021-09-24)
+## [1.4.2](https://www.github.com/googleapis/python-websecurityscanner/compare/v1.4.1...v1.4.2) (2021-09-24)
 
 
 ### Bug Fixes
 
 * add 'dict' annotation type to 'request' ([15b7d1f](https://www.github.com/googleapis/python-websecurityscanner/commit/15b7d1fa81188a866e089a7a6a715cbe7d768976))
 
-### [1.4.1](https://www.github.com/googleapis/python-websecurityscanner/compare/v1.4.0...v1.4.1) (2021-07-27)
+## [1.4.1](https://www.github.com/googleapis/python-websecurityscanner/compare/v1.4.0...v1.4.1) (2021-07-27)
 
 
 ### Features
