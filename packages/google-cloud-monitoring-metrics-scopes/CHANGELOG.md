@@ -1,6 +1,6 @@
 # Changelog
 
-### [1.1.1](https://github.com/googleapis/python-monitoring-metrics-scopes/compare/v1.1.0...v1.1.1) (2022-03-07)
+## [1.1.1](https://github.com/googleapis/python-monitoring-metrics-scopes/compare/v1.1.0...v1.1.1) (2022-03-07)
 
 
 ### Bug Fixes
@@ -26,7 +26,7 @@
 
 * bump release level to production/stable ([#7](https://www.github.com/googleapis/python-monitoring-metrics-scopes/issues/7)) ([52fe836](https://www.github.com/googleapis/python-monitoring-metrics-scopes/commit/52fe8369d035a1f906488789948dab480eaca59b))
 
-### [0.1.1](https://www.github.com/googleapis/python-monitoring-metrics-scopes/compare/v0.1.0...v0.1.1) (2021-11-01)
+## [0.1.1](https://www.github.com/googleapis/python-monitoring-metrics-scopes/compare/v0.1.0...v0.1.1) (2021-11-01)
 
 
 ### Bug Fixes
