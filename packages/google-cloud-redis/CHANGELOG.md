@@ -14,7 +14,7 @@
 * add support for TLS functionality ([d08e3b5](https://github.com/googleapis/python-redis/commit/d08e3b5c7c6c635b7dc7277b0a455b088e94dd19))
 * add Support Maintenance Window ([#172](https://github.com/googleapis/python-redis/issues/172)) ([d08e3b5](https://github.com/googleapis/python-redis/commit/d08e3b5c7c6c635b7dc7277b0a455b088e94dd19))
 
-### [2.7.1](https://github.com/googleapis/python-redis/compare/v2.7.0...v2.7.1) (2022-03-05)
+## [2.7.1](https://github.com/googleapis/python-redis/compare/v2.7.0...v2.7.1) (2022-03-05)
 
 
 ### Bug Fixes
@@ -42,7 +42,7 @@
 
 * resolve DuplicateCredentialArgs error when using credentials_file ([73a5057](https://github.com/googleapis/python-redis/commit/73a50579622e3f780cbb457a08c20402698d1b63))
 
-### [2.5.1](https://github.com/googleapis/python-redis/compare/v2.5.0...v2.5.1) (2022-01-14)
+## [2.5.1](https://github.com/googleapis/python-redis/compare/v2.5.0...v2.5.1) (2022-01-14)
 
 
 ### Bug Fixes
@@ -57,7 +57,7 @@
 * **v1beta1:** Support Multiple Read Replicas when creating Instance ([#136](https://www.github.com/googleapis/python-redis/issues/136)) ([d7146eb](https://www.github.com/googleapis/python-redis/commit/d7146eb1ed826bcd1f2bb29b4de4793ff3105573))
 * **v1:** Support Multiple Read Replicas when creating Instance ([#135](https://www.github.com/googleapis/python-redis/issues/135)) ([27dfdca](https://www.github.com/googleapis/python-redis/commit/27dfdcab82c091d77f40542e6393a0a3f466bcb0))
 
-### [2.4.1](https://www.github.com/googleapis/python-redis/compare/v2.4.0...v2.4.1) (2021-11-01)
+## [2.4.1](https://www.github.com/googleapis/python-redis/compare/v2.4.0...v2.4.1) (2021-11-01)
 
 
 ### Bug Fixes
@@ -84,21 +84,21 @@
 
 * add context manager support in client ([#123](https://www.github.com/googleapis/python-redis/issues/123)) ([4324911](https://www.github.com/googleapis/python-redis/commit/4324911a80baaaa96065e735631bd6c446075f5c))
 
-### [2.2.4](https://www.github.com/googleapis/python-redis/compare/v2.2.3...v2.2.4) (2021-09-30)
+## [2.2.4](https://www.github.com/googleapis/python-redis/compare/v2.2.3...v2.2.4) (2021-09-30)
 
 
 ### Bug Fixes
 
 * improper types in pagers generation ([7b93deb](https://www.github.com/googleapis/python-redis/commit/7b93debcc36cdb60bf8c17808aa1a05bad4695f6))
 
-### [2.2.3](https://www.github.com/googleapis/python-redis/compare/v2.2.2...v2.2.3) (2021-09-24)
+## [2.2.3](https://www.github.com/googleapis/python-redis/compare/v2.2.2...v2.2.3) (2021-09-24)
 
 
 ### Bug Fixes
 
 * add 'dict' annotation type to 'request' ([cf0a714](https://www.github.com/googleapis/python-redis/commit/cf0a71406dfa86909099fc26553f7bf74d4d23e1))
 
-### [2.2.2](https://www.github.com/googleapis/python-redis/compare/v2.2.1...v2.2.2) (2021-07-28)
+## [2.2.2](https://www.github.com/googleapis/python-redis/compare/v2.2.1...v2.2.2) (2021-07-28)
 
 
 ### Bug Fixes
@@ -115,7 +115,7 @@
 
 * release as 2.2.2 ([#103](https://www.github.com/googleapis/python-redis/issues/103)) ([6fad3b8](https://www.github.com/googleapis/python-redis/commit/6fad3b878a9e58269e5d513424ae0a36763677f8))
 
-### [2.2.1](https://www.github.com/googleapis/python-redis/compare/v2.2.0...v2.2.1) (2021-07-20)
+## [2.2.1](https://www.github.com/googleapis/python-redis/compare/v2.2.0...v2.2.1) (2021-07-20)
 
 
 ### Bug Fixes
@@ -139,7 +139,7 @@
 
 * omit mention of Python 2.7 in 'CONTRIBUTING.rst' ([#1127](https://www.github.com/googleapis/python-redis/issues/1127)) ([#83](https://www.github.com/googleapis/python-redis/issues/83)) ([3a64290](https://www.github.com/googleapis/python-redis/commit/3a642900cb9b0ab6fc2dd143c1ccac6a34b30209))
 
-### [2.1.1](https://www.github.com/googleapis/python-redis/compare/v2.1.0...v2.1.1) (2021-05-28)
+## [2.1.1](https://www.github.com/googleapis/python-redis/compare/v2.1.0...v2.1.1) (2021-05-28)
 
 
 ### Bug Fixes
