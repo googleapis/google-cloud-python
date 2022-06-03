@@ -1,6 +1,6 @@
 # Changelog
 
-### [1.4.1](https://github.com/googleapis/python-data-fusion/compare/v1.4.0...v1.4.1) (2022-03-05)
+## [1.4.1](https://github.com/googleapis/python-data-fusion/compare/v1.4.0...v1.4.1) (2022-03-05)
 
 
 ### Bug Fixes
@@ -26,7 +26,7 @@
 
 * update definitions for cloud/datafusion/v1 and cloud/datafusion/v1beta1  ([#58](https://github.com/googleapis/python-data-fusion/issues/58)) ([6b38819](https://github.com/googleapis/python-data-fusion/commit/6b38819f26fb72dc67ac2a4dda1c543d91b7f835))
 
-### [1.2.1](https://www.github.com/googleapis/python-data-fusion/compare/v1.2.0...v1.2.1) (2021-11-01)
+## [1.2.1](https://www.github.com/googleapis/python-data-fusion/compare/v1.2.0...v1.2.1) (2021-11-01)
 
 
 ### Bug Fixes
@@ -53,14 +53,14 @@
 
 * add context manager support in client ([#36](https://www.github.com/googleapis/python-data-fusion/issues/36)) ([3c238d5](https://www.github.com/googleapis/python-data-fusion/commit/3c238d5d26f219dd107f09dcec3fc09977d64760))
 
-### [1.0.2](https://www.github.com/googleapis/python-data-fusion/compare/v1.0.1...v1.0.2) (2021-10-04)
+## [1.0.2](https://www.github.com/googleapis/python-data-fusion/compare/v1.0.1...v1.0.2) (2021-10-04)
 
 
 ### Bug Fixes
 
 * improper types in pagers generation ([b278e83](https://www.github.com/googleapis/python-data-fusion/commit/b278e83f4a087ac21fd02eefc5f79e8c02abcfb5))
 
-### [1.0.1](https://www.github.com/googleapis/python-data-fusion/compare/v1.0.0...v1.0.1) (2021-09-24)
+## [1.0.1](https://www.github.com/googleapis/python-data-fusion/compare/v1.0.0...v1.0.1) (2021-09-24)
 
 
 ### Bug Fixes
@@ -79,7 +79,7 @@
 
 * migrate to main branch ([#20](https://www.github.com/googleapis/python-data-fusion/issues/20)) ([7edab48](https://www.github.com/googleapis/python-data-fusion/commit/7edab48370aeb6194f864bc2d402b8ffa7761a51))
 
-### [0.1.2](https://www.github.com/googleapis/python-data-fusion/compare/v0.1.1...v0.1.2) (2021-07-29)
+## [0.1.2](https://www.github.com/googleapis/python-data-fusion/compare/v0.1.1...v0.1.2) (2021-07-29)
 
 
 ### Bug Fixes
@@ -96,7 +96,7 @@
 
 * release as 0.1.2 ([#11](https://www.github.com/googleapis/python-data-fusion/issues/11)) ([6b418a0](https://www.github.com/googleapis/python-data-fusion/commit/6b418a0d333f81771a597e0a554d2bf05b31d962))
 
-### [0.1.1](https://www.github.com/googleapis/python-data-fusion/compare/v0.1.0...v0.1.1) (2021-07-21)
+## [0.1.1](https://www.github.com/googleapis/python-data-fusion/compare/v0.1.0...v0.1.1) (2021-07-21)
 
 
 ### Bug Fixes
