@@ -1,6 +1,6 @@
 # Changelog
 
-### [1.2.2](https://github.com/googleapis/python-service-management/compare/v1.2.1...v1.2.2) (2022-05-05)
+## [1.2.2](https://github.com/googleapis/python-service-management/compare/v1.2.1...v1.2.2) (2022-05-05)
 
 
 ### Documentation
@@ -8,7 +8,7 @@
 * fix broken links ([#121](https://github.com/googleapis/python-service-management/issues/121)) ([f67944e](https://github.com/googleapis/python-service-management/commit/f67944e9c1865447b452bca6d852879e90664ab2))
 * fix broken links ([#126](https://github.com/googleapis/python-service-management/issues/126)) ([1988c2d](https://github.com/googleapis/python-service-management/commit/1988c2ddf9b9c9929ea263246a98cbfb8d4c7980))
 
-### [1.2.1](https://github.com/googleapis/python-service-management/compare/v1.2.0...v1.2.1) (2022-03-05)
+## [1.2.1](https://github.com/googleapis/python-service-management/compare/v1.2.0...v1.2.1) (2022-03-05)
 
 
 ### Bug Fixes
@@ -29,7 +29,7 @@
 * Remove EnableService and DisableService RPC methods and related modules ([#98](https://github.com/googleapis/python-service-management/issues/98)) ([9a2d72c](https://github.com/googleapis/python-service-management/commit/9a2d72c0eb27238925634b1950f40a90ff4d64a0))
 * resolve DuplicateCredentialArgs error when using credentials_file ([21f9f5d](https://github.com/googleapis/python-service-management/commit/21f9f5deb04992ecc683afda5c4dd3cae5ffffd3))
 
-### [1.1.1](https://www.github.com/googleapis/python-service-management/compare/v1.1.0...v1.1.1) (2021-11-01)
+## [1.1.1](https://www.github.com/googleapis/python-service-management/compare/v1.1.0...v1.1.1) (2021-11-01)
 
 
 ### Bug Fixes
@@ -49,21 +49,21 @@
 
 * add context manager support in client ([#63](https://www.github.com/googleapis/python-service-management/issues/63)) ([71186c1](https://www.github.com/googleapis/python-service-management/commit/71186c1256a9bfbd65f2fcd9ed639f724400eeaf))
 
-### [1.0.4](https://www.github.com/googleapis/python-service-management/compare/v1.0.3...v1.0.4) (2021-09-30)
+## [1.0.4](https://www.github.com/googleapis/python-service-management/compare/v1.0.3...v1.0.4) (2021-09-30)
 
 
 ### Bug Fixes
 
 * improper types in pagers generation ([538b500](https://www.github.com/googleapis/python-service-management/commit/538b5005bac38276ffaaa3c6a2d82f9d7bff3477))
 
-### [1.0.3](https://www.github.com/googleapis/python-service-management/compare/v1.0.2...v1.0.3) (2021-09-24)
+## [1.0.3](https://www.github.com/googleapis/python-service-management/compare/v1.0.2...v1.0.3) (2021-09-24)
 
 
 ### Bug Fixes
 
 * add 'dict' annotation type to 'request' ([7547e3a](https://www.github.com/googleapis/python-service-management/commit/7547e3a53a6a437e56cbc832d62aecc627cb4cd6))
 
-### [1.0.2](https://www.github.com/googleapis/python-service-management/compare/v1.0.1...v1.0.2) (2021-07-28)
+## [1.0.2](https://www.github.com/googleapis/python-service-management/compare/v1.0.1...v1.0.2) (2021-07-28)
 
 
 ### Bug Fixes
@@ -80,7 +80,7 @@
 
 * release as 1.0.2 ([#42](https://www.github.com/googleapis/python-service-management/issues/42)) ([27b79f7](https://www.github.com/googleapis/python-service-management/commit/27b79f7d63ae01e2ba6553eaeedb20b86e878f88))
 
-### [1.0.1](https://www.github.com/googleapis/python-service-management/compare/v1.0.0...v1.0.1) (2021-07-21)
+## [1.0.1](https://www.github.com/googleapis/python-service-management/compare/v1.0.0...v1.0.1) (2021-07-21)
 
 
 ### Bug Fixes
