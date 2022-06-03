@@ -1,13 +1,13 @@
 # Changelog
 
-### [1.3.2](https://github.com/googleapis/python-org-policy/compare/v1.3.1...v1.3.2) (2022-05-26)
+## [1.3.2](https://github.com/googleapis/python-org-policy/compare/v1.3.1...v1.3.2) (2022-05-26)
 
 
 ### Bug Fixes
 
 * regenerate pb2 files using grpcio-tools ([#152](https://github.com/googleapis/python-org-policy/issues/152)) ([e88e34c](https://github.com/googleapis/python-org-policy/commit/e88e34cbd3edfd918d71aed25290ae0df4e471db))
 
-### [1.3.1](https://github.com/googleapis/python-org-policy/compare/v1.3.0...v1.3.1) (2022-03-05)
+## [1.3.1](https://github.com/googleapis/python-org-policy/compare/v1.3.0...v1.3.1) (2022-03-05)
 
 
 ### Bug Fixes
@@ -34,7 +34,7 @@
 
 * add generated snippets  ([#118](https://github.com/googleapis/python-org-policy/issues/118)) ([dae6c2c](https://github.com/googleapis/python-org-policy/commit/dae6c2cc9b3b32ddf751aabd4b0d690003f24bef))
 
-### [1.2.1](https://www.github.com/googleapis/python-org-policy/compare/v1.2.0...v1.2.1) (2021-11-01)
+## [1.2.1](https://www.github.com/googleapis/python-org-policy/compare/v1.2.0...v1.2.1) (2021-11-01)
 
 
 ### Bug Fixes
@@ -66,14 +66,14 @@
 
 * improper types in pagers generation ([3254812](https://www.github.com/googleapis/python-org-policy/commit/3254812ce2adeb32fe44536c3859c44756bd0c89))
 
-### [1.0.2](https://www.github.com/googleapis/python-org-policy/compare/v1.0.1...v1.0.2) (2021-09-24)
+## [1.0.2](https://www.github.com/googleapis/python-org-policy/compare/v1.0.1...v1.0.2) (2021-09-24)
 
 
 ### Bug Fixes
 
 * add 'dict' annotation type to 'request' ([c2ea337](https://www.github.com/googleapis/python-org-policy/commit/c2ea337f06189254eeaec9e60fbf273b38e9f2d8))
 
-### [1.0.1](https://www.github.com/googleapis/python-org-policy/compare/v1.0.0...v1.0.1) (2021-07-26)
+## [1.0.1](https://www.github.com/googleapis/python-org-policy/compare/v1.0.0...v1.0.1) (2021-07-26)
 
 
 ### Bug Fixes
@@ -132,14 +132,14 @@
 
 * add v2 ([#21](https://www.github.com/googleapis/python-org-policy/issues/21)) ([8aaa847](https://www.github.com/googleapis/python-org-policy/commit/8aaa8472df478be10b43b34b4346084131c6e465))
 
-### [0.1.2](https://www.github.com/googleapis/python-org-policy/compare/v0.1.1...v0.1.2) (2020-05-08)
+## [0.1.2](https://www.github.com/googleapis/python-org-policy/compare/v0.1.1...v0.1.2) (2020-05-08)
 
 
 ### Bug Fixes
 
 * add missing __init__.py ([b786474](https://www.github.com/googleapis/python-org-policy/commit/b78647490341488d3264346ef19d8c7a28f48a06))
 
-### [0.1.1](https://www.github.com/googleapis/python-org-policy/compare/v0.1.0...v0.1.1) (2020-05-08)
+## [0.1.1](https://www.github.com/googleapis/python-org-policy/compare/v0.1.0...v0.1.1) (2020-05-08)
 
 
 ### Bug Fixes
