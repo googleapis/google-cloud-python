@@ -1,13 +1,13 @@
 # Changelog
 
-### [1.4.2](https://github.com/googleapis/python-gke-hub/compare/v1.4.1...v1.4.2) (2022-05-05)
+## [1.4.2](https://github.com/googleapis/python-gke-hub/compare/v1.4.1...v1.4.2) (2022-05-05)
 
 
 ### Documentation
 
 * fix type in docstring for map fields ([d6acb71](https://github.com/googleapis/python-gke-hub/commit/d6acb71fd8763ab581cc698713e0dc188a333bd6))
 
-### [1.4.1](https://github.com/googleapis/python-gke-hub/compare/v1.4.0...v1.4.1) (2022-03-05)
+## [1.4.1](https://github.com/googleapis/python-gke-hub/compare/v1.4.0...v1.4.1) (2022-03-05)
 
 
 ### Bug Fixes
@@ -66,14 +66,14 @@
 
 * bump release level to production/stable ([#60](https://www.github.com/googleapis/python-gke-hub/issues/60)) ([5877ee6](https://www.github.com/googleapis/python-gke-hub/commit/5877ee64f259cfdae46f2606e0cb1d9ef5fcc5ea))
 
-### [0.2.2](https://www.github.com/googleapis/python-gke-hub/compare/v0.2.1...v0.2.2) (2021-09-24)
+## [0.2.2](https://www.github.com/googleapis/python-gke-hub/compare/v0.2.1...v0.2.2) (2021-09-24)
 
 
 ### Bug Fixes
 
 * add 'dict' annotation type to 'request' ([7b07616](https://www.github.com/googleapis/python-gke-hub/commit/7b07616c8da7dc504a917634c3749c03e3445148))
 
-### [0.2.1](https://www.github.com/googleapis/python-gke-hub/compare/v0.2.0...v0.2.1) (2021-08-20)
+## [0.2.1](https://www.github.com/googleapis/python-gke-hub/compare/v0.2.0...v0.2.1) (2021-08-20)
 
 
 ### Bug Fixes
@@ -102,14 +102,14 @@
 * omit mention of Python 2.7 in 'CONTRIBUTING.rst' ([#1127](https://www.github.com/googleapis/python-gke-hub/issues/1127)) ([#40](https://www.github.com/googleapis/python-gke-hub/issues/40)) ([8f703d7](https://www.github.com/googleapis/python-gke-hub/commit/8f703d74ad3d9b3ea31b2136ed4e97594b52f832)), closes [#1126](https://www.github.com/googleapis/python-gke-hub/issues/1126)
 * add Samples section to CONTRIBUTING.rst ([#56](https://www.github.com/googleapis/python-gke-hub/issues/56)) ([b08cf7e](https://www.github.com/googleapis/python-gke-hub/commit/b08cf7e5f2dbb1f3615f5b652c2d69f991d8aa69))
 
-### [0.1.2](https://www.github.com/googleapis/python-gke-hub/compare/v0.1.1...v0.1.2) (2021-06-16)
+## [0.1.2](https://www.github.com/googleapis/python-gke-hub/compare/v0.1.1...v0.1.2) (2021-06-16)
 
 
 ### Bug Fixes
 
 * exclude docs and tests from package ([#37](https://www.github.com/googleapis/python-gke-hub/issues/37)) ([65eee87](https://www.github.com/googleapis/python-gke-hub/commit/65eee87a7f48cce25cc89fdedaf383de0fdc4247))
 
-### [0.1.1](https://www.github.com/googleapis/python-gke-hub/compare/v0.1.0...v0.1.1) (2021-05-27)
+## [0.1.1](https://www.github.com/googleapis/python-gke-hub/compare/v0.1.0...v0.1.1) (2021-05-27)
 
 
 ### Bug Fixes
