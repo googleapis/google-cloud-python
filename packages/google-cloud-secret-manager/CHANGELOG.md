@@ -24,14 +24,14 @@
 
 * Added support for accessing secret versions by alias ([#281](https://github.com/googleapis/python-secret-manager/issues/281)) ([6c5cd29](https://github.com/googleapis/python-secret-manager/commit/6c5cd296c888d1839ffdac1a8d09ca568c99d36d))
 
-### [2.9.2](https://github.com/googleapis/python-secret-manager/compare/v2.9.1...v2.9.2) (2022-03-13)
+## [2.9.2](https://github.com/googleapis/python-secret-manager/compare/v2.9.1...v2.9.2) (2022-03-13)
 
 
 ### Documentation
 
 * **samples:** add checksum snippets ([#255](https://github.com/googleapis/python-secret-manager/issues/255)) ([2095a04](https://github.com/googleapis/python-secret-manager/commit/2095a04e73f2437cc4ccbaa272b1998422d18fe3))
 
-### [2.9.1](https://github.com/googleapis/python-secret-manager/compare/v2.9.0...v2.9.1) (2022-03-05)
+## [2.9.1](https://github.com/googleapis/python-secret-manager/compare/v2.9.0...v2.9.1) (2022-03-05)
 
 
 ### Bug Fixes
@@ -78,21 +78,21 @@
 * list oneofs in docstring ([6aac11f](https://www.github.com/googleapis/python-secret-manager/commit/6aac11f08d396835f7c4ca71c7a2f2a2a48e96db))
 * **samples:** Add filtered listing samples ([#209](https://www.github.com/googleapis/python-secret-manager/issues/209)) ([316de2d](https://www.github.com/googleapis/python-secret-manager/commit/316de2d68283e4c1da7f4fdc24fc7e6d65adbfd0))
 
-### [2.7.3](https://www.github.com/googleapis/python-secret-manager/compare/v2.7.2...v2.7.3) (2021-09-30)
+## [2.7.3](https://www.github.com/googleapis/python-secret-manager/compare/v2.7.2...v2.7.3) (2021-09-30)
 
 
 ### Bug Fixes
 
 * improper types in pagers generation ([59c557f](https://www.github.com/googleapis/python-secret-manager/commit/59c557f5acd5de9e12dfa7308fa9fb9e89833fe6))
 
-### [2.7.2](https://www.github.com/googleapis/python-secret-manager/compare/v2.7.1...v2.7.2) (2021-09-24)
+## [2.7.2](https://www.github.com/googleapis/python-secret-manager/compare/v2.7.1...v2.7.2) (2021-09-24)
 
 
 ### Bug Fixes
 
 * add 'dict' annotation type to 'request' ([b5e0c81](https://www.github.com/googleapis/python-secret-manager/commit/b5e0c818eeca22cae59406693f435595d2b92f8d))
 
-### [2.7.1](https://www.github.com/googleapis/python-secret-manager/compare/v2.7.0...v2.7.1) (2021-09-13)
+## [2.7.1](https://www.github.com/googleapis/python-secret-manager/compare/v2.7.0...v2.7.1) (2021-09-13)
 
 
 ### Bug Fixes
@@ -221,7 +221,7 @@
 
 * add support for v1 ([#15](https://www.github.com/googleapis/python-secret-manager/issues/15)) ([cc97391](https://www.github.com/googleapis/python-secret-manager/commit/cc973912f40166c2574caad5a8266eddff6ae7a6))
 
-### [0.1.1](https://www.github.com/googleapis/python-secret-manager/compare/v0.1.0...v0.1.1) (2020-01-06)
+## [0.1.1](https://www.github.com/googleapis/python-secret-manager/compare/v0.1.0...v0.1.1) (2020-01-06)
 
 
 ### Bug Fixes
