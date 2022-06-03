@@ -1,6 +1,6 @@
 # Changelog
 
-### [1.2.2](https://github.com/googleapis/python-assured-workloads/compare/v1.2.1...v1.2.2) (2022-03-05)
+## [1.2.2](https://github.com/googleapis/python-assured-workloads/compare/v1.2.1...v1.2.2) (2022-03-05)
 
 
 ### Bug Fixes
@@ -8,7 +8,7 @@
 * **deps:** require google-api-core>=1.31.5, >=2.3.2 ([#136](https://github.com/googleapis/python-assured-workloads/issues/136)) ([a287c38](https://github.com/googleapis/python-assured-workloads/commit/a287c38712eb08ef30f80e5ab64203926cb8f12a))
 * **deps:** require proto-plus>=1.15.0 ([a287c38](https://github.com/googleapis/python-assured-workloads/commit/a287c38712eb08ef30f80e5ab64203926cb8f12a))
 
-### [1.2.1](https://github.com/googleapis/python-assured-workloads/compare/v1.2.0...v1.2.1) (2022-02-26)
+## [1.2.1](https://github.com/googleapis/python-assured-workloads/compare/v1.2.0...v1.2.1) (2022-02-26)
 
 
 ### Documentation
@@ -55,14 +55,14 @@
 * add context manager support in client ([#94](https://www.github.com/googleapis/python-assured-workloads/issues/94)) ([1dd0e98](https://www.github.com/googleapis/python-assured-workloads/commit/1dd0e982ae7268996ecbf534ed310e446f2d0070))
 * add trove classifier for python 3.10 ([#97](https://www.github.com/googleapis/python-assured-workloads/issues/97)) ([4db7fe0](https://www.github.com/googleapis/python-assured-workloads/commit/4db7fe0f9655b09c47eef5142a8c0a7ba0e270d9))
 
-### [0.7.2](https://www.github.com/googleapis/python-assured-workloads/compare/v0.7.1...v0.7.2) (2021-09-30)
+## [0.7.2](https://www.github.com/googleapis/python-assured-workloads/compare/v0.7.1...v0.7.2) (2021-09-30)
 
 
 ### Bug Fixes
 
 * improper types in pagers generation ([a78556b](https://www.github.com/googleapis/python-assured-workloads/commit/a78556b3481b7e000a209ce0495b52495769cb9a))
 
-### [0.7.1](https://www.github.com/googleapis/python-assured-workloads/compare/v0.7.0...v0.7.1) (2021-09-24)
+## [0.7.1](https://www.github.com/googleapis/python-assured-workloads/compare/v0.7.0...v0.7.1) (2021-09-24)
 
 
 ### Bug Fixes
@@ -99,7 +99,7 @@
 
 * Add EU Regions And Support compliance regime ([#67](https://www.github.com/googleapis/python-assured-workloads/issues/67)) ([a370ad5](https://www.github.com/googleapis/python-assured-workloads/commit/a370ad5c1c7525544f3e5a83e84e0c05ed1851e2))
 
-### [0.4.2](https://www.github.com/googleapis/python-assured-workloads/compare/v0.4.1...v0.4.2) (2021-07-27)
+## [0.4.2](https://www.github.com/googleapis/python-assured-workloads/compare/v0.4.1...v0.4.2) (2021-07-27)
 
 
 ### Bug Fixes
@@ -116,7 +116,7 @@
 
 * release as 0.4.2 ([#65](https://www.github.com/googleapis/python-assured-workloads/issues/65)) ([8f8f538](https://www.github.com/googleapis/python-assured-workloads/commit/8f8f53852fd2e3ae4a917cdd7c37125fb01043a4))
 
-### [0.4.1](https://www.github.com/googleapis/python-assured-workloads/compare/v0.4.0...v0.4.1) (2021-07-20)
+## [0.4.1](https://www.github.com/googleapis/python-assured-workloads/compare/v0.4.0...v0.4.1) (2021-07-20)
 
 
 ### Bug Fixes
@@ -142,7 +142,7 @@
 * fix typo in docs/index.rst ([#43](https://www.github.com/googleapis/python-assured-workloads/issues/43)) ([df2ea64](https://www.github.com/googleapis/python-assured-workloads/commit/df2ea6472b097b53ee7c278051ad4bd11e85ef7b))
 * omit mention of Python 2.7 in 'CONTRIBUTING.rst' ([#1127](https://www.github.com/googleapis/python-assured-workloads/issues/1127)) ([#47](https://www.github.com/googleapis/python-assured-workloads/issues/47)) ([0f28736](https://www.github.com/googleapis/python-assured-workloads/commit/0f28736ad7d1966f41410d5d571fb56b6fef91df))
 
-### [0.3.1](https://www.github.com/googleapis/python-assured-workloads/compare/v0.3.0...v0.3.1) (2021-06-16)
+## [0.3.1](https://www.github.com/googleapis/python-assured-workloads/compare/v0.3.0...v0.3.1) (2021-06-16)
 
 
 ### Bug Fixes
@@ -165,7 +165,7 @@
 * **deps:** add packaging requirement ([#37](https://www.github.com/googleapis/python-assured-workloads/issues/37)) ([ae6197c](https://www.github.com/googleapis/python-assured-workloads/commit/ae6197cb4761e2c7d1cab80721d7f3b0c16375f1))
 * fix retry deadlines ([6ff8af6](https://www.github.com/googleapis/python-assured-workloads/commit/6ff8af6abc18d74d624e71b547f921b444435310))
 
-### [0.2.1](https://www.github.com/googleapis/python-assured-workloads/compare/v0.2.0...v0.2.1) (2021-02-11)
+## [0.2.1](https://www.github.com/googleapis/python-assured-workloads/compare/v0.2.0...v0.2.1) (2021-02-11)
 
 
 ### Bug Fixes
