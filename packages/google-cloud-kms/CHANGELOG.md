@@ -4,7 +4,7 @@
 
 [1]: https://pypi.org/project/google-cloud-kms/#history
 
-### [2.11.1](https://github.com/googleapis/python-kms/compare/v2.11.0...v2.11.1) (2022-03-05)
+## [2.11.1](https://github.com/googleapis/python-kms/compare/v2.11.0...v2.11.1) (2022-03-05)
 
 
 ### Bug Fixes
@@ -36,7 +36,7 @@
 
 * **samples:** fix typo in verify_asymmetric_ec.py ([#227](https://github.com/googleapis/python-kms/issues/227)) ([3817d73](https://github.com/googleapis/python-kms/commit/3817d7390fddebd137c99865455f0ae145dbcf63))
 
-### [2.10.1](https://www.github.com/googleapis/python-kms/compare/v2.10.0...v2.10.1) (2021-11-01)
+## [2.10.1](https://www.github.com/googleapis/python-kms/compare/v2.10.0...v2.10.1) (2021-11-01)
 
 
 ### Bug Fixes
@@ -82,7 +82,7 @@
 
 * improper types in pagers generation ([8ff7501](https://www.github.com/googleapis/python-kms/commit/8ff75018aeacd87bd00abb4a12a130f3e28604f5))
 
-### [2.6.1](https://www.github.com/googleapis/python-kms/compare/v2.6.0...v2.6.1) (2021-09-24)
+## [2.6.1](https://www.github.com/googleapis/python-kms/compare/v2.6.0...v2.6.1) (2021-09-24)
 
 
 ### Bug Fixes
@@ -108,14 +108,14 @@
 
 * add support for HMAC, Variable Key Destruction, and GenerateRandom ([#157](https://www.github.com/googleapis/python-kms/issues/157)) ([4b7c9f9](https://www.github.com/googleapis/python-kms/commit/4b7c9f96a73fba8b825f8c7cfabc748728c0eb62))
 
-### [2.4.3](https://www.github.com/googleapis/python-kms/compare/v2.4.2...v2.4.3) (2021-07-29)
+## [2.4.3](https://www.github.com/googleapis/python-kms/compare/v2.4.2...v2.4.3) (2021-07-29)
 
 
 ### Documentation
 
 * update README for attestation verification scripts ([#151](https://www.github.com/googleapis/python-kms/issues/151)) ([a1a111d](https://www.github.com/googleapis/python-kms/commit/a1a111d67017b89235c18455512658514ce65140))
 
-### [2.4.2](https://www.github.com/googleapis/python-kms/compare/v2.4.1...v2.4.2) (2021-07-28)
+## [2.4.2](https://www.github.com/googleapis/python-kms/compare/v2.4.1...v2.4.2) (2021-07-28)
 
 
 ### Bug Fixes
@@ -132,7 +132,7 @@
 
 * release as 2.4.2 ([#150](https://www.github.com/googleapis/python-kms/issues/150)) ([6663190](https://www.github.com/googleapis/python-kms/commit/66631903dc8c32eea1af0bd0265893e6bdffd55f))
 
-### [2.4.1](https://www.github.com/googleapis/python-kms/compare/v2.4.0...v2.4.1) (2021-07-20)
+## [2.4.1](https://www.github.com/googleapis/python-kms/compare/v2.4.0...v2.4.1) (2021-07-20)
 
 
 ### Bug Fixes
@@ -195,7 +195,7 @@
 
 * accept custom client_info ([#41](https://www.github.com/googleapis/python-kms/issues/41)) ([6688e80](https://www.github.com/googleapis/python-kms/commit/6688e80aa4db74980d4a6194519c814a22cde177))
 
-### [2.0.1](https://www.github.com/googleapis/python-kms/compare/v2.0.0...v2.0.1) (2020-08-24)
+## [2.0.1](https://www.github.com/googleapis/python-kms/compare/v2.0.0...v2.0.1) (2020-08-24)
 
 
 ### Bug Fixes
