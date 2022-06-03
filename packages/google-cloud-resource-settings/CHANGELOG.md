@@ -1,6 +1,6 @@
 # Changelog
 
-### [1.3.1](https://github.com/googleapis/python-resource-settings/compare/v1.3.0...v1.3.1) (2022-03-05)
+## [1.3.1](https://github.com/googleapis/python-resource-settings/compare/v1.3.0...v1.3.1) (2022-03-05)
 
 
 ### Bug Fixes
@@ -19,7 +19,7 @@
 
 * resolve DuplicateCredentialArgs error when using credentials_file ([26211ca](https://github.com/googleapis/python-resource-settings/commit/26211cab0ffad79a7049b9819eba89bbc7ea2998))
 
-### [1.2.1](https://www.github.com/googleapis/python-resource-settings/compare/v1.2.0...v1.2.1) (2021-11-01)
+## [1.2.1](https://www.github.com/googleapis/python-resource-settings/compare/v1.2.0...v1.2.1) (2021-11-01)
 
 
 ### Bug Fixes
@@ -46,14 +46,14 @@
 
 * add context manager support in client ([#49](https://www.github.com/googleapis/python-resource-settings/issues/49)) ([91201e0](https://www.github.com/googleapis/python-resource-settings/commit/91201e09bed298a96fa9e4223d454f5ac4336441))
 
-### [1.0.2](https://www.github.com/googleapis/python-resource-settings/compare/v1.0.1...v1.0.2) (2021-09-30)
+## [1.0.2](https://www.github.com/googleapis/python-resource-settings/compare/v1.0.1...v1.0.2) (2021-09-30)
 
 
 ### Bug Fixes
 
 * improper types in pagers generation ([801dfba](https://www.github.com/googleapis/python-resource-settings/commit/801dfba9f736136df4d8d976f6f460656bc56cd6))
 
-### [1.0.1](https://www.github.com/googleapis/python-resource-settings/compare/v1.0.0...v1.0.1) (2021-09-24)
+## [1.0.1](https://www.github.com/googleapis/python-resource-settings/compare/v1.0.0...v1.0.1) (2021-09-24)
 
 
 ### Bug Fixes
@@ -67,7 +67,7 @@
 
 * bump release level to production/stable ([#27](https://www.github.com/googleapis/python-resource-settings/issues/27)) ([ea55c97](https://www.github.com/googleapis/python-resource-settings/commit/ea55c97e88fc4222d0287d989c96f8f30426ce95))
 
-### [0.3.2](https://www.github.com/googleapis/python-resource-settings/compare/v0.3.1...v0.3.2) (2021-07-29)
+## [0.3.2](https://www.github.com/googleapis/python-resource-settings/compare/v0.3.1...v0.3.2) (2021-07-29)
 
 
 ### Bug Fixes
@@ -84,7 +84,7 @@
 
 * release as 0.3.2 ([#24](https://www.github.com/googleapis/python-resource-settings/issues/24)) ([c0252c4](https://www.github.com/googleapis/python-resource-settings/commit/c0252c43471cf6d5c7abe62fced88121cda28c1b))
 
-### [0.3.1](https://www.github.com/googleapis/python-resource-settings/compare/v0.3.0...v0.3.1) (2021-07-21)
+## [0.3.1](https://www.github.com/googleapis/python-resource-settings/compare/v0.3.0...v0.3.1) (2021-07-21)
 
 
 ### Bug Fixes
