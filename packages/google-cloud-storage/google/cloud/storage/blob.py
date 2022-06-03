@@ -3576,7 +3576,15 @@ class Blob(_PropertyMixin):
         if source.generation:
             query_params["sourceGeneration"] = source.generation
 
-        if self.kms_key_name is not None:
+        # When a Customer Managed Encryption Key is used to encrypt Cloud Storage object
+        # at rest, object resource metadata will store the version of the Key Management
+        # Service cryptographic material. If a Blob instance with KMS Key metadata set is
+        # used to rewrite the object, then the existing kmsKeyName version
+        # value can't be used in the rewrite request and the client instead ignores it.
+        if (
+            self.kms_key_name is not None
+            and "cryptoKeyVersions" not in self.kms_key_name
+        ):
             query_params["destinationKmsKeyName"] = self.kms_key_name
 
         _add_generation_match_parameters(

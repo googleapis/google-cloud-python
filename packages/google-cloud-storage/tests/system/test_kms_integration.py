@@ -224,6 +224,17 @@ def test_blob_rewrite_rotate_csek_to_cmek(
 
     assert dest.download_as_bytes() == source_data
 
+    # Test existing kmsKeyName version is ignored in the rewrite request
+    dest = kms_bucket.get_blob(blob_name)
+    source = kms_bucket.get_blob(blob_name)
+    token, rewritten, total = dest.rewrite(source)
+
+    while token is not None:
+        token, rewritten, total = dest.rewrite(source, token=token)
+
+    assert rewritten == len(source_data)
+    assert dest.download_as_bytes() == source_data
+
 
 def test_blob_upload_w_bucket_cmek_enabled(
     kms_bucket,

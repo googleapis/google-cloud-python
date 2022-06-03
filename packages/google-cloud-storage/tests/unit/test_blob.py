@@ -4942,6 +4942,58 @@ class Test_Blob(unittest.TestCase):
             _target_object=dest,
         )
 
+    def test_rewrite_same_name_w_kms_key_w_version(self):
+        blob_name = "blob"
+        source_key = b"01234567890123456789012345678901"  # 32 bytes
+        source_key_b64 = base64.b64encode(source_key).rstrip().decode("ascii")
+        source_key_hash = hashlib.sha256(source_key).digest()
+        source_key_hash_b64 = base64.b64encode(source_key_hash).rstrip().decode("ascii")
+        dest_kms_resource = (
+            "projects/test-project-123/"
+            "locations/us/"
+            "keyRings/test-ring/"
+            "cryptoKeys/test-key"
+            "cryptoKeyVersions/1"
+        )
+        bytes_rewritten = object_size = 42
+        api_response = {
+            "totalBytesRewritten": bytes_rewritten,
+            "objectSize": object_size,
+            "done": True,
+            "resource": {"etag": "DEADBEEF"},
+        }
+        client = mock.Mock(spec=["_post_resource"])
+        client._post_resource.return_value = api_response
+        bucket = _Bucket(client=client)
+        source = self._make_one(blob_name, bucket=bucket, encryption_key=source_key)
+        dest = self._make_one(blob_name, bucket=bucket, kms_key_name=dest_kms_resource)
+
+        token, rewritten, size = dest.rewrite(source)
+
+        self.assertIsNone(token)
+        self.assertEqual(rewritten, bytes_rewritten)
+        self.assertEqual(size, object_size)
+
+        expected_path = f"/b/name/o/{blob_name}/rewriteTo/b/name/o/{blob_name}"
+        expected_data = {"kmsKeyName": dest_kms_resource}
+        # The kmsKeyName version value can't be used in the rewrite request,
+        # so the client instead ignores it.
+        expected_query_params = {}
+        expected_headers = {
+            "X-Goog-Copy-Source-Encryption-Algorithm": "AES256",
+            "X-Goog-Copy-Source-Encryption-Key": source_key_b64,
+            "X-Goog-Copy-Source-Encryption-Key-Sha256": source_key_hash_b64,
+        }
+        client._post_resource.assert_called_once_with(
+            expected_path,
+            expected_data,
+            query_params=expected_query_params,
+            headers=expected_headers,
+            timeout=self._get_default_timeout(),
+            retry=DEFAULT_RETRY_IF_GENERATION_SPECIFIED,
+            _target_object=dest,
+        )
+
     def test_update_storage_class_invalid(self):
         blob_name = "blob-name"
         bucket = _Bucket()
