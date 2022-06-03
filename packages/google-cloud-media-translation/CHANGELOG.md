@@ -1,6 +1,6 @@
 # Changelog
 
-### [0.8.1](https://github.com/googleapis/python-media-translation/compare/v0.8.0...v0.8.1) (2022-03-05)
+## [0.8.1](https://github.com/googleapis/python-media-translation/compare/v0.8.0...v0.8.1) (2022-03-05)
 
 
 ### Bug Fixes
@@ -25,7 +25,7 @@
 
 * add generated snippets ([#155](https://github.com/googleapis/python-media-translation/issues/155)) ([17cc6bb](https://github.com/googleapis/python-media-translation/commit/17cc6bb8e82f16486b1520bceb0bf6a1b438f6ae))
 
-### [0.7.1](https://www.github.com/googleapis/python-media-translation/compare/v0.7.0...v0.7.1) (2021-11-01)
+## [0.7.1](https://www.github.com/googleapis/python-media-translation/compare/v0.7.0...v0.7.1) (2021-11-01)
 
 
 ### Bug Fixes
@@ -52,14 +52,14 @@
 
 * add context manager support in client ([#116](https://www.github.com/googleapis/python-media-translation/issues/116)) ([50de95e](https://www.github.com/googleapis/python-media-translation/commit/50de95e8586e900dad8d8c43c2c69f7ec578f9a1))
 
-### [0.5.4](https://www.github.com/googleapis/python-media-translation/compare/v0.5.3...v0.5.4) (2021-09-24)
+## [0.5.4](https://www.github.com/googleapis/python-media-translation/compare/v0.5.3...v0.5.4) (2021-09-24)
 
 
 ### Bug Fixes
 
 * add 'dict' annotation type to 'request' ([b6d9e03](https://www.github.com/googleapis/python-media-translation/commit/b6d9e03adc40227f6917069232e0550dcffae528))
 
-### [0.5.3](https://www.github.com/googleapis/python-media-translation/compare/v0.5.2...v0.5.3) (2021-07-28)
+## [0.5.3](https://www.github.com/googleapis/python-media-translation/compare/v0.5.2...v0.5.3) (2021-07-28)
 
 
 ### Bug Fixes
@@ -76,14 +76,14 @@
 
 * release as 0.5.3 ([#93](https://www.github.com/googleapis/python-media-translation/issues/93)) ([8a09e4e](https://www.github.com/googleapis/python-media-translation/commit/8a09e4e397169b880e91320df21742babe953c85))
 
-### [0.5.2](https://www.github.com/googleapis/python-media-translation/compare/v0.5.1...v0.5.2) (2021-07-20)
+## [0.5.2](https://www.github.com/googleapis/python-media-translation/compare/v0.5.1...v0.5.2) (2021-07-20)
 
 
 ### Bug Fixes
 
 * **deps:** pin 'google-{api,cloud}-core', 'google-auth' to allow 2.x versions ([#86](https://www.github.com/googleapis/python-media-translation/issues/86)) ([8f9f974](https://www.github.com/googleapis/python-media-translation/commit/8f9f974f5d768e316d32ce46eabd5e684940bd69))
 
-### [0.5.1](https://www.github.com/googleapis/python-media-translation/compare/v0.5.0...v0.5.1) (2021-07-19)
+## [0.5.1](https://www.github.com/googleapis/python-media-translation/compare/v0.5.0...v0.5.1) (2021-07-19)
 
 
 ### Documentation
@@ -144,7 +144,7 @@
 
 * add mtls support ([#7](https://www.github.com/googleapis/python-media-translation/issues/7)) ([1560ad8](https://www.github.com/googleapis/python-media-translation/commit/1560ad88713766dae0112fbe96663a873fb099df))
 
-### [0.1.1](https://www.github.com/googleapis/python-media-translation/compare/v0.1.0...v0.1.1) (2020-03-23)
+## [0.1.1](https://www.github.com/googleapis/python-media-translation/compare/v0.1.0...v0.1.1) (2020-03-23)
 
 
 ### Bug Fixes
