@@ -1,6 +1,6 @@
 # Changelog
 
-### [1.3.1](https://github.com/googleapis/python-dms/compare/v1.3.0...v1.3.1) (2022-03-05)
+## [1.3.1](https://github.com/googleapis/python-dms/compare/v1.3.0...v1.3.1) (2022-03-05)
 
 
 ### Bug Fixes
@@ -19,7 +19,7 @@
 
 * resolve DuplicateCredentialArgs error when using credentials_file ([64bc21f](https://github.com/googleapis/python-dms/commit/64bc21f3b660738e6f5fb4b63d994da2b6c84350))
 
-### [1.2.1](https://www.github.com/googleapis/python-dms/compare/v1.2.0...v1.2.1) (2021-11-01)
+## [1.2.1](https://www.github.com/googleapis/python-dms/compare/v1.2.0...v1.2.1) (2021-11-01)
 
 
 ### Bug Fixes
@@ -46,14 +46,14 @@
 
 * add context manager support in client ([#50](https://www.github.com/googleapis/python-dms/issues/50)) ([01d2652](https://www.github.com/googleapis/python-dms/commit/01d2652f1a619688fe8baf7478540787cdcf7530))
 
-### [1.0.2](https://www.github.com/googleapis/python-dms/compare/v1.0.1...v1.0.2) (2021-09-30)
+## [1.0.2](https://www.github.com/googleapis/python-dms/compare/v1.0.1...v1.0.2) (2021-09-30)
 
 
 ### Bug Fixes
 
 * improper types in pagers generation ([2a7b8f2](https://www.github.com/googleapis/python-dms/commit/2a7b8f2fcc0eaf4f13a044282aeac22dc53ea918))
 
-### [1.0.1](https://www.github.com/googleapis/python-dms/compare/v1.0.0...v1.0.1) (2021-09-24)
+## [1.0.1](https://www.github.com/googleapis/python-dms/compare/v1.0.0...v1.0.1) (2021-09-24)
 
 
 ### Bug Fixes
@@ -67,7 +67,7 @@
 
 * bump release level to production/stable ([#28](https://www.github.com/googleapis/python-dms/issues/28)) ([a2490a1](https://www.github.com/googleapis/python-dms/commit/a2490a18ec60a6eeb30d2e0da5a690d39256fcc3))
 
-### [0.2.2](https://www.github.com/googleapis/python-dms/compare/v0.2.1...v0.2.2) (2021-07-29)
+## [0.2.2](https://www.github.com/googleapis/python-dms/compare/v0.2.1...v0.2.2) (2021-07-29)
 
 
 ### Bug Fixes
@@ -84,7 +84,7 @@
 
 * release as 0.2.2 ([#25](https://www.github.com/googleapis/python-dms/issues/25)) ([787b401](https://www.github.com/googleapis/python-dms/commit/787b401c50047303c1beabb046e9117497824a1d))
 
-### [0.2.1](https://www.github.com/googleapis/python-dms/compare/v0.2.0...v0.2.1) (2021-07-21)
+## [0.2.1](https://www.github.com/googleapis/python-dms/compare/v0.2.0...v0.2.1) (2021-07-21)
 
 
 ### Bug Fixes
