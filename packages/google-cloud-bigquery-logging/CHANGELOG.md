@@ -1,13 +1,13 @@
 # Changelog
 
-### [1.0.2](https://github.com/googleapis/python-bigquery-logging/compare/v1.0.1...v1.0.2) (2022-03-05)
+## [1.0.2](https://github.com/googleapis/python-bigquery-logging/compare/v1.0.1...v1.0.2) (2022-03-05)
 
 
 ### Bug Fixes
 
 * **deps:** require google-api-core>=1.31.5, >=2.3.2 ([#72](https://github.com/googleapis/python-bigquery-logging/issues/72)) ([609bf19](https://github.com/googleapis/python-bigquery-logging/commit/609bf19d1b3d4b7dc594f8e4a0904af0351143c7))
 
-### [1.0.1](https://www.github.com/googleapis/python-bigquery-logging/compare/v1.0.0...v1.0.1) (2021-11-01)
+## [1.0.1](https://www.github.com/googleapis/python-bigquery-logging/compare/v1.0.0...v1.0.1) (2021-11-01)
 
 ### Bug Fixes
 
@@ -33,14 +33,14 @@
 
 * add context manager support in client ([#43](https://www.github.com/googleapis/python-bigquery-logging/issues/43)) ([493010c](https://www.github.com/googleapis/python-bigquery-logging/commit/493010cbfb288a75a58761d5281993009013e1b6))
 
-### [0.2.2](https://www.github.com/googleapis/python-bigquery-logging/compare/v0.2.1...v0.2.2) (2021-09-24)
+## [0.2.2](https://www.github.com/googleapis/python-bigquery-logging/compare/v0.2.1...v0.2.2) (2021-09-24)
 
 
 ### Bug Fixes
 
 * add 'dict' annotation type to 'request' ([546c1b3](https://www.github.com/googleapis/python-bigquery-logging/commit/546c1b3539f03a172eed2cdf202615a5fa37418f))
 
-### [0.2.1](https://www.github.com/googleapis/python-bigquery-logging/compare/v0.2.0...v0.2.1) (2021-07-29)
+## [0.2.1](https://www.github.com/googleapis/python-bigquery-logging/compare/v0.2.0...v0.2.1) (2021-07-29)
 
 
 ### Bug Fixes
@@ -69,7 +69,7 @@
 
 * omit mention of Python 2.7 in 'CONTRIBUTING.rst' ([#1127](https://www.github.com/googleapis/python-bigquery-logging/issues/1127)) ([#7](https://www.github.com/googleapis/python-bigquery-logging/issues/7)) ([53f6808](https://www.github.com/googleapis/python-bigquery-logging/commit/53f6808fa2b317ee5f9a4ca0a54214267cc1dce0)), closes [#1126](https://www.github.com/googleapis/python-bigquery-logging/issues/1126)
 
-### [0.1.1](https://www.github.com/googleapis/python-bigquery-logging/compare/v0.1.0...v0.1.1) (2021-06-16)
+## [0.1.1](https://www.github.com/googleapis/python-bigquery-logging/compare/v0.1.0...v0.1.1) (2021-06-16)
 
 
 ### Bug Fixes
