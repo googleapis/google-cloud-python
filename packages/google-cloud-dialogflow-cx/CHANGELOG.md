@@ -49,7 +49,7 @@
 
 * clarified wording around Cloud Storage usage ([61fd2dc](https://github.com/googleapis/python-dialogflow-cx/commit/61fd2dc3512e4bcfdfc51cf085cc12cbbf1e043b))
 
-### [1.9.1](https://github.com/googleapis/python-dialogflow-cx/compare/v1.9.0...v1.9.1) (2022-03-05)
+## [1.9.1](https://github.com/googleapis/python-dialogflow-cx/compare/v1.9.0...v1.9.1) (2022-03-05)
 
 
 ### Bug Fixes
@@ -155,7 +155,7 @@
 * added notes on long running operation ([1383bf8](https://www.github.com/googleapis/python-dialogflow-cx/commit/1383bf82b8b2ae0cd92d81768a693a2732a53a46))
 * **v3beta1:** added long running operation explanation for several apis ([977e2aa](https://www.github.com/googleapis/python-dialogflow-cx/commit/977e2aa9c17c235d125c633a6f4ba9f5a1dade7b))
 
-### [1.3.2](https://www.github.com/googleapis/python-dialogflow-cx/compare/v1.3.1...v1.3.2) (2021-09-24)
+## [1.3.2](https://www.github.com/googleapis/python-dialogflow-cx/compare/v1.3.1...v1.3.2) (2021-09-24)
 
 
 ### Bug Fixes
@@ -168,7 +168,7 @@
 * **samples:** added filter sample ([#171](https://www.github.com/googleapis/python-dialogflow-cx/issues/171)) ([5b7e6b9](https://www.github.com/googleapis/python-dialogflow-cx/commit/5b7e6b9fcb066e823d58c5ce3af0f32a54d896bc))
 * **samples:** added page management samples ([#152](https://www.github.com/googleapis/python-dialogflow-cx/issues/152)) ([41d15f8](https://www.github.com/googleapis/python-dialogflow-cx/commit/41d15f8f212baab09222c6a350efc3376a3bf9ea))
 
-### [1.3.1](https://www.github.com/googleapis/python-dialogflow-cx/compare/v1.3.0...v1.3.1) (2021-08-31)
+## [1.3.1](https://www.github.com/googleapis/python-dialogflow-cx/compare/v1.3.0...v1.3.1) (2021-08-31)
 
 
 ### Documentation
@@ -217,7 +217,7 @@
 * **v3beta1:** deprecate legacy logging settings ([96141a1](https://www.github.com/googleapis/python-dialogflow-cx/commit/96141a11fdba3dcb2a77a261505583bba75fcc77))
 * **v3:** deprecate legacy logging settings ([24ef477](https://www.github.com/googleapis/python-dialogflow-cx/commit/24ef4773d4f6392ff39e7cdf70ff67b64ee50449))
 
-### [1.1.1](https://www.github.com/googleapis/python-dialogflow-cx/compare/v1.1.0...v1.1.1) (2021-07-24)
+## [1.1.1](https://www.github.com/googleapis/python-dialogflow-cx/compare/v1.1.0...v1.1.1) (2021-07-24)
 
 
 ### Bug Fixes
@@ -264,7 +264,7 @@
 * added notes to train agent before sending queries ([#111](https://www.github.com/googleapis/python-dialogflow-cx/issues/111)) ([8a53800](https://www.github.com/googleapis/python-dialogflow-cx/commit/8a5380055dfa7d58f83be5ce0da310318b54fc51))
 * omit mention of Python 2.7 in 'CONTRIBUTING.rst' ([#1127](https://www.github.com/googleapis/python-dialogflow-cx/issues/1127)) ([#110](https://www.github.com/googleapis/python-dialogflow-cx/issues/110)) ([40974f5](https://www.github.com/googleapis/python-dialogflow-cx/commit/40974f56c27833ab23575426f75d0868e1a10d94)), closes [#1126](https://www.github.com/googleapis/python-dialogflow-cx/issues/1126)
 
-### [0.7.1](https://www.github.com/googleapis/python-dialogflow-cx/compare/v0.7.0...v0.7.1) (2021-06-16)
+## [0.7.1](https://www.github.com/googleapis/python-dialogflow-cx/compare/v0.7.0...v0.7.1) (2021-06-16)
 
 
 ### Bug Fixes
@@ -327,7 +327,7 @@
 * clarify resource format for session response. ([20df7c3](https://www.github.com/googleapis/python-dialogflow-cx/commit/20df7c3bfabef5da23970512a3f925f4dfe7d2f9))
 * Update docs on Pages, Session, Version, etc. ([20df7c3](https://www.github.com/googleapis/python-dialogflow-cx/commit/20df7c3bfabef5da23970512a3f925f4dfe7d2f9))
 
-### [0.4.1](https://www.github.com/googleapis/python-dialogflow-cx/compare/v0.4.0...v0.4.1) (2021-03-07)
+## [0.4.1](https://www.github.com/googleapis/python-dialogflow-cx/compare/v0.4.0...v0.4.1) (2021-03-07)
 
 
 ### Documentation
@@ -372,7 +372,7 @@
 
 * add v3 ([#21](https://www.github.com/googleapis/python-dialogflow-cx/issues/21)) ([97c7fb5](https://www.github.com/googleapis/python-dialogflow-cx/commit/97c7fb53e5f6af7d8b0fea3043c60da9ee1f549b))
 
-### [0.1.1](https://www.github.com/googleapis/python-dialogflow-cx/compare/v0.1.0...v0.1.1) (2020-11-17)
+## [0.1.1](https://www.github.com/googleapis/python-dialogflow-cx/compare/v0.1.0...v0.1.1) (2020-11-17)
 
 
 ### Bug Fixes
