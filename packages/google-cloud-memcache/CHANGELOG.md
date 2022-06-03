@@ -1,6 +1,6 @@
 # Changelog
 
-### [1.3.1](https://github.com/googleapis/python-memcache/compare/v1.3.0...v1.3.1) (2022-03-05)
+## [1.3.1](https://github.com/googleapis/python-memcache/compare/v1.3.0...v1.3.1) (2022-03-05)
 
 
 ### Bug Fixes
@@ -20,7 +20,7 @@
 
 * resolve DuplicateCredentialArgs error when using credentials_file ([5f8a2b4](https://github.com/googleapis/python-memcache/commit/5f8a2b4fe5fcc0c4a2be6b9f8529f4ceacbf6421))
 
-### [1.2.1](https://www.github.com/googleapis/python-memcache/compare/v1.2.0...v1.2.1) (2021-11-01)
+## [1.2.1](https://www.github.com/googleapis/python-memcache/compare/v1.2.0...v1.2.1) (2021-11-01)
 
 
 ### Bug Fixes
@@ -40,21 +40,21 @@
 
 * add context manager support in client ([#111](https://www.github.com/googleapis/python-memcache/issues/111)) ([a385b99](https://www.github.com/googleapis/python-memcache/commit/a385b993b2473a01256042cc2c560f872c6b8c13))
 
-### [1.1.3](https://www.github.com/googleapis/python-memcache/compare/v1.1.2...v1.1.3) (2021-09-30)
+## [1.1.3](https://www.github.com/googleapis/python-memcache/compare/v1.1.2...v1.1.3) (2021-09-30)
 
 
 ### Bug Fixes
 
 * improper types in pagers generation ([3680bac](https://www.github.com/googleapis/python-memcache/commit/3680bac8c702cc0313b06dbec3c0c6512ac4a58a))
 
-### [1.1.2](https://www.github.com/googleapis/python-memcache/compare/v1.1.1...v1.1.2) (2021-09-24)
+## [1.1.2](https://www.github.com/googleapis/python-memcache/compare/v1.1.1...v1.1.2) (2021-09-24)
 
 
 ### Bug Fixes
 
 * add 'dict' annotation type to 'request' ([c56fbee](https://www.github.com/googleapis/python-memcache/commit/c56fbee0ffedac37a80bca5ca3028c53753ada5a))
 
-### [1.1.1](https://www.github.com/googleapis/python-memcache/compare/v1.1.0...v1.1.1) (2021-07-26)
+## [1.1.1](https://www.github.com/googleapis/python-memcache/compare/v1.1.0...v1.1.1) (2021-07-26)
 
 
 ### Bug Fixes
