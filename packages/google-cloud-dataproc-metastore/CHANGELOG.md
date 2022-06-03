@@ -21,7 +21,7 @@
 
 * formatting improvements ([0a768dd](https://github.com/googleapis/python-dataproc-metastore/commit/0a768dd7f9541231f124d7ff6cd1c9c8a497c1ed))
 
-### [1.4.1](https://github.com/googleapis/python-dataproc-metastore/compare/v1.4.0...v1.4.1) (2022-03-05)
+## [1.4.1](https://github.com/googleapis/python-dataproc-metastore/compare/v1.4.0...v1.4.1) (2022-03-05)
 
 
 ### Bug Fixes
@@ -46,7 +46,7 @@
 
 * add generated snippets ([#110](https://github.com/googleapis/python-dataproc-metastore/issues/110)) ([30373ff](https://github.com/googleapis/python-dataproc-metastore/commit/30373ffee9aa49c4c23a421ad36da141bf06156d))
 
-### [1.3.1](https://www.github.com/googleapis/python-dataproc-metastore/compare/v1.3.0...v1.3.1) (2021-11-01)
+## [1.3.1](https://www.github.com/googleapis/python-dataproc-metastore/compare/v1.3.0...v1.3.1) (2021-11-01)
 
 
 ### Bug Fixes
@@ -73,14 +73,14 @@
 
 * add context manager support in client ([#83](https://www.github.com/googleapis/python-dataproc-metastore/issues/83)) ([d6b8569](https://www.github.com/googleapis/python-dataproc-metastore/commit/d6b85696e21df07a63c93f5e993972fba157aa77))
 
-### [1.1.2](https://www.github.com/googleapis/python-dataproc-metastore/compare/v1.1.1...v1.1.2) (2021-10-05)
+## [1.1.2](https://www.github.com/googleapis/python-dataproc-metastore/compare/v1.1.1...v1.1.2) (2021-10-05)
 
 
 ### Bug Fixes
 
 * improper types in pagers generation ([fd7978b](https://www.github.com/googleapis/python-dataproc-metastore/commit/fd7978b1e2552dd47ea4ecf109d6266d165766b9))
 
-### [1.1.1](https://www.github.com/googleapis/python-dataproc-metastore/compare/v1.1.0...v1.1.1) (2021-09-24)
+## [1.1.1](https://www.github.com/googleapis/python-dataproc-metastore/compare/v1.1.0...v1.1.1) (2021-09-24)
 
 
 ### Bug Fixes
@@ -101,7 +101,7 @@
 
 * bump release level to production/stable ([#59](https://www.github.com/googleapis/python-dataproc-metastore/issues/59)) ([434ca20](https://www.github.com/googleapis/python-dataproc-metastore/commit/434ca203c9ffad48f96d6a8c45de81a5ec74bd2b))
 
-### [0.3.1](https://www.github.com/googleapis/python-dataproc-metastore/compare/v0.3.0...v0.3.1) (2021-07-26)
+## [0.3.1](https://www.github.com/googleapis/python-dataproc-metastore/compare/v0.3.0...v0.3.1) (2021-07-26)
 
 
 ### Bug Fixes
@@ -136,14 +136,14 @@
 
 * omit mention of Python 2.7 in 'CONTRIBUTING.rst' ([#1127](https://www.github.com/googleapis/python-dataproc-metastore/issues/1127)) ([#38](https://www.github.com/googleapis/python-dataproc-metastore/issues/38)) ([9b8c147](https://www.github.com/googleapis/python-dataproc-metastore/commit/9b8c14739b9cb5d02f9372d952acf099712f9826)), closes [#1126](https://www.github.com/googleapis/python-dataproc-metastore/issues/1126)
 
-### [0.2.2](https://www.github.com/googleapis/python-dataproc-metastore/compare/v0.2.1...v0.2.2) (2021-06-16)
+## [0.2.2](https://www.github.com/googleapis/python-dataproc-metastore/compare/v0.2.1...v0.2.2) (2021-06-16)
 
 
 ### Bug Fixes
 
 * **deps:** add packaging requirement ([#35](https://www.github.com/googleapis/python-dataproc-metastore/issues/35)) ([922536c](https://www.github.com/googleapis/python-dataproc-metastore/commit/922536c93fe70eb0052843c6cb9f9a7c91046a81))
 
-### [0.2.1](https://www.github.com/googleapis/python-dataproc-metastore/compare/v0.2.0...v0.2.1) (2021-06-16)
+## [0.2.1](https://www.github.com/googleapis/python-dataproc-metastore/compare/v0.2.0...v0.2.1) (2021-06-16)
 
 
 ### Bug Fixes
