@@ -92,14 +92,14 @@
 
 * add context manager support in client ([#230](https://www.github.com/googleapis/python-securitycenter/issues/230)) ([740af33](https://www.github.com/googleapis/python-securitycenter/commit/740af33ce79a027c5592aabadb58cc367461d6ec))
 
-### [1.5.2](https://www.github.com/googleapis/python-securitycenter/compare/v1.5.1...v1.5.2) (2021-09-30)
+## [1.5.2](https://www.github.com/googleapis/python-securitycenter/compare/v1.5.1...v1.5.2) (2021-09-30)
 
 
 ### Bug Fixes
 
 * improper types in pagers generation ([cd17b59](https://www.github.com/googleapis/python-securitycenter/commit/cd17b5935c330d063ffe05d444ccd68b73b50bd3))
 
-### [1.5.1](https://www.github.com/googleapis/python-securitycenter/compare/v1.5.0...v1.5.1) (2021-09-24)
+## [1.5.1](https://www.github.com/googleapis/python-securitycenter/compare/v1.5.0...v1.5.1) (2021-09-24)
 
 
 ### Bug Fixes
@@ -143,7 +143,7 @@
 
 * omit mention of Python 2.7 in 'CONTRIBUTING.rst' ([#1127](https://www.github.com/googleapis/python-securitycenter/issues/1127)) ([#164](https://www.github.com/googleapis/python-securitycenter/issues/164)) ([42a2f11](https://www.github.com/googleapis/python-securitycenter/commit/42a2f1175d022174c45f04726072935b8738e111)), closes [#1126](https://www.github.com/googleapis/python-securitycenter/issues/1126)
 
-### [1.3.1](https://www.github.com/googleapis/python-securitycenter/compare/v1.3.0...v1.3.1) (2021-06-10)
+## [1.3.1](https://www.github.com/googleapis/python-securitycenter/compare/v1.3.0...v1.3.1) (2021-06-10)
 
 
 ### Documentation
@@ -208,7 +208,7 @@
 
 * generate with microgenerator ([#49](https://www.github.com/googleapis/python-securitycenter/issues/49)) ([838dbc8](https://www.github.com/googleapis/python-securitycenter/commit/838dbc8445046b755b775f96f654944ecb707e35))
 
-### [0.7.1](https://www.github.com/googleapis/python-securitycenter/compare/v0.7.0...v0.7.1) (2020-09-18)
+## [0.7.1](https://www.github.com/googleapis/python-securitycenter/compare/v0.7.0...v0.7.1) (2020-09-18)
 
 
 ### Bug Fixes
