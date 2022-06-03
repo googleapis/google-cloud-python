@@ -11,7 +11,7 @@
 
 * allow extra_api_info to be passed to api request ([#183](https://github.com/googleapis/python-cloud-core/issues/183)) ([3f8e058](https://github.com/googleapis/python-cloud-core/commit/3f8e0581e631cde3163278fff326fd4831a75e75))
 
-### [2.2.3](https://github.com/googleapis/python-cloud-core/compare/v2.2.2...v2.2.3) (2022-03-07)
+## [2.2.3](https://github.com/googleapis/python-cloud-core/compare/v2.2.2...v2.2.3) (2022-03-07)
 
 
 ### Bug Fixes
@@ -19,14 +19,14 @@
 * **deps:** require google-api-core>=1.31.5, >=2.3.2 ([#178](https://github.com/googleapis/python-cloud-core/issues/178)) ([c65ad44](https://github.com/googleapis/python-cloud-core/commit/c65ad44df0b058120aea0686eddeaffbe9bbdda7))
 * **deps:** require google-auth 1.25.0 ([c65ad44](https://github.com/googleapis/python-cloud-core/commit/c65ad44df0b058120aea0686eddeaffbe9bbdda7))
 
-### [2.2.2](https://github.com/googleapis/python-cloud-core/compare/v2.2.1...v2.2.2) (2022-01-17)
+## [2.2.2](https://github.com/googleapis/python-cloud-core/compare/v2.2.1...v2.2.2) (2022-01-17)
 
 
 ### Bug Fixes
 
 * correct param type of _ClientFactoryMixin.from_service_account_info method ([#161](https://github.com/googleapis/python-cloud-core/issues/161)) ([24b7de4](https://github.com/googleapis/python-cloud-core/commit/24b7de49943a49e8235f9dbee6b32693deed8c1f))
 
-### [2.2.1](https://www.github.com/googleapis/python-cloud-core/compare/v2.2.0...v2.2.1) (2021-11-10)
+## [2.2.1](https://www.github.com/googleapis/python-cloud-core/compare/v2.2.0...v2.2.1) (2021-11-10)
 
 
 ### Bug Fixes
@@ -64,7 +64,7 @@
 
 * drop python 2.7 support ([#103](https://www.github.com/googleapis/python-cloud-core/issues/103)) ([181d706](https://www.github.com/googleapis/python-cloud-core/commit/181d706e5b44d9d4189c21782551ce85c720d733)), closes [#102](https://www.github.com/googleapis/python-cloud-core/issues/102)
 
-### [1.7.2](https://www.github.com/googleapis/python-cloud-core/compare/v1.7.1...v1.7.2) (2021-07-27)
+## [1.7.2](https://www.github.com/googleapis/python-cloud-core/compare/v1.7.1...v1.7.2) (2021-07-27)
 
 
 ### Documentation
@@ -111,21 +111,21 @@
 
 * add support for Python 3.9, drop support for Python 3.5 ([#55](https://www.github.com/googleapis/python-cloud-core/issues/55)) ([ddf7ce5](https://www.github.com/googleapis/python-cloud-core/commit/ddf7ce5cc1be78e580d6450043bace71e789e933))
 
-### [1.4.4](https://www.github.com/googleapis/python-cloud-core/compare/v1.4.3...v1.4.4) (2020-11-30)
+## [1.4.4](https://www.github.com/googleapis/python-cloud-core/compare/v1.4.3...v1.4.4) (2020-11-30)
 
 
 ### Dependencies
 
 * require `six>=1.12.0` and `google-api-core>=1.21.0` ([#46](https://www.github.com/googleapis/python-cloud-core/issues/46)) ([a97b9ca](https://www.github.com/googleapis/python-cloud-core/commit/a97b9cae6d3b8f0c723dfa825f1b76efc2318f80))
 
-### [1.4.3](https://www.github.com/googleapis/python-cloud-core/compare/v1.4.2...v1.4.3) (2020-10-06)
+## [1.4.3](https://www.github.com/googleapis/python-cloud-core/compare/v1.4.2...v1.4.3) (2020-10-06)
 
 
 ### Bug Fixes
 
 * avoid using 'pkg_resources' to determine version ([#40](https://www.github.com/googleapis/python-cloud-core/issues/40)) ([568578d](https://www.github.com/googleapis/python-cloud-core/commit/568578d33f71117564ee9212daad72d4e2b739a6)), closes [#39](https://www.github.com/googleapis/python-cloud-core/issues/39)
 
-### [1.4.2](https://www.github.com/googleapis/python-cloud-core/compare/v1.4.1...v1.4.2) (2020-09-29)
+## [1.4.2](https://www.github.com/googleapis/python-cloud-core/compare/v1.4.1...v1.4.2) (2020-09-29)
 
 
 ### Bug Fixes
@@ -137,7 +137,7 @@
 
 * use prettyPrint=false by default ([#28](https://www.github.com/googleapis/python-cloud-core/issues/28)) ([c407b5d](https://www.github.com/googleapis/python-cloud-core/commit/c407b5d617c04affbdb4f444c188edffb25d4336))
 
-### [1.4.1](https://www.github.com/googleapis/python-cloud-core/compare/v1.4.0...v1.4.1) (2020-08-06)
+## [1.4.1](https://www.github.com/googleapis/python-cloud-core/compare/v1.4.0...v1.4.1) (2020-08-06)
 
 
 ### Bug Fixes
