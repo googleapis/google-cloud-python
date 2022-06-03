@@ -1,6 +1,6 @@
 # Changelog
 
-### [1.11.1](https://github.com/googleapis/python-os-config/compare/v1.11.0...v1.11.1) (2022-03-05)
+## [1.11.1](https://github.com/googleapis/python-os-config/compare/v1.11.0...v1.11.1) (2022-03-05)
 
 
 ### Bug Fixes
@@ -59,7 +59,7 @@
 
 * add OS policy assignment rpcs ([#142](https://www.github.com/googleapis/python-os-config/issues/142)) ([44c158d](https://www.github.com/googleapis/python-os-config/commit/44c158dd19c4329678e170733377494821ca955f))
 
-### [1.7.1](https://www.github.com/googleapis/python-os-config/compare/v1.7.0...v1.7.1) (2021-11-02)
+## [1.7.1](https://www.github.com/googleapis/python-os-config/compare/v1.7.0...v1.7.1) (2021-11-02)
 
 
 ### Bug Fixes
@@ -87,14 +87,14 @@
 
 * add context manager support in client ([#129](https://www.github.com/googleapis/python-os-config/issues/129)) ([b207115](https://www.github.com/googleapis/python-os-config/commit/b207115ed97544585c5f0dc7512d71fd94b5aae2))
 
-### [1.5.2](https://www.github.com/googleapis/python-os-config/compare/v1.5.1...v1.5.2) (2021-09-30)
+## [1.5.2](https://www.github.com/googleapis/python-os-config/compare/v1.5.1...v1.5.2) (2021-09-30)
 
 
 ### Bug Fixes
 
 * improper types in pagers generation ([e6d6242](https://www.github.com/googleapis/python-os-config/commit/e6d62422e555f33cd5107eb59073c8d88d292681))
 
-### [1.5.1](https://www.github.com/googleapis/python-os-config/compare/v1.5.0...v1.5.1) (2021-09-24)
+## [1.5.1](https://www.github.com/googleapis/python-os-config/compare/v1.5.0...v1.5.1) (2021-09-24)
 
 
 ### Bug Fixes
@@ -115,7 +115,7 @@
 
 * Update osconfig v1 and v1alpha with WindowsApplication ([#108](https://www.github.com/googleapis/python-os-config/issues/108)) ([befbfdc](https://www.github.com/googleapis/python-os-config/commit/befbfdcd6bffdc402330bd0b715593ac788bd3b0))
 
-### [1.3.2](https://www.github.com/googleapis/python-os-config/compare/v1.3.1...v1.3.2) (2021-07-28)
+## [1.3.2](https://www.github.com/googleapis/python-os-config/compare/v1.3.1...v1.3.2) (2021-07-28)
 
 
 ### Bug Fixes
@@ -132,7 +132,7 @@
 
 * release as 1.3.2 ([#102](https://www.github.com/googleapis/python-os-config/issues/102)) ([7c642b0](https://www.github.com/googleapis/python-os-config/commit/7c642b0eb32171275ee47db7ab64900176d0a4a1))
 
-### [1.3.1](https://www.github.com/googleapis/python-os-config/compare/v1.3.0...v1.3.1) (2021-07-20)
+## [1.3.1](https://www.github.com/googleapis/python-os-config/compare/v1.3.0...v1.3.1) (2021-07-20)
 
 
 ### Bug Fixes
@@ -205,14 +205,14 @@
 * add common resource path helpers ([#24](https://www.github.com/googleapis/python-os-config/issues/24)) ([4d8605e](https://www.github.com/googleapis/python-os-config/commit/4d8605e2d92af271b2c363490926689266c1d4b6))
 * make client transport public ([#24](https://www.github.com/googleapis/python-os-config/issues/24)) ([4d8605e](https://www.github.com/googleapis/python-os-config/commit/4d8605e2d92af271b2c363490926689266c1d4b6))
 ---
-### [0.1.2](https://www.github.com/googleapis/python-os-config/compare/v0.1.1...v0.1.2) (2020-06-11)
+## [0.1.2](https://www.github.com/googleapis/python-os-config/compare/v0.1.1...v0.1.2) (2020-06-11)
 
 
 ### Bug Fixes
 
 * remove duplicate version ([#6](https://www.github.com/googleapis/python-os-config/issues/6)) ([351b553](https://www.github.com/googleapis/python-os-config/commit/351b5531244bb207fc6696625dbeaf840e7a469f))
 
-### [0.1.1](https://www.github.com/googleapis/python-os-config/compare/v0.1.0...v0.1.1) (2020-06-11)
+## [0.1.1](https://www.github.com/googleapis/python-os-config/compare/v0.1.0...v0.1.1) (2020-06-11)
 
 
 ### Bug Fixes
