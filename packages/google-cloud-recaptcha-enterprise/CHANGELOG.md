@@ -13,7 +13,7 @@
 
 * rename parent to project in SearchRelatedAccountGroupMembershipsRequest ([#227](https://github.com/googleapis/python-recaptcha-enterprise/issues/227)) ([86096a4](https://github.com/googleapis/python-recaptcha-enterprise/commit/86096a4edab2304edd469cbd2049f466a009ef2f))
 
-### [1.6.1](https://github.com/googleapis/python-recaptcha-enterprise/compare/v1.6.0...v1.6.1) (2022-03-05)
+## [1.6.1](https://github.com/googleapis/python-recaptcha-enterprise/compare/v1.6.0...v1.6.1) (2022-03-05)
 
 
 ### Bug Fixes
@@ -40,7 +40,7 @@
 
 * add new reCAPTCHA Enterprise fraud annotations ([#163](https://github.com/googleapis/python-recaptcha-enterprise/issues/163)) ([3c638f9](https://github.com/googleapis/python-recaptcha-enterprise/commit/3c638f97a966efdc6809016b9a50d63ffe4b380c))
 
-### [1.4.1](https://www.github.com/googleapis/python-recaptcha-enterprise/compare/v1.4.0...v1.4.1) (2021-11-16)
+## [1.4.1](https://www.github.com/googleapis/python-recaptcha-enterprise/compare/v1.4.0...v1.4.1) (2021-11-16)
 
 
 ### Documentation
@@ -59,7 +59,7 @@
 
 * **samples:** removed assessment name in create_assessment sample ([#147](https://www.github.com/googleapis/python-recaptcha-enterprise/issues/147)) ([f11134d](https://www.github.com/googleapis/python-recaptcha-enterprise/commit/f11134da5e9e9770b73dadd96c08ba69c99b968f))
 
-### [1.3.1](https://www.github.com/googleapis/python-recaptcha-enterprise/compare/v1.3.0...v1.3.1) (2021-11-01)
+## [1.3.1](https://www.github.com/googleapis/python-recaptcha-enterprise/compare/v1.3.0...v1.3.1) (2021-11-01)
 
 
 ### Bug Fixes
@@ -91,14 +91,14 @@
 
 * add context manager support in client ([#131](https://www.github.com/googleapis/python-recaptcha-enterprise/issues/131)) ([69d2b34](https://www.github.com/googleapis/python-recaptcha-enterprise/commit/69d2b347f9aab3f30a3b0265fc9dcd9a3926f62d))
 
-### [1.1.2](https://www.github.com/googleapis/python-recaptcha-enterprise/compare/v1.1.1...v1.1.2) (2021-09-30)
+## [1.1.2](https://www.github.com/googleapis/python-recaptcha-enterprise/compare/v1.1.1...v1.1.2) (2021-09-30)
 
 
 ### Bug Fixes
 
 * improper types in pagers generation ([cab9a71](https://www.github.com/googleapis/python-recaptcha-enterprise/commit/cab9a71083b2482396ecd53051bb694937c7fe7d))
 
-### [1.1.1](https://www.github.com/googleapis/python-recaptcha-enterprise/compare/v1.1.0...v1.1.1) (2021-09-24)
+## [1.1.1](https://www.github.com/googleapis/python-recaptcha-enterprise/compare/v1.1.0...v1.1.1) (2021-09-24)
 
 
 ### Bug Fixes
@@ -119,7 +119,7 @@
 
 * bump release level to production/stable ([#105](https://www.github.com/googleapis/python-recaptcha-enterprise/issues/105)) ([fab3e48](https://www.github.com/googleapis/python-recaptcha-enterprise/commit/fab3e48b6ddc31bed65e9bedfd9f06aa33fd2c02))
 
-### [0.4.2](https://www.github.com/googleapis/python-recaptcha-enterprise/compare/v0.4.1...v0.4.2) (2021-07-28)
+## [0.4.2](https://www.github.com/googleapis/python-recaptcha-enterprise/compare/v0.4.1...v0.4.2) (2021-07-28)
 
 
 ### Bug Fixes
@@ -136,7 +136,7 @@
 
 * release as 0.4.2 ([#102](https://www.github.com/googleapis/python-recaptcha-enterprise/issues/102)) ([ff137b0](https://www.github.com/googleapis/python-recaptcha-enterprise/commit/ff137b00f5282dc061941b6645143db7c66a6718))
 
-### [0.4.1](https://www.github.com/googleapis/python-recaptcha-enterprise/compare/v0.4.0...v0.4.1) (2021-07-20)
+## [0.4.1](https://www.github.com/googleapis/python-recaptcha-enterprise/compare/v0.4.0...v0.4.1) (2021-07-20)
 
 
 ### Bug Fixes
@@ -177,14 +177,14 @@
 
 * omit mention of Python 2.7 in 'CONTRIBUTING.rst' ([#1127](https://www.github.com/googleapis/python-recaptcha-enterprise/issues/1127)) ([#82](https://www.github.com/googleapis/python-recaptcha-enterprise/issues/82)) ([fd4b1b4](https://www.github.com/googleapis/python-recaptcha-enterprise/commit/fd4b1b4af92ff9027675b7bd1b494870225eccaa)), closes [#1126](https://www.github.com/googleapis/python-recaptcha-enterprise/issues/1126)
 
-### [0.3.3](https://www.github.com/googleapis/python-recaptcha-enterprise/compare/v0.3.2...v0.3.3) (2021-06-16)
+## [0.3.3](https://www.github.com/googleapis/python-recaptcha-enterprise/compare/v0.3.2...v0.3.3) (2021-06-16)
 
 
 ### Bug Fixes
 
 * exclude docs and tests from package ([#79](https://www.github.com/googleapis/python-recaptcha-enterprise/issues/79)) ([1d39b4b](https://www.github.com/googleapis/python-recaptcha-enterprise/commit/1d39b4bbf30aadafaa407c4911e2368d9330ccef)), closes [#74](https://www.github.com/googleapis/python-recaptcha-enterprise/issues/74)
 
-### [0.3.2](https://www.github.com/googleapis/python-recaptcha-enterprise/compare/v0.3.1...v0.3.2) (2021-06-09)
+## [0.3.2](https://www.github.com/googleapis/python-recaptcha-enterprise/compare/v0.3.1...v0.3.2) (2021-06-09)
 
 
 ### Documentation
@@ -192,7 +192,7 @@
 * fix package name ([#78](https://www.github.com/googleapis/python-recaptcha-enterprise/issues/78)) ([6de2981](https://www.github.com/googleapis/python-recaptcha-enterprise/commit/6de298111482e205d90895674fd19db401df70ea))
 * fix package name and package info in README ([#76](https://www.github.com/googleapis/python-recaptcha-enterprise/issues/76)) ([0e719bb](https://www.github.com/googleapis/python-recaptcha-enterprise/commit/0e719bb23c9680f46bf36ef2344a98eb73ac70dc))
 
-### [0.3.1](https://www.github.com/googleapis/python-recaptcha-enterprise/compare/v0.3.0...v0.3.1) (2021-05-28)
+## [0.3.1](https://www.github.com/googleapis/python-recaptcha-enterprise/compare/v0.3.0...v0.3.1) (2021-05-28)
 
 
 ### Bug Fixes
@@ -206,7 +206,7 @@
 
 * add async client, add common resource helpers, add from_service_account_info factory ([#30](https://www.github.com/googleapis/python-recaptcha-enterprise/issues/30)) ([7f9db72](https://www.github.com/googleapis/python-recaptcha-enterprise/commit/7f9db7203246c0911ad1760ffc8e56cc61acd224))
 
-### [0.2.1](https://www.github.com/googleapis/python-recaptcha-enterprise/compare/v0.2.0...v0.2.1) (2020-06-01)
+## [0.2.1](https://www.github.com/googleapis/python-recaptcha-enterprise/compare/v0.2.0...v0.2.1) (2020-06-01)
 
 
 ### Bug Fixes
