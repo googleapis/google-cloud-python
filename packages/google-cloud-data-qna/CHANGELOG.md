@@ -1,6 +1,6 @@
 # Changelog
 
-### [0.6.2](https://github.com/googleapis/python-data-qna/compare/v0.6.1...v0.6.2) (2022-03-05)
+## [0.6.2](https://github.com/googleapis/python-data-qna/compare/v0.6.1...v0.6.2) (2022-03-05)
 
 
 ### Bug Fixes
@@ -8,7 +8,7 @@
 * **deps:** require google-api-core>=1.31.5, >=2.3.2 ([#130](https://github.com/googleapis/python-data-qna/issues/130)) ([dd16b4e](https://github.com/googleapis/python-data-qna/commit/dd16b4ec0ece088065f4d1e59dc6ba4e9b586054))
 * **deps:** require proto-plus>=1.15.0 ([dd16b4e](https://github.com/googleapis/python-data-qna/commit/dd16b4ec0ece088065f4d1e59dc6ba4e9b586054))
 
-### [0.6.1](https://github.com/googleapis/python-data-qna/compare/v0.6.0...v0.6.1) (2022-02-26)
+## [0.6.1](https://github.com/googleapis/python-data-qna/compare/v0.6.0...v0.6.1) (2022-02-26)
 
 
 ### Documentation
@@ -27,7 +27,7 @@
 
 * resolve DuplicateCredentialArgs error when using credentials_file ([9fe2aed](https://github.com/googleapis/python-data-qna/commit/9fe2aedd2fac78ef4771bb9c4615c5af2606d4d1))
 
-### [0.5.1](https://www.github.com/googleapis/python-data-qna/compare/v0.5.0...v0.5.1) (2021-11-01)
+## [0.5.1](https://www.github.com/googleapis/python-data-qna/compare/v0.5.0...v0.5.1) (2021-11-01)
 
 
 ### Bug Fixes
@@ -54,14 +54,14 @@
 
 * add context manager support in client ([#93](https://www.github.com/googleapis/python-data-qna/issues/93)) ([9a0ef96](https://www.github.com/googleapis/python-data-qna/commit/9a0ef9636ec8deb2d7b8f0cc18eb3a2d363d5da1))
 
-### [0.3.3](https://www.github.com/googleapis/python-data-qna/compare/v0.3.2...v0.3.3) (2021-09-24)
+## [0.3.3](https://www.github.com/googleapis/python-data-qna/compare/v0.3.2...v0.3.3) (2021-09-24)
 
 
 ### Bug Fixes
 
 * add 'dict' annotation type to 'request' ([149f428](https://www.github.com/googleapis/python-data-qna/commit/149f4286f073101a1013ccf07604a0b0c33b8e94))
 
-### [0.3.2](https://www.github.com/googleapis/python-data-qna/compare/v0.3.1...v0.3.2) (2021-07-27)
+## [0.3.2](https://www.github.com/googleapis/python-data-qna/compare/v0.3.1...v0.3.2) (2021-07-27)
 
 
 ### Bug Fixes
@@ -78,7 +78,7 @@
 
 * release as 0.3.2 ([#72](https://www.github.com/googleapis/python-data-qna/issues/72)) ([8606b7b](https://www.github.com/googleapis/python-data-qna/commit/8606b7b3cd3cb311d9687c7d38211bb9ee07ab97))
 
-### [0.3.1](https://www.github.com/googleapis/python-data-qna/compare/v0.3.0...v0.3.1) (2021-07-20)
+## [0.3.1](https://www.github.com/googleapis/python-data-qna/compare/v0.3.0...v0.3.1) (2021-07-20)
 
 
 ### Bug Fixes
@@ -103,7 +103,7 @@
 
 * omit mention of Python 2.7 in 'CONTRIBUTING.rst' ([#1127](https://www.github.com/googleapis/python-data-qna/issues/1127)) ([#54](https://www.github.com/googleapis/python-data-qna/issues/54)) ([2eb4cfb](https://www.github.com/googleapis/python-data-qna/commit/2eb4cfb449856ea2e40b2202cbba766c14ade9ce))
 
-### [0.2.1](https://www.github.com/googleapis/python-data-qna/compare/v0.2.0...v0.2.1) (2021-06-16)
+## [0.2.1](https://www.github.com/googleapis/python-data-qna/compare/v0.2.0...v0.2.1) (2021-06-16)
 
 
 ### Bug Fixes
@@ -125,7 +125,7 @@
 * **deps:** add packaging requirement ([#46](https://www.github.com/googleapis/python-data-qna/issues/46)) ([afb3009](https://www.github.com/googleapis/python-data-qna/commit/afb3009e762aff472c07f9884469d1cee78bc660))
 * remove gRPC send/recv limits ([#15](https://www.github.com/googleapis/python-data-qna/issues/15)) ([044d47a](https://www.github.com/googleapis/python-data-qna/commit/044d47ab0ab3c9ccb1b1f81fb974be6375a0cf52))
 
-### [0.1.1](https://www.github.com/googleapis/python-data-qna/compare/v0.1.0...v0.1.1) (2020-12-04)
+## [0.1.1](https://www.github.com/googleapis/python-data-qna/compare/v0.1.0...v0.1.1) (2020-12-04)
 
 
 ### Documentation
