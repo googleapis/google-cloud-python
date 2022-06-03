@@ -1,6 +1,6 @@
 # Changelog
 
-### [1.3.1](https://github.com/googleapis/python-orchestration-airflow/compare/v1.3.0...v1.3.1) (2022-03-05)
+## [1.3.1](https://github.com/googleapis/python-orchestration-airflow/compare/v1.3.0...v1.3.1) (2022-03-05)
 
 
 ### Bug Fixes
@@ -19,7 +19,7 @@
 
 * resolve DuplicateCredentialArgs error when using credentials_file ([#63](https://github.com/googleapis/python-orchestration-airflow/issues/63)) ([d2bd1b9](https://github.com/googleapis/python-orchestration-airflow/commit/d2bd1b9c76fe16f180f55b4c046c719ee1fbec46))
 
-### [1.2.1](https://www.github.com/googleapis/python-orchestration-airflow/compare/v1.2.0...v1.2.1) (2021-11-01)
+## [1.2.1](https://www.github.com/googleapis/python-orchestration-airflow/compare/v1.2.0...v1.2.1) (2021-11-01)
 
 
 ### Bug Fixes
@@ -53,21 +53,21 @@
 
 * bump release level to production/stable ([#12](https://www.github.com/googleapis/python-orchestration-airflow/issues/12)) ([9034947](https://www.github.com/googleapis/python-orchestration-airflow/commit/90349471b64fa702618c7da394d212cc31126a33))
 
-### [0.1.3](https://www.github.com/googleapis/python-orchestration-airflow/compare/v0.1.2...v0.1.3) (2021-09-30)
+## [0.1.3](https://www.github.com/googleapis/python-orchestration-airflow/compare/v0.1.2...v0.1.3) (2021-09-30)
 
 
 ### Bug Fixes
 
 * improper types in pagers generation ([b9b7a2f](https://www.github.com/googleapis/python-orchestration-airflow/commit/b9b7a2fe76906c0056c1a4bba1ff576dc7e339a3))
 
-### [0.1.2](https://www.github.com/googleapis/python-orchestration-airflow/compare/v0.1.1...v0.1.2) (2021-09-24)
+## [0.1.2](https://www.github.com/googleapis/python-orchestration-airflow/compare/v0.1.1...v0.1.2) (2021-09-24)
 
 
 ### Bug Fixes
 
 * add 'dict' annotation type to 'request' ([7d5d4de](https://www.github.com/googleapis/python-orchestration-airflow/commit/7d5d4de6ec0ae72fad49db1bb47334b2da0494b4))
 
-### [0.1.1](https://www.github.com/googleapis/python-orchestration-airflow/compare/v0.1.0...v0.1.1) (2021-07-28)
+## [0.1.1](https://www.github.com/googleapis/python-orchestration-airflow/compare/v0.1.0...v0.1.1) (2021-07-28)
 
 
 ### Bug Fixes
