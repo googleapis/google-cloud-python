@@ -11,7 +11,7 @@
 * add support for transferring a specific list of objects (manifest) ([131bef4](https://github.com/googleapis/python-storage-transfer/commit/131bef48fa04b6b3b483675f0f07fc819a6f20d6))
 * add support for transfers between file systems ([131bef4](https://github.com/googleapis/python-storage-transfer/commit/131bef48fa04b6b3b483675f0f07fc819a6f20d6))
 
-### [1.2.1](https://github.com/googleapis/python-storage-transfer/compare/v1.2.0...v1.2.1) (2022-03-05)
+## [1.2.1](https://github.com/googleapis/python-storage-transfer/compare/v1.2.0...v1.2.1) (2022-03-05)
 
 
 ### Bug Fixes
@@ -35,7 +35,7 @@
 
 * add generated snippets ([#60](https://github.com/googleapis/python-storage-transfer/issues/60)) ([68c14e6](https://github.com/googleapis/python-storage-transfer/commit/68c14e6783eb51ba0820ba73757afd61b17ce16c))
 
-### [1.1.1](https://www.github.com/googleapis/python-storage-transfer/compare/v1.1.0...v1.1.1) (2021-11-01)
+## [1.1.1](https://www.github.com/googleapis/python-storage-transfer/compare/v1.1.0...v1.1.1) (2021-11-01)
 
 
 ### Bug Fixes
@@ -56,14 +56,14 @@
 * add context manager support in client ([#28](https://www.github.com/googleapis/python-storage-transfer/issues/28)) ([54fcd0f](https://www.github.com/googleapis/python-storage-transfer/commit/54fcd0f6c21f85f140136a3a73e74184bb88c249))
 * add support for python 3.10 ([#32](https://www.github.com/googleapis/python-storage-transfer/issues/32)) ([bd43b0a](https://www.github.com/googleapis/python-storage-transfer/commit/bd43b0a8f16ad532686d8a0fef80d231896b315f))
 
-### [1.0.2](https://www.github.com/googleapis/python-storage-transfer/compare/v1.0.1...v1.0.2) (2021-09-30)
+## [1.0.2](https://www.github.com/googleapis/python-storage-transfer/compare/v1.0.1...v1.0.2) (2021-09-30)
 
 
 ### Bug Fixes
 
 * improper types in pagers generation ([fa6382c](https://www.github.com/googleapis/python-storage-transfer/commit/fa6382c6d2e82faa0a8e75993c03f5e4b0fdeb6c))
 
-### [1.0.1](https://www.github.com/googleapis/python-storage-transfer/compare/v1.0.0...v1.0.1) (2021-09-24)
+## [1.0.1](https://www.github.com/googleapis/python-storage-transfer/compare/v1.0.0...v1.0.1) (2021-09-24)
 
 
 ### Bug Fixes
