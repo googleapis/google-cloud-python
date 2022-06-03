@@ -12,14 +12,14 @@
 
 * **deps:** require grpc-google-iam-v1 >=0.12.4 ([dfb21df](https://github.com/googleapis/python-containeranalysis/commit/dfb21df83a30d33f31dc67b8a50cc5d5cf9e9ccf))
 
-### [2.7.3](https://github.com/googleapis/python-containeranalysis/compare/v2.7.2...v2.7.3) (2022-03-07)
+## [2.7.3](https://github.com/googleapis/python-containeranalysis/compare/v2.7.2...v2.7.3) (2022-03-07)
 
 
 ### Bug Fixes
 
 * allow credentials to propagate when using get_grafeas_client() ([#251](https://github.com/googleapis/python-containeranalysis/issues/251)) ([237c204](https://github.com/googleapis/python-containeranalysis/commit/237c2043fd526457fc04ebc5d53346067c011c28))
 
-### [2.7.2](https://github.com/googleapis/python-containeranalysis/compare/v2.7.1...v2.7.2) (2022-03-04)
+## [2.7.2](https://github.com/googleapis/python-containeranalysis/compare/v2.7.1...v2.7.2) (2022-03-04)
 
 
 ### Bug Fixes
@@ -27,7 +27,7 @@
 * **deps:** require google-api-core>=1.31.5, >=2.3.2 ([#250](https://github.com/googleapis/python-containeranalysis/issues/250)) ([b35be6a](https://github.com/googleapis/python-containeranalysis/commit/b35be6a5d9fe629f4a575c66fa6e198e784f3035))
 * **deps:** require proto-plus>=1.15.0 ([b35be6a](https://github.com/googleapis/python-containeranalysis/commit/b35be6a5d9fe629f4a575c66fa6e198e784f3035))
 
-### [2.7.1](https://github.com/googleapis/python-containeranalysis/compare/v2.7.0...v2.7.1) (2022-02-11)
+## [2.7.1](https://github.com/googleapis/python-containeranalysis/compare/v2.7.0...v2.7.1) (2022-02-11)
 
 
 ### Bug Fixes
@@ -41,7 +41,7 @@
 
 * add api key support ([#236](https://github.com/googleapis/python-containeranalysis/issues/236)) ([a6ea0c6](https://github.com/googleapis/python-containeranalysis/commit/a6ea0c69d61c1f07220c42d32bf05a93b35db664))
 
-### [2.6.3](https://github.com/googleapis/python-containeranalysis/compare/v2.6.2...v2.6.3) (2022-01-13)
+## [2.6.3](https://github.com/googleapis/python-containeranalysis/compare/v2.6.2...v2.6.3) (2022-01-13)
 
 
 ### Bug Fixes
@@ -49,7 +49,7 @@
 * **deps:** require grafeas 1.4.1 ([16d27f7](https://github.com/googleapis/python-containeranalysis/commit/16d27f73742d969a62394cf1de4cce85849ea92a))
 * include the compliance protos ([#222](https://github.com/googleapis/python-containeranalysis/issues/222)) ([16d27f7](https://github.com/googleapis/python-containeranalysis/commit/16d27f73742d969a62394cf1de4cce85849ea92a))
 
-### [2.6.2](https://www.github.com/googleapis/python-containeranalysis/compare/v2.6.1...v2.6.2) (2021-11-01)
+## [2.6.2](https://www.github.com/googleapis/python-containeranalysis/compare/v2.6.1...v2.6.2) (2021-11-01)
 
 
 ### Bug Fixes
@@ -62,7 +62,7 @@
 
 * list oneofs in docstring ([5de0b09](https://www.github.com/googleapis/python-containeranalysis/commit/5de0b093d7495f9d46c332463aa68a7a5995e317))
 
-### [2.6.1](https://www.github.com/googleapis/python-containeranalysis/compare/v2.6.0...v2.6.1) (2021-10-28)
+## [2.6.1](https://www.github.com/googleapis/python-containeranalysis/compare/v2.6.0...v2.6.1) (2021-10-28)
 
 
 ### Bug Fixes
@@ -83,14 +83,14 @@
 
 * add context manager support in client ([#192](https://www.github.com/googleapis/python-containeranalysis/issues/192)) ([5274a93](https://www.github.com/googleapis/python-containeranalysis/commit/5274a933bd7abec9528168fa0530388536269c4c))
 
-### [2.4.2](https://www.github.com/googleapis/python-containeranalysis/compare/v2.4.1...v2.4.2) (2021-09-24)
+## [2.4.2](https://www.github.com/googleapis/python-containeranalysis/compare/v2.4.1...v2.4.2) (2021-09-24)
 
 
 ### Bug Fixes
 
 * add 'dict' annotation type to 'request' ([42c8c64](https://www.github.com/googleapis/python-containeranalysis/commit/42c8c646630810189a971796c921b30a2d2b419f))
 
-### [2.4.1](https://www.github.com/googleapis/python-containeranalysis/compare/v2.4.0...v2.4.1) (2021-07-26)
+## [2.4.1](https://www.github.com/googleapis/python-containeranalysis/compare/v2.4.0...v2.4.1) (2021-07-26)
 
 
 ### Bug Fixes
@@ -138,21 +138,21 @@
 * add async client to %name_%version/init.py ([b427e90](https://www.github.com/googleapis/python-containeranalysis/commit/b427e9091d4afc482c8d9fd6ff4510ad3b740820))
 * **deps:** add packaging requirement ([#135](https://www.github.com/googleapis/python-containeranalysis/issues/135)) ([3f0bd3a](https://www.github.com/googleapis/python-containeranalysis/commit/3f0bd3af9d809150a81933601bee5b9de0ff834a))
 
-### [2.2.3](https://www.github.com/googleapis/python-containeranalysis/compare/v2.2.2...v2.2.3) (2021-04-02)
+## [2.2.3](https://www.github.com/googleapis/python-containeranalysis/compare/v2.2.2...v2.2.3) (2021-04-02)
 
 
 ### Bug Fixes
 
 * require google-api-core >= 1.22.2 ([#103](https://www.github.com/googleapis/python-containeranalysis/issues/103)) ([74be886](https://www.github.com/googleapis/python-containeranalysis/commit/74be8869363254d3551a58634c299abcfb18e682))
 
-### [2.2.2](https://www.github.com/googleapis/python-containeranalysis/compare/v2.2.1...v2.2.2) (2021-03-25)
+## [2.2.2](https://www.github.com/googleapis/python-containeranalysis/compare/v2.2.1...v2.2.2) (2021-03-25)
 
 
 ### Bug Fixes
 
 * effective severity attribute error ([#104](https://www.github.com/googleapis/python-containeranalysis/issues/104)) ([913251a](https://www.github.com/googleapis/python-containeranalysis/commit/913251aa5535612460cd7ed6139c3cb5b7c7cc3f))
 
-### [2.2.1](https://www.github.com/googleapis/python-containeranalysis/compare/v2.2.0...v2.2.1) (2021-02-09)
+## [2.2.1](https://www.github.com/googleapis/python-containeranalysis/compare/v2.2.0...v2.2.1) (2021-02-09)
 
 
 ### Documentation
@@ -189,7 +189,7 @@
 
 * move to microgen. See the [Migration Guide](https://github.com/googleapis/python-containeranalysis/blob/release-v2.0.0/UPGRADING.md) for details. ([#33](https://www.github.com/googleapis/python-containeranalysis/issues/33)) ([6098905](https://www.github.com/googleapis/python-containeranalysis/commit/60989058883a0ae35f3b913d6a06741c73186203))
 
-### [1.0.3](https://www.github.com/googleapis/python-containeranalysis/compare/v1.0.2...v1.0.3) (2020-08-11)
+## [1.0.3](https://www.github.com/googleapis/python-containeranalysis/compare/v1.0.2...v1.0.3) (2020-08-11)
 
 
 ### Bug Fixes
@@ -197,7 +197,7 @@
 * Use different versions of pytest for python 2 and python3 [([#2558](https://www.github.com/googleapis/python-containeranalysis/issues/2558))](https://github.com/GoogleCloudPlatform/python-docs-samples/issues/2558) ([7d21641](https://www.github.com/googleapis/python-containeranalysis/commit/7d21641eb50f574784ae7dfbb1d25a0d0af14699))
 * **deps:** add upper bound for grafeas ([#30](https://www.github.com/googleapis/python-containeranalysis/issues/30)) ([5ca8f79](https://www.github.com/googleapis/python-containeranalysis/commit/5ca8f7981349ed86438185f02681225f059cc9d9))
 
-### [1.0.2](https://www.github.com/googleapis/python-containeranalysis/compare/v1.0.1...v1.0.2) (2020-07-16)
+## [1.0.2](https://www.github.com/googleapis/python-containeranalysis/compare/v1.0.1...v1.0.2) (2020-07-16)
 
 
 ### Bug Fixes
@@ -209,7 +209,7 @@
 
 * add multiprocessing note ([#21](https://www.github.com/googleapis/python-containeranalysis/issues/21)) ([be29088](https://www.github.com/googleapis/python-containeranalysis/commit/be290885cef76ffdd27afb44cd858c6a89d4f280))
 
-### [1.0.1](https://www.github.com/googleapis/python-containeranalysis/compare/v1.0.0...v1.0.1) (2020-06-16)
+## [1.0.1](https://www.github.com/googleapis/python-containeranalysis/compare/v1.0.0...v1.0.1) (2020-06-16)
 
 
 ### Bug Fixes
