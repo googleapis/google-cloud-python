@@ -4,7 +4,7 @@
 
 [1]: https://pypi.org/project/google-cloud-ndb/#history
 
-### [1.11.1](https://www.github.com/googleapis/python-ndb/compare/v1.11.0...v1.11.1) (2021-11-03)
+## [1.11.1](https://www.github.com/googleapis/python-ndb/compare/v1.11.0...v1.11.1) (2021-11-03)
 
 
 ### Bug Fixes
@@ -18,35 +18,35 @@
 
 * add support for python 3.10 ([#735](https://www.github.com/googleapis/python-ndb/issues/735)) ([58620c1](https://www.github.com/googleapis/python-ndb/commit/58620c1b17e3a4b3608614bea620e93f39e1bd3a))
 
-### [1.10.5](https://www.github.com/googleapis/python-ndb/compare/v1.10.4...v1.10.5) (2021-10-08)
+## [1.10.5](https://www.github.com/googleapis/python-ndb/compare/v1.10.4...v1.10.5) (2021-10-08)
 
 
 ### Bug Fixes
 
 * correct regression in `Model.get_or_insert` ([#731](https://www.github.com/googleapis/python-ndb/issues/731)) ([921ec69](https://www.github.com/googleapis/python-ndb/commit/921ec695e246e548f207b0c6aded7296e4b3b263)), closes [#729](https://www.github.com/googleapis/python-ndb/issues/729)
 
-### [1.10.4](https://www.github.com/googleapis/python-ndb/compare/v1.10.3...v1.10.4) (2021-09-28)
+## [1.10.4](https://www.github.com/googleapis/python-ndb/compare/v1.10.3...v1.10.4) (2021-09-28)
 
 
 ### Bug Fixes
 
 * pin grpcio / googleapis-common-protos under Python2 ([#725](https://www.github.com/googleapis/python-ndb/issues/725)) ([ccc82e4](https://www.github.com/googleapis/python-ndb/commit/ccc82e42fe2bbb285779a81cff03866facfad667))
 
-### [1.10.3](https://www.github.com/googleapis/python-ndb/compare/v1.10.2...v1.10.3) (2021-09-07)
+## [1.10.3](https://www.github.com/googleapis/python-ndb/compare/v1.10.2...v1.10.3) (2021-09-07)
 
 
 ### Bug Fixes
 
 * use thread-safe iterator to generate context ids ([#716](https://www.github.com/googleapis/python-ndb/issues/716)) ([92ec8ac](https://www.github.com/googleapis/python-ndb/commit/92ec8ac7de8cd0f50d6104b9e514b4e933cfbb13)), closes [#715](https://www.github.com/googleapis/python-ndb/issues/715)
 
-### [1.10.2](https://www.github.com/googleapis/python-ndb/compare/v1.10.1...v1.10.2) (2021-08-31)
+## [1.10.2](https://www.github.com/googleapis/python-ndb/compare/v1.10.1...v1.10.2) (2021-08-31)
 
 
 ### Bug Fixes
 
 * **deps:** add pytz as an explicit dependency ([#707](https://www.github.com/googleapis/python-ndb/issues/707)) ([6b48548](https://www.github.com/googleapis/python-ndb/commit/6b48548a1ea4b0c125314f907c25b47992ee6556))
 
-### [1.10.1](https://www.github.com/googleapis/python-ndb/compare/v1.10.0...v1.10.1) (2021-08-11)
+## [1.10.1](https://www.github.com/googleapis/python-ndb/compare/v1.10.0...v1.10.1) (2021-08-11)
 
 
 ### Bug Fixes
@@ -109,7 +109,7 @@
 * replicate legacy behavior for using cache with queries ([#613](https://www.github.com/googleapis/python-ndb/issues/613)) ([edd1185](https://www.github.com/googleapis/python-ndb/commit/edd1185f01c6db5b4876f7b0ce81df0315c98890)), closes [#586](https://www.github.com/googleapis/python-ndb/issues/586)
 * support `int` as base type for `BooleanProperty` ([#624](https://www.github.com/googleapis/python-ndb/issues/624)) ([a04bf3a](https://www.github.com/googleapis/python-ndb/commit/a04bf3acef3eb88f23c4f0832ce74af9557cb03d))
 
-### [1.7.3](https://www.github.com/googleapis/python-ndb/compare/v1.7.2...v1.7.3) (2021-01-21)
+## [1.7.3](https://www.github.com/googleapis/python-ndb/compare/v1.7.2...v1.7.3) (2021-01-21)
 
 
 ### Bug Fixes
@@ -124,7 +124,7 @@
 * fix return type in fetch docstring ([#594](https://www.github.com/googleapis/python-ndb/issues/594)) ([9eb15f4](https://www.github.com/googleapis/python-ndb/commit/9eb15f4ff75204ad25f943dbc1e85c227d88faf6)), closes [#576](https://www.github.com/googleapis/python-ndb/issues/576)
 * fix typo in example code ([#588](https://www.github.com/googleapis/python-ndb/issues/588)) ([76fab49](https://www.github.com/googleapis/python-ndb/commit/76fab49f9d08a2add4135c011d08ff24f04549b2))
 
-### [1.7.2](https://www.github.com/googleapis/python-ndb/compare/v1.7.1...v1.7.2) (2020-12-16)
+## [1.7.2](https://www.github.com/googleapis/python-ndb/compare/v1.7.1...v1.7.2) (2020-12-16)
 
 
 ### Bug Fixes
@@ -138,7 +138,7 @@
 
 * Add urlsafe() info to migration notes ([#579](https://www.github.com/googleapis/python-ndb/issues/579)) ([9df2f9f](https://www.github.com/googleapis/python-ndb/commit/9df2f9f8be40d95fbde297335eb99b19bafad583))
 
-### [1.7.1](https://www.github.com/googleapis/python-ndb/compare/v1.7.0...v1.7.1) (2020-11-11)
+## [1.7.1](https://www.github.com/googleapis/python-ndb/compare/v1.7.0...v1.7.1) (2020-11-11)
 
 
 ### Bug Fixes
@@ -153,7 +153,7 @@
 * fault tolerance for global caches ([#560](https://www.github.com/googleapis/python-ndb/issues/560)) ([8ab8ee0](https://www.github.com/googleapis/python-ndb/commit/8ab8ee01f5577cfe468ed77d3cd48d6f6b816b0e)), closes [#557](https://www.github.com/googleapis/python-ndb/issues/557)
 * Transaction propagation using ndb.TransactionOptions ([#537](https://www.github.com/googleapis/python-ndb/issues/537)) ([f3aa027](https://www.github.com/googleapis/python-ndb/commit/f3aa027d7d55d9aee9a72ce23cebc26a5975bb28))
 
-### [1.6.1](https://www.github.com/googleapis/python-ndb/compare/v1.6.0...v1.6.1) (2020-10-08)
+## [1.6.1](https://www.github.com/googleapis/python-ndb/compare/v1.6.0...v1.6.1) (2020-10-08)
 
 
 ### Bug Fixes
@@ -175,7 +175,7 @@
 
 * memcached integration ([#536](https://www.github.com/googleapis/python-ndb/issues/536)) ([2bd43da](https://www.github.com/googleapis/python-ndb/commit/2bd43dabbd6b6fbffbb4390520e47ae06262c858))
 
-### [1.5.2](https://www.github.com/googleapis/python-ndb/compare/v1.5.1...v1.5.2) (2020-09-03)
+## [1.5.2](https://www.github.com/googleapis/python-ndb/compare/v1.5.1...v1.5.2) (2020-09-03)
 
 
 ### Bug Fixes
@@ -190,7 +190,7 @@
 
 * fix type hint for urlsafe ([#532](https://www.github.com/googleapis/python-ndb/issues/532)) ([87a3475](https://www.github.com/googleapis/python-ndb/commit/87a347536b459c461a02c401b8a8c097e276d3ea)), closes [#529](https://www.github.com/googleapis/python-ndb/issues/529)
 
-### [1.5.1](https://www.github.com/googleapis/python-ndb/compare/v1.5.0...v1.5.1) (2020-08-28)
+## [1.5.1](https://www.github.com/googleapis/python-ndb/compare/v1.5.0...v1.5.1) (2020-08-28)
 
 
 ### Bug Fixes
@@ -212,7 +212,7 @@
 * fix concurrency bug in redis cache implementation ([#503](https://www.github.com/googleapis/python-ndb/issues/503)) ([6c18b95](https://www.github.com/googleapis/python-ndb/commit/6c18b9522e83e5e599a491c6ed287de2d7cdf089)), closes [#496](https://www.github.com/googleapis/python-ndb/issues/496)
 * support polymodel in local structured property ([#497](https://www.github.com/googleapis/python-ndb/issues/497)) ([9ccbdd2](https://www.github.com/googleapis/python-ndb/commit/9ccbdd23448dcb401b111f03e951fa89ae65174f)), closes [#481](https://www.github.com/googleapis/python-ndb/issues/481)
 
-### [1.4.2](https://www.github.com/googleapis/python-ndb/compare/v1.4.1...v1.4.2) (2020-07-30)
+## [1.4.2](https://www.github.com/googleapis/python-ndb/compare/v1.4.1...v1.4.2) (2020-07-30)
 
 
 ### Bug Fixes
@@ -220,7 +220,7 @@
 * include ancestors in `Key.to_legacy_urlsafe` ([#494](https://www.github.com/googleapis/python-ndb/issues/494)) ([0f29190](https://www.github.com/googleapis/python-ndb/commit/0f2919070ef78a17988fb5cae573a1514ff63926)), closes [#478](https://www.github.com/googleapis/python-ndb/issues/478)
 * properly handle explicitly passing default namespace ([#488](https://www.github.com/googleapis/python-ndb/issues/488)) ([3c64483](https://www.github.com/googleapis/python-ndb/commit/3c644838a499f54620c6a12773f8cdd1c245096f)), closes [#476](https://www.github.com/googleapis/python-ndb/issues/476)
 
-### [1.4.1](https://www.github.com/googleapis/python-ndb/compare/v1.4.0...v1.4.1) (2020-07-10)
+## [1.4.1](https://www.github.com/googleapis/python-ndb/compare/v1.4.0...v1.4.1) (2020-07-10)
 
 
 ### Bug Fixes
@@ -261,7 +261,7 @@
 * respect `_code_name` in `StructuredProperty.__getattr__` ([#453](https://www.github.com/googleapis/python-ndb/issues/453)) ([4f54dfc](https://www.github.com/googleapis/python-ndb/commit/4f54dfcee91b15d45cc6046f6b9933d1593d0956)), closes [#449](https://www.github.com/googleapis/python-ndb/issues/449)
 * strip `order_by` option from query when using `count()` ([#452](https://www.github.com/googleapis/python-ndb/issues/452)) ([9d20a2d](https://www.github.com/googleapis/python-ndb/commit/9d20a2d5d75cc0590c4326019ea94159bb4aebe2)), closes [#447](https://www.github.com/googleapis/python-ndb/issues/447)
 
-### [1.2.1](https://www.github.com/googleapis/python-ndb/compare/v1.2.0...v1.2.1) (2020-05-15)
+## [1.2.1](https://www.github.com/googleapis/python-ndb/compare/v1.2.0...v1.2.1) (2020-05-15)
 
 
 ### Features
@@ -300,7 +300,7 @@
 * empty Entities for optional LocalStructuredProperty fields  ([#370](https://www.github.com/googleapis/python-ndb/issues/370)) ([27a0969](https://www.github.com/googleapis/python-ndb/commit/27a0969982013b37d3f6d8785c3ad127788661f9)), closes [#369](https://www.github.com/googleapis/python-ndb/issues/369)
 * return type in DateTimeProperty._to_base_type docstring ([#371](https://www.github.com/googleapis/python-ndb/issues/371)) ([0c549c8](https://www.github.com/googleapis/python-ndb/commit/0c549c89ff78554c4a4dde40973b503aa741422f))
 
-### [1.1.2](https://www.github.com/googleapis/python-ndb/compare/v1.1.1...v1.1.2) (2020-03-16)
+## [1.1.2](https://www.github.com/googleapis/python-ndb/compare/v1.1.1...v1.1.2) (2020-03-16)
 
 
 ### Bug Fixes
@@ -308,7 +308,7 @@
 * check for legacy local structured property values ([#365](https://www.github.com/googleapis/python-ndb/issues/365)) ([f81f406](https://www.github.com/googleapis/python-ndb/commit/f81f406d8e1059121341828836fce2aae5782fca)), closes [#359](https://www.github.com/googleapis/python-ndb/issues/359)
 * move stub (grpc communication channel) to client ([#362](https://www.github.com/googleapis/python-ndb/issues/362)) ([90e0625](https://www.github.com/googleapis/python-ndb/commit/90e06252df25fa2ce199543e7b01b17ec284aaf1)), closes [#343](https://www.github.com/googleapis/python-ndb/issues/343)
 
-### [1.1.1](https://www.github.com/googleapis/python-ndb/compare/v1.1.0...v1.1.1) (2020-03-05)
+## [1.1.1](https://www.github.com/googleapis/python-ndb/compare/v1.1.0...v1.1.1) (2020-03-05)
 
 
 ### Bug Fixes
@@ -334,7 +334,7 @@
 * resurrect support for compressed text property ([#342](https://www.github.com/googleapis/python-ndb/issues/342)) ([5a86456](https://www.github.com/googleapis/python-ndb/commit/5a864563dc6e155b73e2ac35af6519823c356e19)), closes [#277](https://www.github.com/googleapis/python-ndb/issues/277)
 * use correct name when reading legacy structured properties with names ([#347](https://www.github.com/googleapis/python-ndb/issues/347)) ([01d1256](https://www.github.com/googleapis/python-ndb/commit/01d1256e9d41c20bb5836067455c4be4abe1c516)), closes [#345](https://www.github.com/googleapis/python-ndb/issues/345)
 
-### [1.0.1](https://www.github.com/googleapis/python-ndb/compare/v1.0.0...v1.0.1) (2020-02-11)
+## [1.0.1](https://www.github.com/googleapis/python-ndb/compare/v1.0.0...v1.0.1) (2020-02-11)
 
 
 ### Bug Fixes
@@ -359,7 +359,7 @@
 * Fix bug with the _GlobalCacheGetBatch. ([#305](https://www.github.com/googleapis/python-ndb/issues/305)) ([f213165](https://www.github.com/googleapis/python-ndb/commit/f2131654c6e5f67895fb0e3c09a507e8dc25c4bb)), closes [#294](https://www.github.com/googleapis/python-ndb/issues/294)
 * Preserve `QueryIterator.cursor_after`. ([#296](https://www.github.com/googleapis/python-ndb/issues/296)) ([4ffedc7](https://www.github.com/googleapis/python-ndb/commit/4ffedc7b5a2366be15dcd299052d8a46a748addd)), closes [#292](https://www.github.com/googleapis/python-ndb/issues/292)
 
-### [0.2.2](https://www.github.com/googleapis/python-ndb/compare/v0.2.1...v0.2.2) (2020-01-15)
+## [0.2.2](https://www.github.com/googleapis/python-ndb/compare/v0.2.1...v0.2.2) (2020-01-15)
 
 
 ### Bug Fixes
@@ -370,7 +370,7 @@
 * Handle `int` for DateTimeProperty ([#285](https://www.github.com/googleapis/python-ndb/issues/285)) ([2fe5be3](https://www.github.com/googleapis/python-ndb/commit/2fe5be31784a036062180f9c0f2c7b5eda978123)), closes [#261](https://www.github.com/googleapis/python-ndb/issues/261)
 * More friendly error message when using `fetch_page` with post-filters. ([#269](https://www.github.com/googleapis/python-ndb/issues/269)) ([a40ae74](https://www.github.com/googleapis/python-ndb/commit/a40ae74d74fa83119349de4b3a91f90df40d7ea5)), closes [#254](https://www.github.com/googleapis/python-ndb/issues/254)
 
-### [0.2.1](https://www.github.com/googleapis/python-ndb/compare/v0.2.0...v0.2.1) (2019-12-10)
+## [0.2.1](https://www.github.com/googleapis/python-ndb/compare/v0.2.0...v0.2.1) (2019-12-10)
 
 
 ### Bug Fixes
