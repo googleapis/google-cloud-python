@@ -1,13 +1,13 @@
 # Changelog
 
-### [1.2.2](https://github.com/googleapis/python-binary-authorization/compare/v1.2.1...v1.2.2) (2022-03-05)
+## [1.2.2](https://github.com/googleapis/python-binary-authorization/compare/v1.2.1...v1.2.2) (2022-03-05)
 
 
 ### Bug Fixes
 
 * **deps:** require google-api-core>=1.31.5, >=2.3.2 ([#126](https://github.com/googleapis/python-binary-authorization/issues/126)) ([2b7e982](https://github.com/googleapis/python-binary-authorization/commit/2b7e982e09b85570af842acba3ca6c48831a49e2))
 
-### [1.2.1](https://github.com/googleapis/python-binary-authorization/compare/v1.2.0...v1.2.1) (2022-02-11)
+## [1.2.1](https://github.com/googleapis/python-binary-authorization/compare/v1.2.0...v1.2.1) (2022-02-11)
 
 
 ### Bug Fixes
@@ -30,7 +30,7 @@
 * **v1beta1:** add SystemPolicyV1Beta1 service ([f25d17a](https://www.github.com/googleapis/python-binary-authorization/commit/f25d17abaefe4a2d317161ec15b867b33eb3e8ba))
 * **v1beta1:** update SignatureAlgorithm enum to match algorithm names in KMS ([f25d17a](https://www.github.com/googleapis/python-binary-authorization/commit/f25d17abaefe4a2d317161ec15b867b33eb3e8ba))
 
-### [1.0.1](https://www.github.com/googleapis/python-binary-authorization/compare/v1.0.0...v1.0.1) (2021-11-01)
+## [1.0.1](https://www.github.com/googleapis/python-binary-authorization/compare/v1.0.0...v1.0.1) (2021-11-01)
 
 
 ### Bug Fixes
@@ -64,7 +64,7 @@
 
 * add context manager support in client ([#84](https://www.github.com/googleapis/python-binary-authorization/issues/84)) ([0991f56](https://www.github.com/googleapis/python-binary-authorization/commit/0991f564af01dc8b0172693290a9aba566035848))
 
-### [0.4.1](https://www.github.com/googleapis/python-binary-authorization/compare/v0.4.0...v0.4.1) (2021-09-30)
+## [0.4.1](https://www.github.com/googleapis/python-binary-authorization/compare/v0.4.0...v0.4.1) (2021-09-30)
 
 
 ### Bug Fixes
@@ -90,7 +90,7 @@
 
 * fix broken links in README ([cd828ec](https://www.github.com/googleapis/python-binary-authorization/commit/cd828ec45edb5a297607ea7e9f94c39e68ef2d7d))
 
-### [0.3.1](https://www.github.com/googleapis/python-binary-authorization/compare/v0.3.0...v0.3.1) (2021-07-26)
+## [0.3.1](https://www.github.com/googleapis/python-binary-authorization/compare/v0.3.0...v0.3.1) (2021-07-26)
 
 
 ### Bug Fixes
@@ -125,14 +125,14 @@
 
 * omit mention of Python 2.7 in 'CONTRIBUTING.rst' ([#1127](https://www.github.com/googleapis/python-binary-authorization/issues/1127)) ([#43](https://www.github.com/googleapis/python-binary-authorization/issues/43)) ([726d589](https://www.github.com/googleapis/python-binary-authorization/commit/726d58920de4e97a70cbbe1fd88ac427224ba1ea)), closes [#1126](https://www.github.com/googleapis/python-binary-authorization/issues/1126)
 
-### [0.2.2](https://www.github.com/googleapis/python-binary-authorization/compare/v0.2.1...v0.2.2) (2021-06-16)
+## [0.2.2](https://www.github.com/googleapis/python-binary-authorization/compare/v0.2.1...v0.2.2) (2021-06-16)
 
 
 ### Bug Fixes
 
 * exclude docs and tests from package ([#39](https://www.github.com/googleapis/python-binary-authorization/issues/39)) ([a90d7f4](https://www.github.com/googleapis/python-binary-authorization/commit/a90d7f46ca54c3bf805208bff157cfbc48a14234))
 
-### [0.2.1](https://www.github.com/googleapis/python-binary-authorization/compare/v0.2.0...v0.2.1) (2021-05-25)
+## [0.2.1](https://www.github.com/googleapis/python-binary-authorization/compare/v0.2.0...v0.2.1) (2021-05-25)
 
 
 ### Bug Fixes
@@ -146,7 +146,7 @@
 
 * Publish Binary Authorization ContinuousValidationEvent proto ([#31](https://www.github.com/googleapis/python-binary-authorization/issues/31)) ([d3d2abe](https://www.github.com/googleapis/python-binary-authorization/commit/d3d2abeb22bad714de0591916c1065fda7305a92))
 
-### [0.1.1](https://www.github.com/googleapis/python-binary-authorization/compare/v0.1.0...v0.1.1) (2021-04-01)
+## [0.1.1](https://www.github.com/googleapis/python-binary-authorization/compare/v0.1.0...v0.1.1) (2021-04-01)
 
 
 ### Bug Fixes
