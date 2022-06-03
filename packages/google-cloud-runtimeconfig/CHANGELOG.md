@@ -11,28 +11,28 @@
 
 * add support for Python 3.10 ([#114](https://www.github.com/googleapis/python-runtimeconfig/issues/114)) ([a8ca09f](https://www.github.com/googleapis/python-runtimeconfig/commit/a8ca09f0d7cfeaebcf308d260b865619b138feec))
 
-### [0.32.6](https://www.github.com/googleapis/python-runtimeconfig/compare/v0.32.5...v0.32.6) (2021-10-05)
+## [0.32.6](https://www.github.com/googleapis/python-runtimeconfig/compare/v0.32.5...v0.32.6) (2021-10-05)
 
 
 ### Bug Fixes
 
 * don't offset timestamp via naive datetime ([#112](https://www.github.com/googleapis/python-runtimeconfig/issues/112)) ([8fe62f9](https://www.github.com/googleapis/python-runtimeconfig/commit/8fe62f992e1dc98dfb69a805afb24160de9c3b6b))
 
-### [0.32.5](https://www.github.com/googleapis/python-runtimeconfig/compare/v0.32.4...v0.32.5) (2021-09-20)
+## [0.32.5](https://www.github.com/googleapis/python-runtimeconfig/compare/v0.32.4...v0.32.5) (2021-09-20)
 
 
 ### Bug Fixes
 
 * remove six ([#105](https://www.github.com/googleapis/python-runtimeconfig/issues/105)) ([152b9c6](https://www.github.com/googleapis/python-runtimeconfig/commit/152b9c6316c2dcc482106997b6ee6944ee6d0245))
 
-### [0.32.4](https://www.github.com/googleapis/python-runtimeconfig/compare/v0.32.3...v0.32.4) (2021-08-13)
+## [0.32.4](https://www.github.com/googleapis/python-runtimeconfig/compare/v0.32.3...v0.32.4) (2021-08-13)
 
 
 ### Bug Fixes
 
 * remove pytz dependency ([#78](https://www.github.com/googleapis/python-runtimeconfig/issues/78)) ([89e51b3](https://www.github.com/googleapis/python-runtimeconfig/commit/89e51b3b3bfce9c44ecd1fa214f393a3b6a23bb5))
 
-### [0.32.3](https://www.github.com/googleapis/python-runtimeconfig/compare/v0.32.2...v0.32.3) (2021-07-23)
+## [0.32.3](https://www.github.com/googleapis/python-runtimeconfig/compare/v0.32.2...v0.32.3) (2021-07-23)
 
 
 ### Bug Fixes
@@ -40,14 +40,14 @@
 * require python 3.6 ([#63](https://www.github.com/googleapis/python-runtimeconfig/issues/63)) ([b1780a7](https://www.github.com/googleapis/python-runtimeconfig/commit/b1780a752a4f4d7b7fa2e1050117a070d9ea0997))
 
 
-### [0.32.2](https://www.github.com/googleapis/python-runtimeconfig/compare/v0.32.1...v0.32.2) (2021-05-28)
+## [0.32.2](https://www.github.com/googleapis/python-runtimeconfig/compare/v0.32.1...v0.32.2) (2021-05-28)
 
 
 ### Bug Fixes
 
 * require google-cloud-core >= 1.3.0 ([#38](https://www.github.com/googleapis/python-runtimeconfig/issues/38)) ([5f6279d](https://www.github.com/googleapis/python-runtimeconfig/commit/5f6279d874158797d2a26fd89b3d6e8f2fd41fc0))
 
-### [0.32.1](https://www.github.com/googleapis/python-runtimeconfig/compare/v0.32.0...v0.32.1) (2020-12-10)
+## [0.32.1](https://www.github.com/googleapis/python-runtimeconfig/compare/v0.32.0...v0.32.1) (2020-12-10)
 
 
 ### Documentation
