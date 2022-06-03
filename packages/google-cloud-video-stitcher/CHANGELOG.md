@@ -1,6 +1,6 @@
 # Changelog
 
-### [0.1.1](https://github.com/googleapis/python-video-stitcher/compare/v0.1.0...v0.1.1) (2022-03-05)
+## [0.1.1](https://github.com/googleapis/python-video-stitcher/compare/v0.1.0...v0.1.1) (2022-03-05)
 
 
 ### Bug Fixes
