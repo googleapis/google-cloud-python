@@ -1,6 +1,6 @@
 # Changelog
 
-### [1.1.1](https://github.com/googleapis/python-essential-contacts/compare/v1.1.0...v1.1.1) (2022-03-05)
+## [1.1.1](https://github.com/googleapis/python-essential-contacts/compare/v1.1.0...v1.1.1) (2022-03-05)
 
 
 ### Bug Fixes
@@ -19,7 +19,7 @@
 
 * resolve DuplicateCredentialArgs error when using credentials_file ([#81](https://github.com/googleapis/python-essential-contacts/issues/81)) ([17fc687](https://github.com/googleapis/python-essential-contacts/commit/17fc687330360f000982a5b6bd5460693bc7cb3c))
 
-### [1.0.1](https://www.github.com/googleapis/python-essential-contacts/compare/v1.0.0...v1.0.1) (2021-11-01)
+## [1.0.1](https://www.github.com/googleapis/python-essential-contacts/compare/v1.0.0...v1.0.1) (2021-11-01)
 
 
 ### Bug Fixes
@@ -53,21 +53,21 @@
 
 * add context manager support in client ([#51](https://www.github.com/googleapis/python-essential-contacts/issues/51)) ([87911bc](https://www.github.com/googleapis/python-essential-contacts/commit/87911bcb578511d49b1263fc4e3c1c74c328d59a))
 
-### [0.2.4](https://www.github.com/googleapis/python-essential-contacts/compare/v0.2.3...v0.2.4) (2021-10-04)
+## [0.2.4](https://www.github.com/googleapis/python-essential-contacts/compare/v0.2.3...v0.2.4) (2021-10-04)
 
 
 ### Bug Fixes
 
 * improper types in pagers generation ([831f18a](https://www.github.com/googleapis/python-essential-contacts/commit/831f18afd43d83310699352e7467641c4dc9a79a))
 
-### [0.2.3](https://www.github.com/googleapis/python-essential-contacts/compare/v0.2.2...v0.2.3) (2021-09-24)
+## [0.2.3](https://www.github.com/googleapis/python-essential-contacts/compare/v0.2.2...v0.2.3) (2021-09-24)
 
 
 ### Bug Fixes
 
 * add 'dict' annotation type to 'request' ([9fdb6bf](https://www.github.com/googleapis/python-essential-contacts/commit/9fdb6bfa9457ec4faf0463920c08c5eb2bd1407b))
 
-### [0.2.2](https://www.github.com/googleapis/python-essential-contacts/compare/v0.2.1...v0.2.2) (2021-07-29)
+## [0.2.2](https://www.github.com/googleapis/python-essential-contacts/compare/v0.2.1...v0.2.2) (2021-07-29)
 
 
 ### Bug Fixes
@@ -84,7 +84,7 @@
 
 * release as 0.2.2 ([#28](https://www.github.com/googleapis/python-essential-contacts/issues/28)) ([e1ec288](https://www.github.com/googleapis/python-essential-contacts/commit/e1ec2887af5a87395c7af79e07189b35ee13d85f))
 
-### [0.2.1](https://www.github.com/googleapis/python-essential-contacts/compare/v0.2.0...v0.2.1) (2021-07-21)
+## [0.2.1](https://www.github.com/googleapis/python-essential-contacts/compare/v0.2.0...v0.2.1) (2021-07-21)
 
 
 ### Bug Fixes
@@ -108,7 +108,7 @@
 
 * omit mention of Python 2.7 in 'CONTRIBUTING.rst' ([#1127](https://www.github.com/googleapis/python-essential-contacts/issues/1127)) ([#9](https://www.github.com/googleapis/python-essential-contacts/issues/9)) ([31ae5a1](https://www.github.com/googleapis/python-essential-contacts/commit/31ae5a198e8844bfcc57283da8b26bcef17d6814)), closes [#1126](https://www.github.com/googleapis/python-essential-contacts/issues/1126)
 
-### [0.1.1](https://www.github.com/googleapis/python-essential-contacts/compare/v0.1.0...v0.1.1) (2021-06-16)
+## [0.1.1](https://www.github.com/googleapis/python-essential-contacts/compare/v0.1.0...v0.1.1) (2021-06-16)
 
 
 ### Bug Fixes
