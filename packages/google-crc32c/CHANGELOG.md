@@ -35,7 +35,7 @@
 
 * update list of supported wheel platforms / architectures ([#105](https://www.github.com/googleapis/python-crc32c/issues/105)) ([edc8d2d](https://www.github.com/googleapis/python-crc32c/commit/edc8d2dbe643f0c2bf1180f855e1585b0e81bdba))
 
-### [1.1.5](https://www.github.com/googleapis/python-crc32c/compare/v1.1.4...v1.1.5) (2021-09-07)
+## [1.1.5](https://www.github.com/googleapis/python-crc32c/compare/v1.1.4...v1.1.5) (2021-09-07)
 
 
 ### Bug Fixes
@@ -43,7 +43,7 @@
 * revert to silent fallback to pure-Python build ([#93](https://www.github.com/googleapis/python-crc32c/issues/93)) ([789a420](https://www.github.com/googleapis/python-crc32c/commit/789a4203648d1b43f060332510177cf3867f82c4))
 * fix segfault on MacOS 11 ("Big Sur") for Python < 3.9 ([#93](https://www.github.com/googleapis/python-crc32c/issues/93)) ([789a420](https://www.github.com/googleapis/python-crc32c/commit/789a4203648d1b43f060332510177cf3867f82c4))
 
-### [1.1.4](https://www.github.com/googleapis/python-crc32c/compare/v1.1.4...v1.1.4) (2021-09-02)
+## [1.1.4](https://www.github.com/googleapis/python-crc32c/compare/v1.1.4...v1.1.4) (2021-09-02)
 
 
 ### Bug Fixes
@@ -52,7 +52,7 @@
 * restore building 'manylinux1' wheels ([#87](https://www.github.com/googleapis/python-crc32c/issues/87)) ([ebb9c68](https://www.github.com/googleapis/python-crc32c/commit/ebb9c68aca66e6b89d832e9e237679ac8b9ad344))
 * use correct Python 3.10 specifier ([#88](https://www.github.com/googleapis/python-crc32c/issues/88)) ([0c1b740](https://www.github.com/googleapis/python-crc32c/commit/0c1b740c195caed8ac1e67fc38d87073223a6b3d))
 
-### [1.1.4](https://www.github.com/googleapis/python-crc32c/compare/v1.1.3...v1.1.4) (2021-09-01)
+## [1.1.4](https://www.github.com/googleapis/python-crc32c/compare/v1.1.3...v1.1.4) (2021-09-01)
 
 
 ### Bug Fixes
@@ -60,14 +60,14 @@
 * advise setting 'CRC32C_PURE_PYTHON' after build failure ([#84](https://www.github.com/googleapis/python-crc32c/issues/84)) ([6aa1cd6](https://www.github.com/googleapis/python-crc32c/commit/6aa1cd69376b57fbc9bc2c470ed63a270279623d))
 * restore building 'manylinux1' wheels ([#87](https://www.github.com/googleapis/python-crc32c/issues/87)) ([ebb9c68](https://www.github.com/googleapis/python-crc32c/commit/ebb9c68aca66e6b89d832e9e237679ac8b9ad344))
 
-### [1.1.3](https://www.github.com/googleapis/python-crc32c/compare/v1.1.2...v1.1.3) (2021-08-30)
+## [1.1.3](https://www.github.com/googleapis/python-crc32c/compare/v1.1.2...v1.1.3) (2021-08-30)
 
 
 ### Performance Improvements
 
 * replace CFFI with a native C extension ([#76](https://www.github.com/googleapis/python-crc32c/issues/76)) ([b1bf461](https://www.github.com/googleapis/python-crc32c/commit/b1bf461cc0539962ac16a62860cae3cd2384cb4f))
 
-### [1.1.2](https://www.github.com/googleapis/python-crc32c/compare/v1.1.1...v1.1.2) (2021-01-20)
+## [1.1.2](https://www.github.com/googleapis/python-crc32c/compare/v1.1.1...v1.1.2) (2021-01-20)
 
 
 ### Bug Fixes
@@ -80,7 +80,7 @@
 
 * add aarch64 to the readme as produced wheels ([#62](https://www.github.com/googleapis/python-crc32c/issues/62)) ([4ef317d](https://www.github.com/googleapis/python-crc32c/commit/4ef317d0efcd654842d17e03749b801303c8bc30))
 
-### [1.1.1](https://www.github.com/googleapis/python-crc32c/compare/v1.1.0...v1.1.1) (2021-01-14)
+## [1.1.1](https://www.github.com/googleapis/python-crc32c/compare/v1.1.0...v1.1.1) (2021-01-14)
 
 
 ### Bug Fixes
@@ -104,7 +104,7 @@
 
 * add LICENSE to package manifest ([#34](https://www.github.com/googleapis/python-crc32c/issues/34)) ([6c8883b](https://www.github.com/googleapis/python-crc32c/commit/6c8883b2c41aaa6f0dd5991896ad58e73f516182))
 
-### [1.0.0](https://www.github.com/googleapis/python-crc32c/compare/v0.1.0...v1.0.0) (2020-08-07)
+## [1.0.0](https://www.github.com/googleapis/python-crc32c/compare/v0.1.0...v1.0.0) (2020-08-07)
 
 ### Breaking Changes
 * prefix module name with 'google_' to avoid conflict with ICRAR version ([#30](https://www.github.com/googleapis/python-crc32c/issues/30)) ([b50f43e](https://www.github.com/googleapis/python-crc32c/commit/b50f43e7bc40d91ccdade9ccc577a93c0ed05f3a)), closes [#29](https://www.github.com/googleapis/python-crc32c/issues/29)
