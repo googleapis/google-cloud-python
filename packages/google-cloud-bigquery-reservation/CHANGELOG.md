@@ -1,13 +1,13 @@
 # Changelog
 
-### [1.6.2](https://github.com/googleapis/python-bigquery-reservation/compare/v1.6.1...v1.6.2) (2022-05-05)
+## [1.6.2](https://github.com/googleapis/python-bigquery-reservation/compare/v1.6.1...v1.6.2) (2022-05-05)
 
 
 ### Documentation
 
 * cleanup and clarifications ([#253](https://github.com/googleapis/python-bigquery-reservation/issues/253)) ([f34d11a](https://github.com/googleapis/python-bigquery-reservation/commit/f34d11a8c42bc626ca2550c9a3a3e98fa09ec2d0))
 
-### [1.6.1](https://github.com/googleapis/python-bigquery-reservation/compare/v1.6.0...v1.6.1) (2022-03-05)
+## [1.6.1](https://github.com/googleapis/python-bigquery-reservation/compare/v1.6.0...v1.6.1) (2022-03-05)
 
 
 ### Bug Fixes
@@ -34,7 +34,7 @@
 
 * increase the logical timeout (retry deadline) to 5 minutes ([#198](https://www.github.com/googleapis/python-bigquery-reservation/issues/198)) ([13cb5b3](https://www.github.com/googleapis/python-bigquery-reservation/commit/13cb5b3c62fc4ca1823c1154e5ee5eaede5478ae))
 
-### [1.4.1](https://www.github.com/googleapis/python-bigquery-reservation/compare/v1.4.0...v1.4.1) (2021-11-01)
+## [1.4.1](https://www.github.com/googleapis/python-bigquery-reservation/compare/v1.4.0...v1.4.1) (2021-11-01)
 
 
 ### Bug Fixes
@@ -59,7 +59,7 @@
 
 * improper types in pagers generation ([ae65c70](https://www.github.com/googleapis/python-bigquery-reservation/commit/ae65c70bd91602ccb851167d27b4161ebd6c3bb3))
 
-### [1.3.1](https://www.github.com/googleapis/python-bigquery-reservation/compare/v1.3.0...v1.3.1) (2021-09-24)
+## [1.3.1](https://www.github.com/googleapis/python-bigquery-reservation/compare/v1.3.0...v1.3.1) (2021-09-24)
 
 
 ### Bug Fixes
@@ -78,7 +78,7 @@
 
 * samples for managing reservations ([#144](https://www.github.com/googleapis/python-bigquery-reservation/issues/144)) ([27b2564](https://www.github.com/googleapis/python-bigquery-reservation/commit/27b256440b2565369c900cd4728e38676f82fcfe))
 
-### [1.2.2](https://www.github.com/googleapis/python-bigquery-reservation/compare/v1.2.1...v1.2.2) (2021-07-27)
+## [1.2.2](https://www.github.com/googleapis/python-bigquery-reservation/compare/v1.2.1...v1.2.2) (2021-07-27)
 
 
 ### Bug Fixes
@@ -95,7 +95,7 @@
 
 * release as 1.2.2 ([#139](https://www.github.com/googleapis/python-bigquery-reservation/issues/139)) ([96fbeba](https://www.github.com/googleapis/python-bigquery-reservation/commit/96fbeba273eb1776994f41400163788cf7b5e786))
 
-### [1.2.1](https://www.github.com/googleapis/python-bigquery-reservation/compare/v1.2.0...v1.2.1) (2021-07-20)
+## [1.2.1](https://www.github.com/googleapis/python-bigquery-reservation/compare/v1.2.0...v1.2.1) (2021-07-20)
 
 
 ### Bug Fixes
@@ -132,7 +132,7 @@
 
 * add `client_cert_source_for_mtls` argument to transports ([#78](https://www.github.com/googleapis/python-bigquery-reservation/issues/78)) ([5df0f09](https://www.github.com/googleapis/python-bigquery-reservation/commit/5df0f0965c541ca546d3851be1ab7782dc80a11b))
 
-### [1.0.1](https://www.github.com/googleapis/python-bigquery-reservation/compare/v1.0.0...v1.0.1) (2021-01-14)
+## [1.0.1](https://www.github.com/googleapis/python-bigquery-reservation/compare/v1.0.0...v1.0.1) (2021-01-14)
 
 
 ### Bug Fixes
