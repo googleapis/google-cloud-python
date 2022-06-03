@@ -1,6 +1,6 @@
 # Changelog
 
-### [1.4.1](https://github.com/googleapis/python-service-control/compare/v1.4.0...v1.4.1) (2022-05-05)
+## [1.4.1](https://github.com/googleapis/python-service-control/compare/v1.4.0...v1.4.1) (2022-05-05)
 
 
 ### Documentation
@@ -15,7 +15,7 @@
 
 * Added Service Controller v2 API ([#108](https://github.com/googleapis/python-service-control/issues/108)) ([4f5f315](https://github.com/googleapis/python-service-control/commit/4f5f3159c913adf924843489bb7283fb118ac142))
 
-### [1.3.1](https://github.com/googleapis/python-service-control/compare/v1.3.0...v1.3.1) (2022-03-05)
+## [1.3.1](https://github.com/googleapis/python-service-control/compare/v1.3.0...v1.3.1) (2022-03-05)
 
 
 ### Bug Fixes
@@ -35,7 +35,7 @@
 * **deps:** remove unused libcst dependency ([#104](https://github.com/googleapis/python-service-control/issues/104)) ([d6f7ded](https://github.com/googleapis/python-service-control/commit/d6f7dedbbc6620cdd74f63c19ccba82a847fa8d4))
 * resolve DuplicateCredentialArgs error when using credentials_file ([91d18fa](https://github.com/googleapis/python-service-control/commit/91d18fae62221a55202ded68ec0d0551ca3202a4))
 
-### [1.2.1](https://www.github.com/googleapis/python-service-control/compare/v1.2.0...v1.2.1) (2021-11-01)
+## [1.2.1](https://www.github.com/googleapis/python-service-control/compare/v1.2.0...v1.2.1) (2021-11-01)
 
 
 ### Bug Fixes
@@ -67,7 +67,7 @@
 
 * add context manager support in client ([#73](https://www.github.com/googleapis/python-service-control/issues/73)) ([98d60e9](https://www.github.com/googleapis/python-service-control/commit/98d60e9e18b1b6301cbb98ffb6b0b7639e6e6fb9))
 
-### [1.0.3](https://www.github.com/googleapis/python-service-control/compare/v1.0.2...v1.0.3) (2021-09-27)
+## [1.0.3](https://www.github.com/googleapis/python-service-control/compare/v1.0.2...v1.0.3) (2021-09-27)
 
 
 ### Bug Fixes
@@ -79,7 +79,7 @@
 
 * migrate links in CONTRIBUTING.rst from master to main ([#58](https://www.github.com/googleapis/python-service-control/issues/58)) ([98c4177](https://www.github.com/googleapis/python-service-control/commit/98c4177b4cdeb4cc6ad2ac947bff0bb22df578a6))
 
-### [1.0.2](https://www.github.com/googleapis/python-service-control/compare/v1.0.1...v1.0.2) (2021-07-28)
+## [1.0.2](https://www.github.com/googleapis/python-service-control/compare/v1.0.1...v1.0.2) (2021-07-28)
 
 
 ### Bug Fixes
@@ -96,7 +96,7 @@
 
 * release as 1.0.2 ([#53](https://www.github.com/googleapis/python-service-control/issues/53)) ([0dd6658](https://www.github.com/googleapis/python-service-control/commit/0dd6658d4b526f0559acd2fc08af9f6549b62023))
 
-### [1.0.1](https://www.github.com/googleapis/python-service-control/compare/v1.0.0...v1.0.1) (2021-07-21)
+## [1.0.1](https://www.github.com/googleapis/python-service-control/compare/v1.0.0...v1.0.1) (2021-07-21)
 
 
 ### Bug Fixes
