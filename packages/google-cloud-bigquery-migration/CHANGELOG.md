@@ -1,13 +1,13 @@
 # Changelog
 
-### [0.4.2](https://github.com/googleapis/python-bigquery-migration/compare/v0.4.1...v0.4.2) (2022-05-22)
+## [0.4.2](https://github.com/googleapis/python-bigquery-migration/compare/v0.4.1...v0.4.2) (2022-05-22)
 
 
 ### Documentation
 
 * **samples:** add create_migration_workflow snippet ([#71](https://github.com/googleapis/python-bigquery-migration/issues/71)) ([761b5f5](https://github.com/googleapis/python-bigquery-migration/commit/761b5f5045edbe8c81a31f501bf3b14de7dffe20))
 
-### [0.4.1](https://github.com/googleapis/python-bigquery-migration/compare/v0.4.0...v0.4.1) (2022-05-05)
+## [0.4.1](https://github.com/googleapis/python-bigquery-migration/compare/v0.4.0...v0.4.1) (2022-05-05)
 
 
 ### Documentation
@@ -26,7 +26,7 @@
 
 * set bigquery_migration_v2 as the default import ([776ea61](https://github.com/googleapis/python-bigquery-migration/commit/776ea6189f6a94c5daa5af6b4fa7e0e3b21015ec))
 
-### [0.3.1](https://github.com/googleapis/python-bigquery-migration/compare/v0.3.0...v0.3.1) (2022-03-05)
+## [0.3.1](https://github.com/googleapis/python-bigquery-migration/compare/v0.3.0...v0.3.1) (2022-03-05)
 
 
 ### Bug Fixes
@@ -52,7 +52,7 @@
 
 * add generated snippets ([#38](https://github.com/googleapis/python-bigquery-migration/issues/38)) ([13b7ac7](https://github.com/googleapis/python-bigquery-migration/commit/13b7ac71ace1cc226d6fa5b43dde345c3ac3e489))
 
-### [0.2.1](https://www.github.com/googleapis/python-bigquery-migration/compare/v0.2.0...v0.2.1) (2021-11-01)
+## [0.2.1](https://www.github.com/googleapis/python-bigquery-migration/compare/v0.2.0...v0.2.1) (2021-11-01)
 
 
 ### Bug Fixes
