@@ -4,14 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-scheduler/#history
 
-### [2.6.3](https://github.com/googleapis/python-scheduler/compare/v2.6.2...v2.6.3) (2022-04-14)
+## [2.6.3](https://github.com/googleapis/python-scheduler/compare/v2.6.2...v2.6.3) (2022-04-14)
 
 
 ### Bug Fixes
 
 * fix type in docstring for map fields ([#223](https://github.com/googleapis/python-scheduler/issues/223)) ([34d7478](https://github.com/googleapis/python-scheduler/commit/34d7478c4ac14489b36980099446b9520ff3eb4a))
 
-### [2.6.2](https://github.com/googleapis/python-scheduler/compare/v2.6.1...v2.6.2) (2022-03-05)
+## [2.6.2](https://github.com/googleapis/python-scheduler/compare/v2.6.1...v2.6.2) (2022-03-05)
 
 
 ### Bug Fixes
@@ -19,7 +19,7 @@
 * **deps:** require google-api-core>=1.31.5, >=2.3.2 ([#203](https://github.com/googleapis/python-scheduler/issues/203)) ([3e68808](https://github.com/googleapis/python-scheduler/commit/3e688088d09b0ff5af55571b4e47109638a47825))
 * **deps:** require proto-plus>=1.15.0 ([3e68808](https://github.com/googleapis/python-scheduler/commit/3e688088d09b0ff5af55571b4e47109638a47825))
 
-### [2.6.1](https://github.com/googleapis/python-scheduler/compare/v2.6.0...v2.6.1) (2022-02-26)
+## [2.6.1](https://github.com/googleapis/python-scheduler/compare/v2.6.0...v2.6.1) (2022-02-26)
 
 
 ### Bug Fixes
@@ -38,7 +38,7 @@
 
 * add api key support ([#180](https://github.com/googleapis/python-scheduler/issues/180)) ([74eaf8b](https://github.com/googleapis/python-scheduler/commit/74eaf8b00c684c476d7a9f271880e83fc67dedac))
 
-### [2.5.1](https://www.github.com/googleapis/python-scheduler/compare/v2.5.0...v2.5.1) (2021-11-01)
+## [2.5.1](https://www.github.com/googleapis/python-scheduler/compare/v2.5.0...v2.5.1) (2021-11-01)
 
 
 ### Bug Fixes
@@ -65,21 +65,21 @@
 
 * add context manager support in client ([#144](https://www.github.com/googleapis/python-scheduler/issues/144)) ([4bb0fb6](https://www.github.com/googleapis/python-scheduler/commit/4bb0fb62f173edc09b640b0024d2be3bbd97b3b9))
 
-### [2.3.4](https://www.github.com/googleapis/python-scheduler/compare/v2.3.3...v2.3.4) (2021-09-30)
+## [2.3.4](https://www.github.com/googleapis/python-scheduler/compare/v2.3.3...v2.3.4) (2021-09-30)
 
 
 ### Bug Fixes
 
 * improper types in pagers generation ([a24ad41](https://www.github.com/googleapis/python-scheduler/commit/a24ad41ae62407bc542eb5362f2fd84a1370d3c2))
 
-### [2.3.3](https://www.github.com/googleapis/python-scheduler/compare/v2.3.2...v2.3.3) (2021-09-24)
+## [2.3.3](https://www.github.com/googleapis/python-scheduler/compare/v2.3.2...v2.3.3) (2021-09-24)
 
 
 ### Bug Fixes
 
 * add 'dict' annotation type to 'request' ([b8b77d1](https://www.github.com/googleapis/python-scheduler/commit/b8b77d11a46136baf2739cfdf48060bd4bfc10fa))
 
-### [2.3.2](https://www.github.com/googleapis/python-scheduler/compare/v2.3.1...v2.3.2) (2021-07-28)
+## [2.3.2](https://www.github.com/googleapis/python-scheduler/compare/v2.3.1...v2.3.2) (2021-07-28)
 
 
 ### Bug Fixes
@@ -96,7 +96,7 @@
 
 * release as 2.3.2 ([#117](https://www.github.com/googleapis/python-scheduler/issues/117)) ([f06e90b](https://www.github.com/googleapis/python-scheduler/commit/f06e90b68a9021108a732ca9733a80f447489be8))
 
-### [2.3.1](https://www.github.com/googleapis/python-scheduler/compare/v2.3.0...v2.3.1) (2021-07-20)
+## [2.3.1](https://www.github.com/googleapis/python-scheduler/compare/v2.3.0...v2.3.1) (2021-07-20)
 
 
 ### Bug Fixes
@@ -128,7 +128,7 @@
 
 * add `from_service_account_info` ([#67](https://www.github.com/googleapis/python-scheduler/issues/67)) ([bd21900](https://www.github.com/googleapis/python-scheduler/commit/bd2190046269eea1e08111b97f01e845f748b8e5))
 
-### [2.1.1](https://www.github.com/googleapis/python-scheduler/compare/v2.1.0...v2.1.1) (2021-02-08)
+## [2.1.1](https://www.github.com/googleapis/python-scheduler/compare/v2.1.0...v2.1.1) (2021-02-08)
 
 
 ### Bug Fixes
