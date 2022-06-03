@@ -5,7 +5,7 @@
 [1]: https://pypi.org/project/google-cloud-phishing-protection/#history
 
 
-### [1.5.1](https://github.com/googleapis/python-phishingprotection/compare/v1.5.0...v1.5.1) (2022-03-05)
+## [1.5.1](https://github.com/googleapis/python-phishingprotection/compare/v1.5.0...v1.5.1) (2022-03-05)
 
 
 ### Bug Fixes
@@ -25,7 +25,7 @@
 
 * resolve DuplicateCredentialArgs error when using credentials_file ([f5abff9](https://github.com/googleapis/python-phishingprotection/commit/f5abff9ba017069ada02f8e65b82f1ed62c8710d))
 
-### [1.4.1](https://www.github.com/googleapis/python-phishingprotection/compare/v1.4.0...v1.4.1) (2021-11-01)
+## [1.4.1](https://www.github.com/googleapis/python-phishingprotection/compare/v1.4.0...v1.4.1) (2021-11-01)
 
 
 ### Bug Fixes
@@ -52,14 +52,14 @@
 
 * add context manager support in client ([#120](https://www.github.com/googleapis/python-phishingprotection/issues/120)) ([2384d00](https://www.github.com/googleapis/python-phishingprotection/commit/2384d00ab4311c73fbb198963b15831d6dd14c45))
 
-### [1.2.3](https://www.github.com/googleapis/python-phishingprotection/compare/v1.2.2...v1.2.3) (2021-09-24)
+## [1.2.3](https://www.github.com/googleapis/python-phishingprotection/compare/v1.2.2...v1.2.3) (2021-09-24)
 
 
 ### Bug Fixes
 
 * add 'dict' annotation type to 'request' ([a9ac832](https://www.github.com/googleapis/python-phishingprotection/commit/a9ac832c3bed179eec4f007c9e1535bf3a95aa57))
 
-### [1.2.2](https://www.github.com/googleapis/python-phishingprotection/compare/v1.2.1...v1.2.2) (2021-07-26)
+## [1.2.2](https://www.github.com/googleapis/python-phishingprotection/compare/v1.2.1...v1.2.2) (2021-07-26)
 
 
 ### Bug Fixes
@@ -77,7 +77,7 @@
 
 * release as 1.2.2 ([#100](https://www.github.com/googleapis/python-phishingprotection/issues/100)) ([de0503f](https://www.github.com/googleapis/python-phishingprotection/commit/de0503fffd4088d2e7d6e4b876427d79407441e8))
 
-### [1.2.1](https://www.github.com/googleapis/python-phishingprotection/compare/v1.2.0...v1.2.1) (2021-07-14)
+## [1.2.1](https://www.github.com/googleapis/python-phishingprotection/compare/v1.2.0...v1.2.1) (2021-07-14)
 
 
 ### Bug Fixes
@@ -96,7 +96,7 @@
 
 * omit mention of Python 2.7 in 'CONTRIBUTING.rst' ([#1127](https://www.github.com/googleapis/python-phishingprotection/issues/1127)) ([#81](https://www.github.com/googleapis/python-phishingprotection/issues/81)) ([e8590bb](https://www.github.com/googleapis/python-phishingprotection/commit/e8590bbfa6e70d915b618ee265d7cd59cab07e98)), closes [#1126](https://www.github.com/googleapis/python-phishingprotection/issues/1126)
 
-### [1.1.1](https://www.github.com/googleapis/python-phishingprotection/compare/v1.1.0...v1.1.1) (2021-05-28)
+## [1.1.1](https://www.github.com/googleapis/python-phishingprotection/compare/v1.1.0...v1.1.1) (2021-05-28)
 
 
 ### Bug Fixes
