@@ -1,6 +1,6 @@
 # Changelog
 
-### [0.5.1](https://github.com/googleapis/python-life-sciences/compare/v0.5.0...v0.5.1) (2022-03-05)
+## [0.5.1](https://github.com/googleapis/python-life-sciences/compare/v0.5.0...v0.5.1) (2022-03-05)
 
 
 ### Bug Fixes
@@ -19,7 +19,7 @@
 
 * resolve DuplicateCredentialArgs error when using credentials_file ([ffbd3c9](https://github.com/googleapis/python-life-sciences/commit/ffbd3c967c50d477290abca39eaecef24a171e31))
 
-### [0.4.1](https://www.github.com/googleapis/python-life-sciences/compare/v0.4.0...v0.4.1) (2021-11-01)
+## [0.4.1](https://www.github.com/googleapis/python-life-sciences/compare/v0.4.0...v0.4.1) (2021-11-01)
 
 
 ### Bug Fixes
@@ -46,14 +46,14 @@
 
 * add context manager support in client ([#43](https://www.github.com/googleapis/python-life-sciences/issues/43)) ([44bd253](https://www.github.com/googleapis/python-life-sciences/commit/44bd253271c7a6cb77bfc95ecf124e35b3f8a351))
 
-### [0.2.3](https://www.github.com/googleapis/python-life-sciences/compare/v0.2.2...v0.2.3) (2021-09-24)
+## [0.2.3](https://www.github.com/googleapis/python-life-sciences/compare/v0.2.2...v0.2.3) (2021-09-24)
 
 
 ### Bug Fixes
 
 * add 'dict' annotation type to 'request' ([93487cb](https://www.github.com/googleapis/python-life-sciences/commit/93487cbfcdab0d77049dba6b7d1e44222c48fdfb))
 
-### [0.2.2](https://www.github.com/googleapis/python-life-sciences/compare/v0.2.1...v0.2.2) (2021-07-29)
+## [0.2.2](https://www.github.com/googleapis/python-life-sciences/compare/v0.2.1...v0.2.2) (2021-07-29)
 
 
 ### Bug Fixes
@@ -70,7 +70,7 @@
 
 * release as 0.2.2 ([#24](https://www.github.com/googleapis/python-life-sciences/issues/24)) ([d479778](https://www.github.com/googleapis/python-life-sciences/commit/d4797787f08de2df80206b8af4728e8479e44687))
 
-### [0.2.1](https://www.github.com/googleapis/python-life-sciences/compare/v0.2.0...v0.2.1) (2021-07-21)
+## [0.2.1](https://www.github.com/googleapis/python-life-sciences/compare/v0.2.0...v0.2.1) (2021-07-21)
 
 
 ### Bug Fixes
