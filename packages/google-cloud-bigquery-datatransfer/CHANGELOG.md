@@ -4,7 +4,7 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery-datatransfer/#history
 
-### [3.6.1](https://github.com/googleapis/python-bigquery-datatransfer/compare/v3.6.0...v3.6.1) (2022-03-05)
+## [3.6.1](https://github.com/googleapis/python-bigquery-datatransfer/compare/v3.6.0...v3.6.1) (2022-03-05)
 
 
 ### Bug Fixes
@@ -40,7 +40,7 @@
 
 * add support for Python 3.9 / 3.10 ([#253](https://github.com/googleapis/python-bigquery-datatransfer/issues/253)) ([5e02bd1](https://github.com/googleapis/python-bigquery-datatransfer/commit/5e02bd166149b4ef7ee0f295fdcb6a3570ec2f58))
 
-### [3.4.1](https://www.github.com/googleapis/python-bigquery-datatransfer/compare/v3.4.0...v3.4.1) (2021-11-01)
+## [3.4.1](https://www.github.com/googleapis/python-bigquery-datatransfer/compare/v3.4.0...v3.4.1) (2021-11-01)
 
 
 ### Bug Fixes
@@ -60,28 +60,28 @@
 
 * add context manager support in client ([#234](https://www.github.com/googleapis/python-bigquery-datatransfer/issues/234)) ([cba3dad](https://www.github.com/googleapis/python-bigquery-datatransfer/commit/cba3dad55db8a00f95503b9c94d4ca21ed462a4f))
 
-### [3.3.4](https://www.github.com/googleapis/python-bigquery-datatransfer/compare/v3.3.3...v3.3.4) (2021-10-04)
+## [3.3.4](https://www.github.com/googleapis/python-bigquery-datatransfer/compare/v3.3.3...v3.3.4) (2021-10-04)
 
 
 ### Bug Fixes
 
 * improper types in pagers generation ([702a848](https://www.github.com/googleapis/python-bigquery-datatransfer/commit/702a84864e5395cf7a7b8f2aeed93d2109414f7c))
 
-### [3.3.3](https://www.github.com/googleapis/python-bigquery-datatransfer/compare/v3.3.2...v3.3.3) (2021-09-24)
+## [3.3.3](https://www.github.com/googleapis/python-bigquery-datatransfer/compare/v3.3.2...v3.3.3) (2021-09-24)
 
 
 ### Bug Fixes
 
 * add 'dict' annotation type to 'request' ([fe024db](https://www.github.com/googleapis/python-bigquery-datatransfer/commit/fe024dbcc3075fd779358d434f37ec3ee3a0adf9))
 
-### [3.3.2](https://www.github.com/googleapis/python-bigquery-datatransfer/compare/v3.3.1...v3.3.2) (2021-08-27)
+## [3.3.2](https://www.github.com/googleapis/python-bigquery-datatransfer/compare/v3.3.1...v3.3.2) (2021-08-27)
 
 
 ### Documentation
 
 * Improvements to various message and field descriptions ([#202](https://www.github.com/googleapis/python-bigquery-datatransfer/issues/202)) ([9684723](https://www.github.com/googleapis/python-bigquery-datatransfer/commit/9684723aed8c743d665ccac2b338770dd09fc94a))
 
-### [3.3.1](https://www.github.com/googleapis/python-bigquery-datatransfer/compare/v3.3.0...v3.3.1) (2021-07-26)
+## [3.3.1](https://www.github.com/googleapis/python-bigquery-datatransfer/compare/v3.3.0...v3.3.1) (2021-07-26)
 
 
 ### Bug Fixes
@@ -128,7 +128,7 @@
 
 * omit mention of Python 2.7 in 'CONTRIBUTING.rst' ([#1127](https://www.github.com/googleapis/python-bigquery-datatransfer/issues/1127)) ([#164](https://www.github.com/googleapis/python-bigquery-datatransfer/issues/164)) ([2741e4f](https://www.github.com/googleapis/python-bigquery-datatransfer/commit/2741e4fb1d9074494872fafcec96d870b14b671d)), closes [#1126](https://www.github.com/googleapis/python-bigquery-datatransfer/issues/1126)
 
-### [3.1.1](https://www.github.com/googleapis/python-bigquery-datatransfer/compare/v3.1.0...v3.1.1) (2021-04-07)
+## [3.1.1](https://www.github.com/googleapis/python-bigquery-datatransfer/compare/v3.1.0...v3.1.1) (2021-04-07)
 
 
 ### Bug Fixes
@@ -143,7 +143,7 @@
 
 * add `client_cert_source_for_mtls` parameter to grpc transport ([#114](https://www.github.com/googleapis/python-bigquery-datatransfer/issues/114)) ([9c7ed28](https://www.github.com/googleapis/python-bigquery-datatransfer/commit/9c7ed285203cd44917911e78c2c313d3ad50afda))
 
-### [3.0.1](https://www.github.com/googleapis/python-bigquery-datatransfer/compare/v3.0.0...v3.0.1) (2021-03-03)
+## [3.0.1](https://www.github.com/googleapis/python-bigquery-datatransfer/compare/v3.0.0...v3.0.1) (2021-03-03)
 
 
 ### Bug Fixes
