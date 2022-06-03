@@ -68,7 +68,7 @@ UPGRADE_CODE = """def upgrade():
     )"""
 
 
-BLACK_VERSION = "black==19.10b0"
+BLACK_VERSION = "black==22.3.0"
 BLACK_PATHS = ["google", "test", "noxfile.py", "setup.py", "samples"]
 DEFAULT_PYTHON_VERSION = "3.8"
 
@@ -82,10 +82,15 @@ def lint(session):
     """
     session.install("flake8", BLACK_VERSION)
     session.run(
-        "black", "--check", *BLACK_PATHS,
+        "black",
+        "--check",
+        *BLACK_PATHS,
     )
     session.run(
-        "flake8", "google", "test", "--max-line-length=88",
+        "flake8",
+        "google",
+        "test",
+        "--max-line-length=88",
     )
 
 
@@ -101,7 +106,8 @@ def blacken(session):
     """
     session.install(BLACK_VERSION)
     session.run(
-        "black", *BLACK_PATHS,
+        "black",
+        *BLACK_PATHS,
     )
 
 
@@ -128,17 +134,23 @@ def compliance_test_13(session):
         )
 
     session.install(
-        "pytest", "pytest-cov", "pytest-asyncio",
+        "pytest",
+        "pytest-cov",
+        "pytest-asyncio",
     )
 
     session.install("mock")
     session.install("-e", ".[tracing]")
+    session.run("pip", "install", "sqlalchemy>=1.1.13,<=1.3.24", "--force-reinstall")
+    session.run("pip", "install", "pytest==6.2.2", "--force-reinstall")
+    session.run("pip", "install", "opentelemetry-api<=1.10", "--force-reinstall")
+    session.run("pip", "install", "opentelemetry-sdk<=1.10", "--force-reinstall")
     session.run("python", "create_test_database.py")
 
     session.run(
         "py.test",
         "--cov=google.cloud.sqlalchemy_spanner",
-        "--cov=tests",
+        "--cov=test",
         "--cov-append",
         "--cov-config=.coveragerc",
         "--cov-report=",
@@ -164,7 +176,9 @@ def compliance_test_14(session):
         )
 
     session.install(
-        "pytest", "pytest-cov", "pytest-asyncio",
+        "pytest",
+        "pytest-cov",
+        "pytest-asyncio",
     )
 
     session.install("mock")
@@ -176,7 +190,7 @@ def compliance_test_14(session):
     session.run(
         "py.test",
         "--cov=google.cloud.sqlalchemy_spanner",
-        "--cov=tests",
+        "--cov=test",
         "--cov-append",
         "--cov-config=.coveragerc",
         "--cov-report=",
@@ -214,7 +228,8 @@ def migration_test(session):
     session.run("python", "create_test_database.py")
 
     project = os.getenv(
-        "GOOGLE_CLOUD_PROJECT", os.getenv("PROJECT_ID", "emulator-test-project"),
+        "GOOGLE_CLOUD_PROJECT",
+        os.getenv("PROJECT_ID", "emulator-test-project"),
     )
     db_url = (
         f"spanner+spanner:///projects/{project}/instances/"
@@ -242,7 +257,9 @@ def migration_test(session):
     with open(files[0], "r") as f:
         script_code = f.read()
 
-    script_code = script_code.replace("""def upgrade():\n    pass""", UPGRADE_CODE)
+    script_code = script_code.replace(
+        """def upgrade() -> None:\n    pass""", UPGRADE_CODE
+    )
     with open(files[0], "w") as f:
         f.write(script_code)
 

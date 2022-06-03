@@ -32,7 +32,7 @@ def _make_rpc_error(error_cls, trailing_metadata=None):
 # Skip all of these tests if we don't have OpenTelemetry
 if HAS_OPENTELEMETRY_INSTALLED:
 
-    class TestNoTracing(OpenTelemetryBase):
+    class NoTracingTest(OpenTelemetryBase):
         def setup(self):
             self._temp_opentelemetry = sys.modules["opentelemetry"]
 
@@ -47,7 +47,7 @@ if HAS_OPENTELEMETRY_INSTALLED:
             with _opentelemetry_tracing.trace_call("Test") as no_span:
                 assert no_span is None
 
-    class TestTracing(OpenTelemetryBase):
+    class TracingTest(OpenTelemetryBase):
         def test_trace_call(self):
             extra_attributes = {
                 "attribute1": "value1",
@@ -96,7 +96,8 @@ if HAS_OPENTELEMETRY_INSTALLED:
 
             with pytest.raises(GoogleAPICallError):
                 with _opentelemetry_tracing.trace_call(
-                    "CloudSpannerSqlAlchemy.Test", extra_attributes,
+                    "CloudSpannerSqlAlchemy.Test",
+                    extra_attributes,
                 ) as span:
                     from google.api_core.exceptions import InvalidArgument
 

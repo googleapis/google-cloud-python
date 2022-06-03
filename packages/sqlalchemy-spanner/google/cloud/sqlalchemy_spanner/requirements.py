@@ -29,6 +29,7 @@ class Requirements(SuiteRequirements):  # pragma: no cover
     def computed_columns_stored(self):
         return exclusions.open()
 
+    @property
     def sane_rowcount(self):
         return exclusions.closed()
 

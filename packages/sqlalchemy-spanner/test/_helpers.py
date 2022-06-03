@@ -32,7 +32,8 @@ _TEST_OT_PROVIDER_INITIALIZED = False
 
 
 PROJECT = os.getenv(
-    "GOOGLE_CLOUD_PROJECT", os.getenv("PROJECT_ID", "emulator-test-project"),
+    "GOOGLE_CLOUD_PROJECT",
+    os.getenv("PROJECT_ID", "emulator-test-project"),
 )
 DB_URL = (
     f"spanner:///projects/{PROJECT}/instances/"

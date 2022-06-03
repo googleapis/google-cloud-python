@@ -154,7 +154,7 @@ class SpannerBenchmarkTest(BenchmarkTestBase):
         self._many_rows = []
         self._many_rows2 = []
         birth_date = datetime.date(1998, 10, 6)
-        picture = base64.b64encode(u"123".encode())
+        picture = base64.b64encode("123".encode())
         for num in self._many_rows_ids:
             self._many_rows.append(
                 {
@@ -216,7 +216,9 @@ class SQLAlchemyBenchmarkTest(BenchmarkTestBase):
         super().__init__()
         self._engine = create_engine(
             "spanner:///projects/{project}/instances/{instance}/databases/{db}".format(
-                project=PROJECT, instance=INSTANCE, db=DATABASE,
+                project=PROJECT,
+                instance=INSTANCE,
+                db=DATABASE,
             )
         )
         metadata = MetaData(bind=self._engine)
@@ -260,13 +262,15 @@ class SQLAlchemyBenchmarkTest(BenchmarkTestBase):
     @measure_execution_time
     def insert_many_rows(self):
         self._conn.execute(
-            self._table.insert(), self._many_rows,
+            self._table.insert(),
+            self._many_rows,
         )
 
     @measure_execution_time
     def insert_many_rows_with_mutations(self):
         self._conn.execute(
-            self._table.insert(), self._many_rows2,
+            self._table.insert(),
+            self._many_rows2,
         )
 
     @measure_execution_time

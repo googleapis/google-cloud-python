@@ -33,7 +33,8 @@ from sqlalchemy import (
 @pytest.fixture
 def db_url():
     project = os.getenv(
-        "GOOGLE_CLOUD_PROJECT", os.getenv("PROJECT_ID", "emulator-test-project"),
+        "GOOGLE_CLOUD_PROJECT",
+        os.getenv("PROJECT_ID", "emulator-test-project"),
     )
     db_url = (
         f"spanner:///projects/{project}/instances/"

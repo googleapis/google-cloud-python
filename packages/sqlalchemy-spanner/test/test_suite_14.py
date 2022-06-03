@@ -530,7 +530,9 @@ class ComponentReflectionTest(_ComponentReflectionTest):
         """
         metadata = MetaData(self.bind)
         Table(
-            "bytes_table", metadata, Column("TestColumn", LargeBinary, nullable=False),
+            "bytes_table",
+            metadata,
+            Column("TestColumn", LargeBinary, nullable=False),
         )
         metadata.create_all()
 
@@ -600,7 +602,10 @@ class ComponentReflectionTest(_ComponentReflectionTest):
 
         reflected_metadata = MetaData()
         reflected = Table(
-            "testtbl", reflected_metadata, autoload_with=connection, schema=schema,
+            "testtbl",
+            reflected_metadata,
+            autoload_with=connection,
+            schema=schema,
         )
 
         # test "deduplicates for index" logic.   MySQL and Oracle
@@ -964,7 +969,9 @@ class FetchLimitOffsetTest(_FetchLimitOffsetTest):
         u = union(select(stmt), select(stmt)).subquery().select()
 
         self._assert_result(
-            connection, u, [(2,)],
+            connection,
+            u,
+            [(2,)],
         )
 
 
@@ -1939,7 +1946,9 @@ class ComputedReflectionFixtureTest(_ComputedReflectionFixtureTest):
         if testing.requires.computed_columns_stored.enabled:
             t.append_column(
                 Column(
-                    "computed_stored", Integer, Computed("normal - 42", persisted=True),
+                    "computed_stored",
+                    Integer,
+                    Computed("normal - 42", persisted=True),
                 )
             )
 
@@ -1960,11 +1969,17 @@ class ComputedReflectionTest(_ComputedReflectionTest, ComputedReflectionFixtureT
         )
         if testing.requires.computed_columns_virtual.enabled:
             self.check_column(
-                data, "computed_virtual", "normal/2", False,
+                data,
+                "computed_virtual",
+                "normal/2",
+                False,
             )
         if testing.requires.computed_columns_stored.enabled:
             self.check_column(
-                data, "computed_stored", "normal-42", True,
+                data,
+                "computed_stored",
+                "normal-42",
+                True,
             )
 
     @pytest.mark.skip("Default values are not supported.")

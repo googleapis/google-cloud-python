@@ -793,7 +793,10 @@ class ComponentReflectionTest(_ComponentReflectionTest):
 
         reflected_metadata = MetaData()
         reflected = Table(
-            "testtbl", reflected_metadata, autoload_with=orig_meta.bind, schema=schema,
+            "testtbl",
+            reflected_metadata,
+            autoload_with=orig_meta.bind,
+            schema=schema,
         )
 
         # test "deduplicates for index" logic.   MySQL and Oracle
@@ -1079,7 +1082,9 @@ class NumericTest(_NumericTest):
         Overriding the test to avoid the same failure.
         """
         self._literal_round_trip(
-            Numeric(precision=8, scale=4), [15.7563], [decimal.Decimal("15.7563")],
+            Numeric(precision=8, scale=4),
+            [15.7563],
+            [decimal.Decimal("15.7563")],
         )
         self._literal_round_trip(
             Numeric(precision=8, scale=4),
@@ -1098,7 +1103,9 @@ class NumericTest(_NumericTest):
         Overriding the test to avoid the same failure.
         """
         self._literal_round_trip(
-            Numeric(precision=8, scale=4, asdecimal=False), [15.7563], [15.7563],
+            Numeric(precision=8, scale=4, asdecimal=False),
+            [15.7563],
+            [15.7563],
         )
         self._literal_round_trip(
             Numeric(precision=8, scale=4, asdecimal=False),
@@ -1193,7 +1200,9 @@ class NumericTest(_NumericTest):
         Overriding the test to avoid the same failure.
         """
         self._do_test(
-            Float(precision=8, asdecimal=True), [15.7563], [decimal.Decimal("15.7563")],
+            Float(precision=8, asdecimal=True),
+            [15.7563],
+            [decimal.Decimal("15.7563")],
         )
 
         self._do_test(
@@ -1742,7 +1751,9 @@ class ComputedReflectionFixtureTest(_ComputedReflectionFixtureTest):
         if testing.requires.computed_columns_stored.enabled:
             t.append_column(
                 Column(
-                    "computed_stored", Integer, Computed("normal - 42", persisted=True),
+                    "computed_stored",
+                    Integer,
+                    Computed("normal - 42", persisted=True),
                 )
             )
             if testing.requires.schemas.enabled:
