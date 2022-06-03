@@ -25,7 +25,7 @@
 
 * Add Cloud_Resource Connection Support ([#181](https://github.com/googleapis/python-bigquery-connection/issues/181)) ([1be012a](https://github.com/googleapis/python-bigquery-connection/commit/1be012a7d7f585365cfd6c1e499188784838965a))
 
-### [1.3.4](https://github.com/googleapis/python-bigquery-connection/compare/v1.3.3...v1.3.4) (2022-03-05)
+## [1.3.4](https://github.com/googleapis/python-bigquery-connection/compare/v1.3.3...v1.3.4) (2022-03-05)
 
 
 ### Bug Fixes
@@ -33,7 +33,7 @@
 * **deps:** require google-api-core>=1.31.5, >=2.3.2 ([#176](https://github.com/googleapis/python-bigquery-connection/issues/176)) ([a6cfa8f](https://github.com/googleapis/python-bigquery-connection/commit/a6cfa8f0c27ffa507305618d16a7ae5fb6fb15f9))
 * **deps:** require proto-plus>=1.15.0 ([a6cfa8f](https://github.com/googleapis/python-bigquery-connection/commit/a6cfa8f0c27ffa507305618d16a7ae5fb6fb15f9))
 
-### [1.3.3](https://github.com/googleapis/python-bigquery-connection/compare/v1.3.2...v1.3.3) (2022-02-26)
+## [1.3.3](https://github.com/googleapis/python-bigquery-connection/compare/v1.3.2...v1.3.3) (2022-02-26)
 
 
 ### Bug Fixes
@@ -45,14 +45,14 @@
 
 * add generated snippets ([#165](https://github.com/googleapis/python-bigquery-connection/issues/165)) ([53edc14](https://github.com/googleapis/python-bigquery-connection/commit/53edc14b8f976985549856ac0823565b88a1a4ee))
 
-### [1.3.2](https://www.github.com/googleapis/python-bigquery-connection/compare/v1.3.1...v1.3.2) (2022-01-08)
+## [1.3.2](https://www.github.com/googleapis/python-bigquery-connection/compare/v1.3.1...v1.3.2) (2022-01-08)
 
 
 ### Documentation
 
 * add python quickstart sample ([#141](https://www.github.com/googleapis/python-bigquery-connection/issues/141)) ([8b85fb6](https://www.github.com/googleapis/python-bigquery-connection/commit/8b85fb6784ba9bf51123e9185f276391326dd54a))
 
-### [1.3.1](https://www.github.com/googleapis/python-bigquery-connection/compare/v1.3.0...v1.3.1) (2021-11-02)
+## [1.3.1](https://www.github.com/googleapis/python-bigquery-connection/compare/v1.3.0...v1.3.1) (2021-11-02)
 
 
 ### Bug Fixes
@@ -72,7 +72,7 @@
 
 * add context manager support in client ([#125](https://www.github.com/googleapis/python-bigquery-connection/issues/125)) ([bf9cc26](https://www.github.com/googleapis/python-bigquery-connection/commit/bf9cc268363a2a6e115b6af65ab6b50c05bbde28))
 
-### [1.2.3](https://www.github.com/googleapis/python-bigquery-connection/compare/v1.2.2...v1.2.3) (2021-10-05)
+## [1.2.3](https://www.github.com/googleapis/python-bigquery-connection/compare/v1.2.2...v1.2.3) (2021-10-05)
 
 
 ### Bug Fixes
@@ -80,7 +80,7 @@
 * add 'dict' annotation type to 'request' ([87b77ee](https://www.github.com/googleapis/python-bigquery-connection/commit/87b77ee76e3abcce5428230a6884c66843353440))
 * improper types in pagers generation ([47d1b68](https://www.github.com/googleapis/python-bigquery-connection/commit/47d1b68b74dda036b64979e4c7aab589046822ba))
 
-### [1.2.2](https://www.github.com/googleapis/python-bigquery-connection/compare/v1.2.1...v1.2.2) (2021-07-27)
+## [1.2.2](https://www.github.com/googleapis/python-bigquery-connection/compare/v1.2.1...v1.2.2) (2021-07-27)
 
 
 ### Bug Fixes
@@ -97,7 +97,7 @@
 
 * release as 1.2.2 ([#103](https://www.github.com/googleapis/python-bigquery-connection/issues/103)) ([2d6b168](https://www.github.com/googleapis/python-bigquery-connection/commit/2d6b168a7fce539383e72c9ea00d93fffe233607))
 
-### [1.2.1](https://www.github.com/googleapis/python-bigquery-connection/compare/v1.2.0...v1.2.1) (2021-07-20)
+## [1.2.1](https://www.github.com/googleapis/python-bigquery-connection/compare/v1.2.0...v1.2.1) (2021-07-20)
 
 
 ### Bug Fixes
@@ -111,7 +111,7 @@
 
 * add cloud spanner connection support ([#93](https://www.github.com/googleapis/python-bigquery-connection/issues/93)) ([3ae2369](https://www.github.com/googleapis/python-bigquery-connection/commit/3ae236928f0ac923367d5379daa59f366299397b))
 
-### [1.1.1](https://www.github.com/googleapis/python-bigquery-connection/compare/v1.1.0...v1.1.1) (2021-06-30)
+## [1.1.1](https://www.github.com/googleapis/python-bigquery-connection/compare/v1.1.0...v1.1.1) (2021-06-30)
 
 
 ### Bug Fixes
@@ -140,7 +140,7 @@
 * omit mention of Python 2.7 in 'CONTRIBUTING.rst' ([#1127](https://www.github.com/googleapis/python-bigquery-connection/issues/1127)) ([#85](https://www.github.com/googleapis/python-bigquery-connection/issues/85)) ([715e04b](https://www.github.com/googleapis/python-bigquery-connection/commit/715e04b77dc352b17e508288a7268c6c2ce46e10)), closes [#1126](https://www.github.com/googleapis/python-bigquery-connection/issues/1126)
 * Update the README to reflect that this library is GA ([#79](https://www.github.com/googleapis/python-bigquery-connection/issues/79)) ([f737861](https://www.github.com/googleapis/python-bigquery-connection/commit/f7378614002697ed5c7dc9217fbe8b48ba7c7410))
 
-### [1.0.1](https://www.github.com/googleapis/python-bigquery-connection/compare/v1.0.0...v1.0.1) (2021-02-03)
+## [1.0.1](https://www.github.com/googleapis/python-bigquery-connection/compare/v1.0.0...v1.0.1) (2021-02-03)
 
 
 ### Bug Fixes
