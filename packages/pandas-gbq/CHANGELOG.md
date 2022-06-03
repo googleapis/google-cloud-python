@@ -1,13 +1,13 @@
 # Changelog
 
-### [0.17.5](https://github.com/googleapis/python-bigquery-pandas/compare/v0.17.4...v0.17.5) (2022-05-09)
+## [0.17.5](https://github.com/googleapis/python-bigquery-pandas/compare/v0.17.4...v0.17.5) (2022-05-09)
 
 
 ### Bug Fixes
 
 * **deps:** allow pyarrow v8 ([#525](https://github.com/googleapis/python-bigquery-pandas/issues/525)) ([a4ee0df](https://github.com/googleapis/python-bigquery-pandas/commit/a4ee0dffae0580a7509d5d6014edb46e05394717))
 
-### [0.17.4](https://github.com/googleapis/python-bigquery-pandas/compare/v0.17.3...v0.17.4) (2022-03-14)
+## [0.17.4](https://github.com/googleapis/python-bigquery-pandas/compare/v0.17.3...v0.17.4) (2022-03-14)
 
 
 ### Bug Fixes
@@ -15,7 +15,7 @@
 * avoid deprecated "out-of-band" authentication flow ([#500](https://github.com/googleapis/python-bigquery-pandas/issues/500)) ([4758e3a](https://github.com/googleapis/python-bigquery-pandas/commit/4758e3a9ccb82109aae65f76258b2910077e02dd))
 * correctly transform query job timeout configuration and exceptions ([#492](https://github.com/googleapis/python-bigquery-pandas/issues/492)) ([d8c3900](https://github.com/googleapis/python-bigquery-pandas/commit/d8c3900eda5aa2cb5b663b2be569d639f6a028a9))
 
-### [0.17.3](https://github.com/googleapis/python-bigquery-pandas/compare/v0.17.2...v0.17.3) (2022-03-05)
+## [0.17.3](https://github.com/googleapis/python-bigquery-pandas/compare/v0.17.2...v0.17.3) (2022-03-05)
 
 
 ### Bug Fixes
@@ -24,14 +24,14 @@
 * **deps:** require google-auth>=1.25.0 ([744a71c](https://github.com/googleapis/python-bigquery-pandas/commit/744a71c3d265d0e9a2ac25ca98dd0fa3ca68af6a))
 * **deps:** require proto-plus>=1.15.0 ([744a71c](https://github.com/googleapis/python-bigquery-pandas/commit/744a71c3d265d0e9a2ac25ca98dd0fa3ca68af6a))
 
-### [0.17.2](https://github.com/googleapis/python-bigquery-pandas/compare/v0.17.1...v0.17.2) (2022-03-02)
+## [0.17.2](https://github.com/googleapis/python-bigquery-pandas/compare/v0.17.1...v0.17.2) (2022-03-02)
 
 
 ### Dependencies
 
 * allow pyarrow 7.0 ([#487](https://github.com/googleapis/python-bigquery-pandas/issues/487)) ([39441b6](https://github.com/googleapis/python-bigquery-pandas/commit/39441b63fadd95810c535e7079d781e9eec72189))
 
-### [0.17.1](https://github.com/googleapis/python-bigquery-pandas/compare/v0.17.0...v0.17.1) (2022-02-24)
+## [0.17.1](https://github.com/googleapis/python-bigquery-pandas/compare/v0.17.0...v0.17.1) (2022-02-24)
 
 
 ### Bug Fixes
