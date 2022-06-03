@@ -7,14 +7,14 @@
 
 * Add Provider resources ([#109](https://github.com/googleapis/python-eventarc/issues/109)) ([11be2a5](https://github.com/googleapis/python-eventarc/commit/11be2a5ee982a01ee974cb19f8efc9aa8e90be93))
 
-### [1.4.2](https://github.com/googleapis/python-eventarc/compare/v1.4.1...v1.4.2) (2022-04-14)
+## [1.4.2](https://github.com/googleapis/python-eventarc/compare/v1.4.1...v1.4.2) (2022-04-14)
 
 
 ### Bug Fixes
 
 * fix type in docstring for map fields ([#97](https://github.com/googleapis/python-eventarc/issues/97)) ([2865664](https://github.com/googleapis/python-eventarc/commit/2865664e1cd4c75ee7ec9f3dbee78a7c1eb83d91))
 
-### [1.4.1](https://github.com/googleapis/python-eventarc/compare/v1.4.0...v1.4.1) (2022-03-05)
+## [1.4.1](https://github.com/googleapis/python-eventarc/compare/v1.4.0...v1.4.1) (2022-03-05)
 
 
 ### Bug Fixes
@@ -40,7 +40,7 @@
 
 * resolve DuplicateCredentialArgs error when using credentials_file ([6bffd75](https://github.com/googleapis/python-eventarc/commit/6bffd757478617fe6ffff905f42fc702a0cb1262))
 
-### [1.2.1](https://www.github.com/googleapis/python-eventarc/compare/v1.2.0...v1.2.1) (2021-11-01)
+## [1.2.1](https://www.github.com/googleapis/python-eventarc/compare/v1.2.0...v1.2.1) (2021-11-01)
 
 
 ### Bug Fixes
@@ -67,14 +67,14 @@
 
 * add context manager support in client ([#44](https://www.github.com/googleapis/python-eventarc/issues/44)) ([d732a44](https://www.github.com/googleapis/python-eventarc/commit/d732a44510336c7725809b797d082e4fc58c444c))
 
-### [1.0.2](https://www.github.com/googleapis/python-eventarc/compare/v1.0.1...v1.0.2) (2021-09-30)
+## [1.0.2](https://www.github.com/googleapis/python-eventarc/compare/v1.0.1...v1.0.2) (2021-09-30)
 
 
 ### Bug Fixes
 
 * improper types in pagers generation ([406ac83](https://www.github.com/googleapis/python-eventarc/commit/406ac83dc4f568500c87ce8ff7b6aa61000252b3))
 
-### [1.0.1](https://www.github.com/googleapis/python-eventarc/compare/v1.0.0...v1.0.1) (2021-09-24)
+## [1.0.1](https://www.github.com/googleapis/python-eventarc/compare/v1.0.0...v1.0.1) (2021-09-24)
 
 
 ### Bug Fixes
@@ -88,7 +88,7 @@
 
 * bump release level to production/stable ([#25](https://www.github.com/googleapis/python-eventarc/issues/25)) ([bf70c36](https://www.github.com/googleapis/python-eventarc/commit/bf70c364be632440d3af774e7ddbdf83661a9432))
 
-### [0.2.2](https://www.github.com/googleapis/python-eventarc/compare/v0.2.1...v0.2.2) (2021-07-30)
+## [0.2.2](https://www.github.com/googleapis/python-eventarc/compare/v0.2.1...v0.2.2) (2021-07-30)
 
 
 ### Features
@@ -105,7 +105,7 @@
 
 * release as 0.2.2 ([#22](https://www.github.com/googleapis/python-eventarc/issues/22)) ([0b26e99](https://www.github.com/googleapis/python-eventarc/commit/0b26e9953c2690f2c71d87681523afd6299af638))
 
-### [0.2.1](https://www.github.com/googleapis/python-eventarc/compare/v0.2.0...v0.2.1) (2021-07-21)
+## [0.2.1](https://www.github.com/googleapis/python-eventarc/compare/v0.2.0...v0.2.1) (2021-07-21)
 
 
 ### Bug Fixes
