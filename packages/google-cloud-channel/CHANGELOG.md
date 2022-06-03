@@ -8,7 +8,7 @@
 * Add API definitions for Cloud Channel Repricing APIs ([#169](https://github.com/googleapis/python-channel/issues/169)) ([18db43c](https://github.com/googleapis/python-channel/commit/18db43c21a935ab9bc52539edf8f97556aa05819))
 * Add filter in ListCustomersRequest ([#167](https://github.com/googleapis/python-channel/issues/167)) ([2a88151](https://github.com/googleapis/python-channel/commit/2a881514bb8ecfbcbdec9dac15663f4caa00bd00))
 
-### [1.7.1](https://github.com/googleapis/python-channel/compare/v1.7.0...v1.7.1) (2022-03-05)
+## [1.7.1](https://github.com/googleapis/python-channel/compare/v1.7.0...v1.7.1) (2022-03-05)
 
 
 ### Bug Fixes
@@ -34,21 +34,21 @@
 * clarify language for provisioning_id ([#140](https://github.com/googleapis/python-channel/issues/140)) ([a925354](https://github.com/googleapis/python-channel/commit/a925354a36a6587219a6525da100afbd36f48a68))
 * Update description for ProvisionedService.provisioning_id ([#137](https://github.com/googleapis/python-channel/issues/137)) ([9b24071](https://github.com/googleapis/python-channel/commit/9b24071c8701355bf29916c0a35cc1d8f067d12e))
 
-### [1.6.3](https://www.github.com/googleapis/python-channel/compare/v1.6.2...v1.6.3) (2021-11-13)
+## [1.6.3](https://www.github.com/googleapis/python-channel/compare/v1.6.2...v1.6.3) (2021-11-13)
 
 
 ### Documentation
 
 * clarify entitlement parameter `assigned_units` ([#122](https://www.github.com/googleapis/python-channel/issues/122)) ([7bb783e](https://www.github.com/googleapis/python-channel/commit/7bb783ef1ba20506f35fed649a079a7b153eddb4))
 
-### [1.6.2](https://www.github.com/googleapis/python-channel/compare/v1.6.1...v1.6.2) (2021-11-04)
+## [1.6.2](https://www.github.com/googleapis/python-channel/compare/v1.6.1...v1.6.2) (2021-11-04)
 
 
 ### Documentation
 
 * clarified usage of entitlement parameters ([#116](https://www.github.com/googleapis/python-channel/issues/116)) ([20fb1ff](https://www.github.com/googleapis/python-channel/commit/20fb1ffdf922875d420266c9a761c184fe19d671))
 
-### [1.6.1](https://www.github.com/googleapis/python-channel/compare/v1.6.0...v1.6.1) (2021-11-01)
+## [1.6.1](https://www.github.com/googleapis/python-channel/compare/v1.6.0...v1.6.1) (2021-11-01)
 
 
 ### Bug Fixes
@@ -82,14 +82,14 @@
 
 * add context manager support in client ([#102](https://www.github.com/googleapis/python-channel/issues/102)) ([acf8bb2](https://www.github.com/googleapis/python-channel/commit/acf8bb2ce65cf64a9bee20362b49c207f17ffe91))
 
-### [1.3.2](https://www.github.com/googleapis/python-channel/compare/v1.3.1...v1.3.2) (2021-09-30)
+## [1.3.2](https://www.github.com/googleapis/python-channel/compare/v1.3.1...v1.3.2) (2021-09-30)
 
 
 ### Bug Fixes
 
 * improper types in pagers generation ([dae83af](https://www.github.com/googleapis/python-channel/commit/dae83af170d1d5734ba3b1b72ffc9710adfd2a67))
 
-### [1.3.1](https://www.github.com/googleapis/python-channel/compare/v1.3.0...v1.3.1) (2021-09-24)
+## [1.3.1](https://www.github.com/googleapis/python-channel/compare/v1.3.0...v1.3.1) (2021-09-24)
 
 
 ### Bug Fixes
@@ -103,14 +103,14 @@
 
 * add ImportCustomer ([#90](https://www.github.com/googleapis/python-channel/issues/90)) ([2bb2d89](https://www.github.com/googleapis/python-channel/commit/2bb2d8987da8a6138bef45c5fd278cb25235cfa7))
 
-### [1.2.3](https://www.github.com/googleapis/python-channel/compare/v1.2.2...v1.2.3) (2021-08-31)
+## [1.2.3](https://www.github.com/googleapis/python-channel/compare/v1.2.2...v1.2.3) (2021-08-31)
 
 
 ### Bug Fixes
 
 * disable self signed jwt if users provide their own credential ([#86](https://www.github.com/googleapis/python-channel/issues/86)) ([d7c07f8](https://www.github.com/googleapis/python-channel/commit/d7c07f8d579ce55ea86520e6a7b7a268befae92d))
 
-### [1.2.2](https://www.github.com/googleapis/python-channel/compare/v1.2.1...v1.2.2) (2021-07-27)
+## [1.2.2](https://www.github.com/googleapis/python-channel/compare/v1.2.1...v1.2.2) (2021-07-27)
 
 
 ### Bug Fixes
@@ -127,7 +127,7 @@
 
 * release as 1.2.2 ([#77](https://www.github.com/googleapis/python-channel/issues/77)) ([2e950a4](https://www.github.com/googleapis/python-channel/commit/2e950a41e5099facad90b884fe24f43e00b59255))
 
-### [1.2.1](https://www.github.com/googleapis/python-channel/compare/v1.2.0...v1.2.1) (2021-07-20)
+## [1.2.1](https://www.github.com/googleapis/python-channel/compare/v1.2.0...v1.2.1) (2021-07-20)
 
 
 ### Bug Fixes
@@ -152,7 +152,7 @@
 
 * omit mention of Python 2.7 in 'CONTRIBUTING.rst' ([#1127](https://www.github.com/googleapis/python-channel/issues/1127)) ([#59](https://www.github.com/googleapis/python-channel/issues/59)) ([f358de3](https://www.github.com/googleapis/python-channel/commit/f358de3eb94fc9c870a899e3d94d93c5f14b5b0d)), closes [#1126](https://www.github.com/googleapis/python-channel/issues/1126)
 
-### [1.1.1](https://www.github.com/googleapis/python-channel/compare/v1.1.0...v1.1.1) (2021-06-16)
+## [1.1.1](https://www.github.com/googleapis/python-channel/compare/v1.1.0...v1.1.1) (2021-06-16)
 
 
 ### Bug Fixes
@@ -195,7 +195,7 @@
 * add async client to %name_%version/init.py ([c218e2e](https://www.github.com/googleapis/python-channel/commit/c218e2efeef2f2e4cf1646644a8d4c38be021bdf))
 * **deps:** add packaging requirement ([#43](https://www.github.com/googleapis/python-channel/issues/43)) ([e368062](https://www.github.com/googleapis/python-channel/commit/e36806211b8b3392811eb5ee1047517f840265c7))
 
-### [0.2.1](https://www.github.com/googleapis/python-channel/compare/v0.2.0...v0.2.1) (2021-04-07)
+## [0.2.1](https://www.github.com/googleapis/python-channel/compare/v0.2.0...v0.2.1) (2021-04-07)
 
 
 ### Bug Fixes
