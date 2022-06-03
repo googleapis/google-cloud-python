@@ -1,6 +1,6 @@
 # Changelog
 
-### [1.3.1](https://github.com/googleapis/python-notebooks/compare/v1.3.0...v1.3.1) (2022-05-05)
+## [1.3.1](https://github.com/googleapis/python-notebooks/compare/v1.3.0...v1.3.1) (2022-05-05)
 
 
 ### Documentation
@@ -14,7 +14,7 @@
 
 * Update Notebooks API for clients libraries ([#154](https://github.com/googleapis/python-notebooks/issues/154)) ([c4a526e](https://github.com/googleapis/python-notebooks/commit/c4a526ed474983b1b18041414a3dc87217ea27aa))
 
-### [1.2.1](https://github.com/googleapis/python-notebooks/compare/v1.2.0...v1.2.1) (2022-03-05)
+## [1.2.1](https://github.com/googleapis/python-notebooks/compare/v1.2.0...v1.2.1) (2022-03-05)
 
 
 ### Bug Fixes
@@ -39,7 +39,7 @@
 
 * add generated snippets ([#130](https://github.com/googleapis/python-notebooks/issues/130)) ([dd62813](https://github.com/googleapis/python-notebooks/commit/dd628139a7ec75537342c289d571cacbbba58492))
 
-### [1.1.1](https://www.github.com/googleapis/python-notebooks/compare/v1.1.0...v1.1.1) (2021-11-01)
+## [1.1.1](https://www.github.com/googleapis/python-notebooks/compare/v1.1.0...v1.1.1) (2021-11-01)
 
 
 ### Bug Fixes
@@ -72,21 +72,21 @@
 * add context manager support in client ([#99](https://www.github.com/googleapis/python-notebooks/issues/99)) ([22efa38](https://www.github.com/googleapis/python-notebooks/commit/22efa38a5e9be1e1137a68329fa947e8a116753c))
 * bump release level to production/stable ([#96](https://www.github.com/googleapis/python-notebooks/issues/96)) ([92d6b71](https://www.github.com/googleapis/python-notebooks/commit/92d6b71d5954ca7fab6a4e2a1deaa95c85032e12))
 
-### [0.4.3](https://www.github.com/googleapis/python-notebooks/compare/v0.4.2...v0.4.3) (2021-10-05)
+## [0.4.3](https://www.github.com/googleapis/python-notebooks/compare/v0.4.2...v0.4.3) (2021-10-05)
 
 
 ### Documentation
 
 * Fix broken links and formatting in the reference documentation ([#93](https://www.github.com/googleapis/python-notebooks/issues/93)) ([f122cb0](https://www.github.com/googleapis/python-notebooks/commit/f122cb0d638579ebba3b54705f27942660704048))
 
-### [0.4.2](https://www.github.com/googleapis/python-notebooks/compare/v0.4.1...v0.4.2) (2021-09-30)
+## [0.4.2](https://www.github.com/googleapis/python-notebooks/compare/v0.4.1...v0.4.2) (2021-09-30)
 
 
 ### Bug Fixes
 
 * improper types in pagers generation ([88bbf8f](https://www.github.com/googleapis/python-notebooks/commit/88bbf8f238ad58fa69bf21fa8ecfa48db32b086b))
 
-### [0.4.1](https://www.github.com/googleapis/python-notebooks/compare/v0.4.0...v0.4.1) (2021-09-24)
+## [0.4.1](https://www.github.com/googleapis/python-notebooks/compare/v0.4.0...v0.4.1) (2021-09-24)
 
 
 ### Bug Fixes
@@ -101,7 +101,7 @@
 * add Notebooks v1 ([#76](https://www.github.com/googleapis/python-notebooks/issues/76)) ([bc92c07](https://www.github.com/googleapis/python-notebooks/commit/bc92c075369bc93f0b15bd6afa0cc00b8eb9cc77))
 * set the default import to notebooks_v1 ([bc92c07](https://www.github.com/googleapis/python-notebooks/commit/bc92c075369bc93f0b15bd6afa0cc00b8eb9cc77))
 
-### [0.3.2](https://www.github.com/googleapis/python-notebooks/compare/v0.3.1...v0.3.2) (2021-07-28)
+## [0.3.2](https://www.github.com/googleapis/python-notebooks/compare/v0.3.1...v0.3.2) (2021-07-28)
 
 
 ### Bug Fixes
@@ -118,7 +118,7 @@
 
 * release as 0.3.2 ([#69](https://www.github.com/googleapis/python-notebooks/issues/69)) ([e3eb4df](https://www.github.com/googleapis/python-notebooks/commit/e3eb4df74a19b88f4f60fab87b9d85349f025ce0))
 
-### [0.3.1](https://www.github.com/googleapis/python-notebooks/compare/v0.3.0...v0.3.1) (2021-07-20)
+## [0.3.1](https://www.github.com/googleapis/python-notebooks/compare/v0.3.0...v0.3.1) (2021-07-20)
 
 
 ### Bug Fixes
@@ -156,14 +156,14 @@
 * add async client to %name_%version/init.py ([7a84b3b](https://www.github.com/googleapis/python-notebooks/commit/7a84b3b9b8c206a0dc33ccc09821ffa8ee8c3ddd))
 * **deps:** add packaging requirement ([#45](https://www.github.com/googleapis/python-notebooks/issues/45)) ([9790dc9](https://www.github.com/googleapis/python-notebooks/commit/9790dc9da532ec396a8d81e3946da53cf243c066))
 
-### [0.1.2](https://www.github.com/googleapis/python-notebooks/compare/v0.1.1...v0.1.2) (2021-02-08)
+## [0.1.2](https://www.github.com/googleapis/python-notebooks/compare/v0.1.1...v0.1.2) (2021-02-08)
 
 
 ### Bug Fixes
 
 * remove gRPC send/recv limit ([#12](https://www.github.com/googleapis/python-notebooks/issues/12)) ([8faa7fc](https://www.github.com/googleapis/python-notebooks/commit/8faa7fc87f62590b5c4119dc63d08347ed8eb901))
 
-### [0.1.1](https://www.github.com/googleapis/python-notebooks/compare/v0.1.0...v0.1.1) (2020-08-06)
+## [0.1.1](https://www.github.com/googleapis/python-notebooks/compare/v0.1.0...v0.1.1) (2020-08-06)
 
 
 ### Bug Fixes
