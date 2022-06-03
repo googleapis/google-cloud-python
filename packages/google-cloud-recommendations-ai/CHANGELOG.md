@@ -1,6 +1,6 @@
 # Changelog
 
-### [0.6.1](https://github.com/googleapis/python-recommendations-ai/compare/v0.6.0...v0.6.1) (2022-03-05)
+## [0.6.1](https://github.com/googleapis/python-recommendations-ai/compare/v0.6.0...v0.6.1) (2022-03-05)
 
 
 ### Bug Fixes
@@ -24,7 +24,7 @@
 
 * add generated snippets ([#122](https://github.com/googleapis/python-recommendations-ai/issues/122)) ([eebbeb6](https://github.com/googleapis/python-recommendations-ai/commit/eebbeb618b6dc62a1103cb6b3cbc9df65630fff3))
 
-### [0.5.1](https://www.github.com/googleapis/python-recommendations-ai/compare/v0.5.0...v0.5.1) (2021-11-01)
+## [0.5.1](https://www.github.com/googleapis/python-recommendations-ai/compare/v0.5.0...v0.5.1) (2021-11-01)
 
 
 ### Bug Fixes
@@ -61,14 +61,14 @@
 
 * improper types in pagers generation ([2d73287](https://www.github.com/googleapis/python-recommendations-ai/commit/2d732875566d49e9eed8702a40120c427222d529))
 
-### [0.3.3](https://www.github.com/googleapis/python-recommendations-ai/compare/v0.3.2...v0.3.3) (2021-09-24)
+## [0.3.3](https://www.github.com/googleapis/python-recommendations-ai/compare/v0.3.2...v0.3.3) (2021-09-24)
 
 
 ### Bug Fixes
 
 * add 'dict' annotation type to 'request' ([ff8c418](https://www.github.com/googleapis/python-recommendations-ai/commit/ff8c4189e70770b83b84eb0d6cf886104d62d36a))
 
-### [0.3.2](https://www.github.com/googleapis/python-recommendations-ai/compare/v0.3.1...v0.3.2) (2021-07-28)
+## [0.3.2](https://www.github.com/googleapis/python-recommendations-ai/compare/v0.3.1...v0.3.2) (2021-07-28)
 
 
 ### Bug Fixes
@@ -85,7 +85,7 @@
 
 * release as 0.3.2 ([#73](https://www.github.com/googleapis/python-recommendations-ai/issues/73)) ([67460b7](https://www.github.com/googleapis/python-recommendations-ai/commit/67460b7c78ebbdbc0b3fd45623a8ff325f1bb86e))
 
-### [0.3.1](https://www.github.com/googleapis/python-recommendations-ai/compare/v0.3.0...v0.3.1) (2021-07-20)
+## [0.3.1](https://www.github.com/googleapis/python-recommendations-ai/compare/v0.3.0...v0.3.1) (2021-07-20)
 
 
 ### Bug Fixes
@@ -109,14 +109,14 @@
 
 * omit mention of Python 2.7 in 'CONTRIBUTING.rst' ([#1127](https://www.github.com/googleapis/python-recommendations-ai/issues/1127)) ([#55](https://www.github.com/googleapis/python-recommendations-ai/issues/55)) ([47faef8](https://www.github.com/googleapis/python-recommendations-ai/commit/47faef890d8356ce60da06925b92a50f23a34e20)), closes [#1126](https://www.github.com/googleapis/python-recommendations-ai/issues/1126)
 
-### [0.2.2](https://www.github.com/googleapis/python-recommendations-ai/compare/v0.2.1...v0.2.2) (2021-06-16)
+## [0.2.2](https://www.github.com/googleapis/python-recommendations-ai/compare/v0.2.1...v0.2.2) (2021-06-16)
 
 
 ### Bug Fixes
 
 * exclude docs and tests from package ([#52](https://www.github.com/googleapis/python-recommendations-ai/issues/52)) ([5d4926d](https://www.github.com/googleapis/python-recommendations-ai/commit/5d4926d7220f924ba296098e102d8c64b010ad36))
 
-### [0.2.1](https://www.github.com/googleapis/python-recommendations-ai/compare/v0.2.0...v0.2.1) (2021-05-28)
+## [0.2.1](https://www.github.com/googleapis/python-recommendations-ai/compare/v0.2.0...v0.2.1) (2021-05-28)
 
 
 ### Bug Fixes
