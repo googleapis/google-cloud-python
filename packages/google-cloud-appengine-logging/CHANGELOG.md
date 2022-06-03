@@ -1,6 +1,6 @@
 # Changelog
 
-### [1.1.1](https://github.com/googleapis/python-appengine-logging/compare/v1.1.0...v1.1.1) (2022-03-05)
+## [1.1.1](https://github.com/googleapis/python-appengine-logging/compare/v1.1.0...v1.1.1) (2022-03-05)
 
 
 ### Bug Fixes
@@ -28,14 +28,14 @@
 
 * add context manager support in client ([#44](https://www.github.com/googleapis/python-appengine-logging/issues/44)) ([9d23c02](https://www.github.com/googleapis/python-appengine-logging/commit/9d23c02d043cf4c569e445eb13db5f78207fbaa7))
 
-### [0.1.5](https://www.github.com/googleapis/python-appengine-logging/compare/v0.1.4...v0.1.5) (2021-09-24)
+## [0.1.5](https://www.github.com/googleapis/python-appengine-logging/compare/v0.1.4...v0.1.5) (2021-09-24)
 
 
 ### Bug Fixes
 
 * add 'dict' annotation type to 'request' ([35fa951](https://www.github.com/googleapis/python-appengine-logging/commit/35fa951f775931caefacf0b7dadd37610aad9354))
 
-### [0.1.4](https://www.github.com/googleapis/python-appengine-logging/compare/v0.1.3...v0.1.4) (2021-07-29)
+## [0.1.4](https://www.github.com/googleapis/python-appengine-logging/compare/v0.1.3...v0.1.4) (2021-07-29)
 
 
 ### Documentation
@@ -47,21 +47,21 @@
 
 * release as 0.1.4 ([#24](https://www.github.com/googleapis/python-appengine-logging/issues/24)) ([5aa924e](https://www.github.com/googleapis/python-appengine-logging/commit/5aa924e0a24a94cf259168cc1dd5aa65dc0f40a9))
 
-### [0.1.3](https://www.github.com/googleapis/python-appengine-logging/compare/v0.1.2...v0.1.3) (2021-07-21)
+## [0.1.3](https://www.github.com/googleapis/python-appengine-logging/compare/v0.1.2...v0.1.3) (2021-07-21)
 
 
 ### Bug Fixes
 
 * **deps:** pin 'google-{api,cloud}-core', 'google-auth' to allow 2.x versions ([#18](https://www.github.com/googleapis/python-appengine-logging/issues/18)) ([6f49270](https://www.github.com/googleapis/python-appengine-logging/commit/6f492709a55926c7b993da7bb26469fc0bf79128))
 
-### [0.1.2](https://www.github.com/googleapis/python-appengine-logging/compare/v0.1.1...v0.1.2) (2021-07-14)
+## [0.1.2](https://www.github.com/googleapis/python-appengine-logging/compare/v0.1.1...v0.1.2) (2021-07-14)
 
 
 ### Documentation
 
 * omit mention of Python 2.7 in 'CONTRIBUTING.rst' ([#1127](https://www.github.com/googleapis/python-appengine-logging/issues/1127)) ([#8](https://www.github.com/googleapis/python-appengine-logging/issues/8)) ([f1bd0a3](https://www.github.com/googleapis/python-appengine-logging/commit/f1bd0a3d2d068fae0c6d9c167a25908b6f808997)), closes [#1126](https://www.github.com/googleapis/python-appengine-logging/issues/1126)
 
-### [0.1.1](https://www.github.com/googleapis/python-appengine-logging/compare/v0.1.0...v0.1.1) (2021-06-16)
+## [0.1.1](https://www.github.com/googleapis/python-appengine-logging/compare/v0.1.0...v0.1.1) (2021-06-16)
 
 
 ### Bug Fixes
