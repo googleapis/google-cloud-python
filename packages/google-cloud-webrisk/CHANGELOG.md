@@ -3,7 +3,7 @@
 [PyPI History][1]
 
 [1]: https://pypi.org/project/google-cloud-webrisk/#history
-### [1.7.1](https://github.com/googleapis/python-webrisk/compare/v1.7.0...v1.7.1) (2022-03-05)
+## [1.7.1](https://github.com/googleapis/python-webrisk/compare/v1.7.0...v1.7.1) (2022-03-05)
 
 
 ### Bug Fixes
@@ -28,7 +28,7 @@
 
 * add generated snippets ([#161](https://github.com/googleapis/python-webrisk/issues/161)) ([101d3fd](https://github.com/googleapis/python-webrisk/commit/101d3fdeb735aecc4aa6a21502ede35ee4b2d3f2))
 
-### [1.6.1](https://www.github.com/googleapis/python-webrisk/compare/v1.6.0...v1.6.1) (2021-11-01)
+## [1.6.1](https://www.github.com/googleapis/python-webrisk/compare/v1.6.0...v1.6.1) (2021-11-01)
 
 
 ### Bug Fixes
@@ -55,14 +55,14 @@
 
 * add context manager support in client ([#129](https://www.github.com/googleapis/python-webrisk/issues/129)) ([7b5d09e](https://www.github.com/googleapis/python-webrisk/commit/7b5d09e313bc8bbd252ff0af1aa9a0d0114227e4))
 
-### [1.4.3](https://www.github.com/googleapis/python-webrisk/compare/v1.4.2...v1.4.3) (2021-09-24)
+## [1.4.3](https://www.github.com/googleapis/python-webrisk/compare/v1.4.2...v1.4.3) (2021-09-24)
 
 
 ### Bug Fixes
 
 * add 'dict' annotation type to 'request' ([0c271c0](https://www.github.com/googleapis/python-webrisk/commit/0c271c073004b927c65160b3c474e9c6e24c7895))
 
-### [1.4.2](https://www.github.com/googleapis/python-webrisk/compare/v1.4.1...v1.4.2) (2021-07-29)
+## [1.4.2](https://www.github.com/googleapis/python-webrisk/compare/v1.4.1...v1.4.2) (2021-07-29)
 
 
 ### Bug Fixes
@@ -79,7 +79,7 @@
 
 * release as 1.4.2 ([#110](https://www.github.com/googleapis/python-webrisk/issues/110)) ([b87730f](https://www.github.com/googleapis/python-webrisk/commit/b87730ff5927bdab57b877e923a9dd57b1b64e67))
 
-### [1.4.1](https://www.github.com/googleapis/python-webrisk/compare/v1.4.0...v1.4.1) (2021-07-20)
+## [1.4.1](https://www.github.com/googleapis/python-webrisk/compare/v1.4.0...v1.4.1) (2021-07-20)
 
 
 ### Bug Fixes
@@ -129,7 +129,7 @@
 
 * add common resource helpers; expose client transport; remove gRPC send/recv limits ([#40](https://www.github.com/googleapis/python-webrisk/issues/40)) ([3f09199](https://www.github.com/googleapis/python-webrisk/commit/3f09199d2a9aa40a74dc7f83ac3d4b27bb4e3791))
 
-### [1.0.1](https://www.github.com/googleapis/python-webrisk/compare/v1.0.0...v1.0.1) (2020-07-15)
+## [1.0.1](https://www.github.com/googleapis/python-webrisk/compare/v1.0.0...v1.0.1) (2020-07-15)
 
 
 ### Bug Fixes
