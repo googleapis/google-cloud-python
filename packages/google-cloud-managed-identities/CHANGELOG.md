@@ -1,6 +1,6 @@
 # Changelog
 
-### [1.4.1](https://github.com/googleapis/python-managed-identities/compare/v1.4.0...v1.4.1) (2022-03-05)
+## [1.4.1](https://github.com/googleapis/python-managed-identities/compare/v1.4.0...v1.4.1) (2022-03-05)
 
 
 ### Bug Fixes
@@ -21,7 +21,7 @@
 * **deps:** remove unused dependency libcst ([#109](https://github.com/googleapis/python-managed-identities/issues/109)) ([8d92706](https://github.com/googleapis/python-managed-identities/commit/8d9270668ae4f9ee090d84559e45f6ba4d1756eb))
 * resolve DuplicateCredentialArgs error when using credentials_file ([ed0bec5](https://github.com/googleapis/python-managed-identities/commit/ed0bec5588b9e0809d37e7902a375ce776ecdfc5))
 
-### [1.3.1](https://www.github.com/googleapis/python-managed-identities/compare/v1.3.0...v1.3.1) (2021-11-01)
+## [1.3.1](https://www.github.com/googleapis/python-managed-identities/compare/v1.3.0...v1.3.1) (2021-11-01)
 
 
 ### Bug Fixes
@@ -48,21 +48,21 @@
 
 * add context manager support in client ([#78](https://www.github.com/googleapis/python-managed-identities/issues/78)) ([9cad312](https://www.github.com/googleapis/python-managed-identities/commit/9cad312b3673009f8bcd6b51c8a24fe5dda468f0))
 
-### [1.1.3](https://www.github.com/googleapis/python-managed-identities/compare/v1.1.2...v1.1.3) (2021-09-30)
+## [1.1.3](https://www.github.com/googleapis/python-managed-identities/compare/v1.1.2...v1.1.3) (2021-09-30)
 
 
 ### Bug Fixes
 
 * improper types in pagers generation ([4d42021](https://www.github.com/googleapis/python-managed-identities/commit/4d4202106eb7ed5af809a96f823e4b8067709f6e))
 
-### [1.1.2](https://www.github.com/googleapis/python-managed-identities/compare/v1.1.1...v1.1.2) (2021-09-24)
+## [1.1.2](https://www.github.com/googleapis/python-managed-identities/compare/v1.1.1...v1.1.2) (2021-09-24)
 
 
 ### Bug Fixes
 
 * add 'dict' annotation type to 'request' ([9da978a](https://www.github.com/googleapis/python-managed-identities/commit/9da978af7a5e95cbc6edae861978ed492797a0c9))
 
-### [1.1.1](https://www.github.com/googleapis/python-managed-identities/compare/v1.1.0...v1.1.1) (2021-07-26)
+## [1.1.1](https://www.github.com/googleapis/python-managed-identities/compare/v1.1.0...v1.1.1) (2021-07-26)
 
 
 ### Bug Fixes
