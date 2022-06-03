@@ -12,7 +12,7 @@
 
 * **deps:** require grpc-google-iam-v1 >=0.12.4 ([784539c](https://github.com/googleapis/python-functions/commit/784539cbe13583722195f21780781c682ba8c7ac))
 
-### [1.5.2](https://github.com/googleapis/python-functions/compare/v1.5.1...v1.5.2) (2022-03-05)
+## [1.5.2](https://github.com/googleapis/python-functions/compare/v1.5.1...v1.5.2) (2022-03-05)
 
 
 ### Bug Fixes
@@ -20,7 +20,7 @@
 * **deps:** require google-api-core>=1.31.5, >=2.3.2 ([#157](https://github.com/googleapis/python-functions/issues/157)) ([68d56b4](https://github.com/googleapis/python-functions/commit/68d56b41fe472e30101030b8604d7c064acc33d6))
 * **deps:** require proto-plus>=1.15.0 ([68d56b4](https://github.com/googleapis/python-functions/commit/68d56b41fe472e30101030b8604d7c064acc33d6))
 
-### [1.5.1](https://github.com/googleapis/python-functions/compare/v1.5.0...v1.5.1) (2022-02-26)
+## [1.5.1](https://github.com/googleapis/python-functions/compare/v1.5.0...v1.5.1) (2022-02-26)
 
 
 ### Bug Fixes
@@ -42,7 +42,7 @@
 * CMEK integration fields 'kms_key_name' and 'docker_repository' added ([47c99d0](https://www.github.com/googleapis/python-functions/commit/47c99d0ea2e5e7d74d10976ea1ec7d8d399e06a4))
 * Secret Manager integration fields 'secret_environment_variables' and 'secret_volumes' added ([#130](https://www.github.com/googleapis/python-functions/issues/130)) ([47c99d0](https://www.github.com/googleapis/python-functions/commit/47c99d0ea2e5e7d74d10976ea1ec7d8d399e06a4))
 
-### [1.3.1](https://www.github.com/googleapis/python-functions/compare/v1.3.0...v1.3.1) (2021-11-01)
+## [1.3.1](https://www.github.com/googleapis/python-functions/compare/v1.3.0...v1.3.1) (2021-11-01)
 
 
 ### Bug Fixes
@@ -69,7 +69,7 @@
 
 * add context manager support in client ([#119](https://www.github.com/googleapis/python-functions/issues/119)) ([66772fa](https://www.github.com/googleapis/python-functions/commit/66772faffc88aeb6e84984f402902d51c2d786b2))
 
-### [1.1.1](https://www.github.com/googleapis/python-functions/compare/v1.1.0...v1.1.1) (2021-09-30)
+## [1.1.1](https://www.github.com/googleapis/python-functions/compare/v1.1.0...v1.1.1) (2021-09-30)
 
 
 ### Bug Fixes
@@ -83,21 +83,21 @@
 
 * add SecurityLevel option on HttpsTrigger ([#109](https://www.github.com/googleapis/python-functions/issues/109)) ([91aa229](https://www.github.com/googleapis/python-functions/commit/91aa229a10b7a6fcdfeb03b2566f4f5a2702636e))
 
-### [1.0.4](https://www.github.com/googleapis/python-functions/compare/v1.0.3...v1.0.4) (2021-08-30)
+## [1.0.4](https://www.github.com/googleapis/python-functions/compare/v1.0.3...v1.0.4) (2021-08-30)
 
 
 ### Documentation
 
 * minor formatting fixes to Cloud Functions reference docs ([#98](https://www.github.com/googleapis/python-functions/issues/98)) ([05f10cf](https://www.github.com/googleapis/python-functions/commit/05f10cfc3d735d04806a25630875c5ecb3bad65d))
 
-### [1.0.3](https://www.github.com/googleapis/python-functions/compare/v1.0.2...v1.0.3) (2021-08-07)
+## [1.0.3](https://www.github.com/googleapis/python-functions/compare/v1.0.2...v1.0.3) (2021-08-07)
 
 
 ### Bug Fixes
 
 * Updating behavior of source_upload_url during Get/List function calls ([#93](https://www.github.com/googleapis/python-functions/issues/93)) ([264984c](https://www.github.com/googleapis/python-functions/commit/264984cda2a6a1b75a4e5d78268b35d247ebdd99))
 
-### [1.0.2](https://www.github.com/googleapis/python-functions/compare/v1.0.1...v1.0.2) (2021-07-28)
+## [1.0.2](https://www.github.com/googleapis/python-functions/compare/v1.0.1...v1.0.2) (2021-07-28)
 
 
 ### Bug Fixes
@@ -114,7 +114,7 @@
 
 * release as 1.0.2 ([#91](https://www.github.com/googleapis/python-functions/issues/91)) ([a0f104c](https://www.github.com/googleapis/python-functions/commit/a0f104c51302a8065e35b3eff25b5031f5110162))
 
-### [1.0.1](https://www.github.com/googleapis/python-functions/compare/v1.0.0...v1.0.1) (2021-07-20)
+## [1.0.1](https://www.github.com/googleapis/python-functions/compare/v1.0.0...v1.0.1) (2021-07-20)
 
 
 ### Bug Fixes
@@ -145,7 +145,7 @@
 
 * omit mention of Python 2.7 in 'CONTRIBUTING.rst' ([#1127](https://www.github.com/googleapis/python-functions/issues/1127)) ([#72](https://www.github.com/googleapis/python-functions/issues/72)) ([ec7129a](https://www.github.com/googleapis/python-functions/commit/ec7129a4ce543a08db862f30bc67d394d5a7ef9c)), closes [#1126](https://www.github.com/googleapis/python-functions/issues/1126)
 
-### [0.6.1](https://www.github.com/googleapis/python-functions/compare/v0.6.0...v0.6.1) (2021-06-16)
+## [0.6.1](https://www.github.com/googleapis/python-functions/compare/v0.6.0...v0.6.1) (2021-06-16)
 
 
 ### Bug Fixes
@@ -166,7 +166,7 @@
 * **deps:** add packaging requirement ([#62](https://www.github.com/googleapis/python-functions/issues/62)) ([1384f55](https://www.github.com/googleapis/python-functions/commit/1384f55b4e35f6263d42639667c4a38ab1689b16))
 * use correct default retry and timeout ([#42](https://www.github.com/googleapis/python-functions/issues/42)) ([8c7db91](https://www.github.com/googleapis/python-functions/commit/8c7db919535193151ed52465a3038d3ac72d701e))
 
-### [0.5.1](https://www.github.com/googleapis/python-functions/compare/v0.5.0...v0.5.1) (2021-02-08)
+## [0.5.1](https://www.github.com/googleapis/python-functions/compare/v0.5.0...v0.5.1) (2021-02-08)
 
 
 ### Bug Fixes
