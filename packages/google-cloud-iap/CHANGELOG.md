@@ -14,7 +14,7 @@
 
 * **deps:** require grpc-google-iam-v1 >=0.12.4 ([49dc9c7](https://github.com/googleapis/python-iap/commit/49dc9c7162e956c684892bdf866f20b47e3b27d2))
 
-### [1.3.1](https://github.com/googleapis/python-iap/compare/v1.3.0...v1.3.1) (2022-03-05)
+## [1.3.1](https://github.com/googleapis/python-iap/compare/v1.3.0...v1.3.1) (2022-03-05)
 
 
 ### Bug Fixes
@@ -38,7 +38,7 @@
 
 * add generated snippets ([#62](https://github.com/googleapis/python-iap/issues/62)) ([27c14d2](https://github.com/googleapis/python-iap/commit/27c14d24ce50d6bb80f09218bcf0ebc1db9ceabd))
 
-### [1.2.1](https://www.github.com/googleapis/python-iap/compare/v1.2.0...v1.2.1) (2021-11-01)
+## [1.2.1](https://www.github.com/googleapis/python-iap/compare/v1.2.0...v1.2.1) (2021-11-01)
 
 
 ### Bug Fixes
@@ -65,14 +65,14 @@
 
 * add context manager support in client ([#34](https://www.github.com/googleapis/python-iap/issues/34)) ([a985591](https://www.github.com/googleapis/python-iap/commit/a985591b016e768a5a172ab5f8de873319b1e7e0))
 
-### [1.0.2](https://www.github.com/googleapis/python-iap/compare/v1.0.1...v1.0.2) (2021-10-05)
+## [1.0.2](https://www.github.com/googleapis/python-iap/compare/v1.0.1...v1.0.2) (2021-10-05)
 
 
 ### Bug Fixes
 
 * improper types in pagers generation ([242d445](https://www.github.com/googleapis/python-iap/commit/242d44516fe55141a26024653158ea94fa93e525))
 
-### [1.0.1](https://www.github.com/googleapis/python-iap/compare/v1.0.0...v1.0.1) (2021-09-24)
+## [1.0.1](https://www.github.com/googleapis/python-iap/compare/v1.0.0...v1.0.1) (2021-09-24)
 
 
 ### Bug Fixes
@@ -86,7 +86,7 @@
 
 * bump release level to production/stable ([#13](https://www.github.com/googleapis/python-iap/issues/13)) ([9d0a9f8](https://www.github.com/googleapis/python-iap/commit/9d0a9f84554b98fd2b1829532c9c13b16432b0af))
 
-### [0.1.2](https://www.github.com/googleapis/python-iap/compare/v0.1.1...v0.1.2) (2021-07-29)
+## [0.1.2](https://www.github.com/googleapis/python-iap/compare/v0.1.1...v0.1.2) (2021-07-29)
 
 
 ### Bug Fixes
@@ -103,7 +103,7 @@
 
 * release as 0.1.2 ([#10](https://www.github.com/googleapis/python-iap/issues/10)) ([4499ba5](https://www.github.com/googleapis/python-iap/commit/4499ba5ccd90edc882fbda73e4d792074ff44e6d))
 
-### [0.1.1](https://www.github.com/googleapis/python-iap/compare/v0.1.0...v0.1.1) (2021-07-21)
+## [0.1.1](https://www.github.com/googleapis/python-iap/compare/v0.1.0...v0.1.1) (2021-07-21)
 
 
 ### Bug Fixes
