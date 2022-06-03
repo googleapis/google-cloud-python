@@ -1,6 +1,6 @@
 # Changelog
 
-### [1.56.2](https://github.com/googleapis/python-api-common-protos/compare/v1.56.1...v1.56.2) (2022-05-26)
+## [1.56.2](https://github.com/googleapis/python-api-common-protos/compare/v1.56.1...v1.56.2) (2022-05-26)
 
 
 ### Bug Fixes
@@ -8,7 +8,7 @@
 * **deps:** require grpcio >= 1.0.0, <2.0.0dev ([4a402ce](https://github.com/googleapis/python-api-common-protos/commit/4a402ce798c8364679e69eefdaadcf61fc289308))
 * **deps:** require protobuf>= 3.15.0, <4.0.0dev ([#105](https://github.com/googleapis/python-api-common-protos/issues/105)) ([4a402ce](https://github.com/googleapis/python-api-common-protos/commit/4a402ce798c8364679e69eefdaadcf61fc289308))
 
-### [1.56.1](https://github.com/googleapis/python-api-common-protos/compare/v1.56.0...v1.56.1) (2022-05-05)
+## [1.56.1](https://github.com/googleapis/python-api-common-protos/compare/v1.56.0...v1.56.1) (2022-05-05)
 
 
 ### Bug Fixes
