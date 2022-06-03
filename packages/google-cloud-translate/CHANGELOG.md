@@ -4,14 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-translate/#history
 
-### [3.7.3](https://github.com/googleapis/python-translate/compare/v3.7.2...v3.7.3) (2022-05-19)
+## [3.7.3](https://github.com/googleapis/python-translate/compare/v3.7.2...v3.7.3) (2022-05-19)
 
 
 ### Documentation
 
 * fix type in docstring for map fields ([3b845d6](https://github.com/googleapis/python-translate/commit/3b845d68eddd852c2d65bb852de6c5c4b4d096ad))
 
-### [3.7.2](https://github.com/googleapis/python-translate/compare/v3.7.1...v3.7.2) (2022-03-05)
+## [3.7.2](https://github.com/googleapis/python-translate/compare/v3.7.1...v3.7.2) (2022-03-05)
 
 
 ### Bug Fixes
@@ -19,7 +19,7 @@
 * **deps:** require google-api-core>=1.31.5, >=2.3.2 ([#348](https://github.com/googleapis/python-translate/issues/348)) ([fe3ac1e](https://github.com/googleapis/python-translate/commit/fe3ac1e68cf50147fcb0aecf01aec17f5e598425))
 * **deps:** require proto-plus>=1.15.0 ([fe3ac1e](https://github.com/googleapis/python-translate/commit/fe3ac1e68cf50147fcb0aecf01aec17f5e598425))
 
-### [3.7.1](https://github.com/googleapis/python-translate/compare/v3.7.0...v3.7.1) (2022-02-26)
+## [3.7.1](https://github.com/googleapis/python-translate/compare/v3.7.0...v3.7.1) (2022-02-26)
 
 
 ### Documentation
@@ -39,7 +39,7 @@
 * 290 added a create glossary line before each call using bistro-glossary ([#302](https://github.com/googleapis/python-translate/issues/302)) ([742e414](https://github.com/googleapis/python-translate/commit/742e414ad8ac83e4116c67740a42e264a63e3287))
 * resolve DuplicateCredentialArgs error when using credentials_file ([26791c2](https://github.com/googleapis/python-translate/commit/26791c251e851f921d23316e6ca5adab648c63c0))
 
-### [3.6.1](https://www.github.com/googleapis/python-translate/compare/v3.6.0...v3.6.1) (2021-11-04)
+## [3.6.1](https://www.github.com/googleapis/python-translate/compare/v3.6.0...v3.6.1) (2021-11-04)
 
 
 ### Bug Fixes
@@ -77,7 +77,7 @@
 
 * [#254](https://www.github.com/googleapis/python-translate/issues/254) by increasing timeout, use backoff module instead of flaky ([#271](https://www.github.com/googleapis/python-translate/issues/271)) ([0cff0f2](https://www.github.com/googleapis/python-translate/commit/0cff0f2d6c1a6509f03e18a5a3dbd8377f864b27))
 
-### [3.4.1](https://www.github.com/googleapis/python-translate/compare/v3.4.0...v3.4.1) (2021-09-30)
+## [3.4.1](https://www.github.com/googleapis/python-translate/compare/v3.4.0...v3.4.1) (2021-09-30)
 
 
 ### Bug Fixes
@@ -98,7 +98,7 @@
 
 * add missing annotation for batch document translation ([#231](https://www.github.com/googleapis/python-translate/issues/231)) ([a1297ba](https://www.github.com/googleapis/python-translate/commit/a1297ba6079524f82588c3fe79ec3f5c433a7606))
 
-### [3.3.2](https://www.github.com/googleapis/python-translate/compare/v3.3.1...v3.3.2) (2021-07-29)
+## [3.3.2](https://www.github.com/googleapis/python-translate/compare/v3.3.1...v3.3.2) (2021-07-29)
 
 
 ### Bug Fixes
@@ -115,7 +115,7 @@
 
 * release as 3.3.2 ([#218](https://www.github.com/googleapis/python-translate/issues/218)) ([e14de99](https://www.github.com/googleapis/python-translate/commit/e14de99d9d3480274ba92ef36c93f0b626a2bd91))
 
-### [3.3.1](https://www.github.com/googleapis/python-translate/compare/v3.3.0...v3.3.1) (2021-07-21)
+## [3.3.1](https://www.github.com/googleapis/python-translate/compare/v3.3.0...v3.3.1) (2021-07-21)
 
 
 ### Bug Fixes
@@ -134,7 +134,7 @@
 
 * disable always_use_jwt_access ([#186](https://www.github.com/googleapis/python-translate/issues/186)) ([778878d](https://www.github.com/googleapis/python-translate/commit/778878d7aeb70a3da249c91b8a2bd36c675b1e4b))
 
-### [3.2.1](https://www.github.com/googleapis/python-translate/compare/v3.2.0...v3.2.1) (2021-06-21)
+## [3.2.1](https://www.github.com/googleapis/python-translate/compare/v3.2.0...v3.2.1) (2021-06-21)
 
 
 ### Documentation
@@ -174,14 +174,14 @@
 * moves region tags ([#103](https://www.github.com/googleapis/python-translate/issues/103)) ([e161eb5](https://www.github.com/googleapis/python-translate/commit/e161eb5e9cdc3124aa7efe2d535bae67812ae93c))
 * use correct retry deadlines ([a397eff](https://www.github.com/googleapis/python-translate/commit/a397effb87f74f579605bcf261bf2b00d5e9fa5b))
 
-### [3.0.2](https://www.github.com/googleapis/python-translate/compare/v3.0.1...v3.0.2) (2020-12-09)
+## [3.0.2](https://www.github.com/googleapis/python-translate/compare/v3.0.1...v3.0.2) (2020-12-09)
 
 
 ### Documentation
 
 * add w/ glossary and model ([1e030d4](https://www.github.com/googleapis/python-translate/commit/1e030d4557ee1f67bad5e5b4759d0200efd27afd))
 
-### [3.0.1](https://www.github.com/googleapis/python-translate/compare/v3.0.0...v3.0.1) (2020-08-08)
+## [3.0.1](https://www.github.com/googleapis/python-translate/compare/v3.0.0...v3.0.1) (2020-08-08)
 
 
 ### Bug Fixes
@@ -199,7 +199,7 @@
 
 * migrate API to microgenerator ([#31](https://www.github.com/googleapis/python-translate/issues/31)) ([1c5b6e8](https://www.github.com/googleapis/python-translate/commit/1c5b6e89a0a3b55c41c909e4ee27e0bd23e4b579))
 
-### [2.0.2](https://www.github.com/googleapis/python-translate/compare/v2.0.1...v2.0.2) (2020-08-03)
+## [2.0.2](https://www.github.com/googleapis/python-translate/compare/v2.0.1...v2.0.2) (2020-08-03)
 
 
 ### Bug Fixes
@@ -208,7 +208,7 @@
 * translate test [([#2671](https://www.github.com/googleapis/python-translate/issues/2671))](https://github.com/GoogleCloudPlatform/python-docs-samples/issues/2671) ([a3d9f80](https://www.github.com/googleapis/python-translate/commit/a3d9f804576caeb4fdcdbbd4479caeb926efd8d0))
 * update default retry config ([#15](https://www.github.com/googleapis/python-translate/issues/15)) ([dddf0bf](https://www.github.com/googleapis/python-translate/commit/dddf0bf33463968932031cc0be5bc8a0d4a96455))
 
-### [2.0.1](https://www.github.com/googleapis/python-translate/compare/v2.0.0...v2.0.1) (2020-01-31)
+## [2.0.1](https://www.github.com/googleapis/python-translate/compare/v2.0.0...v2.0.1) (2020-01-31)
 
 
 ### Bug Fixes
