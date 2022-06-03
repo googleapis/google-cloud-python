@@ -4,7 +4,7 @@
 
 [1]: https://pypi.org/project/google-cloud-dataproc/#history
 
-### [4.0.2](https://github.com/googleapis/python-dataproc/compare/v4.0.1...v4.0.2) (2022-04-06)
+## [4.0.2](https://github.com/googleapis/python-dataproc/compare/v4.0.1...v4.0.2) (2022-04-06)
 
 
 ### Bug Fixes
@@ -12,7 +12,7 @@
 * resource quotas ([#377](https://github.com/googleapis/python-dataproc/issues/377)) ([122c2f7](https://github.com/googleapis/python-dataproc/commit/122c2f77a93228dda409a8fad22465f2d28c5e0d))
 * updating submit_job_to_cluster.py ([#387](https://github.com/googleapis/python-dataproc/issues/387)) ([0719d2b](https://github.com/googleapis/python-dataproc/commit/0719d2b69661f9775c00a1fc0dade2e65b4e44e9))
 
-### [4.0.1](https://github.com/googleapis/python-dataproc/compare/v4.0.0...v4.0.1) (2022-03-05)
+## [4.0.1](https://github.com/googleapis/python-dataproc/compare/v4.0.0...v4.0.1) (2022-03-05)
 
 
 ### Bug Fixes
@@ -64,7 +64,7 @@
 * custom image containers for Spark batches ([f2e35d9](https://github.com/googleapis/python-dataproc/commit/f2e35d9735cbd0dd5a0e32d78631d70820380846))
 * local SSD NVME interface support for GCE clusters ([f2e35d9](https://github.com/googleapis/python-dataproc/commit/f2e35d9735cbd0dd5a0e32d78631d70820380846))
 
-### [3.1.1](https://www.github.com/googleapis/python-dataproc/compare/v3.1.0...v3.1.1) (2021-11-01)
+## [3.1.1](https://www.github.com/googleapis/python-dataproc/compare/v3.1.0...v3.1.1) (2021-11-01)
 
 
 ### Bug Fixes
@@ -160,7 +160,7 @@
 * fix sphinx identifiers ([6525f86](https://www.github.com/googleapis/python-dataproc/commit/6525f86b698242d77606cffb42713d18724a2526))
 * use correct retry deadlines ([#122](https://www.github.com/googleapis/python-dataproc/issues/122)) ([6525f86](https://www.github.com/googleapis/python-dataproc/commit/6525f86b698242d77606cffb42713d18724a2526))
 
-### [2.3.1](https://www.github.com/googleapis/python-dataproc/compare/v2.3.0...v2.3.1) (2021-03-27)
+## [2.3.1](https://www.github.com/googleapis/python-dataproc/compare/v2.3.0...v2.3.1) (2021-03-27)
 
 
 ### Bug Fixes
@@ -198,7 +198,7 @@
 
 * add `submit_job` samples  ([#88](https://www.github.com/googleapis/python-dataproc/issues/88)) ([e7379b5](https://www.github.com/googleapis/python-dataproc/commit/e7379b5ab45a0c1e5b6944330c3e8ae4faa115e8))
 
-### [2.0.1](https://www.github.com/googleapis/python-dataproc/compare/v2.0.0...v2.0.1) (2020-09-14)
+## [2.0.1](https://www.github.com/googleapis/python-dataproc/compare/v2.0.0...v2.0.1) (2020-09-14)
 
 
 ### Documentation
@@ -216,7 +216,7 @@
 
 * migrate to use microgen ([#71](https://www.github.com/googleapis/python-dataproc/issues/71)) ([108d6ff](https://www.github.com/googleapis/python-dataproc/commit/108d6ff91c6442e743cdf449790f981709305a09))
 
-### [1.1.1](https://www.github.com/googleapis/python-dataproc/compare/v1.1.0...v1.1.1) (2020-08-10)
+## [1.1.1](https://www.github.com/googleapis/python-dataproc/compare/v1.1.0...v1.1.1) (2020-08-10)
 
 
 ### Documentation
@@ -230,7 +230,7 @@
 
 * add support for temp_bucket, endpoint_config in clusters; add preemptibility for instance group configs ([#60](https://www.github.com/googleapis/python-dataproc/issues/60)) ([a80fc72](https://www.github.com/googleapis/python-dataproc/commit/a80fc727510c10c678caa125902c201c8280dcc1))
 
-### [1.0.1](https://www.github.com/googleapis/python-dataproc/compare/v1.0.0...v1.0.1) (2020-07-16)
+## [1.0.1](https://www.github.com/googleapis/python-dataproc/compare/v1.0.0...v1.0.1) (2020-07-16)
 
 
 ### Bug Fixes
@@ -244,7 +244,7 @@
 
 * release as production/stable ([#44](https://www.github.com/googleapis/python-dataproc/issues/44)) ([58f8c87](https://www.github.com/googleapis/python-dataproc/commit/58f8c87acc826e56b2e6271306c7a2078eed59ef))
 
-### [0.8.1](https://www.github.com/googleapis/python-dataproc/compare/v0.8.0...v0.8.1) (2020-06-05)
+## [0.8.1](https://www.github.com/googleapis/python-dataproc/compare/v0.8.0...v0.8.1) (2020-06-05)
 
 
 ### Bug Fixes
