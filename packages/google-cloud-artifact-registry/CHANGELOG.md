@@ -13,7 +13,7 @@
 
 * **deps:** require grpc-google-iam-v1 >=0.12.4 ([c22893b](https://github.com/googleapis/python-artifact-registry/commit/c22893b8e671fea8416ff1e6a4f23aa03e201e74))
 
-### [1.1.2](https://github.com/googleapis/python-artifact-registry/compare/v1.1.1...v1.1.2) (2022-03-05)
+## [1.1.2](https://github.com/googleapis/python-artifact-registry/compare/v1.1.1...v1.1.2) (2022-03-05)
 
 
 ### Bug Fixes
@@ -26,7 +26,7 @@
 
 * more details for ListFilesRequest parent field ([#133](https://github.com/googleapis/python-artifact-registry/issues/133)) ([f4ef78b](https://github.com/googleapis/python-artifact-registry/commit/f4ef78b6b108543bf07d8c564f4316a8314e8d54))
 
-### [1.1.1](https://github.com/googleapis/python-artifact-registry/compare/v1.1.0...v1.1.1) (2022-02-15)
+## [1.1.1](https://github.com/googleapis/python-artifact-registry/compare/v1.1.0...v1.1.1) (2022-02-15)
 
 
 ### Bug Fixes
@@ -55,14 +55,14 @@
 
 * mark a few resource name fields as required ([a86d4f1](https://github.com/googleapis/python-artifact-registry/commit/a86d4f143c401e20052182b7bba3b9178014dace))
 
-### [1.0.2](https://www.github.com/googleapis/python-artifact-registry/compare/v1.0.1...v1.0.2) (2022-01-07)
+## [1.0.2](https://www.github.com/googleapis/python-artifact-registry/compare/v1.0.1...v1.0.2) (2022-01-07)
 
 
 ### Bug Fixes
 
 * fix resource pattern ID segment name ([#107](https://www.github.com/googleapis/python-artifact-registry/issues/107)) ([254dc73](https://www.github.com/googleapis/python-artifact-registry/commit/254dc73dbbc52d41014e0d2db81f3cc6cd864058))
 
-### [1.0.1](https://www.github.com/googleapis/python-artifact-registry/compare/v1.0.0...v1.0.1) (2021-11-01)
+## [1.0.1](https://www.github.com/googleapis/python-artifact-registry/compare/v1.0.0...v1.0.1) (2021-11-01)
 
 
 ### Bug Fixes
@@ -95,7 +95,7 @@
 * add context manager support in client ([#88](https://www.github.com/googleapis/python-artifact-registry/issues/88)) ([0f631cc](https://www.github.com/googleapis/python-artifact-registry/commit/0f631cc8bd8ff0928d5403e756d2206f1842c35c))
 * add trove classifier for python 3.10 ([#91](https://www.github.com/googleapis/python-artifact-registry/issues/91)) ([e392f56](https://www.github.com/googleapis/python-artifact-registry/commit/e392f565e5e9252bff8a5f6ede67c11b25438cdd))
 
-### [0.4.1](https://www.github.com/googleapis/python-artifact-registry/compare/v0.4.0...v0.4.1) (2021-09-30)
+## [0.4.1](https://www.github.com/googleapis/python-artifact-registry/compare/v0.4.0...v0.4.1) (2021-09-30)
 
 
 ### Bug Fixes
@@ -115,7 +115,7 @@
 
 * add 'dict' annotation type to 'request' ([43413eb](https://www.github.com/googleapis/python-artifact-registry/commit/43413ebd0d6823233573ab88c0340e4165ee4487))
 
-### [0.3.3](https://www.github.com/googleapis/python-artifact-registry/compare/v0.3.2...v0.3.3) (2021-07-27)
+## [0.3.3](https://www.github.com/googleapis/python-artifact-registry/compare/v0.3.2...v0.3.3) (2021-07-27)
 
 
 ### Bug Fixes
@@ -132,14 +132,14 @@
 
 * release as 0.3.3 ([#60](https://www.github.com/googleapis/python-artifact-registry/issues/60)) ([b8d7865](https://www.github.com/googleapis/python-artifact-registry/commit/b8d78650cceae268f6616c4eefef3200c7477cc1))
 
-### [0.3.2](https://www.github.com/googleapis/python-artifact-registry/compare/v0.3.1...v0.3.2) (2021-07-20)
+## [0.3.2](https://www.github.com/googleapis/python-artifact-registry/compare/v0.3.1...v0.3.2) (2021-07-20)
 
 
 ### Bug Fixes
 
 * **deps:** pin 'google-{api,cloud}-core', 'google-auth' to allow 2.x versions ([#54](https://www.github.com/googleapis/python-artifact-registry/issues/54)) ([b171295](https://www.github.com/googleapis/python-artifact-registry/commit/b171295c19c0e29025aad08975ceb9a8c9aac66c))
 
-### [0.3.1](https://www.github.com/googleapis/python-artifact-registry/compare/v0.3.0...v0.3.1) (2021-06-30)
+## [0.3.1](https://www.github.com/googleapis/python-artifact-registry/compare/v0.3.0...v0.3.1) (2021-06-30)
 
 
 ### Bug Fixes
@@ -159,14 +159,14 @@
 
 * omit mention of Python 2.7 in 'CONTRIBUTING.rst' ([#1127](https://www.github.com/googleapis/python-artifact-registry/issues/1127)) ([#41](https://www.github.com/googleapis/python-artifact-registry/issues/41)) ([7ae05ed](https://www.github.com/googleapis/python-artifact-registry/commit/7ae05eddef4fce0f3f09774e835381f901a6a031)), closes [#1126](https://www.github.com/googleapis/python-artifact-registry/issues/1126)
 
-### [0.2.2](https://www.github.com/googleapis/python-artifact-registry/compare/v0.2.1...v0.2.2) (2021-06-16)
+## [0.2.2](https://www.github.com/googleapis/python-artifact-registry/compare/v0.2.1...v0.2.2) (2021-06-16)
 
 
 ### Bug Fixes
 
 * exclude docs and tests from package ([#38](https://www.github.com/googleapis/python-artifact-registry/issues/38)) ([345496f](https://www.github.com/googleapis/python-artifact-registry/commit/345496fbd96d4c780acdb2ee940e530e7d48ab6c))
 
-### [0.2.1](https://www.github.com/googleapis/python-artifact-registry/compare/v0.2.0...v0.2.1) (2021-06-01)
+## [0.2.1](https://www.github.com/googleapis/python-artifact-registry/compare/v0.2.0...v0.2.1) (2021-06-01)
 
 
 ### Bug Fixes
