@@ -6,5 +6,6 @@
 # Then this file should have google-cloud-foo==1.14.0
 google-api-core==1.31.5
 proto-plus==1.15.0
-googleapis-common-protos==1.56.0
+googleapis-common-protos==1.56.1
 grpc-google-iam-v1==0.12.4
+protobuf==3.19.0
