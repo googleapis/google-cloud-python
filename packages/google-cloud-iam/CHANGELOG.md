@@ -4,7 +4,7 @@
 
 [1]: https://pypi.org/project/google-cloud-iam/#history
 
-### [2.6.1](https://github.com/googleapis/python-iam/compare/v2.6.0...v2.6.1) (2022-03-05)
+## [2.6.1](https://github.com/googleapis/python-iam/compare/v2.6.0...v2.6.1) (2022-03-05)
 
 
 ### Bug Fixes
@@ -29,7 +29,7 @@
 
 * add generated snippets ([#152](https://github.com/googleapis/python-iam/issues/152)) ([a213fdc](https://github.com/googleapis/python-iam/commit/a213fdc92f4feb7777692ad918cb99acaf064b1a))
 
-### [2.5.1](https://www.github.com/googleapis/python-iam/compare/v2.5.0...v2.5.1) (2021-11-01)
+## [2.5.1](https://www.github.com/googleapis/python-iam/compare/v2.5.0...v2.5.1) (2021-11-01)
 
 
 ### Bug Fixes
@@ -56,14 +56,14 @@
 
 * add context manager support in client ([#125](https://www.github.com/googleapis/python-iam/issues/125)) ([070897f](https://www.github.com/googleapis/python-iam/commit/070897fd1656ec23bc7da85ef44781d7861f4559))
 
-### [2.3.2](https://www.github.com/googleapis/python-iam/compare/v2.3.1...v2.3.2) (2021-09-24)
+## [2.3.2](https://www.github.com/googleapis/python-iam/compare/v2.3.1...v2.3.2) (2021-09-24)
 
 
 ### Bug Fixes
 
 * add 'dict' annotation type to 'request' ([96b0b6a](https://www.github.com/googleapis/python-iam/commit/96b0b6ad8af89e0ab2803325f9ff595ce5e3b5b4))
 
-### [2.3.1](https://www.github.com/googleapis/python-iam/compare/v2.3.0...v2.3.1) (2021-07-26)
+## [2.3.1](https://www.github.com/googleapis/python-iam/compare/v2.3.0...v2.3.1) (2021-07-26)
 
 
 ### Bug Fixes
@@ -143,7 +143,7 @@
 
 * migrate to microgenerator ([#26](https://www.github.com/googleapis/python-iam/issues/26)) ([60e221b](https://www.github.com/googleapis/python-iam/commit/60e221b010c18f12b156c2e282edc647d178a0f2))
 
-### [1.0.1](https://www.github.com/googleapis/python-iam/compare/v1.0.0...v1.0.1) (2020-06-29)
+## [1.0.1](https://www.github.com/googleapis/python-iam/compare/v1.0.0...v1.0.1) (2020-06-29)
 
 
 ### Bug Fixes
