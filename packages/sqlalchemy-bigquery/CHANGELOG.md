@@ -14,14 +14,14 @@ Older versions of this project were distributed as [pybigquery][0].
 [2]: https://pypi.org/project/pybigquery/#history
 
 
-### [1.4.3](https://github.com/googleapis/python-bigquery-sqlalchemy/compare/v1.4.2...v1.4.3) (2022-03-22)
+## [1.4.3](https://github.com/googleapis/python-bigquery-sqlalchemy/compare/v1.4.2...v1.4.3) (2022-03-22)
 
 
 ### Bug Fixes
 
 * correct license text from Apache to MIT ([#436](https://github.com/googleapis/python-bigquery-sqlalchemy/issues/436)) ([dbf7501](https://github.com/googleapis/python-bigquery-sqlalchemy/commit/dbf7501c26157d3776f5a68254898758ee43a667))
 
-### [1.4.2](https://github.com/googleapis/python-bigquery-sqlalchemy/compare/v1.4.1...v1.4.2) (2022-03-22)
+## [1.4.2](https://github.com/googleapis/python-bigquery-sqlalchemy/compare/v1.4.1...v1.4.2) (2022-03-22)
 
 
 ### Bug Fixes
@@ -34,7 +34,7 @@ Older versions of this project were distributed as [pybigquery][0].
 
 * require google-cloud-bigquery-storage to avoid performance warning ([#414](https://github.com/googleapis/python-bigquery-sqlalchemy/issues/414)) ([ff3273f](https://github.com/googleapis/python-bigquery-sqlalchemy/commit/ff3273feacfa1f34bb9090f28f11c2ac470759fc))
 
-### [1.4.1](https://github.com/googleapis/python-bigquery-sqlalchemy/compare/v1.4.0...v1.4.1) (2022-03-07)
+## [1.4.1](https://github.com/googleapis/python-bigquery-sqlalchemy/compare/v1.4.0...v1.4.1) (2022-03-07)
 
 
 ### Bug Fixes
@@ -60,14 +60,14 @@ Older versions of this project were distributed as [pybigquery][0].
 
 * Enable support for 3.10 ([#381](https://www.github.com/googleapis/python-bigquery-sqlalchemy/issues/381)) ([4b3505b](https://www.github.com/googleapis/python-bigquery-sqlalchemy/commit/4b3505b3d3a4293ea127fc3c483e3e7de04fbd04))
 
-### [1.2.2](https://www.github.com/googleapis/python-bigquery-sqlalchemy/compare/v1.2.1...v1.2.2) (2021-10-29)
+## [1.2.2](https://www.github.com/googleapis/python-bigquery-sqlalchemy/compare/v1.2.1...v1.2.2) (2021-10-29)
 
 
 ### Bug Fixes
 
 * avoid aliasing known tables used in CTEs ([#369](https://www.github.com/googleapis/python-bigquery-sqlalchemy/issues/369)) ([4b05d21](https://www.github.com/googleapis/python-bigquery-sqlalchemy/commit/4b05d21b8dc89339a69df87183f8893bf02459c5))
 
-### [1.2.1](https://www.github.com/googleapis/python-bigquery-sqlalchemy/compare/v1.2.0...v1.2.1) (2021-10-27)
+## [1.2.1](https://www.github.com/googleapis/python-bigquery-sqlalchemy/compare/v1.2.0...v1.2.1) (2021-10-27)
 
 
 ### Bug Fixes
