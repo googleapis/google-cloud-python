@@ -15,3 +15,4 @@ branchProtectionRules:
     - 'Samples - Python 3.8'
     - 'Samples - Python 3.9'
     - 'Samples - Python 3.10'
+    - 'OwlBot Post Processor'
