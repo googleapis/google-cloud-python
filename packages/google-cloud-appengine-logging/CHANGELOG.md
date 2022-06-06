@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.1.2](https://github.com/googleapis/python-appengine-logging/compare/v1.1.1...v1.1.2) (2022-06-03)
+
+
+### Bug Fixes
+
+* **deps:** require protobuf <4.0.0dev ([#95](https://github.com/googleapis/python-appengine-logging/issues/95)) ([ad0bcd2](https://github.com/googleapis/python-appengine-logging/commit/ad0bcd219d1d5d976529d49ef8ade36fde7e32ce))
+
+
+### Documentation
+
+* fix changelog header to consistent size ([#96](https://github.com/googleapis/python-appengine-logging/issues/96)) ([4c01656](https://github.com/googleapis/python-appengine-logging/commit/4c016568df4a5abc145daae1ae4448535181f4ff))
+
 ## [1.1.1](https://github.com/googleapis/python-appengine-logging/compare/v1.1.0...v1.1.1) (2022-03-05)
 
 
