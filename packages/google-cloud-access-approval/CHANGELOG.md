@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.6.1](https://github.com/googleapis/python-access-approval/compare/v1.6.0...v1.6.1) (2022-06-03)
+
+
+### Bug Fixes
+
+* **deps:** require protobuf <4.0.0dev ([#207](https://github.com/googleapis/python-access-approval/issues/207)) ([7829ed3](https://github.com/googleapis/python-access-approval/commit/7829ed38b6e11dfafb516fa52eb856f2bb2b08b3))
+
+
+### Documentation
+
+* fix changelog header to consistent size ([#205](https://github.com/googleapis/python-access-approval/issues/205)) ([5aa1022](https://github.com/googleapis/python-access-approval/commit/5aa102287af385e24514a8e2a18f5636d6479b5f))
+
 ## [1.6.0](https://github.com/googleapis/python-access-approval/compare/v1.5.1...v1.6.0) (2022-05-19)
 
 
