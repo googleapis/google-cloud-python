@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-runtimeconfig/#history
 
+## [0.33.1](https://github.com/googleapis/python-runtimeconfig/compare/v0.33.0...v0.33.1) (2022-06-06)
+
+
+### Documentation
+
+* fix changelog header to consistent size ([#147](https://github.com/googleapis/python-runtimeconfig/issues/147)) ([30b2d90](https://github.com/googleapis/python-runtimeconfig/commit/30b2d90c329690999845f2649f9debee556f75f1))
+
 ## [0.33.0](https://www.github.com/googleapis/python-runtimeconfig/compare/v0.32.6...v0.33.0) (2021-10-08)
 
 

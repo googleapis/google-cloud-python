@@ -22,7 +22,7 @@ import setuptools
 
 name = "google-cloud-runtimeconfig"
 description = "Google Cloud RuntimeConfig API client library"
-version = "0.33.0"
+version = "0.33.1"
 # Should be one of:
 # 'Development Status :: 3 - Alpha'
 # 'Development Status :: 4 - Beta'
