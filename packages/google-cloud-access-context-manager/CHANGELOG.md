@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.12](https://github.com/googleapis/python-access-context-manager/compare/v0.1.11...v0.1.12) (2022-06-06)
+
+
+### Documentation
+
+* fix changelog header to consistent size ([#128](https://github.com/googleapis/python-access-context-manager/issues/128)) ([e295ae6](https://github.com/googleapis/python-access-context-manager/commit/e295ae6b031d86543c54562f1011560272753898))
+
 ## [0.1.11](https://github.com/googleapis/python-access-context-manager/compare/v0.1.10...v0.1.11) (2022-05-26)
 
 
