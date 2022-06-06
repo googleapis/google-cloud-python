@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.4.1](https://github.com/googleapis/python-appengine-admin/compare/v1.4.0...v1.4.1) (2022-06-03)
+
+
+### Bug Fixes
+
+* **deps:** require protobuf <4.0.0dev ([#167](https://github.com/googleapis/python-appengine-admin/issues/167)) ([d18523f](https://github.com/googleapis/python-appengine-admin/commit/d18523f1e900cd3d59ab5919629680f1023cb5da))
+
+
+### Documentation
+
+* fix changelog header to consistent size ([#168](https://github.com/googleapis/python-appengine-admin/issues/168)) ([32eb983](https://github.com/googleapis/python-appengine-admin/commit/32eb9839a119be5c9189140e02dd8e2c2798cbf3))
+
 ## [1.4.0](https://github.com/googleapis/python-appengine-admin/compare/v1.3.3...v1.4.0) (2022-05-05)
 
 
