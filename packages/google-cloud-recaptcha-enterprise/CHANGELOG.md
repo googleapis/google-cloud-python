@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.7.1](https://github.com/googleapis/python-recaptcha-enterprise/compare/v1.7.0...v1.7.1) (2022-06-06)
+
+
+### Bug Fixes
+
+* **deps:** require protobuf <4.0.0dev ([#258](https://github.com/googleapis/python-recaptcha-enterprise/issues/258)) ([56b014a](https://github.com/googleapis/python-recaptcha-enterprise/commit/56b014a1781fdb1636797bca24af306fdcbd68b9))
+
+
+### Documentation
+
+* fix changelog header to consistent size ([#259](https://github.com/googleapis/python-recaptcha-enterprise/issues/259)) ([ad6402b](https://github.com/googleapis/python-recaptcha-enterprise/commit/ad6402b20391b1ae3e6a38343612260a51c8bfdc))
+
 ## [1.7.0](https://github.com/googleapis/python-recaptcha-enterprise/compare/v1.6.1...v1.7.0) (2022-05-19)
 
 
