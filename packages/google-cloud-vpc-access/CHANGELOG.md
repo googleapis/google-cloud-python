@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.3.2](https://github.com/googleapis/python-vpc-access/compare/v1.3.1...v1.3.2) (2022-06-03)
+
+
+### Bug Fixes
+
+* **deps:** require protobuf <4.0.0dev ([#111](https://github.com/googleapis/python-vpc-access/issues/111)) ([b0dd3f8](https://github.com/googleapis/python-vpc-access/commit/b0dd3f8ad278067188fdc736fb047a747c410ec7))
+
+
+### Documentation
+
+* fix changelog header to consistent size ([#112](https://github.com/googleapis/python-vpc-access/issues/112)) ([02034f0](https://github.com/googleapis/python-vpc-access/commit/02034f0c11d0b5352d74b1b327b6795185aa26b1))
+
 ## [1.3.1](https://github.com/googleapis/python-vpc-access/compare/v1.3.0...v1.3.1) (2022-03-05)
 
 
