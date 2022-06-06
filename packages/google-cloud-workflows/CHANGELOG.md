@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.6.3](https://github.com/googleapis/python-workflows/compare/v1.6.2...v1.6.3) (2022-06-03)
+
+
+### Bug Fixes
+
+* **deps:** require protobuf>=3.19.0, <4.0.0dev ([#183](https://github.com/googleapis/python-workflows/issues/183)) ([d58f508](https://github.com/googleapis/python-workflows/commit/d58f508d0efc171ccb0dc6354360e6ac8f234c87))
+
+
+### Documentation
+
+* fix changelog header to consistent size ([#184](https://github.com/googleapis/python-workflows/issues/184)) ([0578027](https://github.com/googleapis/python-workflows/commit/0578027fc1d034f2706987324eb9cd9988b3b8b1))
+
 ## [1.6.2](https://github.com/googleapis/python-workflows/compare/v1.6.1...v1.6.2) (2022-05-05)
 
 
