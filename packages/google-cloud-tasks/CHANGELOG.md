@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-tasks/#history
 
+## [2.9.1](https://github.com/googleapis/python-tasks/compare/v2.9.0...v2.9.1) (2022-06-06)
+
+
+### Bug Fixes
+
+* **deps:** require protobuf <4.0.0dev ([#262](https://github.com/googleapis/python-tasks/issues/262)) ([db23558](https://github.com/googleapis/python-tasks/commit/db23558d053d56ff84a4447f7af2525ff4459309))
+
+
+### Documentation
+
+* fix changelog header to consistent size ([#263](https://github.com/googleapis/python-tasks/issues/263)) ([048d907](https://github.com/googleapis/python-tasks/commit/048d907b1929f2ced1dc1d1b3536f38265994330))
+
 ## [2.9.0](https://github.com/googleapis/python-tasks/compare/v2.8.1...v2.9.0) (2022-05-05)
 
 
