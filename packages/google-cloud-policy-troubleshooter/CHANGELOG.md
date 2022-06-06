@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.4.2](https://github.com/googleapis/python-policy-troubleshooter/compare/v1.4.1...v1.4.2) (2022-06-03)
+
+
+### Bug Fixes
+
+* **deps:** require protobuf <4.0.0dev ([#125](https://github.com/googleapis/python-policy-troubleshooter/issues/125)) ([df6621b](https://github.com/googleapis/python-policy-troubleshooter/commit/df6621b2022b7ce20cd82d0b22cd90708ca6883d))
+
+
+### Documentation
+
+* fix changelog header to consistent size ([#126](https://github.com/googleapis/python-policy-troubleshooter/issues/126)) ([e4bd46a](https://github.com/googleapis/python-policy-troubleshooter/commit/e4bd46a477d840d1f1350d4464b0508a4dd7b1ab))
+
 ## [1.4.1](https://github.com/googleapis/python-policy-troubleshooter/compare/v1.4.0...v1.4.1) (2022-03-05)
 
 
