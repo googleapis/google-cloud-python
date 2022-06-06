@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-redis/#history
 
+## [2.8.1](https://github.com/googleapis/python-redis/compare/v2.8.0...v2.8.1) (2022-06-06)
+
+
+### Bug Fixes
+
+* **deps:** require protobuf <4.0.0dev ([#195](https://github.com/googleapis/python-redis/issues/195)) ([b764fa8](https://github.com/googleapis/python-redis/commit/b764fa8920614f52e5fdc39719c44e8685f64d5f))
+
+
+### Documentation
+
+* fix changelog header to consistent size ([#196](https://github.com/googleapis/python-redis/issues/196)) ([6939feb](https://github.com/googleapis/python-redis/commit/6939feb6850a953de3133ea91f0117ba0fff88f1))
+
 ## [2.8.0](https://github.com/googleapis/python-redis/compare/v2.7.1...v2.8.0) (2022-03-15)
 
 
