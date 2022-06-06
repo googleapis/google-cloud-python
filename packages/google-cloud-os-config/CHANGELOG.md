@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.11.2](https://github.com/googleapis/python-os-config/compare/v1.11.1...v1.11.2) (2022-06-03)
+
+
+### Bug Fixes
+
+* **deps:** require protobuf <4.0.0dev ([#205](https://github.com/googleapis/python-os-config/issues/205)) ([14b8400](https://github.com/googleapis/python-os-config/commit/14b8400e2f23158f402f18b4af7c5e1fac0b35c5))
+
+
+### Documentation
+
+* fix changelog header to consistent size ([#206](https://github.com/googleapis/python-os-config/issues/206)) ([17b8505](https://github.com/googleapis/python-os-config/commit/17b850599b0da9625dc1dcd26064f17f30448448))
+
 ## [1.11.1](https://github.com/googleapis/python-os-config/compare/v1.11.0...v1.11.1) (2022-03-05)
 
 
