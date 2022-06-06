@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.3.3](https://github.com/googleapis/python-org-policy/compare/v1.3.2...v1.3.3) (2022-06-03)
+
+
+### Bug Fixes
+
+* **deps:** require protobuf <4.0.0dev ([#155](https://github.com/googleapis/python-org-policy/issues/155)) ([50c659f](https://github.com/googleapis/python-org-policy/commit/50c659fd79f2f663a5988239846773019aea08e0))
+
+
+### Documentation
+
+* fix changelog header to consistent size ([#156](https://github.com/googleapis/python-org-policy/issues/156)) ([9231917](https://github.com/googleapis/python-org-policy/commit/9231917a644d0a1fe047db255269c7886eeb50c6))
+
 ## [1.3.2](https://github.com/googleapis/python-org-policy/compare/v1.3.1...v1.3.2) (2022-05-26)
 
 
