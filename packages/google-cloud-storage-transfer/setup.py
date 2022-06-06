@@ -22,7 +22,7 @@ import setuptools
 name = "google-cloud-storage-transfer"
 description = "Storage Transfer API client library"
 url = "https://github.com/googleapis/python-storage-transfer"
-version = "1.3.0"
+version = "1.3.1"
 release_status = "Development Status :: 5 - Production/Stable"
 dependencies = [
     # NOTE: Maintainers, please do not require google-api-core>=2.x.x
