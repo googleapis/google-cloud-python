@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.4.2](https://github.com/googleapis/python-service-control/compare/v1.4.1...v1.4.2) (2022-06-03)
+
+
+### Bug Fixes
+
+* **deps:** require protobuf <4.0.0dev ([#141](https://github.com/googleapis/python-service-control/issues/141)) ([9aafaaf](https://github.com/googleapis/python-service-control/commit/9aafaaf66112be7fc247d384aa714af22a807f08))
+
+
+### Documentation
+
+* fix changelog header to consistent size ([#142](https://github.com/googleapis/python-service-control/issues/142)) ([af6128c](https://github.com/googleapis/python-service-control/commit/af6128c8e454fbeea008bb4983531ca6b7a2da68))
+
 ## [1.4.1](https://github.com/googleapis/python-service-control/compare/v1.4.0...v1.4.1) (2022-05-05)
 
 

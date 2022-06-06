@@ -21,7 +21,7 @@ import os
 import setuptools  # type: ignore
 
 name = "google-cloud-service-control"
-version = "1.4.1"
+version = "1.4.2"
 description = "Service Control API client library"
 release_status = "Development Status :: 5 - Production/Stable"
 url = "https://github.com/googleapis/python-service-control"
