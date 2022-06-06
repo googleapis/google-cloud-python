@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.2.2](https://github.com/googleapis/python-api-gateway/compare/v1.2.1...v1.2.2) (2022-06-03)
+
+
+### Bug Fixes
+
+* **deps:** require protobuf <4.0.0dev ([#146](https://github.com/googleapis/python-api-gateway/issues/146)) ([c1c7fbf](https://github.com/googleapis/python-api-gateway/commit/c1c7fbf9dbf0968cc63a53d5d73dced9dce6d427))
+
+
+### Documentation
+
+* fix changelog header to consistent size ([#147](https://github.com/googleapis/python-api-gateway/issues/147)) ([6e7f4f1](https://github.com/googleapis/python-api-gateway/commit/6e7f4f1b2310ae510dff2bbcfb262385b090c6d7))
+
 ## [1.2.1](https://github.com/googleapis/python-api-gateway/compare/v1.2.0...v1.2.1) (2022-03-05)
 
 

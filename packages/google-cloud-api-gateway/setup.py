@@ -21,7 +21,7 @@ import os
 import setuptools  # type: ignore
 
 name = "google-cloud-api-gateway"
-version = "1.2.1"
+version = "1.2.2"
 description = "API Gateway client library"
 release_status = "Development Status :: 5 - Production/Stable"
 url = "https://github.com/googleapis/python-api-gateway"
