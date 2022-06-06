@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-oslogin/#history
 
+## [2.6.2](https://github.com/googleapis/python-oslogin/compare/v2.6.1...v2.6.2) (2022-06-03)
+
+
+### Bug Fixes
+
+* **deps:** require protobuf <4.0.0dev ([#187](https://github.com/googleapis/python-oslogin/issues/187)) ([9738e17](https://github.com/googleapis/python-oslogin/commit/9738e17dc106ebd8aaa981e8ee1e04b5f133cd13))
+
+
+### Documentation
+
+* fix changelog header to consistent size ([#188](https://github.com/googleapis/python-oslogin/issues/188)) ([7924617](https://github.com/googleapis/python-oslogin/commit/7924617cc1b697992a257ffce01bfd34ed9bf974))
+
 ## [2.6.1](https://github.com/googleapis/python-oslogin/compare/v2.6.0...v2.6.1) (2022-03-05)
 
 
