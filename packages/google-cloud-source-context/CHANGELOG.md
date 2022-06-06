@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.2.4](https://github.com/googleapis/python-source-context/compare/v1.2.3...v1.2.4) (2022-06-03)
+
+
+### Bug Fixes
+
+* **deps:** require protobuf <4.0.0dev ([#87](https://github.com/googleapis/python-source-context/issues/87)) ([5b86140](https://github.com/googleapis/python-source-context/commit/5b86140b3a4ffa4c591722e127e4bbff64eab91e))
+
+
+### Documentation
+
+* fix changelog header to consistent size ([#88](https://github.com/googleapis/python-source-context/issues/88)) ([7b7fe62](https://github.com/googleapis/python-source-context/commit/7b7fe6278cf454196e89c18db63a20acd2c8aa23))
+
 ## [1.2.3](https://github.com/googleapis/python-source-context/compare/v1.2.2...v1.2.3) (2022-05-05)
 
 
