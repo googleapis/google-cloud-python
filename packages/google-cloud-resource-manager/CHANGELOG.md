@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-resource-manager/#history
 
+## [1.5.1](https://github.com/googleapis/python-resource-manager/compare/v1.5.0...v1.5.1) (2022-06-06)
+
+
+### Bug Fixes
+
+* **deps:** require protobuf <4.0.0dev ([#199](https://github.com/googleapis/python-resource-manager/issues/199)) ([0708c56](https://github.com/googleapis/python-resource-manager/commit/0708c56b03260d2c887d860e56b18cc31dfa0b24))
+
+
+### Documentation
+
+* fix changelog header to consistent size ([#200](https://github.com/googleapis/python-resource-manager/issues/200)) ([65e3cad](https://github.com/googleapis/python-resource-manager/commit/65e3cade0bf55a7b5962880952a7c5ba7becdcaa))
+
 ## [1.5.0](https://github.com/googleapis/python-resource-manager/compare/v1.4.1...v1.5.0) (2022-05-05)
 
 
