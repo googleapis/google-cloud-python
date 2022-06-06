@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-translate/#history
 
+## [3.7.4](https://github.com/googleapis/python-translate/compare/v3.7.3...v3.7.4) (2022-06-06)
+
+
+### Bug Fixes
+
+* **deps:** require protobuf <4.0.0dev ([#395](https://github.com/googleapis/python-translate/issues/395)) ([6747720](https://github.com/googleapis/python-translate/commit/6747720cd1241a90459c06c037f2d28027368de7))
+
+
+### Documentation
+
+* fix changelog header to consistent size ([#396](https://github.com/googleapis/python-translate/issues/396)) ([d4d2825](https://github.com/googleapis/python-translate/commit/d4d2825052762a5b06ae729e8f566c9500da9cc0))
+
 ## [3.7.3](https://github.com/googleapis/python-translate/compare/v3.7.2...v3.7.3) (2022-05-19)
 
 
