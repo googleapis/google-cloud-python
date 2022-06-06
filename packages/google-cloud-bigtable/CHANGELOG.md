@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-bigtable/#history
 
+## [2.10.1](https://github.com/googleapis/python-bigtable/compare/v2.10.0...v2.10.1) (2022-06-03)
+
+
+### Bug Fixes
+
+* **deps:** require protobuf <4.0.0dev ([#595](https://github.com/googleapis/python-bigtable/issues/595)) ([a4deaf7](https://github.com/googleapis/python-bigtable/commit/a4deaf7b1b5c4b7ce8f6dc5bb96d32ea8ff55c2d))
+
+
+### Documentation
+
+* fix changelog header to consistent size ([#596](https://github.com/googleapis/python-bigtable/issues/596)) ([51961c3](https://github.com/googleapis/python-bigtable/commit/51961c32686fe5851e957581b85adbe92a073e03))
+
 ## [2.10.0](https://github.com/googleapis/python-bigtable/compare/v2.9.0...v2.10.0) (2022-05-30)
 
 
