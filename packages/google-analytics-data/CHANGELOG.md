@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.12.1](https://github.com/googleapis/python-analytics-data/compare/v0.12.0...v0.12.1) (2022-06-03)
+
+
+### Bug Fixes
+
+* **deps:** require protobuf <4.0.0dev ([#242](https://github.com/googleapis/python-analytics-data/issues/242)) ([94137c5](https://github.com/googleapis/python-analytics-data/commit/94137c50660b9e4236a17c914662ff98ee587fbf))
+
+
+### Documentation
+
+* fix changelog header to consistent size ([#243](https://github.com/googleapis/python-analytics-data/issues/243)) ([8e65b0d](https://github.com/googleapis/python-analytics-data/commit/8e65b0d89590ebaa611e4106e7b4bff967c95338))
+
 ## [0.12.0](https://github.com/googleapis/python-analytics-data/compare/v0.11.2...v0.12.0) (2022-05-07)
 
 
