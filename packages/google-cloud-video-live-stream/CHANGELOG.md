@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.1.5](https://github.com/googleapis/python-video-live-stream/compare/v0.1.4...v0.1.5) (2022-06-03)
+
+
+### Bug Fixes
+
+* **deps:** require protobuf <4.0.0dev ([#65](https://github.com/googleapis/python-video-live-stream/issues/65)) ([a072bbf](https://github.com/googleapis/python-video-live-stream/commit/a072bbf7d411b4595e5f915866a839eb52e3d208))
+
+
+### Documentation
+
+* fix changelog header to consistent size ([#66](https://github.com/googleapis/python-video-live-stream/issues/66)) ([fbc3528](https://github.com/googleapis/python-video-live-stream/commit/fbc3528b4d2f22751c0f5a99bae513668fcb3db5))
+
 ## [0.1.4](https://github.com/googleapis/python-video-live-stream/compare/v0.1.3...v0.1.4) (2022-05-22)
 
 

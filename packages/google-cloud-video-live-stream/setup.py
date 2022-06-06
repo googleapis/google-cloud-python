@@ -22,7 +22,7 @@ import setuptools
 name = "google-cloud-video-live-stream"
 description = "Live Stream API client library"
 url = "https://github.com/googleapis/python-video-live-stream"
-version = "0.1.4"
+version = "0.1.5"
 release_status = "Development Status :: 4 - Beta"
 dependencies = [
     # NOTE: Maintainers, please do not require google-api-core>=2.x.x
