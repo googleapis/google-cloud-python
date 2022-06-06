@@ -112,7 +112,7 @@ the blob (e.g.,
 makes the operation conditional on whether the blob's current ``generation``
 matches the given value.
 
-As a special case, passing ``0`` as the value for``if_generation_match``
+As a special case, passing ``0`` as the value for ``if_generation_match``
 makes the operation succeed only if there are no live versions of the blob.
 
 
