@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.6.1](https://github.com/googleapis/python-retail/compare/v1.6.0...v1.6.1) (2022-06-02)
+
+
+### Bug Fixes
+
+* **deps:** require protobuf <4.0.0dev ([#272](https://github.com/googleapis/python-retail/issues/272)) ([83bb41e](https://github.com/googleapis/python-retail/commit/83bb41e71896338c44d526b6b9028ec7a720c6a3))
+
+
+### Documentation
+
+* fix changelog header to consistent size ([#273](https://github.com/googleapis/python-retail/issues/273)) ([6a3646f](https://github.com/googleapis/python-retail/commit/6a3646fc43a4bd69d5b7ce2e5982e5a00339637c))
+
 ## [1.6.0](https://github.com/googleapis/python-retail/compare/v1.5.0...v1.6.0) (2022-05-19)
 
 
