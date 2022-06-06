@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-cloud-logging/#history
 
+## [3.1.2](https://github.com/googleapis/python-logging/compare/v3.1.1...v3.1.2) (2022-06-03)
+
+
+### Bug Fixes
+
+* **deps:** require protobuf <4.0.0dev ([#564](https://github.com/googleapis/python-logging/issues/564)) ([cb0720c](https://github.com/googleapis/python-logging/commit/cb0720ceac84f4cebe3d79e4a01eea6728da8f05))
+
+
+### Documentation
+
+* fix changelog header to consistent size ([#562](https://github.com/googleapis/python-logging/issues/562)) ([3f16107](https://github.com/googleapis/python-logging/commit/3f16107ef02f85a405d2608862ffc0a73cdc8e48))
+* Update README image to absolute URL, fix PyPI rendering ([#561](https://github.com/googleapis/python-logging/issues/561)) ([76413b1](https://github.com/googleapis/python-logging/commit/76413b1c405019d8ed6044f0213f7983c38673cb))
+
 ## [3.1.1](https://github.com/googleapis/python-logging/compare/v3.1.0...v3.1.1) (2022-05-23)
 
 
