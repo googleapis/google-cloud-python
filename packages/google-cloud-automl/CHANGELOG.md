@@ -4,7 +4,7 @@
 
 [1]: https://pypi.org/project/google-cloud-automl/#history
 
-### [2.7.2](https://github.com/googleapis/python-automl/compare/v2.7.1...v2.7.2) (2022-03-06)
+## [2.7.2](https://github.com/googleapis/python-automl/compare/v2.7.1...v2.7.2) (2022-03-06)
 
 
 ### Bug Fixes
@@ -12,7 +12,7 @@
 * **deps:** require google-api-core>=1.31.5, >=2.3.2 ([#348](https://github.com/googleapis/python-automl/issues/348)) ([ec5e4e2](https://github.com/googleapis/python-automl/commit/ec5e4e2e2089b99b957f051c7bbd280457514f83))
 * **deps:** require proto-plus>=1.15.0 ([ec5e4e2](https://github.com/googleapis/python-automl/commit/ec5e4e2e2089b99b957f051c7bbd280457514f83))
 
-### [2.7.1](https://github.com/googleapis/python-automl/compare/v2.7.0...v2.7.1) (2022-02-26)
+## [2.7.1](https://github.com/googleapis/python-automl/compare/v2.7.0...v2.7.1) (2022-02-26)
 
 
 ### Bug Fixes
@@ -43,7 +43,7 @@
 
 * **deps:** allow google-cloud-storage < 3.0.0dev ([#316](https://github.com/googleapis/python-automl/issues/316)) ([ba271a8](https://github.com/googleapis/python-automl/commit/ba271a8cfea916f7fb3df536258cda2dca32a423))
 
-### [2.5.2](https://www.github.com/googleapis/python-automl/compare/v2.5.1...v2.5.2) (2021-11-01)
+## [2.5.2](https://www.github.com/googleapis/python-automl/compare/v2.5.1...v2.5.2) (2021-11-01)
 
 
 ### Bug Fixes
@@ -56,7 +56,7 @@
 
 * list oneofs in docstring ([e50d4c9](https://www.github.com/googleapis/python-automl/commit/e50d4c928601f6a32b22dcd36338e820254451d4))
 
-### [2.5.1](https://www.github.com/googleapis/python-automl/compare/v2.5.0...v2.5.1) (2021-10-20)
+## [2.5.1](https://www.github.com/googleapis/python-automl/compare/v2.5.0...v2.5.1) (2021-10-20)
 
 
 ### Bug Fixes
@@ -77,7 +77,7 @@
 * flaky test, issue 223 ([#250](https://www.github.com/googleapis/python-automl/issues/250)) ([efb9d0b](https://www.github.com/googleapis/python-automl/commit/efb9d0b3eff27364764aa5d6dc7fa57c3d4825e5))
 * improper types in pagers generation ([5ae7bcf](https://www.github.com/googleapis/python-automl/commit/5ae7bcf39d4cd2733f46c0f38a47f92e676cfa45))
 
-### [2.4.2](https://www.github.com/googleapis/python-automl/compare/v2.4.1...v2.4.2) (2021-07-27)
+## [2.4.2](https://www.github.com/googleapis/python-automl/compare/v2.4.1...v2.4.2) (2021-07-27)
 
 
 ### Bug Fixes
@@ -85,7 +85,7 @@
 * enable self signed jwt for grpc ([#217](https://www.github.com/googleapis/python-automl/issues/217)) ([20a72aa](https://www.github.com/googleapis/python-automl/commit/20a72aa0524fabb855cfda8589dd3722e4c65bdd))
 
 
-### [2.4.1](https://www.github.com/googleapis/python-automl/compare/v2.4.0...v2.4.1) (2021-07-21)
+## [2.4.1](https://www.github.com/googleapis/python-automl/compare/v2.4.0...v2.4.1) (2021-07-21)
 
 
 ### Bug Fixes
@@ -181,7 +181,7 @@
 * add cancel operation sample ([abc5070](https://www.github.com/googleapis/python-automl/commit/abc507005d5255ed5adf2c4b8e0b23042a0bdf47))
 * add samples from tables/automl ([#54](https://www.github.com/googleapis/python-automl/issues/54)) ([d225a5f](https://www.github.com/googleapis/python-automl/commit/d225a5f97c2823218b91a79e77d3383132875231)), closes [#2090](https://www.github.com/googleapis/python-automl/issues/2090) [#2100](https://www.github.com/googleapis/python-automl/issues/2100) [#2102](https://www.github.com/googleapis/python-automl/issues/2102) [#2103](https://www.github.com/googleapis/python-automl/issues/2103) [#2101](https://www.github.com/googleapis/python-automl/issues/2101) [#2110](https://www.github.com/googleapis/python-automl/issues/2110) [#2115](https://www.github.com/googleapis/python-automl/issues/2115) [#2150](https://www.github.com/googleapis/python-automl/issues/2150) [#2145](https://www.github.com/googleapis/python-automl/issues/2145) [#2203](https://www.github.com/googleapis/python-automl/issues/2203) [#2340](https://www.github.com/googleapis/python-automl/issues/2340) [#2337](https://www.github.com/googleapis/python-automl/issues/2337) [#2336](https://www.github.com/googleapis/python-automl/issues/2336) [#2339](https://www.github.com/googleapis/python-automl/issues/2339) [#2338](https://www.github.com/googleapis/python-automl/issues/2338) [#2276](https://www.github.com/googleapis/python-automl/issues/2276) [#2257](https://www.github.com/googleapis/python-automl/issues/2257) [#2424](https://www.github.com/googleapis/python-automl/issues/2424) [#2407](https://www.github.com/googleapis/python-automl/issues/2407) [#2501](https://www.github.com/googleapis/python-automl/issues/2501) [#2459](https://www.github.com/googleapis/python-automl/issues/2459) [#2601](https://www.github.com/googleapis/python-automl/issues/2601) [#2523](https://www.github.com/googleapis/python-automl/issues/2523) [#2005](https://www.github.com/googleapis/python-automl/issues/2005) [#3033](https://www.github.com/googleapis/python-automl/issues/3033) [#2806](https://www.github.com/googleapis/python-automl/issues/2806) [#3750](https://www.github.com/googleapis/python-automl/issues/3750) [#3571](https://www.github.com/googleapis/python-automl/issues/3571) [#3929](https://www.github.com/googleapis/python-automl/issues/3929) [#4022](https://www.github.com/googleapis/python-automl/issues/4022) [#4127](https://www.github.com/googleapis/python-automl/issues/4127)
 
-### [1.0.1](https://www.github.com/googleapis/python-automl/compare/v1.0.0...v1.0.1) (2020-06-18)
+## [1.0.1](https://www.github.com/googleapis/python-automl/compare/v1.0.0...v1.0.1) (2020-06-18)
 
 
 ### Bug Fixes
