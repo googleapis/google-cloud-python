@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.2.1](https://github.com/googleapis/python-artifact-registry/compare/v1.2.0...v1.2.1) (2022-06-03)
+
+
+### Bug Fixes
+
+* **deps:** require protobuf <4.0.0dev ([#164](https://github.com/googleapis/python-artifact-registry/issues/164)) ([3f57f9a](https://github.com/googleapis/python-artifact-registry/commit/3f57f9a14b3e8a93abefe5f57a8e5066ff7a3b6f))
+
+
+### Documentation
+
+* fix changelog header to consistent size ([#165](https://github.com/googleapis/python-artifact-registry/issues/165)) ([57f37c9](https://github.com/googleapis/python-artifact-registry/commit/57f37c956ef4adf6800ba45f20266693e9f11b57))
+
 ## [1.2.0](https://github.com/googleapis/python-artifact-registry/compare/v1.1.2...v1.2.0) (2022-04-21)
 
 
