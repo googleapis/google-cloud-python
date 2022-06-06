@@ -21,7 +21,7 @@ import setuptools
 
 name = "google-cloud-network-security"
 description = "Network Security API client library"
-version = "0.4.1"
+version = "0.4.2"
 release_status = "Development Status :: 4 - Beta"
 dependencies = [
     # NOTE: Maintainers, please do not require google-api-core>=2.x.x

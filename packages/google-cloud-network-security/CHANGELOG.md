@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.4.2](https://github.com/googleapis/python-network-security/compare/v0.4.1...v0.4.2) (2022-06-03)
+
+
+### Bug Fixes
+
+* **deps:** require protobuf <4.0.0dev ([#98](https://github.com/googleapis/python-network-security/issues/98)) ([dfdc5c7](https://github.com/googleapis/python-network-security/commit/dfdc5c706382ba14a2a12a8e28530abcd8b48724))
+
+
+### Documentation
+
+* fix changelog header to consistent size ([#99](https://github.com/googleapis/python-network-security/issues/99)) ([86bc9e4](https://github.com/googleapis/python-network-security/commit/86bc9e4db6a2332ace0a8f6d8a194261f38dd072))
+
 ## [0.4.1](https://github.com/googleapis/python-network-security/compare/v0.4.0...v0.4.1) (2022-03-05)
 
 
