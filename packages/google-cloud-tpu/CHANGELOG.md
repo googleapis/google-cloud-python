@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.3.4](https://github.com/googleapis/python-tpu/compare/v1.3.3...v1.3.4) (2022-06-03)
+
+
+### Bug Fixes
+
+* **deps:** require protobuf <4.0.0dev ([#158](https://github.com/googleapis/python-tpu/issues/158)) ([1d789e5](https://github.com/googleapis/python-tpu/commit/1d789e506309cd98c11b4952f5ff89f479ea3695))
+
+
+### Documentation
+
+* fix changelog header to consistent size ([#159](https://github.com/googleapis/python-tpu/issues/159)) ([1788016](https://github.com/googleapis/python-tpu/commit/1788016409819f3a3627b3c55a453e9240934fc9))
+
 ## [1.3.3](https://github.com/googleapis/python-tpu/compare/v1.3.2...v1.3.3) (2022-05-05)
 
 
