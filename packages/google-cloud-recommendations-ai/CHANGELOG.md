@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.6.2](https://github.com/googleapis/python-recommendations-ai/compare/v0.6.1...v0.6.2) (2022-06-06)
+
+
+### Bug Fixes
+
+* **deps:** require protobuf <4.0.0dev ([#152](https://github.com/googleapis/python-recommendations-ai/issues/152)) ([5368548](https://github.com/googleapis/python-recommendations-ai/commit/53685485b60cca5338a1df7af22c64024cc17167))
+
+
+### Documentation
+
+* fix changelog header to consistent size ([#153](https://github.com/googleapis/python-recommendations-ai/issues/153)) ([35a440a](https://github.com/googleapis/python-recommendations-ai/commit/35a440a1606398fc7fae60c28c21df52058e043b))
+
 ## [0.6.1](https://github.com/googleapis/python-recommendations-ai/compare/v0.6.0...v0.6.1) (2022-03-05)
 
 
