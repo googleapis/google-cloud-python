@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.5.2](https://github.com/googleapis/python-private-catalog/compare/v0.5.1...v0.5.2) (2022-06-03)
+
+
+### Bug Fixes
+
+* **deps:** require protobuf <4.0.0dev ([#121](https://github.com/googleapis/python-private-catalog/issues/121)) ([1124488](https://github.com/googleapis/python-private-catalog/commit/11244880e55e768d364f4ec2ef7ca1efaf6c0620))
+
+
+### Documentation
+
+* fix changelog header to consistent size ([#122](https://github.com/googleapis/python-private-catalog/issues/122)) ([c02ef18](https://github.com/googleapis/python-private-catalog/commit/c02ef185e09036a769d09bc4d33a8836e07d8d3b))
+
 ## [0.5.1](https://github.com/googleapis/python-private-catalog/compare/v0.5.0...v0.5.1) (2022-03-05)
 
 
