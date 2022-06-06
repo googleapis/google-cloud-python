@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.2](https://github.com/googleapis/python-test-utils/compare/v1.3.1...v1.3.2) (2022-06-06)
+
+
+### Documentation
+
+* fix changelog header to consistent size ([#100](https://github.com/googleapis/python-test-utils/issues/100)) ([a446cdc](https://github.com/googleapis/python-test-utils/commit/a446cdcb4b9e32c7066da82e2e6cae4a6210d85a))
+
 ## [1.3.1](https://www.github.com/googleapis/python-test-utils/compare/v1.3.0...v1.3.1) (2021-12-07)
 
 
