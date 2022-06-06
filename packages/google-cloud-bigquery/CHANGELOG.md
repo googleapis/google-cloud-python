@@ -5,6 +5,25 @@
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
 
+## [3.2.0](https://github.com/googleapis/python-bigquery/compare/v3.1.0...v3.2.0) (2022-06-06)
+
+
+### Features
+
+* add support for table clones ([#1235](https://github.com/googleapis/python-bigquery/issues/1235)) ([176fb2a](https://github.com/googleapis/python-bigquery/commit/176fb2afc9888c6b0cd74d590065b3002bdbf533))
+
+
+### Bug Fixes
+
+* **deps:** proto-plus >= 1.15.0, <2.0.0dev ([ba58d3a](https://github.com/googleapis/python-bigquery/commit/ba58d3af80ca796be09c813529d3aadb79e0413c))
+* **deps:** require packaging >= 14.3, <22.0.0dev ([ba58d3a](https://github.com/googleapis/python-bigquery/commit/ba58d3af80ca796be09c813529d3aadb79e0413c))
+* **deps:** require protobuf>= 3.12.0, <4.0.0dev ([#1263](https://github.com/googleapis/python-bigquery/issues/1263)) ([ba58d3a](https://github.com/googleapis/python-bigquery/commit/ba58d3af80ca796be09c813529d3aadb79e0413c))
+
+
+### Documentation
+
+* fix changelog header to consistent size ([#1268](https://github.com/googleapis/python-bigquery/issues/1268)) ([d03e2a2](https://github.com/googleapis/python-bigquery/commit/d03e2a29ecfa5d2ccd5599f5c0faac55286e52e7))
+
 ## [3.1.0](https://github.com/googleapis/python-bigquery/compare/v3.0.1...v3.1.0) (2022-05-09)
 
 
