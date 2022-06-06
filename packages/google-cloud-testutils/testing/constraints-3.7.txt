@@ -1,0 +1,4 @@
+click==7.0.0
+google-auth==0.4.0
+packaging==19.0
+colorlog==3.0.0
