@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-trace/#history
 
+## [1.6.2](https://github.com/googleapis/python-trace/compare/v1.6.1...v1.6.2) (2022-06-06)
+
+
+### Bug Fixes
+
+* **deps:** require protobuf <4.0.0dev ([#229](https://github.com/googleapis/python-trace/issues/229)) ([6074f64](https://github.com/googleapis/python-trace/commit/6074f646b6bac5b6e106b86dc44c0d3132d67712))
+
+
+### Documentation
+
+* fix changelog header to consistent size ([#230](https://github.com/googleapis/python-trace/issues/230)) ([4994bb7](https://github.com/googleapis/python-trace/commit/4994bb7bf34f9e2c4afa7c4c38947bdeab76598a))
+
 ## [1.6.1](https://github.com/googleapis/python-trace/compare/v1.6.0...v1.6.1) (2022-03-05)
 
 
