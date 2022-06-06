@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.3.2](https://github.com/googleapis/python-security-private-ca/compare/v1.3.1...v1.3.2) (2022-06-03)
+
+
+### Bug Fixes
+
+* **deps:** require protobuf <4.0.0dev ([#257](https://github.com/googleapis/python-security-private-ca/issues/257)) ([a9d08f4](https://github.com/googleapis/python-security-private-ca/commit/a9d08f41075aca6af42e0d423808c116f1d88db3))
+
+
+### Documentation
+
+* fix changelog header to consistent size ([#258](https://github.com/googleapis/python-security-private-ca/issues/258)) ([4689ab3](https://github.com/googleapis/python-security-private-ca/commit/4689ab386e34020dbe13521829a6f2f8a73ad64a))
+
 ## [1.3.1](https://github.com/googleapis/python-security-private-ca/compare/v1.3.0...v1.3.1) (2022-05-05)
 
 
