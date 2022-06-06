@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.3.2](https://github.com/googleapis/python-resource-settings/compare/v1.3.1...v1.3.2) (2022-06-03)
+
+
+### Bug Fixes
+
+* **deps:** require protobuf <4.0.0dev ([#110](https://github.com/googleapis/python-resource-settings/issues/110)) ([ea71f0f](https://github.com/googleapis/python-resource-settings/commit/ea71f0f039fc23e113d45d919a5841498e7d31de))
+
+
+### Documentation
+
+* fix changelog header to consistent size ([#111](https://github.com/googleapis/python-resource-settings/issues/111)) ([a1dad10](https://github.com/googleapis/python-resource-settings/commit/a1dad1003f17f533a3e8290f7a15d37b5e799547))
+
 ## [1.3.1](https://github.com/googleapis/python-resource-settings/compare/v1.3.0...v1.3.1) (2022-03-05)
 
 
