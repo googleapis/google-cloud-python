@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.3.2](https://github.com/googleapis/python-orchestration-airflow/compare/v1.3.1...v1.3.2) (2022-06-03)
+
+
+### Bug Fixes
+
+* **deps:** require protobuf <4.0.0dev ([#108](https://github.com/googleapis/python-orchestration-airflow/issues/108)) ([9f4671f](https://github.com/googleapis/python-orchestration-airflow/commit/9f4671fd7282114fb3a91b29c63938a9c3a977a2))
+
+
+### Documentation
+
+* fix changelog header to consistent size ([#109](https://github.com/googleapis/python-orchestration-airflow/issues/109)) ([5d8f6a0](https://github.com/googleapis/python-orchestration-airflow/commit/5d8f6a0f400f77e31e23fb0f8398f70de6b30a74))
+
 ## [1.3.1](https://github.com/googleapis/python-orchestration-airflow/compare/v1.3.0...v1.3.1) (2022-03-05)
 
 
