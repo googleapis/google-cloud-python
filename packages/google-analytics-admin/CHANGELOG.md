@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.8.2](https://github.com/googleapis/python-analytics-admin/compare/v0.8.1...v0.8.2) (2022-06-03)
+
+
+### Bug Fixes
+
+* **deps:** require protobuf <4.0.0dev ([#227](https://github.com/googleapis/python-analytics-admin/issues/227)) ([2dc98b3](https://github.com/googleapis/python-analytics-admin/commit/2dc98b354cefb6eeafe2a8065b3d85e60c0c7824))
+
+
+### Documentation
+
+* fix changelog header to consistent size ([#228](https://github.com/googleapis/python-analytics-admin/issues/228)) ([2385b9b](https://github.com/googleapis/python-analytics-admin/commit/2385b9b9b96abac09b9adebd6d462d8a95afe356))
+
 ## [0.8.1](https://github.com/googleapis/python-analytics-admin/compare/v0.8.0...v0.8.1) (2022-05-13)
 
 
