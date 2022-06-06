@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.3.2](https://github.com/googleapis/python-service-usage/compare/v1.3.1...v1.3.2) (2022-06-03)
+
+
+### Bug Fixes
+
+* **deps:** require protobuf <4.0.0dev ([#115](https://github.com/googleapis/python-service-usage/issues/115)) ([fc546f2](https://github.com/googleapis/python-service-usage/commit/fc546f2dc727e8b358d62f4f9958006c04b35c4c))
+
+
+### Documentation
+
+* fix changelog header to consistent size ([#116](https://github.com/googleapis/python-service-usage/issues/116)) ([1c9df92](https://github.com/googleapis/python-service-usage/commit/1c9df92b379f9735477bd7c7d590a9280e944fbd))
+
 ## [1.3.1](https://github.com/googleapis/python-service-usage/compare/v1.3.0...v1.3.1) (2022-03-05)
 
 
