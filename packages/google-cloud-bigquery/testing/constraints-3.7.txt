@@ -1,1 +1,27 @@
+# This constraints file is used to check that lower bounds
+# are correct in setup.py
+# List *all* library dependencies and extras in this file.
+# Pin the version to the lower bound.
+#
+# e.g., if setup.py has "foo >= 1.14.0, < 2.0.0dev",
+# Then this file should have foo==1.14.0
+db-dtypes==0.3.0
+geopandas==0.9.0
+google-api-core==1.31.5
+google-cloud-bigquery-storage==2.0.0
+google-cloud-core==1.4.1
+google-resumable-media==0.6.0
+grpcio==1.38.1
+ipython==7.0.1
+opentelemetry-api==1.1.0
+opentelemetry-instrumentation==0.20b0
+opentelemetry-sdk==1.1.0
 pandas==1.1.0
+proto-plus==1.15.0
+protobuf==3.12.0
+pyarrow==3.0.0
+python-dateutil==2.7.3
+requests==2.18.0
+Shapely==1.6.4.post2
+six==1.13.0
+tqdm==4.7.4
