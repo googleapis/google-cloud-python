@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.3.2](https://github.com/googleapis/python-notebooks/compare/v1.3.1...v1.3.2) (2022-06-03)
+
+
+### Bug Fixes
+
+* **deps:** require protobuf <4.0.0dev ([#168](https://github.com/googleapis/python-notebooks/issues/168)) ([242d2d1](https://github.com/googleapis/python-notebooks/commit/242d2d162efcbf1c280b0ffc5f510b297de67695))
+
+
+### Documentation
+
+* fix changelog header to consistent size ([#169](https://github.com/googleapis/python-notebooks/issues/169)) ([a8e4abd](https://github.com/googleapis/python-notebooks/commit/a8e4abda16ad273dd840262d2289c56dc5e9f371))
+
 ## [1.3.1](https://github.com/googleapis/python-notebooks/compare/v1.3.0...v1.3.1) (2022-05-05)
 
 
