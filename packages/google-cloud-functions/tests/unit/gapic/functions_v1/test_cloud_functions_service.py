@@ -1073,6 +1073,7 @@ def test_get_function(request_type, transport: str = "grpc"):
             build_name="build_name_value",
             source_token="source_token_value",
             docker_repository="docker_repository_value",
+            docker_registry=functions.CloudFunction.DockerRegistry.CONTAINER_REGISTRY,
             source_archive_url="source_archive_url_value",
             https_trigger=functions.HttpsTrigger(url="url_value"),
         )
@@ -1110,6 +1111,10 @@ def test_get_function(request_type, transport: str = "grpc"):
     assert response.build_name == "build_name_value"
     assert response.source_token == "source_token_value"
     assert response.docker_repository == "docker_repository_value"
+    assert (
+        response.docker_registry
+        == functions.CloudFunction.DockerRegistry.CONTAINER_REGISTRY
+    )
 
 
 def test_get_function_empty_call():
@@ -1166,6 +1171,7 @@ async def test_get_function_async(
                 build_name="build_name_value",
                 source_token="source_token_value",
                 docker_repository="docker_repository_value",
+                docker_registry=functions.CloudFunction.DockerRegistry.CONTAINER_REGISTRY,
             )
         )
         response = await client.get_function(request)
@@ -1202,6 +1208,10 @@ async def test_get_function_async(
     assert response.build_name == "build_name_value"
     assert response.source_token == "source_token_value"
     assert response.docker_repository == "docker_repository_value"
+    assert (
+        response.docker_registry
+        == functions.CloudFunction.DockerRegistry.CONTAINER_REGISTRY
+    )
 
 
 @pytest.mark.asyncio

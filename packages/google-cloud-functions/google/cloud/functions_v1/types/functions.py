@@ -58,7 +58,7 @@ class CloudFunctionStatus(proto.Enum):
 class CloudFunction(proto.Message):
     r"""Describes a Cloud Function that contains user computation
     executed in response to an event. It encapsulate function and
-    triggers configurations. Next tag: 36
+    triggers configurations.
 
     This message has `oneof`_ fields (mutually exclusive fields).
     For each oneof, at most one member field can be set at the same time.
@@ -212,8 +212,10 @@ class CloudFunction(proto.Message):
             repository using the ``docker_repository`` field that was
             created with the same KMS crypto key.
 
-            The following service accounts need to be granted Cloud KMS
-            crypto key encrypter/decrypter roles on the key.
+            The following service accounts need to be granted the role
+            'Cloud KMS CryptoKey Encrypter/Decrypter
+            (roles/cloudkms.cryptoKeyEncrypterDecrypter)' on the
+            Key/KeyRing/Project/Organization (least access preferred).
 
             1. Google Cloud Functions service account
                (service-{project_number}@gcf-admin-robot.iam.gserviceaccount.com)
@@ -275,6 +277,14 @@ class CloudFunction(proto.Message):
             Cross-project repositories are not supported. Cross-location
             repositories are not supported. Repository format must be
             'DOCKER'.
+        docker_registry (google.cloud.functions_v1.types.CloudFunction.DockerRegistry):
+            Docker Registry to use for this deployment.
+
+            If ``docker_repository`` field is specified, this field will
+            be automatically set as ``ARTIFACT_REGISTRY``. If
+            unspecified, it currently defaults to
+            ``CONTAINER_REGISTRY``. This field may be overridden by the
+            backend for eligible deployments.
     """
 
     class VpcConnectorEgressSettings(proto.Enum):
@@ -298,6 +308,12 @@ class CloudFunction(proto.Message):
         ALLOW_ALL = 1
         ALLOW_INTERNAL_ONLY = 2
         ALLOW_INTERNAL_AND_GCLB = 3
+
+    class DockerRegistry(proto.Enum):
+        r"""Docker Registry to use for storing function Docker images."""
+        DOCKER_REGISTRY_UNSPECIFIED = 0
+        CONTAINER_REGISTRY = 1
+        ARTIFACT_REGISTRY = 2
 
     name = proto.Field(
         proto.STRING,
@@ -444,6 +460,11 @@ class CloudFunction(proto.Message):
     docker_repository = proto.Field(
         proto.STRING,
         number=34,
+    )
+    docker_registry = proto.Field(
+        proto.ENUM,
+        number=35,
+        enum=DockerRegistry,
     )
 
 
@@ -626,9 +647,7 @@ class FailurePolicy(proto.Message):
 class SecretEnvVar(proto.Message):
     r"""Configuration for a secret environment variable. It has the
     information necessary to fetch the secret value from secret
-    manager and expose it as an environment variable. Secret value
-    is not a part of the configuration. Secret values are only
-    fetched when a new clone starts.
+    manager and expose it as an environment variable.
 
     Attributes:
         key (str):
@@ -648,7 +667,7 @@ class SecretEnvVar(proto.Message):
             string 'latest'). It is recommended to use a
             numeric version for secret environment variables
             as any updates to the secret value is not
-            reflected until new clones start.
+            reflected until new instances start.
     """
 
     key = proto.Field(
@@ -779,8 +798,8 @@ class UpdateFunctionRequest(proto.Message):
         function (google.cloud.functions_v1.types.CloudFunction):
             Required. New version of the function.
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Required list of fields to be updated in this
-            request.
+            Required. The list of fields in ``CloudFunction`` that have
+            to be updated.
     """
 
     function = proto.Field(
@@ -956,11 +975,36 @@ class GenerateUploadUrlRequest(proto.Message):
             The project and location in which the Google Cloud Storage
             signed URL should be generated, specified in the format
             ``projects/*/locations/*``.
+        kms_key_name (str):
+            Resource name of a KMS crypto key (managed by the user) used
+            to encrypt/decrypt function source code objects in staging
+            Cloud Storage buckets. When you generate an upload url and
+            upload your source code, it gets copied to a staging Cloud
+            Storage bucket in an internal regional project. The source
+            code is then copied to a versioned directory in the sources
+            bucket in the consumer project during the function
+            deployment.
+
+            It must match the pattern
+            ``projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}``.
+
+            The Google Cloud Functions service account
+            (service-{project_number}@gcf-admin-robot.iam.gserviceaccount.com)
+            must be granted the role 'Cloud KMS CryptoKey
+            Encrypter/Decrypter
+            (roles/cloudkms.cryptoKeyEncrypterDecrypter)' on the
+            Key/KeyRing/Project/Organization (least access preferred).
+            GCF will delegate access to the Google Storage service
+            account in the internal project.
     """
 
     parent = proto.Field(
         proto.STRING,
         number=1,
+    )
+    kms_key_name = proto.Field(
+        proto.STRING,
+        number=2,
     )
 
 

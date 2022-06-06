@@ -625,7 +625,6 @@ class CloudFunctionsServiceClient(metaclass=CloudFunctionsServiceClientMeta):
                 contains user computation executed in
                 response to an event. It encapsulate
                 function and triggers configurations.
-                Next tag: 36
 
         """
         # Create or coerce a protobuf request object.
@@ -740,7 +739,7 @@ class CloudFunctionsServiceClient(metaclass=CloudFunctionsServiceClientMeta):
 
                 The result type for the operation will be :class:`google.cloud.functions_v1.types.CloudFunction` Describes a Cloud Function that contains user computation executed in
                    response to an event. It encapsulate function and
-                   triggers configurations. Next tag: 36
+                   triggers configurations.
 
         """
         # Create or coerce a protobuf request object.
@@ -855,7 +854,7 @@ class CloudFunctionsServiceClient(metaclass=CloudFunctionsServiceClientMeta):
 
                 The result type for the operation will be :class:`google.cloud.functions_v1.types.CloudFunction` Describes a Cloud Function that contains user computation executed in
                    response to an event. It encapsulate function and
-                   triggers configurations. Next tag: 36
+                   triggers configurations.
 
         """
         # Create or coerce a protobuf request object.
