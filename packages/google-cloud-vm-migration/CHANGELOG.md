@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.1.2](https://github.com/googleapis/python-vm-migration/compare/v1.1.1...v1.1.2) (2022-06-03)
+
+
+### Bug Fixes
+
+* **deps:** require protobuf <4.0.0dev ([#48](https://github.com/googleapis/python-vm-migration/issues/48)) ([c5c3155](https://github.com/googleapis/python-vm-migration/commit/c5c3155f62d5f46ac4f5071d68af0c448edcd93d))
+
+
+### Documentation
+
+* fix changelog header to consistent size ([#49](https://github.com/googleapis/python-vm-migration/issues/49)) ([1f5f92a](https://github.com/googleapis/python-vm-migration/commit/1f5f92ab6422e9b737a9f8e597501eb0cf17b798))
+
 ## [1.1.1](https://github.com/googleapis/python-vm-migration/compare/v1.1.0...v1.1.1) (2022-03-05)
 
 
