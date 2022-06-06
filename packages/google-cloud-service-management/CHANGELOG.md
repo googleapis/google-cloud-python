@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.2.3](https://github.com/googleapis/python-service-management/compare/v1.2.2...v1.2.3) (2022-06-03)
+
+
+### Bug Fixes
+
+* **deps:** require protobuf <4.0.0dev ([#141](https://github.com/googleapis/python-service-management/issues/141)) ([4c7181c](https://github.com/googleapis/python-service-management/commit/4c7181cb92354ba4d1adcaaf67d8cd374be1943a))
+
+
+### Documentation
+
+* fix changelog header to consistent size ([#142](https://github.com/googleapis/python-service-management/issues/142)) ([61c20c7](https://github.com/googleapis/python-service-management/commit/61c20c73279399731f4c525bbf328a27e17f64dc))
+
 ## [1.2.2](https://github.com/googleapis/python-service-management/compare/v1.2.1...v1.2.2) (2022-05-05)
 
 
