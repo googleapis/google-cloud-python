@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.3.2](https://github.com/googleapis/python-video-transcoder/compare/v1.3.1...v1.3.2) (2022-06-03)
+
+
+### Bug Fixes
+
+* **deps:** require protobuf <4.0.0dev ([#195](https://github.com/googleapis/python-video-transcoder/issues/195)) ([8d9c679](https://github.com/googleapis/python-video-transcoder/commit/8d9c679a2f0b460c1f34456ab2e46437c4cbdc16))
+
+
+### Documentation
+
+* fix changelog header to consistent size ([#196](https://github.com/googleapis/python-video-transcoder/issues/196)) ([04ee631](https://github.com/googleapis/python-video-transcoder/commit/04ee631bb65cd5bb0121f7dcfce9b78e67d19198))
+
 ## [1.3.1](https://github.com/googleapis/python-video-transcoder/compare/v1.3.0...v1.3.1) (2022-03-05)
 
 
