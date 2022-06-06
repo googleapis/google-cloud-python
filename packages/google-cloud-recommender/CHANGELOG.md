@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-recommender/#history
 
+## [2.7.4](https://github.com/googleapis/python-recommender/compare/v2.7.3...v2.7.4) (2022-06-06)
+
+
+### Bug Fixes
+
+* **deps:** require protobuf <4.0.0dev ([#207](https://github.com/googleapis/python-recommender/issues/207)) ([7e8c1a1](https://github.com/googleapis/python-recommender/commit/7e8c1a1c67f2bfaa65e0d97fef5cb5c7c29849b6))
+
+
+### Documentation
+
+* fix changelog header to consistent size ([#208](https://github.com/googleapis/python-recommender/issues/208)) ([355c612](https://github.com/googleapis/python-recommender/commit/355c6121afc231dc9b78e57fe7bf39ed1d31383d))
+
 ## [2.7.3](https://github.com/googleapis/python-recommender/compare/v2.7.2...v2.7.3) (2022-05-05)
 
 
