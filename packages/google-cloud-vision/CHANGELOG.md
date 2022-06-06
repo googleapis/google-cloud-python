@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-vision/#history
 
+## [2.7.3](https://github.com/googleapis/python-vision/compare/v2.7.2...v2.7.3) (2022-06-06)
+
+
+### Bug Fixes
+
+* **deps:** require protobuf <4.0.0dev ([#438](https://github.com/googleapis/python-vision/issues/438)) ([927e833](https://github.com/googleapis/python-vision/commit/927e8331c0825fbabb382942b3e0c1efd8bd7c11))
+
+
+### Documentation
+
+* fix changelog header to consistent size ([#439](https://github.com/googleapis/python-vision/issues/439)) ([e3bd56d](https://github.com/googleapis/python-vision/commit/e3bd56de3138830a931413d065ccc850b2e90a06))
+
 ## [2.7.2](https://github.com/googleapis/python-vision/compare/v2.7.1...v2.7.2) (2022-03-25)
 
 
