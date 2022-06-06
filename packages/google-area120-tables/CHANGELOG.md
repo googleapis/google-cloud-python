@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.6.2](https://github.com/googleapis/python-area120-tables/compare/v0.6.1...v0.6.2) (2022-06-03)
+
+
+### Bug Fixes
+
+* **deps:** require protobuf <4.0.0dev ([#165](https://github.com/googleapis/python-area120-tables/issues/165)) ([4475608](https://github.com/googleapis/python-area120-tables/commit/44756082f10cf31ed691d5345216de396efae88c))
+
+
+### Documentation
+
+* fix changelog header to consistent size ([#166](https://github.com/googleapis/python-area120-tables/issues/166)) ([bb33737](https://github.com/googleapis/python-area120-tables/commit/bb3373758f17d092bd65510107cd162d24e696fe))
+
 ## [0.6.1](https://github.com/googleapis/python-area120-tables/compare/v0.6.0...v0.6.1) (2022-03-05)
 
 
