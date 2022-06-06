@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.3.2](https://github.com/googleapis/python-apigee-connect/compare/v1.3.1...v1.3.2) (2022-06-03)
+
+
+### Bug Fixes
+
+* **deps:** require protobuf <4.0.0dev ([#115](https://github.com/googleapis/python-apigee-connect/issues/115)) ([4abbe8b](https://github.com/googleapis/python-apigee-connect/commit/4abbe8b68e1a8bb9f32b6f37f8f9462da0179b56))
+
+
+### Documentation
+
+* fix changelog header to consistent size ([#116](https://github.com/googleapis/python-apigee-connect/issues/116)) ([de3022c](https://github.com/googleapis/python-apigee-connect/commit/de3022cfe32ff6cc796bd24fb1a6f9935599ad96))
+
 ## [1.3.1](https://github.com/googleapis/python-apigee-connect/compare/v1.3.0...v1.3.1) (2022-03-05)
 
 
