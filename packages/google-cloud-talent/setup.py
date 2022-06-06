@@ -21,7 +21,7 @@ import setuptools
 
 name = "google-cloud-talent"
 description = "Google Cloud Talent Solution API client library"
-version = "2.5.2"
+version = "2.6.0"
 # Should be one of:
 # 'Development Status :: 3 - Alpha'
 # 'Development Status :: 4 - Beta'

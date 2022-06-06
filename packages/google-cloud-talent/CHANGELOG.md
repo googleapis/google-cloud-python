@@ -4,6 +4,24 @@
 
 [1]: https://pypi.org/project/google-cloud-talent/#history
 
+## [2.6.0](https://github.com/googleapis/python-talent/compare/v2.5.2...v2.6.0) (2022-06-06)
+
+
+### Features
+
+* Add a new operator on companyDisplayNames filter to further support fuzzy match by treating input value as a multi word token ([#248](https://github.com/googleapis/python-talent/issues/248)) ([aeab3a0](https://github.com/googleapis/python-talent/commit/aeab3a023ae19f313f7ea8e75d7e48fbb784fbcc))
+* Add a new option TELECOMMUTE_JOBS_EXCLUDED under enum TelecommutePreference to completely filter out the telecommute jobs in response ([aeab3a0](https://github.com/googleapis/python-talent/commit/aeab3a023ae19f313f7ea8e75d7e48fbb784fbcc))
+
+
+### Bug Fixes
+
+* **deps:** require protobuf <4.0.0dev ([#251](https://github.com/googleapis/python-talent/issues/251)) ([75b11a6](https://github.com/googleapis/python-talent/commit/75b11a6cbb8a872d6766d0aa31d97efc765318cd))
+
+
+### Documentation
+
+* Deprecate option TELECOMMUTE_EXCLUDED under enum TelecommutePreference ([aeab3a0](https://github.com/googleapis/python-talent/commit/aeab3a023ae19f313f7ea8e75d7e48fbb784fbcc))
+
 ### [2.5.2](https://github.com/googleapis/python-talent/compare/v2.5.1...v2.5.2) (2022-03-29)
 
 
