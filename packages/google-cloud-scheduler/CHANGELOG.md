@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-scheduler/#history
 
+## [2.6.4](https://github.com/googleapis/python-scheduler/compare/v2.6.3...v2.6.4) (2022-06-06)
+
+
+### Bug Fixes
+
+* **deps:** require protobuf <4.0.0dev ([#243](https://github.com/googleapis/python-scheduler/issues/243)) ([72b64ad](https://github.com/googleapis/python-scheduler/commit/72b64ad3ff1dbf92273c73e07c798f974f6afd5e))
+
+
+### Documentation
+
+* fix changelog header to consistent size ([#244](https://github.com/googleapis/python-scheduler/issues/244)) ([b6b6fd1](https://github.com/googleapis/python-scheduler/commit/b6b6fd1f607f7b67867e8dc31472c69c9ef20958))
+
 ## [2.6.3](https://github.com/googleapis/python-scheduler/compare/v2.6.2...v2.6.3) (2022-04-14)
 
 
