@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.3.3](https://github.com/googleapis/python-shell/compare/v1.3.2...v1.3.3) (2022-06-03)
+
+
+### Bug Fixes
+
+* **deps:** require protobuf <4.0.0dev ([#106](https://github.com/googleapis/python-shell/issues/106)) ([5ac2e3b](https://github.com/googleapis/python-shell/commit/5ac2e3b0bbf79f4910a3e00f077554f78bf9accf))
+
+
+### Documentation
+
+* fix changelog header to consistent size ([#107](https://github.com/googleapis/python-shell/issues/107)) ([4d16fd5](https://github.com/googleapis/python-shell/commit/4d16fd5738b545fac4cb7b4ae47a59b618a73333))
+
 ## [1.3.2](https://github.com/googleapis/python-shell/compare/v1.3.1...v1.3.2) (2022-03-05)
 
 
