@@ -1,5 +1,17 @@
 # Changelog
 
+## [2.8.1](https://github.com/googleapis/python-containeranalysis/compare/v2.8.0...v2.8.1) (2022-06-03)
+
+
+### Bug Fixes
+
+* **deps:** require protobuf <4.0.0dev ([#290](https://github.com/googleapis/python-containeranalysis/issues/290)) ([26720af](https://github.com/googleapis/python-containeranalysis/commit/26720af5f15534c7459bb6bcf3711334b79e3aeb))
+
+
+### Documentation
+
+* fix changelog header to consistent size ([#291](https://github.com/googleapis/python-containeranalysis/issues/291)) ([3bd6974](https://github.com/googleapis/python-containeranalysis/commit/3bd6974f040bcac04fe2ec3061f7ff284ab98aed))
+
 ## [2.8.0](https://github.com/googleapis/python-containeranalysis/compare/v2.7.3...v2.8.0) (2022-05-05)
 
 
