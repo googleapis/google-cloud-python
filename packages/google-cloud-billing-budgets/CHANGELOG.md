@@ -1,4 +1,16 @@
 # Changelog
+## [1.6.2](https://github.com/googleapis/python-billingbudgets/compare/v1.6.1...v1.6.2) (2022-06-03)
+
+
+### Bug Fixes
+
+* **deps:** require protobuf <4.0.0dev ([#208](https://github.com/googleapis/python-billingbudgets/issues/208)) ([d55daaa](https://github.com/googleapis/python-billingbudgets/commit/d55daaa337b3c8e1fea14972f4d72dc32d35ac9d))
+
+
+### Documentation
+
+* fix changelog header to consistent size ([#209](https://github.com/googleapis/python-billingbudgets/issues/209)) ([d50aaad](https://github.com/googleapis/python-billingbudgets/commit/d50aaad156ae5c3654461e5bdac213ab65d1e82c))
+
 ## [1.6.1](https://github.com/googleapis/python-billingbudgets/compare/v1.6.0...v1.6.1) (2022-03-05)
 
 
