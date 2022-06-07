@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.3.2](https://github.com/googleapis/python-contact-center-insights/compare/v1.3.1...v1.3.2) (2022-06-07)
+
+
+### Bug Fixes
+
+* **deps:** require protobuf <4.0.0dev ([#199](https://github.com/googleapis/python-contact-center-insights/issues/199)) ([72b1db8](https://github.com/googleapis/python-contact-center-insights/commit/72b1db85bc851e28a52337bba6ca15f3d5c30f59))
+
+
+### Documentation
+
+* fix changelog header to consistent size ([#200](https://github.com/googleapis/python-contact-center-insights/issues/200)) ([097bb5c](https://github.com/googleapis/python-contact-center-insights/commit/097bb5c76ba0073fbbd0c8d9ddf5e3e5689a430e))
+* Updating comments ([#203](https://github.com/googleapis/python-contact-center-insights/issues/203)) ([9a4888e](https://github.com/googleapis/python-contact-center-insights/commit/9a4888efb120e2d061207217a2f9b5df995eea94))
+
 ## [1.3.1](https://github.com/googleapis/python-contact-center-insights/compare/v1.3.0...v1.3.1) (2022-03-07)
 
 
