@@ -4,6 +4,31 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+## [2.7.0](https://github.com/googleapis/google-auth-library-python/compare/v2.6.6...v2.7.0) (2022-06-07)
+
+
+### Features
+
+* add experimental enterprise cert support ([#1052](https://github.com/googleapis/google-auth-library-python/issues/1052)) ([dda7dda](https://github.com/googleapis/google-auth-library-python/commit/dda7ddaf859f5f7a21af714ebb422dfde4da46c8))
+* add experimental GDCH support ([#1022](https://github.com/googleapis/google-auth-library-python/issues/1022)) ([5367aac](https://github.com/googleapis/google-auth-library-python/commit/5367aac881fdba814f66e4d6d5f59fccecc12547))
+* Pluggable auth support ([#995](https://github.com/googleapis/google-auth-library-python/issues/995)) ([62daa73](https://github.com/googleapis/google-auth-library-python/commit/62daa73168f47806905bfc52b8f059995a193b71))
+
+
+### Bug Fixes
+
+* validate urls for external accounts ([#1031](https://github.com/googleapis/google-auth-library-python/issues/1031)) ([61b1f15](https://github.com/googleapis/google-auth-library-python/commit/61b1f1561ad6c3ddf4540143171351e53ff50f99))
+
+
+### Reverts
+
+* pluggable auth support [#995](https://github.com/googleapis/google-auth-library-python/issues/995) ([#1039](https://github.com/googleapis/google-auth-library-python/issues/1039)) ([513d999](https://github.com/googleapis/google-auth-library-python/commit/513d999d1f3b8a69bff86a2b91a73b6bdf6f92d0))
+* revert experimental GDCH support ([#1022](https://github.com/googleapis/google-auth-library-python/issues/1022)) ([#1042](https://github.com/googleapis/google-auth-library-python/issues/1042)) ([c720995](https://github.com/googleapis/google-auth-library-python/commit/c720995aa08f539fe884685d9d53e599ca707e45))
+
+
+### Documentation
+
+* fix changelog header to consistent size ([#1046](https://github.com/googleapis/google-auth-library-python/issues/1046)) ([e64d084](https://github.com/googleapis/google-auth-library-python/commit/e64d0847276d456a95b171f5b79207e94ab818f3))
+
 ## [2.6.6](https://github.com/googleapis/google-auth-library-python/compare/v2.6.5...v2.6.6) (2022-04-21)
 
 
