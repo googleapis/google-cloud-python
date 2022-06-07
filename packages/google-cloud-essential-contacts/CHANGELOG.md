@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.1.2](https://github.com/googleapis/python-essential-contacts/compare/v1.1.1...v1.1.2) (2022-06-03)
+
+
+### Bug Fixes
+
+* **deps:** require protobuf <4.0.0dev ([#117](https://github.com/googleapis/python-essential-contacts/issues/117)) ([4830d80](https://github.com/googleapis/python-essential-contacts/commit/4830d8065cfbd169848f32d8a116ec4c37e94801))
+
+
+### Documentation
+
+* fix changelog header to consistent size ([#116](https://github.com/googleapis/python-essential-contacts/issues/116)) ([4a32ee2](https://github.com/googleapis/python-essential-contacts/commit/4a32ee2bd1474fb076fba41ee64b6fa3c2b1c52a))
+
 ## [1.1.1](https://github.com/googleapis/python-essential-contacts/compare/v1.1.0...v1.1.1) (2022-03-05)
 
 
