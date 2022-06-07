@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-dataproc/#history
 
+## [4.0.3](https://github.com/googleapis/python-dataproc/compare/v4.0.2...v4.0.3) (2022-06-03)
+
+
+### Bug Fixes
+
+* **deps:** require protobuf <4.0.0dev ([#423](https://github.com/googleapis/python-dataproc/issues/423)) ([5d1a263](https://github.com/googleapis/python-dataproc/commit/5d1a263533c1812587a9668d6bd6d7d29ac82f2f))
+
+
+### Documentation
+
+* fix changelog header to consistent size ([#424](https://github.com/googleapis/python-dataproc/issues/424)) ([00162f0](https://github.com/googleapis/python-dataproc/commit/00162f07935cca365c41dcbf8be4e5a7681d680e))
+
 ## [4.0.2](https://github.com/googleapis/python-dataproc/compare/v4.0.1...v4.0.2) (2022-04-06)
 
 
