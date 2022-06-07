@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.5.2](https://github.com/googleapis/python-life-sciences/compare/v0.5.1...v0.5.2) (2022-06-03)
+
+
+### Bug Fixes
+
+* **deps:** require protobuf <4.0.0dev ([#104](https://github.com/googleapis/python-life-sciences/issues/104)) ([bf7be77](https://github.com/googleapis/python-life-sciences/commit/bf7be77f20b3dfe75368d9d42d0724e599c77b59))
+
+
+### Documentation
+
+* fix changelog header to consistent size ([#103](https://github.com/googleapis/python-life-sciences/issues/103)) ([52d4069](https://github.com/googleapis/python-life-sciences/commit/52d406904afab63c32b0a56ad4553a5004db6dd7))
+
 ## [0.5.1](https://github.com/googleapis/python-life-sciences/compare/v0.5.0...v0.5.1) (2022-03-05)
 
 
