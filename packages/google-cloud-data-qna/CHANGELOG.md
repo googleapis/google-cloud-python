@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.6.3](https://github.com/googleapis/python-data-qna/compare/v0.6.2...v0.6.3) (2022-06-03)
+
+
+### Bug Fixes
+
+* **deps:** require protobuf <4.0.0dev ([#151](https://github.com/googleapis/python-data-qna/issues/151)) ([6f292bd](https://github.com/googleapis/python-data-qna/commit/6f292bdfad46ca12a622209519af6a77a37c5132))
+
+
+### Documentation
+
+* fix changelog header to consistent size ([#152](https://github.com/googleapis/python-data-qna/issues/152)) ([07536c6](https://github.com/googleapis/python-data-qna/commit/07536c60e876a8b8d9e78545c5f3492515149c0b))
+
 ## [0.6.2](https://github.com/googleapis/python-data-qna/compare/v0.6.1...v0.6.2) (2022-03-05)
 
 
