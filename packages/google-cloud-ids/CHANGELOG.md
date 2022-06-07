@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.1.2](https://github.com/googleapis/python-ids/compare/v1.1.1...v1.1.2) (2022-06-03)
+
+
+### Bug Fixes
+
+* **deps:** require protobuf <4.0.0dev ([#52](https://github.com/googleapis/python-ids/issues/52)) ([cde8a52](https://github.com/googleapis/python-ids/commit/cde8a52a5152df0d7f2858ab4733769a024eb9aa))
+
+
+### Documentation
+
+* fix changelog header to consistent size ([#51](https://github.com/googleapis/python-ids/issues/51)) ([24267af](https://github.com/googleapis/python-ids/commit/24267afe4003f33c2f7505ac69c23f352136c55a))
+
 ## [1.1.1](https://github.com/googleapis/python-ids/compare/v1.1.0...v1.1.1) (2022-03-05)
 
 
