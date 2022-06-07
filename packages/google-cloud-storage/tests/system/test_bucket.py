@@ -47,6 +47,8 @@ def test_bucket_lifecycle_rules(storage_client, buckets_to_delete):
     bucket_name = _helpers.unique_name("w-lifcycle-rules")
     custom_time_before = datetime.date(2018, 8, 1)
     noncurrent_before = datetime.date(2018, 8, 1)
+    matches_prefix = ["storage-sys-test", "gcs-sys-test"]
+    matches_suffix = ["suffix-test"]
 
     with pytest.raises(exceptions.NotFound):
         storage_client.get_bucket(bucket_name)
@@ -59,6 +61,8 @@ def test_bucket_lifecycle_rules(storage_client, buckets_to_delete):
         custom_time_before=custom_time_before,
         days_since_noncurrent_time=2,
         noncurrent_time_before=noncurrent_before,
+        matches_prefix=matches_prefix,
+        matches_suffix=matches_suffix,
     )
     bucket.add_lifecycle_set_storage_class_rule(
         constants.COLDLINE_STORAGE_CLASS,
@@ -77,6 +81,8 @@ def test_bucket_lifecycle_rules(storage_client, buckets_to_delete):
             custom_time_before=custom_time_before,
             days_since_noncurrent_time=2,
             noncurrent_time_before=noncurrent_before,
+            matches_prefix=matches_prefix,
+            matches_suffix=matches_suffix,
         ),
         LifecycleRuleSetStorageClass(
             constants.COLDLINE_STORAGE_CLASS,
@@ -95,9 +101,17 @@ def test_bucket_lifecycle_rules(storage_client, buckets_to_delete):
     assert list(bucket.lifecycle_rules) == expected_rules
 
     # Test modifying lifecycle rules
-    expected_rules[0] = LifecycleRuleDelete(age=30)
+    expected_rules[0] = LifecycleRuleDelete(
+        age=30,
+        matches_prefix=["new-prefix"],
+        matches_suffix=["new-suffix"],
+    )
     rules = list(bucket.lifecycle_rules)
-    rules[0]["condition"] = {"age": 30}
+    rules[0]["condition"] = {
+        "age": 30,
+        "matchesPrefix": ["new-prefix"],
+        "matchesSuffix": ["new-suffix"],
+    }
     bucket.lifecycle_rules = rules
     bucket.patch()
 

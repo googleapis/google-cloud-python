@@ -230,6 +230,28 @@ class Test_LifecycleRuleConditions(unittest.TestCase):
         self.assertEqual(conditions.number_of_newer_versions, 3)
         self.assertEqual(conditions.noncurrent_time_before, noncurrent_before)
 
+    def test_ctor_w_matches_prefix(self):
+        conditions = self._make_one(matches_prefix=["test-prefix"])
+        expected = {"matchesPrefix": ["test-prefix"]}
+        self.assertEqual(dict(conditions), expected)
+        self.assertIsNone(conditions.age)
+        self.assertIsNone(conditions.created_before)
+        self.assertIsNone(conditions.is_live)
+        self.assertIsNone(conditions.matches_storage_class)
+        self.assertIsNone(conditions.matches_suffix)
+        self.assertEqual(conditions.matches_prefix, ["test-prefix"])
+
+    def test_ctor_w_matches_suffix(self):
+        conditions = self._make_one(matches_suffix=["test-suffix"])
+        expected = {"matchesSuffix": ["test-suffix"]}
+        self.assertEqual(dict(conditions), expected)
+        self.assertIsNone(conditions.age)
+        self.assertIsNone(conditions.created_before)
+        self.assertIsNone(conditions.is_live)
+        self.assertIsNone(conditions.matches_storage_class)
+        self.assertIsNone(conditions.matches_prefix)
+        self.assertEqual(conditions.matches_suffix, ["test-suffix"])
+
     def test_from_api_repr(self):
         import datetime
 
