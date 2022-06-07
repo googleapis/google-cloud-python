@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-error-reporting/#history
 
+## [1.5.3](https://github.com/googleapis/python-error-reporting/compare/v1.5.2...v1.5.3) (2022-06-07)
+
+
+### Bug Fixes
+
+* **deps:** require protobuf <4.0.0dev ([#347](https://github.com/googleapis/python-error-reporting/issues/347)) ([ad4c778](https://github.com/googleapis/python-error-reporting/commit/ad4c778e290eb76ea1d62252b5e115ca4c30d42c))
+
+
+### Documentation
+
+* fix changelog header to consistent size ([#346](https://github.com/googleapis/python-error-reporting/issues/346)) ([6dc90f7](https://github.com/googleapis/python-error-reporting/commit/6dc90f7e8978c06899c50f1897c160f5e253be79))
+
 ## [1.5.2](https://github.com/googleapis/python-error-reporting/compare/v1.5.1...v1.5.2) (2022-04-16)
 
 
