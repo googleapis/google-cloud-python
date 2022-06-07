@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-cloud-speech/#history
 
+## [2.14.1](https://github.com/googleapis/python-speech/compare/v2.14.0...v2.14.1) (2022-06-06)
+
+
+### Bug Fixes
+
+* **deps:** require protobuf <4.0.0dev ([#400](https://github.com/googleapis/python-speech/issues/400)) ([a5d2059](https://github.com/googleapis/python-speech/commit/a5d2059d29167ba0ba3f6c07ca7336073ea87053))
+
+
+### Documentation
+
+* fix changelog header to consistent size ([#401](https://github.com/googleapis/python-speech/issues/401)) ([233539d](https://github.com/googleapis/python-speech/commit/233539d8b3ef34a236eac9a6662e19e433f427fc))
+* **samples:** resolve library deprecation warnings ([1d4569d](https://github.com/googleapis/python-speech/commit/1d4569d86b9afcc882016abcd60e96583e4efed9))
+
 ## [2.14.0](https://github.com/googleapis/python-speech/compare/v2.13.1...v2.14.0) (2022-05-11)
 
 
