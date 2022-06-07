@@ -1,5 +1,22 @@
 # Changelog
 
+## [1.7.0](https://github.com/googleapis/python-functions/compare/v1.6.0...v1.7.0) (2022-06-06)
+
+
+### Features
+
+* added support for CMEK ([#188](https://github.com/googleapis/python-functions/issues/188)) ([fa7d695](https://github.com/googleapis/python-functions/commit/fa7d695822e8dc6bb26a2d17800a312c3220fc4c))
+
+
+### Bug Fixes
+
+* **deps:** require protobuf <4.0.0dev ([#184](https://github.com/googleapis/python-functions/issues/184)) ([d1e8907](https://github.com/googleapis/python-functions/commit/d1e8907c5862549a412424009a7621b1f321548a))
+
+
+### Documentation
+
+* fix changelog header to consistent size ([#183](https://github.com/googleapis/python-functions/issues/183)) ([b28c780](https://github.com/googleapis/python-functions/commit/b28c780a405faaf4b068a8e2860932bab4f2ebd9))
+
 ## [1.6.0](https://github.com/googleapis/python-functions/compare/v1.5.2...v1.6.0) (2022-04-14)
 
 
