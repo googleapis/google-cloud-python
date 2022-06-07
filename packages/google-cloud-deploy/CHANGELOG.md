@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.2.1](https://github.com/googleapis/python-deploy/compare/v1.2.0...v1.2.1) (2022-06-03)
+
+
+### Bug Fixes
+
+* **deps:** require protobuf <4.0.0dev ([#99](https://github.com/googleapis/python-deploy/issues/99)) ([5f58f57](https://github.com/googleapis/python-deploy/commit/5f58f5744097cfb9bfbe933e2e56bc198a0436b3))
+
+
+### Documentation
+
+* fix changelog header to consistent size ([#100](https://github.com/googleapis/python-deploy/issues/100)) ([d13fd2d](https://github.com/googleapis/python-deploy/commit/d13fd2dd4bd260879e9795174465639d5dcd4108))
+
 ## [1.2.0](https://github.com/googleapis/python-deploy/compare/v1.1.1...v1.2.0) (2022-05-06)
 
 
