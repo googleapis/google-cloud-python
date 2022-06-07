@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.0.1](https://github.com/googleapis/python-dataplex/compare/v1.0.0...v1.0.1) (2022-06-03)
+
+
+### Bug Fixes
+
+* **deps:** require protobuf <4.0.0dev ([#66](https://github.com/googleapis/python-dataplex/issues/66)) ([0faef94](https://github.com/googleapis/python-dataplex/commit/0faef94bbd9371e41a18aa0372b1f59865010cab))
+
+
+### Documentation
+
+* fix changelog header to consistent size ([#67](https://github.com/googleapis/python-dataplex/issues/67)) ([3090fd6](https://github.com/googleapis/python-dataplex/commit/3090fd6d011e2a482e46a1c19c5e87a1aa90de35))
+
 ## [1.0.0](https://github.com/googleapis/python-dataplex/compare/v0.2.1...v1.0.0) (2022-04-26)
 
 
