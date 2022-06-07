@@ -118,6 +118,7 @@ def unit_prev_versions(session):
         "--cov=google.oauth2",
         "--cov=tests",
         "tests",
+        "--ignore=tests/transport/test__custom_tls_signer.py",  # enterprise cert is for python 3.6+
     )
 
 

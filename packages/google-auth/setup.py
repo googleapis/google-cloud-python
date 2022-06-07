@@ -38,6 +38,9 @@ extras = {
     ],
     "pyopenssl": "pyopenssl>=20.0.0",
     "reauth": "pyu2f>=0.1.5",
+    # Enterprise cert only works for OpenSSL 1.1.1. Newer versions of these
+    # dependencies are built with OpenSSL 3.0 so we need to fix the version.
+    "enterprise_cert": ["cryptography==36.0.2", "pyopenssl==22.0.0"],
 }
 
 with io.open("README.rst", "r") as fh:

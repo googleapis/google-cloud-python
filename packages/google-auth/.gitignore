@@ -46,3 +46,5 @@ pytype_output/
 .DS_Store
 cert_path
 key_path
+env/
+.vscode/
