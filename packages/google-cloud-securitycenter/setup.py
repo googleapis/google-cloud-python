@@ -21,7 +21,7 @@ import setuptools
 
 name = "google-cloud-securitycenter"
 description = "Cloud Security Command Center API client library"
-version = "1.11.0"
+version = "1.11.1"
 release_status = "Development Status :: 5 - Production/Stable"
 dependencies = [
     # NOTE: Maintainers, please do not require google-api-core>=2.x.x

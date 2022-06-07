@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-securitycenter/#history
 
+## [1.11.1](https://github.com/googleapis/python-securitycenter/compare/v1.11.0...v1.11.1) (2022-06-06)
+
+
+### Bug Fixes
+
+* **deps:** require protobuf <4.0.0dev ([#336](https://github.com/googleapis/python-securitycenter/issues/336)) ([b02e931](https://github.com/googleapis/python-securitycenter/commit/b02e93180914e21d0c0359a298f80c9bf6f22af0))
+
+
+### Documentation
+
+* fix changelog header to consistent size ([#338](https://github.com/googleapis/python-securitycenter/issues/338)) ([60c8d5f](https://github.com/googleapis/python-securitycenter/commit/60c8d5f8010e81f90dd6291ac2e4ba505aa8085a))
+
 ## [1.11.0](https://github.com/googleapis/python-securitycenter/compare/v1.10.0...v1.11.0) (2022-04-28)
 
 
