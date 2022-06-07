@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/dialogflow/#history
 
+## [2.14.1](https://github.com/googleapis/python-dialogflow/compare/v2.14.0...v2.14.1) (2022-06-03)
+
+
+### Bug Fixes
+
+* **deps:** require protobuf <4.0.0dev ([#523](https://github.com/googleapis/python-dialogflow/issues/523)) ([d444383](https://github.com/googleapis/python-dialogflow/commit/d44438335af3488cec8d973b3329cea1161bc5eb))
+
+
+### Documentation
+
+* fix changelog header to consistent size ([#524](https://github.com/googleapis/python-dialogflow/issues/524)) ([75977e8](https://github.com/googleapis/python-dialogflow/commit/75977e823d5e569494da81fbb8de4f0395bf6990))
+
 ## [2.14.0](https://github.com/googleapis/python-dialogflow/compare/v2.13.0...v2.14.0) (2022-05-09)
 
 
