@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.3.2](https://github.com/googleapis/python-dms/compare/v1.3.1...v1.3.2) (2022-06-03)
+
+
+### Bug Fixes
+
+* **deps:** require protobuf <4.0.0dev ([#120](https://github.com/googleapis/python-dms/issues/120)) ([aa852de](https://github.com/googleapis/python-dms/commit/aa852de1c441c66f8f1e169171c9d0cfaa17314a))
+
+
+### Documentation
+
+* fix changelog header to consistent size ([#119](https://github.com/googleapis/python-dms/issues/119)) ([2781a13](https://github.com/googleapis/python-dms/commit/2781a136d0eced234aecc962389f5f4bc033f2b1))
+
 ## [1.3.1](https://github.com/googleapis/python-dms/compare/v1.3.0...v1.3.1) (2022-03-05)
 
 
