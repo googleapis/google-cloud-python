@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-asset/#history
 
+## [3.9.1](https://github.com/googleapis/python-asset/compare/v3.9.0...v3.9.1) (2022-06-03)
+
+
+### Bug Fixes
+
+* **deps:** require protobuf <4.0.0dev ([#432](https://github.com/googleapis/python-asset/issues/432)) ([8c28318](https://github.com/googleapis/python-asset/commit/8c2831839fcf4457b5bff244d63ced7bea715807))
+
+
+### Documentation
+
+* fix changelog header to consistent size ([#434](https://github.com/googleapis/python-asset/issues/434)) ([68d237e](https://github.com/googleapis/python-asset/commit/68d237e999f94af889c6559229d1d6c439bfe29a))
+
 ## [3.9.0](https://github.com/googleapis/python-asset/compare/v3.8.1...v3.9.0) (2022-05-19)
 
 
