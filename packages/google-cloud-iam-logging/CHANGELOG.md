@@ -1,6 +1,13 @@
 # Changelog
 
-### [1.0.1](https://github.com/googleapis/python-iam-logging/compare/v1.0.0...v1.0.1) (2022-03-05)
+## [1.0.2](https://github.com/googleapis/python-iam-logging/compare/v1.0.1...v1.0.2) (2022-06-03)
+
+
+### Bug Fixes
+
+* **deps:** require protobuf <4.0.0dev ([#90](https://github.com/googleapis/python-iam-logging/issues/90)) ([c0f7e3d](https://github.com/googleapis/python-iam-logging/commit/c0f7e3dd9fb9ffe9a645b784c089cdbafc35275f))
+
+## [1.0.1](https://github.com/googleapis/python-iam-logging/compare/v1.0.0...v1.0.1) (2022-03-05)
 
 
 ### Bug Fixes
@@ -21,14 +28,14 @@
 
 * add support for python 3.10 ([#38](https://www.github.com/googleapis/python-iam-logging/issues/38)) ([77a155a](https://www.github.com/googleapis/python-iam-logging/commit/77a155ac795471d110ca2feef89f70e6957c5779))
 
-### [0.1.3](https://www.github.com/googleapis/python-iam-logging/compare/v0.1.2...v0.1.3) (2021-09-24)
+## [0.1.3](https://www.github.com/googleapis/python-iam-logging/compare/v0.1.2...v0.1.3) (2021-09-24)
 
 
 ### Bug Fixes
 
 * add 'dict' annotation type to 'request' ([86d48f8](https://www.github.com/googleapis/python-iam-logging/commit/86d48f8fcf08d9cb381a46fcefb9f22b334d4896))
 
-### [0.1.2](https://www.github.com/googleapis/python-iam-logging/compare/v0.1.1...v0.1.2) (2021-07-29)
+## [0.1.2](https://www.github.com/googleapis/python-iam-logging/compare/v0.1.1...v0.1.2) (2021-07-29)
 
 
 ### Bug Fixes
@@ -46,7 +53,7 @@
 
 * release as 0.1.2 ([#21](https://www.github.com/googleapis/python-iam-logging/issues/21)) ([cbdafee](https://www.github.com/googleapis/python-iam-logging/commit/cbdafee9741024b45f61030183cb27c7cedcd73a))
 
-### [0.1.1](https://www.github.com/googleapis/python-iam-logging/compare/v0.1.0...v0.1.1) (2021-07-14)
+## [0.1.1](https://www.github.com/googleapis/python-iam-logging/compare/v0.1.0...v0.1.1) (2021-07-14)
 
 
 ### Documentation
