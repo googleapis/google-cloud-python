@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.2.3](https://github.com/googleapis/python-binary-authorization/compare/v1.2.2...v1.2.3) (2022-06-03)
+
+
+### Bug Fixes
+
+* **deps:** require protobuf <4.0.0dev ([#148](https://github.com/googleapis/python-binary-authorization/issues/148)) ([2768020](https://github.com/googleapis/python-binary-authorization/commit/276802072057a817993311b92111ee4f84c7505a))
+
+
+### Documentation
+
+* fix changelog header to consistent size ([#149](https://github.com/googleapis/python-binary-authorization/issues/149)) ([3d3d7e4](https://github.com/googleapis/python-binary-authorization/commit/3d3d7e40793834a4d079e83d21db6ec1fe285718))
+
 ## [1.2.2](https://github.com/googleapis/python-binary-authorization/compare/v1.2.1...v1.2.2) (2022-03-05)
 
 
