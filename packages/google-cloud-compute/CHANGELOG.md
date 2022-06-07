@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.3.2](https://github.com/googleapis/python-compute/compare/v1.3.1...v1.3.2) (2022-06-03)
+
+
+### Bug Fixes
+
+* **deps:** require protobuf <4.0.0dev ([#287](https://github.com/googleapis/python-compute/issues/287)) ([afe0083](https://github.com/googleapis/python-compute/commit/afe0083f945d5a7ead4cf7078192eb63efd2f886))
+
+
+### Documentation
+
+* fix changelog header to consistent size ([#288](https://github.com/googleapis/python-compute/issues/288)) ([20af4aa](https://github.com/googleapis/python-compute/commit/20af4aa9277c1aa7bfb24a46d9875df61b7bed05))
+
 ## [1.3.1](https://github.com/googleapis/python-compute/compare/v1.3.0...v1.3.1) (2022-05-05)
 
 
