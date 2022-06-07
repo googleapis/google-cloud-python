@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-datacatalog/#history
 
+## [3.8.1](https://github.com/googleapis/python-datacatalog/compare/v3.8.0...v3.8.1) (2022-06-03)
+
+
+### Bug Fixes
+
+* **deps:** require protobuf <4.0.0dev ([#384](https://github.com/googleapis/python-datacatalog/issues/384)) ([f73208b](https://github.com/googleapis/python-datacatalog/commit/f73208b7022c35267e62bdb3ba8bb4de7bc51915))
+
+
+### Documentation
+
+* fix changelog header to consistent size ([#385](https://github.com/googleapis/python-datacatalog/issues/385)) ([7588b0b](https://github.com/googleapis/python-datacatalog/commit/7588b0bf7221c1c4b599fd9d196c3674828718b4))
+
 ## [3.8.0](https://github.com/googleapis/python-datacatalog/compare/v3.7.1...v3.8.0) (2022-05-09)
 
 
