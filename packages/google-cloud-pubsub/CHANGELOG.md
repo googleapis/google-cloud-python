@@ -5,6 +5,24 @@
 [1]: https://pypi.org/project/google-cloud-pubsub/#history
 
 
+## [2.13.0](https://github.com/googleapis/python-pubsub/compare/v2.12.1...v2.13.0) (2022-06-06)
+
+
+### Features
+
+* add BigQuery configuration for subscriptions ([#685](https://github.com/googleapis/python-pubsub/issues/685)) ([6fa03be](https://github.com/googleapis/python-pubsub/commit/6fa03be779d6a7105bb7c029b95d4c357d2a49df))
+
+
+### Bug Fixes
+
+* add info log for bidi streaming pull ack_deadline requests ([#692](https://github.com/googleapis/python-pubsub/issues/692)) ([fcb67dd](https://github.com/googleapis/python-pubsub/commit/fcb67dd0d8fff5a583ebe0a3a08d0219601df8e9))
+* **deps:** require protobuf <4.0.0dev ([#699](https://github.com/googleapis/python-pubsub/issues/699)) ([dcdf013](https://github.com/googleapis/python-pubsub/commit/dcdf0137905949662ce191adcb6dd588bd74f9fe))
+
+
+### Documentation
+
+* fix changelog header to consistent size ([#700](https://github.com/googleapis/python-pubsub/issues/700)) ([93f2b62](https://github.com/googleapis/python-pubsub/commit/93f2b62a18f622d8da71043a6b6d3f53295db308))
+
 ## [2.12.1](https://github.com/googleapis/python-pubsub/compare/v2.12.0...v2.12.1) (2022-05-11)
 
 
