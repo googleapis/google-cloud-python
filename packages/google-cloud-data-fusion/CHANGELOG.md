@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.4.2](https://github.com/googleapis/python-data-fusion/compare/v1.4.1...v1.4.2) (2022-06-03)
+
+
+### Bug Fixes
+
+* **deps:** require protobuf <4.0.0dev ([#112](https://github.com/googleapis/python-data-fusion/issues/112)) ([adc00c1](https://github.com/googleapis/python-data-fusion/commit/adc00c1c7a75d1d06cef8e2a841353c0b7365457))
+
+
+### Documentation
+
+* fix changelog header to consistent size ([#113](https://github.com/googleapis/python-data-fusion/issues/113)) ([2ec8e36](https://github.com/googleapis/python-data-fusion/commit/2ec8e36dcfe1acacf0b7e32f06fcadad9029cb3f))
+
 ## [1.4.1](https://github.com/googleapis/python-data-fusion/compare/v1.4.0...v1.4.1) (2022-03-05)
 
 
