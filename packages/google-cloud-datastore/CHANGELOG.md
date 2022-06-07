@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-datastore/#history
 
+## [2.6.2](https://github.com/googleapis/python-datastore/compare/v2.6.1...v2.6.2) (2022-06-07)
+
+
+### Bug Fixes
+
+* **deps:** require protobuf <4.0.0dev ([#318](https://github.com/googleapis/python-datastore/issues/318)) ([1dccd37](https://github.com/googleapis/python-datastore/commit/1dccd377fd86613b330df11477135b56e19d2226))
+
+
+### Documentation
+
+* fix changelog header to consistent size ([#319](https://github.com/googleapis/python-datastore/issues/319)) ([d3e9304](https://github.com/googleapis/python-datastore/commit/d3e93044c4520e5ebb25737cdd356d9d8e57fe6e))
+
 ## [2.6.1](https://github.com/googleapis/python-datastore/compare/v2.6.0...v2.6.1) (2022-05-27)
 
 
