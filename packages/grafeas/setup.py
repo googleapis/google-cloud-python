@@ -21,7 +21,7 @@ import setuptools
 
 name = "grafeas"
 description = "Grafeas API client library"
-version = "1.4.4"
+version = "1.4.5"
 release_status = "Development Status :: 5 - Production/Stable"
 dependencies = [
     # NOTE: Maintainers, please do not require google-api-core>=2.x.x

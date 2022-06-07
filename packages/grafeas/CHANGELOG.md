@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/grafeas/#history
 
+## [1.4.5](https://github.com/googleapis/python-grafeas/compare/v1.4.4...v1.4.5) (2022-06-03)
+
+
+### Bug Fixes
+
+* **deps:** require protobuf <4.0.0dev ([#182](https://github.com/googleapis/python-grafeas/issues/182)) ([d20665c](https://github.com/googleapis/python-grafeas/commit/d20665c84379e260cd2d4470ba8b000f0336a8d2))
+
+
+### Documentation
+
+* fix changelog header to consistent size ([#181](https://github.com/googleapis/python-grafeas/issues/181)) ([ac19dbf](https://github.com/googleapis/python-grafeas/commit/ac19dbf79e1d29205ecd36d8ef185c615ee7a691))
+
 ## [1.4.4](https://github.com/googleapis/python-grafeas/compare/v1.4.3...v1.4.4) (2022-05-05)
 
 
