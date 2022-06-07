@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.3.2](https://github.com/googleapis/python-memcache/compare/v1.3.1...v1.3.2) (2022-06-06)
+
+
+### Bug Fixes
+
+* **deps:** require protobuf <4.0.0dev ([#184](https://github.com/googleapis/python-memcache/issues/184)) ([acc06a7](https://github.com/googleapis/python-memcache/commit/acc06a7c8564d272617a66456ac2a002b463443f))
+
+
+### Documentation
+
+* fix changelog header to consistent size ([#183](https://github.com/googleapis/python-memcache/issues/183)) ([3647e5f](https://github.com/googleapis/python-memcache/commit/3647e5f70d1d43e388d25f11fee9d730c453732d))
+
 ## [1.3.1](https://github.com/googleapis/python-memcache/compare/v1.3.0...v1.3.1) (2022-03-05)
 
 
