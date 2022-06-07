@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.5.2](https://github.com/googleapis/python-gke-connect-gateway/compare/v0.5.1...v0.5.2) (2022-06-03)
+
+
+### Bug Fixes
+
+* **deps:** require protobuf <4.0.0dev ([#102](https://github.com/googleapis/python-gke-connect-gateway/issues/102)) ([40c2311](https://github.com/googleapis/python-gke-connect-gateway/commit/40c2311de38d119f2a06b066a7b01f38870459ce))
+
+
+### Documentation
+
+* fix changelog header to consistent size ([#101](https://github.com/googleapis/python-gke-connect-gateway/issues/101)) ([56393c5](https://github.com/googleapis/python-gke-connect-gateway/commit/56393c5ea1e582505bebf8fca3c76f01f83eccc3))
+
 ## [0.5.1](https://github.com/googleapis/python-gke-connect-gateway/compare/v0.5.0...v0.5.1) (2022-03-05)
 
 
