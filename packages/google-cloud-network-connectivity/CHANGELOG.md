@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.3.2](https://github.com/googleapis/python-network-connectivity/compare/v1.3.1...v1.3.2) (2022-06-03)
+
+
+### Bug Fixes
+
+* **deps:** require protobuf <4.0.0dev ([#176](https://github.com/googleapis/python-network-connectivity/issues/176)) ([95a4e49](https://github.com/googleapis/python-network-connectivity/commit/95a4e49a5eff6cf94f7631a72e67619731c71037))
+
+
+### Documentation
+
+* fix changelog header to consistent size ([#175](https://github.com/googleapis/python-network-connectivity/issues/175)) ([b897def](https://github.com/googleapis/python-network-connectivity/commit/b897def5d9a3f93e053aa69fee9b4764f8f3d732))
+
 ## [1.3.1](https://github.com/googleapis/python-network-connectivity/compare/v1.3.0...v1.3.1) (2022-03-05)
 
 
