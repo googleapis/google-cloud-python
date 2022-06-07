@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.8.1](https://github.com/googleapis/python-channel/compare/v1.8.0...v1.8.1) (2022-06-03)
+
+
+### Bug Fixes
+
+* **deps:** require protobuf <4.0.0dev ([#175](https://github.com/googleapis/python-channel/issues/175)) ([893ca41](https://github.com/googleapis/python-channel/commit/893ca41c4dfdf94244ffb625071574d6d5c2c198))
+
+
+### Documentation
+
+* fix changelog header to consistent size ([#176](https://github.com/googleapis/python-channel/issues/176)) ([607f171](https://github.com/googleapis/python-channel/commit/607f171fac16d7b8a374db6c66cb81cd06ef50fd))
+
 ## [1.8.0](https://github.com/googleapis/python-channel/compare/v1.7.1...v1.8.0) (2022-04-27)
 
 
