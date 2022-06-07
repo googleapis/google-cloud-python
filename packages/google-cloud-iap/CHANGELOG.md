@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.4.1](https://github.com/googleapis/python-iap/compare/v1.4.0...v1.4.1) (2022-06-03)
+
+
+### Bug Fixes
+
+* **deps:** require protobuf <4.0.0dev ([#103](https://github.com/googleapis/python-iap/issues/103)) ([c8b9cc5](https://github.com/googleapis/python-iap/commit/c8b9cc54d3734f62fd5bfaeb8f7f107427f3bae3))
+
+
+### Documentation
+
+* fix changelog header to consistent size ([#102](https://github.com/googleapis/python-iap/issues/102)) ([7c7a470](https://github.com/googleapis/python-iap/commit/7c7a4705af42124a616a193ebc4a665bfa9e69be))
+
 ## [1.4.0](https://github.com/googleapis/python-iap/compare/v1.3.1...v1.4.0) (2022-05-19)
 
 
