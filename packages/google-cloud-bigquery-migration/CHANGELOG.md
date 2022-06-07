@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.4.3](https://github.com/googleapis/python-bigquery-migration/compare/v0.4.2...v0.4.3) (2022-06-03)
+
+
+### Bug Fixes
+
+* **deps:** require protobuf <4.0.0dev ([#95](https://github.com/googleapis/python-bigquery-migration/issues/95)) ([0b93e8d](https://github.com/googleapis/python-bigquery-migration/commit/0b93e8d0332269cf837d146106d8d5fbdcd42cc4))
+
+
+### Documentation
+
+* fix changelog header to consistent size ([#96](https://github.com/googleapis/python-bigquery-migration/issues/96)) ([e95f0fc](https://github.com/googleapis/python-bigquery-migration/commit/e95f0fcad0f6c3366ade1637b51295a89d2bc1b2))
+
 ## [0.4.2](https://github.com/googleapis/python-bigquery-migration/compare/v0.4.1...v0.4.2) (2022-05-22)
 
 
