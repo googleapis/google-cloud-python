@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.2.3](https://github.com/googleapis/python-assured-workloads/compare/v1.2.2...v1.2.3) (2022-06-03)
+
+
+### Bug Fixes
+
+* **deps:** require protobuf <4.0.0dev ([#166](https://github.com/googleapis/python-assured-workloads/issues/166)) ([8395361](https://github.com/googleapis/python-assured-workloads/commit/8395361fe0258c98b2430f36eb0789c976a977da))
+
+
+### Documentation
+
+* fix changelog header to consistent size ([#167](https://github.com/googleapis/python-assured-workloads/issues/167)) ([ace4d91](https://github.com/googleapis/python-assured-workloads/commit/ace4d9142a1c8721419aca0a0661f9f654cd352c))
+
 ## [1.2.2](https://github.com/googleapis/python-assured-workloads/compare/v1.2.1...v1.2.2) (2022-03-05)
 
 
