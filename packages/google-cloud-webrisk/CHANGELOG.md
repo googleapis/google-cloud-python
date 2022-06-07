@@ -3,6 +3,18 @@
 [PyPI History][1]
 
 [1]: https://pypi.org/project/google-cloud-webrisk/#history
+## [1.7.2](https://github.com/googleapis/python-webrisk/compare/v1.7.1...v1.7.2) (2022-06-06)
+
+
+### Bug Fixes
+
+* **deps:** require protobuf <4.0.0dev ([#199](https://github.com/googleapis/python-webrisk/issues/199)) ([bbe6f58](https://github.com/googleapis/python-webrisk/commit/bbe6f580a5689a90c915863997fa0196bcc2d8ea))
+
+
+### Documentation
+
+* fix changelog header to consistent size ([#198](https://github.com/googleapis/python-webrisk/issues/198)) ([a96cf1d](https://github.com/googleapis/python-webrisk/commit/a96cf1dc27aa42a4cdcce5ef43abb91ab758096b))
+
 ## [1.7.1](https://github.com/googleapis/python-webrisk/compare/v1.7.0...v1.7.1) (2022-03-05)
 
 
