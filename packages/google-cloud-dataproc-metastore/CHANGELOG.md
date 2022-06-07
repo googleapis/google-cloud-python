@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.5.1](https://github.com/googleapis/python-dataproc-metastore/compare/v1.5.0...v1.5.1) (2022-06-03)
+
+
+### Bug Fixes
+
+* **deps:** require protobuf <4.0.0dev ([#147](https://github.com/googleapis/python-dataproc-metastore/issues/147)) ([776fe97](https://github.com/googleapis/python-dataproc-metastore/commit/776fe97db292998b8bb68e13953c2ca057502b2f))
+
+
+### Documentation
+
+* fix changelog header to consistent size ([#148](https://github.com/googleapis/python-dataproc-metastore/issues/148)) ([0f93c4e](https://github.com/googleapis/python-dataproc-metastore/commit/0f93c4e5ab1a663c2b8350b5b2827eacced8548d))
+
 ## [1.5.0](https://github.com/googleapis/python-dataproc-metastore/compare/v1.4.1...v1.5.0) (2022-03-21)
 
 
