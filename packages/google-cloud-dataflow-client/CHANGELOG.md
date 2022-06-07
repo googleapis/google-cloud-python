@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.5.2](https://github.com/googleapis/python-dataflow-client/compare/v0.5.1...v0.5.2) (2022-06-03)
+
+
+### Bug Fixes
+
+* **deps:** require protobuf <4.0.0dev ([#106](https://github.com/googleapis/python-dataflow-client/issues/106)) ([3170fe7](https://github.com/googleapis/python-dataflow-client/commit/3170fe7af4b3de2802251b2f24ca73d2060d560b))
+
+
+### Documentation
+
+* fix changelog header to consistent size ([#107](https://github.com/googleapis/python-dataflow-client/issues/107)) ([df80541](https://github.com/googleapis/python-dataflow-client/commit/df805416bd144da9d2c0e4c49a7d478580237b28))
+
 ## [0.5.1](https://github.com/googleapis/python-dataflow-client/compare/v0.5.0...v0.5.1) (2022-05-05)
 
 
