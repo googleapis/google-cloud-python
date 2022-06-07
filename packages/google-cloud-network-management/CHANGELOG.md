@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.3.3](https://github.com/googleapis/python-network-management/compare/v1.3.2...v1.3.3) (2022-06-03)
+
+
+### Bug Fixes
+
+* **deps:** require protobuf <4.0.0dev ([#111](https://github.com/googleapis/python-network-management/issues/111)) ([c56801a](https://github.com/googleapis/python-network-management/commit/c56801a0ff641dbeae24700197f5e132cc301142))
+
+
+### Documentation
+
+* fix changelog header to consistent size ([#110](https://github.com/googleapis/python-network-management/issues/110)) ([5d19cd5](https://github.com/googleapis/python-network-management/commit/5d19cd58b067c8dee9072d4295736bac14326f99))
+
 ## [1.3.2](https://github.com/googleapis/python-network-management/compare/v1.3.1...v1.3.2) (2022-05-05)
 
 
