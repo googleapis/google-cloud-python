@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-cloud-dlp/#history
 
+## [3.7.1](https://github.com/googleapis/python-dlp/compare/v3.7.0...v3.7.1) (2022-06-03)
+
+
+### Bug Fixes
+
+* **deps:** require protobuf <4.0.0dev ([#395](https://github.com/googleapis/python-dlp/issues/395)) ([d8760a1](https://github.com/googleapis/python-dlp/commit/d8760a12f4d566cb64df4e4aec3641cb6aa8e588))
+* drop dependency pytz ([d8760a1](https://github.com/googleapis/python-dlp/commit/d8760a12f4d566cb64df4e4aec3641cb6aa8e588))
+
+
+### Documentation
+
+* fix changelog header to consistent size ([#396](https://github.com/googleapis/python-dlp/issues/396)) ([d09ac69](https://github.com/googleapis/python-dlp/commit/d09ac693f6b356bf5da1e26e522168bc2376872e))
+
 ## [3.7.0](https://github.com/googleapis/python-dlp/compare/v3.6.2...v3.7.0) (2022-05-12)
 
 
