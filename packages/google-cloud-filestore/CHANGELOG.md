@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.1.3](https://github.com/googleapis/python-filestore/compare/v1.1.2...v1.1.3) (2022-06-03)
+
+
+### Bug Fixes
+
+* **deps:** require protobuf <4.0.0dev ([#77](https://github.com/googleapis/python-filestore/issues/77)) ([4f8b600](https://github.com/googleapis/python-filestore/commit/4f8b6009555a008d7ad483b5801e56efb948dbfa))
+
+
+### Documentation
+
+* fix changelog header to consistent size ([#76](https://github.com/googleapis/python-filestore/issues/76)) ([07f57aa](https://github.com/googleapis/python-filestore/commit/07f57aa4588f2fbacb554306b38f70970fb918b7))
+
 ## [1.1.2](https://github.com/googleapis/python-filestore/compare/v1.1.1...v1.1.2) (2022-05-06)
 
 
