@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.0.2](https://github.com/googleapis/python-datastream/compare/v1.0.1...v1.0.2) (2022-06-03)
+
+
+### Bug Fixes
+
+* **deps:** require protobuf <4.0.0dev ([#100](https://github.com/googleapis/python-datastream/issues/100)) ([251b6b4](https://github.com/googleapis/python-datastream/commit/251b6b4bd215cd68b5aa72b529a15f0f94704471))
+
+
+### Documentation
+
+* fix changelog header to consistent size ([#101](https://github.com/googleapis/python-datastream/issues/101)) ([f3dc083](https://github.com/googleapis/python-datastream/commit/f3dc0837538cbd77869b49afb8b750314c068ddf))
+
 ## [1.0.1](https://github.com/googleapis/python-datastream/compare/v1.0.0...v1.0.1) (2022-05-06)
 
 
