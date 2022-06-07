@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.1.3](https://github.com/googleapis/python-domains/compare/v1.1.2...v1.1.3) (2022-06-03)
+
+
+### Bug Fixes
+
+* **deps:** require protobuf <4.0.0dev ([#144](https://github.com/googleapis/python-domains/issues/144)) ([672ff97](https://github.com/googleapis/python-domains/commit/672ff979ff60527eeda83597bccf77201200119c))
+
+
+### Documentation
+
+* fix changelog header to consistent size ([#143](https://github.com/googleapis/python-domains/issues/143)) ([00a732d](https://github.com/googleapis/python-domains/commit/00a732d48739196fd891053725a73e3dd6eef570))
+
 ## [1.1.2](https://github.com/googleapis/python-domains/compare/v1.1.1...v1.1.2) (2022-05-05)
 
 
