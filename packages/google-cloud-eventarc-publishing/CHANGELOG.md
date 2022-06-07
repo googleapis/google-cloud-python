@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.2.1](https://github.com/googleapis/python-eventarc-publishing/compare/v0.2.0...v0.2.1) (2022-06-03)
+
+
+### Bug Fixes
+
+* **deps:** require protobuf <4.0.0dev ([#39](https://github.com/googleapis/python-eventarc-publishing/issues/39)) ([de887d2](https://github.com/googleapis/python-eventarc-publishing/commit/de887d2702f64bbdb025a9dc841d694119b351a1))
+
+
+### Documentation
+
+* fix changelog header to consistent size ([#38](https://github.com/googleapis/python-eventarc-publishing/issues/38)) ([96f1edb](https://github.com/googleapis/python-eventarc-publishing/commit/96f1edbd3eb44f8729f630b4b0fbb5668a3f2099))
+
 ## [0.2.0](https://github.com/googleapis/python-eventarc-publishing/compare/v0.1.1...v0.2.0) (2022-05-06)
 
 
