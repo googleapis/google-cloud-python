@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-datalabeling/#history
 
+## [1.5.2](https://github.com/googleapis/python-datalabeling/compare/v1.5.1...v1.5.2) (2022-06-03)
+
+
+### Bug Fixes
+
+* **deps:** require protobuf <4.0.0dev ([#240](https://github.com/googleapis/python-datalabeling/issues/240)) ([5be7c05](https://github.com/googleapis/python-datalabeling/commit/5be7c058f8732249b38dd84c478da492ea1c5f02))
+
+
+### Documentation
+
+* fix changelog header to consistent size ([#241](https://github.com/googleapis/python-datalabeling/issues/241)) ([3f68205](https://github.com/googleapis/python-datalabeling/commit/3f68205d42409b7f2beb83a276862607e395dd56))
+
 ## [1.5.1](https://github.com/googleapis/python-datalabeling/compare/v1.5.0...v1.5.1) (2022-03-05)
 
 
