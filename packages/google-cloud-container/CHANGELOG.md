@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-container/#history
 
+## [2.10.8](https://github.com/googleapis/python-container/compare/v2.10.7...v2.10.8) (2022-06-03)
+
+
+### Bug Fixes
+
+* **deps:** require protobuf <4.0.0dev ([#252](https://github.com/googleapis/python-container/issues/252)) ([f5ab2a8](https://github.com/googleapis/python-container/commit/f5ab2a89d1238b2315963f4dd8469323746459f0))
+
+
+### Documentation
+
+* fix changelog header to consistent size ([#253](https://github.com/googleapis/python-container/issues/253)) ([9db4c78](https://github.com/googleapis/python-container/commit/9db4c786430da9a5831893a31321cb0e65db4751))
+
 ## [2.10.7](https://github.com/googleapis/python-container/compare/v2.10.6...v2.10.7) (2022-03-22)
 
 
