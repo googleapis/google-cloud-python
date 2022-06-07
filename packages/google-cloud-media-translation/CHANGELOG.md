@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.8.2](https://github.com/googleapis/python-media-translation/compare/v0.8.1...v0.8.2) (2022-06-06)
+
+
+### Bug Fixes
+
+* **deps:** require protobuf <4.0.0dev ([#192](https://github.com/googleapis/python-media-translation/issues/192)) ([897aeaf](https://github.com/googleapis/python-media-translation/commit/897aeaf33e067499d8e9e2460a7558254cf92959))
+
+
+### Documentation
+
+* fix changelog header to consistent size ([#191](https://github.com/googleapis/python-media-translation/issues/191)) ([0671443](https://github.com/googleapis/python-media-translation/commit/0671443d4a8d0337318ff13a075b63e6705ac00f))
+
 ## [0.8.1](https://github.com/googleapis/python-media-translation/compare/v0.8.0...v0.8.1) (2022-03-05)
 
 
