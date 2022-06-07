@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-language/#history
 
+## [2.4.3](https://github.com/googleapis/python-language/compare/v2.4.2...v2.4.3) (2022-06-06)
+
+
+### Bug Fixes
+
+* **deps:** require protobuf <4.0.0dev ([#325](https://github.com/googleapis/python-language/issues/325)) ([1048350](https://github.com/googleapis/python-language/commit/1048350a2b4cf175b445c52bd52142166d104fc6))
+
+
+### Documentation
+
+* fix changelog header to consistent size ([#324](https://github.com/googleapis/python-language/issues/324)) ([11aa986](https://github.com/googleapis/python-language/commit/11aa9864db65556a3a27c1a7a99bf96ea60ad434))
+
 ## [2.4.2](https://github.com/googleapis/python-language/compare/v2.4.1...v2.4.2) (2022-05-17)
 
 
