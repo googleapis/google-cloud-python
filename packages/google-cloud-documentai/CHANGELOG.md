@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.4.2](https://github.com/googleapis/python-documentai/compare/v1.4.1...v1.4.2) (2022-06-03)
+
+
+### Bug Fixes
+
+* **deps:** require protobuf <4.0.0dev ([#334](https://github.com/googleapis/python-documentai/issues/334)) ([fbdc01b](https://github.com/googleapis/python-documentai/commit/fbdc01b6670514418e32a90e39540dcb56f53048))
+
+
+### Documentation
+
+* fix changelog header to consistent size ([#333](https://github.com/googleapis/python-documentai/issues/333)) ([bf23383](https://github.com/googleapis/python-documentai/commit/bf23383b869d08bad4a6193e0596ac4e70573539))
+
 ## [1.4.1](https://github.com/googleapis/python-documentai/compare/v1.4.0...v1.4.1) (2022-04-28)
 
 
