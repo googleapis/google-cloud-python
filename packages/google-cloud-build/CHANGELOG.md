@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-build/#history
 
+## [3.8.3](https://github.com/googleapis/python-cloudbuild/compare/v3.8.2...v3.8.3) (2022-06-03)
+
+
+### Bug Fixes
+
+* **deps:** require protobuf <4.0.0dev ([#293](https://github.com/googleapis/python-cloudbuild/issues/293)) ([cc1bd84](https://github.com/googleapis/python-cloudbuild/commit/cc1bd849fe93f83486e333d644b6a7dd0169f5a3))
+
+
+### Documentation
+
+* fix changelog header to consistent size ([#294](https://github.com/googleapis/python-cloudbuild/issues/294)) ([057a06d](https://github.com/googleapis/python-cloudbuild/commit/057a06dbd19163b1c20bdcfed3cedd4e82d99f2a))
+
 ## [3.8.2](https://github.com/googleapis/python-cloudbuild/compare/v3.8.1...v3.8.2) (2022-05-05)
 
 
