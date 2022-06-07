@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-iam/#history
 
+## [2.6.2](https://github.com/googleapis/python-iam/compare/v2.6.1...v2.6.2) (2022-06-03)
+
+
+### Bug Fixes
+
+* **deps:** require protobuf <4.0.0dev ([#194](https://github.com/googleapis/python-iam/issues/194)) ([48510c0](https://github.com/googleapis/python-iam/commit/48510c0959ca537c80489fa40f23acd54719dcc7))
+
+
+### Documentation
+
+* fix changelog header to consistent size ([#193](https://github.com/googleapis/python-iam/issues/193)) ([cfffd59](https://github.com/googleapis/python-iam/commit/cfffd592e3d7a01ff8b238bbbf05792145824962))
+
 ## [2.6.1](https://github.com/googleapis/python-iam/compare/v2.6.0...v2.6.1) (2022-03-05)
 
 
