@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.6.1](https://github.com/googleapis/python-billing/compare/v1.6.0...v1.6.1) (2022-06-06)
+
+
+### Bug Fixes
+
+* **deps:** require protobuf <4.0.0dev ([#185](https://github.com/googleapis/python-billing/issues/185)) ([2542e90](https://github.com/googleapis/python-billing/commit/2542e902b8c23cbb9b84d2e6e266689e80102884))
+
+
+### Documentation
+
+* fix changelog header to consistent size ([#186](https://github.com/googleapis/python-billing/issues/186)) ([0b7c05e](https://github.com/googleapis/python-billing/commit/0b7c05ea4038a68b8648e0594f5cd0c05255f381))
+
 ## [1.6.0](https://github.com/googleapis/python-billing/compare/v1.5.1...v1.6.0) (2022-05-05)
 
 
