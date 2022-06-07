@@ -7,7 +7,7 @@
 
 * bump release level to production/stable ([#19](https://github.com/googleapis/python-bare-metal-solution/issues/19)) ([e4bc62a](https://github.com/googleapis/python-bare-metal-solution/commit/e4bc62a66040934b659ca9bc2f85b1409ae59d25))
 
-### [0.1.1](https://github.com/googleapis/python-bare-metal-solution/compare/v0.1.0...v0.1.1) (2022-04-21)
+## [0.1.1](https://github.com/googleapis/python-bare-metal-solution/compare/v0.1.0...v0.1.1) (2022-04-21)
 
 
 ### Documentation
