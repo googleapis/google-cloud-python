@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.4.2](https://github.com/googleapis/python-managed-identities/compare/v1.4.1...v1.4.2) (2022-06-03)
+
+
+### Bug Fixes
+
+* **deps:** require protobuf <4.0.0dev ([#146](https://github.com/googleapis/python-managed-identities/issues/146)) ([fb8eaf8](https://github.com/googleapis/python-managed-identities/commit/fb8eaf8ee5f16bffeb4335fd52134a313c98eef9))
+
+
+### Documentation
+
+* fix changelog header to consistent size ([#145](https://github.com/googleapis/python-managed-identities/issues/145)) ([5549f26](https://github.com/googleapis/python-managed-identities/commit/5549f264cce65c9ff59e859690ee76f1a96c2c05))
+
 ## [1.4.1](https://github.com/googleapis/python-managed-identities/compare/v1.4.0...v1.4.1) (2022-03-05)
 
 
