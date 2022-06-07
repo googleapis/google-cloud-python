@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.4.3](https://github.com/googleapis/python-gke-hub/compare/v1.4.2...v1.4.3) (2022-06-03)
+
+
+### Bug Fixes
+
+* **deps:** require protobuf <4.0.0dev ([#174](https://github.com/googleapis/python-gke-hub/issues/174)) ([f061842](https://github.com/googleapis/python-gke-hub/commit/f061842b7dfd93e63e46209820c8c8aceeb175a6))
+
+
+### Documentation
+
+* fix changelog header to consistent size ([#173](https://github.com/googleapis/python-gke-hub/issues/173)) ([396111b](https://github.com/googleapis/python-gke-hub/commit/396111b2d29a682611ac90172fe4ed6fe79e8e26))
+
 ## [1.4.2](https://github.com/googleapis/python-gke-hub/compare/v1.4.1...v1.4.2) (2022-05-05)
 
 

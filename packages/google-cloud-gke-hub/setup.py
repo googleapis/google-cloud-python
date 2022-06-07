@@ -20,7 +20,7 @@ import os
 import setuptools  # type: ignore
 
 name = "google-cloud-gke-hub"
-version = "1.4.2"
+version = "1.4.3"
 description = "GKE Hub API client library"
 release_status = "Development Status :: 5 - Production/Stable"
 url = "https://github.com/googleapis/python-gke-hub"
