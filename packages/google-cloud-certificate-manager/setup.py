@@ -22,7 +22,7 @@ import setuptools
 name = "google-cloud-certificate-manager"
 description = "Certificate Manager API client library"
 url = "https://github.com/googleapis/python-certificate-manager"
-version = "0.1.2"
+version = "0.1.3"
 release_status = "Development Status :: 4 - Beta"
 dependencies = [
     # NOTE: Maintainers, please do not require google-api-core>=2.x.x
