@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.0.3](https://github.com/googleapis/python-bigquery-logging/compare/v1.0.2...v1.0.3) (2022-06-03)
+
+
+### Bug Fixes
+
+* **deps:** require protobuf <4.0.0dev ([#92](https://github.com/googleapis/python-bigquery-logging/issues/92)) ([c22b72f](https://github.com/googleapis/python-bigquery-logging/commit/c22b72fb6d2b943b5734de18b357a69d03473fda))
+
+
+### Documentation
+
+* fix changelog header to consistent size ([#93](https://github.com/googleapis/python-bigquery-logging/issues/93)) ([598a61b](https://github.com/googleapis/python-bigquery-logging/commit/598a61bf74058fa6bafb9cb84ccc262512f2207a))
+
 ## [1.0.2](https://github.com/googleapis/python-bigquery-logging/compare/v1.0.1...v1.0.2) (2022-03-05)
 
 
