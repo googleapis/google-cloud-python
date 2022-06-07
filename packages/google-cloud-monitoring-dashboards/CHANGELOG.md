@@ -1,5 +1,17 @@
 # Changelog
 
+## [2.6.1](https://github.com/googleapis/python-monitoring-dashboards/compare/v2.6.0...v2.6.1) (2022-06-06)
+
+
+### Bug Fixes
+
+* **deps:** require protobuf <4.0.0dev ([#193](https://github.com/googleapis/python-monitoring-dashboards/issues/193)) ([74f7ba9](https://github.com/googleapis/python-monitoring-dashboards/commit/74f7ba9945ab20f8132a4d5c3624401da726845e))
+
+
+### Documentation
+
+* fix changelog header to consistent size ([#192](https://github.com/googleapis/python-monitoring-dashboards/issues/192)) ([81c56f5](https://github.com/googleapis/python-monitoring-dashboards/commit/81c56f5c8f3d2207578efe3f6a9188b2f22ef470))
+
 ## [2.6.0](https://github.com/googleapis/python-monitoring-dashboards/compare/v2.5.1...v2.6.0) (2022-05-05)
 
 
