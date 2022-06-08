@@ -40,7 +40,7 @@
 * add support for row_count in cursor. ([#675](https://github.com/googleapis/python-spanner/issues/675)) ([d431339](https://github.com/googleapis/python-spanner/commit/d431339069874abf345347b777b3811464925e46))
 * resolve DuplicateCredentialArgs error when using credentials_file ([#676](https://github.com/googleapis/python-spanner/issues/676)) ([39ff137](https://github.com/googleapis/python-spanner/commit/39ff13796adc13b6702d003e4d549775f8cef202))
 
-### [3.12.1](https://www.github.com/googleapis/python-spanner/compare/v3.12.0...v3.12.1) (2022-01-06)
+## [3.12.1](https://www.github.com/googleapis/python-spanner/compare/v3.12.0...v3.12.1) (2022-01-06)
 
 
 ### Bug Fixes
@@ -79,7 +79,7 @@
 
 * list oneofs in docstring ([5ae4be8](https://www.github.com/googleapis/python-spanner/commit/5ae4be8ce0a429b33b31a119d7079ce4deb50ca2))
 
-### [3.11.1](https://www.github.com/googleapis/python-spanner/compare/v3.11.0...v3.11.1) (2021-10-04)
+## [3.11.1](https://www.github.com/googleapis/python-spanner/compare/v3.11.0...v3.11.1) (2021-10-04)
 
 
 ### Bug Fixes
@@ -330,7 +330,7 @@
 * DB-API driver + unit tests ([#160](https://www.github.com/googleapis/python-spanner/issues/160)) ([2493fa1](https://www.github.com/googleapis/python-spanner/commit/2493fa1725d2d613f6c064637a4e215ee66255e3))
 * migrate to v2.0.0 ([#147](https://www.github.com/googleapis/python-spanner/issues/147)) ([bf4b278](https://www.github.com/googleapis/python-spanner/commit/bf4b27827494e3dc33b1e4333dfe147a36a486b3))
 
-### [1.19.1](https://www.github.com/googleapis/python-spanner/compare/v1.19.0...v1.19.1) (2020-10-13)
+## [1.19.1](https://www.github.com/googleapis/python-spanner/compare/v1.19.0...v1.19.1) (2020-10-13)
 
 
 ### Bug Fixes
@@ -377,7 +377,7 @@
 * add samples from spanner/cloud-client ([#117](https://www.github.com/googleapis/python-spanner/issues/117)) ([8910771](https://www.github.com/googleapis/python-spanner/commit/891077105d5093a73caf96683d10afef2cd17823)), closes [#804](https://www.github.com/googleapis/python-spanner/issues/804) [#815](https://www.github.com/googleapis/python-spanner/issues/815) [#818](https://www.github.com/googleapis/python-spanner/issues/818) [#887](https://www.github.com/googleapis/python-spanner/issues/887) [#914](https://www.github.com/googleapis/python-spanner/issues/914) [#922](https://www.github.com/googleapis/python-spanner/issues/922) [#928](https://www.github.com/googleapis/python-spanner/issues/928) [#962](https://www.github.com/googleapis/python-spanner/issues/962) [#992](https://www.github.com/googleapis/python-spanner/issues/992) [#1004](https://www.github.com/googleapis/python-spanner/issues/1004) [#1035](https://www.github.com/googleapis/python-spanner/issues/1035) [#1055](https://www.github.com/googleapis/python-spanner/issues/1055) [#1063](https://www.github.com/googleapis/python-spanner/issues/1063) [#1093](https://www.github.com/googleapis/python-spanner/issues/1093) [#1107](https://www.github.com/googleapis/python-spanner/issues/1107) [#1121](https://www.github.com/googleapis/python-spanner/issues/1121) [#1158](https://www.github.com/googleapis/python-spanner/issues/1158) [#1138](https://www.github.com/googleapis/python-spanner/issues/1138) [#1186](https://www.github.com/googleapis/python-spanner/issues/1186) [#1192](https://www.github.com/googleapis/python-spanner/issues/1192) [#1207](https://www.github.com/googleapis/python-spanner/issues/1207) [#1254](https://www.github.com/googleapis/python-spanner/issues/1254) [#1316](https://www.github.com/googleapis/python-spanner/issues/1316) [#1354](https://www.github.com/googleapis/python-spanner/issues/1354) [#1376](https://www.github.com/googleapis/python-spanner/issues/1376) [#1377](https://www.github.com/googleapis/python-spanner/issues/1377) [#1402](https://www.github.com/googleapis/python-spanner/issues/1402) [#1406](https://www.github.com/googleapis/python-spanner/issues/1406) [#1425](https://www.github.com/googleapis/python-spanner/issues/1425) [#1441](https://www.github.com/googleapis/python-spanner/issues/1441) [#1464](https://www.github.com/googleapis/python-spanner/issues/1464) [#1519](https://www.github.com/googleapis/python-spanner/issues/1519) [#1548](https://www.github.com/googleapis/python-spanner/issues/1548) [#1633](https://www.github.com/googleapis/python-spanner/issues/1633) [#1742](https://www.github.com/googleapis/python-spanner/issues/1742) [#1836](https://www.github.com/googleapis/python-spanner/issues/1836) [#1846](https://www.github.com/googleapis/python-spanner/issues/1846) [#1872](https://www.github.com/googleapis/python-spanner/issues/1872) [#1980](https://www.github.com/googleapis/python-spanner/issues/1980) [#2068](https://www.github.com/googleapis/python-spanner/issues/2068) [#2153](https://www.github.com/googleapis/python-spanner/issues/2153) [#2224](https://www.github.com/googleapis/python-spanner/issues/2224) [#2198](https://www.github.com/googleapis/python-spanner/issues/2198) [#2251](https://www.github.com/googleapis/python-spanner/issues/2251) [#2295](https://www.github.com/googleapis/python-spanner/issues/2295) [#2356](https://www.github.com/googleapis/python-spanner/issues/2356) [#2392](https://www.github.com/googleapis/python-spanner/issues/2392) [#2439](https://www.github.com/googleapis/python-spanner/issues/2439) [#2535](https://www.github.com/googleapis/python-spanner/issues/2535) [#2005](https://www.github.com/googleapis/python-spanner/issues/2005) [#2721](https://www.github.com/googleapis/python-spanner/issues/2721) [#3093](https://www.github.com/googleapis/python-spanner/issues/3093) [#3101](https://www.github.com/googleapis/python-spanner/issues/3101) [#2806](https://www.github.com/googleapis/python-spanner/issues/2806) [#3377](https://www.github.com/googleapis/python-spanner/issues/3377)
 * typo fix ([#109](https://www.github.com/googleapis/python-spanner/issues/109)) ([63b4324](https://www.github.com/googleapis/python-spanner/commit/63b432472613bd80e234ee9c9f73906db2f0a52b))
 
-### [1.17.1](https://www.github.com/googleapis/python-spanner/compare/v1.17.0...v1.17.1) (2020-06-24)
+## [1.17.1](https://www.github.com/googleapis/python-spanner/compare/v1.17.0...v1.17.1) (2020-06-24)
 
 
 ### Documentation
@@ -412,7 +412,7 @@
 * add keepalive changes to synth.py ([#55](https://www.github.com/googleapis/python-spanner/issues/55)) ([805bbb7](https://www.github.com/googleapis/python-spanner/commit/805bbb766fd9c019f528e2f8ed1379d997622d03))
 * pass gRPC config options to gRPC channel creation ([#26](https://www.github.com/googleapis/python-spanner/issues/26)) ([6c9a1ba](https://www.github.com/googleapis/python-spanner/commit/6c9a1badfed610a18454137e1b45156872914e7e))
 
-### [1.15.1](https://www.github.com/googleapis/python-spanner/compare/v1.15.0...v1.15.1) (2020-04-08)
+## [1.15.1](https://www.github.com/googleapis/python-spanner/compare/v1.15.0...v1.15.1) (2020-04-08)
 
 
 ### Bug Fixes
