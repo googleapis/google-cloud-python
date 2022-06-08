@@ -4,6 +4,27 @@
 
 [1]: https://pypi.org/project/google-cloud-storage/#history
 
+## [2.4.0](https://github.com/googleapis/python-storage/compare/v2.3.0...v2.4.0) (2022-06-07)
+
+
+### Features
+
+* add AbortIncompleteMultipartUpload lifecycle rule ([#765](https://github.com/googleapis/python-storage/issues/765)) ([b2e5150](https://github.com/googleapis/python-storage/commit/b2e5150f191c04acb47ad98cef88512451aff81d))
+* support OLM Prefix/Suffix ([#773](https://github.com/googleapis/python-storage/issues/773)) ([187cf50](https://github.com/googleapis/python-storage/commit/187cf503194cf636640ca8ba787f9e8c216ea763))
+
+
+### Bug Fixes
+
+* fix rewrite object in CMEK enabled bucket ([#807](https://github.com/googleapis/python-storage/issues/807)) ([9b3cbf3](https://github.com/googleapis/python-storage/commit/9b3cbf3789c21462eac3c776cd29df12701e792f))
+
+
+### Documentation
+
+* fix changelog header to consistent size ([#802](https://github.com/googleapis/python-storage/issues/802)) ([4dd0907](https://github.com/googleapis/python-storage/commit/4dd0907b68e20d1ffcd0fe350831867197917e0d))
+* **samples:** Update the Recovery Point Objective (RPO) sample output ([#725](https://github.com/googleapis/python-storage/issues/725)) ([b0bf411](https://github.com/googleapis/python-storage/commit/b0bf411f8fec8712b3eeb99a2dd33de6d82312f8))
+* Update generation_metageneration.rst with a missing space ([#798](https://github.com/googleapis/python-storage/issues/798)) ([1e7cdb6](https://github.com/googleapis/python-storage/commit/1e7cdb655beb2a61a0d1b984c4d0468ec31bf463))
+* update retry docs ([#808](https://github.com/googleapis/python-storage/issues/808)) ([c365d5b](https://github.com/googleapis/python-storage/commit/c365d5bbd78292adb6861da3cdfae9ab7b39b844))
+
 ## [2.3.0](https://github.com/googleapis/python-storage/compare/v2.2.1...v2.3.0) (2022-04-12)
 
 
