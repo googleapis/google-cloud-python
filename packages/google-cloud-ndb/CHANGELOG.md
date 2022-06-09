@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-ndb/#history
 
+## [1.11.2](https://github.com/googleapis/python-ndb/compare/v1.11.1...v1.11.2) (2022-06-03)
+
+
+### Documentation
+
+* fix changelog header to consistent size ([#773](https://github.com/googleapis/python-ndb/issues/773)) ([7bb4e5a](https://github.com/googleapis/python-ndb/commit/7bb4e5a7bf11061a546f21e6f57cf2937f7a3a9d))
+
 ## [1.11.1](https://www.github.com/googleapis/python-ndb/compare/v1.11.0...v1.11.1) (2021-11-03)
 
 
