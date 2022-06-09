@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-automl/#history
 
+## [2.7.3](https://github.com/googleapis/python-automl/compare/v2.7.2...v2.7.3) (2022-06-07)
+
+
+### Bug Fixes
+
+* **deps:** require protobuf <4.0.0dev ([#391](https://github.com/googleapis/python-automl/issues/391)) ([30cfcb2](https://github.com/googleapis/python-automl/commit/30cfcb2acd5ed43cdbd74610a87bde7eb23dec03))
+
+
+### Documentation
+
+* fix changelog header to consistent size ([#392](https://github.com/googleapis/python-automl/issues/392)) ([18952b3](https://github.com/googleapis/python-automl/commit/18952b306f91e49b89a3cb3b4022b0b6a8ed4eac))
+
 ## [2.7.2](https://github.com/googleapis/python-automl/compare/v2.7.1...v2.7.2) (2022-03-06)
 
 
