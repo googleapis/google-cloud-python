@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.6.3](https://github.com/googleapis/python-bigquery-reservation/compare/v1.6.2...v1.6.3) (2022-06-06)
+
+
+### Bug Fixes
+
+* **deps:** require protobuf <4.0.0dev ([#271](https://github.com/googleapis/python-bigquery-reservation/issues/271)) ([a054642](https://github.com/googleapis/python-bigquery-reservation/commit/a054642feccb275527eb803c97d56613cf006670))
+
+
+### Documentation
+
+* fix changelog header to consistent size ([#272](https://github.com/googleapis/python-bigquery-reservation/issues/272)) ([2a9c9de](https://github.com/googleapis/python-bigquery-reservation/commit/2a9c9deb1ec2afbe469296210c6659276c15379a))
+
 ## [1.6.2](https://github.com/googleapis/python-bigquery-reservation/compare/v1.6.1...v1.6.2) (2022-05-05)
 
 
