@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-core/#history
 
+## [2.3.1](https://github.com/googleapis/python-cloud-core/compare/v2.3.0...v2.3.1) (2022-06-03)
+
+
+### Documentation
+
+* fix changelog header to consistent size ([#194](https://github.com/googleapis/python-cloud-core/issues/194)) ([1b79d69](https://github.com/googleapis/python-cloud-core/commit/1b79d69cdb156ae21dddb5ab7579f6c08fd701b8))
+
 ## [2.3.0](https://github.com/googleapis/python-cloud-core/compare/v2.2.3...v2.3.0) (2022-04-06)
 
 
