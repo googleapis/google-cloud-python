@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.2](https://github.com/googleapis/python-db-dtypes-pandas/compare/v1.0.1...v1.0.2) (2022-06-03)
+
+
+### Documentation
+
+* fix changelog header to consistent size ([#111](https://github.com/googleapis/python-db-dtypes-pandas/issues/111)) ([145f875](https://github.com/googleapis/python-db-dtypes-pandas/commit/145f8750682fb007343a57c7c94bc5e7fa5b63ab))
+
 ## [1.0.1](https://github.com/googleapis/python-db-dtypes-pandas/compare/v1.0.0...v1.0.1) (2022-05-07)
 
 
