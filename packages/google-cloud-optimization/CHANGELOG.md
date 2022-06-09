@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.0.1](https://github.com/googleapis/python-optimization/compare/v1.0.0...v1.0.1) (2022-06-07)
+
+
+### Bug Fixes
+
+* **deps:** require protobuf>=3.19.0,<4.0.0 ([#42](https://github.com/googleapis/python-optimization/issues/42)) ([c141479](https://github.com/googleapis/python-optimization/commit/c141479451116a9667c73e4dc391e2933048da0c))
+
+
+### Documentation
+
+* fix changelog header to consistent size ([#40](https://github.com/googleapis/python-optimization/issues/40)) ([d1feb93](https://github.com/googleapis/python-optimization/commit/d1feb935cbe4ed15588adf165988cc74fcdb0a73))
+
 ## [1.0.0](https://github.com/googleapis/python-optimization/compare/v0.1.1...v1.0.0) (2022-04-26)
 
 
