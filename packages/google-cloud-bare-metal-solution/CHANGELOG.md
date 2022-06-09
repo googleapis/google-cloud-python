@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.0.1](https://github.com/googleapis/python-bare-metal-solution/compare/v1.0.0...v1.0.1) (2022-06-07)
+
+
+### Bug Fixes
+
+* **deps:** require protobuf>=3.19.0,<4.0.0 ([#29](https://github.com/googleapis/python-bare-metal-solution/issues/29)) ([c3ffc61](https://github.com/googleapis/python-bare-metal-solution/commit/c3ffc61e53b7f14a7ca15304862f5fc18e10b3df))
+
+
+### Documentation
+
+* fix changelog header to consistent size ([#27](https://github.com/googleapis/python-bare-metal-solution/issues/27)) ([15d9556](https://github.com/googleapis/python-bare-metal-solution/commit/15d95563aa6043f45dd9c064c21c5e46a1193674))
+
 ## [1.0.0](https://github.com/googleapis/python-bare-metal-solution/compare/v0.1.1...v1.0.0) (2022-04-26)
 
 
