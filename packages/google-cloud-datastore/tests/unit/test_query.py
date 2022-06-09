@@ -175,12 +175,18 @@ def test_query_add_filter_w_all_operators():
     query.add_filter("lt_prop", "<", "val3")
     query.add_filter("gt_prop", ">", "val4")
     query.add_filter("eq_prop", "=", "val5")
-    assert len(query.filters) == 5
+    query.add_filter("in_prop", "IN", ["val6"])
+    query.add_filter("neq_prop", "!=", "val9")
+    query.add_filter("not_in_prop", "NOT_IN", ["val13"])
+    assert len(query.filters) == 8
     assert query.filters[0] == ("leq_prop", "<=", "val1")
     assert query.filters[1] == ("geq_prop", ">=", "val2")
     assert query.filters[2] == ("lt_prop", "<", "val3")
     assert query.filters[3] == ("gt_prop", ">", "val4")
     assert query.filters[4] == ("eq_prop", "=", "val5")
+    assert query.filters[5] == ("in_prop", "IN", ["val6"])
+    assert query.filters[6] == ("neq_prop", "!=", "val9")
+    assert query.filters[7] == ("not_in_prop", "NOT_IN", ["val13"])
 
 
 def test_query_add_filter_w_known_operator_and_entity():
