@@ -119,6 +119,9 @@ class ComplianceVersion(proto.Message):
             The CPE URI
             (https://cpe.mitre.org/specification/) this
             benchmark is applicable to.
+        benchmark_document (str):
+            The name of the document that defines this
+            benchmark, e.g. "CIS Container-Optimized OS".
         version (str):
             The version of the benchmark. This is set to
             the version of the OS-specific CIS document the
@@ -128,6 +131,10 @@ class ComplianceVersion(proto.Message):
     cpe_uri = proto.Field(
         proto.STRING,
         number=1,
+    )
+    benchmark_document = proto.Field(
+        proto.STRING,
+        number=3,
     )
     version = proto.Field(
         proto.STRING,

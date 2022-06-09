@@ -22,8 +22,11 @@ from .types.attestation import AttestationOccurrence
 from .types.attestation import Jwt
 from .types.build import BuildNote
 from .types.build import BuildOccurrence
+from .types.common import Digest
 from .types.common import Envelope
 from .types.common import EnvelopeSignature
+from .types.common import FileLocation
+from .types.common import License
 from .types.common import RelatedUrl
 from .types.common import Signature
 from .types.common import NoteKind
@@ -92,6 +95,7 @@ from .types.provenance import Source
 from .types.provenance import SourceContext
 from .types.severity import Severity
 from .types.slsa_provenance import SlsaProvenance
+from .types.slsa_provenance_zero_two import SlsaProvenanceZeroTwo
 from .types.upgrade import UpgradeDistribution
 from .types.upgrade import UpgradeNote
 from .types.upgrade import UpgradeOccurrence
@@ -130,12 +134,14 @@ __all__ = (
     "DeleteOccurrenceRequest",
     "DeploymentNote",
     "DeploymentOccurrence",
+    "Digest",
     "DiscoveryNote",
     "DiscoveryOccurrence",
     "Distribution",
     "Envelope",
     "EnvelopeSignature",
     "FileHashes",
+    "FileLocation",
     "Fingerprint",
     "GerritSourceContext",
     "GetNoteRequest",
@@ -150,6 +156,7 @@ __all__ = (
     "InTotoStatement",
     "Jwt",
     "Layer",
+    "License",
     "ListNoteOccurrencesRequest",
     "ListNoteOccurrencesResponse",
     "ListNotesRequest",
@@ -171,6 +178,7 @@ __all__ = (
     "Severity",
     "Signature",
     "SlsaProvenance",
+    "SlsaProvenanceZeroTwo",
     "Source",
     "SourceContext",
     "Subject",

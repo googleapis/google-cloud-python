@@ -22,8 +22,11 @@ from grafeas.grafeas_v1.types.attestation import AttestationOccurrence
 from grafeas.grafeas_v1.types.attestation import Jwt
 from grafeas.grafeas_v1.types.build import BuildNote
 from grafeas.grafeas_v1.types.build import BuildOccurrence
+from grafeas.grafeas_v1.types.common import Digest
 from grafeas.grafeas_v1.types.common import Envelope
 from grafeas.grafeas_v1.types.common import EnvelopeSignature
+from grafeas.grafeas_v1.types.common import FileLocation
+from grafeas.grafeas_v1.types.common import License
 from grafeas.grafeas_v1.types.common import RelatedUrl
 from grafeas.grafeas_v1.types.common import Signature
 from grafeas.grafeas_v1.types.common import NoteKind
@@ -92,6 +95,7 @@ from grafeas.grafeas_v1.types.provenance import Source
 from grafeas.grafeas_v1.types.provenance import SourceContext
 from grafeas.grafeas_v1.types.severity import Severity
 from grafeas.grafeas_v1.types.slsa_provenance import SlsaProvenance
+from grafeas.grafeas_v1.types.slsa_provenance_zero_two import SlsaProvenanceZeroTwo
 from grafeas.grafeas_v1.types.upgrade import UpgradeDistribution
 from grafeas.grafeas_v1.types.upgrade import UpgradeNote
 from grafeas.grafeas_v1.types.upgrade import UpgradeOccurrence
@@ -107,8 +111,11 @@ __all__ = (
     "Jwt",
     "BuildNote",
     "BuildOccurrence",
+    "Digest",
     "Envelope",
     "EnvelopeSignature",
+    "FileLocation",
+    "License",
     "RelatedUrl",
     "Signature",
     "NoteKind",
@@ -177,6 +184,7 @@ __all__ = (
     "SourceContext",
     "Severity",
     "SlsaProvenance",
+    "SlsaProvenanceZeroTwo",
     "UpgradeDistribution",
     "UpgradeNote",
     "UpgradeOccurrence",

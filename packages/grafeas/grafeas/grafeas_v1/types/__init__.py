@@ -23,8 +23,11 @@ from .build import (
     BuildOccurrence,
 )
 from .common import (
+    Digest,
     Envelope,
     EnvelopeSignature,
+    FileLocation,
+    License,
     RelatedUrl,
     Signature,
     NoteKind,
@@ -117,6 +120,9 @@ from .provenance import (
 from .slsa_provenance import (
     SlsaProvenance,
 )
+from .slsa_provenance_zero_two import (
+    SlsaProvenanceZeroTwo,
+)
 from .upgrade import (
     UpgradeDistribution,
     UpgradeNote,
@@ -134,8 +140,11 @@ __all__ = (
     "Jwt",
     "BuildNote",
     "BuildOccurrence",
+    "Digest",
     "Envelope",
     "EnvelopeSignature",
+    "FileLocation",
+    "License",
     "RelatedUrl",
     "Signature",
     "NoteKind",
@@ -204,6 +213,7 @@ __all__ = (
     "SourceContext",
     "Severity",
     "SlsaProvenance",
+    "SlsaProvenanceZeroTwo",
     "UpgradeDistribution",
     "UpgradeNote",
     "UpgradeOccurrence",

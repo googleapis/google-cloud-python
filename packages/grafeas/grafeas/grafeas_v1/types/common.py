@@ -24,6 +24,9 @@ __protobuf__ = proto.module(
         "Signature",
         "Envelope",
         "EnvelopeSignature",
+        "FileLocation",
+        "License",
+        "Digest",
     },
 )
 
@@ -181,6 +184,69 @@ class EnvelopeSignature(proto.Message):
     )
     keyid = proto.Field(
         proto.STRING,
+        number=2,
+    )
+
+
+class FileLocation(proto.Message):
+    r"""Indicates the location at which a package was found.
+
+    Attributes:
+        file_path (str):
+            For jars that are contained inside .war
+            files, this filepath can indicate the path to
+            war file combined with the path to jar file.
+    """
+
+    file_path = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class License(proto.Message):
+    r"""License information.
+
+    Attributes:
+        expression (str):
+            Often a single license can be used to
+            represent the licensing terms. Sometimes it is
+            necessary to include a choice of one or more
+            licenses or some combination of license
+            identifiers.
+            Examples: "LGPL-2.1-only OR MIT", "LGPL-2.1-only
+            AND MIT", "GPL-2.0-or-later WITH
+            Bison-exception-2.2".
+        comments (str):
+            Comments
+    """
+
+    expression = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    comments = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class Digest(proto.Message):
+    r"""Digest information.
+
+    Attributes:
+        algo (str):
+            ``SHA1``, ``SHA512`` etc.
+        digest_bytes (bytes):
+            Value of the digest.
+    """
+
+    algo = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    digest_bytes = proto.Field(
+        proto.BYTES,
         number=2,
     )
 

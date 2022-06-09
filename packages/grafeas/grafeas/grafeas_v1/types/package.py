@@ -15,6 +15,8 @@
 #
 import proto  # type: ignore
 
+from grafeas.grafeas_v1.types import common
+
 
 __protobuf__ = proto.module(
     package="grafeas.v1",
@@ -44,7 +46,7 @@ class Distribution(proto.Message):
 
     Attributes:
         cpe_uri (str):
-            Required. The cpe_uri in `CPE
+            The cpe_uri in `CPE
             format <https://cpe.mitre.org/specification/>`__ denoting
             the package manager version distributing a package.
         architecture (grafeas.grafeas_v1.types.Architecture):
@@ -99,10 +101,10 @@ class Location(proto.Message):
 
     Attributes:
         cpe_uri (str):
-            Required. The CPE URI in `CPE
-            format <https://cpe.mitre.org/specification/>`__ denoting
-            the package manager version distributing a package.
+            Deprecated. The CPE URI in `CPE
+            format <https://cpe.mitre.org/specification/>`__
         version (grafeas.grafeas_v1.types.Version):
+            Deprecated.
             The version installed at this location.
         path (str):
             The path from which we gathered that this
@@ -125,16 +127,44 @@ class Location(proto.Message):
 
 
 class PackageNote(proto.Message):
-    r"""This represents a particular package that is distributed over
-    various channels. E.g., glibc (aka libc6) is distributed by
-    many, at various versions.
+    r"""PackageNote represents a particular package version.
 
     Attributes:
         name (str):
-            Required. Immutable. The name of the package.
+            The name of the package.
         distribution (Sequence[grafeas.grafeas_v1.types.Distribution]):
+            Deprecated.
             The various channels by which a package is
             distributed.
+        package_type (str):
+            The type of package; whether native or non
+            native (e.g., ruby gems, node.js packages,
+            etc.).
+        cpe_uri (str):
+            The cpe_uri in `CPE
+            format <https://cpe.mitre.org/specification/>`__ denoting
+            the package manager version distributing a package. The
+            cpe_uri will be blank for language packages.
+        architecture (grafeas.grafeas_v1.types.Architecture):
+            The CPU architecture for which packages in
+            this distribution channel were built.
+            Architecture will be blank for language
+            packages.
+        version (grafeas.grafeas_v1.types.Version):
+            The version of the package.
+        maintainer (str):
+            A freeform text denoting the maintainer of
+            this package.
+        url (str):
+            The homepage for this package.
+        description (str):
+            The description of this package.
+        license_ (grafeas.grafeas_v1.types.License):
+            Licenses that have been declared by the
+            authors of the package.
+        digest (Sequence[grafeas.grafeas_v1.types.Digest]):
+            Hash value, typically a file digest, that
+            allows unique identification a specific package.
     """
 
     name = proto.Field(
@@ -146,6 +176,46 @@ class PackageNote(proto.Message):
         number=10,
         message="Distribution",
     )
+    package_type = proto.Field(
+        proto.STRING,
+        number=11,
+    )
+    cpe_uri = proto.Field(
+        proto.STRING,
+        number=12,
+    )
+    architecture = proto.Field(
+        proto.ENUM,
+        number=13,
+        enum="Architecture",
+    )
+    version = proto.Field(
+        proto.MESSAGE,
+        number=14,
+        message="Version",
+    )
+    maintainer = proto.Field(
+        proto.STRING,
+        number=15,
+    )
+    url = proto.Field(
+        proto.STRING,
+        number=16,
+    )
+    description = proto.Field(
+        proto.STRING,
+        number=17,
+    )
+    license_ = proto.Field(
+        proto.MESSAGE,
+        number=18,
+        message=common.License,
+    )
+    digest = proto.RepeatedField(
+        proto.MESSAGE,
+        number=19,
+        message=common.Digest,
+    )
 
 
 class PackageOccurrence(proto.Message):
@@ -154,12 +224,29 @@ class PackageOccurrence(proto.Message):
 
     Attributes:
         name (str):
-            Output only. The name of the installed
-            package.
+            The name of the installed package.
         location (Sequence[grafeas.grafeas_v1.types.Location]):
-            Required. All of the places within the
-            filesystem versions of this package have been
-            found.
+            All of the places within the filesystem
+            versions of this package have been found.
+        package_type (str):
+            The type of package; whether native or non
+            native (e.g., ruby gems, node.js packages,
+            etc.).
+        cpe_uri (str):
+            The cpe_uri in `CPE
+            format <https://cpe.mitre.org/specification/>`__ denoting
+            the package manager version distributing a package. The
+            cpe_uri will be blank for language packages.
+        architecture (grafeas.grafeas_v1.types.Architecture):
+            The CPU architecture for which packages in
+            this distribution channel were built.
+            Architecture will be blank for language
+            packages.
+        license_ (grafeas.grafeas_v1.types.License):
+            Licenses that have been declared by the
+            authors of the package.
+        version (grafeas.grafeas_v1.types.Version):
+            The version of the package.
     """
 
     name = proto.Field(
@@ -170,6 +257,29 @@ class PackageOccurrence(proto.Message):
         proto.MESSAGE,
         number=2,
         message="Location",
+    )
+    package_type = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    cpe_uri = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    architecture = proto.Field(
+        proto.ENUM,
+        number=5,
+        enum="Architecture",
+    )
+    license_ = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message=common.License,
+    )
+    version = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message="Version",
     )
 
 

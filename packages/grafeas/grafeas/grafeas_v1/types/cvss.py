@@ -157,10 +157,9 @@ class CVSS(proto.Message):
     r"""Common Vulnerability Scoring System.
     For details, see
     https://www.first.org/cvss/specification-document This is a
-    message we will try to use for storing multiple versions of
-    CVSS. The intention is that as new versions of CVSS scores get
-    added, we will be able to modify this message rather than adding
-    new protos for each new version of the score.
+    message we will try to use for storing various versions of CVSS
+    rather than making a separate proto for storing a specific
+    version.
 
     Attributes:
         base_score (float):

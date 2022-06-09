@@ -40,6 +40,7 @@ from google.auth.exceptions import MutualTLSChannelError
 from google.oauth2 import service_account
 from google.protobuf import any_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
+from google.protobuf import struct_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.rpc import status_pb2  # type: ignore
 from grafeas.grafeas_v1.services.grafeas import GrafeasAsyncClient
@@ -62,6 +63,7 @@ from grafeas.grafeas_v1.types import package
 from grafeas.grafeas_v1.types import provenance
 from grafeas.grafeas_v1.types import severity
 from grafeas.grafeas_v1.types import slsa_provenance
+from grafeas.grafeas_v1.types import slsa_provenance_zero_two
 from grafeas.grafeas_v1.types import upgrade
 from grafeas.grafeas_v1.types import vulnerability
 import google.auth

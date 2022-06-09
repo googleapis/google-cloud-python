@@ -17,6 +17,9 @@ import proto  # type: ignore
 
 from grafeas.grafeas_v1.types import intoto_provenance
 from grafeas.grafeas_v1.types import slsa_provenance as g_slsa_provenance
+from grafeas.grafeas_v1.types import (
+    slsa_provenance_zero_two as g_slsa_provenance_zero_two,
+)
 
 
 __protobuf__ = proto.module(
@@ -55,6 +58,9 @@ class InTotoStatement(proto.Message):
         slsa_provenance (grafeas.grafeas_v1.types.SlsaProvenance):
 
             This field is a member of `oneof`_ ``predicate``.
+        slsa_provenance_zero_two (grafeas.grafeas_v1.types.SlsaProvenanceZeroTwo):
+
+            This field is a member of `oneof`_ ``predicate``.
     """
 
     type_ = proto.Field(
@@ -81,6 +87,12 @@ class InTotoStatement(proto.Message):
         number=5,
         oneof="predicate",
         message=g_slsa_provenance.SlsaProvenance,
+    )
+    slsa_provenance_zero_two = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        oneof="predicate",
+        message=g_slsa_provenance_zero_two.SlsaProvenanceZeroTwo,
     )
 
 
