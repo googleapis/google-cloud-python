@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.5.1](https://github.com/googleapis/python-bigquery-connection/compare/v1.5.0...v1.5.1) (2022-06-07)
+
+
+### Bug Fixes
+
+* **deps:** require protobuf <4.0.0dev ([#218](https://github.com/googleapis/python-bigquery-connection/issues/218)) ([f842925](https://github.com/googleapis/python-bigquery-connection/commit/f842925ac025647b2959f60443b1b22326f8f9bc))
+
+
+### Documentation
+
+* fix changelog header to consistent size ([#219](https://github.com/googleapis/python-bigquery-connection/issues/219)) ([33c376f](https://github.com/googleapis/python-bigquery-connection/commit/33c376f7f1df8825dfdf1697512e42754b988075))
+
 ## [1.5.0](https://github.com/googleapis/python-bigquery-connection/compare/v1.4.0...v1.5.0) (2022-05-05)
 
 
