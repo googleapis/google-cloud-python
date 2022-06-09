@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.17.6](https://github.com/googleapis/python-bigquery-pandas/compare/v0.17.5...v0.17.6) (2022-06-03)
+
+
+### Documentation
+
+* fix changelog header to consistent size ([#529](https://github.com/googleapis/python-bigquery-pandas/issues/529)) ([218e06a](https://github.com/googleapis/python-bigquery-pandas/commit/218e06af40e991f870649a8e958dfc1bc46f0ee8))
+
 ## [0.17.5](https://github.com/googleapis/python-bigquery-pandas/compare/v0.17.4...v0.17.5) (2022-05-09)
 
 
