@@ -14,6 +14,13 @@ Older versions of this project were distributed as [pybigquery][0].
 [2]: https://pypi.org/project/pybigquery/#history
 
 
+## [1.4.4](https://github.com/googleapis/python-bigquery-sqlalchemy/compare/v1.4.3...v1.4.4) (2022-06-03)
+
+
+### Documentation
+
+* fix changelog header to consistent size ([#461](https://github.com/googleapis/python-bigquery-sqlalchemy/issues/461)) ([177e70a](https://github.com/googleapis/python-bigquery-sqlalchemy/commit/177e70afb79420541021895fd0a082beb1704cf4))
+
 ## [1.4.3](https://github.com/googleapis/python-bigquery-sqlalchemy/compare/v1.4.2...v1.4.3) (2022-03-22)
 
 
