@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-datastore/#history
 
+## [2.7.0](https://github.com/googleapis/python-datastore/compare/v2.6.2...v2.7.0) (2022-06-09)
+
+
+### Features
+
+* support IN/NOT_IN/NOT_EQUAL operators ([#287](https://github.com/googleapis/python-datastore/issues/287)) ([465bd87](https://github.com/googleapis/python-datastore/commit/465bd87c5463b4203b3e087090033a814c4128be))
+
 ## [2.6.2](https://github.com/googleapis/python-datastore/compare/v2.6.1...v2.6.2) (2022-06-07)
 
 
