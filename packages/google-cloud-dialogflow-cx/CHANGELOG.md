@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.12.1](https://github.com/googleapis/python-dialogflow-cx/compare/v1.12.0...v1.12.1) (2022-06-03)
+
+
+### Bug Fixes
+
+* **deps:** require protobuf <4.0.0dev ([#396](https://github.com/googleapis/python-dialogflow-cx/issues/396)) ([51be5ca](https://github.com/googleapis/python-dialogflow-cx/commit/51be5ca187e68f17af53e6a41e59bb4cc04086c1))
+
+
+### Documentation
+
+* fix changelog header to consistent size ([#395](https://github.com/googleapis/python-dialogflow-cx/issues/395)) ([f21bc73](https://github.com/googleapis/python-dialogflow-cx/commit/f21bc7349da7fabe50cc5fb846db43e15da8b71d))
+
 ## [1.12.0](https://github.com/googleapis/python-dialogflow-cx/compare/v1.11.0...v1.12.0) (2022-05-09)
 
 
