@@ -22,7 +22,7 @@ import setuptools
 
 name = "google-cloud-bigquery-data-exchange"
 description = "BigQuery Analytics Hub API client library"
-version = "0.1.0"
+version = "0.1.1"
 url = "https://github.com/googleapis/python-bigquery-data-exchange"
 release_status = "Development Status :: 4 - Beta"
 dependencies = [
