@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-auth-oauthlib/#history
 
+## [0.5.2](https://github.com/googleapis/google-auth-library-python-oauthlib/compare/v0.5.1...v0.5.2) (2022-06-03)
+
+
+### Documentation
+
+* fix changelog header to consistent size ([#204](https://github.com/googleapis/google-auth-library-python-oauthlib/issues/204)) ([cbd7d67](https://github.com/googleapis/google-auth-library-python-oauthlib/commit/cbd7d675e772ad7c31da45296e3444113b6fd19a))
+
 ## [0.5.1](https://github.com/googleapis/google-auth-library-python-oauthlib/compare/v0.5.0...v0.5.1) (2022-03-15)
 
 
