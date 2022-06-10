@@ -1,6 +1,13 @@
 # Changelog
 
 
+## [1.0.1](https://github.com/googleapis/gapic-generator-python/compare/v1.0.0...v1.0.1) (2022-06-10)
+
+
+### Bug Fixes
+
+* add missing metadata. ([#1335](https://github.com/googleapis/gapic-generator-python/issues/1335)) ([228efda](https://github.com/googleapis/gapic-generator-python/commit/228efdab198dd18de82df2be1b8d858b78811a89))
+
 ## [1.0.0](https://github.com/googleapis/gapic-generator-python/compare/v0.65.3...v1.0.0) (2022-05-24)
 
 
