@@ -565,11 +565,8 @@ def test_create_channel_with_credentials_file_and_default_scopes(
     grpc_secure_channel.assert_called_once_with(target, composite_creds)
 
 
-@pytest.mark.skipif(
-    grpc_helpers_async.HAS_GRPC_GCP, reason="grpc_gcp module not available"
-)
 @mock.patch("grpc.aio.secure_channel")
-def test_create_channel_without_grpc_gcp(grpc_secure_channel):
+def test_create_channel(grpc_secure_channel):
     target = "example.com:443"
     scopes = ["test_scope"]
 

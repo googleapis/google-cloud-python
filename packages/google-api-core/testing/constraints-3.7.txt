@@ -11,5 +11,4 @@ google-auth==1.25.0
 requests==2.18.0
 packaging==14.3
 grpcio==1.33.2
-grpcio-gcp==0.2.2
 grpcio-status==1.33.2

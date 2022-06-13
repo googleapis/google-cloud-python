@@ -27,9 +27,6 @@ from grpc import aio
 from google.api_core import exceptions, grpc_helpers
 
 
-# TODO(lidiz) Support gRPC GCP wrapper
-HAS_GRPC_GCP = False
-
 # NOTE(lidiz) Alternatively, we can hack "__getattribute__" to perform
 # automatic patching for us. But that means the overhead of creating an
 # extra Python function spreads to every single send and receive.

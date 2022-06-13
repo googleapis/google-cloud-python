@@ -36,8 +36,6 @@ dependencies = [
 ]
 extras = {
     "grpc": ["grpcio >= 1.33.2, < 2.0dev", "grpcio-status >= 1.33.2, < 2.0dev"],
-    "grpcgcp": "grpcio-gcp >= 0.2.2, < 1.0dev",
-    "grpcio-gcp": "grpcio-gcp >= 0.2.2, < 1.0dev",
 }
 
 

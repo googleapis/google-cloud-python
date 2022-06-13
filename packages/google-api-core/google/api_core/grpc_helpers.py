@@ -25,13 +25,6 @@ import google.auth.credentials
 import google.auth.transport.grpc
 import google.auth.transport.requests
 
-try:
-    import grpc_gcp
-
-    HAS_GRPC_GCP = True
-except ImportError:
-    HAS_GRPC_GCP = False
-
 
 # The list of gRPC Callable interfaces that return iterators.
 _STREAM_WRAP_CLASSES = (grpc.UnaryStreamMultiCallable, grpc.StreamStreamMultiCallable)
@@ -282,8 +275,7 @@ def create_channel(
         default_scopes (Sequence[str]): Default scopes passed by a Google client
             library. Use 'scopes' for user-defined scopes.
         default_host (str): The default endpoint. e.g., "pubsub.googleapis.com".
-        kwargs: Additional key-word args passed to
-            :func:`grpc_gcp.secure_channel` or :func:`grpc.secure_channel`.
+        kwargs: Additional key-word args passed to :func:`grpc.secure_channel`.
 
     Returns:
         grpc.Channel: The created channel.
@@ -302,12 +294,7 @@ def create_channel(
         default_host=default_host,
     )
 
-    if HAS_GRPC_GCP:
-        # If grpc_gcp module is available use grpc_gcp.secure_channel,
-        # otherwise, use grpc.secure_channel to create grpc channel.
-        return grpc_gcp.secure_channel(target, composite_credentials, **kwargs)
-    else:
-        return grpc.secure_channel(target, composite_credentials, **kwargs)
+    return grpc.secure_channel(target, composite_credentials, **kwargs)
 
 
 _MethodCall = collections.namedtuple(

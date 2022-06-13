@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        option: ["", "_grpc_gcp", "_wo_grpc"]
+        option: ["", "_wo_grpc"]
         python:
           - "3.6"
           - "3.7"
