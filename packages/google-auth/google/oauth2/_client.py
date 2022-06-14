@@ -44,11 +44,13 @@ def _handle_error_response(response_data):
     """Translates an error response into an exception.
 
     Args:
-        response_data (Mapping): The decoded response data.
+        response_data (Mapping | str): The decoded response data.
 
     Raises:
         google.auth.exceptions.RefreshError: The errors contained in response_data.
     """
+    if isinstance(response_data, six.string_types):
+        raise exceptions.RefreshError(response_data)
     try:
         error_details = "{}: {}".format(
             response_data["error"], response_data.get("error_description")
@@ -79,7 +81,7 @@ def _parse_expiry(response_data):
 
 
 def _token_endpoint_request_no_throw(
-    request, token_uri, body, access_token=None, use_json=False
+    request, token_uri, body, access_token=None, use_json=False, **kwargs
 ):
     """Makes a request to the OAuth 2.0 authorization server's token endpoint.
     This function doesn't throw on response errors.
@@ -93,6 +95,13 @@ def _token_endpoint_request_no_throw(
         access_token (Optional(str)): The access token needed to make the request.
         use_json (Optional(bool)): Use urlencoded format or json format for the
             content type. The default value is False.
+        kwargs: Additional arguments passed on to the request method. The
+            kwargs will be passed to `requests.request` method, see:
+            https://docs.python-requests.org/en/latest/api/#requests.request.
+            For example, you can use `cert=("cert_pem_path", "key_pem_path")`
+            to set up client side SSL certificate, and use
+            `verify="ca_bundle_path"` to set up the CA certificates for sever
+            side SSL certificate verification.
 
     Returns:
         Tuple(bool, Mapping[str, str]): A boolean indicating if the request is
@@ -112,32 +121,40 @@ def _token_endpoint_request_no_throw(
     # retry to fetch token for maximum of two times if any internal failure
     # occurs.
     while True:
-        response = request(method="POST", url=token_uri, headers=headers, body=body)
+        response = request(
+            method="POST", url=token_uri, headers=headers, body=body, **kwargs
+        )
         response_body = (
             response.data.decode("utf-8")
             if hasattr(response.data, "decode")
             else response.data
         )
-        response_data = json.loads(response_body)
 
         if response.status == http_client.OK:
+            # response_body should be a JSON
+            response_data = json.loads(response_body)
             break
         else:
-            error_desc = response_data.get("error_description") or ""
-            error_code = response_data.get("error") or ""
-            if (
-                any(e == "internal_failure" for e in (error_code, error_desc))
-                and retry < 1
-            ):
-                retry += 1
-                continue
-            return response.status == http_client.OK, response_data
+            # For a failed response, response_body could be a string
+            try:
+                response_data = json.loads(response_body)
+                error_desc = response_data.get("error_description") or ""
+                error_code = response_data.get("error") or ""
+                if (
+                    any(e == "internal_failure" for e in (error_code, error_desc))
+                    and retry < 1
+                ):
+                    retry += 1
+                    continue
+            except ValueError:
+                response_data = response_body
+            return False, response_data
 
-    return response.status == http_client.OK, response_data
+    return True, response_data
 
 
 def _token_endpoint_request(
-    request, token_uri, body, access_token=None, use_json=False
+    request, token_uri, body, access_token=None, use_json=False, **kwargs
 ):
     """Makes a request to the OAuth 2.0 authorization server's token endpoint.
 
@@ -150,6 +167,13 @@ def _token_endpoint_request(
         access_token (Optional(str)): The access token needed to make the request.
         use_json (Optional(bool)): Use urlencoded format or json format for the
             content type. The default value is False.
+        kwargs: Additional arguments passed on to the request method. The
+            kwargs will be passed to `requests.request` method, see:
+            https://docs.python-requests.org/en/latest/api/#requests.request.
+            For example, you can use `cert=("cert_pem_path", "key_pem_path")`
+            to set up client side SSL certificate, and use
+            `verify="ca_bundle_path"` to set up the CA certificates for sever
+            side SSL certificate verification.
 
     Returns:
         Mapping[str, str]: The JSON-decoded response data.
@@ -159,7 +183,7 @@ def _token_endpoint_request(
             an error.
     """
     response_status_ok, response_data = _token_endpoint_request_no_throw(
-        request, token_uri, body, access_token=access_token, use_json=use_json
+        request, token_uri, body, access_token=access_token, use_json=use_json, **kwargs
     )
     if not response_status_ok:
         _handle_error_response(response_data)

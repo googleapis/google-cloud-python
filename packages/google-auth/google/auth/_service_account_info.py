@@ -22,7 +22,7 @@ import six
 from google.auth import crypt
 
 
-def from_dict(data, require=None):
+def from_dict(data, require=None, use_rsa_signer=True):
     """Validates a dictionary containing Google service account data.
 
     Creates and returns a :class:`google.auth.crypt.Signer` instance from the
@@ -32,6 +32,8 @@ def from_dict(data, require=None):
         data (Mapping[str, str]): The service account data
         require (Sequence[str]): List of keys required to be present in the
             info.
+        use_rsa_signer (Optional[bool]): Whether to use RSA signer or EC signer.
+            We use RSA signer by default.
 
     Returns:
         google.auth.crypt.Signer: A signer created from the private key in the
@@ -52,18 +54,23 @@ def from_dict(data, require=None):
         )
 
     # Create a signer.
-    signer = crypt.RSASigner.from_service_account_info(data)
+    if use_rsa_signer:
+        signer = crypt.RSASigner.from_service_account_info(data)
+    else:
+        signer = crypt.ES256Signer.from_service_account_info(data)
 
     return signer
 
 
-def from_filename(filename, require=None):
+def from_filename(filename, require=None, use_rsa_signer=True):
     """Reads a Google service account JSON file and returns its parsed info.
 
     Args:
         filename (str): The path to the service account .json file.
         require (Sequence[str]): List of keys required to be present in the
             info.
+        use_rsa_signer (Optional[bool]): Whether to use RSA signer or EC signer.
+            We use RSA signer by default.
 
     Returns:
         Tuple[ Mapping[str, str], google.auth.crypt.Signer ]: The verified
@@ -71,4 +78,4 @@ def from_filename(filename, require=None):
     """
     with io.open(filename, "r", encoding="utf-8") as json_file:
         data = json.load(json_file)
-        return data, from_dict(data, require=require)
+        return data, from_dict(data, require=require, use_rsa_signer=use_rsa_signer)

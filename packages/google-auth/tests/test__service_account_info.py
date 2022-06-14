@@ -24,15 +24,27 @@ from google.auth import crypt
 
 DATA_DIR = os.path.join(os.path.dirname(__file__), "data")
 SERVICE_ACCOUNT_JSON_FILE = os.path.join(DATA_DIR, "service_account.json")
+GDCH_SERVICE_ACCOUNT_JSON_FILE = os.path.join(DATA_DIR, "gdch_service_account.json")
 
 with open(SERVICE_ACCOUNT_JSON_FILE, "r") as fh:
     SERVICE_ACCOUNT_INFO = json.load(fh)
+
+with open(GDCH_SERVICE_ACCOUNT_JSON_FILE, "r") as fh:
+    GDCH_SERVICE_ACCOUNT_INFO = json.load(fh)
 
 
 def test_from_dict():
     signer = _service_account_info.from_dict(SERVICE_ACCOUNT_INFO)
     assert isinstance(signer, crypt.RSASigner)
     assert signer.key_id == SERVICE_ACCOUNT_INFO["private_key_id"]
+
+
+def test_from_dict_es256_signer():
+    signer = _service_account_info.from_dict(
+        GDCH_SERVICE_ACCOUNT_INFO, use_rsa_signer=False
+    )
+    assert isinstance(signer, crypt.ES256Signer)
+    assert signer.key_id == GDCH_SERVICE_ACCOUNT_INFO["private_key_id"]
 
 
 def test_from_dict_bad_private_key():
@@ -60,3 +72,12 @@ def test_from_filename():
 
     assert isinstance(signer, crypt.RSASigner)
     assert signer.key_id == SERVICE_ACCOUNT_INFO["private_key_id"]
+
+
+def test_from_filename_es256_signer():
+    _, signer = _service_account_info.from_filename(
+        GDCH_SERVICE_ACCOUNT_JSON_FILE, use_rsa_signer=False
+    )
+
+    assert isinstance(signer, crypt.ES256Signer)
+    assert signer.key_id == GDCH_SERVICE_ACCOUNT_INFO["private_key_id"]
