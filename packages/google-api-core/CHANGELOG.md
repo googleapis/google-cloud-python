@@ -4,6 +4,20 @@
 
 [1]: https://pypi.org/project/google-api-core/#history
 
+## [2.8.2](https://github.com/googleapis/python-api-core/compare/v2.8.1...v2.8.2) (2022-06-13)
+
+
+### Bug Fixes
+
+* **deps:** allow protobuf < 5.0.0 ([#400](https://github.com/googleapis/python-api-core/issues/400)) ([8f73d2e](https://github.com/googleapis/python-api-core/commit/8f73d2ee2d3af2201f877aa7e2f7361147759dc7))
+* drop support for grpc-gcp ([#401](https://github.com/googleapis/python-api-core/issues/401)) ([5da6733](https://github.com/googleapis/python-api-core/commit/5da6733a475c436efc11b14889af73b3a0e20379))
+
+
+### Documentation
+
+* fix changelog header to consistent size ([#394](https://github.com/googleapis/python-api-core/issues/394)) ([ac266e9](https://github.com/googleapis/python-api-core/commit/ac266e935bc4e7c6dff250384407e7a60d8dba90))
+* Fix typo in the BackgroundConsumer docstring ([#395](https://github.com/googleapis/python-api-core/issues/395)) ([0eb727f](https://github.com/googleapis/python-api-core/commit/0eb727f92314db3c4383754514f75a49ba02e27b))
+
 ## [2.8.1](https://github.com/googleapis/python-api-core/compare/v2.8.0...v2.8.1) (2022-05-26)
 
 
