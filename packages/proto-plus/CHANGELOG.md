@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.20.6](https://github.com/googleapis/proto-plus-python/compare/v1.20.5...v1.20.6) (2022-06-13)
+
+
+### Bug Fixes
+
+* **deps:** allow protobuf < 5.0.0 ([#324](https://github.com/googleapis/proto-plus-python/issues/324)) ([af4f56e](https://github.com/googleapis/proto-plus-python/commit/af4f56edb0bfbfa808f7def37e19b24bd27d4b40))
+
+
+### Documentation
+
+* fix changelog header to consistent size ([#319](https://github.com/googleapis/proto-plus-python/issues/319)) ([27d2003](https://github.com/googleapis/proto-plus-python/commit/27d2003571342e24aa74d29a45fa49d2328ff76d))
+
 ## [1.20.5](https://github.com/googleapis/proto-plus-python/compare/v1.20.4...v1.20.5) (2022-05-26)
 
 
