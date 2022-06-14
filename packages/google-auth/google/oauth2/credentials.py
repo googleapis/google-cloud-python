@@ -54,7 +54,7 @@ class Credentials(credentials.ReadOnlyScoped, credentials.CredentialsWithQuotaPr
     The credentials are considered immutable. If you want to modify the
     quota project, use :meth:`with_quota_project` or ::
 
-        credentials = credentials.with_quota_project('myproject-123)
+        credentials = credentials.with_quota_project('myproject-123')
 
     Reauth is disabled by default. To enable reauth, set the
     `enable_reauth_refresh` parameter to True in the constructor. Note that
