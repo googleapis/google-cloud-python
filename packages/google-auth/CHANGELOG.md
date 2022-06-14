@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+## [2.8.0](https://github.com/googleapis/google-auth-library-python/compare/v2.7.0...v2.8.0) (2022-06-14)
+
+
+### Features
+
+* add experimental GDCH support ([#1044](https://github.com/googleapis/google-auth-library-python/issues/1044)) ([94fb5e2](https://github.com/googleapis/google-auth-library-python/commit/94fb5e27ef57b9ffb2fa58386bc0cb382ddafec2))
+
 ## [2.7.0](https://github.com/googleapis/google-auth-library-python/compare/v2.6.6...v2.7.0) (2022-06-07)
 
 
