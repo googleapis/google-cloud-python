@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.0](https://github.com/googleapis/python-bigquery-migration/compare/v0.4.3...v0.5.0) (2022-06-15)
+
+
+### Features
+
+* Add SQL Server dialect to bigquerymigration v2 client library ([#99](https://github.com/googleapis/python-bigquery-migration/issues/99)) ([35a1099](https://github.com/googleapis/python-bigquery-migration/commit/35a10990d6d9019511d9c1813f4f6d5889004189))
+
 ## [0.4.3](https://github.com/googleapis/python-bigquery-migration/compare/v0.4.2...v0.4.3) (2022-06-03)
 
 
