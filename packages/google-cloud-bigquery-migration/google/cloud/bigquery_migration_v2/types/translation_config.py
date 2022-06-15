@@ -30,6 +30,7 @@ __protobuf__ = proto.module(
         "NetezzaDialect",
         "AzureSynapseDialect",
         "VerticaDialect",
+        "SQLServerDialect",
         "ObjectNameMappingList",
         "ObjectNameMapping",
         "NameMappingKey",
@@ -156,6 +157,10 @@ class Dialect(proto.Message):
             The Vertica dialect
 
             This field is a member of `oneof`_ ``dialect_value``.
+        sql_server_dialect (google.cloud.bigquery_migration_v2.types.SQLServerDialect):
+            The SQL Server dialect
+
+            This field is a member of `oneof`_ ``dialect_value``.
     """
 
     bigquery_dialect = proto.Field(
@@ -218,6 +223,12 @@ class Dialect(proto.Message):
         oneof="dialect_value",
         message="VerticaDialect",
     )
+    sql_server_dialect = proto.Field(
+        proto.MESSAGE,
+        number=11,
+        oneof="dialect_value",
+        message="SQLServerDialect",
+    )
 
 
 class BigQueryDialect(proto.Message):
@@ -276,6 +287,10 @@ class AzureSynapseDialect(proto.Message):
 
 class VerticaDialect(proto.Message):
     r"""The dialect definition for Vertica."""
+
+
+class SQLServerDialect(proto.Message):
+    r"""The dialect definition for SQL Server."""
 
 
 class ObjectNameMappingList(proto.Message):
