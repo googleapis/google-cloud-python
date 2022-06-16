@@ -119,6 +119,7 @@ def load_parquet(
 ):
     job_config = bigquery.LoadJobConfig()
     job_config.write_disposition = "WRITE_APPEND"
+    job_config.create_disposition = "CREATE_NEVER"
     job_config.source_format = "PARQUET"
 
     if schema is not None:
@@ -148,6 +149,7 @@ def load_csv(
 ):
     job_config = bigquery.LoadJobConfig()
     job_config.write_disposition = "WRITE_APPEND"
+    job_config.create_disposition = "CREATE_NEVER"
     job_config.source_format = "CSV"
     job_config.allow_quoted_newlines = True
 
