@@ -5,7 +5,7 @@
 # https://help.github.com/en/github/creating-cloning-and-archiving-repositories/about-code-owners#codeowners-syntax
 
 # The @googleapis/yoshi-python is the default owner for changes in this repo
-*               @arithmetic1728 @sai-sunder-s @googleapis/yoshi-python
+*               @arithmetic1728 @sai-sunder-s @TimurSadykov @googleapis/yoshi-python
 
 # The python-samples-reviewers team is the default owner for samples changes
 /samples/  @googleapis/python-samples-owners
