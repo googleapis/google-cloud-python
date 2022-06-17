@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-spanner/#history
 
+## [3.15.0](https://github.com/googleapis/python-spanner/compare/v3.14.1...v3.15.0) (2022-06-17)
+
+
+### Features
+
+* Add support for Postgresql dialect ([#741](https://github.com/googleapis/python-spanner/issues/741)) ([d2551b0](https://github.com/googleapis/python-spanner/commit/d2551b028ea2ad4e2eaa1c97ca7bac4683c4fdec))
+
 ## [3.14.1](https://github.com/googleapis/python-spanner/compare/v3.14.0...v3.14.1) (2022-06-08)
 
 
