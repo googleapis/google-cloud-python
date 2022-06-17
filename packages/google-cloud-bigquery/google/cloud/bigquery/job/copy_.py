@@ -126,6 +126,20 @@ class CopyJobConfig(_JobConfig):
             value = OperationType.OPERATION_TYPE_UNSPECIFIED
         self._set_sub_prop("operationType", value)
 
+    @property
+    def destination_expiration_time(self) -> str:
+        """google.cloud.bigquery.job.DestinationExpirationTime: The time when the
+        destination table expires. Expired tables will be deleted and their storage reclaimed.
+
+        See
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/Job#JobConfigurationTableCopy.FIELDS.destination_expiration_time
+        """
+        return self._get_sub_prop("destinationExpirationTime")
+
+    @destination_expiration_time.setter
+    def destination_expiration_time(self, value: str):
+        self._set_sub_prop("destinationExpirationTime", value)
+
 
 class CopyJob(_AsyncJob):
     """Asynchronous job: copy data into a table from other tables.

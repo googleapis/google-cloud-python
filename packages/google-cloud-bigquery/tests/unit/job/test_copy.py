@@ -19,6 +19,8 @@ from ..helpers import make_connection
 from .helpers import _Base
 from .helpers import _make_client
 
+import datetime
+
 
 class TestCopyJobConfig(_Base):
     JOB_TYPE = "copy"
@@ -36,6 +38,7 @@ class TestCopyJobConfig(_Base):
 
         assert config.create_disposition is None
         assert config.write_disposition is None
+        assert config.destination_expiration_time is None
         assert config.destination_encryption_configuration is None
         assert config.operation_type == OperationType.OPERATION_TYPE_UNSPECIFIED
 
@@ -48,15 +51,22 @@ class TestCopyJobConfig(_Base):
         write_disposition = WriteDisposition.WRITE_TRUNCATE
         snapshot_operation = OperationType.SNAPSHOT
 
+        today = datetime.date.today()
+        destination_expiration_time = f"{today.year + 1}-01-01T00:00:00Z"
+
         config = self._get_target_class()(
             create_disposition=create_disposition,
             write_disposition=write_disposition,
             operation_type=snapshot_operation,
+            destination_expiration_time=destination_expiration_time,
         )
 
         self.assertEqual(config.create_disposition, create_disposition)
         self.assertEqual(config.write_disposition, write_disposition)
         self.assertEqual(config.operation_type, snapshot_operation)
+        self.assertEqual(
+            config.destination_expiration_time, destination_expiration_time
+        )
 
     def test_to_api_repr_with_encryption(self):
         from google.cloud.bigquery.encryption_configuration import (
