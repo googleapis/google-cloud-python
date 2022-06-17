@@ -26,6 +26,7 @@ from google.rpc import code_pb2
 from google.api_core import datetime_helpers
 from google.api_core import exceptions
 from google.cloud import spanner_v1
+from google.cloud.spanner_admin_database_v1 import DatabaseDialect
 from google.cloud._helpers import UTC
 from google.cloud.spanner_v1.data_types import JsonObject
 from tests import _helpers as ot_helpers
@@ -81,7 +82,15 @@ LIVE_ALL_TYPES_COLUMNS = (
     "json_value",
     "json_array",
 )
+
 EMULATOR_ALL_TYPES_COLUMNS = LIVE_ALL_TYPES_COLUMNS[:-4]
+# ToDo: Clean up generation of POSTGRES_ALL_TYPES_COLUMNS
+POSTGRES_ALL_TYPES_COLUMNS = (
+    LIVE_ALL_TYPES_COLUMNS[:1]
+    + LIVE_ALL_TYPES_COLUMNS[1:7:2]
+    + LIVE_ALL_TYPES_COLUMNS[9:17:2]
+)
+
 AllTypesRowData = collections.namedtuple("AllTypesRowData", LIVE_ALL_TYPES_COLUMNS)
 AllTypesRowData.__new__.__defaults__ = tuple([None for colum in LIVE_ALL_TYPES_COLUMNS])
 EmulatorAllTypesRowData = collections.namedtuple(
@@ -89,6 +98,12 @@ EmulatorAllTypesRowData = collections.namedtuple(
 )
 EmulatorAllTypesRowData.__new__.__defaults__ = tuple(
     [None for colum in EMULATOR_ALL_TYPES_COLUMNS]
+)
+PostGresAllTypesRowData = collections.namedtuple(
+    "PostGresAllTypesRowData", POSTGRES_ALL_TYPES_COLUMNS
+)
+PostGresAllTypesRowData.__new__.__defaults__ = tuple(
+    [None for colum in POSTGRES_ALL_TYPES_COLUMNS]
 )
 
 LIVE_ALL_TYPES_ROWDATA = (
@@ -156,16 +171,33 @@ EMULATOR_ALL_TYPES_ROWDATA = (
     EmulatorAllTypesRowData(pkey=307, timestamp_array=[SOME_TIME, NANO_TIME, None]),
 )
 
+POSTGRES_ALL_TYPES_ROWDATA = (
+    # all nulls
+    PostGresAllTypesRowData(pkey=0),
+    # Non-null values
+    PostGresAllTypesRowData(pkey=101, int_value=123),
+    PostGresAllTypesRowData(pkey=102, bool_value=False),
+    PostGresAllTypesRowData(pkey=103, bytes_value=BYTES_1),
+    PostGresAllTypesRowData(pkey=105, float_value=1.4142136),
+    PostGresAllTypesRowData(pkey=106, string_value="VALUE"),
+    PostGresAllTypesRowData(pkey=107, timestamp_value=SOME_TIME),
+    PostGresAllTypesRowData(pkey=108, timestamp_value=NANO_TIME),
+    PostGresAllTypesRowData(pkey=109, numeric_value=NUMERIC_1),
+)
+
 if _helpers.USE_EMULATOR:
     ALL_TYPES_COLUMNS = EMULATOR_ALL_TYPES_COLUMNS
     ALL_TYPES_ROWDATA = EMULATOR_ALL_TYPES_ROWDATA
+elif _helpers.DATABASE_DIALECT:
+    ALL_TYPES_COLUMNS = POSTGRES_ALL_TYPES_COLUMNS
+    ALL_TYPES_ROWDATA = POSTGRES_ALL_TYPES_ROWDATA
 else:
     ALL_TYPES_COLUMNS = LIVE_ALL_TYPES_COLUMNS
     ALL_TYPES_ROWDATA = LIVE_ALL_TYPES_ROWDATA
 
 
 @pytest.fixture(scope="session")
-def sessions_database(shared_instance, database_operation_timeout):
+def sessions_database(shared_instance, database_operation_timeout, database_dialect):
     database_name = _helpers.unique_id("test_sessions", separator="_")
     pool = spanner_v1.BurstyPool(labels={"testcase": "session_api"})
     sessions_database = shared_instance.database(
@@ -356,7 +388,7 @@ def test_batch_insert_then_read(sessions_database, ot_exporter):
         )
 
 
-def test_batch_insert_then_read_string_array_of_string(sessions_database):
+def test_batch_insert_then_read_string_array_of_string(sessions_database, not_postgres):
     table = "string_plus_array_of_string"
     columns = ["id", "name", "tags"]
     rowdata = [
@@ -402,7 +434,7 @@ def test_batch_insert_or_update_then_query(sessions_database):
     sd._check_rows_data(rows)
 
 
-def test_batch_insert_w_commit_timestamp(sessions_database):
+def test_batch_insert_w_commit_timestamp(sessions_database, not_postgres):
     table = "users_history"
     columns = ["id", "commit_ts", "name", "email", "deleted"]
     user_id = 1234
@@ -588,11 +620,12 @@ def _generate_insert_statements():
     column_list = ", ".join(_sample_data.COLUMNS)
 
     for row in _sample_data.ROW_DATA:
-        row_data = '{}, "{}", "{}", "{}"'.format(*row)
+        row_data = "{}, '{}', '{}', '{}'".format(*row)
         yield f"INSERT INTO {table} ({column_list}) VALUES ({row_data})"
 
 
 @_helpers.retry_mabye_conflict
+@_helpers.retry_mabye_aborted_txn
 def test_transaction_execute_sql_w_dml_read_rollback(
     sessions_database,
     sessions_to_delete,
@@ -690,7 +723,9 @@ def test_transaction_execute_update_then_insert_commit(
     # [END spanner_test_dml_with_mutation]
 
 
-def test_transaction_batch_update_success(sessions_database, sessions_to_delete):
+def test_transaction_batch_update_success(
+    sessions_database, sessions_to_delete, database_dialect
+):
     # [START spanner_test_dml_with_mutation]
     # [START spanner_test_dml_update]
     sd = _sample_data
@@ -703,16 +738,27 @@ def test_transaction_batch_update_success(sessions_database, sessions_to_delete)
     with session.batch() as batch:
         batch.delete(sd.TABLE, sd.ALL)
 
+    keys = (
+        ["p1", "p2"]
+        if database_dialect == DatabaseDialect.POSTGRESQL
+        else ["contact_id", "email"]
+    )
+    placeholders = (
+        ["$1", "$2"]
+        if database_dialect == DatabaseDialect.POSTGRESQL
+        else [f"@{key}" for key in keys]
+    )
+
     insert_statement = list(_generate_insert_statements())[0]
     update_statement = (
-        "UPDATE contacts SET email = @email WHERE contact_id = @contact_id;",
-        {"contact_id": 1, "email": "phreddy@example.com"},
-        {"contact_id": param_types.INT64, "email": param_types.STRING},
+        f"UPDATE contacts SET email = {placeholders[1]} WHERE contact_id = {placeholders[0]};",
+        {keys[0]: 1, keys[1]: "phreddy@example.com"},
+        {keys[0]: param_types.INT64, keys[1]: param_types.STRING},
     )
     delete_statement = (
-        "DELETE contacts WHERE contact_id = @contact_id;",
-        {"contact_id": 1},
-        {"contact_id": param_types.INT64},
+        f"DELETE FROM contacts WHERE contact_id = {placeholders[0]};",
+        {keys[0]: 1},
+        {keys[0]: param_types.INT64},
     )
 
     def unit_of_work(transaction):
@@ -737,8 +783,7 @@ def test_transaction_batch_update_success(sessions_database, sessions_to_delete)
 
 
 def test_transaction_batch_update_and_execute_dml(
-    sessions_database,
-    sessions_to_delete,
+    sessions_database, sessions_to_delete, database_dialect
 ):
     sd = _sample_data
     param_types = spanner_v1.param_types
@@ -750,16 +795,27 @@ def test_transaction_batch_update_and_execute_dml(
     with session.batch() as batch:
         batch.delete(sd.TABLE, sd.ALL)
 
+    keys = (
+        ["p1", "p2"]
+        if database_dialect == DatabaseDialect.POSTGRESQL
+        else ["contact_id", "email"]
+    )
+    placeholders = (
+        ["$1", "$2"]
+        if database_dialect == DatabaseDialect.POSTGRESQL
+        else [f"@{key}" for key in keys]
+    )
+
     insert_statements = list(_generate_insert_statements())
     update_statements = [
         (
-            "UPDATE contacts SET email = @email WHERE contact_id = @contact_id;",
-            {"contact_id": 1, "email": "phreddy@example.com"},
-            {"contact_id": param_types.INT64, "email": param_types.STRING},
+            f"UPDATE contacts SET email = {placeholders[1]} WHERE contact_id = {placeholders[0]};",
+            {keys[0]: 1, keys[1]: "phreddy@example.com"},
+            {keys[0]: param_types.INT64, keys[1]: param_types.STRING},
         )
     ]
 
-    delete_statement = "DELETE contacts WHERE TRUE;"
+    delete_statement = "DELETE FROM contacts WHERE TRUE;"
 
     def unit_of_work(transaction):
         rows = list(transaction.read(sd.TABLE, sd.COLUMNS, sd.ALL))
@@ -784,7 +840,9 @@ def test_transaction_batch_update_and_execute_dml(
     sd._check_rows_data(rows, [])
 
 
-def test_transaction_batch_update_w_syntax_error(sessions_database, sessions_to_delete):
+def test_transaction_batch_update_w_syntax_error(
+    sessions_database, sessions_to_delete, database_dialect
+):
     from google.rpc import code_pb2
 
     sd = _sample_data
@@ -797,16 +855,27 @@ def test_transaction_batch_update_w_syntax_error(sessions_database, sessions_to_
     with session.batch() as batch:
         batch.delete(sd.TABLE, sd.ALL)
 
+    keys = (
+        ["p1", "p2"]
+        if database_dialect == DatabaseDialect.POSTGRESQL
+        else ["contact_id", "email"]
+    )
+    placeholders = (
+        ["$1", "$2"]
+        if database_dialect == DatabaseDialect.POSTGRESQL
+        else [f"@{key}" for key in keys]
+    )
+
     insert_statement = list(_generate_insert_statements())[0]
     update_statement = (
-        "UPDTAE contacts SET email = @email WHERE contact_id = @contact_id;",
-        {"contact_id": 1, "email": "phreddy@example.com"},
-        {"contact_id": param_types.INT64, "email": param_types.STRING},
+        f"UPDTAE contacts SET email = {placeholders[1]} WHERE contact_id = {placeholders[0]};",
+        {keys[0]: 1, keys[1]: "phreddy@example.com"},
+        {keys[0]: param_types.INT64, keys[1]: param_types.STRING},
     )
     delete_statement = (
-        "DELETE contacts WHERE contact_id = @contact_id;",
-        {"contact_id": 1},
-        {"contact_id": param_types.INT64},
+        f"DELETE FROM contacts WHERE contact_id = {placeholders[0]};",
+        {keys[0]: 1},
+        {keys[0]: param_types.INT64},
     )
 
     def unit_of_work(transaction):
@@ -838,9 +907,7 @@ def test_transaction_batch_update_wo_statements(sessions_database, sessions_to_d
     reason="trace requires OpenTelemetry",
 )
 def test_transaction_batch_update_w_parent_span(
-    sessions_database,
-    sessions_to_delete,
-    ot_exporter,
+    sessions_database, sessions_to_delete, ot_exporter, database_dialect
 ):
     from opentelemetry import trace
 
@@ -855,16 +922,27 @@ def test_transaction_batch_update_w_parent_span(
     with session.batch() as batch:
         batch.delete(sd.TABLE, sd.ALL)
 
+    keys = (
+        ["p1", "p2"]
+        if database_dialect == DatabaseDialect.POSTGRESQL
+        else ["contact_id", "email"]
+    )
+    placeholders = (
+        ["$1", "$2"]
+        if database_dialect == DatabaseDialect.POSTGRESQL
+        else [f"@{key}" for key in keys]
+    )
+
     insert_statement = list(_generate_insert_statements())[0]
     update_statement = (
-        "UPDATE contacts SET email = @email WHERE contact_id = @contact_id;",
-        {"contact_id": 1, "email": "phreddy@example.com"},
-        {"contact_id": param_types.INT64, "email": param_types.STRING},
+        f"UPDATE contacts SET email = {placeholders[1]} WHERE contact_id = {placeholders[0]};",
+        {keys[0]: 1, keys[1]: "phreddy@example.com"},
+        {keys[0]: param_types.INT64, keys[1]: param_types.STRING},
     )
     delete_statement = (
-        "DELETE contacts WHERE contact_id = @contact_id;",
-        {"contact_id": 1},
-        {"contact_id": param_types.INT64},
+        f"DELETE FROM contacts WHERE contact_id = {placeholders[0]};",
+        {keys[0]: 1},
+        {keys[0]: param_types.INT64},
     )
 
     def unit_of_work(transaction):
@@ -896,7 +974,7 @@ def test_transaction_batch_update_w_parent_span(
         assert span.parent.span_id == span_list[-1].context.span_id
 
 
-def test_execute_partitioned_dml(sessions_database):
+def test_execute_partitioned_dml(sessions_database, database_dialect):
     # [START spanner_test_dml_partioned_dml_update]
     sd = _sample_data
     param_types = spanner_v1.param_types
@@ -915,17 +993,26 @@ def test_execute_partitioned_dml(sessions_database):
 
     sd._check_rows_data(before_pdml)
 
+    keys = (
+        ["p1", "p2"]
+        if database_dialect == DatabaseDialect.POSTGRESQL
+        else ["email", "target"]
+    )
+    placeholders = (
+        ["$1", "$2"]
+        if database_dialect == DatabaseDialect.POSTGRESQL
+        else [f"@{key}" for key in keys]
+    )
     nonesuch = "nonesuch@example.com"
     target = "phred@example.com"
     update_statement = (
-        f"UPDATE {sd.TABLE} SET {sd.TABLE}.email = @email "
-        f"WHERE {sd.TABLE}.email = @target"
+        f"UPDATE contacts SET email = {placeholders[0]} WHERE email = {placeholders[1]}"
     )
 
     row_count = sessions_database.execute_partitioned_dml(
         update_statement,
-        params={"email": nonesuch, "target": target},
-        param_types={"email": param_types.STRING, "target": param_types.STRING},
+        params={keys[0]: nonesuch, keys[1]: target},
+        param_types={keys[0]: param_types.STRING, keys[1]: param_types.STRING},
         request_options=spanner_v1.RequestOptions(
             priority=spanner_v1.RequestOptions.Priority.PRIORITY_MEDIUM
         ),
@@ -949,7 +1036,9 @@ def test_execute_partitioned_dml(sessions_database):
     # [END spanner_test_dml_partioned_dml_update]
 
 
-def _transaction_concurrency_helper(sessions_database, unit_of_work, pkey):
+def _transaction_concurrency_helper(
+    sessions_database, unit_of_work, pkey, database_dialect=None
+):
     initial_value = 123
     num_threads = 3  # conforms to equivalent Java systest.
 
@@ -965,10 +1054,14 @@ def _transaction_concurrency_helper(sessions_database, unit_of_work, pkey):
     for _ in range(num_threads):
         txn_sessions.append(sessions_database)
 
+    args = (
+        (unit_of_work, pkey, database_dialect)
+        if database_dialect
+        else (unit_of_work, pkey)
+    )
+
     threads = [
-        threading.Thread(
-            target=txn_session.run_in_transaction, args=(unit_of_work, pkey)
-        )
+        threading.Thread(target=txn_session.run_in_transaction, args=args)
         for txn_session in txn_sessions
     ]
 
@@ -999,12 +1092,14 @@ def test_transaction_read_w_concurrent_updates(sessions_database):
     _transaction_concurrency_helper(sessions_database, _read_w_concurrent_update, pkey)
 
 
-def _query_w_concurrent_update(transaction, pkey):
+def _query_w_concurrent_update(transaction, pkey, database_dialect):
     param_types = spanner_v1.param_types
-    sql = f"SELECT * FROM {COUNTERS_TABLE} WHERE name = @name"
+    key = "p1" if database_dialect == DatabaseDialect.POSTGRESQL else "name"
+    placeholder = "$1" if database_dialect == DatabaseDialect.POSTGRESQL else f"@{key}"
+    sql = f"SELECT * FROM {COUNTERS_TABLE} WHERE name = {placeholder}"
     rows = list(
         transaction.execute_sql(
-            sql, params={"name": pkey}, param_types={"name": param_types.STRING}
+            sql, params={key: pkey}, param_types={key: param_types.STRING}
         )
     )
     assert len(rows) == 1
@@ -1012,9 +1107,11 @@ def _query_w_concurrent_update(transaction, pkey):
     transaction.update(COUNTERS_TABLE, COUNTERS_COLUMNS, [[pkey, value + 1]])
 
 
-def test_transaction_query_w_concurrent_updates(sessions_database):
+def test_transaction_query_w_concurrent_updates(sessions_database, database_dialect):
     pkey = "query_w_concurrent_updates"
-    _transaction_concurrency_helper(sessions_database, _query_w_concurrent_update, pkey)
+    _transaction_concurrency_helper(
+        sessions_database, _query_w_concurrent_update, pkey, database_dialect
+    )
 
 
 def test_transaction_read_w_abort(not_emulator, sessions_database):
@@ -1214,7 +1311,9 @@ def test_multiuse_snapshot_read_isolation_exact_staleness(sessions_database):
         sd._check_row_data(after, all_data_rows)
 
 
-def test_read_w_index(shared_instance, database_operation_timeout, databases_to_delete):
+def test_read_w_index(
+    shared_instance, database_operation_timeout, databases_to_delete, database_dialect
+):
     # Indexed reads cannot return non-indexed columns
     sd = _sample_data
     row_count = 2000
@@ -1227,6 +1326,7 @@ def test_read_w_index(shared_instance, database_operation_timeout, databases_to_
         _helpers.unique_id("test_read", separator="_"),
         ddl_statements=_helpers.DDL_STATEMENTS + extra_ddl,
         pool=pool,
+        database_dialect=database_dialect,
     )
     operation = temp_db.create()
     databases_to_delete.append(temp_db)
@@ -1684,7 +1784,7 @@ def test_multiuse_snapshot_execute_sql_isolation_strong(sessions_database):
         sd._check_row_data(after, all_data_rows)
 
 
-def test_execute_sql_returning_array_of_struct(sessions_database):
+def test_execute_sql_returning_array_of_struct(sessions_database, not_postgres):
     sql = (
         "SELECT ARRAY(SELECT AS STRUCT C1, C2 "
         "FROM (SELECT 'a' AS C1, 1 AS C2 "
@@ -1700,7 +1800,7 @@ def test_execute_sql_returning_array_of_struct(sessions_database):
     )
 
 
-def test_execute_sql_returning_empty_array_of_struct(sessions_database):
+def test_execute_sql_returning_empty_array_of_struct(sessions_database, not_postgres):
     sql = (
         "SELECT ARRAY(SELECT AS STRUCT C1, C2 "
         "FROM (SELECT 2 AS C1) X "
@@ -1749,7 +1849,8 @@ def test_execute_sql_select_1(sessions_database):
 
 def _bind_test_helper(
     database,
-    type_name,
+    database_dialect,
+    param_type,
     single_value,
     array_value,
     expected_array_value=None,
@@ -1757,12 +1858,15 @@ def _bind_test_helper(
 ):
     database.snapshot(multi_use=True)
 
+    key = "p1" if database_dialect == DatabaseDialect.POSTGRESQL else "v"
+    placeholder = "$1" if database_dialect == DatabaseDialect.POSTGRESQL else f"@{key}"
+
     # Bind a non-null <type_name>
     _check_sql_results(
         database,
-        sql="SELECT @v",
-        params={"v": single_value},
-        param_types={"v": spanner_v1.Type(code=type_name)},
+        sql=f"SELECT {placeholder}",
+        params={key: single_value},
+        param_types={key: param_type},
         expected=[(single_value,)],
         order=False,
         recurse_into_lists=recurse_into_lists,
@@ -1771,16 +1875,16 @@ def _bind_test_helper(
     # Bind a null <type_name>
     _check_sql_results(
         database,
-        sql="SELECT @v",
-        params={"v": None},
-        param_types={"v": spanner_v1.Type(code=type_name)},
+        sql=f"SELECT {placeholder}",
+        params={key: None},
+        param_types={key: param_type},
         expected=[(None,)],
         order=False,
         recurse_into_lists=recurse_into_lists,
     )
 
     # Bind an array of <type_name>
-    array_element_type = spanner_v1.Type(code=type_name)
+    array_element_type = param_type
     array_type = spanner_v1.Type(
         code=spanner_v1.TypeCode.ARRAY, array_element_type=array_element_type
     )
@@ -1790,9 +1894,9 @@ def _bind_test_helper(
 
     _check_sql_results(
         database,
-        sql="SELECT @v",
-        params={"v": array_value},
-        param_types={"v": array_type},
+        sql=f"SELECT {placeholder}",
+        params={key: array_value},
+        param_types={key: array_type},
         expected=[(expected_array_value,)],
         order=False,
         recurse_into_lists=recurse_into_lists,
@@ -1801,9 +1905,9 @@ def _bind_test_helper(
     # Bind an empty array of <type_name>
     _check_sql_results(
         database,
-        sql="SELECT @v",
-        params={"v": []},
-        param_types={"v": array_type},
+        sql=f"SELECT {placeholder}",
+        params={key: []},
+        param_types={key: array_type},
         expected=[([],)],
         order=False,
         recurse_into_lists=recurse_into_lists,
@@ -1812,70 +1916,93 @@ def _bind_test_helper(
     # Bind a null array of <type_name>
     _check_sql_results(
         database,
-        sql="SELECT @v",
-        params={"v": None},
-        param_types={"v": array_type},
+        sql=f"SELECT {placeholder}",
+        params={key: None},
+        param_types={key: array_type},
         expected=[(None,)],
         order=False,
         recurse_into_lists=recurse_into_lists,
     )
 
 
-def test_execute_sql_w_string_bindings(sessions_database):
+def test_execute_sql_w_string_bindings(sessions_database, database_dialect):
     _bind_test_helper(
-        sessions_database, spanner_v1.TypeCode.STRING, "Phred", ["Phred", "Bharney"]
+        sessions_database,
+        database_dialect,
+        spanner_v1.param_types.STRING,
+        "Phred",
+        ["Phred", "Bharney"],
     )
 
 
-def test_execute_sql_w_bool_bindings(sessions_database):
+def test_execute_sql_w_bool_bindings(sessions_database, database_dialect):
     _bind_test_helper(
-        sessions_database, spanner_v1.TypeCode.BOOL, True, [True, False, True]
+        sessions_database,
+        database_dialect,
+        spanner_v1.param_types.BOOL,
+        True,
+        [True, False, True],
     )
 
 
-def test_execute_sql_w_int64_bindings(sessions_database):
-    _bind_test_helper(sessions_database, spanner_v1.TypeCode.INT64, 42, [123, 456, 789])
-
-
-def test_execute_sql_w_float64_bindings(sessions_database):
+def test_execute_sql_w_int64_bindings(sessions_database, database_dialect):
     _bind_test_helper(
-        sessions_database, spanner_v1.TypeCode.FLOAT64, 42.3, [12.3, 456.0, 7.89]
+        sessions_database,
+        database_dialect,
+        spanner_v1.param_types.INT64,
+        42,
+        [123, 456, 789],
     )
 
 
-def test_execute_sql_w_float_bindings_transfinite(sessions_database):
+def test_execute_sql_w_float64_bindings(sessions_database, database_dialect):
+    _bind_test_helper(
+        sessions_database,
+        database_dialect,
+        spanner_v1.param_types.FLOAT64,
+        42.3,
+        [12.3, 456.0, 7.89],
+    )
+
+
+def test_execute_sql_w_float_bindings_transfinite(sessions_database, database_dialect):
+    key = "p1" if database_dialect == DatabaseDialect.POSTGRESQL else "neg_inf"
+    placeholder = "$1" if database_dialect == DatabaseDialect.POSTGRESQL else f"@{key}"
 
     # Find -inf
     _check_sql_results(
         sessions_database,
-        sql="SELECT @neg_inf",
-        params={"neg_inf": NEG_INF},
-        param_types={"neg_inf": spanner_v1.param_types.FLOAT64},
+        sql=f"SELECT {placeholder}",
+        params={key: NEG_INF},
+        param_types={key: spanner_v1.param_types.FLOAT64},
         expected=[(NEG_INF,)],
         order=False,
     )
 
+    key = "p1" if database_dialect == DatabaseDialect.POSTGRESQL else "pos_inf"
+    placeholder = "$1" if database_dialect == DatabaseDialect.POSTGRESQL else f"@{key}"
     # Find +inf
     _check_sql_results(
         sessions_database,
-        sql="SELECT @pos_inf",
-        params={"pos_inf": POS_INF},
-        param_types={"pos_inf": spanner_v1.param_types.FLOAT64},
+        sql=f"SELECT {placeholder}",
+        params={key: POS_INF},
+        param_types={key: spanner_v1.param_types.FLOAT64},
         expected=[(POS_INF,)],
         order=False,
     )
 
 
-def test_execute_sql_w_bytes_bindings(sessions_database):
+def test_execute_sql_w_bytes_bindings(sessions_database, database_dialect):
     _bind_test_helper(
         sessions_database,
-        spanner_v1.TypeCode.BYTES,
+        database_dialect,
+        spanner_v1.param_types.BYTES,
         b"DEADBEEF",
         [b"FACEDACE", b"DEADBEEF"],
     )
 
 
-def test_execute_sql_w_timestamp_bindings(sessions_database):
+def test_execute_sql_w_timestamp_bindings(sessions_database, database_dialect):
 
     timestamp_1 = datetime_helpers.DatetimeWithNanoseconds(
         1989, 1, 17, 17, 59, 12, nanosecond=345612789
@@ -1892,7 +2019,8 @@ def test_execute_sql_w_timestamp_bindings(sessions_database):
 
     _bind_test_helper(
         sessions_database,
-        spanner_v1.TypeCode.TIMESTAMP,
+        database_dialect,
+        spanner_v1.param_types.TIMESTAMP,
         timestamp_1,
         timestamps,
         expected_timestamps,
@@ -1900,30 +2028,49 @@ def test_execute_sql_w_timestamp_bindings(sessions_database):
     )
 
 
-def test_execute_sql_w_date_bindings(sessions_database):
+def test_execute_sql_w_date_bindings(sessions_database, not_postgres, database_dialect):
     dates = [SOME_DATE, SOME_DATE + datetime.timedelta(days=1)]
-    _bind_test_helper(sessions_database, spanner_v1.TypeCode.DATE, SOME_DATE, dates)
-
-
-def test_execute_sql_w_numeric_bindings(not_emulator, sessions_database):
     _bind_test_helper(
         sessions_database,
-        spanner_v1.TypeCode.NUMERIC,
-        NUMERIC_1,
-        [NUMERIC_1, NUMERIC_2],
+        database_dialect,
+        spanner_v1.param_types.DATE,
+        SOME_DATE,
+        dates,
     )
 
 
-def test_execute_sql_w_json_bindings(not_emulator, sessions_database):
+def test_execute_sql_w_numeric_bindings(
+    not_emulator, not_postgres, sessions_database, database_dialect
+):
+    if database_dialect == DatabaseDialect.POSTGRESQL:
+        _bind_test_helper(
+            sessions_database,
+            database_dialect,
+            spanner_v1.param_types.PG_NUMERIC,
+            NUMERIC_1,
+            [NUMERIC_1, NUMERIC_2],
+        )
+    else:
+        _bind_test_helper(
+            sessions_database,
+            database_dialect,
+            spanner_v1.param_types.NUMERIC,
+            NUMERIC_1,
+            [NUMERIC_1, NUMERIC_2],
+        )
+
+
+def test_execute_sql_w_json_bindings(not_emulator, sessions_database, database_dialect):
     _bind_test_helper(
         sessions_database,
-        spanner_v1.TypeCode.JSON,
+        database_dialect,
+        spanner_v1.param_types.JSON,
         JSON_1,
         [JSON_1, JSON_2],
     )
 
 
-def test_execute_sql_w_query_param_struct(sessions_database):
+def test_execute_sql_w_query_param_struct(sessions_database, not_postgres):
     name = "Phred"
     count = 123
     size = 23.456
@@ -2128,7 +2275,7 @@ def test_execute_sql_w_query_param_struct(sessions_database):
     )
 
 
-def test_execute_sql_returning_transfinite_floats(sessions_database):
+def test_execute_sql_returning_transfinite_floats(sessions_database, not_postgres):
 
     with sessions_database.snapshot(multi_use=True) as snapshot:
         # Query returning -inf, +inf, NaN as column values

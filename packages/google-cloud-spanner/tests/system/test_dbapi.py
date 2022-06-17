@@ -41,7 +41,7 @@ DDL_STATEMENTS = (
 
 
 @pytest.fixture(scope="session")
-def raw_database(shared_instance, database_operation_timeout):
+def raw_database(shared_instance, database_operation_timeout, not_postgres):
     databse_id = _helpers.unique_id("dbapi-txn")
     pool = spanner_v1.BurstyPool(labels={"testcase": "database_api"})
     database = shared_instance.database(

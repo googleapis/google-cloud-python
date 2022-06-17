@@ -57,6 +57,7 @@ from .types.transaction import TransactionOptions
 from .types.transaction import TransactionSelector
 from .types.type import StructType
 from .types.type import Type
+from .types.type import TypeAnnotationCode
 from .types.type import TypeCode
 from .data_types import JsonObject
 
@@ -132,6 +133,7 @@ __all__ = (
     "TransactionOptions",
     "TransactionSelector",
     "Type",
+    "TypeAnnotationCode",
     "TypeCode",
     # Custom spanner related data types
     "JsonObject",

@@ -94,6 +94,7 @@ class Backup(object):
         self._encryption_info = None
         self._max_expire_time = None
         self._referencing_backups = None
+        self._database_dialect = None
         if type(encryption_config) == dict:
             if source_backup:
                 self._encryption_config = CopyBackupEncryptionConfig(
@@ -193,7 +194,7 @@ class Backup(object):
     @property
     def encryption_info(self):
         """Encryption info for this backup.
-        :rtype: :class:`~google.clod.spanner_admin_database_v1.types.EncryptionInfo`
+        :rtype: :class:`~google.cloud.spanner_admin_database_v1.types.EncryptionInfo`
         :returns: a class representing the encryption info
         """
         return self._encryption_info
@@ -215,6 +216,13 @@ class Backup(object):
             referencing this copy backup
         """
         return self._referencing_backups
+
+    def database_dialect(self):
+        """Database Dialect for this backup.
+        :rtype: :class:`~google.cloud.spanner_admin_database_v1.types.DatabaseDialect`
+        :returns: a class representing the dialect of this backup's database
+        """
+        return self._database_dialect
 
     @classmethod
     def from_pb(cls, backup_pb, instance):

@@ -27,7 +27,7 @@ DBAPI_OPERATION_TIMEOUT = 240  # seconds
 
 
 @pytest.fixture(scope="module")
-def multiregion_instance(spanner_client, instance_operation_timeout):
+def multiregion_instance(spanner_client, instance_operation_timeout, not_postgres):
     multi_region_instance_id = _helpers.unique_id("multi-region")
     multi_region_config = "nam3"
     config_name = "{}/instanceConfigs/{}".format(
@@ -55,10 +55,12 @@ def test_list_databases(shared_instance, shared_database):
     assert shared_database.name in database_names
 
 
-def test_create_database(shared_instance, databases_to_delete):
+def test_create_database(shared_instance, databases_to_delete, database_dialect):
     pool = spanner_v1.BurstyPool(labels={"testcase": "create_database"})
     temp_db_id = _helpers.unique_id("temp_db")
-    temp_db = shared_instance.database(temp_db_id, pool=pool)
+    temp_db = shared_instance.database(
+        temp_db_id, pool=pool, database_dialect=database_dialect
+    )
     operation = temp_db.create()
     databases_to_delete.append(temp_db)
 
@@ -71,6 +73,7 @@ def test_create_database(shared_instance, databases_to_delete):
 
 def test_create_database_pitr_invalid_retention_period(
     not_emulator,  # PITR-lite features are not supported by the emulator
+    not_postgres,
     shared_instance,
 ):
     pool = spanner_v1.BurstyPool(labels={"testcase": "create_database_pitr"})
@@ -89,6 +92,7 @@ def test_create_database_pitr_invalid_retention_period(
 
 def test_create_database_pitr_success(
     not_emulator,  # PITR-lite features are not supported by the emulator
+    not_postgres,
     shared_instance,
     databases_to_delete,
 ):
@@ -180,7 +184,9 @@ def test_table_not_found(shared_instance):
         temp_db.create()
 
 
-def test_update_ddl_w_operation_id(shared_instance, databases_to_delete):
+def test_update_ddl_w_operation_id(
+    shared_instance, databases_to_delete, database_dialect
+):
     # We used to have:
     # @pytest.mark.skip(
     #    reason="'Database.update_ddl' has a flaky timeout.  See: "
@@ -188,7 +194,9 @@ def test_update_ddl_w_operation_id(shared_instance, databases_to_delete):
     # )
     pool = spanner_v1.BurstyPool(labels={"testcase": "update_database_ddl"})
     temp_db_id = _helpers.unique_id("update_ddl", separator="_")
-    temp_db = shared_instance.database(temp_db_id, pool=pool)
+    temp_db = shared_instance.database(
+        temp_db_id, pool=pool, database_dialect=database_dialect
+    )
     create_op = temp_db.create()
     databases_to_delete.append(temp_db)
     create_op.result(DBAPI_OPERATION_TIMEOUT)  # raises on failure / timeout.
@@ -208,6 +216,7 @@ def test_update_ddl_w_operation_id(shared_instance, databases_to_delete):
 
 def test_update_ddl_w_pitr_invalid(
     not_emulator,
+    not_postgres,
     shared_instance,
     databases_to_delete,
 ):
@@ -232,6 +241,7 @@ def test_update_ddl_w_pitr_invalid(
 
 def test_update_ddl_w_pitr_success(
     not_emulator,
+    not_postgres,
     shared_instance,
     databases_to_delete,
 ):

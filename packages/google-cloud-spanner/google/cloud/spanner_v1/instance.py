@@ -25,6 +25,7 @@ from google.cloud.exceptions import NotFound
 from google.cloud.spanner_admin_instance_v1 import Instance as InstancePB
 from google.cloud.spanner_admin_database_v1.types import backup
 from google.cloud.spanner_admin_database_v1.types import spanner_database_admin
+from google.cloud.spanner_admin_database_v1 import DatabaseDialect
 from google.cloud.spanner_admin_database_v1 import ListBackupsRequest
 from google.cloud.spanner_admin_database_v1 import ListBackupOperationsRequest
 from google.cloud.spanner_admin_database_v1 import ListDatabasesRequest
@@ -428,6 +429,7 @@ class Instance(object):
         pool=None,
         logger=None,
         encryption_config=None,
+        database_dialect=DatabaseDialect.DATABASE_DIALECT_UNSPECIFIED,
     ):
         """Factory to create a database within this instance.
 
@@ -458,6 +460,11 @@ class Instance(object):
             messages :class:`~google.cloud.spanner_admin_database_v1.types.EncryptionConfig`
             or :class:`~google.cloud.spanner_admin_database_v1.types.RestoreDatabaseEncryptionConfig`
 
+        :type database_dialect:
+            :class:`~google.cloud.spanner_admin_database_v1.types.DatabaseDialect`
+        :param database_dialect:
+            (Optional) database dialect for the database
+
         :rtype: :class:`~google.cloud.spanner_v1.database.Database`
         :returns: a database owned by this instance.
         """
@@ -468,6 +475,7 @@ class Instance(object):
             pool=pool,
             logger=logger,
             encryption_config=encryption_config,
+            database_dialect=database_dialect,
         )
 
     def list_databases(self, page_size=None):

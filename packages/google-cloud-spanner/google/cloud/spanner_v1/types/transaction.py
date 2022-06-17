@@ -30,7 +30,7 @@ __protobuf__ = proto.module(
 
 
 class TransactionOptions(proto.Message):
-    r"""Transactions:
+    r"""Transactions
 
     Each session can have at most one active transaction at a time (note
     that standalone reads and queries use a transaction internally and
@@ -39,7 +39,9 @@ class TransactionOptions(proto.Message):
     the next transaction. It is not necessary to create a new session
     for each transaction.
 
-    Transaction Modes: Cloud Spanner supports three transaction modes:
+    Transaction Modes
+
+    Cloud Spanner supports three transaction modes:
 
     1. Locking read-write. This type of transaction is the only way to
        write data into Cloud Spanner. These transactions rely on
@@ -70,9 +72,11 @@ class TransactionOptions(proto.Message):
     may, however, read/write data in different tables within that
     database.
 
-    Locking Read-Write Transactions: Locking transactions may be used to
-    atomically read-modify-write data anywhere in a database. This type
-    of transaction is externally consistent.
+    Locking Read-Write Transactions
+
+    Locking transactions may be used to atomically read-modify-write
+    data anywhere in a database. This type of transaction is externally
+    consistent.
 
     Clients should attempt to minimize the amount of time a transaction
     is active. Faster transactions commit with higher probability and
@@ -91,25 +95,28 @@ class TransactionOptions(proto.Message):
     [Rollback][google.spanner.v1.Spanner.Rollback] request to abort the
     transaction.
 
-    Semantics: Cloud Spanner can commit the transaction if all read
-    locks it acquired are still valid at commit time, and it is able to
-    acquire write locks for all writes. Cloud Spanner can abort the
-    transaction for any reason. If a commit attempt returns ``ABORTED``,
-    Cloud Spanner guarantees that the transaction has not modified any
-    user data in Cloud Spanner.
+    Semantics
+
+    Cloud Spanner can commit the transaction if all read locks it
+    acquired are still valid at commit time, and it is able to acquire
+    write locks for all writes. Cloud Spanner can abort the transaction
+    for any reason. If a commit attempt returns ``ABORTED``, Cloud
+    Spanner guarantees that the transaction has not modified any user
+    data in Cloud Spanner.
 
     Unless the transaction commits, Cloud Spanner makes no guarantees
     about how long the transaction's locks were held for. It is an error
     to use Cloud Spanner locks for any sort of mutual exclusion other
     than between Cloud Spanner transactions themselves.
 
-    Retrying Aborted Transactions: When a transaction aborts, the
-    application can choose to retry the whole transaction again. To
-    maximize the chances of successfully committing the retry, the
-    client should execute the retry in the same session as the original
-    attempt. The original session's lock priority increases with each
-    consecutive abort, meaning that each attempt has a slightly better
-    chance of success than the previous.
+    Retrying Aborted Transactions
+
+    When a transaction aborts, the application can choose to retry the
+    whole transaction again. To maximize the chances of successfully
+    committing the retry, the client should execute the retry in the
+    same session as the original attempt. The original session's lock
+    priority increases with each consecutive abort, meaning that each
+    attempt has a slightly better chance of success than the previous.
 
     Under some circumstances (for example, many transactions attempting
     to modify the same row(s)), a transaction can abort many times in a
@@ -118,21 +125,23 @@ class TransactionOptions(proto.Message):
     instead, it is better to limit the total amount of time spent
     retrying.
 
-    Idle Transactions: A transaction is considered idle if it has no
-    outstanding reads or SQL queries and has not started a read or SQL
-    query within the last 10 seconds. Idle transactions can be aborted
-    by Cloud Spanner so that they don't hold on to locks indefinitely.
-    If an idle transaction is aborted, the commit will fail with error
-    ``ABORTED``.
+    Idle Transactions
+
+    A transaction is considered idle if it has no outstanding reads or
+    SQL queries and has not started a read or SQL query within the last
+    10 seconds. Idle transactions can be aborted by Cloud Spanner so
+    that they don't hold on to locks indefinitely. In that case, the
+    commit will fail with error ``ABORTED``.
 
     If this behavior is undesirable, periodically executing a simple SQL
     query in the transaction (for example, ``SELECT 1``) prevents the
     transaction from becoming idle.
 
-    Snapshot Read-Only Transactions: Snapshot read-only transactions
-    provides a simpler method than locking read-write transactions for
-    doing several consistent reads. However, this type of transaction
-    does not support writes.
+    Snapshot Read-Only Transactions
+
+    Snapshot read-only transactions provides a simpler method than
+    locking read-write transactions for doing several consistent reads.
+    However, this type of transaction does not support writes.
 
     Snapshot transactions do not take locks. Instead, they work by
     choosing a Cloud Spanner timestamp, then executing all reads at that
@@ -166,11 +175,13 @@ class TransactionOptions(proto.Message):
 
     Each type of timestamp bound is discussed in detail below.
 
-    Strong: Strong reads are guaranteed to see the effects of all
-    transactions that have committed before the start of the read.
-    Furthermore, all rows yielded by a single read are consistent with
-    each other -- if any part of the read observes a transaction, all
-    parts of the read see the transaction.
+    Strong
+
+    Strong reads are guaranteed to see the effects of all transactions
+    that have committed before the start of the read. Furthermore, all
+    rows yielded by a single read are consistent with each other -- if
+    any part of the read observes a transaction, all parts of the read
+    see the transaction.
 
     Strong reads are not repeatable: two consecutive strong read-only
     transactions might return inconsistent results if there are
@@ -181,14 +192,16 @@ class TransactionOptions(proto.Message):
     See
     [TransactionOptions.ReadOnly.strong][google.spanner.v1.TransactionOptions.ReadOnly.strong].
 
-    Exact Staleness: These timestamp bounds execute reads at a
-    user-specified timestamp. Reads at a timestamp are guaranteed to see
-    a consistent prefix of the global transaction history: they observe
-    modifications done by all transactions with a commit timestamp less
-    than or equal to the read timestamp, and observe none of the
-    modifications done by transactions with a larger commit timestamp.
-    They will block until all conflicting transactions that may be
-    assigned commit timestamps <= the read timestamp have finished.
+    Exact Staleness
+
+    These timestamp bounds execute reads at a user-specified timestamp.
+    Reads at a timestamp are guaranteed to see a consistent prefix of
+    the global transaction history: they observe modifications done by
+    all transactions with a commit timestamp <= the read timestamp, and
+    observe none of the modifications done by transactions with a larger
+    commit timestamp. They will block until all conflicting transactions
+    that may be assigned commit timestamps <= the read timestamp have
+    finished.
 
     The timestamp can either be expressed as an absolute Cloud Spanner
     commit timestamp or a staleness relative to the current time.
@@ -203,11 +216,13 @@ class TransactionOptions(proto.Message):
     and
     [TransactionOptions.ReadOnly.exact_staleness][google.spanner.v1.TransactionOptions.ReadOnly.exact_staleness].
 
-    Bounded Staleness: Bounded staleness modes allow Cloud Spanner to
-    pick the read timestamp, subject to a user-provided staleness bound.
-    Cloud Spanner chooses the newest timestamp within the staleness
-    bound that allows execution of the reads at the closest available
-    replica without blocking.
+    Bounded Staleness
+
+    Bounded staleness modes allow Cloud Spanner to pick the read
+    timestamp, subject to a user-provided staleness bound. Cloud Spanner
+    chooses the newest timestamp within the staleness bound that allows
+    execution of the reads at the closest available replica without
+    blocking.
 
     All rows yielded are consistent with each other -- if any part of
     the read observes a transaction, all parts of the read see the
@@ -233,23 +248,25 @@ class TransactionOptions(proto.Message):
     and
     [TransactionOptions.ReadOnly.min_read_timestamp][google.spanner.v1.TransactionOptions.ReadOnly.min_read_timestamp].
 
-    Old Read Timestamps and Garbage Collection: Cloud Spanner
-    continuously garbage collects deleted and overwritten data in the
-    background to reclaim storage space. This process is known as
-    "version GC". By default, version GC reclaims versions after they
-    are one hour old. Because of this, Cloud Spanner cannot perform
-    reads at read timestamps more than one hour in the past. This
-    restriction also applies to in-progress reads and/or SQL queries
-    whose timestamp become too old while executing. Reads and SQL
-    queries with too-old read timestamps fail with the error
+    Old Read Timestamps and Garbage Collection
+
+    Cloud Spanner continuously garbage collects deleted and overwritten
+    data in the background to reclaim storage space. This process is
+    known as "version GC". By default, version GC reclaims versions
+    after they are one hour old. Because of this, Cloud Spanner cannot
+    perform reads at read timestamps more than one hour in the past.
+    This restriction also applies to in-progress reads and/or SQL
+    queries whose timestamp become too old while executing. Reads and
+    SQL queries with too-old read timestamps fail with the error
     ``FAILED_PRECONDITION``.
 
-    Partitioned DML Transactions: Partitioned DML transactions are used
-    to execute DML statements with a different execution strategy that
-    provides different, and often better, scalability properties for
-    large, table-wide operations than DML in a ReadWrite transaction.
-    Smaller scoped statements, such as an OLTP workload, should prefer
-    using ReadWrite transactions.
+    Partitioned DML Transactions
+
+    Partitioned DML transactions are used to execute DML statements with
+    a different execution strategy that provides different, and often
+    better, scalability properties for large, table-wide operations than
+    DML in a ReadWrite transaction. Smaller scoped statements, such as
+    an OLTP workload, should prefer using ReadWrite transactions.
 
     Partitioned DML partitions the keyspace and runs the DML statement
     on each partition in separate, internal transactions. These
@@ -486,7 +503,6 @@ class TransactionOptions(proto.Message):
 
 class Transaction(proto.Message):
     r"""A transaction.
-
     Attributes:
         id (bytes):
             ``id`` may be used to identify the transaction in subsequent

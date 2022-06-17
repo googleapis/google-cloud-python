@@ -16,6 +16,7 @@
 
 from google.cloud.exceptions import NotFound
 
+from google.cloud.spanner_admin_database_v1 import DatabaseDialect
 from google.cloud.spanner_v1.types import (
     Type,
     TypeCode,
@@ -26,7 +27,7 @@ _EXISTS_TEMPLATE = """
 SELECT EXISTS(
     SELECT TABLE_NAME
     FROM INFORMATION_SCHEMA.TABLES
-    WHERE TABLE_NAME = @table_id
+    {}
 )
 """
 _GET_SCHEMA_TEMPLATE = "SELECT * FROM {} LIMIT 0"
@@ -76,11 +77,18 @@ class Table(object):
         :rtype: bool
         :returns: True if the table exists, else false.
         """
-        results = snapshot.execute_sql(
-            _EXISTS_TEMPLATE,
-            params={"table_id": self.table_id},
-            param_types={"table_id": Type(code=TypeCode.STRING)},
-        )
+        if self._database.database_dialect == DatabaseDialect.POSTGRESQL:
+            results = snapshot.execute_sql(
+                _EXISTS_TEMPLATE.format("WHERE TABLE_NAME = $1"),
+                params={"p1": self.table_id},
+                param_types={"p1": Type(code=TypeCode.STRING)},
+            )
+        else:
+            results = snapshot.execute_sql(
+                _EXISTS_TEMPLATE.format("WHERE TABLE_NAME = @table_id"),
+                params={"table_id": self.table_id},
+                param_types={"table_id": Type(code=TypeCode.STRING)},
+            )
         return next(iter(results))[0]
 
     @property

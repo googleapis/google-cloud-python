@@ -120,7 +120,36 @@ CREATE TABLE users_history (
      PRIMARY KEY(id, commit_ts DESC);
 """
 
+PG_DDL = """\
+CREATE TABLE contacts (
+    contact_id BIGINT,
+    first_name VARCHAR(1024),
+    last_name VARCHAR(1024),
+    email VARCHAR(1024),
+    PRIMARY KEY (contact_id) );
+CREATE TABLE all_types (
+    pkey BIGINT NOT NULL,
+    int_value INT,
+    bool_value BOOL,
+    bytes_value BYTEA,
+    float_value DOUBLE PRECISION,
+    string_value VARCHAR(16),
+    timestamp_value TIMESTAMPTZ,
+    numeric_value NUMERIC,
+    PRIMARY KEY (pkey) );
+CREATE TABLE counters (
+    name VARCHAR(1024),
+    value BIGINT,
+    PRIMARY KEY (name));
+CREATE TABLE string_plus_array_of_string (
+    id BIGINT,
+    name VARCHAR(16),
+    PRIMARY KEY (id));
+CREATE INDEX name ON contacts(first_name, last_name);
+"""
+
 DDL_STATEMENTS = [stmt.strip() for stmt in DDL.split(";") if stmt.strip()]
 EMULATOR_DDL_STATEMENTS = [
     stmt.strip() for stmt in EMULATOR_DDL.split(";") if stmt.strip()
 ]
+PG_DDL_STATEMENTS = [stmt.strip() for stmt in PG_DDL.split(";") if stmt.strip()]

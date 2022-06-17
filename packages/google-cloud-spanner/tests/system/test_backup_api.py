@@ -50,7 +50,7 @@ def same_config_instance(spanner_client, shared_instance, instance_operation_tim
 
 
 @pytest.fixture(scope="session")
-def diff_config(shared_instance, instance_configs):
+def diff_config(shared_instance, instance_configs, not_postgres):
     current_config = shared_instance.configuration_name
     for config in reversed(instance_configs):
         if "-us-" in config.name and config.name != current_config:
@@ -93,11 +93,14 @@ def database_version_time(shared_database):
 
 
 @pytest.fixture(scope="session")
-def second_database(shared_instance, database_operation_timeout):
+def second_database(shared_instance, database_operation_timeout, database_dialect):
     database_name = _helpers.unique_id("test_database2")
     pool = spanner_v1.BurstyPool(labels={"testcase": "database_api"})
     database = shared_instance.database(
-        database_name, ddl_statements=_helpers.DDL_STATEMENTS, pool=pool
+        database_name,
+        ddl_statements=_helpers.DDL_STATEMENTS,
+        pool=pool,
+        database_dialect=database_dialect,
     )
     operation = database.create()
     operation.result(database_operation_timeout)  # raises on failure / timeout.
@@ -120,6 +123,7 @@ def backups_to_delete():
 def test_backup_workflow(
     shared_instance,
     shared_database,
+    database_dialect,
     database_version_time,
     backups_to_delete,
     databases_to_delete,
@@ -197,6 +201,7 @@ def test_backup_workflow(
     database.reload()
     expected_encryption_config = EncryptionConfig()
     assert expected_encryption_config == database.encryption_config
+    assert database_dialect == database.database_dialect
 
     database.drop()
     backup.delete()

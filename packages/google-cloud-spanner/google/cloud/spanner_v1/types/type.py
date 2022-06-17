@@ -59,6 +59,7 @@ class TypeAnnotationCode(proto.Enum):
     the way value is serialized.
     """
     TYPE_ANNOTATION_CODE_UNSPECIFIED = 0
+    # INT32 = 1 #unsupported
     PG_NUMERIC = 2
 
 

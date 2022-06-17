@@ -294,7 +294,7 @@ class CreateDatabaseRequest(proto.Message):
             Cloud Spanner will encrypt/decrypt all data at
             rest using Google default encryption.
         database_dialect (google.cloud.spanner_admin_database_v1.types.DatabaseDialect):
-            Optional. The dialect of the Cloud Spanner
+            Output only. The dialect of the Cloud Spanner
             Database.
     """
 

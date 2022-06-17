@@ -15,6 +15,7 @@
 """Types exported from this package."""
 
 from google.cloud.spanner_v1 import Type
+from google.cloud.spanner_v1 import TypeAnnotationCode
 from google.cloud.spanner_v1 import TypeCode
 from google.cloud.spanner_v1 import StructType
 
@@ -29,6 +30,7 @@ DATE = Type(code=TypeCode.DATE)
 TIMESTAMP = Type(code=TypeCode.TIMESTAMP)
 NUMERIC = Type(code=TypeCode.NUMERIC)
 JSON = Type(code=TypeCode.JSON)
+PG_NUMERIC = Type(code=TypeCode.NUMERIC, type_annotation=TypeAnnotationCode.PG_NUMERIC)
 
 
 def Array(element_type):

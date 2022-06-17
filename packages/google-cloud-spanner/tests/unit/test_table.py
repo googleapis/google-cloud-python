@@ -59,7 +59,7 @@ class TestTable(_BaseTest):
         exists = table.exists()
         self.assertFalse(exists)
         snapshot.execute_sql.assert_called_with(
-            _EXISTS_TEMPLATE,
+            _EXISTS_TEMPLATE.format("WHERE TABLE_NAME = @table_id"),
             params={"table_id": self.TABLE_ID},
             param_types={"table_id": Type(code=TypeCode.STRING)},
         )
