@@ -233,7 +233,7 @@ def sql_pyformat_args_to_spanner(sql, params):
               arguments.
     """
     if not params:
-        return sanitize_literals_for_upload(sql), params
+        return sanitize_literals_for_upload(sql), None
 
     found_pyformat_placeholders = RE_PYFORMAT.findall(sql)
     params_is_dict = isinstance(params, dict)
