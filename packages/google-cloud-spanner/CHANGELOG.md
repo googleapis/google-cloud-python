@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-spanner/#history
 
+## [3.15.1](https://github.com/googleapis/python-spanner/compare/v3.15.0...v3.15.1) (2022-06-17)
+
+
+### Bug Fixes
+
+* don't use a list for empty arguments ([#750](https://github.com/googleapis/python-spanner/issues/750)) ([5d8b055](https://github.com/googleapis/python-spanner/commit/5d8b0558f43a3505f62f9a8eae4228c91c6f0ada))
+
 ## [3.15.0](https://github.com/googleapis/python-spanner/compare/v3.14.1...v3.15.0) (2022-06-17)
 
 
