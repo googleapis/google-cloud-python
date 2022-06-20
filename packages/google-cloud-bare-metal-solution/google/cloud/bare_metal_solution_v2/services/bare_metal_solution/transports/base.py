@@ -26,9 +26,16 @@ from google.api_core import operations_v1
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
-from google.cloud.bare_metal_solution_v2.types import baremetalsolution
+from google.cloud.bare_metal_solution_v2.types import instance
+from google.cloud.bare_metal_solution_v2.types import instance as gcb_instance
+from google.cloud.bare_metal_solution_v2.types import lun
+from google.cloud.bare_metal_solution_v2.types import network
+from google.cloud.bare_metal_solution_v2.types import network as gcb_network
+from google.cloud.bare_metal_solution_v2.types import nfs_share
+from google.cloud.bare_metal_solution_v2.types import nfs_share as gcb_nfs_share
+from google.cloud.bare_metal_solution_v2.types import volume
+from google.cloud.bare_metal_solution_v2.types import volume as gcb_volume
 from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf import empty_pb2  # type: ignore
 
 try:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
@@ -134,8 +141,28 @@ class BareMetalSolutionTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.update_instance: gapic_v1.method.wrap_method(
+                self.update_instance,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.reset_instance: gapic_v1.method.wrap_method(
                 self.reset_instance,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.start_instance: gapic_v1.method.wrap_method(
+                self.start_instance,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.stop_instance: gapic_v1.method.wrap_method(
+                self.stop_instance,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.detach_lun: gapic_v1.method.wrap_method(
+                self.detach_lun,
                 default_timeout=None,
                 client_info=client_info,
             ),
@@ -154,8 +181,18 @@ class BareMetalSolutionTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.resize_volume: gapic_v1.method.wrap_method(
+                self.resize_volume,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.list_networks: gapic_v1.method.wrap_method(
                 self.list_networks,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_network_usage: gapic_v1.method.wrap_method(
+                self.list_network_usage,
                 default_timeout=None,
                 client_info=client_info,
             ),
@@ -164,53 +201,8 @@ class BareMetalSolutionTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.list_snapshot_schedule_policies: gapic_v1.method.wrap_method(
-                self.list_snapshot_schedule_policies,
-                default_timeout=None,
-                client_info=client_info,
-            ),
-            self.get_snapshot_schedule_policy: gapic_v1.method.wrap_method(
-                self.get_snapshot_schedule_policy,
-                default_timeout=None,
-                client_info=client_info,
-            ),
-            self.create_snapshot_schedule_policy: gapic_v1.method.wrap_method(
-                self.create_snapshot_schedule_policy,
-                default_timeout=None,
-                client_info=client_info,
-            ),
-            self.update_snapshot_schedule_policy: gapic_v1.method.wrap_method(
-                self.update_snapshot_schedule_policy,
-                default_timeout=None,
-                client_info=client_info,
-            ),
-            self.delete_snapshot_schedule_policy: gapic_v1.method.wrap_method(
-                self.delete_snapshot_schedule_policy,
-                default_timeout=None,
-                client_info=client_info,
-            ),
-            self.create_volume_snapshot: gapic_v1.method.wrap_method(
-                self.create_volume_snapshot,
-                default_timeout=None,
-                client_info=client_info,
-            ),
-            self.restore_volume_snapshot: gapic_v1.method.wrap_method(
-                self.restore_volume_snapshot,
-                default_timeout=None,
-                client_info=client_info,
-            ),
-            self.delete_volume_snapshot: gapic_v1.method.wrap_method(
-                self.delete_volume_snapshot,
-                default_timeout=None,
-                client_info=client_info,
-            ),
-            self.get_volume_snapshot: gapic_v1.method.wrap_method(
-                self.get_volume_snapshot,
-                default_timeout=None,
-                client_info=client_info,
-            ),
-            self.list_volume_snapshots: gapic_v1.method.wrap_method(
-                self.list_volume_snapshots,
+            self.update_network: gapic_v1.method.wrap_method(
+                self.update_network,
                 default_timeout=None,
                 client_info=client_info,
             ),
@@ -221,6 +213,21 @@ class BareMetalSolutionTransport(abc.ABC):
             ),
             self.list_luns: gapic_v1.method.wrap_method(
                 self.list_luns,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_nfs_share: gapic_v1.method.wrap_method(
+                self.get_nfs_share,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_nfs_shares: gapic_v1.method.wrap_method(
+                self.list_nfs_shares,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_nfs_share: gapic_v1.method.wrap_method(
+                self.update_nfs_share,
                 default_timeout=None,
                 client_info=client_info,
             ),
@@ -244,10 +251,9 @@ class BareMetalSolutionTransport(abc.ABC):
     def list_instances(
         self,
     ) -> Callable[
-        [baremetalsolution.ListInstancesRequest],
+        [instance.ListInstancesRequest],
         Union[
-            baremetalsolution.ListInstancesResponse,
-            Awaitable[baremetalsolution.ListInstancesResponse],
+            instance.ListInstancesResponse, Awaitable[instance.ListInstancesResponse]
         ],
     ]:
         raise NotImplementedError()
@@ -256,8 +262,17 @@ class BareMetalSolutionTransport(abc.ABC):
     def get_instance(
         self,
     ) -> Callable[
-        [baremetalsolution.GetInstanceRequest],
-        Union[baremetalsolution.Instance, Awaitable[baremetalsolution.Instance]],
+        [instance.GetInstanceRequest],
+        Union[instance.Instance, Awaitable[instance.Instance]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_instance(
+        self,
+    ) -> Callable[
+        [gcb_instance.UpdateInstanceRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()
 
@@ -265,7 +280,34 @@ class BareMetalSolutionTransport(abc.ABC):
     def reset_instance(
         self,
     ) -> Callable[
-        [baremetalsolution.ResetInstanceRequest],
+        [instance.ResetInstanceRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def start_instance(
+        self,
+    ) -> Callable[
+        [instance.StartInstanceRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def stop_instance(
+        self,
+    ) -> Callable[
+        [instance.StopInstanceRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def detach_lun(
+        self,
+    ) -> Callable[
+        [gcb_instance.DetachLunRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()
@@ -274,11 +316,8 @@ class BareMetalSolutionTransport(abc.ABC):
     def list_volumes(
         self,
     ) -> Callable[
-        [baremetalsolution.ListVolumesRequest],
-        Union[
-            baremetalsolution.ListVolumesResponse,
-            Awaitable[baremetalsolution.ListVolumesResponse],
-        ],
+        [volume.ListVolumesRequest],
+        Union[volume.ListVolumesResponse, Awaitable[volume.ListVolumesResponse]],
     ]:
         raise NotImplementedError()
 
@@ -286,8 +325,7 @@ class BareMetalSolutionTransport(abc.ABC):
     def get_volume(
         self,
     ) -> Callable[
-        [baremetalsolution.GetVolumeRequest],
-        Union[baremetalsolution.Volume, Awaitable[baremetalsolution.Volume]],
+        [volume.GetVolumeRequest], Union[volume.Volume, Awaitable[volume.Volume]]
     ]:
         raise NotImplementedError()
 
@@ -295,7 +333,16 @@ class BareMetalSolutionTransport(abc.ABC):
     def update_volume(
         self,
     ) -> Callable[
-        [baremetalsolution.UpdateVolumeRequest],
+        [gcb_volume.UpdateVolumeRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def resize_volume(
+        self,
+    ) -> Callable[
+        [gcb_volume.ResizeVolumeRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()
@@ -304,10 +351,19 @@ class BareMetalSolutionTransport(abc.ABC):
     def list_networks(
         self,
     ) -> Callable[
-        [baremetalsolution.ListNetworksRequest],
+        [network.ListNetworksRequest],
+        Union[network.ListNetworksResponse, Awaitable[network.ListNetworksResponse]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_network_usage(
+        self,
+    ) -> Callable[
+        [network.ListNetworkUsageRequest],
         Union[
-            baremetalsolution.ListNetworksResponse,
-            Awaitable[baremetalsolution.ListNetworksResponse],
+            network.ListNetworkUsageResponse,
+            Awaitable[network.ListNetworkUsageResponse],
         ],
     ]:
         raise NotImplementedError()
@@ -316,140 +372,60 @@ class BareMetalSolutionTransport(abc.ABC):
     def get_network(
         self,
     ) -> Callable[
-        [baremetalsolution.GetNetworkRequest],
-        Union[baremetalsolution.Network, Awaitable[baremetalsolution.Network]],
+        [network.GetNetworkRequest], Union[network.Network, Awaitable[network.Network]]
     ]:
         raise NotImplementedError()
 
     @property
-    def list_snapshot_schedule_policies(
+    def update_network(
         self,
     ) -> Callable[
-        [baremetalsolution.ListSnapshotSchedulePoliciesRequest],
-        Union[
-            baremetalsolution.ListSnapshotSchedulePoliciesResponse,
-            Awaitable[baremetalsolution.ListSnapshotSchedulePoliciesResponse],
-        ],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def get_snapshot_schedule_policy(
-        self,
-    ) -> Callable[
-        [baremetalsolution.GetSnapshotSchedulePolicyRequest],
-        Union[
-            baremetalsolution.SnapshotSchedulePolicy,
-            Awaitable[baremetalsolution.SnapshotSchedulePolicy],
-        ],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def create_snapshot_schedule_policy(
-        self,
-    ) -> Callable[
-        [baremetalsolution.CreateSnapshotSchedulePolicyRequest],
-        Union[
-            baremetalsolution.SnapshotSchedulePolicy,
-            Awaitable[baremetalsolution.SnapshotSchedulePolicy],
-        ],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def update_snapshot_schedule_policy(
-        self,
-    ) -> Callable[
-        [baremetalsolution.UpdateSnapshotSchedulePolicyRequest],
-        Union[
-            baremetalsolution.SnapshotSchedulePolicy,
-            Awaitable[baremetalsolution.SnapshotSchedulePolicy],
-        ],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def delete_snapshot_schedule_policy(
-        self,
-    ) -> Callable[
-        [baremetalsolution.DeleteSnapshotSchedulePolicyRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def create_volume_snapshot(
-        self,
-    ) -> Callable[
-        [baremetalsolution.CreateVolumeSnapshotRequest],
-        Union[
-            baremetalsolution.VolumeSnapshot,
-            Awaitable[baremetalsolution.VolumeSnapshot],
-        ],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def restore_volume_snapshot(
-        self,
-    ) -> Callable[
-        [baremetalsolution.RestoreVolumeSnapshotRequest],
+        [gcb_network.UpdateNetworkRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def delete_volume_snapshot(
-        self,
-    ) -> Callable[
-        [baremetalsolution.DeleteVolumeSnapshotRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def get_volume_snapshot(
-        self,
-    ) -> Callable[
-        [baremetalsolution.GetVolumeSnapshotRequest],
-        Union[
-            baremetalsolution.VolumeSnapshot,
-            Awaitable[baremetalsolution.VolumeSnapshot],
-        ],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def list_volume_snapshots(
-        self,
-    ) -> Callable[
-        [baremetalsolution.ListVolumeSnapshotsRequest],
-        Union[
-            baremetalsolution.ListVolumeSnapshotsResponse,
-            Awaitable[baremetalsolution.ListVolumeSnapshotsResponse],
-        ],
     ]:
         raise NotImplementedError()
 
     @property
     def get_lun(
         self,
-    ) -> Callable[
-        [baremetalsolution.GetLunRequest],
-        Union[baremetalsolution.Lun, Awaitable[baremetalsolution.Lun]],
-    ]:
+    ) -> Callable[[lun.GetLunRequest], Union[lun.Lun, Awaitable[lun.Lun]]]:
         raise NotImplementedError()
 
     @property
     def list_luns(
         self,
     ) -> Callable[
-        [baremetalsolution.ListLunsRequest],
+        [lun.ListLunsRequest],
+        Union[lun.ListLunsResponse, Awaitable[lun.ListLunsResponse]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_nfs_share(
+        self,
+    ) -> Callable[
+        [nfs_share.GetNfsShareRequest],
+        Union[nfs_share.NfsShare, Awaitable[nfs_share.NfsShare]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_nfs_shares(
+        self,
+    ) -> Callable[
+        [nfs_share.ListNfsSharesRequest],
         Union[
-            baremetalsolution.ListLunsResponse,
-            Awaitable[baremetalsolution.ListLunsResponse],
+            nfs_share.ListNfsSharesResponse, Awaitable[nfs_share.ListNfsSharesResponse]
         ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_nfs_share(
+        self,
+    ) -> Callable[
+        [gcb_nfs_share.UpdateNfsShareRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()
 

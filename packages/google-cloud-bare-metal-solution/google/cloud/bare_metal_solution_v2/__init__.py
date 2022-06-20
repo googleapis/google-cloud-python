@@ -17,78 +17,88 @@
 from .services.bare_metal_solution import BareMetalSolutionClient
 from .services.bare_metal_solution import BareMetalSolutionAsyncClient
 
-from .types.baremetalsolution import CreateSnapshotSchedulePolicyRequest
-from .types.baremetalsolution import CreateVolumeSnapshotRequest
-from .types.baremetalsolution import DeleteSnapshotSchedulePolicyRequest
-from .types.baremetalsolution import DeleteVolumeSnapshotRequest
-from .types.baremetalsolution import GetInstanceRequest
-from .types.baremetalsolution import GetLunRequest
-from .types.baremetalsolution import GetNetworkRequest
-from .types.baremetalsolution import GetSnapshotSchedulePolicyRequest
-from .types.baremetalsolution import GetVolumeRequest
-from .types.baremetalsolution import GetVolumeSnapshotRequest
-from .types.baremetalsolution import Instance
-from .types.baremetalsolution import ListInstancesRequest
-from .types.baremetalsolution import ListInstancesResponse
-from .types.baremetalsolution import ListLunsRequest
-from .types.baremetalsolution import ListLunsResponse
-from .types.baremetalsolution import ListNetworksRequest
-from .types.baremetalsolution import ListNetworksResponse
-from .types.baremetalsolution import ListSnapshotSchedulePoliciesRequest
-from .types.baremetalsolution import ListSnapshotSchedulePoliciesResponse
-from .types.baremetalsolution import ListVolumeSnapshotsRequest
-from .types.baremetalsolution import ListVolumeSnapshotsResponse
-from .types.baremetalsolution import ListVolumesRequest
-from .types.baremetalsolution import ListVolumesResponse
-from .types.baremetalsolution import Lun
-from .types.baremetalsolution import Network
 from .types.baremetalsolution import OperationMetadata
-from .types.baremetalsolution import ResetInstanceRequest
 from .types.baremetalsolution import ResetInstanceResponse
-from .types.baremetalsolution import RestoreVolumeSnapshotRequest
-from .types.baremetalsolution import SnapshotSchedulePolicy
-from .types.baremetalsolution import UpdateSnapshotSchedulePolicyRequest
-from .types.baremetalsolution import UpdateVolumeRequest
-from .types.baremetalsolution import Volume
-from .types.baremetalsolution import VolumeSnapshot
-from .types.baremetalsolution import VRF
+from .types.instance import DetachLunRequest
+from .types.instance import GetInstanceRequest
+from .types.instance import Instance
+from .types.instance import ListInstancesRequest
+from .types.instance import ListInstancesResponse
+from .types.instance import ResetInstanceRequest
+from .types.instance import ServerNetworkTemplate
+from .types.instance import StartInstanceRequest
+from .types.instance import StartInstanceResponse
+from .types.instance import StopInstanceRequest
+from .types.instance import StopInstanceResponse
+from .types.instance import UpdateInstanceRequest
+from .types.lun import GetLunRequest
+from .types.lun import ListLunsRequest
+from .types.lun import ListLunsResponse
+from .types.lun import Lun
+from .types.network import GetNetworkRequest
+from .types.network import ListNetworksRequest
+from .types.network import ListNetworksResponse
+from .types.network import ListNetworkUsageRequest
+from .types.network import ListNetworkUsageResponse
+from .types.network import LogicalInterface
+from .types.network import Network
+from .types.network import NetworkAddressReservation
+from .types.network import NetworkUsage
+from .types.network import UpdateNetworkRequest
+from .types.network import VRF
+from .types.nfs_share import GetNfsShareRequest
+from .types.nfs_share import ListNfsSharesRequest
+from .types.nfs_share import ListNfsSharesResponse
+from .types.nfs_share import NfsShare
+from .types.nfs_share import UpdateNfsShareRequest
+from .types.volume import GetVolumeRequest
+from .types.volume import ListVolumesRequest
+from .types.volume import ListVolumesResponse
+from .types.volume import ResizeVolumeRequest
+from .types.volume import UpdateVolumeRequest
+from .types.volume import Volume
 
 __all__ = (
     "BareMetalSolutionAsyncClient",
     "BareMetalSolutionClient",
-    "CreateSnapshotSchedulePolicyRequest",
-    "CreateVolumeSnapshotRequest",
-    "DeleteSnapshotSchedulePolicyRequest",
-    "DeleteVolumeSnapshotRequest",
+    "DetachLunRequest",
     "GetInstanceRequest",
     "GetLunRequest",
     "GetNetworkRequest",
-    "GetSnapshotSchedulePolicyRequest",
+    "GetNfsShareRequest",
     "GetVolumeRequest",
-    "GetVolumeSnapshotRequest",
     "Instance",
     "ListInstancesRequest",
     "ListInstancesResponse",
     "ListLunsRequest",
     "ListLunsResponse",
+    "ListNetworkUsageRequest",
+    "ListNetworkUsageResponse",
     "ListNetworksRequest",
     "ListNetworksResponse",
-    "ListSnapshotSchedulePoliciesRequest",
-    "ListSnapshotSchedulePoliciesResponse",
-    "ListVolumeSnapshotsRequest",
-    "ListVolumeSnapshotsResponse",
+    "ListNfsSharesRequest",
+    "ListNfsSharesResponse",
     "ListVolumesRequest",
     "ListVolumesResponse",
+    "LogicalInterface",
     "Lun",
     "Network",
+    "NetworkAddressReservation",
+    "NetworkUsage",
+    "NfsShare",
     "OperationMetadata",
     "ResetInstanceRequest",
     "ResetInstanceResponse",
-    "RestoreVolumeSnapshotRequest",
-    "SnapshotSchedulePolicy",
-    "UpdateSnapshotSchedulePolicyRequest",
+    "ResizeVolumeRequest",
+    "ServerNetworkTemplate",
+    "StartInstanceRequest",
+    "StartInstanceResponse",
+    "StopInstanceRequest",
+    "StopInstanceResponse",
+    "UpdateInstanceRequest",
+    "UpdateNetworkRequest",
+    "UpdateNfsShareRequest",
     "UpdateVolumeRequest",
     "VRF",
     "Volume",
-    "VolumeSnapshot",
 )

@@ -25,9 +25,16 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 
 import grpc  # type: ignore
 
-from google.cloud.bare_metal_solution_v2.types import baremetalsolution
+from google.cloud.bare_metal_solution_v2.types import instance
+from google.cloud.bare_metal_solution_v2.types import instance as gcb_instance
+from google.cloud.bare_metal_solution_v2.types import lun
+from google.cloud.bare_metal_solution_v2.types import network
+from google.cloud.bare_metal_solution_v2.types import network as gcb_network
+from google.cloud.bare_metal_solution_v2.types import nfs_share
+from google.cloud.bare_metal_solution_v2.types import nfs_share as gcb_nfs_share
+from google.cloud.bare_metal_solution_v2.types import volume
+from google.cloud.bare_metal_solution_v2.types import volume as gcb_volume
 from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf import empty_pb2  # type: ignore
 from .base import BareMetalSolutionTransport, DEFAULT_CLIENT_INFO
 
 
@@ -256,10 +263,7 @@ class BareMetalSolutionGrpcTransport(BareMetalSolutionTransport):
     @property
     def list_instances(
         self,
-    ) -> Callable[
-        [baremetalsolution.ListInstancesRequest],
-        baremetalsolution.ListInstancesResponse,
-    ]:
+    ) -> Callable[[instance.ListInstancesRequest], instance.ListInstancesResponse]:
         r"""Return a callable for the list instances method over gRPC.
 
         List servers in a given project and location.
@@ -277,15 +281,15 @@ class BareMetalSolutionGrpcTransport(BareMetalSolutionTransport):
         if "list_instances" not in self._stubs:
             self._stubs["list_instances"] = self.grpc_channel.unary_unary(
                 "/google.cloud.baremetalsolution.v2.BareMetalSolution/ListInstances",
-                request_serializer=baremetalsolution.ListInstancesRequest.serialize,
-                response_deserializer=baremetalsolution.ListInstancesResponse.deserialize,
+                request_serializer=instance.ListInstancesRequest.serialize,
+                response_deserializer=instance.ListInstancesResponse.deserialize,
             )
         return self._stubs["list_instances"]
 
     @property
     def get_instance(
         self,
-    ) -> Callable[[baremetalsolution.GetInstanceRequest], baremetalsolution.Instance]:
+    ) -> Callable[[instance.GetInstanceRequest], instance.Instance]:
         r"""Return a callable for the get instance method over gRPC.
 
         Get details about a single server.
@@ -303,15 +307,41 @@ class BareMetalSolutionGrpcTransport(BareMetalSolutionTransport):
         if "get_instance" not in self._stubs:
             self._stubs["get_instance"] = self.grpc_channel.unary_unary(
                 "/google.cloud.baremetalsolution.v2.BareMetalSolution/GetInstance",
-                request_serializer=baremetalsolution.GetInstanceRequest.serialize,
-                response_deserializer=baremetalsolution.Instance.deserialize,
+                request_serializer=instance.GetInstanceRequest.serialize,
+                response_deserializer=instance.Instance.deserialize,
             )
         return self._stubs["get_instance"]
 
     @property
+    def update_instance(
+        self,
+    ) -> Callable[[gcb_instance.UpdateInstanceRequest], operations_pb2.Operation]:
+        r"""Return a callable for the update instance method over gRPC.
+
+        Update details of a single server.
+
+        Returns:
+            Callable[[~.UpdateInstanceRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_instance" not in self._stubs:
+            self._stubs["update_instance"] = self.grpc_channel.unary_unary(
+                "/google.cloud.baremetalsolution.v2.BareMetalSolution/UpdateInstance",
+                request_serializer=gcb_instance.UpdateInstanceRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["update_instance"]
+
+    @property
     def reset_instance(
         self,
-    ) -> Callable[[baremetalsolution.ResetInstanceRequest], operations_pb2.Operation]:
+    ) -> Callable[[instance.ResetInstanceRequest], operations_pb2.Operation]:
         r"""Return a callable for the reset instance method over gRPC.
 
         Perform an ungraceful, hard reset on a server.
@@ -331,17 +361,93 @@ class BareMetalSolutionGrpcTransport(BareMetalSolutionTransport):
         if "reset_instance" not in self._stubs:
             self._stubs["reset_instance"] = self.grpc_channel.unary_unary(
                 "/google.cloud.baremetalsolution.v2.BareMetalSolution/ResetInstance",
-                request_serializer=baremetalsolution.ResetInstanceRequest.serialize,
+                request_serializer=instance.ResetInstanceRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["reset_instance"]
 
     @property
+    def start_instance(
+        self,
+    ) -> Callable[[instance.StartInstanceRequest], operations_pb2.Operation]:
+        r"""Return a callable for the start instance method over gRPC.
+
+        Starts a server that was shutdown.
+
+        Returns:
+            Callable[[~.StartInstanceRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "start_instance" not in self._stubs:
+            self._stubs["start_instance"] = self.grpc_channel.unary_unary(
+                "/google.cloud.baremetalsolution.v2.BareMetalSolution/StartInstance",
+                request_serializer=instance.StartInstanceRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["start_instance"]
+
+    @property
+    def stop_instance(
+        self,
+    ) -> Callable[[instance.StopInstanceRequest], operations_pb2.Operation]:
+        r"""Return a callable for the stop instance method over gRPC.
+
+        Stop a running server.
+
+        Returns:
+            Callable[[~.StopInstanceRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "stop_instance" not in self._stubs:
+            self._stubs["stop_instance"] = self.grpc_channel.unary_unary(
+                "/google.cloud.baremetalsolution.v2.BareMetalSolution/StopInstance",
+                request_serializer=instance.StopInstanceRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["stop_instance"]
+
+    @property
+    def detach_lun(
+        self,
+    ) -> Callable[[gcb_instance.DetachLunRequest], operations_pb2.Operation]:
+        r"""Return a callable for the detach lun method over gRPC.
+
+        Detach LUN from Instance.
+
+        Returns:
+            Callable[[~.DetachLunRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "detach_lun" not in self._stubs:
+            self._stubs["detach_lun"] = self.grpc_channel.unary_unary(
+                "/google.cloud.baremetalsolution.v2.BareMetalSolution/DetachLun",
+                request_serializer=gcb_instance.DetachLunRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["detach_lun"]
+
+    @property
     def list_volumes(
         self,
-    ) -> Callable[
-        [baremetalsolution.ListVolumesRequest], baremetalsolution.ListVolumesResponse
-    ]:
+    ) -> Callable[[volume.ListVolumesRequest], volume.ListVolumesResponse]:
         r"""Return a callable for the list volumes method over gRPC.
 
         List storage volumes in a given project and location.
@@ -359,15 +465,13 @@ class BareMetalSolutionGrpcTransport(BareMetalSolutionTransport):
         if "list_volumes" not in self._stubs:
             self._stubs["list_volumes"] = self.grpc_channel.unary_unary(
                 "/google.cloud.baremetalsolution.v2.BareMetalSolution/ListVolumes",
-                request_serializer=baremetalsolution.ListVolumesRequest.serialize,
-                response_deserializer=baremetalsolution.ListVolumesResponse.deserialize,
+                request_serializer=volume.ListVolumesRequest.serialize,
+                response_deserializer=volume.ListVolumesResponse.deserialize,
             )
         return self._stubs["list_volumes"]
 
     @property
-    def get_volume(
-        self,
-    ) -> Callable[[baremetalsolution.GetVolumeRequest], baremetalsolution.Volume]:
+    def get_volume(self) -> Callable[[volume.GetVolumeRequest], volume.Volume]:
         r"""Return a callable for the get volume method over gRPC.
 
         Get details of a single storage volume.
@@ -385,15 +489,15 @@ class BareMetalSolutionGrpcTransport(BareMetalSolutionTransport):
         if "get_volume" not in self._stubs:
             self._stubs["get_volume"] = self.grpc_channel.unary_unary(
                 "/google.cloud.baremetalsolution.v2.BareMetalSolution/GetVolume",
-                request_serializer=baremetalsolution.GetVolumeRequest.serialize,
-                response_deserializer=baremetalsolution.Volume.deserialize,
+                request_serializer=volume.GetVolumeRequest.serialize,
+                response_deserializer=volume.Volume.deserialize,
             )
         return self._stubs["get_volume"]
 
     @property
     def update_volume(
         self,
-    ) -> Callable[[baremetalsolution.UpdateVolumeRequest], operations_pb2.Operation]:
+    ) -> Callable[[gcb_volume.UpdateVolumeRequest], operations_pb2.Operation]:
         r"""Return a callable for the update volume method over gRPC.
 
         Update details of a single storage volume.
@@ -411,17 +515,41 @@ class BareMetalSolutionGrpcTransport(BareMetalSolutionTransport):
         if "update_volume" not in self._stubs:
             self._stubs["update_volume"] = self.grpc_channel.unary_unary(
                 "/google.cloud.baremetalsolution.v2.BareMetalSolution/UpdateVolume",
-                request_serializer=baremetalsolution.UpdateVolumeRequest.serialize,
+                request_serializer=gcb_volume.UpdateVolumeRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["update_volume"]
 
     @property
+    def resize_volume(
+        self,
+    ) -> Callable[[gcb_volume.ResizeVolumeRequest], operations_pb2.Operation]:
+        r"""Return a callable for the resize volume method over gRPC.
+
+        Emergency Volume resize.
+
+        Returns:
+            Callable[[~.ResizeVolumeRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "resize_volume" not in self._stubs:
+            self._stubs["resize_volume"] = self.grpc_channel.unary_unary(
+                "/google.cloud.baremetalsolution.v2.BareMetalSolution/ResizeVolume",
+                request_serializer=gcb_volume.ResizeVolumeRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["resize_volume"]
+
+    @property
     def list_networks(
         self,
-    ) -> Callable[
-        [baremetalsolution.ListNetworksRequest], baremetalsolution.ListNetworksResponse
-    ]:
+    ) -> Callable[[network.ListNetworksRequest], network.ListNetworksResponse]:
         r"""Return a callable for the list networks method over gRPC.
 
         List network in a given project and location.
@@ -439,15 +567,41 @@ class BareMetalSolutionGrpcTransport(BareMetalSolutionTransport):
         if "list_networks" not in self._stubs:
             self._stubs["list_networks"] = self.grpc_channel.unary_unary(
                 "/google.cloud.baremetalsolution.v2.BareMetalSolution/ListNetworks",
-                request_serializer=baremetalsolution.ListNetworksRequest.serialize,
-                response_deserializer=baremetalsolution.ListNetworksResponse.deserialize,
+                request_serializer=network.ListNetworksRequest.serialize,
+                response_deserializer=network.ListNetworksResponse.deserialize,
             )
         return self._stubs["list_networks"]
 
     @property
-    def get_network(
+    def list_network_usage(
         self,
-    ) -> Callable[[baremetalsolution.GetNetworkRequest], baremetalsolution.Network]:
+    ) -> Callable[[network.ListNetworkUsageRequest], network.ListNetworkUsageResponse]:
+        r"""Return a callable for the list network usage method over gRPC.
+
+        List all Networks (and used IPs for each Network) in
+        the vendor account associated with the specified
+        project.
+
+        Returns:
+            Callable[[~.ListNetworkUsageRequest],
+                    ~.ListNetworkUsageResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_network_usage" not in self._stubs:
+            self._stubs["list_network_usage"] = self.grpc_channel.unary_unary(
+                "/google.cloud.baremetalsolution.v2.BareMetalSolution/ListNetworkUsage",
+                request_serializer=network.ListNetworkUsageRequest.serialize,
+                response_deserializer=network.ListNetworkUsageResponse.deserialize,
+            )
+        return self._stubs["list_network_usage"]
+
+    @property
+    def get_network(self) -> Callable[[network.GetNetworkRequest], network.Network]:
         r"""Return a callable for the get network method over gRPC.
 
         Get details of a single network.
@@ -465,213 +619,21 @@ class BareMetalSolutionGrpcTransport(BareMetalSolutionTransport):
         if "get_network" not in self._stubs:
             self._stubs["get_network"] = self.grpc_channel.unary_unary(
                 "/google.cloud.baremetalsolution.v2.BareMetalSolution/GetNetwork",
-                request_serializer=baremetalsolution.GetNetworkRequest.serialize,
-                response_deserializer=baremetalsolution.Network.deserialize,
+                request_serializer=network.GetNetworkRequest.serialize,
+                response_deserializer=network.Network.deserialize,
             )
         return self._stubs["get_network"]
 
     @property
-    def list_snapshot_schedule_policies(
+    def update_network(
         self,
-    ) -> Callable[
-        [baremetalsolution.ListSnapshotSchedulePoliciesRequest],
-        baremetalsolution.ListSnapshotSchedulePoliciesResponse,
-    ]:
-        r"""Return a callable for the list snapshot schedule
-        policies method over gRPC.
+    ) -> Callable[[gcb_network.UpdateNetworkRequest], operations_pb2.Operation]:
+        r"""Return a callable for the update network method over gRPC.
 
-        List snapshot schedule policies in a given project
-        and location.
+        Update details of a single network.
 
         Returns:
-            Callable[[~.ListSnapshotSchedulePoliciesRequest],
-                    ~.ListSnapshotSchedulePoliciesResponse]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "list_snapshot_schedule_policies" not in self._stubs:
-            self._stubs[
-                "list_snapshot_schedule_policies"
-            ] = self.grpc_channel.unary_unary(
-                "/google.cloud.baremetalsolution.v2.BareMetalSolution/ListSnapshotSchedulePolicies",
-                request_serializer=baremetalsolution.ListSnapshotSchedulePoliciesRequest.serialize,
-                response_deserializer=baremetalsolution.ListSnapshotSchedulePoliciesResponse.deserialize,
-            )
-        return self._stubs["list_snapshot_schedule_policies"]
-
-    @property
-    def get_snapshot_schedule_policy(
-        self,
-    ) -> Callable[
-        [baremetalsolution.GetSnapshotSchedulePolicyRequest],
-        baremetalsolution.SnapshotSchedulePolicy,
-    ]:
-        r"""Return a callable for the get snapshot schedule policy method over gRPC.
-
-        Get details of a single snapshot schedule policy.
-
-        Returns:
-            Callable[[~.GetSnapshotSchedulePolicyRequest],
-                    ~.SnapshotSchedulePolicy]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "get_snapshot_schedule_policy" not in self._stubs:
-            self._stubs["get_snapshot_schedule_policy"] = self.grpc_channel.unary_unary(
-                "/google.cloud.baremetalsolution.v2.BareMetalSolution/GetSnapshotSchedulePolicy",
-                request_serializer=baremetalsolution.GetSnapshotSchedulePolicyRequest.serialize,
-                response_deserializer=baremetalsolution.SnapshotSchedulePolicy.deserialize,
-            )
-        return self._stubs["get_snapshot_schedule_policy"]
-
-    @property
-    def create_snapshot_schedule_policy(
-        self,
-    ) -> Callable[
-        [baremetalsolution.CreateSnapshotSchedulePolicyRequest],
-        baremetalsolution.SnapshotSchedulePolicy,
-    ]:
-        r"""Return a callable for the create snapshot schedule
-        policy method over gRPC.
-
-        Create a snapshot schedule policy in the specified
-        project.
-
-        Returns:
-            Callable[[~.CreateSnapshotSchedulePolicyRequest],
-                    ~.SnapshotSchedulePolicy]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "create_snapshot_schedule_policy" not in self._stubs:
-            self._stubs[
-                "create_snapshot_schedule_policy"
-            ] = self.grpc_channel.unary_unary(
-                "/google.cloud.baremetalsolution.v2.BareMetalSolution/CreateSnapshotSchedulePolicy",
-                request_serializer=baremetalsolution.CreateSnapshotSchedulePolicyRequest.serialize,
-                response_deserializer=baremetalsolution.SnapshotSchedulePolicy.deserialize,
-            )
-        return self._stubs["create_snapshot_schedule_policy"]
-
-    @property
-    def update_snapshot_schedule_policy(
-        self,
-    ) -> Callable[
-        [baremetalsolution.UpdateSnapshotSchedulePolicyRequest],
-        baremetalsolution.SnapshotSchedulePolicy,
-    ]:
-        r"""Return a callable for the update snapshot schedule
-        policy method over gRPC.
-
-        Update a snapshot schedule policy in the specified
-        project.
-
-        Returns:
-            Callable[[~.UpdateSnapshotSchedulePolicyRequest],
-                    ~.SnapshotSchedulePolicy]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "update_snapshot_schedule_policy" not in self._stubs:
-            self._stubs[
-                "update_snapshot_schedule_policy"
-            ] = self.grpc_channel.unary_unary(
-                "/google.cloud.baremetalsolution.v2.BareMetalSolution/UpdateSnapshotSchedulePolicy",
-                request_serializer=baremetalsolution.UpdateSnapshotSchedulePolicyRequest.serialize,
-                response_deserializer=baremetalsolution.SnapshotSchedulePolicy.deserialize,
-            )
-        return self._stubs["update_snapshot_schedule_policy"]
-
-    @property
-    def delete_snapshot_schedule_policy(
-        self,
-    ) -> Callable[
-        [baremetalsolution.DeleteSnapshotSchedulePolicyRequest], empty_pb2.Empty
-    ]:
-        r"""Return a callable for the delete snapshot schedule
-        policy method over gRPC.
-
-        Delete a named snapshot schedule policy.
-
-        Returns:
-            Callable[[~.DeleteSnapshotSchedulePolicyRequest],
-                    ~.Empty]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "delete_snapshot_schedule_policy" not in self._stubs:
-            self._stubs[
-                "delete_snapshot_schedule_policy"
-            ] = self.grpc_channel.unary_unary(
-                "/google.cloud.baremetalsolution.v2.BareMetalSolution/DeleteSnapshotSchedulePolicy",
-                request_serializer=baremetalsolution.DeleteSnapshotSchedulePolicyRequest.serialize,
-                response_deserializer=empty_pb2.Empty.FromString,
-            )
-        return self._stubs["delete_snapshot_schedule_policy"]
-
-    @property
-    def create_volume_snapshot(
-        self,
-    ) -> Callable[
-        [baremetalsolution.CreateVolumeSnapshotRequest],
-        baremetalsolution.VolumeSnapshot,
-    ]:
-        r"""Return a callable for the create volume snapshot method over gRPC.
-
-        Create a storage volume snapshot in a containing
-        volume.
-
-        Returns:
-            Callable[[~.CreateVolumeSnapshotRequest],
-                    ~.VolumeSnapshot]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "create_volume_snapshot" not in self._stubs:
-            self._stubs["create_volume_snapshot"] = self.grpc_channel.unary_unary(
-                "/google.cloud.baremetalsolution.v2.BareMetalSolution/CreateVolumeSnapshot",
-                request_serializer=baremetalsolution.CreateVolumeSnapshotRequest.serialize,
-                response_deserializer=baremetalsolution.VolumeSnapshot.deserialize,
-            )
-        return self._stubs["create_volume_snapshot"]
-
-    @property
-    def restore_volume_snapshot(
-        self,
-    ) -> Callable[
-        [baremetalsolution.RestoreVolumeSnapshotRequest], operations_pb2.Operation
-    ]:
-        r"""Return a callable for the restore volume snapshot method over gRPC.
-
-        Restore a storage volume snapshot to its containing
-        volume.
-
-        Returns:
-            Callable[[~.RestoreVolumeSnapshotRequest],
+            Callable[[~.UpdateNetworkRequest],
                     ~.Operation]:
                 A function that, when called, will call the underlying RPC
                 on the server.
@@ -680,102 +642,16 @@ class BareMetalSolutionGrpcTransport(BareMetalSolutionTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "restore_volume_snapshot" not in self._stubs:
-            self._stubs["restore_volume_snapshot"] = self.grpc_channel.unary_unary(
-                "/google.cloud.baremetalsolution.v2.BareMetalSolution/RestoreVolumeSnapshot",
-                request_serializer=baremetalsolution.RestoreVolumeSnapshotRequest.serialize,
+        if "update_network" not in self._stubs:
+            self._stubs["update_network"] = self.grpc_channel.unary_unary(
+                "/google.cloud.baremetalsolution.v2.BareMetalSolution/UpdateNetwork",
+                request_serializer=gcb_network.UpdateNetworkRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
-        return self._stubs["restore_volume_snapshot"]
+        return self._stubs["update_network"]
 
     @property
-    def delete_volume_snapshot(
-        self,
-    ) -> Callable[[baremetalsolution.DeleteVolumeSnapshotRequest], empty_pb2.Empty]:
-        r"""Return a callable for the delete volume snapshot method over gRPC.
-
-        Deletes a storage volume snapshot for a given volume.
-
-        Returns:
-            Callable[[~.DeleteVolumeSnapshotRequest],
-                    ~.Empty]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "delete_volume_snapshot" not in self._stubs:
-            self._stubs["delete_volume_snapshot"] = self.grpc_channel.unary_unary(
-                "/google.cloud.baremetalsolution.v2.BareMetalSolution/DeleteVolumeSnapshot",
-                request_serializer=baremetalsolution.DeleteVolumeSnapshotRequest.serialize,
-                response_deserializer=empty_pb2.Empty.FromString,
-            )
-        return self._stubs["delete_volume_snapshot"]
-
-    @property
-    def get_volume_snapshot(
-        self,
-    ) -> Callable[
-        [baremetalsolution.GetVolumeSnapshotRequest], baremetalsolution.VolumeSnapshot
-    ]:
-        r"""Return a callable for the get volume snapshot method over gRPC.
-
-        Get details of a single storage volume snapshot.
-
-        Returns:
-            Callable[[~.GetVolumeSnapshotRequest],
-                    ~.VolumeSnapshot]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "get_volume_snapshot" not in self._stubs:
-            self._stubs["get_volume_snapshot"] = self.grpc_channel.unary_unary(
-                "/google.cloud.baremetalsolution.v2.BareMetalSolution/GetVolumeSnapshot",
-                request_serializer=baremetalsolution.GetVolumeSnapshotRequest.serialize,
-                response_deserializer=baremetalsolution.VolumeSnapshot.deserialize,
-            )
-        return self._stubs["get_volume_snapshot"]
-
-    @property
-    def list_volume_snapshots(
-        self,
-    ) -> Callable[
-        [baremetalsolution.ListVolumeSnapshotsRequest],
-        baremetalsolution.ListVolumeSnapshotsResponse,
-    ]:
-        r"""Return a callable for the list volume snapshots method over gRPC.
-
-        List storage volume snapshots for given storage
-        volume.
-
-        Returns:
-            Callable[[~.ListVolumeSnapshotsRequest],
-                    ~.ListVolumeSnapshotsResponse]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "list_volume_snapshots" not in self._stubs:
-            self._stubs["list_volume_snapshots"] = self.grpc_channel.unary_unary(
-                "/google.cloud.baremetalsolution.v2.BareMetalSolution/ListVolumeSnapshots",
-                request_serializer=baremetalsolution.ListVolumeSnapshotsRequest.serialize,
-                response_deserializer=baremetalsolution.ListVolumeSnapshotsResponse.deserialize,
-            )
-        return self._stubs["list_volume_snapshots"]
-
-    @property
-    def get_lun(
-        self,
-    ) -> Callable[[baremetalsolution.GetLunRequest], baremetalsolution.Lun]:
+    def get_lun(self) -> Callable[[lun.GetLunRequest], lun.Lun]:
         r"""Return a callable for the get lun method over gRPC.
 
         Get details of a single storage logical unit
@@ -794,17 +670,13 @@ class BareMetalSolutionGrpcTransport(BareMetalSolutionTransport):
         if "get_lun" not in self._stubs:
             self._stubs["get_lun"] = self.grpc_channel.unary_unary(
                 "/google.cloud.baremetalsolution.v2.BareMetalSolution/GetLun",
-                request_serializer=baremetalsolution.GetLunRequest.serialize,
-                response_deserializer=baremetalsolution.Lun.deserialize,
+                request_serializer=lun.GetLunRequest.serialize,
+                response_deserializer=lun.Lun.deserialize,
             )
         return self._stubs["get_lun"]
 
     @property
-    def list_luns(
-        self,
-    ) -> Callable[
-        [baremetalsolution.ListLunsRequest], baremetalsolution.ListLunsResponse
-    ]:
+    def list_luns(self) -> Callable[[lun.ListLunsRequest], lun.ListLunsResponse]:
         r"""Return a callable for the list luns method over gRPC.
 
         List storage volume luns for given storage volume.
@@ -822,10 +694,88 @@ class BareMetalSolutionGrpcTransport(BareMetalSolutionTransport):
         if "list_luns" not in self._stubs:
             self._stubs["list_luns"] = self.grpc_channel.unary_unary(
                 "/google.cloud.baremetalsolution.v2.BareMetalSolution/ListLuns",
-                request_serializer=baremetalsolution.ListLunsRequest.serialize,
-                response_deserializer=baremetalsolution.ListLunsResponse.deserialize,
+                request_serializer=lun.ListLunsRequest.serialize,
+                response_deserializer=lun.ListLunsResponse.deserialize,
             )
         return self._stubs["list_luns"]
+
+    @property
+    def get_nfs_share(
+        self,
+    ) -> Callable[[nfs_share.GetNfsShareRequest], nfs_share.NfsShare]:
+        r"""Return a callable for the get nfs share method over gRPC.
+
+        Get details of a single NFS share.
+
+        Returns:
+            Callable[[~.GetNfsShareRequest],
+                    ~.NfsShare]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_nfs_share" not in self._stubs:
+            self._stubs["get_nfs_share"] = self.grpc_channel.unary_unary(
+                "/google.cloud.baremetalsolution.v2.BareMetalSolution/GetNfsShare",
+                request_serializer=nfs_share.GetNfsShareRequest.serialize,
+                response_deserializer=nfs_share.NfsShare.deserialize,
+            )
+        return self._stubs["get_nfs_share"]
+
+    @property
+    def list_nfs_shares(
+        self,
+    ) -> Callable[[nfs_share.ListNfsSharesRequest], nfs_share.ListNfsSharesResponse]:
+        r"""Return a callable for the list nfs shares method over gRPC.
+
+        List NFS shares.
+
+        Returns:
+            Callable[[~.ListNfsSharesRequest],
+                    ~.ListNfsSharesResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_nfs_shares" not in self._stubs:
+            self._stubs["list_nfs_shares"] = self.grpc_channel.unary_unary(
+                "/google.cloud.baremetalsolution.v2.BareMetalSolution/ListNfsShares",
+                request_serializer=nfs_share.ListNfsSharesRequest.serialize,
+                response_deserializer=nfs_share.ListNfsSharesResponse.deserialize,
+            )
+        return self._stubs["list_nfs_shares"]
+
+    @property
+    def update_nfs_share(
+        self,
+    ) -> Callable[[gcb_nfs_share.UpdateNfsShareRequest], operations_pb2.Operation]:
+        r"""Return a callable for the update nfs share method over gRPC.
+
+        Update details of a single NFS share.
+
+        Returns:
+            Callable[[~.UpdateNfsShareRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_nfs_share" not in self._stubs:
+            self._stubs["update_nfs_share"] = self.grpc_channel.unary_unary(
+                "/google.cloud.baremetalsolution.v2.BareMetalSolution/UpdateNfsShare",
+                request_serializer=gcb_nfs_share.UpdateNfsShareRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["update_nfs_share"]
 
     def close(self):
         self.grpc_channel.close()

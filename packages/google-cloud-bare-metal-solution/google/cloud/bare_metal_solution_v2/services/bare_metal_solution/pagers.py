@@ -24,7 +24,11 @@ from typing import (
     Iterator,
 )
 
-from google.cloud.bare_metal_solution_v2.types import baremetalsolution
+from google.cloud.bare_metal_solution_v2.types import instance
+from google.cloud.bare_metal_solution_v2.types import lun
+from google.cloud.bare_metal_solution_v2.types import network
+from google.cloud.bare_metal_solution_v2.types import nfs_share
+from google.cloud.bare_metal_solution_v2.types import volume
 
 
 class ListInstancesPager:
@@ -47,9 +51,9 @@ class ListInstancesPager:
 
     def __init__(
         self,
-        method: Callable[..., baremetalsolution.ListInstancesResponse],
-        request: baremetalsolution.ListInstancesRequest,
-        response: baremetalsolution.ListInstancesResponse,
+        method: Callable[..., instance.ListInstancesResponse],
+        request: instance.ListInstancesRequest,
+        response: instance.ListInstancesResponse,
         *,
         metadata: Sequence[Tuple[str, str]] = ()
     ):
@@ -66,7 +70,7 @@ class ListInstancesPager:
                 sent along with the request as metadata.
         """
         self._method = method
-        self._request = baremetalsolution.ListInstancesRequest(request)
+        self._request = instance.ListInstancesRequest(request)
         self._response = response
         self._metadata = metadata
 
@@ -74,14 +78,14 @@ class ListInstancesPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterator[baremetalsolution.ListInstancesResponse]:
+    def pages(self) -> Iterator[instance.ListInstancesResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterator[baremetalsolution.Instance]:
+    def __iter__(self) -> Iterator[instance.Instance]:
         for page in self.pages:
             yield from page.instances
 
@@ -109,9 +113,9 @@ class ListInstancesAsyncPager:
 
     def __init__(
         self,
-        method: Callable[..., Awaitable[baremetalsolution.ListInstancesResponse]],
-        request: baremetalsolution.ListInstancesRequest,
-        response: baremetalsolution.ListInstancesResponse,
+        method: Callable[..., Awaitable[instance.ListInstancesResponse]],
+        request: instance.ListInstancesRequest,
+        response: instance.ListInstancesResponse,
         *,
         metadata: Sequence[Tuple[str, str]] = ()
     ):
@@ -128,7 +132,7 @@ class ListInstancesAsyncPager:
                 sent along with the request as metadata.
         """
         self._method = method
-        self._request = baremetalsolution.ListInstancesRequest(request)
+        self._request = instance.ListInstancesRequest(request)
         self._response = response
         self._metadata = metadata
 
@@ -136,14 +140,14 @@ class ListInstancesAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(self) -> AsyncIterator[baremetalsolution.ListInstancesResponse]:
+    async def pages(self) -> AsyncIterator[instance.ListInstancesResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterator[baremetalsolution.Instance]:
+    def __aiter__(self) -> AsyncIterator[instance.Instance]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.instances:
@@ -175,9 +179,9 @@ class ListVolumesPager:
 
     def __init__(
         self,
-        method: Callable[..., baremetalsolution.ListVolumesResponse],
-        request: baremetalsolution.ListVolumesRequest,
-        response: baremetalsolution.ListVolumesResponse,
+        method: Callable[..., volume.ListVolumesResponse],
+        request: volume.ListVolumesRequest,
+        response: volume.ListVolumesResponse,
         *,
         metadata: Sequence[Tuple[str, str]] = ()
     ):
@@ -194,7 +198,7 @@ class ListVolumesPager:
                 sent along with the request as metadata.
         """
         self._method = method
-        self._request = baremetalsolution.ListVolumesRequest(request)
+        self._request = volume.ListVolumesRequest(request)
         self._response = response
         self._metadata = metadata
 
@@ -202,14 +206,14 @@ class ListVolumesPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterator[baremetalsolution.ListVolumesResponse]:
+    def pages(self) -> Iterator[volume.ListVolumesResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterator[baremetalsolution.Volume]:
+    def __iter__(self) -> Iterator[volume.Volume]:
         for page in self.pages:
             yield from page.volumes
 
@@ -237,9 +241,9 @@ class ListVolumesAsyncPager:
 
     def __init__(
         self,
-        method: Callable[..., Awaitable[baremetalsolution.ListVolumesResponse]],
-        request: baremetalsolution.ListVolumesRequest,
-        response: baremetalsolution.ListVolumesResponse,
+        method: Callable[..., Awaitable[volume.ListVolumesResponse]],
+        request: volume.ListVolumesRequest,
+        response: volume.ListVolumesResponse,
         *,
         metadata: Sequence[Tuple[str, str]] = ()
     ):
@@ -256,7 +260,7 @@ class ListVolumesAsyncPager:
                 sent along with the request as metadata.
         """
         self._method = method
-        self._request = baremetalsolution.ListVolumesRequest(request)
+        self._request = volume.ListVolumesRequest(request)
         self._response = response
         self._metadata = metadata
 
@@ -264,14 +268,14 @@ class ListVolumesAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(self) -> AsyncIterator[baremetalsolution.ListVolumesResponse]:
+    async def pages(self) -> AsyncIterator[volume.ListVolumesResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterator[baremetalsolution.Volume]:
+    def __aiter__(self) -> AsyncIterator[volume.Volume]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.volumes:
@@ -303,9 +307,9 @@ class ListNetworksPager:
 
     def __init__(
         self,
-        method: Callable[..., baremetalsolution.ListNetworksResponse],
-        request: baremetalsolution.ListNetworksRequest,
-        response: baremetalsolution.ListNetworksResponse,
+        method: Callable[..., network.ListNetworksResponse],
+        request: network.ListNetworksRequest,
+        response: network.ListNetworksResponse,
         *,
         metadata: Sequence[Tuple[str, str]] = ()
     ):
@@ -322,7 +326,7 @@ class ListNetworksPager:
                 sent along with the request as metadata.
         """
         self._method = method
-        self._request = baremetalsolution.ListNetworksRequest(request)
+        self._request = network.ListNetworksRequest(request)
         self._response = response
         self._metadata = metadata
 
@@ -330,14 +334,14 @@ class ListNetworksPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterator[baremetalsolution.ListNetworksResponse]:
+    def pages(self) -> Iterator[network.ListNetworksResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterator[baremetalsolution.Network]:
+    def __iter__(self) -> Iterator[network.Network]:
         for page in self.pages:
             yield from page.networks
 
@@ -365,9 +369,9 @@ class ListNetworksAsyncPager:
 
     def __init__(
         self,
-        method: Callable[..., Awaitable[baremetalsolution.ListNetworksResponse]],
-        request: baremetalsolution.ListNetworksRequest,
-        response: baremetalsolution.ListNetworksResponse,
+        method: Callable[..., Awaitable[network.ListNetworksResponse]],
+        request: network.ListNetworksRequest,
+        response: network.ListNetworksResponse,
         *,
         metadata: Sequence[Tuple[str, str]] = ()
     ):
@@ -384,7 +388,7 @@ class ListNetworksAsyncPager:
                 sent along with the request as metadata.
         """
         self._method = method
-        self._request = baremetalsolution.ListNetworksRequest(request)
+        self._request = network.ListNetworksRequest(request)
         self._response = response
         self._metadata = metadata
 
@@ -392,279 +396,17 @@ class ListNetworksAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(self) -> AsyncIterator[baremetalsolution.ListNetworksResponse]:
+    async def pages(self) -> AsyncIterator[network.ListNetworksResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterator[baremetalsolution.Network]:
+    def __aiter__(self) -> AsyncIterator[network.Network]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.networks:
-                    yield response
-
-        return async_generator()
-
-    def __repr__(self) -> str:
-        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
-
-
-class ListSnapshotSchedulePoliciesPager:
-    """A pager for iterating through ``list_snapshot_schedule_policies`` requests.
-
-    This class thinly wraps an initial
-    :class:`google.cloud.bare_metal_solution_v2.types.ListSnapshotSchedulePoliciesResponse` object, and
-    provides an ``__iter__`` method to iterate through its
-    ``snapshot_schedule_policies`` field.
-
-    If there are more pages, the ``__iter__`` method will make additional
-    ``ListSnapshotSchedulePolicies`` requests and continue to iterate
-    through the ``snapshot_schedule_policies`` field on the
-    corresponding responses.
-
-    All the usual :class:`google.cloud.bare_metal_solution_v2.types.ListSnapshotSchedulePoliciesResponse`
-    attributes are available on the pager. If multiple requests are made, only
-    the most recent response is retained, and thus used for attribute lookup.
-    """
-
-    def __init__(
-        self,
-        method: Callable[..., baremetalsolution.ListSnapshotSchedulePoliciesResponse],
-        request: baremetalsolution.ListSnapshotSchedulePoliciesRequest,
-        response: baremetalsolution.ListSnapshotSchedulePoliciesResponse,
-        *,
-        metadata: Sequence[Tuple[str, str]] = ()
-    ):
-        """Instantiate the pager.
-
-        Args:
-            method (Callable): The method that was originally called, and
-                which instantiated this pager.
-            request (google.cloud.bare_metal_solution_v2.types.ListSnapshotSchedulePoliciesRequest):
-                The initial request object.
-            response (google.cloud.bare_metal_solution_v2.types.ListSnapshotSchedulePoliciesResponse):
-                The initial response object.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-        """
-        self._method = method
-        self._request = baremetalsolution.ListSnapshotSchedulePoliciesRequest(request)
-        self._response = response
-        self._metadata = metadata
-
-    def __getattr__(self, name: str) -> Any:
-        return getattr(self._response, name)
-
-    @property
-    def pages(self) -> Iterator[baremetalsolution.ListSnapshotSchedulePoliciesResponse]:
-        yield self._response
-        while self._response.next_page_token:
-            self._request.page_token = self._response.next_page_token
-            self._response = self._method(self._request, metadata=self._metadata)
-            yield self._response
-
-    def __iter__(self) -> Iterator[baremetalsolution.SnapshotSchedulePolicy]:
-        for page in self.pages:
-            yield from page.snapshot_schedule_policies
-
-    def __repr__(self) -> str:
-        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
-
-
-class ListSnapshotSchedulePoliciesAsyncPager:
-    """A pager for iterating through ``list_snapshot_schedule_policies`` requests.
-
-    This class thinly wraps an initial
-    :class:`google.cloud.bare_metal_solution_v2.types.ListSnapshotSchedulePoliciesResponse` object, and
-    provides an ``__aiter__`` method to iterate through its
-    ``snapshot_schedule_policies`` field.
-
-    If there are more pages, the ``__aiter__`` method will make additional
-    ``ListSnapshotSchedulePolicies`` requests and continue to iterate
-    through the ``snapshot_schedule_policies`` field on the
-    corresponding responses.
-
-    All the usual :class:`google.cloud.bare_metal_solution_v2.types.ListSnapshotSchedulePoliciesResponse`
-    attributes are available on the pager. If multiple requests are made, only
-    the most recent response is retained, and thus used for attribute lookup.
-    """
-
-    def __init__(
-        self,
-        method: Callable[
-            ..., Awaitable[baremetalsolution.ListSnapshotSchedulePoliciesResponse]
-        ],
-        request: baremetalsolution.ListSnapshotSchedulePoliciesRequest,
-        response: baremetalsolution.ListSnapshotSchedulePoliciesResponse,
-        *,
-        metadata: Sequence[Tuple[str, str]] = ()
-    ):
-        """Instantiates the pager.
-
-        Args:
-            method (Callable): The method that was originally called, and
-                which instantiated this pager.
-            request (google.cloud.bare_metal_solution_v2.types.ListSnapshotSchedulePoliciesRequest):
-                The initial request object.
-            response (google.cloud.bare_metal_solution_v2.types.ListSnapshotSchedulePoliciesResponse):
-                The initial response object.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-        """
-        self._method = method
-        self._request = baremetalsolution.ListSnapshotSchedulePoliciesRequest(request)
-        self._response = response
-        self._metadata = metadata
-
-    def __getattr__(self, name: str) -> Any:
-        return getattr(self._response, name)
-
-    @property
-    async def pages(
-        self,
-    ) -> AsyncIterator[baremetalsolution.ListSnapshotSchedulePoliciesResponse]:
-        yield self._response
-        while self._response.next_page_token:
-            self._request.page_token = self._response.next_page_token
-            self._response = await self._method(self._request, metadata=self._metadata)
-            yield self._response
-
-    def __aiter__(self) -> AsyncIterator[baremetalsolution.SnapshotSchedulePolicy]:
-        async def async_generator():
-            async for page in self.pages:
-                for response in page.snapshot_schedule_policies:
-                    yield response
-
-        return async_generator()
-
-    def __repr__(self) -> str:
-        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
-
-
-class ListVolumeSnapshotsPager:
-    """A pager for iterating through ``list_volume_snapshots`` requests.
-
-    This class thinly wraps an initial
-    :class:`google.cloud.bare_metal_solution_v2.types.ListVolumeSnapshotsResponse` object, and
-    provides an ``__iter__`` method to iterate through its
-    ``volume_snapshots`` field.
-
-    If there are more pages, the ``__iter__`` method will make additional
-    ``ListVolumeSnapshots`` requests and continue to iterate
-    through the ``volume_snapshots`` field on the
-    corresponding responses.
-
-    All the usual :class:`google.cloud.bare_metal_solution_v2.types.ListVolumeSnapshotsResponse`
-    attributes are available on the pager. If multiple requests are made, only
-    the most recent response is retained, and thus used for attribute lookup.
-    """
-
-    def __init__(
-        self,
-        method: Callable[..., baremetalsolution.ListVolumeSnapshotsResponse],
-        request: baremetalsolution.ListVolumeSnapshotsRequest,
-        response: baremetalsolution.ListVolumeSnapshotsResponse,
-        *,
-        metadata: Sequence[Tuple[str, str]] = ()
-    ):
-        """Instantiate the pager.
-
-        Args:
-            method (Callable): The method that was originally called, and
-                which instantiated this pager.
-            request (google.cloud.bare_metal_solution_v2.types.ListVolumeSnapshotsRequest):
-                The initial request object.
-            response (google.cloud.bare_metal_solution_v2.types.ListVolumeSnapshotsResponse):
-                The initial response object.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-        """
-        self._method = method
-        self._request = baremetalsolution.ListVolumeSnapshotsRequest(request)
-        self._response = response
-        self._metadata = metadata
-
-    def __getattr__(self, name: str) -> Any:
-        return getattr(self._response, name)
-
-    @property
-    def pages(self) -> Iterator[baremetalsolution.ListVolumeSnapshotsResponse]:
-        yield self._response
-        while self._response.next_page_token:
-            self._request.page_token = self._response.next_page_token
-            self._response = self._method(self._request, metadata=self._metadata)
-            yield self._response
-
-    def __iter__(self) -> Iterator[baremetalsolution.VolumeSnapshot]:
-        for page in self.pages:
-            yield from page.volume_snapshots
-
-    def __repr__(self) -> str:
-        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
-
-
-class ListVolumeSnapshotsAsyncPager:
-    """A pager for iterating through ``list_volume_snapshots`` requests.
-
-    This class thinly wraps an initial
-    :class:`google.cloud.bare_metal_solution_v2.types.ListVolumeSnapshotsResponse` object, and
-    provides an ``__aiter__`` method to iterate through its
-    ``volume_snapshots`` field.
-
-    If there are more pages, the ``__aiter__`` method will make additional
-    ``ListVolumeSnapshots`` requests and continue to iterate
-    through the ``volume_snapshots`` field on the
-    corresponding responses.
-
-    All the usual :class:`google.cloud.bare_metal_solution_v2.types.ListVolumeSnapshotsResponse`
-    attributes are available on the pager. If multiple requests are made, only
-    the most recent response is retained, and thus used for attribute lookup.
-    """
-
-    def __init__(
-        self,
-        method: Callable[..., Awaitable[baremetalsolution.ListVolumeSnapshotsResponse]],
-        request: baremetalsolution.ListVolumeSnapshotsRequest,
-        response: baremetalsolution.ListVolumeSnapshotsResponse,
-        *,
-        metadata: Sequence[Tuple[str, str]] = ()
-    ):
-        """Instantiates the pager.
-
-        Args:
-            method (Callable): The method that was originally called, and
-                which instantiated this pager.
-            request (google.cloud.bare_metal_solution_v2.types.ListVolumeSnapshotsRequest):
-                The initial request object.
-            response (google.cloud.bare_metal_solution_v2.types.ListVolumeSnapshotsResponse):
-                The initial response object.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-        """
-        self._method = method
-        self._request = baremetalsolution.ListVolumeSnapshotsRequest(request)
-        self._response = response
-        self._metadata = metadata
-
-    def __getattr__(self, name: str) -> Any:
-        return getattr(self._response, name)
-
-    @property
-    async def pages(
-        self,
-    ) -> AsyncIterator[baremetalsolution.ListVolumeSnapshotsResponse]:
-        yield self._response
-        while self._response.next_page_token:
-            self._request.page_token = self._response.next_page_token
-            self._response = await self._method(self._request, metadata=self._metadata)
-            yield self._response
-
-    def __aiter__(self) -> AsyncIterator[baremetalsolution.VolumeSnapshot]:
-        async def async_generator():
-            async for page in self.pages:
-                for response in page.volume_snapshots:
                     yield response
 
         return async_generator()
@@ -693,9 +435,9 @@ class ListLunsPager:
 
     def __init__(
         self,
-        method: Callable[..., baremetalsolution.ListLunsResponse],
-        request: baremetalsolution.ListLunsRequest,
-        response: baremetalsolution.ListLunsResponse,
+        method: Callable[..., lun.ListLunsResponse],
+        request: lun.ListLunsRequest,
+        response: lun.ListLunsResponse,
         *,
         metadata: Sequence[Tuple[str, str]] = ()
     ):
@@ -712,7 +454,7 @@ class ListLunsPager:
                 sent along with the request as metadata.
         """
         self._method = method
-        self._request = baremetalsolution.ListLunsRequest(request)
+        self._request = lun.ListLunsRequest(request)
         self._response = response
         self._metadata = metadata
 
@@ -720,14 +462,14 @@ class ListLunsPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterator[baremetalsolution.ListLunsResponse]:
+    def pages(self) -> Iterator[lun.ListLunsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterator[baremetalsolution.Lun]:
+    def __iter__(self) -> Iterator[lun.Lun]:
         for page in self.pages:
             yield from page.luns
 
@@ -755,9 +497,9 @@ class ListLunsAsyncPager:
 
     def __init__(
         self,
-        method: Callable[..., Awaitable[baremetalsolution.ListLunsResponse]],
-        request: baremetalsolution.ListLunsRequest,
-        response: baremetalsolution.ListLunsResponse,
+        method: Callable[..., Awaitable[lun.ListLunsResponse]],
+        request: lun.ListLunsRequest,
+        response: lun.ListLunsResponse,
         *,
         metadata: Sequence[Tuple[str, str]] = ()
     ):
@@ -774,7 +516,7 @@ class ListLunsAsyncPager:
                 sent along with the request as metadata.
         """
         self._method = method
-        self._request = baremetalsolution.ListLunsRequest(request)
+        self._request = lun.ListLunsRequest(request)
         self._response = response
         self._metadata = metadata
 
@@ -782,17 +524,145 @@ class ListLunsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(self) -> AsyncIterator[baremetalsolution.ListLunsResponse]:
+    async def pages(self) -> AsyncIterator[lun.ListLunsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterator[baremetalsolution.Lun]:
+    def __aiter__(self) -> AsyncIterator[lun.Lun]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.luns:
+                    yield response
+
+        return async_generator()
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListNfsSharesPager:
+    """A pager for iterating through ``list_nfs_shares`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.bare_metal_solution_v2.types.ListNfsSharesResponse` object, and
+    provides an ``__iter__`` method to iterate through its
+    ``nfs_shares`` field.
+
+    If there are more pages, the ``__iter__`` method will make additional
+    ``ListNfsShares`` requests and continue to iterate
+    through the ``nfs_shares`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.bare_metal_solution_v2.types.ListNfsSharesResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., nfs_share.ListNfsSharesResponse],
+        request: nfs_share.ListNfsSharesRequest,
+        response: nfs_share.ListNfsSharesResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.bare_metal_solution_v2.types.ListNfsSharesRequest):
+                The initial request object.
+            response (google.cloud.bare_metal_solution_v2.types.ListNfsSharesResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = nfs_share.ListNfsSharesRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    def pages(self) -> Iterator[nfs_share.ListNfsSharesResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __iter__(self) -> Iterator[nfs_share.NfsShare]:
+        for page in self.pages:
+            yield from page.nfs_shares
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListNfsSharesAsyncPager:
+    """A pager for iterating through ``list_nfs_shares`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.bare_metal_solution_v2.types.ListNfsSharesResponse` object, and
+    provides an ``__aiter__`` method to iterate through its
+    ``nfs_shares`` field.
+
+    If there are more pages, the ``__aiter__`` method will make additional
+    ``ListNfsShares`` requests and continue to iterate
+    through the ``nfs_shares`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.bare_metal_solution_v2.types.ListNfsSharesResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., Awaitable[nfs_share.ListNfsSharesResponse]],
+        request: nfs_share.ListNfsSharesRequest,
+        response: nfs_share.ListNfsSharesResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiates the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.bare_metal_solution_v2.types.ListNfsSharesRequest):
+                The initial request object.
+            response (google.cloud.bare_metal_solution_v2.types.ListNfsSharesResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = nfs_share.ListNfsSharesRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    async def pages(self) -> AsyncIterator[nfs_share.ListNfsSharesResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = await self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __aiter__(self) -> AsyncIterator[nfs_share.NfsShare]:
+        async def async_generator():
+            async for page in self.pages:
+                for response in page.nfs_shares:
                     yield response
 
         return async_generator()

@@ -10,24 +10,9 @@
         "grpc": {
           "libraryClient": "BareMetalSolutionClient",
           "rpcs": {
-            "CreateSnapshotSchedulePolicy": {
+            "DetachLun": {
               "methods": [
-                "create_snapshot_schedule_policy"
-              ]
-            },
-            "CreateVolumeSnapshot": {
-              "methods": [
-                "create_volume_snapshot"
-              ]
-            },
-            "DeleteSnapshotSchedulePolicy": {
-              "methods": [
-                "delete_snapshot_schedule_policy"
-              ]
-            },
-            "DeleteVolumeSnapshot": {
-              "methods": [
-                "delete_volume_snapshot"
+                "detach_lun"
               ]
             },
             "GetInstance": {
@@ -45,19 +30,14 @@
                 "get_network"
               ]
             },
-            "GetSnapshotSchedulePolicy": {
+            "GetNfsShare": {
               "methods": [
-                "get_snapshot_schedule_policy"
+                "get_nfs_share"
               ]
             },
             "GetVolume": {
               "methods": [
                 "get_volume"
-              ]
-            },
-            "GetVolumeSnapshot": {
-              "methods": [
-                "get_volume_snapshot"
               ]
             },
             "ListInstances": {
@@ -70,19 +50,19 @@
                 "list_luns"
               ]
             },
+            "ListNetworkUsage": {
+              "methods": [
+                "list_network_usage"
+              ]
+            },
             "ListNetworks": {
               "methods": [
                 "list_networks"
               ]
             },
-            "ListSnapshotSchedulePolicies": {
+            "ListNfsShares": {
               "methods": [
-                "list_snapshot_schedule_policies"
-              ]
-            },
-            "ListVolumeSnapshots": {
-              "methods": [
-                "list_volume_snapshots"
+                "list_nfs_shares"
               ]
             },
             "ListVolumes": {
@@ -95,14 +75,34 @@
                 "reset_instance"
               ]
             },
-            "RestoreVolumeSnapshot": {
+            "ResizeVolume": {
               "methods": [
-                "restore_volume_snapshot"
+                "resize_volume"
               ]
             },
-            "UpdateSnapshotSchedulePolicy": {
+            "StartInstance": {
               "methods": [
-                "update_snapshot_schedule_policy"
+                "start_instance"
+              ]
+            },
+            "StopInstance": {
+              "methods": [
+                "stop_instance"
+              ]
+            },
+            "UpdateInstance": {
+              "methods": [
+                "update_instance"
+              ]
+            },
+            "UpdateNetwork": {
+              "methods": [
+                "update_network"
+              ]
+            },
+            "UpdateNfsShare": {
+              "methods": [
+                "update_nfs_share"
               ]
             },
             "UpdateVolume": {
@@ -115,24 +115,9 @@
         "grpc-async": {
           "libraryClient": "BareMetalSolutionAsyncClient",
           "rpcs": {
-            "CreateSnapshotSchedulePolicy": {
+            "DetachLun": {
               "methods": [
-                "create_snapshot_schedule_policy"
-              ]
-            },
-            "CreateVolumeSnapshot": {
-              "methods": [
-                "create_volume_snapshot"
-              ]
-            },
-            "DeleteSnapshotSchedulePolicy": {
-              "methods": [
-                "delete_snapshot_schedule_policy"
-              ]
-            },
-            "DeleteVolumeSnapshot": {
-              "methods": [
-                "delete_volume_snapshot"
+                "detach_lun"
               ]
             },
             "GetInstance": {
@@ -150,19 +135,14 @@
                 "get_network"
               ]
             },
-            "GetSnapshotSchedulePolicy": {
+            "GetNfsShare": {
               "methods": [
-                "get_snapshot_schedule_policy"
+                "get_nfs_share"
               ]
             },
             "GetVolume": {
               "methods": [
                 "get_volume"
-              ]
-            },
-            "GetVolumeSnapshot": {
-              "methods": [
-                "get_volume_snapshot"
               ]
             },
             "ListInstances": {
@@ -175,19 +155,19 @@
                 "list_luns"
               ]
             },
+            "ListNetworkUsage": {
+              "methods": [
+                "list_network_usage"
+              ]
+            },
             "ListNetworks": {
               "methods": [
                 "list_networks"
               ]
             },
-            "ListSnapshotSchedulePolicies": {
+            "ListNfsShares": {
               "methods": [
-                "list_snapshot_schedule_policies"
-              ]
-            },
-            "ListVolumeSnapshots": {
-              "methods": [
-                "list_volume_snapshots"
+                "list_nfs_shares"
               ]
             },
             "ListVolumes": {
@@ -200,14 +180,34 @@
                 "reset_instance"
               ]
             },
-            "RestoreVolumeSnapshot": {
+            "ResizeVolume": {
               "methods": [
-                "restore_volume_snapshot"
+                "resize_volume"
               ]
             },
-            "UpdateSnapshotSchedulePolicy": {
+            "StartInstance": {
               "methods": [
-                "update_snapshot_schedule_policy"
+                "start_instance"
+              ]
+            },
+            "StopInstance": {
+              "methods": [
+                "stop_instance"
+              ]
+            },
+            "UpdateInstance": {
+              "methods": [
+                "update_instance"
+              ]
+            },
+            "UpdateNetwork": {
+              "methods": [
+                "update_network"
+              ]
+            },
+            "UpdateNfsShare": {
+              "methods": [
+                "update_nfs_share"
               ]
             },
             "UpdateVolume": {

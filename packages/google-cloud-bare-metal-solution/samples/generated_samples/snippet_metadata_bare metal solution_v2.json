@@ -18,30 +18,26 @@
           "fullName": "google.cloud.bare_metal_solution_v2.BareMetalSolutionAsyncClient",
           "shortName": "BareMetalSolutionAsyncClient"
         },
-        "fullName": "google.cloud.bare_metal_solution_v2.BareMetalSolutionAsyncClient.create_snapshot_schedule_policy",
+        "fullName": "google.cloud.bare_metal_solution_v2.BareMetalSolutionAsyncClient.detach_lun",
         "method": {
-          "fullName": "google.cloud.baremetalsolution.v2.BareMetalSolution.CreateSnapshotSchedulePolicy",
+          "fullName": "google.cloud.baremetalsolution.v2.BareMetalSolution.DetachLun",
           "service": {
             "fullName": "google.cloud.baremetalsolution.v2.BareMetalSolution",
             "shortName": "BareMetalSolution"
           },
-          "shortName": "CreateSnapshotSchedulePolicy"
+          "shortName": "DetachLun"
         },
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.bare_metal_solution_v2.types.CreateSnapshotSchedulePolicyRequest"
+            "type": "google.cloud.bare_metal_solution_v2.types.DetachLunRequest"
           },
           {
-            "name": "parent",
+            "name": "instance",
             "type": "str"
           },
           {
-            "name": "snapshot_schedule_policy",
-            "type": "google.cloud.bare_metal_solution_v2.types.SnapshotSchedulePolicy"
-          },
-          {
-            "name": "snapshot_schedule_policy_id",
+            "name": "lun",
             "type": "str"
           },
           {
@@ -57,22 +53,22 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.bare_metal_solution_v2.types.SnapshotSchedulePolicy",
-        "shortName": "create_snapshot_schedule_policy"
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "detach_lun"
       },
-      "description": "Sample for CreateSnapshotSchedulePolicy",
-      "file": "baremetalsolution_v2_generated_bare_metal_solution_create_snapshot_schedule_policy_async.py",
+      "description": "Sample for DetachLun",
+      "file": "baremetalsolution_v2_generated_bare_metal_solution_detach_lun_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "baremetalsolution_v2_generated_BareMetalSolution_CreateSnapshotSchedulePolicy_async",
+      "regionTag": "baremetalsolution_v2_generated_BareMetalSolution_DetachLun_async",
       "segments": [
         {
-          "end": 45,
+          "end": 49,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 45,
+          "end": 49,
           "start": 27,
           "type": "SHORT"
         },
@@ -87,17 +83,17 @@
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 42,
+          "end": 46,
           "start": 40,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 46,
-          "start": 43,
+          "end": 50,
+          "start": 47,
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "baremetalsolution_v2_generated_bare_metal_solution_create_snapshot_schedule_policy_async.py"
+      "title": "baremetalsolution_v2_generated_bare_metal_solution_detach_lun_async.py"
     },
     {
       "canonical": true,
@@ -106,30 +102,26 @@
           "fullName": "google.cloud.bare_metal_solution_v2.BareMetalSolutionClient",
           "shortName": "BareMetalSolutionClient"
         },
-        "fullName": "google.cloud.bare_metal_solution_v2.BareMetalSolutionClient.create_snapshot_schedule_policy",
+        "fullName": "google.cloud.bare_metal_solution_v2.BareMetalSolutionClient.detach_lun",
         "method": {
-          "fullName": "google.cloud.baremetalsolution.v2.BareMetalSolution.CreateSnapshotSchedulePolicy",
+          "fullName": "google.cloud.baremetalsolution.v2.BareMetalSolution.DetachLun",
           "service": {
             "fullName": "google.cloud.baremetalsolution.v2.BareMetalSolution",
             "shortName": "BareMetalSolution"
           },
-          "shortName": "CreateSnapshotSchedulePolicy"
+          "shortName": "DetachLun"
         },
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.bare_metal_solution_v2.types.CreateSnapshotSchedulePolicyRequest"
+            "type": "google.cloud.bare_metal_solution_v2.types.DetachLunRequest"
           },
           {
-            "name": "parent",
+            "name": "instance",
             "type": "str"
           },
           {
-            "name": "snapshot_schedule_policy",
-            "type": "google.cloud.bare_metal_solution_v2.types.SnapshotSchedulePolicy"
-          },
-          {
-            "name": "snapshot_schedule_policy_id",
+            "name": "lun",
             "type": "str"
           },
           {
@@ -145,22 +137,22 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.bare_metal_solution_v2.types.SnapshotSchedulePolicy",
-        "shortName": "create_snapshot_schedule_policy"
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "detach_lun"
       },
-      "description": "Sample for CreateSnapshotSchedulePolicy",
-      "file": "baremetalsolution_v2_generated_bare_metal_solution_create_snapshot_schedule_policy_sync.py",
+      "description": "Sample for DetachLun",
+      "file": "baremetalsolution_v2_generated_bare_metal_solution_detach_lun_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "baremetalsolution_v2_generated_BareMetalSolution_CreateSnapshotSchedulePolicy_sync",
+      "regionTag": "baremetalsolution_v2_generated_BareMetalSolution_DetachLun_sync",
       "segments": [
         {
-          "end": 45,
+          "end": 49,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 45,
+          "end": 49,
           "start": 27,
           "type": "SHORT"
         },
@@ -175,496 +167,17 @@
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 42,
+          "end": 46,
           "start": 40,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 46,
-          "start": 43,
+          "end": 50,
+          "start": 47,
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "baremetalsolution_v2_generated_bare_metal_solution_create_snapshot_schedule_policy_sync.py"
-    },
-    {
-      "canonical": true,
-      "clientMethod": {
-        "async": true,
-        "client": {
-          "fullName": "google.cloud.bare_metal_solution_v2.BareMetalSolutionAsyncClient",
-          "shortName": "BareMetalSolutionAsyncClient"
-        },
-        "fullName": "google.cloud.bare_metal_solution_v2.BareMetalSolutionAsyncClient.create_volume_snapshot",
-        "method": {
-          "fullName": "google.cloud.baremetalsolution.v2.BareMetalSolution.CreateVolumeSnapshot",
-          "service": {
-            "fullName": "google.cloud.baremetalsolution.v2.BareMetalSolution",
-            "shortName": "BareMetalSolution"
-          },
-          "shortName": "CreateVolumeSnapshot"
-        },
-        "parameters": [
-          {
-            "name": "request",
-            "type": "google.cloud.bare_metal_solution_v2.types.CreateVolumeSnapshotRequest"
-          },
-          {
-            "name": "parent",
-            "type": "str"
-          },
-          {
-            "name": "volume_snapshot",
-            "type": "google.cloud.bare_metal_solution_v2.types.VolumeSnapshot"
-          },
-          {
-            "name": "retry",
-            "type": "google.api_core.retry.Retry"
-          },
-          {
-            "name": "timeout",
-            "type": "float"
-          },
-          {
-            "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
-          }
-        ],
-        "resultType": "google.cloud.bare_metal_solution_v2.types.VolumeSnapshot",
-        "shortName": "create_volume_snapshot"
-      },
-      "description": "Sample for CreateVolumeSnapshot",
-      "file": "baremetalsolution_v2_generated_bare_metal_solution_create_volume_snapshot_async.py",
-      "language": "PYTHON",
-      "origin": "API_DEFINITION",
-      "regionTag": "baremetalsolution_v2_generated_BareMetalSolution_CreateVolumeSnapshot_async",
-      "segments": [
-        {
-          "end": 44,
-          "start": 27,
-          "type": "FULL"
-        },
-        {
-          "end": 44,
-          "start": 27,
-          "type": "SHORT"
-        },
-        {
-          "end": 33,
-          "start": 31,
-          "type": "CLIENT_INITIALIZATION"
-        },
-        {
-          "end": 38,
-          "start": 34,
-          "type": "REQUEST_INITIALIZATION"
-        },
-        {
-          "end": 41,
-          "start": 39,
-          "type": "REQUEST_EXECUTION"
-        },
-        {
-          "end": 45,
-          "start": 42,
-          "type": "RESPONSE_HANDLING"
-        }
-      ],
-      "title": "baremetalsolution_v2_generated_bare_metal_solution_create_volume_snapshot_async.py"
-    },
-    {
-      "canonical": true,
-      "clientMethod": {
-        "client": {
-          "fullName": "google.cloud.bare_metal_solution_v2.BareMetalSolutionClient",
-          "shortName": "BareMetalSolutionClient"
-        },
-        "fullName": "google.cloud.bare_metal_solution_v2.BareMetalSolutionClient.create_volume_snapshot",
-        "method": {
-          "fullName": "google.cloud.baremetalsolution.v2.BareMetalSolution.CreateVolumeSnapshot",
-          "service": {
-            "fullName": "google.cloud.baremetalsolution.v2.BareMetalSolution",
-            "shortName": "BareMetalSolution"
-          },
-          "shortName": "CreateVolumeSnapshot"
-        },
-        "parameters": [
-          {
-            "name": "request",
-            "type": "google.cloud.bare_metal_solution_v2.types.CreateVolumeSnapshotRequest"
-          },
-          {
-            "name": "parent",
-            "type": "str"
-          },
-          {
-            "name": "volume_snapshot",
-            "type": "google.cloud.bare_metal_solution_v2.types.VolumeSnapshot"
-          },
-          {
-            "name": "retry",
-            "type": "google.api_core.retry.Retry"
-          },
-          {
-            "name": "timeout",
-            "type": "float"
-          },
-          {
-            "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
-          }
-        ],
-        "resultType": "google.cloud.bare_metal_solution_v2.types.VolumeSnapshot",
-        "shortName": "create_volume_snapshot"
-      },
-      "description": "Sample for CreateVolumeSnapshot",
-      "file": "baremetalsolution_v2_generated_bare_metal_solution_create_volume_snapshot_sync.py",
-      "language": "PYTHON",
-      "origin": "API_DEFINITION",
-      "regionTag": "baremetalsolution_v2_generated_BareMetalSolution_CreateVolumeSnapshot_sync",
-      "segments": [
-        {
-          "end": 44,
-          "start": 27,
-          "type": "FULL"
-        },
-        {
-          "end": 44,
-          "start": 27,
-          "type": "SHORT"
-        },
-        {
-          "end": 33,
-          "start": 31,
-          "type": "CLIENT_INITIALIZATION"
-        },
-        {
-          "end": 38,
-          "start": 34,
-          "type": "REQUEST_INITIALIZATION"
-        },
-        {
-          "end": 41,
-          "start": 39,
-          "type": "REQUEST_EXECUTION"
-        },
-        {
-          "end": 45,
-          "start": 42,
-          "type": "RESPONSE_HANDLING"
-        }
-      ],
-      "title": "baremetalsolution_v2_generated_bare_metal_solution_create_volume_snapshot_sync.py"
-    },
-    {
-      "canonical": true,
-      "clientMethod": {
-        "async": true,
-        "client": {
-          "fullName": "google.cloud.bare_metal_solution_v2.BareMetalSolutionAsyncClient",
-          "shortName": "BareMetalSolutionAsyncClient"
-        },
-        "fullName": "google.cloud.bare_metal_solution_v2.BareMetalSolutionAsyncClient.delete_snapshot_schedule_policy",
-        "method": {
-          "fullName": "google.cloud.baremetalsolution.v2.BareMetalSolution.DeleteSnapshotSchedulePolicy",
-          "service": {
-            "fullName": "google.cloud.baremetalsolution.v2.BareMetalSolution",
-            "shortName": "BareMetalSolution"
-          },
-          "shortName": "DeleteSnapshotSchedulePolicy"
-        },
-        "parameters": [
-          {
-            "name": "request",
-            "type": "google.cloud.bare_metal_solution_v2.types.DeleteSnapshotSchedulePolicyRequest"
-          },
-          {
-            "name": "name",
-            "type": "str"
-          },
-          {
-            "name": "retry",
-            "type": "google.api_core.retry.Retry"
-          },
-          {
-            "name": "timeout",
-            "type": "float"
-          },
-          {
-            "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
-          }
-        ],
-        "shortName": "delete_snapshot_schedule_policy"
-      },
-      "description": "Sample for DeleteSnapshotSchedulePolicy",
-      "file": "baremetalsolution_v2_generated_bare_metal_solution_delete_snapshot_schedule_policy_async.py",
-      "language": "PYTHON",
-      "origin": "API_DEFINITION",
-      "regionTag": "baremetalsolution_v2_generated_BareMetalSolution_DeleteSnapshotSchedulePolicy_async",
-      "segments": [
-        {
-          "end": 42,
-          "start": 27,
-          "type": "FULL"
-        },
-        {
-          "end": 42,
-          "start": 27,
-          "type": "SHORT"
-        },
-        {
-          "end": 33,
-          "start": 31,
-          "type": "CLIENT_INITIALIZATION"
-        },
-        {
-          "end": 38,
-          "start": 34,
-          "type": "REQUEST_INITIALIZATION"
-        },
-        {
-          "start": 39,
-          "type": "REQUEST_EXECUTION"
-        },
-        {
-          "end": 43,
-          "type": "RESPONSE_HANDLING"
-        }
-      ],
-      "title": "baremetalsolution_v2_generated_bare_metal_solution_delete_snapshot_schedule_policy_async.py"
-    },
-    {
-      "canonical": true,
-      "clientMethod": {
-        "client": {
-          "fullName": "google.cloud.bare_metal_solution_v2.BareMetalSolutionClient",
-          "shortName": "BareMetalSolutionClient"
-        },
-        "fullName": "google.cloud.bare_metal_solution_v2.BareMetalSolutionClient.delete_snapshot_schedule_policy",
-        "method": {
-          "fullName": "google.cloud.baremetalsolution.v2.BareMetalSolution.DeleteSnapshotSchedulePolicy",
-          "service": {
-            "fullName": "google.cloud.baremetalsolution.v2.BareMetalSolution",
-            "shortName": "BareMetalSolution"
-          },
-          "shortName": "DeleteSnapshotSchedulePolicy"
-        },
-        "parameters": [
-          {
-            "name": "request",
-            "type": "google.cloud.bare_metal_solution_v2.types.DeleteSnapshotSchedulePolicyRequest"
-          },
-          {
-            "name": "name",
-            "type": "str"
-          },
-          {
-            "name": "retry",
-            "type": "google.api_core.retry.Retry"
-          },
-          {
-            "name": "timeout",
-            "type": "float"
-          },
-          {
-            "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
-          }
-        ],
-        "shortName": "delete_snapshot_schedule_policy"
-      },
-      "description": "Sample for DeleteSnapshotSchedulePolicy",
-      "file": "baremetalsolution_v2_generated_bare_metal_solution_delete_snapshot_schedule_policy_sync.py",
-      "language": "PYTHON",
-      "origin": "API_DEFINITION",
-      "regionTag": "baremetalsolution_v2_generated_BareMetalSolution_DeleteSnapshotSchedulePolicy_sync",
-      "segments": [
-        {
-          "end": 42,
-          "start": 27,
-          "type": "FULL"
-        },
-        {
-          "end": 42,
-          "start": 27,
-          "type": "SHORT"
-        },
-        {
-          "end": 33,
-          "start": 31,
-          "type": "CLIENT_INITIALIZATION"
-        },
-        {
-          "end": 38,
-          "start": 34,
-          "type": "REQUEST_INITIALIZATION"
-        },
-        {
-          "start": 39,
-          "type": "REQUEST_EXECUTION"
-        },
-        {
-          "end": 43,
-          "type": "RESPONSE_HANDLING"
-        }
-      ],
-      "title": "baremetalsolution_v2_generated_bare_metal_solution_delete_snapshot_schedule_policy_sync.py"
-    },
-    {
-      "canonical": true,
-      "clientMethod": {
-        "async": true,
-        "client": {
-          "fullName": "google.cloud.bare_metal_solution_v2.BareMetalSolutionAsyncClient",
-          "shortName": "BareMetalSolutionAsyncClient"
-        },
-        "fullName": "google.cloud.bare_metal_solution_v2.BareMetalSolutionAsyncClient.delete_volume_snapshot",
-        "method": {
-          "fullName": "google.cloud.baremetalsolution.v2.BareMetalSolution.DeleteVolumeSnapshot",
-          "service": {
-            "fullName": "google.cloud.baremetalsolution.v2.BareMetalSolution",
-            "shortName": "BareMetalSolution"
-          },
-          "shortName": "DeleteVolumeSnapshot"
-        },
-        "parameters": [
-          {
-            "name": "request",
-            "type": "google.cloud.bare_metal_solution_v2.types.DeleteVolumeSnapshotRequest"
-          },
-          {
-            "name": "name",
-            "type": "str"
-          },
-          {
-            "name": "retry",
-            "type": "google.api_core.retry.Retry"
-          },
-          {
-            "name": "timeout",
-            "type": "float"
-          },
-          {
-            "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
-          }
-        ],
-        "shortName": "delete_volume_snapshot"
-      },
-      "description": "Sample for DeleteVolumeSnapshot",
-      "file": "baremetalsolution_v2_generated_bare_metal_solution_delete_volume_snapshot_async.py",
-      "language": "PYTHON",
-      "origin": "API_DEFINITION",
-      "regionTag": "baremetalsolution_v2_generated_BareMetalSolution_DeleteVolumeSnapshot_async",
-      "segments": [
-        {
-          "end": 42,
-          "start": 27,
-          "type": "FULL"
-        },
-        {
-          "end": 42,
-          "start": 27,
-          "type": "SHORT"
-        },
-        {
-          "end": 33,
-          "start": 31,
-          "type": "CLIENT_INITIALIZATION"
-        },
-        {
-          "end": 38,
-          "start": 34,
-          "type": "REQUEST_INITIALIZATION"
-        },
-        {
-          "start": 39,
-          "type": "REQUEST_EXECUTION"
-        },
-        {
-          "end": 43,
-          "type": "RESPONSE_HANDLING"
-        }
-      ],
-      "title": "baremetalsolution_v2_generated_bare_metal_solution_delete_volume_snapshot_async.py"
-    },
-    {
-      "canonical": true,
-      "clientMethod": {
-        "client": {
-          "fullName": "google.cloud.bare_metal_solution_v2.BareMetalSolutionClient",
-          "shortName": "BareMetalSolutionClient"
-        },
-        "fullName": "google.cloud.bare_metal_solution_v2.BareMetalSolutionClient.delete_volume_snapshot",
-        "method": {
-          "fullName": "google.cloud.baremetalsolution.v2.BareMetalSolution.DeleteVolumeSnapshot",
-          "service": {
-            "fullName": "google.cloud.baremetalsolution.v2.BareMetalSolution",
-            "shortName": "BareMetalSolution"
-          },
-          "shortName": "DeleteVolumeSnapshot"
-        },
-        "parameters": [
-          {
-            "name": "request",
-            "type": "google.cloud.bare_metal_solution_v2.types.DeleteVolumeSnapshotRequest"
-          },
-          {
-            "name": "name",
-            "type": "str"
-          },
-          {
-            "name": "retry",
-            "type": "google.api_core.retry.Retry"
-          },
-          {
-            "name": "timeout",
-            "type": "float"
-          },
-          {
-            "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
-          }
-        ],
-        "shortName": "delete_volume_snapshot"
-      },
-      "description": "Sample for DeleteVolumeSnapshot",
-      "file": "baremetalsolution_v2_generated_bare_metal_solution_delete_volume_snapshot_sync.py",
-      "language": "PYTHON",
-      "origin": "API_DEFINITION",
-      "regionTag": "baremetalsolution_v2_generated_BareMetalSolution_DeleteVolumeSnapshot_sync",
-      "segments": [
-        {
-          "end": 42,
-          "start": 27,
-          "type": "FULL"
-        },
-        {
-          "end": 42,
-          "start": 27,
-          "type": "SHORT"
-        },
-        {
-          "end": 33,
-          "start": 31,
-          "type": "CLIENT_INITIALIZATION"
-        },
-        {
-          "end": 38,
-          "start": 34,
-          "type": "REQUEST_INITIALIZATION"
-        },
-        {
-          "start": 39,
-          "type": "REQUEST_EXECUTION"
-        },
-        {
-          "end": 43,
-          "type": "RESPONSE_HANDLING"
-        }
-      ],
-      "title": "baremetalsolution_v2_generated_bare_metal_solution_delete_volume_snapshot_sync.py"
+      "title": "baremetalsolution_v2_generated_bare_metal_solution_detach_lun_sync.py"
     },
     {
       "canonical": true,
@@ -1157,19 +670,19 @@
           "fullName": "google.cloud.bare_metal_solution_v2.BareMetalSolutionAsyncClient",
           "shortName": "BareMetalSolutionAsyncClient"
         },
-        "fullName": "google.cloud.bare_metal_solution_v2.BareMetalSolutionAsyncClient.get_snapshot_schedule_policy",
+        "fullName": "google.cloud.bare_metal_solution_v2.BareMetalSolutionAsyncClient.get_nfs_share",
         "method": {
-          "fullName": "google.cloud.baremetalsolution.v2.BareMetalSolution.GetSnapshotSchedulePolicy",
+          "fullName": "google.cloud.baremetalsolution.v2.BareMetalSolution.GetNfsShare",
           "service": {
             "fullName": "google.cloud.baremetalsolution.v2.BareMetalSolution",
             "shortName": "BareMetalSolution"
           },
-          "shortName": "GetSnapshotSchedulePolicy"
+          "shortName": "GetNfsShare"
         },
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.bare_metal_solution_v2.types.GetSnapshotSchedulePolicyRequest"
+            "type": "google.cloud.bare_metal_solution_v2.types.GetNfsShareRequest"
           },
           {
             "name": "name",
@@ -1188,14 +701,14 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.bare_metal_solution_v2.types.SnapshotSchedulePolicy",
-        "shortName": "get_snapshot_schedule_policy"
+        "resultType": "google.cloud.bare_metal_solution_v2.types.NfsShare",
+        "shortName": "get_nfs_share"
       },
-      "description": "Sample for GetSnapshotSchedulePolicy",
-      "file": "baremetalsolution_v2_generated_bare_metal_solution_get_snapshot_schedule_policy_async.py",
+      "description": "Sample for GetNfsShare",
+      "file": "baremetalsolution_v2_generated_bare_metal_solution_get_nfs_share_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "baremetalsolution_v2_generated_BareMetalSolution_GetSnapshotSchedulePolicy_async",
+      "regionTag": "baremetalsolution_v2_generated_BareMetalSolution_GetNfsShare_async",
       "segments": [
         {
           "end": 44,
@@ -1228,7 +741,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "baremetalsolution_v2_generated_bare_metal_solution_get_snapshot_schedule_policy_async.py"
+      "title": "baremetalsolution_v2_generated_bare_metal_solution_get_nfs_share_async.py"
     },
     {
       "canonical": true,
@@ -1237,19 +750,19 @@
           "fullName": "google.cloud.bare_metal_solution_v2.BareMetalSolutionClient",
           "shortName": "BareMetalSolutionClient"
         },
-        "fullName": "google.cloud.bare_metal_solution_v2.BareMetalSolutionClient.get_snapshot_schedule_policy",
+        "fullName": "google.cloud.bare_metal_solution_v2.BareMetalSolutionClient.get_nfs_share",
         "method": {
-          "fullName": "google.cloud.baremetalsolution.v2.BareMetalSolution.GetSnapshotSchedulePolicy",
+          "fullName": "google.cloud.baremetalsolution.v2.BareMetalSolution.GetNfsShare",
           "service": {
             "fullName": "google.cloud.baremetalsolution.v2.BareMetalSolution",
             "shortName": "BareMetalSolution"
           },
-          "shortName": "GetSnapshotSchedulePolicy"
+          "shortName": "GetNfsShare"
         },
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.bare_metal_solution_v2.types.GetSnapshotSchedulePolicyRequest"
+            "type": "google.cloud.bare_metal_solution_v2.types.GetNfsShareRequest"
           },
           {
             "name": "name",
@@ -1268,14 +781,14 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.bare_metal_solution_v2.types.SnapshotSchedulePolicy",
-        "shortName": "get_snapshot_schedule_policy"
+        "resultType": "google.cloud.bare_metal_solution_v2.types.NfsShare",
+        "shortName": "get_nfs_share"
       },
-      "description": "Sample for GetSnapshotSchedulePolicy",
-      "file": "baremetalsolution_v2_generated_bare_metal_solution_get_snapshot_schedule_policy_sync.py",
+      "description": "Sample for GetNfsShare",
+      "file": "baremetalsolution_v2_generated_bare_metal_solution_get_nfs_share_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "baremetalsolution_v2_generated_BareMetalSolution_GetSnapshotSchedulePolicy_sync",
+      "regionTag": "baremetalsolution_v2_generated_BareMetalSolution_GetNfsShare_sync",
       "segments": [
         {
           "end": 44,
@@ -1308,168 +821,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "baremetalsolution_v2_generated_bare_metal_solution_get_snapshot_schedule_policy_sync.py"
-    },
-    {
-      "canonical": true,
-      "clientMethod": {
-        "async": true,
-        "client": {
-          "fullName": "google.cloud.bare_metal_solution_v2.BareMetalSolutionAsyncClient",
-          "shortName": "BareMetalSolutionAsyncClient"
-        },
-        "fullName": "google.cloud.bare_metal_solution_v2.BareMetalSolutionAsyncClient.get_volume_snapshot",
-        "method": {
-          "fullName": "google.cloud.baremetalsolution.v2.BareMetalSolution.GetVolumeSnapshot",
-          "service": {
-            "fullName": "google.cloud.baremetalsolution.v2.BareMetalSolution",
-            "shortName": "BareMetalSolution"
-          },
-          "shortName": "GetVolumeSnapshot"
-        },
-        "parameters": [
-          {
-            "name": "request",
-            "type": "google.cloud.bare_metal_solution_v2.types.GetVolumeSnapshotRequest"
-          },
-          {
-            "name": "name",
-            "type": "str"
-          },
-          {
-            "name": "retry",
-            "type": "google.api_core.retry.Retry"
-          },
-          {
-            "name": "timeout",
-            "type": "float"
-          },
-          {
-            "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
-          }
-        ],
-        "resultType": "google.cloud.bare_metal_solution_v2.types.VolumeSnapshot",
-        "shortName": "get_volume_snapshot"
-      },
-      "description": "Sample for GetVolumeSnapshot",
-      "file": "baremetalsolution_v2_generated_bare_metal_solution_get_volume_snapshot_async.py",
-      "language": "PYTHON",
-      "origin": "API_DEFINITION",
-      "regionTag": "baremetalsolution_v2_generated_BareMetalSolution_GetVolumeSnapshot_async",
-      "segments": [
-        {
-          "end": 44,
-          "start": 27,
-          "type": "FULL"
-        },
-        {
-          "end": 44,
-          "start": 27,
-          "type": "SHORT"
-        },
-        {
-          "end": 33,
-          "start": 31,
-          "type": "CLIENT_INITIALIZATION"
-        },
-        {
-          "end": 38,
-          "start": 34,
-          "type": "REQUEST_INITIALIZATION"
-        },
-        {
-          "end": 41,
-          "start": 39,
-          "type": "REQUEST_EXECUTION"
-        },
-        {
-          "end": 45,
-          "start": 42,
-          "type": "RESPONSE_HANDLING"
-        }
-      ],
-      "title": "baremetalsolution_v2_generated_bare_metal_solution_get_volume_snapshot_async.py"
-    },
-    {
-      "canonical": true,
-      "clientMethod": {
-        "client": {
-          "fullName": "google.cloud.bare_metal_solution_v2.BareMetalSolutionClient",
-          "shortName": "BareMetalSolutionClient"
-        },
-        "fullName": "google.cloud.bare_metal_solution_v2.BareMetalSolutionClient.get_volume_snapshot",
-        "method": {
-          "fullName": "google.cloud.baremetalsolution.v2.BareMetalSolution.GetVolumeSnapshot",
-          "service": {
-            "fullName": "google.cloud.baremetalsolution.v2.BareMetalSolution",
-            "shortName": "BareMetalSolution"
-          },
-          "shortName": "GetVolumeSnapshot"
-        },
-        "parameters": [
-          {
-            "name": "request",
-            "type": "google.cloud.bare_metal_solution_v2.types.GetVolumeSnapshotRequest"
-          },
-          {
-            "name": "name",
-            "type": "str"
-          },
-          {
-            "name": "retry",
-            "type": "google.api_core.retry.Retry"
-          },
-          {
-            "name": "timeout",
-            "type": "float"
-          },
-          {
-            "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
-          }
-        ],
-        "resultType": "google.cloud.bare_metal_solution_v2.types.VolumeSnapshot",
-        "shortName": "get_volume_snapshot"
-      },
-      "description": "Sample for GetVolumeSnapshot",
-      "file": "baremetalsolution_v2_generated_bare_metal_solution_get_volume_snapshot_sync.py",
-      "language": "PYTHON",
-      "origin": "API_DEFINITION",
-      "regionTag": "baremetalsolution_v2_generated_BareMetalSolution_GetVolumeSnapshot_sync",
-      "segments": [
-        {
-          "end": 44,
-          "start": 27,
-          "type": "FULL"
-        },
-        {
-          "end": 44,
-          "start": 27,
-          "type": "SHORT"
-        },
-        {
-          "end": 33,
-          "start": 31,
-          "type": "CLIENT_INITIALIZATION"
-        },
-        {
-          "end": 38,
-          "start": 34,
-          "type": "REQUEST_INITIALIZATION"
-        },
-        {
-          "end": 41,
-          "start": 39,
-          "type": "REQUEST_EXECUTION"
-        },
-        {
-          "end": 45,
-          "start": 42,
-          "type": "RESPONSE_HANDLING"
-        }
-      ],
-      "title": "baremetalsolution_v2_generated_bare_metal_solution_get_volume_snapshot_sync.py"
+      "title": "baremetalsolution_v2_generated_bare_metal_solution_get_nfs_share_sync.py"
     },
     {
       "canonical": true,
@@ -1962,6 +1314,167 @@
           "fullName": "google.cloud.bare_metal_solution_v2.BareMetalSolutionAsyncClient",
           "shortName": "BareMetalSolutionAsyncClient"
         },
+        "fullName": "google.cloud.bare_metal_solution_v2.BareMetalSolutionAsyncClient.list_network_usage",
+        "method": {
+          "fullName": "google.cloud.baremetalsolution.v2.BareMetalSolution.ListNetworkUsage",
+          "service": {
+            "fullName": "google.cloud.baremetalsolution.v2.BareMetalSolution",
+            "shortName": "BareMetalSolution"
+          },
+          "shortName": "ListNetworkUsage"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.bare_metal_solution_v2.types.ListNetworkUsageRequest"
+          },
+          {
+            "name": "location",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.bare_metal_solution_v2.types.ListNetworkUsageResponse",
+        "shortName": "list_network_usage"
+      },
+      "description": "Sample for ListNetworkUsage",
+      "file": "baremetalsolution_v2_generated_bare_metal_solution_list_network_usage_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "baremetalsolution_v2_generated_BareMetalSolution_ListNetworkUsage_async",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "baremetalsolution_v2_generated_bare_metal_solution_list_network_usage_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.bare_metal_solution_v2.BareMetalSolutionClient",
+          "shortName": "BareMetalSolutionClient"
+        },
+        "fullName": "google.cloud.bare_metal_solution_v2.BareMetalSolutionClient.list_network_usage",
+        "method": {
+          "fullName": "google.cloud.baremetalsolution.v2.BareMetalSolution.ListNetworkUsage",
+          "service": {
+            "fullName": "google.cloud.baremetalsolution.v2.BareMetalSolution",
+            "shortName": "BareMetalSolution"
+          },
+          "shortName": "ListNetworkUsage"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.bare_metal_solution_v2.types.ListNetworkUsageRequest"
+          },
+          {
+            "name": "location",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.bare_metal_solution_v2.types.ListNetworkUsageResponse",
+        "shortName": "list_network_usage"
+      },
+      "description": "Sample for ListNetworkUsage",
+      "file": "baremetalsolution_v2_generated_bare_metal_solution_list_network_usage_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "baremetalsolution_v2_generated_BareMetalSolution_ListNetworkUsage_sync",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "baremetalsolution_v2_generated_bare_metal_solution_list_network_usage_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.bare_metal_solution_v2.BareMetalSolutionAsyncClient",
+          "shortName": "BareMetalSolutionAsyncClient"
+        },
         "fullName": "google.cloud.bare_metal_solution_v2.BareMetalSolutionAsyncClient.list_networks",
         "method": {
           "fullName": "google.cloud.baremetalsolution.v2.BareMetalSolution.ListNetworks",
@@ -2123,19 +1636,19 @@
           "fullName": "google.cloud.bare_metal_solution_v2.BareMetalSolutionAsyncClient",
           "shortName": "BareMetalSolutionAsyncClient"
         },
-        "fullName": "google.cloud.bare_metal_solution_v2.BareMetalSolutionAsyncClient.list_snapshot_schedule_policies",
+        "fullName": "google.cloud.bare_metal_solution_v2.BareMetalSolutionAsyncClient.list_nfs_shares",
         "method": {
-          "fullName": "google.cloud.baremetalsolution.v2.BareMetalSolution.ListSnapshotSchedulePolicies",
+          "fullName": "google.cloud.baremetalsolution.v2.BareMetalSolution.ListNfsShares",
           "service": {
             "fullName": "google.cloud.baremetalsolution.v2.BareMetalSolution",
             "shortName": "BareMetalSolution"
           },
-          "shortName": "ListSnapshotSchedulePolicies"
+          "shortName": "ListNfsShares"
         },
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.bare_metal_solution_v2.types.ListSnapshotSchedulePoliciesRequest"
+            "type": "google.cloud.bare_metal_solution_v2.types.ListNfsSharesRequest"
           },
           {
             "name": "parent",
@@ -2154,14 +1667,14 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.bare_metal_solution_v2.services.bare_metal_solution.pagers.ListSnapshotSchedulePoliciesAsyncPager",
-        "shortName": "list_snapshot_schedule_policies"
+        "resultType": "google.cloud.bare_metal_solution_v2.services.bare_metal_solution.pagers.ListNfsSharesAsyncPager",
+        "shortName": "list_nfs_shares"
       },
-      "description": "Sample for ListSnapshotSchedulePolicies",
-      "file": "baremetalsolution_v2_generated_bare_metal_solution_list_snapshot_schedule_policies_async.py",
+      "description": "Sample for ListNfsShares",
+      "file": "baremetalsolution_v2_generated_bare_metal_solution_list_nfs_shares_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "baremetalsolution_v2_generated_BareMetalSolution_ListSnapshotSchedulePolicies_async",
+      "regionTag": "baremetalsolution_v2_generated_BareMetalSolution_ListNfsShares_async",
       "segments": [
         {
           "end": 45,
@@ -2194,7 +1707,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "baremetalsolution_v2_generated_bare_metal_solution_list_snapshot_schedule_policies_async.py"
+      "title": "baremetalsolution_v2_generated_bare_metal_solution_list_nfs_shares_async.py"
     },
     {
       "canonical": true,
@@ -2203,19 +1716,19 @@
           "fullName": "google.cloud.bare_metal_solution_v2.BareMetalSolutionClient",
           "shortName": "BareMetalSolutionClient"
         },
-        "fullName": "google.cloud.bare_metal_solution_v2.BareMetalSolutionClient.list_snapshot_schedule_policies",
+        "fullName": "google.cloud.bare_metal_solution_v2.BareMetalSolutionClient.list_nfs_shares",
         "method": {
-          "fullName": "google.cloud.baremetalsolution.v2.BareMetalSolution.ListSnapshotSchedulePolicies",
+          "fullName": "google.cloud.baremetalsolution.v2.BareMetalSolution.ListNfsShares",
           "service": {
             "fullName": "google.cloud.baremetalsolution.v2.BareMetalSolution",
             "shortName": "BareMetalSolution"
           },
-          "shortName": "ListSnapshotSchedulePolicies"
+          "shortName": "ListNfsShares"
         },
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.bare_metal_solution_v2.types.ListSnapshotSchedulePoliciesRequest"
+            "type": "google.cloud.bare_metal_solution_v2.types.ListNfsSharesRequest"
           },
           {
             "name": "parent",
@@ -2234,14 +1747,14 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.bare_metal_solution_v2.services.bare_metal_solution.pagers.ListSnapshotSchedulePoliciesPager",
-        "shortName": "list_snapshot_schedule_policies"
+        "resultType": "google.cloud.bare_metal_solution_v2.services.bare_metal_solution.pagers.ListNfsSharesPager",
+        "shortName": "list_nfs_shares"
       },
-      "description": "Sample for ListSnapshotSchedulePolicies",
-      "file": "baremetalsolution_v2_generated_bare_metal_solution_list_snapshot_schedule_policies_sync.py",
+      "description": "Sample for ListNfsShares",
+      "file": "baremetalsolution_v2_generated_bare_metal_solution_list_nfs_shares_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "baremetalsolution_v2_generated_BareMetalSolution_ListSnapshotSchedulePolicies_sync",
+      "regionTag": "baremetalsolution_v2_generated_BareMetalSolution_ListNfsShares_sync",
       "segments": [
         {
           "end": 45,
@@ -2274,168 +1787,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "baremetalsolution_v2_generated_bare_metal_solution_list_snapshot_schedule_policies_sync.py"
-    },
-    {
-      "canonical": true,
-      "clientMethod": {
-        "async": true,
-        "client": {
-          "fullName": "google.cloud.bare_metal_solution_v2.BareMetalSolutionAsyncClient",
-          "shortName": "BareMetalSolutionAsyncClient"
-        },
-        "fullName": "google.cloud.bare_metal_solution_v2.BareMetalSolutionAsyncClient.list_volume_snapshots",
-        "method": {
-          "fullName": "google.cloud.baremetalsolution.v2.BareMetalSolution.ListVolumeSnapshots",
-          "service": {
-            "fullName": "google.cloud.baremetalsolution.v2.BareMetalSolution",
-            "shortName": "BareMetalSolution"
-          },
-          "shortName": "ListVolumeSnapshots"
-        },
-        "parameters": [
-          {
-            "name": "request",
-            "type": "google.cloud.bare_metal_solution_v2.types.ListVolumeSnapshotsRequest"
-          },
-          {
-            "name": "parent",
-            "type": "str"
-          },
-          {
-            "name": "retry",
-            "type": "google.api_core.retry.Retry"
-          },
-          {
-            "name": "timeout",
-            "type": "float"
-          },
-          {
-            "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
-          }
-        ],
-        "resultType": "google.cloud.bare_metal_solution_v2.services.bare_metal_solution.pagers.ListVolumeSnapshotsAsyncPager",
-        "shortName": "list_volume_snapshots"
-      },
-      "description": "Sample for ListVolumeSnapshots",
-      "file": "baremetalsolution_v2_generated_bare_metal_solution_list_volume_snapshots_async.py",
-      "language": "PYTHON",
-      "origin": "API_DEFINITION",
-      "regionTag": "baremetalsolution_v2_generated_BareMetalSolution_ListVolumeSnapshots_async",
-      "segments": [
-        {
-          "end": 45,
-          "start": 27,
-          "type": "FULL"
-        },
-        {
-          "end": 45,
-          "start": 27,
-          "type": "SHORT"
-        },
-        {
-          "end": 33,
-          "start": 31,
-          "type": "CLIENT_INITIALIZATION"
-        },
-        {
-          "end": 38,
-          "start": 34,
-          "type": "REQUEST_INITIALIZATION"
-        },
-        {
-          "end": 41,
-          "start": 39,
-          "type": "REQUEST_EXECUTION"
-        },
-        {
-          "end": 46,
-          "start": 42,
-          "type": "RESPONSE_HANDLING"
-        }
-      ],
-      "title": "baremetalsolution_v2_generated_bare_metal_solution_list_volume_snapshots_async.py"
-    },
-    {
-      "canonical": true,
-      "clientMethod": {
-        "client": {
-          "fullName": "google.cloud.bare_metal_solution_v2.BareMetalSolutionClient",
-          "shortName": "BareMetalSolutionClient"
-        },
-        "fullName": "google.cloud.bare_metal_solution_v2.BareMetalSolutionClient.list_volume_snapshots",
-        "method": {
-          "fullName": "google.cloud.baremetalsolution.v2.BareMetalSolution.ListVolumeSnapshots",
-          "service": {
-            "fullName": "google.cloud.baremetalsolution.v2.BareMetalSolution",
-            "shortName": "BareMetalSolution"
-          },
-          "shortName": "ListVolumeSnapshots"
-        },
-        "parameters": [
-          {
-            "name": "request",
-            "type": "google.cloud.bare_metal_solution_v2.types.ListVolumeSnapshotsRequest"
-          },
-          {
-            "name": "parent",
-            "type": "str"
-          },
-          {
-            "name": "retry",
-            "type": "google.api_core.retry.Retry"
-          },
-          {
-            "name": "timeout",
-            "type": "float"
-          },
-          {
-            "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
-          }
-        ],
-        "resultType": "google.cloud.bare_metal_solution_v2.services.bare_metal_solution.pagers.ListVolumeSnapshotsPager",
-        "shortName": "list_volume_snapshots"
-      },
-      "description": "Sample for ListVolumeSnapshots",
-      "file": "baremetalsolution_v2_generated_bare_metal_solution_list_volume_snapshots_sync.py",
-      "language": "PYTHON",
-      "origin": "API_DEFINITION",
-      "regionTag": "baremetalsolution_v2_generated_BareMetalSolution_ListVolumeSnapshots_sync",
-      "segments": [
-        {
-          "end": 45,
-          "start": 27,
-          "type": "FULL"
-        },
-        {
-          "end": 45,
-          "start": 27,
-          "type": "SHORT"
-        },
-        {
-          "end": 33,
-          "start": 31,
-          "type": "CLIENT_INITIALIZATION"
-        },
-        {
-          "end": 38,
-          "start": 34,
-          "type": "REQUEST_INITIALIZATION"
-        },
-        {
-          "end": 41,
-          "start": 39,
-          "type": "REQUEST_EXECUTION"
-        },
-        {
-          "end": 46,
-          "start": 42,
-          "type": "RESPONSE_HANDLING"
-        }
-      ],
-      "title": "baremetalsolution_v2_generated_bare_metal_solution_list_volume_snapshots_sync.py"
+      "title": "baremetalsolution_v2_generated_bare_metal_solution_list_nfs_shares_sync.py"
     },
     {
       "canonical": true,
@@ -2767,22 +2119,191 @@
           "fullName": "google.cloud.bare_metal_solution_v2.BareMetalSolutionAsyncClient",
           "shortName": "BareMetalSolutionAsyncClient"
         },
-        "fullName": "google.cloud.bare_metal_solution_v2.BareMetalSolutionAsyncClient.restore_volume_snapshot",
+        "fullName": "google.cloud.bare_metal_solution_v2.BareMetalSolutionAsyncClient.resize_volume",
         "method": {
-          "fullName": "google.cloud.baremetalsolution.v2.BareMetalSolution.RestoreVolumeSnapshot",
+          "fullName": "google.cloud.baremetalsolution.v2.BareMetalSolution.ResizeVolume",
           "service": {
             "fullName": "google.cloud.baremetalsolution.v2.BareMetalSolution",
             "shortName": "BareMetalSolution"
           },
-          "shortName": "RestoreVolumeSnapshot"
+          "shortName": "ResizeVolume"
         },
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.bare_metal_solution_v2.types.RestoreVolumeSnapshotRequest"
+            "type": "google.cloud.bare_metal_solution_v2.types.ResizeVolumeRequest"
           },
           {
-            "name": "volume_snapshot",
+            "name": "volume",
+            "type": "str"
+          },
+          {
+            "name": "size_gib",
+            "type": "int"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "resize_volume"
+      },
+      "description": "Sample for ResizeVolume",
+      "file": "baremetalsolution_v2_generated_bare_metal_solution_resize_volume_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "baremetalsolution_v2_generated_BareMetalSolution_ResizeVolume_async",
+      "segments": [
+        {
+          "end": 48,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 48,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 49,
+          "start": 46,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "baremetalsolution_v2_generated_bare_metal_solution_resize_volume_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.bare_metal_solution_v2.BareMetalSolutionClient",
+          "shortName": "BareMetalSolutionClient"
+        },
+        "fullName": "google.cloud.bare_metal_solution_v2.BareMetalSolutionClient.resize_volume",
+        "method": {
+          "fullName": "google.cloud.baremetalsolution.v2.BareMetalSolution.ResizeVolume",
+          "service": {
+            "fullName": "google.cloud.baremetalsolution.v2.BareMetalSolution",
+            "shortName": "BareMetalSolution"
+          },
+          "shortName": "ResizeVolume"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.bare_metal_solution_v2.types.ResizeVolumeRequest"
+          },
+          {
+            "name": "volume",
+            "type": "str"
+          },
+          {
+            "name": "size_gib",
+            "type": "int"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "resize_volume"
+      },
+      "description": "Sample for ResizeVolume",
+      "file": "baremetalsolution_v2_generated_bare_metal_solution_resize_volume_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "baremetalsolution_v2_generated_BareMetalSolution_ResizeVolume_sync",
+      "segments": [
+        {
+          "end": 48,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 48,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 49,
+          "start": 46,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "baremetalsolution_v2_generated_bare_metal_solution_resize_volume_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.bare_metal_solution_v2.BareMetalSolutionAsyncClient",
+          "shortName": "BareMetalSolutionAsyncClient"
+        },
+        "fullName": "google.cloud.bare_metal_solution_v2.BareMetalSolutionAsyncClient.start_instance",
+        "method": {
+          "fullName": "google.cloud.baremetalsolution.v2.BareMetalSolution.StartInstance",
+          "service": {
+            "fullName": "google.cloud.baremetalsolution.v2.BareMetalSolution",
+            "shortName": "BareMetalSolution"
+          },
+          "shortName": "StartInstance"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.bare_metal_solution_v2.types.StartInstanceRequest"
+          },
+          {
+            "name": "name",
             "type": "str"
           },
           {
@@ -2799,13 +2320,13 @@
           }
         ],
         "resultType": "google.api_core.operation_async.AsyncOperation",
-        "shortName": "restore_volume_snapshot"
+        "shortName": "start_instance"
       },
-      "description": "Sample for RestoreVolumeSnapshot",
-      "file": "baremetalsolution_v2_generated_bare_metal_solution_restore_volume_snapshot_async.py",
+      "description": "Sample for StartInstance",
+      "file": "baremetalsolution_v2_generated_bare_metal_solution_start_instance_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "baremetalsolution_v2_generated_BareMetalSolution_RestoreVolumeSnapshot_async",
+      "regionTag": "baremetalsolution_v2_generated_BareMetalSolution_StartInstance_async",
       "segments": [
         {
           "end": 48,
@@ -2838,7 +2359,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "baremetalsolution_v2_generated_bare_metal_solution_restore_volume_snapshot_async.py"
+      "title": "baremetalsolution_v2_generated_bare_metal_solution_start_instance_async.py"
     },
     {
       "canonical": true,
@@ -2847,22 +2368,22 @@
           "fullName": "google.cloud.bare_metal_solution_v2.BareMetalSolutionClient",
           "shortName": "BareMetalSolutionClient"
         },
-        "fullName": "google.cloud.bare_metal_solution_v2.BareMetalSolutionClient.restore_volume_snapshot",
+        "fullName": "google.cloud.bare_metal_solution_v2.BareMetalSolutionClient.start_instance",
         "method": {
-          "fullName": "google.cloud.baremetalsolution.v2.BareMetalSolution.RestoreVolumeSnapshot",
+          "fullName": "google.cloud.baremetalsolution.v2.BareMetalSolution.StartInstance",
           "service": {
             "fullName": "google.cloud.baremetalsolution.v2.BareMetalSolution",
             "shortName": "BareMetalSolution"
           },
-          "shortName": "RestoreVolumeSnapshot"
+          "shortName": "StartInstance"
         },
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.bare_metal_solution_v2.types.RestoreVolumeSnapshotRequest"
+            "type": "google.cloud.bare_metal_solution_v2.types.StartInstanceRequest"
           },
           {
-            "name": "volume_snapshot",
+            "name": "name",
             "type": "str"
           },
           {
@@ -2879,13 +2400,13 @@
           }
         ],
         "resultType": "google.api_core.operation.Operation",
-        "shortName": "restore_volume_snapshot"
+        "shortName": "start_instance"
       },
-      "description": "Sample for RestoreVolumeSnapshot",
-      "file": "baremetalsolution_v2_generated_bare_metal_solution_restore_volume_snapshot_sync.py",
+      "description": "Sample for StartInstance",
+      "file": "baremetalsolution_v2_generated_bare_metal_solution_start_instance_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "baremetalsolution_v2_generated_BareMetalSolution_RestoreVolumeSnapshot_sync",
+      "regionTag": "baremetalsolution_v2_generated_BareMetalSolution_StartInstance_sync",
       "segments": [
         {
           "end": 48,
@@ -2918,7 +2439,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "baremetalsolution_v2_generated_bare_metal_solution_restore_volume_snapshot_sync.py"
+      "title": "baremetalsolution_v2_generated_bare_metal_solution_start_instance_sync.py"
     },
     {
       "canonical": true,
@@ -2928,27 +2449,23 @@
           "fullName": "google.cloud.bare_metal_solution_v2.BareMetalSolutionAsyncClient",
           "shortName": "BareMetalSolutionAsyncClient"
         },
-        "fullName": "google.cloud.bare_metal_solution_v2.BareMetalSolutionAsyncClient.update_snapshot_schedule_policy",
+        "fullName": "google.cloud.bare_metal_solution_v2.BareMetalSolutionAsyncClient.stop_instance",
         "method": {
-          "fullName": "google.cloud.baremetalsolution.v2.BareMetalSolution.UpdateSnapshotSchedulePolicy",
+          "fullName": "google.cloud.baremetalsolution.v2.BareMetalSolution.StopInstance",
           "service": {
             "fullName": "google.cloud.baremetalsolution.v2.BareMetalSolution",
             "shortName": "BareMetalSolution"
           },
-          "shortName": "UpdateSnapshotSchedulePolicy"
+          "shortName": "StopInstance"
         },
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.bare_metal_solution_v2.types.UpdateSnapshotSchedulePolicyRequest"
+            "type": "google.cloud.bare_metal_solution_v2.types.StopInstanceRequest"
           },
           {
-            "name": "snapshot_schedule_policy",
-            "type": "google.cloud.bare_metal_solution_v2.types.SnapshotSchedulePolicy"
-          },
-          {
-            "name": "update_mask",
-            "type": "google.protobuf.field_mask_pb2.FieldMask"
+            "name": "name",
+            "type": "str"
           },
           {
             "name": "retry",
@@ -2963,22 +2480,22 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.bare_metal_solution_v2.types.SnapshotSchedulePolicy",
-        "shortName": "update_snapshot_schedule_policy"
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "stop_instance"
       },
-      "description": "Sample for UpdateSnapshotSchedulePolicy",
-      "file": "baremetalsolution_v2_generated_bare_metal_solution_update_snapshot_schedule_policy_async.py",
+      "description": "Sample for StopInstance",
+      "file": "baremetalsolution_v2_generated_bare_metal_solution_stop_instance_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "baremetalsolution_v2_generated_BareMetalSolution_UpdateSnapshotSchedulePolicy_async",
+      "regionTag": "baremetalsolution_v2_generated_BareMetalSolution_StopInstance_async",
       "segments": [
         {
-          "end": 43,
+          "end": 48,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 43,
+          "end": 48,
           "start": 27,
           "type": "SHORT"
         },
@@ -2988,22 +2505,22 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 37,
+          "end": 38,
           "start": 34,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 40,
-          "start": 38,
+          "end": 45,
+          "start": 39,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 44,
-          "start": 41,
+          "end": 49,
+          "start": 46,
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "baremetalsolution_v2_generated_bare_metal_solution_update_snapshot_schedule_policy_async.py"
+      "title": "baremetalsolution_v2_generated_bare_metal_solution_stop_instance_async.py"
     },
     {
       "canonical": true,
@@ -3012,23 +2529,104 @@
           "fullName": "google.cloud.bare_metal_solution_v2.BareMetalSolutionClient",
           "shortName": "BareMetalSolutionClient"
         },
-        "fullName": "google.cloud.bare_metal_solution_v2.BareMetalSolutionClient.update_snapshot_schedule_policy",
+        "fullName": "google.cloud.bare_metal_solution_v2.BareMetalSolutionClient.stop_instance",
         "method": {
-          "fullName": "google.cloud.baremetalsolution.v2.BareMetalSolution.UpdateSnapshotSchedulePolicy",
+          "fullName": "google.cloud.baremetalsolution.v2.BareMetalSolution.StopInstance",
           "service": {
             "fullName": "google.cloud.baremetalsolution.v2.BareMetalSolution",
             "shortName": "BareMetalSolution"
           },
-          "shortName": "UpdateSnapshotSchedulePolicy"
+          "shortName": "StopInstance"
         },
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.bare_metal_solution_v2.types.UpdateSnapshotSchedulePolicyRequest"
+            "type": "google.cloud.bare_metal_solution_v2.types.StopInstanceRequest"
           },
           {
-            "name": "snapshot_schedule_policy",
-            "type": "google.cloud.bare_metal_solution_v2.types.SnapshotSchedulePolicy"
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "stop_instance"
+      },
+      "description": "Sample for StopInstance",
+      "file": "baremetalsolution_v2_generated_bare_metal_solution_stop_instance_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "baremetalsolution_v2_generated_BareMetalSolution_StopInstance_sync",
+      "segments": [
+        {
+          "end": 48,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 48,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 49,
+          "start": 46,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "baremetalsolution_v2_generated_bare_metal_solution_stop_instance_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.bare_metal_solution_v2.BareMetalSolutionAsyncClient",
+          "shortName": "BareMetalSolutionAsyncClient"
+        },
+        "fullName": "google.cloud.bare_metal_solution_v2.BareMetalSolutionAsyncClient.update_instance",
+        "method": {
+          "fullName": "google.cloud.baremetalsolution.v2.BareMetalSolution.UpdateInstance",
+          "service": {
+            "fullName": "google.cloud.baremetalsolution.v2.BareMetalSolution",
+            "shortName": "BareMetalSolution"
+          },
+          "shortName": "UpdateInstance"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.bare_metal_solution_v2.types.UpdateInstanceRequest"
+          },
+          {
+            "name": "instance",
+            "type": "google.cloud.bare_metal_solution_v2.types.Instance"
           },
           {
             "name": "update_mask",
@@ -3047,22 +2645,22 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.bare_metal_solution_v2.types.SnapshotSchedulePolicy",
-        "shortName": "update_snapshot_schedule_policy"
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "update_instance"
       },
-      "description": "Sample for UpdateSnapshotSchedulePolicy",
-      "file": "baremetalsolution_v2_generated_bare_metal_solution_update_snapshot_schedule_policy_sync.py",
+      "description": "Sample for UpdateInstance",
+      "file": "baremetalsolution_v2_generated_bare_metal_solution_update_instance_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "baremetalsolution_v2_generated_BareMetalSolution_UpdateSnapshotSchedulePolicy_sync",
+      "regionTag": "baremetalsolution_v2_generated_BareMetalSolution_UpdateInstance_async",
       "segments": [
         {
-          "end": 43,
+          "end": 47,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 43,
+          "end": 47,
           "start": 27,
           "type": "SHORT"
         },
@@ -3077,17 +2675,439 @@
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 40,
+          "end": 44,
           "start": 38,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 44,
-          "start": 41,
+          "end": 48,
+          "start": 45,
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "baremetalsolution_v2_generated_bare_metal_solution_update_snapshot_schedule_policy_sync.py"
+      "title": "baremetalsolution_v2_generated_bare_metal_solution_update_instance_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.bare_metal_solution_v2.BareMetalSolutionClient",
+          "shortName": "BareMetalSolutionClient"
+        },
+        "fullName": "google.cloud.bare_metal_solution_v2.BareMetalSolutionClient.update_instance",
+        "method": {
+          "fullName": "google.cloud.baremetalsolution.v2.BareMetalSolution.UpdateInstance",
+          "service": {
+            "fullName": "google.cloud.baremetalsolution.v2.BareMetalSolution",
+            "shortName": "BareMetalSolution"
+          },
+          "shortName": "UpdateInstance"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.bare_metal_solution_v2.types.UpdateInstanceRequest"
+          },
+          {
+            "name": "instance",
+            "type": "google.cloud.bare_metal_solution_v2.types.Instance"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "update_instance"
+      },
+      "description": "Sample for UpdateInstance",
+      "file": "baremetalsolution_v2_generated_bare_metal_solution_update_instance_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "baremetalsolution_v2_generated_BareMetalSolution_UpdateInstance_sync",
+      "segments": [
+        {
+          "end": 47,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 47,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 37,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 44,
+          "start": 38,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 48,
+          "start": 45,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "baremetalsolution_v2_generated_bare_metal_solution_update_instance_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.bare_metal_solution_v2.BareMetalSolutionAsyncClient",
+          "shortName": "BareMetalSolutionAsyncClient"
+        },
+        "fullName": "google.cloud.bare_metal_solution_v2.BareMetalSolutionAsyncClient.update_network",
+        "method": {
+          "fullName": "google.cloud.baremetalsolution.v2.BareMetalSolution.UpdateNetwork",
+          "service": {
+            "fullName": "google.cloud.baremetalsolution.v2.BareMetalSolution",
+            "shortName": "BareMetalSolution"
+          },
+          "shortName": "UpdateNetwork"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.bare_metal_solution_v2.types.UpdateNetworkRequest"
+          },
+          {
+            "name": "network",
+            "type": "google.cloud.bare_metal_solution_v2.types.Network"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "update_network"
+      },
+      "description": "Sample for UpdateNetwork",
+      "file": "baremetalsolution_v2_generated_bare_metal_solution_update_network_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "baremetalsolution_v2_generated_BareMetalSolution_UpdateNetwork_async",
+      "segments": [
+        {
+          "end": 47,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 47,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 37,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 44,
+          "start": 38,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 48,
+          "start": 45,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "baremetalsolution_v2_generated_bare_metal_solution_update_network_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.bare_metal_solution_v2.BareMetalSolutionClient",
+          "shortName": "BareMetalSolutionClient"
+        },
+        "fullName": "google.cloud.bare_metal_solution_v2.BareMetalSolutionClient.update_network",
+        "method": {
+          "fullName": "google.cloud.baremetalsolution.v2.BareMetalSolution.UpdateNetwork",
+          "service": {
+            "fullName": "google.cloud.baremetalsolution.v2.BareMetalSolution",
+            "shortName": "BareMetalSolution"
+          },
+          "shortName": "UpdateNetwork"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.bare_metal_solution_v2.types.UpdateNetworkRequest"
+          },
+          {
+            "name": "network",
+            "type": "google.cloud.bare_metal_solution_v2.types.Network"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "update_network"
+      },
+      "description": "Sample for UpdateNetwork",
+      "file": "baremetalsolution_v2_generated_bare_metal_solution_update_network_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "baremetalsolution_v2_generated_BareMetalSolution_UpdateNetwork_sync",
+      "segments": [
+        {
+          "end": 47,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 47,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 37,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 44,
+          "start": 38,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 48,
+          "start": 45,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "baremetalsolution_v2_generated_bare_metal_solution_update_network_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.bare_metal_solution_v2.BareMetalSolutionAsyncClient",
+          "shortName": "BareMetalSolutionAsyncClient"
+        },
+        "fullName": "google.cloud.bare_metal_solution_v2.BareMetalSolutionAsyncClient.update_nfs_share",
+        "method": {
+          "fullName": "google.cloud.baremetalsolution.v2.BareMetalSolution.UpdateNfsShare",
+          "service": {
+            "fullName": "google.cloud.baremetalsolution.v2.BareMetalSolution",
+            "shortName": "BareMetalSolution"
+          },
+          "shortName": "UpdateNfsShare"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.bare_metal_solution_v2.types.UpdateNfsShareRequest"
+          },
+          {
+            "name": "nfs_share",
+            "type": "google.cloud.bare_metal_solution_v2.types.NfsShare"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "update_nfs_share"
+      },
+      "description": "Sample for UpdateNfsShare",
+      "file": "baremetalsolution_v2_generated_bare_metal_solution_update_nfs_share_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "baremetalsolution_v2_generated_BareMetalSolution_UpdateNfsShare_async",
+      "segments": [
+        {
+          "end": 47,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 47,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 37,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 44,
+          "start": 38,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 48,
+          "start": 45,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "baremetalsolution_v2_generated_bare_metal_solution_update_nfs_share_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.bare_metal_solution_v2.BareMetalSolutionClient",
+          "shortName": "BareMetalSolutionClient"
+        },
+        "fullName": "google.cloud.bare_metal_solution_v2.BareMetalSolutionClient.update_nfs_share",
+        "method": {
+          "fullName": "google.cloud.baremetalsolution.v2.BareMetalSolution.UpdateNfsShare",
+          "service": {
+            "fullName": "google.cloud.baremetalsolution.v2.BareMetalSolution",
+            "shortName": "BareMetalSolution"
+          },
+          "shortName": "UpdateNfsShare"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.bare_metal_solution_v2.types.UpdateNfsShareRequest"
+          },
+          {
+            "name": "nfs_share",
+            "type": "google.cloud.bare_metal_solution_v2.types.NfsShare"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "update_nfs_share"
+      },
+      "description": "Sample for UpdateNfsShare",
+      "file": "baremetalsolution_v2_generated_bare_metal_solution_update_nfs_share_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "baremetalsolution_v2_generated_BareMetalSolution_UpdateNfsShare_sync",
+      "segments": [
+        {
+          "end": 47,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 47,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 37,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 44,
+          "start": 38,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 48,
+          "start": 45,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "baremetalsolution_v2_generated_bare_metal_solution_update_nfs_share_sync.py"
     },
     {
       "canonical": true,

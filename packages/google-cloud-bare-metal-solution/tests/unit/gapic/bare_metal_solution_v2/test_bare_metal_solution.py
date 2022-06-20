@@ -50,6 +50,15 @@ from google.cloud.bare_metal_solution_v2.services.bare_metal_solution import (
 from google.cloud.bare_metal_solution_v2.services.bare_metal_solution import pagers
 from google.cloud.bare_metal_solution_v2.services.bare_metal_solution import transports
 from google.cloud.bare_metal_solution_v2.types import baremetalsolution
+from google.cloud.bare_metal_solution_v2.types import instance
+from google.cloud.bare_metal_solution_v2.types import instance as gcb_instance
+from google.cloud.bare_metal_solution_v2.types import lun
+from google.cloud.bare_metal_solution_v2.types import network
+from google.cloud.bare_metal_solution_v2.types import network as gcb_network
+from google.cloud.bare_metal_solution_v2.types import nfs_share
+from google.cloud.bare_metal_solution_v2.types import nfs_share as gcb_nfs_share
+from google.cloud.bare_metal_solution_v2.types import volume
+from google.cloud.bare_metal_solution_v2.types import volume as gcb_volume
 from google.longrunning import operations_pb2
 from google.oauth2 import service_account
 from google.protobuf import field_mask_pb2  # type: ignore
@@ -680,7 +689,7 @@ def test_bare_metal_solution_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        baremetalsolution.ListInstancesRequest,
+        instance.ListInstancesRequest,
         dict,
     ],
 )
@@ -697,7 +706,7 @@ def test_list_instances(request_type, transport: str = "grpc"):
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_instances), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = baremetalsolution.ListInstancesResponse(
+        call.return_value = instance.ListInstancesResponse(
             next_page_token="next_page_token_value",
             unreachable=["unreachable_value"],
         )
@@ -706,7 +715,7 @@ def test_list_instances(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == baremetalsolution.ListInstancesRequest()
+        assert args[0] == instance.ListInstancesRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListInstancesPager)
@@ -727,12 +736,12 @@ def test_list_instances_empty_call():
         client.list_instances()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == baremetalsolution.ListInstancesRequest()
+        assert args[0] == instance.ListInstancesRequest()
 
 
 @pytest.mark.asyncio
 async def test_list_instances_async(
-    transport: str = "grpc_asyncio", request_type=baremetalsolution.ListInstancesRequest
+    transport: str = "grpc_asyncio", request_type=instance.ListInstancesRequest
 ):
     client = BareMetalSolutionAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -747,7 +756,7 @@ async def test_list_instances_async(
     with mock.patch.object(type(client.transport.list_instances), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            baremetalsolution.ListInstancesResponse(
+            instance.ListInstancesResponse(
                 next_page_token="next_page_token_value",
                 unreachable=["unreachable_value"],
             )
@@ -757,7 +766,7 @@ async def test_list_instances_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == baremetalsolution.ListInstancesRequest()
+        assert args[0] == instance.ListInstancesRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListInstancesAsyncPager)
@@ -777,13 +786,13 @@ def test_list_instances_field_headers():
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = baremetalsolution.ListInstancesRequest()
+    request = instance.ListInstancesRequest()
 
     request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_instances), "__call__") as call:
-        call.return_value = baremetalsolution.ListInstancesResponse()
+        call.return_value = instance.ListInstancesResponse()
         client.list_instances(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -807,14 +816,14 @@ async def test_list_instances_field_headers_async():
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = baremetalsolution.ListInstancesRequest()
+    request = instance.ListInstancesRequest()
 
     request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_instances), "__call__") as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            baremetalsolution.ListInstancesResponse()
+            instance.ListInstancesResponse()
         )
         await client.list_instances(request)
 
@@ -839,7 +848,7 @@ def test_list_instances_flattened():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_instances), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = baremetalsolution.ListInstancesResponse()
+        call.return_value = instance.ListInstancesResponse()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.list_instances(
@@ -864,7 +873,7 @@ def test_list_instances_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.list_instances(
-            baremetalsolution.ListInstancesRequest(),
+            instance.ListInstancesRequest(),
             parent="parent_value",
         )
 
@@ -878,10 +887,10 @@ async def test_list_instances_flattened_async():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_instances), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = baremetalsolution.ListInstancesResponse()
+        call.return_value = instance.ListInstancesResponse()
 
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            baremetalsolution.ListInstancesResponse()
+            instance.ListInstancesResponse()
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
@@ -908,7 +917,7 @@ async def test_list_instances_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.list_instances(
-            baremetalsolution.ListInstancesRequest(),
+            instance.ListInstancesRequest(),
             parent="parent_value",
         )
 
@@ -923,28 +932,28 @@ def test_list_instances_pager(transport_name: str = "grpc"):
     with mock.patch.object(type(client.transport.list_instances), "__call__") as call:
         # Set the response to a series of pages.
         call.side_effect = (
-            baremetalsolution.ListInstancesResponse(
+            instance.ListInstancesResponse(
                 instances=[
-                    baremetalsolution.Instance(),
-                    baremetalsolution.Instance(),
-                    baremetalsolution.Instance(),
+                    instance.Instance(),
+                    instance.Instance(),
+                    instance.Instance(),
                 ],
                 next_page_token="abc",
             ),
-            baremetalsolution.ListInstancesResponse(
+            instance.ListInstancesResponse(
                 instances=[],
                 next_page_token="def",
             ),
-            baremetalsolution.ListInstancesResponse(
+            instance.ListInstancesResponse(
                 instances=[
-                    baremetalsolution.Instance(),
+                    instance.Instance(),
                 ],
                 next_page_token="ghi",
             ),
-            baremetalsolution.ListInstancesResponse(
+            instance.ListInstancesResponse(
                 instances=[
-                    baremetalsolution.Instance(),
-                    baremetalsolution.Instance(),
+                    instance.Instance(),
+                    instance.Instance(),
                 ],
             ),
             RuntimeError,
@@ -960,7 +969,7 @@ def test_list_instances_pager(transport_name: str = "grpc"):
 
         results = list(pager)
         assert len(results) == 6
-        assert all(isinstance(i, baremetalsolution.Instance) for i in results)
+        assert all(isinstance(i, instance.Instance) for i in results)
 
 
 def test_list_instances_pages(transport_name: str = "grpc"):
@@ -973,28 +982,28 @@ def test_list_instances_pages(transport_name: str = "grpc"):
     with mock.patch.object(type(client.transport.list_instances), "__call__") as call:
         # Set the response to a series of pages.
         call.side_effect = (
-            baremetalsolution.ListInstancesResponse(
+            instance.ListInstancesResponse(
                 instances=[
-                    baremetalsolution.Instance(),
-                    baremetalsolution.Instance(),
-                    baremetalsolution.Instance(),
+                    instance.Instance(),
+                    instance.Instance(),
+                    instance.Instance(),
                 ],
                 next_page_token="abc",
             ),
-            baremetalsolution.ListInstancesResponse(
+            instance.ListInstancesResponse(
                 instances=[],
                 next_page_token="def",
             ),
-            baremetalsolution.ListInstancesResponse(
+            instance.ListInstancesResponse(
                 instances=[
-                    baremetalsolution.Instance(),
+                    instance.Instance(),
                 ],
                 next_page_token="ghi",
             ),
-            baremetalsolution.ListInstancesResponse(
+            instance.ListInstancesResponse(
                 instances=[
-                    baremetalsolution.Instance(),
-                    baremetalsolution.Instance(),
+                    instance.Instance(),
+                    instance.Instance(),
                 ],
             ),
             RuntimeError,
@@ -1016,28 +1025,28 @@ async def test_list_instances_async_pager():
     ) as call:
         # Set the response to a series of pages.
         call.side_effect = (
-            baremetalsolution.ListInstancesResponse(
+            instance.ListInstancesResponse(
                 instances=[
-                    baremetalsolution.Instance(),
-                    baremetalsolution.Instance(),
-                    baremetalsolution.Instance(),
+                    instance.Instance(),
+                    instance.Instance(),
+                    instance.Instance(),
                 ],
                 next_page_token="abc",
             ),
-            baremetalsolution.ListInstancesResponse(
+            instance.ListInstancesResponse(
                 instances=[],
                 next_page_token="def",
             ),
-            baremetalsolution.ListInstancesResponse(
+            instance.ListInstancesResponse(
                 instances=[
-                    baremetalsolution.Instance(),
+                    instance.Instance(),
                 ],
                 next_page_token="ghi",
             ),
-            baremetalsolution.ListInstancesResponse(
+            instance.ListInstancesResponse(
                 instances=[
-                    baremetalsolution.Instance(),
-                    baremetalsolution.Instance(),
+                    instance.Instance(),
+                    instance.Instance(),
                 ],
             ),
             RuntimeError,
@@ -1051,7 +1060,7 @@ async def test_list_instances_async_pager():
             responses.append(response)
 
         assert len(responses) == 6
-        assert all(isinstance(i, baremetalsolution.Instance) for i in responses)
+        assert all(isinstance(i, instance.Instance) for i in responses)
 
 
 @pytest.mark.asyncio
@@ -1066,28 +1075,28 @@ async def test_list_instances_async_pages():
     ) as call:
         # Set the response to a series of pages.
         call.side_effect = (
-            baremetalsolution.ListInstancesResponse(
+            instance.ListInstancesResponse(
                 instances=[
-                    baremetalsolution.Instance(),
-                    baremetalsolution.Instance(),
-                    baremetalsolution.Instance(),
+                    instance.Instance(),
+                    instance.Instance(),
+                    instance.Instance(),
                 ],
                 next_page_token="abc",
             ),
-            baremetalsolution.ListInstancesResponse(
+            instance.ListInstancesResponse(
                 instances=[],
                 next_page_token="def",
             ),
-            baremetalsolution.ListInstancesResponse(
+            instance.ListInstancesResponse(
                 instances=[
-                    baremetalsolution.Instance(),
+                    instance.Instance(),
                 ],
                 next_page_token="ghi",
             ),
-            baremetalsolution.ListInstancesResponse(
+            instance.ListInstancesResponse(
                 instances=[
-                    baremetalsolution.Instance(),
-                    baremetalsolution.Instance(),
+                    instance.Instance(),
+                    instance.Instance(),
                 ],
             ),
             RuntimeError,
@@ -1104,7 +1113,7 @@ async def test_list_instances_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        baremetalsolution.GetInstanceRequest,
+        instance.GetInstanceRequest,
         dict,
     ],
 )
@@ -1121,27 +1130,35 @@ def test_get_instance(request_type, transport: str = "grpc"):
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_instance), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = baremetalsolution.Instance(
+        call.return_value = instance.Instance(
             name="name_value",
+            id="id_value",
             machine_type="machine_type_value",
-            state=baremetalsolution.Instance.State.PROVISIONING,
+            state=instance.Instance.State.PROVISIONING,
             hyperthreading_enabled=True,
             interactive_serial_console_enabled=True,
+            os_image="os_image_value",
+            pod="pod_value",
+            network_template="network_template_value",
         )
         response = client.get_instance(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == baremetalsolution.GetInstanceRequest()
+        assert args[0] == instance.GetInstanceRequest()
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, baremetalsolution.Instance)
+    assert isinstance(response, instance.Instance)
     assert response.name == "name_value"
+    assert response.id == "id_value"
     assert response.machine_type == "machine_type_value"
-    assert response.state == baremetalsolution.Instance.State.PROVISIONING
+    assert response.state == instance.Instance.State.PROVISIONING
     assert response.hyperthreading_enabled is True
     assert response.interactive_serial_console_enabled is True
+    assert response.os_image == "os_image_value"
+    assert response.pod == "pod_value"
+    assert response.network_template == "network_template_value"
 
 
 def test_get_instance_empty_call():
@@ -1157,12 +1174,12 @@ def test_get_instance_empty_call():
         client.get_instance()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == baremetalsolution.GetInstanceRequest()
+        assert args[0] == instance.GetInstanceRequest()
 
 
 @pytest.mark.asyncio
 async def test_get_instance_async(
-    transport: str = "grpc_asyncio", request_type=baremetalsolution.GetInstanceRequest
+    transport: str = "grpc_asyncio", request_type=instance.GetInstanceRequest
 ):
     client = BareMetalSolutionAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -1177,12 +1194,16 @@ async def test_get_instance_async(
     with mock.patch.object(type(client.transport.get_instance), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            baremetalsolution.Instance(
+            instance.Instance(
                 name="name_value",
+                id="id_value",
                 machine_type="machine_type_value",
-                state=baremetalsolution.Instance.State.PROVISIONING,
+                state=instance.Instance.State.PROVISIONING,
                 hyperthreading_enabled=True,
                 interactive_serial_console_enabled=True,
+                os_image="os_image_value",
+                pod="pod_value",
+                network_template="network_template_value",
             )
         )
         response = await client.get_instance(request)
@@ -1190,15 +1211,19 @@ async def test_get_instance_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == baremetalsolution.GetInstanceRequest()
+        assert args[0] == instance.GetInstanceRequest()
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, baremetalsolution.Instance)
+    assert isinstance(response, instance.Instance)
     assert response.name == "name_value"
+    assert response.id == "id_value"
     assert response.machine_type == "machine_type_value"
-    assert response.state == baremetalsolution.Instance.State.PROVISIONING
+    assert response.state == instance.Instance.State.PROVISIONING
     assert response.hyperthreading_enabled is True
     assert response.interactive_serial_console_enabled is True
+    assert response.os_image == "os_image_value"
+    assert response.pod == "pod_value"
+    assert response.network_template == "network_template_value"
 
 
 @pytest.mark.asyncio
@@ -1213,13 +1238,13 @@ def test_get_instance_field_headers():
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = baremetalsolution.GetInstanceRequest()
+    request = instance.GetInstanceRequest()
 
     request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_instance), "__call__") as call:
-        call.return_value = baremetalsolution.Instance()
+        call.return_value = instance.Instance()
         client.get_instance(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -1243,15 +1268,13 @@ async def test_get_instance_field_headers_async():
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = baremetalsolution.GetInstanceRequest()
+    request = instance.GetInstanceRequest()
 
     request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_instance), "__call__") as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            baremetalsolution.Instance()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(instance.Instance())
         await client.get_instance(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -1275,7 +1298,7 @@ def test_get_instance_flattened():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_instance), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = baremetalsolution.Instance()
+        call.return_value = instance.Instance()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.get_instance(
@@ -1300,7 +1323,7 @@ def test_get_instance_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.get_instance(
-            baremetalsolution.GetInstanceRequest(),
+            instance.GetInstanceRequest(),
             name="name_value",
         )
 
@@ -1314,11 +1337,9 @@ async def test_get_instance_flattened_async():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_instance), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = baremetalsolution.Instance()
+        call.return_value = instance.Instance()
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            baremetalsolution.Instance()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(instance.Instance())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.get_instance(
@@ -1344,7 +1365,7 @@ async def test_get_instance_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.get_instance(
-            baremetalsolution.GetInstanceRequest(),
+            instance.GetInstanceRequest(),
             name="name_value",
         )
 
@@ -1352,7 +1373,243 @@ async def test_get_instance_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        baremetalsolution.ResetInstanceRequest,
+        gcb_instance.UpdateInstanceRequest,
+        dict,
+    ],
+)
+def test_update_instance(request_type, transport: str = "grpc"):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_instance), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/spam")
+        response = client.update_instance(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gcb_instance.UpdateInstanceRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_update_instance_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_instance), "__call__") as call:
+        client.update_instance()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gcb_instance.UpdateInstanceRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_instance_async(
+    transport: str = "grpc_asyncio", request_type=gcb_instance.UpdateInstanceRequest
+):
+    client = BareMetalSolutionAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_instance), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.update_instance(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gcb_instance.UpdateInstanceRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_update_instance_async_from_dict():
+    await test_update_instance_async(request_type=dict)
+
+
+def test_update_instance_field_headers():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = gcb_instance.UpdateInstanceRequest()
+
+    request.instance.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_instance), "__call__") as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.update_instance(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "instance.name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_update_instance_field_headers_async():
+    client = BareMetalSolutionAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = gcb_instance.UpdateInstanceRequest()
+
+    request.instance.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_instance), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/op")
+        )
+        await client.update_instance(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "instance.name=name_value",
+    ) in kw["metadata"]
+
+
+def test_update_instance_flattened():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_instance), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.update_instance(
+            instance=gcb_instance.Instance(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].instance
+        mock_val = gcb_instance.Instance(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
+
+
+def test_update_instance_flattened_error():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_instance(
+            gcb_instance.UpdateInstanceRequest(),
+            instance=gcb_instance.Instance(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+@pytest.mark.asyncio
+async def test_update_instance_flattened_async():
+    client = BareMetalSolutionAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_instance), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.update_instance(
+            instance=gcb_instance.Instance(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].instance
+        mock_val = gcb_instance.Instance(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_update_instance_flattened_error_async():
+    client = BareMetalSolutionAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.update_instance(
+            gcb_instance.UpdateInstanceRequest(),
+            instance=gcb_instance.Instance(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        instance.ResetInstanceRequest,
         dict,
     ],
 )
@@ -1375,7 +1632,7 @@ def test_reset_instance(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == baremetalsolution.ResetInstanceRequest()
+        assert args[0] == instance.ResetInstanceRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -1394,12 +1651,12 @@ def test_reset_instance_empty_call():
         client.reset_instance()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == baremetalsolution.ResetInstanceRequest()
+        assert args[0] == instance.ResetInstanceRequest()
 
 
 @pytest.mark.asyncio
 async def test_reset_instance_async(
-    transport: str = "grpc_asyncio", request_type=baremetalsolution.ResetInstanceRequest
+    transport: str = "grpc_asyncio", request_type=instance.ResetInstanceRequest
 ):
     client = BareMetalSolutionAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -1421,7 +1678,7 @@ async def test_reset_instance_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == baremetalsolution.ResetInstanceRequest()
+        assert args[0] == instance.ResetInstanceRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -1439,7 +1696,7 @@ def test_reset_instance_field_headers():
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = baremetalsolution.ResetInstanceRequest()
+    request = instance.ResetInstanceRequest()
 
     request.name = "name_value"
 
@@ -1469,7 +1726,7 @@ async def test_reset_instance_field_headers_async():
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = baremetalsolution.ResetInstanceRequest()
+    request = instance.ResetInstanceRequest()
 
     request.name = "name_value"
 
@@ -1526,7 +1783,7 @@ def test_reset_instance_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.reset_instance(
-            baremetalsolution.ResetInstanceRequest(),
+            instance.ResetInstanceRequest(),
             name="name_value",
         )
 
@@ -1570,7 +1827,7 @@ async def test_reset_instance_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.reset_instance(
-            baremetalsolution.ResetInstanceRequest(),
+            instance.ResetInstanceRequest(),
             name="name_value",
         )
 
@@ -1578,7 +1835,695 @@ async def test_reset_instance_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        baremetalsolution.ListVolumesRequest,
+        instance.StartInstanceRequest,
+        dict,
+    ],
+)
+def test_start_instance(request_type, transport: str = "grpc"):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.start_instance), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/spam")
+        response = client.start_instance(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == instance.StartInstanceRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_start_instance_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.start_instance), "__call__") as call:
+        client.start_instance()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == instance.StartInstanceRequest()
+
+
+@pytest.mark.asyncio
+async def test_start_instance_async(
+    transport: str = "grpc_asyncio", request_type=instance.StartInstanceRequest
+):
+    client = BareMetalSolutionAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.start_instance), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.start_instance(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == instance.StartInstanceRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_start_instance_async_from_dict():
+    await test_start_instance_async(request_type=dict)
+
+
+def test_start_instance_field_headers():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = instance.StartInstanceRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.start_instance), "__call__") as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.start_instance(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_start_instance_field_headers_async():
+    client = BareMetalSolutionAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = instance.StartInstanceRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.start_instance), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/op")
+        )
+        await client.start_instance(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_start_instance_flattened():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.start_instance), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.start_instance(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_start_instance_flattened_error():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.start_instance(
+            instance.StartInstanceRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_start_instance_flattened_async():
+    client = BareMetalSolutionAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.start_instance), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.start_instance(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_start_instance_flattened_error_async():
+    client = BareMetalSolutionAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.start_instance(
+            instance.StartInstanceRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        instance.StopInstanceRequest,
+        dict,
+    ],
+)
+def test_stop_instance(request_type, transport: str = "grpc"):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.stop_instance), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/spam")
+        response = client.stop_instance(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == instance.StopInstanceRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_stop_instance_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.stop_instance), "__call__") as call:
+        client.stop_instance()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == instance.StopInstanceRequest()
+
+
+@pytest.mark.asyncio
+async def test_stop_instance_async(
+    transport: str = "grpc_asyncio", request_type=instance.StopInstanceRequest
+):
+    client = BareMetalSolutionAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.stop_instance), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.stop_instance(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == instance.StopInstanceRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_stop_instance_async_from_dict():
+    await test_stop_instance_async(request_type=dict)
+
+
+def test_stop_instance_field_headers():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = instance.StopInstanceRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.stop_instance), "__call__") as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.stop_instance(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_stop_instance_field_headers_async():
+    client = BareMetalSolutionAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = instance.StopInstanceRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.stop_instance), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/op")
+        )
+        await client.stop_instance(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_stop_instance_flattened():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.stop_instance), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.stop_instance(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_stop_instance_flattened_error():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.stop_instance(
+            instance.StopInstanceRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_stop_instance_flattened_async():
+    client = BareMetalSolutionAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.stop_instance), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.stop_instance(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_stop_instance_flattened_error_async():
+    client = BareMetalSolutionAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.stop_instance(
+            instance.StopInstanceRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gcb_instance.DetachLunRequest,
+        dict,
+    ],
+)
+def test_detach_lun(request_type, transport: str = "grpc"):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.detach_lun), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/spam")
+        response = client.detach_lun(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gcb_instance.DetachLunRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_detach_lun_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.detach_lun), "__call__") as call:
+        client.detach_lun()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gcb_instance.DetachLunRequest()
+
+
+@pytest.mark.asyncio
+async def test_detach_lun_async(
+    transport: str = "grpc_asyncio", request_type=gcb_instance.DetachLunRequest
+):
+    client = BareMetalSolutionAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.detach_lun), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.detach_lun(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gcb_instance.DetachLunRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_detach_lun_async_from_dict():
+    await test_detach_lun_async(request_type=dict)
+
+
+def test_detach_lun_field_headers():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = gcb_instance.DetachLunRequest()
+
+    request.instance = "instance_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.detach_lun), "__call__") as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.detach_lun(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "instance=instance_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_detach_lun_field_headers_async():
+    client = BareMetalSolutionAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = gcb_instance.DetachLunRequest()
+
+    request.instance = "instance_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.detach_lun), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/op")
+        )
+        await client.detach_lun(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "instance=instance_value",
+    ) in kw["metadata"]
+
+
+def test_detach_lun_flattened():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.detach_lun), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.detach_lun(
+            instance="instance_value",
+            lun="lun_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].instance
+        mock_val = "instance_value"
+        assert arg == mock_val
+        arg = args[0].lun
+        mock_val = "lun_value"
+        assert arg == mock_val
+
+
+def test_detach_lun_flattened_error():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.detach_lun(
+            gcb_instance.DetachLunRequest(),
+            instance="instance_value",
+            lun="lun_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_detach_lun_flattened_async():
+    client = BareMetalSolutionAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.detach_lun), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.detach_lun(
+            instance="instance_value",
+            lun="lun_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].instance
+        mock_val = "instance_value"
+        assert arg == mock_val
+        arg = args[0].lun
+        mock_val = "lun_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_detach_lun_flattened_error_async():
+    client = BareMetalSolutionAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.detach_lun(
+            gcb_instance.DetachLunRequest(),
+            instance="instance_value",
+            lun="lun_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        volume.ListVolumesRequest,
         dict,
     ],
 )
@@ -1595,7 +2540,7 @@ def test_list_volumes(request_type, transport: str = "grpc"):
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_volumes), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = baremetalsolution.ListVolumesResponse(
+        call.return_value = volume.ListVolumesResponse(
             next_page_token="next_page_token_value",
             unreachable=["unreachable_value"],
         )
@@ -1604,7 +2549,7 @@ def test_list_volumes(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == baremetalsolution.ListVolumesRequest()
+        assert args[0] == volume.ListVolumesRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListVolumesPager)
@@ -1625,12 +2570,12 @@ def test_list_volumes_empty_call():
         client.list_volumes()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == baremetalsolution.ListVolumesRequest()
+        assert args[0] == volume.ListVolumesRequest()
 
 
 @pytest.mark.asyncio
 async def test_list_volumes_async(
-    transport: str = "grpc_asyncio", request_type=baremetalsolution.ListVolumesRequest
+    transport: str = "grpc_asyncio", request_type=volume.ListVolumesRequest
 ):
     client = BareMetalSolutionAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -1645,7 +2590,7 @@ async def test_list_volumes_async(
     with mock.patch.object(type(client.transport.list_volumes), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            baremetalsolution.ListVolumesResponse(
+            volume.ListVolumesResponse(
                 next_page_token="next_page_token_value",
                 unreachable=["unreachable_value"],
             )
@@ -1655,7 +2600,7 @@ async def test_list_volumes_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == baremetalsolution.ListVolumesRequest()
+        assert args[0] == volume.ListVolumesRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListVolumesAsyncPager)
@@ -1675,13 +2620,13 @@ def test_list_volumes_field_headers():
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = baremetalsolution.ListVolumesRequest()
+    request = volume.ListVolumesRequest()
 
     request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_volumes), "__call__") as call:
-        call.return_value = baremetalsolution.ListVolumesResponse()
+        call.return_value = volume.ListVolumesResponse()
         client.list_volumes(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -1705,14 +2650,14 @@ async def test_list_volumes_field_headers_async():
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = baremetalsolution.ListVolumesRequest()
+    request = volume.ListVolumesRequest()
 
     request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_volumes), "__call__") as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            baremetalsolution.ListVolumesResponse()
+            volume.ListVolumesResponse()
         )
         await client.list_volumes(request)
 
@@ -1737,7 +2682,7 @@ def test_list_volumes_flattened():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_volumes), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = baremetalsolution.ListVolumesResponse()
+        call.return_value = volume.ListVolumesResponse()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.list_volumes(
@@ -1762,7 +2707,7 @@ def test_list_volumes_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.list_volumes(
-            baremetalsolution.ListVolumesRequest(),
+            volume.ListVolumesRequest(),
             parent="parent_value",
         )
 
@@ -1776,10 +2721,10 @@ async def test_list_volumes_flattened_async():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_volumes), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = baremetalsolution.ListVolumesResponse()
+        call.return_value = volume.ListVolumesResponse()
 
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            baremetalsolution.ListVolumesResponse()
+            volume.ListVolumesResponse()
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
@@ -1806,7 +2751,7 @@ async def test_list_volumes_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.list_volumes(
-            baremetalsolution.ListVolumesRequest(),
+            volume.ListVolumesRequest(),
             parent="parent_value",
         )
 
@@ -1821,28 +2766,28 @@ def test_list_volumes_pager(transport_name: str = "grpc"):
     with mock.patch.object(type(client.transport.list_volumes), "__call__") as call:
         # Set the response to a series of pages.
         call.side_effect = (
-            baremetalsolution.ListVolumesResponse(
+            volume.ListVolumesResponse(
                 volumes=[
-                    baremetalsolution.Volume(),
-                    baremetalsolution.Volume(),
-                    baremetalsolution.Volume(),
+                    volume.Volume(),
+                    volume.Volume(),
+                    volume.Volume(),
                 ],
                 next_page_token="abc",
             ),
-            baremetalsolution.ListVolumesResponse(
+            volume.ListVolumesResponse(
                 volumes=[],
                 next_page_token="def",
             ),
-            baremetalsolution.ListVolumesResponse(
+            volume.ListVolumesResponse(
                 volumes=[
-                    baremetalsolution.Volume(),
+                    volume.Volume(),
                 ],
                 next_page_token="ghi",
             ),
-            baremetalsolution.ListVolumesResponse(
+            volume.ListVolumesResponse(
                 volumes=[
-                    baremetalsolution.Volume(),
-                    baremetalsolution.Volume(),
+                    volume.Volume(),
+                    volume.Volume(),
                 ],
             ),
             RuntimeError,
@@ -1858,7 +2803,7 @@ def test_list_volumes_pager(transport_name: str = "grpc"):
 
         results = list(pager)
         assert len(results) == 6
-        assert all(isinstance(i, baremetalsolution.Volume) for i in results)
+        assert all(isinstance(i, volume.Volume) for i in results)
 
 
 def test_list_volumes_pages(transport_name: str = "grpc"):
@@ -1871,28 +2816,28 @@ def test_list_volumes_pages(transport_name: str = "grpc"):
     with mock.patch.object(type(client.transport.list_volumes), "__call__") as call:
         # Set the response to a series of pages.
         call.side_effect = (
-            baremetalsolution.ListVolumesResponse(
+            volume.ListVolumesResponse(
                 volumes=[
-                    baremetalsolution.Volume(),
-                    baremetalsolution.Volume(),
-                    baremetalsolution.Volume(),
+                    volume.Volume(),
+                    volume.Volume(),
+                    volume.Volume(),
                 ],
                 next_page_token="abc",
             ),
-            baremetalsolution.ListVolumesResponse(
+            volume.ListVolumesResponse(
                 volumes=[],
                 next_page_token="def",
             ),
-            baremetalsolution.ListVolumesResponse(
+            volume.ListVolumesResponse(
                 volumes=[
-                    baremetalsolution.Volume(),
+                    volume.Volume(),
                 ],
                 next_page_token="ghi",
             ),
-            baremetalsolution.ListVolumesResponse(
+            volume.ListVolumesResponse(
                 volumes=[
-                    baremetalsolution.Volume(),
-                    baremetalsolution.Volume(),
+                    volume.Volume(),
+                    volume.Volume(),
                 ],
             ),
             RuntimeError,
@@ -1914,28 +2859,28 @@ async def test_list_volumes_async_pager():
     ) as call:
         # Set the response to a series of pages.
         call.side_effect = (
-            baremetalsolution.ListVolumesResponse(
+            volume.ListVolumesResponse(
                 volumes=[
-                    baremetalsolution.Volume(),
-                    baremetalsolution.Volume(),
-                    baremetalsolution.Volume(),
+                    volume.Volume(),
+                    volume.Volume(),
+                    volume.Volume(),
                 ],
                 next_page_token="abc",
             ),
-            baremetalsolution.ListVolumesResponse(
+            volume.ListVolumesResponse(
                 volumes=[],
                 next_page_token="def",
             ),
-            baremetalsolution.ListVolumesResponse(
+            volume.ListVolumesResponse(
                 volumes=[
-                    baremetalsolution.Volume(),
+                    volume.Volume(),
                 ],
                 next_page_token="ghi",
             ),
-            baremetalsolution.ListVolumesResponse(
+            volume.ListVolumesResponse(
                 volumes=[
-                    baremetalsolution.Volume(),
-                    baremetalsolution.Volume(),
+                    volume.Volume(),
+                    volume.Volume(),
                 ],
             ),
             RuntimeError,
@@ -1949,7 +2894,7 @@ async def test_list_volumes_async_pager():
             responses.append(response)
 
         assert len(responses) == 6
-        assert all(isinstance(i, baremetalsolution.Volume) for i in responses)
+        assert all(isinstance(i, volume.Volume) for i in responses)
 
 
 @pytest.mark.asyncio
@@ -1964,28 +2909,28 @@ async def test_list_volumes_async_pages():
     ) as call:
         # Set the response to a series of pages.
         call.side_effect = (
-            baremetalsolution.ListVolumesResponse(
+            volume.ListVolumesResponse(
                 volumes=[
-                    baremetalsolution.Volume(),
-                    baremetalsolution.Volume(),
-                    baremetalsolution.Volume(),
+                    volume.Volume(),
+                    volume.Volume(),
+                    volume.Volume(),
                 ],
                 next_page_token="abc",
             ),
-            baremetalsolution.ListVolumesResponse(
+            volume.ListVolumesResponse(
                 volumes=[],
                 next_page_token="def",
             ),
-            baremetalsolution.ListVolumesResponse(
+            volume.ListVolumesResponse(
                 volumes=[
-                    baremetalsolution.Volume(),
+                    volume.Volume(),
                 ],
                 next_page_token="ghi",
             ),
-            baremetalsolution.ListVolumesResponse(
+            volume.ListVolumesResponse(
                 volumes=[
-                    baremetalsolution.Volume(),
-                    baremetalsolution.Volume(),
+                    volume.Volume(),
+                    volume.Volume(),
                 ],
             ),
             RuntimeError,
@@ -2002,7 +2947,7 @@ async def test_list_volumes_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        baremetalsolution.GetVolumeRequest,
+        volume.GetVolumeRequest,
         dict,
     ],
 )
@@ -2019,38 +2964,44 @@ def test_get_volume(request_type, transport: str = "grpc"):
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_volume), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = baremetalsolution.Volume(
+        call.return_value = volume.Volume(
             name="name_value",
-            storage_type=baremetalsolution.Volume.StorageType.SSD,
-            state=baremetalsolution.Volume.State.CREATING,
+            id="id_value",
+            storage_type=volume.Volume.StorageType.SSD,
+            state=volume.Volume.State.CREATING,
             requested_size_gib=1917,
             current_size_gib=1710,
+            emergency_size_gib=1898,
             auto_grown_size_gib=2032,
             remaining_space_gib=1974,
-            snapshot_auto_delete_behavior=baremetalsolution.Volume.SnapshotAutoDeleteBehavior.DISABLED,
-            snapshot_schedule_policy="snapshot_schedule_policy_value",
+            snapshot_auto_delete_behavior=volume.Volume.SnapshotAutoDeleteBehavior.DISABLED,
+            snapshot_enabled=True,
+            pod="pod_value",
         )
         response = client.get_volume(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == baremetalsolution.GetVolumeRequest()
+        assert args[0] == volume.GetVolumeRequest()
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, baremetalsolution.Volume)
+    assert isinstance(response, volume.Volume)
     assert response.name == "name_value"
-    assert response.storage_type == baremetalsolution.Volume.StorageType.SSD
-    assert response.state == baremetalsolution.Volume.State.CREATING
+    assert response.id == "id_value"
+    assert response.storage_type == volume.Volume.StorageType.SSD
+    assert response.state == volume.Volume.State.CREATING
     assert response.requested_size_gib == 1917
     assert response.current_size_gib == 1710
+    assert response.emergency_size_gib == 1898
     assert response.auto_grown_size_gib == 2032
     assert response.remaining_space_gib == 1974
     assert (
         response.snapshot_auto_delete_behavior
-        == baremetalsolution.Volume.SnapshotAutoDeleteBehavior.DISABLED
+        == volume.Volume.SnapshotAutoDeleteBehavior.DISABLED
     )
-    assert response.snapshot_schedule_policy == "snapshot_schedule_policy_value"
+    assert response.snapshot_enabled is True
+    assert response.pod == "pod_value"
 
 
 def test_get_volume_empty_call():
@@ -2066,12 +3017,12 @@ def test_get_volume_empty_call():
         client.get_volume()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == baremetalsolution.GetVolumeRequest()
+        assert args[0] == volume.GetVolumeRequest()
 
 
 @pytest.mark.asyncio
 async def test_get_volume_async(
-    transport: str = "grpc_asyncio", request_type=baremetalsolution.GetVolumeRequest
+    transport: str = "grpc_asyncio", request_type=volume.GetVolumeRequest
 ):
     client = BareMetalSolutionAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -2086,16 +3037,19 @@ async def test_get_volume_async(
     with mock.patch.object(type(client.transport.get_volume), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            baremetalsolution.Volume(
+            volume.Volume(
                 name="name_value",
-                storage_type=baremetalsolution.Volume.StorageType.SSD,
-                state=baremetalsolution.Volume.State.CREATING,
+                id="id_value",
+                storage_type=volume.Volume.StorageType.SSD,
+                state=volume.Volume.State.CREATING,
                 requested_size_gib=1917,
                 current_size_gib=1710,
+                emergency_size_gib=1898,
                 auto_grown_size_gib=2032,
                 remaining_space_gib=1974,
-                snapshot_auto_delete_behavior=baremetalsolution.Volume.SnapshotAutoDeleteBehavior.DISABLED,
-                snapshot_schedule_policy="snapshot_schedule_policy_value",
+                snapshot_auto_delete_behavior=volume.Volume.SnapshotAutoDeleteBehavior.DISABLED,
+                snapshot_enabled=True,
+                pod="pod_value",
             )
         )
         response = await client.get_volume(request)
@@ -2103,22 +3057,25 @@ async def test_get_volume_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == baremetalsolution.GetVolumeRequest()
+        assert args[0] == volume.GetVolumeRequest()
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, baremetalsolution.Volume)
+    assert isinstance(response, volume.Volume)
     assert response.name == "name_value"
-    assert response.storage_type == baremetalsolution.Volume.StorageType.SSD
-    assert response.state == baremetalsolution.Volume.State.CREATING
+    assert response.id == "id_value"
+    assert response.storage_type == volume.Volume.StorageType.SSD
+    assert response.state == volume.Volume.State.CREATING
     assert response.requested_size_gib == 1917
     assert response.current_size_gib == 1710
+    assert response.emergency_size_gib == 1898
     assert response.auto_grown_size_gib == 2032
     assert response.remaining_space_gib == 1974
     assert (
         response.snapshot_auto_delete_behavior
-        == baremetalsolution.Volume.SnapshotAutoDeleteBehavior.DISABLED
+        == volume.Volume.SnapshotAutoDeleteBehavior.DISABLED
     )
-    assert response.snapshot_schedule_policy == "snapshot_schedule_policy_value"
+    assert response.snapshot_enabled is True
+    assert response.pod == "pod_value"
 
 
 @pytest.mark.asyncio
@@ -2133,13 +3090,13 @@ def test_get_volume_field_headers():
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = baremetalsolution.GetVolumeRequest()
+    request = volume.GetVolumeRequest()
 
     request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_volume), "__call__") as call:
-        call.return_value = baremetalsolution.Volume()
+        call.return_value = volume.Volume()
         client.get_volume(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -2163,15 +3120,13 @@ async def test_get_volume_field_headers_async():
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = baremetalsolution.GetVolumeRequest()
+    request = volume.GetVolumeRequest()
 
     request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_volume), "__call__") as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            baremetalsolution.Volume()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(volume.Volume())
         await client.get_volume(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -2195,7 +3150,7 @@ def test_get_volume_flattened():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_volume), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = baremetalsolution.Volume()
+        call.return_value = volume.Volume()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.get_volume(
@@ -2220,7 +3175,7 @@ def test_get_volume_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.get_volume(
-            baremetalsolution.GetVolumeRequest(),
+            volume.GetVolumeRequest(),
             name="name_value",
         )
 
@@ -2234,11 +3189,9 @@ async def test_get_volume_flattened_async():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_volume), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = baremetalsolution.Volume()
+        call.return_value = volume.Volume()
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            baremetalsolution.Volume()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(volume.Volume())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.get_volume(
@@ -2264,7 +3217,7 @@ async def test_get_volume_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.get_volume(
-            baremetalsolution.GetVolumeRequest(),
+            volume.GetVolumeRequest(),
             name="name_value",
         )
 
@@ -2272,7 +3225,7 @@ async def test_get_volume_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        baremetalsolution.UpdateVolumeRequest,
+        gcb_volume.UpdateVolumeRequest,
         dict,
     ],
 )
@@ -2295,7 +3248,7 @@ def test_update_volume(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == baremetalsolution.UpdateVolumeRequest()
+        assert args[0] == gcb_volume.UpdateVolumeRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2314,12 +3267,12 @@ def test_update_volume_empty_call():
         client.update_volume()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == baremetalsolution.UpdateVolumeRequest()
+        assert args[0] == gcb_volume.UpdateVolumeRequest()
 
 
 @pytest.mark.asyncio
 async def test_update_volume_async(
-    transport: str = "grpc_asyncio", request_type=baremetalsolution.UpdateVolumeRequest
+    transport: str = "grpc_asyncio", request_type=gcb_volume.UpdateVolumeRequest
 ):
     client = BareMetalSolutionAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -2341,7 +3294,7 @@ async def test_update_volume_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == baremetalsolution.UpdateVolumeRequest()
+        assert args[0] == gcb_volume.UpdateVolumeRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2359,7 +3312,7 @@ def test_update_volume_field_headers():
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = baremetalsolution.UpdateVolumeRequest()
+    request = gcb_volume.UpdateVolumeRequest()
 
     request.volume.name = "name_value"
 
@@ -2389,7 +3342,7 @@ async def test_update_volume_field_headers_async():
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = baremetalsolution.UpdateVolumeRequest()
+    request = gcb_volume.UpdateVolumeRequest()
 
     request.volume.name = "name_value"
 
@@ -2425,7 +3378,7 @@ def test_update_volume_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.update_volume(
-            volume=baremetalsolution.Volume(name="name_value"),
+            volume=gcb_volume.Volume(name="name_value"),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
@@ -2434,7 +3387,7 @@ def test_update_volume_flattened():
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
         arg = args[0].volume
-        mock_val = baremetalsolution.Volume(name="name_value")
+        mock_val = gcb_volume.Volume(name="name_value")
         assert arg == mock_val
         arg = args[0].update_mask
         mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
@@ -2450,8 +3403,8 @@ def test_update_volume_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.update_volume(
-            baremetalsolution.UpdateVolumeRequest(),
-            volume=baremetalsolution.Volume(name="name_value"),
+            gcb_volume.UpdateVolumeRequest(),
+            volume=gcb_volume.Volume(name="name_value"),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
@@ -2473,7 +3426,7 @@ async def test_update_volume_flattened_async():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.update_volume(
-            volume=baremetalsolution.Volume(name="name_value"),
+            volume=gcb_volume.Volume(name="name_value"),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
@@ -2482,7 +3435,7 @@ async def test_update_volume_flattened_async():
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
         arg = args[0].volume
-        mock_val = baremetalsolution.Volume(name="name_value")
+        mock_val = gcb_volume.Volume(name="name_value")
         assert arg == mock_val
         arg = args[0].update_mask
         mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
@@ -2499,8 +3452,8 @@ async def test_update_volume_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.update_volume(
-            baremetalsolution.UpdateVolumeRequest(),
-            volume=baremetalsolution.Volume(name="name_value"),
+            gcb_volume.UpdateVolumeRequest(),
+            volume=gcb_volume.Volume(name="name_value"),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
@@ -2508,7 +3461,243 @@ async def test_update_volume_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        baremetalsolution.ListNetworksRequest,
+        gcb_volume.ResizeVolumeRequest,
+        dict,
+    ],
+)
+def test_resize_volume(request_type, transport: str = "grpc"):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.resize_volume), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/spam")
+        response = client.resize_volume(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gcb_volume.ResizeVolumeRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_resize_volume_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.resize_volume), "__call__") as call:
+        client.resize_volume()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gcb_volume.ResizeVolumeRequest()
+
+
+@pytest.mark.asyncio
+async def test_resize_volume_async(
+    transport: str = "grpc_asyncio", request_type=gcb_volume.ResizeVolumeRequest
+):
+    client = BareMetalSolutionAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.resize_volume), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.resize_volume(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gcb_volume.ResizeVolumeRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_resize_volume_async_from_dict():
+    await test_resize_volume_async(request_type=dict)
+
+
+def test_resize_volume_field_headers():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = gcb_volume.ResizeVolumeRequest()
+
+    request.volume = "volume_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.resize_volume), "__call__") as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.resize_volume(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "volume=volume_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_resize_volume_field_headers_async():
+    client = BareMetalSolutionAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = gcb_volume.ResizeVolumeRequest()
+
+    request.volume = "volume_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.resize_volume), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/op")
+        )
+        await client.resize_volume(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "volume=volume_value",
+    ) in kw["metadata"]
+
+
+def test_resize_volume_flattened():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.resize_volume), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.resize_volume(
+            volume="volume_value",
+            size_gib=844,
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].volume
+        mock_val = "volume_value"
+        assert arg == mock_val
+        arg = args[0].size_gib
+        mock_val = 844
+        assert arg == mock_val
+
+
+def test_resize_volume_flattened_error():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.resize_volume(
+            gcb_volume.ResizeVolumeRequest(),
+            volume="volume_value",
+            size_gib=844,
+        )
+
+
+@pytest.mark.asyncio
+async def test_resize_volume_flattened_async():
+    client = BareMetalSolutionAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.resize_volume), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.resize_volume(
+            volume="volume_value",
+            size_gib=844,
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].volume
+        mock_val = "volume_value"
+        assert arg == mock_val
+        arg = args[0].size_gib
+        mock_val = 844
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_resize_volume_flattened_error_async():
+    client = BareMetalSolutionAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.resize_volume(
+            gcb_volume.ResizeVolumeRequest(),
+            volume="volume_value",
+            size_gib=844,
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        network.ListNetworksRequest,
         dict,
     ],
 )
@@ -2525,7 +3714,7 @@ def test_list_networks(request_type, transport: str = "grpc"):
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_networks), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = baremetalsolution.ListNetworksResponse(
+        call.return_value = network.ListNetworksResponse(
             next_page_token="next_page_token_value",
             unreachable=["unreachable_value"],
         )
@@ -2534,7 +3723,7 @@ def test_list_networks(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == baremetalsolution.ListNetworksRequest()
+        assert args[0] == network.ListNetworksRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListNetworksPager)
@@ -2555,12 +3744,12 @@ def test_list_networks_empty_call():
         client.list_networks()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == baremetalsolution.ListNetworksRequest()
+        assert args[0] == network.ListNetworksRequest()
 
 
 @pytest.mark.asyncio
 async def test_list_networks_async(
-    transport: str = "grpc_asyncio", request_type=baremetalsolution.ListNetworksRequest
+    transport: str = "grpc_asyncio", request_type=network.ListNetworksRequest
 ):
     client = BareMetalSolutionAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -2575,7 +3764,7 @@ async def test_list_networks_async(
     with mock.patch.object(type(client.transport.list_networks), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            baremetalsolution.ListNetworksResponse(
+            network.ListNetworksResponse(
                 next_page_token="next_page_token_value",
                 unreachable=["unreachable_value"],
             )
@@ -2585,7 +3774,7 @@ async def test_list_networks_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == baremetalsolution.ListNetworksRequest()
+        assert args[0] == network.ListNetworksRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListNetworksAsyncPager)
@@ -2605,13 +3794,13 @@ def test_list_networks_field_headers():
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = baremetalsolution.ListNetworksRequest()
+    request = network.ListNetworksRequest()
 
     request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_networks), "__call__") as call:
-        call.return_value = baremetalsolution.ListNetworksResponse()
+        call.return_value = network.ListNetworksResponse()
         client.list_networks(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -2635,14 +3824,14 @@ async def test_list_networks_field_headers_async():
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = baremetalsolution.ListNetworksRequest()
+    request = network.ListNetworksRequest()
 
     request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_networks), "__call__") as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            baremetalsolution.ListNetworksResponse()
+            network.ListNetworksResponse()
         )
         await client.list_networks(request)
 
@@ -2667,7 +3856,7 @@ def test_list_networks_flattened():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_networks), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = baremetalsolution.ListNetworksResponse()
+        call.return_value = network.ListNetworksResponse()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.list_networks(
@@ -2692,7 +3881,7 @@ def test_list_networks_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.list_networks(
-            baremetalsolution.ListNetworksRequest(),
+            network.ListNetworksRequest(),
             parent="parent_value",
         )
 
@@ -2706,10 +3895,10 @@ async def test_list_networks_flattened_async():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_networks), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = baremetalsolution.ListNetworksResponse()
+        call.return_value = network.ListNetworksResponse()
 
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            baremetalsolution.ListNetworksResponse()
+            network.ListNetworksResponse()
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
@@ -2736,7 +3925,7 @@ async def test_list_networks_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.list_networks(
-            baremetalsolution.ListNetworksRequest(),
+            network.ListNetworksRequest(),
             parent="parent_value",
         )
 
@@ -2751,28 +3940,28 @@ def test_list_networks_pager(transport_name: str = "grpc"):
     with mock.patch.object(type(client.transport.list_networks), "__call__") as call:
         # Set the response to a series of pages.
         call.side_effect = (
-            baremetalsolution.ListNetworksResponse(
+            network.ListNetworksResponse(
                 networks=[
-                    baremetalsolution.Network(),
-                    baremetalsolution.Network(),
-                    baremetalsolution.Network(),
+                    network.Network(),
+                    network.Network(),
+                    network.Network(),
                 ],
                 next_page_token="abc",
             ),
-            baremetalsolution.ListNetworksResponse(
+            network.ListNetworksResponse(
                 networks=[],
                 next_page_token="def",
             ),
-            baremetalsolution.ListNetworksResponse(
+            network.ListNetworksResponse(
                 networks=[
-                    baremetalsolution.Network(),
+                    network.Network(),
                 ],
                 next_page_token="ghi",
             ),
-            baremetalsolution.ListNetworksResponse(
+            network.ListNetworksResponse(
                 networks=[
-                    baremetalsolution.Network(),
-                    baremetalsolution.Network(),
+                    network.Network(),
+                    network.Network(),
                 ],
             ),
             RuntimeError,
@@ -2788,7 +3977,7 @@ def test_list_networks_pager(transport_name: str = "grpc"):
 
         results = list(pager)
         assert len(results) == 6
-        assert all(isinstance(i, baremetalsolution.Network) for i in results)
+        assert all(isinstance(i, network.Network) for i in results)
 
 
 def test_list_networks_pages(transport_name: str = "grpc"):
@@ -2801,28 +3990,28 @@ def test_list_networks_pages(transport_name: str = "grpc"):
     with mock.patch.object(type(client.transport.list_networks), "__call__") as call:
         # Set the response to a series of pages.
         call.side_effect = (
-            baremetalsolution.ListNetworksResponse(
+            network.ListNetworksResponse(
                 networks=[
-                    baremetalsolution.Network(),
-                    baremetalsolution.Network(),
-                    baremetalsolution.Network(),
+                    network.Network(),
+                    network.Network(),
+                    network.Network(),
                 ],
                 next_page_token="abc",
             ),
-            baremetalsolution.ListNetworksResponse(
+            network.ListNetworksResponse(
                 networks=[],
                 next_page_token="def",
             ),
-            baremetalsolution.ListNetworksResponse(
+            network.ListNetworksResponse(
                 networks=[
-                    baremetalsolution.Network(),
+                    network.Network(),
                 ],
                 next_page_token="ghi",
             ),
-            baremetalsolution.ListNetworksResponse(
+            network.ListNetworksResponse(
                 networks=[
-                    baremetalsolution.Network(),
-                    baremetalsolution.Network(),
+                    network.Network(),
+                    network.Network(),
                 ],
             ),
             RuntimeError,
@@ -2844,28 +4033,28 @@ async def test_list_networks_async_pager():
     ) as call:
         # Set the response to a series of pages.
         call.side_effect = (
-            baremetalsolution.ListNetworksResponse(
+            network.ListNetworksResponse(
                 networks=[
-                    baremetalsolution.Network(),
-                    baremetalsolution.Network(),
-                    baremetalsolution.Network(),
+                    network.Network(),
+                    network.Network(),
+                    network.Network(),
                 ],
                 next_page_token="abc",
             ),
-            baremetalsolution.ListNetworksResponse(
+            network.ListNetworksResponse(
                 networks=[],
                 next_page_token="def",
             ),
-            baremetalsolution.ListNetworksResponse(
+            network.ListNetworksResponse(
                 networks=[
-                    baremetalsolution.Network(),
+                    network.Network(),
                 ],
                 next_page_token="ghi",
             ),
-            baremetalsolution.ListNetworksResponse(
+            network.ListNetworksResponse(
                 networks=[
-                    baremetalsolution.Network(),
-                    baremetalsolution.Network(),
+                    network.Network(),
+                    network.Network(),
                 ],
             ),
             RuntimeError,
@@ -2879,7 +4068,7 @@ async def test_list_networks_async_pager():
             responses.append(response)
 
         assert len(responses) == 6
-        assert all(isinstance(i, baremetalsolution.Network) for i in responses)
+        assert all(isinstance(i, network.Network) for i in responses)
 
 
 @pytest.mark.asyncio
@@ -2894,28 +4083,28 @@ async def test_list_networks_async_pages():
     ) as call:
         # Set the response to a series of pages.
         call.side_effect = (
-            baremetalsolution.ListNetworksResponse(
+            network.ListNetworksResponse(
                 networks=[
-                    baremetalsolution.Network(),
-                    baremetalsolution.Network(),
-                    baremetalsolution.Network(),
+                    network.Network(),
+                    network.Network(),
+                    network.Network(),
                 ],
                 next_page_token="abc",
             ),
-            baremetalsolution.ListNetworksResponse(
+            network.ListNetworksResponse(
                 networks=[],
                 next_page_token="def",
             ),
-            baremetalsolution.ListNetworksResponse(
+            network.ListNetworksResponse(
                 networks=[
-                    baremetalsolution.Network(),
+                    network.Network(),
                 ],
                 next_page_token="ghi",
             ),
-            baremetalsolution.ListNetworksResponse(
+            network.ListNetworksResponse(
                 networks=[
-                    baremetalsolution.Network(),
-                    baremetalsolution.Network(),
+                    network.Network(),
+                    network.Network(),
                 ],
             ),
             RuntimeError,
@@ -2932,7 +4121,247 @@ async def test_list_networks_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        baremetalsolution.GetNetworkRequest,
+        network.ListNetworkUsageRequest,
+        dict,
+    ],
+)
+def test_list_network_usage(request_type, transport: str = "grpc"):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_network_usage), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = network.ListNetworkUsageResponse()
+        response = client.list_network_usage(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == network.ListNetworkUsageRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, network.ListNetworkUsageResponse)
+
+
+def test_list_network_usage_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_network_usage), "__call__"
+    ) as call:
+        client.list_network_usage()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == network.ListNetworkUsageRequest()
+
+
+@pytest.mark.asyncio
+async def test_list_network_usage_async(
+    transport: str = "grpc_asyncio", request_type=network.ListNetworkUsageRequest
+):
+    client = BareMetalSolutionAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_network_usage), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            network.ListNetworkUsageResponse()
+        )
+        response = await client.list_network_usage(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == network.ListNetworkUsageRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, network.ListNetworkUsageResponse)
+
+
+@pytest.mark.asyncio
+async def test_list_network_usage_async_from_dict():
+    await test_list_network_usage_async(request_type=dict)
+
+
+def test_list_network_usage_field_headers():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = network.ListNetworkUsageRequest()
+
+    request.location = "location_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_network_usage), "__call__"
+    ) as call:
+        call.return_value = network.ListNetworkUsageResponse()
+        client.list_network_usage(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "location=location_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_list_network_usage_field_headers_async():
+    client = BareMetalSolutionAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = network.ListNetworkUsageRequest()
+
+    request.location = "location_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_network_usage), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            network.ListNetworkUsageResponse()
+        )
+        await client.list_network_usage(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "location=location_value",
+    ) in kw["metadata"]
+
+
+def test_list_network_usage_flattened():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_network_usage), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = network.ListNetworkUsageResponse()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.list_network_usage(
+            location="location_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].location
+        mock_val = "location_value"
+        assert arg == mock_val
+
+
+def test_list_network_usage_flattened_error():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_network_usage(
+            network.ListNetworkUsageRequest(),
+            location="location_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_network_usage_flattened_async():
+    client = BareMetalSolutionAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_network_usage), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = network.ListNetworkUsageResponse()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            network.ListNetworkUsageResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.list_network_usage(
+            location="location_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].location
+        mock_val = "location_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_list_network_usage_flattened_error_async():
+    client = BareMetalSolutionAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.list_network_usage(
+            network.ListNetworkUsageRequest(),
+            location="location_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        network.GetNetworkRequest,
         dict,
     ],
 )
@@ -2949,33 +4378,35 @@ def test_get_network(request_type, transport: str = "grpc"):
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_network), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = baremetalsolution.Network(
+        call.return_value = network.Network(
             name="name_value",
-            network="network_value",
-            type_=baremetalsolution.Network.Type.CLIENT,
+            id="id_value",
+            type_=network.Network.Type.CLIENT,
             ip_address="ip_address_value",
             mac_address=["mac_address_value"],
-            state=baremetalsolution.Network.State.PROVISIONING,
+            state=network.Network.State.PROVISIONING,
             vlan_id="vlan_id_value",
             cidr="cidr_value",
+            services_cidr="services_cidr_value",
         )
         response = client.get_network(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == baremetalsolution.GetNetworkRequest()
+        assert args[0] == network.GetNetworkRequest()
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, baremetalsolution.Network)
+    assert isinstance(response, network.Network)
     assert response.name == "name_value"
-    assert response.network == "network_value"
-    assert response.type_ == baremetalsolution.Network.Type.CLIENT
+    assert response.id == "id_value"
+    assert response.type_ == network.Network.Type.CLIENT
     assert response.ip_address == "ip_address_value"
     assert response.mac_address == ["mac_address_value"]
-    assert response.state == baremetalsolution.Network.State.PROVISIONING
+    assert response.state == network.Network.State.PROVISIONING
     assert response.vlan_id == "vlan_id_value"
     assert response.cidr == "cidr_value"
+    assert response.services_cidr == "services_cidr_value"
 
 
 def test_get_network_empty_call():
@@ -2991,12 +4422,12 @@ def test_get_network_empty_call():
         client.get_network()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == baremetalsolution.GetNetworkRequest()
+        assert args[0] == network.GetNetworkRequest()
 
 
 @pytest.mark.asyncio
 async def test_get_network_async(
-    transport: str = "grpc_asyncio", request_type=baremetalsolution.GetNetworkRequest
+    transport: str = "grpc_asyncio", request_type=network.GetNetworkRequest
 ):
     client = BareMetalSolutionAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -3011,15 +4442,16 @@ async def test_get_network_async(
     with mock.patch.object(type(client.transport.get_network), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            baremetalsolution.Network(
+            network.Network(
                 name="name_value",
-                network="network_value",
-                type_=baremetalsolution.Network.Type.CLIENT,
+                id="id_value",
+                type_=network.Network.Type.CLIENT,
                 ip_address="ip_address_value",
                 mac_address=["mac_address_value"],
-                state=baremetalsolution.Network.State.PROVISIONING,
+                state=network.Network.State.PROVISIONING,
                 vlan_id="vlan_id_value",
                 cidr="cidr_value",
+                services_cidr="services_cidr_value",
             )
         )
         response = await client.get_network(request)
@@ -3027,18 +4459,19 @@ async def test_get_network_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == baremetalsolution.GetNetworkRequest()
+        assert args[0] == network.GetNetworkRequest()
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, baremetalsolution.Network)
+    assert isinstance(response, network.Network)
     assert response.name == "name_value"
-    assert response.network == "network_value"
-    assert response.type_ == baremetalsolution.Network.Type.CLIENT
+    assert response.id == "id_value"
+    assert response.type_ == network.Network.Type.CLIENT
     assert response.ip_address == "ip_address_value"
     assert response.mac_address == ["mac_address_value"]
-    assert response.state == baremetalsolution.Network.State.PROVISIONING
+    assert response.state == network.Network.State.PROVISIONING
     assert response.vlan_id == "vlan_id_value"
     assert response.cidr == "cidr_value"
+    assert response.services_cidr == "services_cidr_value"
 
 
 @pytest.mark.asyncio
@@ -3053,13 +4486,13 @@ def test_get_network_field_headers():
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = baremetalsolution.GetNetworkRequest()
+    request = network.GetNetworkRequest()
 
     request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_network), "__call__") as call:
-        call.return_value = baremetalsolution.Network()
+        call.return_value = network.Network()
         client.get_network(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -3083,15 +4516,13 @@ async def test_get_network_field_headers_async():
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = baremetalsolution.GetNetworkRequest()
+    request = network.GetNetworkRequest()
 
     request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_network), "__call__") as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            baremetalsolution.Network()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(network.Network())
         await client.get_network(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -3115,7 +4546,7 @@ def test_get_network_flattened():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_network), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = baremetalsolution.Network()
+        call.return_value = network.Network()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.get_network(
@@ -3140,7 +4571,7 @@ def test_get_network_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.get_network(
-            baremetalsolution.GetNetworkRequest(),
+            network.GetNetworkRequest(),
             name="name_value",
         )
 
@@ -3154,11 +4585,9 @@ async def test_get_network_flattened_async():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_network), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = baremetalsolution.Network()
+        call.return_value = network.Network()
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            baremetalsolution.Network()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(network.Network())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.get_network(
@@ -3184,7 +4613,7 @@ async def test_get_network_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.get_network(
-            baremetalsolution.GetNetworkRequest(),
+            network.GetNetworkRequest(),
             name="name_value",
         )
 
@@ -3192,11 +4621,11 @@ async def test_get_network_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        baremetalsolution.ListSnapshotSchedulePoliciesRequest,
+        gcb_network.UpdateNetworkRequest,
         dict,
     ],
 )
-def test_list_snapshot_schedule_policies(request_type, transport: str = "grpc"):
+def test_update_network(request_type, transport: str = "grpc"):
     client = BareMetalSolutionClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
@@ -3207,1773 +4636,21 @@ def test_list_snapshot_schedule_policies(request_type, transport: str = "grpc"):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_snapshot_schedule_policies), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = baremetalsolution.ListSnapshotSchedulePoliciesResponse(
-            next_page_token="next_page_token_value",
-        )
-        response = client.list_snapshot_schedule_policies(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == baremetalsolution.ListSnapshotSchedulePoliciesRequest()
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListSnapshotSchedulePoliciesPager)
-    assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_snapshot_schedule_policies_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = BareMetalSolutionClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_snapshot_schedule_policies), "__call__"
-    ) as call:
-        client.list_snapshot_schedule_policies()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == baremetalsolution.ListSnapshotSchedulePoliciesRequest()
-
-
-@pytest.mark.asyncio
-async def test_list_snapshot_schedule_policies_async(
-    transport: str = "grpc_asyncio",
-    request_type=baremetalsolution.ListSnapshotSchedulePoliciesRequest,
-):
-    client = BareMetalSolutionAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_snapshot_schedule_policies), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            baremetalsolution.ListSnapshotSchedulePoliciesResponse(
-                next_page_token="next_page_token_value",
-            )
-        )
-        response = await client.list_snapshot_schedule_policies(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == baremetalsolution.ListSnapshotSchedulePoliciesRequest()
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListSnapshotSchedulePoliciesAsyncPager)
-    assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_snapshot_schedule_policies_async_from_dict():
-    await test_list_snapshot_schedule_policies_async(request_type=dict)
-
-
-def test_list_snapshot_schedule_policies_field_headers():
-    client = BareMetalSolutionClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = baremetalsolution.ListSnapshotSchedulePoliciesRequest()
-
-    request.parent = "parent_value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_snapshot_schedule_policies), "__call__"
-    ) as call:
-        call.return_value = baremetalsolution.ListSnapshotSchedulePoliciesResponse()
-        client.list_snapshot_schedule_policies(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert (
-        "x-goog-request-params",
-        "parent=parent_value",
-    ) in kw["metadata"]
-
-
-@pytest.mark.asyncio
-async def test_list_snapshot_schedule_policies_field_headers_async():
-    client = BareMetalSolutionAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = baremetalsolution.ListSnapshotSchedulePoliciesRequest()
-
-    request.parent = "parent_value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_snapshot_schedule_policies), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            baremetalsolution.ListSnapshotSchedulePoliciesResponse()
-        )
-        await client.list_snapshot_schedule_policies(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert (
-        "x-goog-request-params",
-        "parent=parent_value",
-    ) in kw["metadata"]
-
-
-def test_list_snapshot_schedule_policies_flattened():
-    client = BareMetalSolutionClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_snapshot_schedule_policies), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = baremetalsolution.ListSnapshotSchedulePoliciesResponse()
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        client.list_snapshot_schedule_policies(
-            parent="parent_value",
-        )
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        arg = args[0].parent
-        mock_val = "parent_value"
-        assert arg == mock_val
-
-
-def test_list_snapshot_schedule_policies_flattened_error():
-    client = BareMetalSolutionClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        client.list_snapshot_schedule_policies(
-            baremetalsolution.ListSnapshotSchedulePoliciesRequest(),
-            parent="parent_value",
-        )
-
-
-@pytest.mark.asyncio
-async def test_list_snapshot_schedule_policies_flattened_async():
-    client = BareMetalSolutionAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_snapshot_schedule_policies), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = baremetalsolution.ListSnapshotSchedulePoliciesResponse()
-
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            baremetalsolution.ListSnapshotSchedulePoliciesResponse()
-        )
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        response = await client.list_snapshot_schedule_policies(
-            parent="parent_value",
-        )
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        arg = args[0].parent
-        mock_val = "parent_value"
-        assert arg == mock_val
-
-
-@pytest.mark.asyncio
-async def test_list_snapshot_schedule_policies_flattened_error_async():
-    client = BareMetalSolutionAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        await client.list_snapshot_schedule_policies(
-            baremetalsolution.ListSnapshotSchedulePoliciesRequest(),
-            parent="parent_value",
-        )
-
-
-def test_list_snapshot_schedule_policies_pager(transport_name: str = "grpc"):
-    client = BareMetalSolutionClient(
-        credentials=ga_credentials.AnonymousCredentials,
-        transport=transport_name,
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_snapshot_schedule_policies), "__call__"
-    ) as call:
-        # Set the response to a series of pages.
-        call.side_effect = (
-            baremetalsolution.ListSnapshotSchedulePoliciesResponse(
-                snapshot_schedule_policies=[
-                    baremetalsolution.SnapshotSchedulePolicy(),
-                    baremetalsolution.SnapshotSchedulePolicy(),
-                    baremetalsolution.SnapshotSchedulePolicy(),
-                ],
-                next_page_token="abc",
-            ),
-            baremetalsolution.ListSnapshotSchedulePoliciesResponse(
-                snapshot_schedule_policies=[],
-                next_page_token="def",
-            ),
-            baremetalsolution.ListSnapshotSchedulePoliciesResponse(
-                snapshot_schedule_policies=[
-                    baremetalsolution.SnapshotSchedulePolicy(),
-                ],
-                next_page_token="ghi",
-            ),
-            baremetalsolution.ListSnapshotSchedulePoliciesResponse(
-                snapshot_schedule_policies=[
-                    baremetalsolution.SnapshotSchedulePolicy(),
-                    baremetalsolution.SnapshotSchedulePolicy(),
-                ],
-            ),
-            RuntimeError,
-        )
-
-        metadata = ()
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
-        )
-        pager = client.list_snapshot_schedule_policies(request={})
-
-        assert pager._metadata == metadata
-
-        results = list(pager)
-        assert len(results) == 6
-        assert all(
-            isinstance(i, baremetalsolution.SnapshotSchedulePolicy) for i in results
-        )
-
-
-def test_list_snapshot_schedule_policies_pages(transport_name: str = "grpc"):
-    client = BareMetalSolutionClient(
-        credentials=ga_credentials.AnonymousCredentials,
-        transport=transport_name,
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_snapshot_schedule_policies), "__call__"
-    ) as call:
-        # Set the response to a series of pages.
-        call.side_effect = (
-            baremetalsolution.ListSnapshotSchedulePoliciesResponse(
-                snapshot_schedule_policies=[
-                    baremetalsolution.SnapshotSchedulePolicy(),
-                    baremetalsolution.SnapshotSchedulePolicy(),
-                    baremetalsolution.SnapshotSchedulePolicy(),
-                ],
-                next_page_token="abc",
-            ),
-            baremetalsolution.ListSnapshotSchedulePoliciesResponse(
-                snapshot_schedule_policies=[],
-                next_page_token="def",
-            ),
-            baremetalsolution.ListSnapshotSchedulePoliciesResponse(
-                snapshot_schedule_policies=[
-                    baremetalsolution.SnapshotSchedulePolicy(),
-                ],
-                next_page_token="ghi",
-            ),
-            baremetalsolution.ListSnapshotSchedulePoliciesResponse(
-                snapshot_schedule_policies=[
-                    baremetalsolution.SnapshotSchedulePolicy(),
-                    baremetalsolution.SnapshotSchedulePolicy(),
-                ],
-            ),
-            RuntimeError,
-        )
-        pages = list(client.list_snapshot_schedule_policies(request={}).pages)
-        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
-            assert page_.raw_page.next_page_token == token
-
-
-@pytest.mark.asyncio
-async def test_list_snapshot_schedule_policies_async_pager():
-    client = BareMetalSolutionAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials,
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_snapshot_schedule_policies),
-        "__call__",
-        new_callable=mock.AsyncMock,
-    ) as call:
-        # Set the response to a series of pages.
-        call.side_effect = (
-            baremetalsolution.ListSnapshotSchedulePoliciesResponse(
-                snapshot_schedule_policies=[
-                    baremetalsolution.SnapshotSchedulePolicy(),
-                    baremetalsolution.SnapshotSchedulePolicy(),
-                    baremetalsolution.SnapshotSchedulePolicy(),
-                ],
-                next_page_token="abc",
-            ),
-            baremetalsolution.ListSnapshotSchedulePoliciesResponse(
-                snapshot_schedule_policies=[],
-                next_page_token="def",
-            ),
-            baremetalsolution.ListSnapshotSchedulePoliciesResponse(
-                snapshot_schedule_policies=[
-                    baremetalsolution.SnapshotSchedulePolicy(),
-                ],
-                next_page_token="ghi",
-            ),
-            baremetalsolution.ListSnapshotSchedulePoliciesResponse(
-                snapshot_schedule_policies=[
-                    baremetalsolution.SnapshotSchedulePolicy(),
-                    baremetalsolution.SnapshotSchedulePolicy(),
-                ],
-            ),
-            RuntimeError,
-        )
-        async_pager = await client.list_snapshot_schedule_policies(
-            request={},
-        )
-        assert async_pager.next_page_token == "abc"
-        responses = []
-        async for response in async_pager:  # pragma: no branch
-            responses.append(response)
-
-        assert len(responses) == 6
-        assert all(
-            isinstance(i, baremetalsolution.SnapshotSchedulePolicy) for i in responses
-        )
-
-
-@pytest.mark.asyncio
-async def test_list_snapshot_schedule_policies_async_pages():
-    client = BareMetalSolutionAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials,
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_snapshot_schedule_policies),
-        "__call__",
-        new_callable=mock.AsyncMock,
-    ) as call:
-        # Set the response to a series of pages.
-        call.side_effect = (
-            baremetalsolution.ListSnapshotSchedulePoliciesResponse(
-                snapshot_schedule_policies=[
-                    baremetalsolution.SnapshotSchedulePolicy(),
-                    baremetalsolution.SnapshotSchedulePolicy(),
-                    baremetalsolution.SnapshotSchedulePolicy(),
-                ],
-                next_page_token="abc",
-            ),
-            baremetalsolution.ListSnapshotSchedulePoliciesResponse(
-                snapshot_schedule_policies=[],
-                next_page_token="def",
-            ),
-            baremetalsolution.ListSnapshotSchedulePoliciesResponse(
-                snapshot_schedule_policies=[
-                    baremetalsolution.SnapshotSchedulePolicy(),
-                ],
-                next_page_token="ghi",
-            ),
-            baremetalsolution.ListSnapshotSchedulePoliciesResponse(
-                snapshot_schedule_policies=[
-                    baremetalsolution.SnapshotSchedulePolicy(),
-                    baremetalsolution.SnapshotSchedulePolicy(),
-                ],
-            ),
-            RuntimeError,
-        )
-        pages = []
-        async for page_ in (
-            await client.list_snapshot_schedule_policies(request={})
-        ).pages:  # pragma: no branch
-            pages.append(page_)
-        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
-            assert page_.raw_page.next_page_token == token
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        baremetalsolution.GetSnapshotSchedulePolicyRequest,
-        dict,
-    ],
-)
-def test_get_snapshot_schedule_policy(request_type, transport: str = "grpc"):
-    client = BareMetalSolutionClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_snapshot_schedule_policy), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = baremetalsolution.SnapshotSchedulePolicy(
-            name="name_value",
-            description="description_value",
-        )
-        response = client.get_snapshot_schedule_policy(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == baremetalsolution.GetSnapshotSchedulePolicyRequest()
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, baremetalsolution.SnapshotSchedulePolicy)
-    assert response.name == "name_value"
-    assert response.description == "description_value"
-
-
-def test_get_snapshot_schedule_policy_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = BareMetalSolutionClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_snapshot_schedule_policy), "__call__"
-    ) as call:
-        client.get_snapshot_schedule_policy()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == baremetalsolution.GetSnapshotSchedulePolicyRequest()
-
-
-@pytest.mark.asyncio
-async def test_get_snapshot_schedule_policy_async(
-    transport: str = "grpc_asyncio",
-    request_type=baremetalsolution.GetSnapshotSchedulePolicyRequest,
-):
-    client = BareMetalSolutionAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_snapshot_schedule_policy), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            baremetalsolution.SnapshotSchedulePolicy(
-                name="name_value",
-                description="description_value",
-            )
-        )
-        response = await client.get_snapshot_schedule_policy(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == baremetalsolution.GetSnapshotSchedulePolicyRequest()
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, baremetalsolution.SnapshotSchedulePolicy)
-    assert response.name == "name_value"
-    assert response.description == "description_value"
-
-
-@pytest.mark.asyncio
-async def test_get_snapshot_schedule_policy_async_from_dict():
-    await test_get_snapshot_schedule_policy_async(request_type=dict)
-
-
-def test_get_snapshot_schedule_policy_field_headers():
-    client = BareMetalSolutionClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = baremetalsolution.GetSnapshotSchedulePolicyRequest()
-
-    request.name = "name_value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_snapshot_schedule_policy), "__call__"
-    ) as call:
-        call.return_value = baremetalsolution.SnapshotSchedulePolicy()
-        client.get_snapshot_schedule_policy(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert (
-        "x-goog-request-params",
-        "name=name_value",
-    ) in kw["metadata"]
-
-
-@pytest.mark.asyncio
-async def test_get_snapshot_schedule_policy_field_headers_async():
-    client = BareMetalSolutionAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = baremetalsolution.GetSnapshotSchedulePolicyRequest()
-
-    request.name = "name_value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_snapshot_schedule_policy), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            baremetalsolution.SnapshotSchedulePolicy()
-        )
-        await client.get_snapshot_schedule_policy(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert (
-        "x-goog-request-params",
-        "name=name_value",
-    ) in kw["metadata"]
-
-
-def test_get_snapshot_schedule_policy_flattened():
-    client = BareMetalSolutionClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_snapshot_schedule_policy), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = baremetalsolution.SnapshotSchedulePolicy()
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        client.get_snapshot_schedule_policy(
-            name="name_value",
-        )
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        arg = args[0].name
-        mock_val = "name_value"
-        assert arg == mock_val
-
-
-def test_get_snapshot_schedule_policy_flattened_error():
-    client = BareMetalSolutionClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        client.get_snapshot_schedule_policy(
-            baremetalsolution.GetSnapshotSchedulePolicyRequest(),
-            name="name_value",
-        )
-
-
-@pytest.mark.asyncio
-async def test_get_snapshot_schedule_policy_flattened_async():
-    client = BareMetalSolutionAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_snapshot_schedule_policy), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = baremetalsolution.SnapshotSchedulePolicy()
-
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            baremetalsolution.SnapshotSchedulePolicy()
-        )
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        response = await client.get_snapshot_schedule_policy(
-            name="name_value",
-        )
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        arg = args[0].name
-        mock_val = "name_value"
-        assert arg == mock_val
-
-
-@pytest.mark.asyncio
-async def test_get_snapshot_schedule_policy_flattened_error_async():
-    client = BareMetalSolutionAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        await client.get_snapshot_schedule_policy(
-            baremetalsolution.GetSnapshotSchedulePolicyRequest(),
-            name="name_value",
-        )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        baremetalsolution.CreateSnapshotSchedulePolicyRequest,
-        dict,
-    ],
-)
-def test_create_snapshot_schedule_policy(request_type, transport: str = "grpc"):
-    client = BareMetalSolutionClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_snapshot_schedule_policy), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = baremetalsolution.SnapshotSchedulePolicy(
-            name="name_value",
-            description="description_value",
-        )
-        response = client.create_snapshot_schedule_policy(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == baremetalsolution.CreateSnapshotSchedulePolicyRequest()
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, baremetalsolution.SnapshotSchedulePolicy)
-    assert response.name == "name_value"
-    assert response.description == "description_value"
-
-
-def test_create_snapshot_schedule_policy_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = BareMetalSolutionClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_snapshot_schedule_policy), "__call__"
-    ) as call:
-        client.create_snapshot_schedule_policy()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == baremetalsolution.CreateSnapshotSchedulePolicyRequest()
-
-
-@pytest.mark.asyncio
-async def test_create_snapshot_schedule_policy_async(
-    transport: str = "grpc_asyncio",
-    request_type=baremetalsolution.CreateSnapshotSchedulePolicyRequest,
-):
-    client = BareMetalSolutionAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_snapshot_schedule_policy), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            baremetalsolution.SnapshotSchedulePolicy(
-                name="name_value",
-                description="description_value",
-            )
-        )
-        response = await client.create_snapshot_schedule_policy(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == baremetalsolution.CreateSnapshotSchedulePolicyRequest()
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, baremetalsolution.SnapshotSchedulePolicy)
-    assert response.name == "name_value"
-    assert response.description == "description_value"
-
-
-@pytest.mark.asyncio
-async def test_create_snapshot_schedule_policy_async_from_dict():
-    await test_create_snapshot_schedule_policy_async(request_type=dict)
-
-
-def test_create_snapshot_schedule_policy_field_headers():
-    client = BareMetalSolutionClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = baremetalsolution.CreateSnapshotSchedulePolicyRequest()
-
-    request.parent = "parent_value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_snapshot_schedule_policy), "__call__"
-    ) as call:
-        call.return_value = baremetalsolution.SnapshotSchedulePolicy()
-        client.create_snapshot_schedule_policy(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert (
-        "x-goog-request-params",
-        "parent=parent_value",
-    ) in kw["metadata"]
-
-
-@pytest.mark.asyncio
-async def test_create_snapshot_schedule_policy_field_headers_async():
-    client = BareMetalSolutionAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = baremetalsolution.CreateSnapshotSchedulePolicyRequest()
-
-    request.parent = "parent_value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_snapshot_schedule_policy), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            baremetalsolution.SnapshotSchedulePolicy()
-        )
-        await client.create_snapshot_schedule_policy(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert (
-        "x-goog-request-params",
-        "parent=parent_value",
-    ) in kw["metadata"]
-
-
-def test_create_snapshot_schedule_policy_flattened():
-    client = BareMetalSolutionClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_snapshot_schedule_policy), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = baremetalsolution.SnapshotSchedulePolicy()
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        client.create_snapshot_schedule_policy(
-            parent="parent_value",
-            snapshot_schedule_policy=baremetalsolution.SnapshotSchedulePolicy(
-                name="name_value"
-            ),
-            snapshot_schedule_policy_id="snapshot_schedule_policy_id_value",
-        )
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        arg = args[0].parent
-        mock_val = "parent_value"
-        assert arg == mock_val
-        arg = args[0].snapshot_schedule_policy
-        mock_val = baremetalsolution.SnapshotSchedulePolicy(name="name_value")
-        assert arg == mock_val
-        arg = args[0].snapshot_schedule_policy_id
-        mock_val = "snapshot_schedule_policy_id_value"
-        assert arg == mock_val
-
-
-def test_create_snapshot_schedule_policy_flattened_error():
-    client = BareMetalSolutionClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        client.create_snapshot_schedule_policy(
-            baremetalsolution.CreateSnapshotSchedulePolicyRequest(),
-            parent="parent_value",
-            snapshot_schedule_policy=baremetalsolution.SnapshotSchedulePolicy(
-                name="name_value"
-            ),
-            snapshot_schedule_policy_id="snapshot_schedule_policy_id_value",
-        )
-
-
-@pytest.mark.asyncio
-async def test_create_snapshot_schedule_policy_flattened_async():
-    client = BareMetalSolutionAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_snapshot_schedule_policy), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = baremetalsolution.SnapshotSchedulePolicy()
-
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            baremetalsolution.SnapshotSchedulePolicy()
-        )
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        response = await client.create_snapshot_schedule_policy(
-            parent="parent_value",
-            snapshot_schedule_policy=baremetalsolution.SnapshotSchedulePolicy(
-                name="name_value"
-            ),
-            snapshot_schedule_policy_id="snapshot_schedule_policy_id_value",
-        )
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        arg = args[0].parent
-        mock_val = "parent_value"
-        assert arg == mock_val
-        arg = args[0].snapshot_schedule_policy
-        mock_val = baremetalsolution.SnapshotSchedulePolicy(name="name_value")
-        assert arg == mock_val
-        arg = args[0].snapshot_schedule_policy_id
-        mock_val = "snapshot_schedule_policy_id_value"
-        assert arg == mock_val
-
-
-@pytest.mark.asyncio
-async def test_create_snapshot_schedule_policy_flattened_error_async():
-    client = BareMetalSolutionAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        await client.create_snapshot_schedule_policy(
-            baremetalsolution.CreateSnapshotSchedulePolicyRequest(),
-            parent="parent_value",
-            snapshot_schedule_policy=baremetalsolution.SnapshotSchedulePolicy(
-                name="name_value"
-            ),
-            snapshot_schedule_policy_id="snapshot_schedule_policy_id_value",
-        )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        baremetalsolution.UpdateSnapshotSchedulePolicyRequest,
-        dict,
-    ],
-)
-def test_update_snapshot_schedule_policy(request_type, transport: str = "grpc"):
-    client = BareMetalSolutionClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_snapshot_schedule_policy), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = baremetalsolution.SnapshotSchedulePolicy(
-            name="name_value",
-            description="description_value",
-        )
-        response = client.update_snapshot_schedule_policy(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == baremetalsolution.UpdateSnapshotSchedulePolicyRequest()
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, baremetalsolution.SnapshotSchedulePolicy)
-    assert response.name == "name_value"
-    assert response.description == "description_value"
-
-
-def test_update_snapshot_schedule_policy_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = BareMetalSolutionClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_snapshot_schedule_policy), "__call__"
-    ) as call:
-        client.update_snapshot_schedule_policy()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == baremetalsolution.UpdateSnapshotSchedulePolicyRequest()
-
-
-@pytest.mark.asyncio
-async def test_update_snapshot_schedule_policy_async(
-    transport: str = "grpc_asyncio",
-    request_type=baremetalsolution.UpdateSnapshotSchedulePolicyRequest,
-):
-    client = BareMetalSolutionAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_snapshot_schedule_policy), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            baremetalsolution.SnapshotSchedulePolicy(
-                name="name_value",
-                description="description_value",
-            )
-        )
-        response = await client.update_snapshot_schedule_policy(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == baremetalsolution.UpdateSnapshotSchedulePolicyRequest()
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, baremetalsolution.SnapshotSchedulePolicy)
-    assert response.name == "name_value"
-    assert response.description == "description_value"
-
-
-@pytest.mark.asyncio
-async def test_update_snapshot_schedule_policy_async_from_dict():
-    await test_update_snapshot_schedule_policy_async(request_type=dict)
-
-
-def test_update_snapshot_schedule_policy_field_headers():
-    client = BareMetalSolutionClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = baremetalsolution.UpdateSnapshotSchedulePolicyRequest()
-
-    request.snapshot_schedule_policy.name = "name_value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_snapshot_schedule_policy), "__call__"
-    ) as call:
-        call.return_value = baremetalsolution.SnapshotSchedulePolicy()
-        client.update_snapshot_schedule_policy(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert (
-        "x-goog-request-params",
-        "snapshot_schedule_policy.name=name_value",
-    ) in kw["metadata"]
-
-
-@pytest.mark.asyncio
-async def test_update_snapshot_schedule_policy_field_headers_async():
-    client = BareMetalSolutionAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = baremetalsolution.UpdateSnapshotSchedulePolicyRequest()
-
-    request.snapshot_schedule_policy.name = "name_value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_snapshot_schedule_policy), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            baremetalsolution.SnapshotSchedulePolicy()
-        )
-        await client.update_snapshot_schedule_policy(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert (
-        "x-goog-request-params",
-        "snapshot_schedule_policy.name=name_value",
-    ) in kw["metadata"]
-
-
-def test_update_snapshot_schedule_policy_flattened():
-    client = BareMetalSolutionClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_snapshot_schedule_policy), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = baremetalsolution.SnapshotSchedulePolicy()
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        client.update_snapshot_schedule_policy(
-            snapshot_schedule_policy=baremetalsolution.SnapshotSchedulePolicy(
-                name="name_value"
-            ),
-            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
-        )
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        arg = args[0].snapshot_schedule_policy
-        mock_val = baremetalsolution.SnapshotSchedulePolicy(name="name_value")
-        assert arg == mock_val
-        arg = args[0].update_mask
-        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
-        assert arg == mock_val
-
-
-def test_update_snapshot_schedule_policy_flattened_error():
-    client = BareMetalSolutionClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        client.update_snapshot_schedule_policy(
-            baremetalsolution.UpdateSnapshotSchedulePolicyRequest(),
-            snapshot_schedule_policy=baremetalsolution.SnapshotSchedulePolicy(
-                name="name_value"
-            ),
-            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
-        )
-
-
-@pytest.mark.asyncio
-async def test_update_snapshot_schedule_policy_flattened_async():
-    client = BareMetalSolutionAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_snapshot_schedule_policy), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = baremetalsolution.SnapshotSchedulePolicy()
-
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            baremetalsolution.SnapshotSchedulePolicy()
-        )
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        response = await client.update_snapshot_schedule_policy(
-            snapshot_schedule_policy=baremetalsolution.SnapshotSchedulePolicy(
-                name="name_value"
-            ),
-            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
-        )
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        arg = args[0].snapshot_schedule_policy
-        mock_val = baremetalsolution.SnapshotSchedulePolicy(name="name_value")
-        assert arg == mock_val
-        arg = args[0].update_mask
-        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
-        assert arg == mock_val
-
-
-@pytest.mark.asyncio
-async def test_update_snapshot_schedule_policy_flattened_error_async():
-    client = BareMetalSolutionAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        await client.update_snapshot_schedule_policy(
-            baremetalsolution.UpdateSnapshotSchedulePolicyRequest(),
-            snapshot_schedule_policy=baremetalsolution.SnapshotSchedulePolicy(
-                name="name_value"
-            ),
-            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
-        )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        baremetalsolution.DeleteSnapshotSchedulePolicyRequest,
-        dict,
-    ],
-)
-def test_delete_snapshot_schedule_policy(request_type, transport: str = "grpc"):
-    client = BareMetalSolutionClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_snapshot_schedule_policy), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = None
-        response = client.delete_snapshot_schedule_policy(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == baremetalsolution.DeleteSnapshotSchedulePolicyRequest()
-
-    # Establish that the response is the type that we expect.
-    assert response is None
-
-
-def test_delete_snapshot_schedule_policy_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = BareMetalSolutionClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_snapshot_schedule_policy), "__call__"
-    ) as call:
-        client.delete_snapshot_schedule_policy()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == baremetalsolution.DeleteSnapshotSchedulePolicyRequest()
-
-
-@pytest.mark.asyncio
-async def test_delete_snapshot_schedule_policy_async(
-    transport: str = "grpc_asyncio",
-    request_type=baremetalsolution.DeleteSnapshotSchedulePolicyRequest,
-):
-    client = BareMetalSolutionAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_snapshot_schedule_policy), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
-        response = await client.delete_snapshot_schedule_policy(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == baremetalsolution.DeleteSnapshotSchedulePolicyRequest()
-
-    # Establish that the response is the type that we expect.
-    assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_snapshot_schedule_policy_async_from_dict():
-    await test_delete_snapshot_schedule_policy_async(request_type=dict)
-
-
-def test_delete_snapshot_schedule_policy_field_headers():
-    client = BareMetalSolutionClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = baremetalsolution.DeleteSnapshotSchedulePolicyRequest()
-
-    request.name = "name_value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_snapshot_schedule_policy), "__call__"
-    ) as call:
-        call.return_value = None
-        client.delete_snapshot_schedule_policy(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert (
-        "x-goog-request-params",
-        "name=name_value",
-    ) in kw["metadata"]
-
-
-@pytest.mark.asyncio
-async def test_delete_snapshot_schedule_policy_field_headers_async():
-    client = BareMetalSolutionAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = baremetalsolution.DeleteSnapshotSchedulePolicyRequest()
-
-    request.name = "name_value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_snapshot_schedule_policy), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
-        await client.delete_snapshot_schedule_policy(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert (
-        "x-goog-request-params",
-        "name=name_value",
-    ) in kw["metadata"]
-
-
-def test_delete_snapshot_schedule_policy_flattened():
-    client = BareMetalSolutionClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_snapshot_schedule_policy), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = None
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        client.delete_snapshot_schedule_policy(
-            name="name_value",
-        )
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        arg = args[0].name
-        mock_val = "name_value"
-        assert arg == mock_val
-
-
-def test_delete_snapshot_schedule_policy_flattened_error():
-    client = BareMetalSolutionClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        client.delete_snapshot_schedule_policy(
-            baremetalsolution.DeleteSnapshotSchedulePolicyRequest(),
-            name="name_value",
-        )
-
-
-@pytest.mark.asyncio
-async def test_delete_snapshot_schedule_policy_flattened_async():
-    client = BareMetalSolutionAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_snapshot_schedule_policy), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = None
-
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        response = await client.delete_snapshot_schedule_policy(
-            name="name_value",
-        )
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        arg = args[0].name
-        mock_val = "name_value"
-        assert arg == mock_val
-
-
-@pytest.mark.asyncio
-async def test_delete_snapshot_schedule_policy_flattened_error_async():
-    client = BareMetalSolutionAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        await client.delete_snapshot_schedule_policy(
-            baremetalsolution.DeleteSnapshotSchedulePolicyRequest(),
-            name="name_value",
-        )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        baremetalsolution.CreateVolumeSnapshotRequest,
-        dict,
-    ],
-)
-def test_create_volume_snapshot(request_type, transport: str = "grpc"):
-    client = BareMetalSolutionClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_volume_snapshot), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = baremetalsolution.VolumeSnapshot(
-            name="name_value",
-            description="description_value",
-            size_bytes=1089,
-            storage_volume="storage_volume_value",
-        )
-        response = client.create_volume_snapshot(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == baremetalsolution.CreateVolumeSnapshotRequest()
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, baremetalsolution.VolumeSnapshot)
-    assert response.name == "name_value"
-    assert response.description == "description_value"
-    assert response.size_bytes == 1089
-    assert response.storage_volume == "storage_volume_value"
-
-
-def test_create_volume_snapshot_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = BareMetalSolutionClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_volume_snapshot), "__call__"
-    ) as call:
-        client.create_volume_snapshot()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == baremetalsolution.CreateVolumeSnapshotRequest()
-
-
-@pytest.mark.asyncio
-async def test_create_volume_snapshot_async(
-    transport: str = "grpc_asyncio",
-    request_type=baremetalsolution.CreateVolumeSnapshotRequest,
-):
-    client = BareMetalSolutionAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_volume_snapshot), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            baremetalsolution.VolumeSnapshot(
-                name="name_value",
-                description="description_value",
-                size_bytes=1089,
-                storage_volume="storage_volume_value",
-            )
-        )
-        response = await client.create_volume_snapshot(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == baremetalsolution.CreateVolumeSnapshotRequest()
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, baremetalsolution.VolumeSnapshot)
-    assert response.name == "name_value"
-    assert response.description == "description_value"
-    assert response.size_bytes == 1089
-    assert response.storage_volume == "storage_volume_value"
-
-
-@pytest.mark.asyncio
-async def test_create_volume_snapshot_async_from_dict():
-    await test_create_volume_snapshot_async(request_type=dict)
-
-
-def test_create_volume_snapshot_field_headers():
-    client = BareMetalSolutionClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = baremetalsolution.CreateVolumeSnapshotRequest()
-
-    request.parent = "parent_value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_volume_snapshot), "__call__"
-    ) as call:
-        call.return_value = baremetalsolution.VolumeSnapshot()
-        client.create_volume_snapshot(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert (
-        "x-goog-request-params",
-        "parent=parent_value",
-    ) in kw["metadata"]
-
-
-@pytest.mark.asyncio
-async def test_create_volume_snapshot_field_headers_async():
-    client = BareMetalSolutionAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = baremetalsolution.CreateVolumeSnapshotRequest()
-
-    request.parent = "parent_value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_volume_snapshot), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            baremetalsolution.VolumeSnapshot()
-        )
-        await client.create_volume_snapshot(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert (
-        "x-goog-request-params",
-        "parent=parent_value",
-    ) in kw["metadata"]
-
-
-def test_create_volume_snapshot_flattened():
-    client = BareMetalSolutionClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_volume_snapshot), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = baremetalsolution.VolumeSnapshot()
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        client.create_volume_snapshot(
-            parent="parent_value",
-            volume_snapshot=baremetalsolution.VolumeSnapshot(name="name_value"),
-        )
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        arg = args[0].parent
-        mock_val = "parent_value"
-        assert arg == mock_val
-        arg = args[0].volume_snapshot
-        mock_val = baremetalsolution.VolumeSnapshot(name="name_value")
-        assert arg == mock_val
-
-
-def test_create_volume_snapshot_flattened_error():
-    client = BareMetalSolutionClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        client.create_volume_snapshot(
-            baremetalsolution.CreateVolumeSnapshotRequest(),
-            parent="parent_value",
-            volume_snapshot=baremetalsolution.VolumeSnapshot(name="name_value"),
-        )
-
-
-@pytest.mark.asyncio
-async def test_create_volume_snapshot_flattened_async():
-    client = BareMetalSolutionAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_volume_snapshot), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = baremetalsolution.VolumeSnapshot()
-
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            baremetalsolution.VolumeSnapshot()
-        )
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        response = await client.create_volume_snapshot(
-            parent="parent_value",
-            volume_snapshot=baremetalsolution.VolumeSnapshot(name="name_value"),
-        )
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        arg = args[0].parent
-        mock_val = "parent_value"
-        assert arg == mock_val
-        arg = args[0].volume_snapshot
-        mock_val = baremetalsolution.VolumeSnapshot(name="name_value")
-        assert arg == mock_val
-
-
-@pytest.mark.asyncio
-async def test_create_volume_snapshot_flattened_error_async():
-    client = BareMetalSolutionAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        await client.create_volume_snapshot(
-            baremetalsolution.CreateVolumeSnapshotRequest(),
-            parent="parent_value",
-            volume_snapshot=baremetalsolution.VolumeSnapshot(name="name_value"),
-        )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        baremetalsolution.RestoreVolumeSnapshotRequest,
-        dict,
-    ],
-)
-def test_restore_volume_snapshot(request_type, transport: str = "grpc"):
-    client = BareMetalSolutionClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.restore_volume_snapshot), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.update_network), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/spam")
-        response = client.restore_volume_snapshot(request)
+        response = client.update_network(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == baremetalsolution.RestoreVolumeSnapshotRequest()
+        assert args[0] == gcb_network.UpdateNetworkRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
 
 
-def test_restore_volume_snapshot_empty_call():
+def test_update_network_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = BareMetalSolutionClient(
@@ -4982,19 +4659,16 @@ def test_restore_volume_snapshot_empty_call():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.restore_volume_snapshot), "__call__"
-    ) as call:
-        client.restore_volume_snapshot()
+    with mock.patch.object(type(client.transport.update_network), "__call__") as call:
+        client.update_network()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == baremetalsolution.RestoreVolumeSnapshotRequest()
+        assert args[0] == gcb_network.UpdateNetworkRequest()
 
 
 @pytest.mark.asyncio
-async def test_restore_volume_snapshot_async(
-    transport: str = "grpc_asyncio",
-    request_type=baremetalsolution.RestoreVolumeSnapshotRequest,
+async def test_update_network_async(
+    transport: str = "grpc_asyncio", request_type=gcb_network.UpdateNetworkRequest
 ):
     client = BareMetalSolutionAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -5006,46 +4680,42 @@ async def test_restore_volume_snapshot_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.restore_volume_snapshot), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.update_network), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             operations_pb2.Operation(name="operations/spam")
         )
-        response = await client.restore_volume_snapshot(request)
+        response = await client.update_network(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == baremetalsolution.RestoreVolumeSnapshotRequest()
+        assert args[0] == gcb_network.UpdateNetworkRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
 
 
 @pytest.mark.asyncio
-async def test_restore_volume_snapshot_async_from_dict():
-    await test_restore_volume_snapshot_async(request_type=dict)
+async def test_update_network_async_from_dict():
+    await test_update_network_async(request_type=dict)
 
 
-def test_restore_volume_snapshot_field_headers():
+def test_update_network_field_headers():
     client = BareMetalSolutionClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = baremetalsolution.RestoreVolumeSnapshotRequest()
+    request = gcb_network.UpdateNetworkRequest()
 
-    request.volume_snapshot = "volume_snapshot_value"
+    request.network.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.restore_volume_snapshot), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.update_network), "__call__") as call:
         call.return_value = operations_pb2.Operation(name="operations/op")
-        client.restore_volume_snapshot(request)
+        client.update_network(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
@@ -5056,30 +4726,28 @@ def test_restore_volume_snapshot_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "volume_snapshot=volume_snapshot_value",
+        "network.name=name_value",
     ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
-async def test_restore_volume_snapshot_field_headers_async():
+async def test_update_network_field_headers_async():
     client = BareMetalSolutionAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = baremetalsolution.RestoreVolumeSnapshotRequest()
+    request = gcb_network.UpdateNetworkRequest()
 
-    request.volume_snapshot = "volume_snapshot_value"
+    request.network.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.restore_volume_snapshot), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.update_network), "__call__") as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             operations_pb2.Operation(name="operations/op")
         )
-        await client.restore_volume_snapshot(request)
+        await client.update_network(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
@@ -5090,37 +4758,39 @@ async def test_restore_volume_snapshot_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "volume_snapshot=volume_snapshot_value",
+        "network.name=name_value",
     ) in kw["metadata"]
 
 
-def test_restore_volume_snapshot_flattened():
+def test_update_network_flattened():
     client = BareMetalSolutionClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.restore_volume_snapshot), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.update_network), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/op")
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.restore_volume_snapshot(
-            volume_snapshot="volume_snapshot_value",
+        client.update_network(
+            network=gcb_network.Network(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
         # Establish that the underlying call was made with the expected
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        arg = args[0].volume_snapshot
-        mock_val = "volume_snapshot_value"
+        arg = args[0].network
+        mock_val = gcb_network.Network(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
         assert arg == mock_val
 
 
-def test_restore_volume_snapshot_flattened_error():
+def test_update_network_flattened_error():
     client = BareMetalSolutionClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
@@ -5128,22 +4798,21 @@ def test_restore_volume_snapshot_flattened_error():
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
-        client.restore_volume_snapshot(
-            baremetalsolution.RestoreVolumeSnapshotRequest(),
-            volume_snapshot="volume_snapshot_value",
+        client.update_network(
+            gcb_network.UpdateNetworkRequest(),
+            network=gcb_network.Network(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
 
 @pytest.mark.asyncio
-async def test_restore_volume_snapshot_flattened_async():
+async def test_update_network_flattened_async():
     client = BareMetalSolutionAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.restore_volume_snapshot), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.update_network), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/op")
 
@@ -5152,21 +4821,25 @@ async def test_restore_volume_snapshot_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.restore_volume_snapshot(
-            volume_snapshot="volume_snapshot_value",
+        response = await client.update_network(
+            network=gcb_network.Network(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
         # Establish that the underlying call was made with the expected
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        arg = args[0].volume_snapshot
-        mock_val = "volume_snapshot_value"
+        arg = args[0].network
+        mock_val = gcb_network.Network(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
         assert arg == mock_val
 
 
 @pytest.mark.asyncio
-async def test_restore_volume_snapshot_flattened_error_async():
+async def test_update_network_flattened_error_async():
     client = BareMetalSolutionAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
@@ -5174,957 +4847,17 @@ async def test_restore_volume_snapshot_flattened_error_async():
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
-        await client.restore_volume_snapshot(
-            baremetalsolution.RestoreVolumeSnapshotRequest(),
-            volume_snapshot="volume_snapshot_value",
+        await client.update_network(
+            gcb_network.UpdateNetworkRequest(),
+            network=gcb_network.Network(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
 
 @pytest.mark.parametrize(
     "request_type",
     [
-        baremetalsolution.DeleteVolumeSnapshotRequest,
-        dict,
-    ],
-)
-def test_delete_volume_snapshot(request_type, transport: str = "grpc"):
-    client = BareMetalSolutionClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_volume_snapshot), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = None
-        response = client.delete_volume_snapshot(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == baremetalsolution.DeleteVolumeSnapshotRequest()
-
-    # Establish that the response is the type that we expect.
-    assert response is None
-
-
-def test_delete_volume_snapshot_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = BareMetalSolutionClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_volume_snapshot), "__call__"
-    ) as call:
-        client.delete_volume_snapshot()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == baremetalsolution.DeleteVolumeSnapshotRequest()
-
-
-@pytest.mark.asyncio
-async def test_delete_volume_snapshot_async(
-    transport: str = "grpc_asyncio",
-    request_type=baremetalsolution.DeleteVolumeSnapshotRequest,
-):
-    client = BareMetalSolutionAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_volume_snapshot), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
-        response = await client.delete_volume_snapshot(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == baremetalsolution.DeleteVolumeSnapshotRequest()
-
-    # Establish that the response is the type that we expect.
-    assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_volume_snapshot_async_from_dict():
-    await test_delete_volume_snapshot_async(request_type=dict)
-
-
-def test_delete_volume_snapshot_field_headers():
-    client = BareMetalSolutionClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = baremetalsolution.DeleteVolumeSnapshotRequest()
-
-    request.name = "name_value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_volume_snapshot), "__call__"
-    ) as call:
-        call.return_value = None
-        client.delete_volume_snapshot(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert (
-        "x-goog-request-params",
-        "name=name_value",
-    ) in kw["metadata"]
-
-
-@pytest.mark.asyncio
-async def test_delete_volume_snapshot_field_headers_async():
-    client = BareMetalSolutionAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = baremetalsolution.DeleteVolumeSnapshotRequest()
-
-    request.name = "name_value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_volume_snapshot), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
-        await client.delete_volume_snapshot(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert (
-        "x-goog-request-params",
-        "name=name_value",
-    ) in kw["metadata"]
-
-
-def test_delete_volume_snapshot_flattened():
-    client = BareMetalSolutionClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_volume_snapshot), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = None
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        client.delete_volume_snapshot(
-            name="name_value",
-        )
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        arg = args[0].name
-        mock_val = "name_value"
-        assert arg == mock_val
-
-
-def test_delete_volume_snapshot_flattened_error():
-    client = BareMetalSolutionClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        client.delete_volume_snapshot(
-            baremetalsolution.DeleteVolumeSnapshotRequest(),
-            name="name_value",
-        )
-
-
-@pytest.mark.asyncio
-async def test_delete_volume_snapshot_flattened_async():
-    client = BareMetalSolutionAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_volume_snapshot), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = None
-
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        response = await client.delete_volume_snapshot(
-            name="name_value",
-        )
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        arg = args[0].name
-        mock_val = "name_value"
-        assert arg == mock_val
-
-
-@pytest.mark.asyncio
-async def test_delete_volume_snapshot_flattened_error_async():
-    client = BareMetalSolutionAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        await client.delete_volume_snapshot(
-            baremetalsolution.DeleteVolumeSnapshotRequest(),
-            name="name_value",
-        )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        baremetalsolution.GetVolumeSnapshotRequest,
-        dict,
-    ],
-)
-def test_get_volume_snapshot(request_type, transport: str = "grpc"):
-    client = BareMetalSolutionClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_volume_snapshot), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = baremetalsolution.VolumeSnapshot(
-            name="name_value",
-            description="description_value",
-            size_bytes=1089,
-            storage_volume="storage_volume_value",
-        )
-        response = client.get_volume_snapshot(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == baremetalsolution.GetVolumeSnapshotRequest()
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, baremetalsolution.VolumeSnapshot)
-    assert response.name == "name_value"
-    assert response.description == "description_value"
-    assert response.size_bytes == 1089
-    assert response.storage_volume == "storage_volume_value"
-
-
-def test_get_volume_snapshot_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = BareMetalSolutionClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_volume_snapshot), "__call__"
-    ) as call:
-        client.get_volume_snapshot()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == baremetalsolution.GetVolumeSnapshotRequest()
-
-
-@pytest.mark.asyncio
-async def test_get_volume_snapshot_async(
-    transport: str = "grpc_asyncio",
-    request_type=baremetalsolution.GetVolumeSnapshotRequest,
-):
-    client = BareMetalSolutionAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_volume_snapshot), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            baremetalsolution.VolumeSnapshot(
-                name="name_value",
-                description="description_value",
-                size_bytes=1089,
-                storage_volume="storage_volume_value",
-            )
-        )
-        response = await client.get_volume_snapshot(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == baremetalsolution.GetVolumeSnapshotRequest()
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, baremetalsolution.VolumeSnapshot)
-    assert response.name == "name_value"
-    assert response.description == "description_value"
-    assert response.size_bytes == 1089
-    assert response.storage_volume == "storage_volume_value"
-
-
-@pytest.mark.asyncio
-async def test_get_volume_snapshot_async_from_dict():
-    await test_get_volume_snapshot_async(request_type=dict)
-
-
-def test_get_volume_snapshot_field_headers():
-    client = BareMetalSolutionClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = baremetalsolution.GetVolumeSnapshotRequest()
-
-    request.name = "name_value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_volume_snapshot), "__call__"
-    ) as call:
-        call.return_value = baremetalsolution.VolumeSnapshot()
-        client.get_volume_snapshot(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert (
-        "x-goog-request-params",
-        "name=name_value",
-    ) in kw["metadata"]
-
-
-@pytest.mark.asyncio
-async def test_get_volume_snapshot_field_headers_async():
-    client = BareMetalSolutionAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = baremetalsolution.GetVolumeSnapshotRequest()
-
-    request.name = "name_value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_volume_snapshot), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            baremetalsolution.VolumeSnapshot()
-        )
-        await client.get_volume_snapshot(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert (
-        "x-goog-request-params",
-        "name=name_value",
-    ) in kw["metadata"]
-
-
-def test_get_volume_snapshot_flattened():
-    client = BareMetalSolutionClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_volume_snapshot), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = baremetalsolution.VolumeSnapshot()
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        client.get_volume_snapshot(
-            name="name_value",
-        )
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        arg = args[0].name
-        mock_val = "name_value"
-        assert arg == mock_val
-
-
-def test_get_volume_snapshot_flattened_error():
-    client = BareMetalSolutionClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        client.get_volume_snapshot(
-            baremetalsolution.GetVolumeSnapshotRequest(),
-            name="name_value",
-        )
-
-
-@pytest.mark.asyncio
-async def test_get_volume_snapshot_flattened_async():
-    client = BareMetalSolutionAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_volume_snapshot), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = baremetalsolution.VolumeSnapshot()
-
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            baremetalsolution.VolumeSnapshot()
-        )
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        response = await client.get_volume_snapshot(
-            name="name_value",
-        )
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        arg = args[0].name
-        mock_val = "name_value"
-        assert arg == mock_val
-
-
-@pytest.mark.asyncio
-async def test_get_volume_snapshot_flattened_error_async():
-    client = BareMetalSolutionAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        await client.get_volume_snapshot(
-            baremetalsolution.GetVolumeSnapshotRequest(),
-            name="name_value",
-        )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        baremetalsolution.ListVolumeSnapshotsRequest,
-        dict,
-    ],
-)
-def test_list_volume_snapshots(request_type, transport: str = "grpc"):
-    client = BareMetalSolutionClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_volume_snapshots), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = baremetalsolution.ListVolumeSnapshotsResponse(
-            next_page_token="next_page_token_value",
-            unreachable=["unreachable_value"],
-        )
-        response = client.list_volume_snapshots(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == baremetalsolution.ListVolumeSnapshotsRequest()
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListVolumeSnapshotsPager)
-    assert response.next_page_token == "next_page_token_value"
-    assert response.unreachable == ["unreachable_value"]
-
-
-def test_list_volume_snapshots_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = BareMetalSolutionClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_volume_snapshots), "__call__"
-    ) as call:
-        client.list_volume_snapshots()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == baremetalsolution.ListVolumeSnapshotsRequest()
-
-
-@pytest.mark.asyncio
-async def test_list_volume_snapshots_async(
-    transport: str = "grpc_asyncio",
-    request_type=baremetalsolution.ListVolumeSnapshotsRequest,
-):
-    client = BareMetalSolutionAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_volume_snapshots), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            baremetalsolution.ListVolumeSnapshotsResponse(
-                next_page_token="next_page_token_value",
-                unreachable=["unreachable_value"],
-            )
-        )
-        response = await client.list_volume_snapshots(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == baremetalsolution.ListVolumeSnapshotsRequest()
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListVolumeSnapshotsAsyncPager)
-    assert response.next_page_token == "next_page_token_value"
-    assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_volume_snapshots_async_from_dict():
-    await test_list_volume_snapshots_async(request_type=dict)
-
-
-def test_list_volume_snapshots_field_headers():
-    client = BareMetalSolutionClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = baremetalsolution.ListVolumeSnapshotsRequest()
-
-    request.parent = "parent_value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_volume_snapshots), "__call__"
-    ) as call:
-        call.return_value = baremetalsolution.ListVolumeSnapshotsResponse()
-        client.list_volume_snapshots(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert (
-        "x-goog-request-params",
-        "parent=parent_value",
-    ) in kw["metadata"]
-
-
-@pytest.mark.asyncio
-async def test_list_volume_snapshots_field_headers_async():
-    client = BareMetalSolutionAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = baremetalsolution.ListVolumeSnapshotsRequest()
-
-    request.parent = "parent_value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_volume_snapshots), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            baremetalsolution.ListVolumeSnapshotsResponse()
-        )
-        await client.list_volume_snapshots(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert (
-        "x-goog-request-params",
-        "parent=parent_value",
-    ) in kw["metadata"]
-
-
-def test_list_volume_snapshots_flattened():
-    client = BareMetalSolutionClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_volume_snapshots), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = baremetalsolution.ListVolumeSnapshotsResponse()
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        client.list_volume_snapshots(
-            parent="parent_value",
-        )
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        arg = args[0].parent
-        mock_val = "parent_value"
-        assert arg == mock_val
-
-
-def test_list_volume_snapshots_flattened_error():
-    client = BareMetalSolutionClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        client.list_volume_snapshots(
-            baremetalsolution.ListVolumeSnapshotsRequest(),
-            parent="parent_value",
-        )
-
-
-@pytest.mark.asyncio
-async def test_list_volume_snapshots_flattened_async():
-    client = BareMetalSolutionAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_volume_snapshots), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = baremetalsolution.ListVolumeSnapshotsResponse()
-
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            baremetalsolution.ListVolumeSnapshotsResponse()
-        )
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        response = await client.list_volume_snapshots(
-            parent="parent_value",
-        )
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        arg = args[0].parent
-        mock_val = "parent_value"
-        assert arg == mock_val
-
-
-@pytest.mark.asyncio
-async def test_list_volume_snapshots_flattened_error_async():
-    client = BareMetalSolutionAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        await client.list_volume_snapshots(
-            baremetalsolution.ListVolumeSnapshotsRequest(),
-            parent="parent_value",
-        )
-
-
-def test_list_volume_snapshots_pager(transport_name: str = "grpc"):
-    client = BareMetalSolutionClient(
-        credentials=ga_credentials.AnonymousCredentials,
-        transport=transport_name,
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_volume_snapshots), "__call__"
-    ) as call:
-        # Set the response to a series of pages.
-        call.side_effect = (
-            baremetalsolution.ListVolumeSnapshotsResponse(
-                volume_snapshots=[
-                    baremetalsolution.VolumeSnapshot(),
-                    baremetalsolution.VolumeSnapshot(),
-                    baremetalsolution.VolumeSnapshot(),
-                ],
-                next_page_token="abc",
-            ),
-            baremetalsolution.ListVolumeSnapshotsResponse(
-                volume_snapshots=[],
-                next_page_token="def",
-            ),
-            baremetalsolution.ListVolumeSnapshotsResponse(
-                volume_snapshots=[
-                    baremetalsolution.VolumeSnapshot(),
-                ],
-                next_page_token="ghi",
-            ),
-            baremetalsolution.ListVolumeSnapshotsResponse(
-                volume_snapshots=[
-                    baremetalsolution.VolumeSnapshot(),
-                    baremetalsolution.VolumeSnapshot(),
-                ],
-            ),
-            RuntimeError,
-        )
-
-        metadata = ()
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
-        )
-        pager = client.list_volume_snapshots(request={})
-
-        assert pager._metadata == metadata
-
-        results = list(pager)
-        assert len(results) == 6
-        assert all(isinstance(i, baremetalsolution.VolumeSnapshot) for i in results)
-
-
-def test_list_volume_snapshots_pages(transport_name: str = "grpc"):
-    client = BareMetalSolutionClient(
-        credentials=ga_credentials.AnonymousCredentials,
-        transport=transport_name,
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_volume_snapshots), "__call__"
-    ) as call:
-        # Set the response to a series of pages.
-        call.side_effect = (
-            baremetalsolution.ListVolumeSnapshotsResponse(
-                volume_snapshots=[
-                    baremetalsolution.VolumeSnapshot(),
-                    baremetalsolution.VolumeSnapshot(),
-                    baremetalsolution.VolumeSnapshot(),
-                ],
-                next_page_token="abc",
-            ),
-            baremetalsolution.ListVolumeSnapshotsResponse(
-                volume_snapshots=[],
-                next_page_token="def",
-            ),
-            baremetalsolution.ListVolumeSnapshotsResponse(
-                volume_snapshots=[
-                    baremetalsolution.VolumeSnapshot(),
-                ],
-                next_page_token="ghi",
-            ),
-            baremetalsolution.ListVolumeSnapshotsResponse(
-                volume_snapshots=[
-                    baremetalsolution.VolumeSnapshot(),
-                    baremetalsolution.VolumeSnapshot(),
-                ],
-            ),
-            RuntimeError,
-        )
-        pages = list(client.list_volume_snapshots(request={}).pages)
-        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
-            assert page_.raw_page.next_page_token == token
-
-
-@pytest.mark.asyncio
-async def test_list_volume_snapshots_async_pager():
-    client = BareMetalSolutionAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials,
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_volume_snapshots),
-        "__call__",
-        new_callable=mock.AsyncMock,
-    ) as call:
-        # Set the response to a series of pages.
-        call.side_effect = (
-            baremetalsolution.ListVolumeSnapshotsResponse(
-                volume_snapshots=[
-                    baremetalsolution.VolumeSnapshot(),
-                    baremetalsolution.VolumeSnapshot(),
-                    baremetalsolution.VolumeSnapshot(),
-                ],
-                next_page_token="abc",
-            ),
-            baremetalsolution.ListVolumeSnapshotsResponse(
-                volume_snapshots=[],
-                next_page_token="def",
-            ),
-            baremetalsolution.ListVolumeSnapshotsResponse(
-                volume_snapshots=[
-                    baremetalsolution.VolumeSnapshot(),
-                ],
-                next_page_token="ghi",
-            ),
-            baremetalsolution.ListVolumeSnapshotsResponse(
-                volume_snapshots=[
-                    baremetalsolution.VolumeSnapshot(),
-                    baremetalsolution.VolumeSnapshot(),
-                ],
-            ),
-            RuntimeError,
-        )
-        async_pager = await client.list_volume_snapshots(
-            request={},
-        )
-        assert async_pager.next_page_token == "abc"
-        responses = []
-        async for response in async_pager:  # pragma: no branch
-            responses.append(response)
-
-        assert len(responses) == 6
-        assert all(isinstance(i, baremetalsolution.VolumeSnapshot) for i in responses)
-
-
-@pytest.mark.asyncio
-async def test_list_volume_snapshots_async_pages():
-    client = BareMetalSolutionAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials,
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_volume_snapshots),
-        "__call__",
-        new_callable=mock.AsyncMock,
-    ) as call:
-        # Set the response to a series of pages.
-        call.side_effect = (
-            baremetalsolution.ListVolumeSnapshotsResponse(
-                volume_snapshots=[
-                    baremetalsolution.VolumeSnapshot(),
-                    baremetalsolution.VolumeSnapshot(),
-                    baremetalsolution.VolumeSnapshot(),
-                ],
-                next_page_token="abc",
-            ),
-            baremetalsolution.ListVolumeSnapshotsResponse(
-                volume_snapshots=[],
-                next_page_token="def",
-            ),
-            baremetalsolution.ListVolumeSnapshotsResponse(
-                volume_snapshots=[
-                    baremetalsolution.VolumeSnapshot(),
-                ],
-                next_page_token="ghi",
-            ),
-            baremetalsolution.ListVolumeSnapshotsResponse(
-                volume_snapshots=[
-                    baremetalsolution.VolumeSnapshot(),
-                    baremetalsolution.VolumeSnapshot(),
-                ],
-            ),
-            RuntimeError,
-        )
-        pages = []
-        async for page_ in (
-            await client.list_volume_snapshots(request={})
-        ).pages:  # pragma: no branch
-            pages.append(page_)
-        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
-            assert page_.raw_page.next_page_token == token
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        baremetalsolution.GetLunRequest,
+        lun.GetLunRequest,
         dict,
     ],
 )
@@ -6141,15 +4874,16 @@ def test_get_lun(request_type, transport: str = "grpc"):
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_lun), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = baremetalsolution.Lun(
+        call.return_value = lun.Lun(
             name="name_value",
-            state=baremetalsolution.Lun.State.CREATING,
+            id="id_value",
+            state=lun.Lun.State.CREATING,
             size_gb=739,
-            multiprotocol_type=baremetalsolution.Lun.MultiprotocolType.LINUX,
+            multiprotocol_type=lun.Lun.MultiprotocolType.LINUX,
             storage_volume="storage_volume_value",
             shareable=True,
             boot_lun=True,
-            storage_type=baremetalsolution.Lun.StorageType.SSD,
+            storage_type=lun.Lun.StorageType.SSD,
             wwid="wwid_value",
         )
         response = client.get_lun(request)
@@ -6157,18 +4891,19 @@ def test_get_lun(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == baremetalsolution.GetLunRequest()
+        assert args[0] == lun.GetLunRequest()
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, baremetalsolution.Lun)
+    assert isinstance(response, lun.Lun)
     assert response.name == "name_value"
-    assert response.state == baremetalsolution.Lun.State.CREATING
+    assert response.id == "id_value"
+    assert response.state == lun.Lun.State.CREATING
     assert response.size_gb == 739
-    assert response.multiprotocol_type == baremetalsolution.Lun.MultiprotocolType.LINUX
+    assert response.multiprotocol_type == lun.Lun.MultiprotocolType.LINUX
     assert response.storage_volume == "storage_volume_value"
     assert response.shareable is True
     assert response.boot_lun is True
-    assert response.storage_type == baremetalsolution.Lun.StorageType.SSD
+    assert response.storage_type == lun.Lun.StorageType.SSD
     assert response.wwid == "wwid_value"
 
 
@@ -6185,12 +4920,12 @@ def test_get_lun_empty_call():
         client.get_lun()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == baremetalsolution.GetLunRequest()
+        assert args[0] == lun.GetLunRequest()
 
 
 @pytest.mark.asyncio
 async def test_get_lun_async(
-    transport: str = "grpc_asyncio", request_type=baremetalsolution.GetLunRequest
+    transport: str = "grpc_asyncio", request_type=lun.GetLunRequest
 ):
     client = BareMetalSolutionAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -6205,15 +4940,16 @@ async def test_get_lun_async(
     with mock.patch.object(type(client.transport.get_lun), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            baremetalsolution.Lun(
+            lun.Lun(
                 name="name_value",
-                state=baremetalsolution.Lun.State.CREATING,
+                id="id_value",
+                state=lun.Lun.State.CREATING,
                 size_gb=739,
-                multiprotocol_type=baremetalsolution.Lun.MultiprotocolType.LINUX,
+                multiprotocol_type=lun.Lun.MultiprotocolType.LINUX,
                 storage_volume="storage_volume_value",
                 shareable=True,
                 boot_lun=True,
-                storage_type=baremetalsolution.Lun.StorageType.SSD,
+                storage_type=lun.Lun.StorageType.SSD,
                 wwid="wwid_value",
             )
         )
@@ -6222,18 +4958,19 @@ async def test_get_lun_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == baremetalsolution.GetLunRequest()
+        assert args[0] == lun.GetLunRequest()
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, baremetalsolution.Lun)
+    assert isinstance(response, lun.Lun)
     assert response.name == "name_value"
-    assert response.state == baremetalsolution.Lun.State.CREATING
+    assert response.id == "id_value"
+    assert response.state == lun.Lun.State.CREATING
     assert response.size_gb == 739
-    assert response.multiprotocol_type == baremetalsolution.Lun.MultiprotocolType.LINUX
+    assert response.multiprotocol_type == lun.Lun.MultiprotocolType.LINUX
     assert response.storage_volume == "storage_volume_value"
     assert response.shareable is True
     assert response.boot_lun is True
-    assert response.storage_type == baremetalsolution.Lun.StorageType.SSD
+    assert response.storage_type == lun.Lun.StorageType.SSD
     assert response.wwid == "wwid_value"
 
 
@@ -6249,13 +4986,13 @@ def test_get_lun_field_headers():
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = baremetalsolution.GetLunRequest()
+    request = lun.GetLunRequest()
 
     request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_lun), "__call__") as call:
-        call.return_value = baremetalsolution.Lun()
+        call.return_value = lun.Lun()
         client.get_lun(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -6279,15 +5016,13 @@ async def test_get_lun_field_headers_async():
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = baremetalsolution.GetLunRequest()
+    request = lun.GetLunRequest()
 
     request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_lun), "__call__") as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            baremetalsolution.Lun()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(lun.Lun())
         await client.get_lun(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -6311,7 +5046,7 @@ def test_get_lun_flattened():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_lun), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = baremetalsolution.Lun()
+        call.return_value = lun.Lun()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.get_lun(
@@ -6336,7 +5071,7 @@ def test_get_lun_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.get_lun(
-            baremetalsolution.GetLunRequest(),
+            lun.GetLunRequest(),
             name="name_value",
         )
 
@@ -6350,11 +5085,9 @@ async def test_get_lun_flattened_async():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_lun), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = baremetalsolution.Lun()
+        call.return_value = lun.Lun()
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            baremetalsolution.Lun()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(lun.Lun())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.get_lun(
@@ -6380,7 +5113,7 @@ async def test_get_lun_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.get_lun(
-            baremetalsolution.GetLunRequest(),
+            lun.GetLunRequest(),
             name="name_value",
         )
 
@@ -6388,7 +5121,7 @@ async def test_get_lun_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        baremetalsolution.ListLunsRequest,
+        lun.ListLunsRequest,
         dict,
     ],
 )
@@ -6405,7 +5138,7 @@ def test_list_luns(request_type, transport: str = "grpc"):
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_luns), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = baremetalsolution.ListLunsResponse(
+        call.return_value = lun.ListLunsResponse(
             next_page_token="next_page_token_value",
             unreachable=["unreachable_value"],
         )
@@ -6414,7 +5147,7 @@ def test_list_luns(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == baremetalsolution.ListLunsRequest()
+        assert args[0] == lun.ListLunsRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListLunsPager)
@@ -6435,12 +5168,12 @@ def test_list_luns_empty_call():
         client.list_luns()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == baremetalsolution.ListLunsRequest()
+        assert args[0] == lun.ListLunsRequest()
 
 
 @pytest.mark.asyncio
 async def test_list_luns_async(
-    transport: str = "grpc_asyncio", request_type=baremetalsolution.ListLunsRequest
+    transport: str = "grpc_asyncio", request_type=lun.ListLunsRequest
 ):
     client = BareMetalSolutionAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -6455,7 +5188,7 @@ async def test_list_luns_async(
     with mock.patch.object(type(client.transport.list_luns), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            baremetalsolution.ListLunsResponse(
+            lun.ListLunsResponse(
                 next_page_token="next_page_token_value",
                 unreachable=["unreachable_value"],
             )
@@ -6465,7 +5198,7 @@ async def test_list_luns_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == baremetalsolution.ListLunsRequest()
+        assert args[0] == lun.ListLunsRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListLunsAsyncPager)
@@ -6485,13 +5218,13 @@ def test_list_luns_field_headers():
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = baremetalsolution.ListLunsRequest()
+    request = lun.ListLunsRequest()
 
     request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_luns), "__call__") as call:
-        call.return_value = baremetalsolution.ListLunsResponse()
+        call.return_value = lun.ListLunsResponse()
         client.list_luns(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -6515,14 +5248,14 @@ async def test_list_luns_field_headers_async():
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = baremetalsolution.ListLunsRequest()
+    request = lun.ListLunsRequest()
 
     request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_luns), "__call__") as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            baremetalsolution.ListLunsResponse()
+            lun.ListLunsResponse()
         )
         await client.list_luns(request)
 
@@ -6547,7 +5280,7 @@ def test_list_luns_flattened():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_luns), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = baremetalsolution.ListLunsResponse()
+        call.return_value = lun.ListLunsResponse()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.list_luns(
@@ -6572,7 +5305,7 @@ def test_list_luns_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.list_luns(
-            baremetalsolution.ListLunsRequest(),
+            lun.ListLunsRequest(),
             parent="parent_value",
         )
 
@@ -6586,10 +5319,10 @@ async def test_list_luns_flattened_async():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_luns), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = baremetalsolution.ListLunsResponse()
+        call.return_value = lun.ListLunsResponse()
 
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            baremetalsolution.ListLunsResponse()
+            lun.ListLunsResponse()
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
@@ -6616,7 +5349,7 @@ async def test_list_luns_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.list_luns(
-            baremetalsolution.ListLunsRequest(),
+            lun.ListLunsRequest(),
             parent="parent_value",
         )
 
@@ -6631,28 +5364,28 @@ def test_list_luns_pager(transport_name: str = "grpc"):
     with mock.patch.object(type(client.transport.list_luns), "__call__") as call:
         # Set the response to a series of pages.
         call.side_effect = (
-            baremetalsolution.ListLunsResponse(
+            lun.ListLunsResponse(
                 luns=[
-                    baremetalsolution.Lun(),
-                    baremetalsolution.Lun(),
-                    baremetalsolution.Lun(),
+                    lun.Lun(),
+                    lun.Lun(),
+                    lun.Lun(),
                 ],
                 next_page_token="abc",
             ),
-            baremetalsolution.ListLunsResponse(
+            lun.ListLunsResponse(
                 luns=[],
                 next_page_token="def",
             ),
-            baremetalsolution.ListLunsResponse(
+            lun.ListLunsResponse(
                 luns=[
-                    baremetalsolution.Lun(),
+                    lun.Lun(),
                 ],
                 next_page_token="ghi",
             ),
-            baremetalsolution.ListLunsResponse(
+            lun.ListLunsResponse(
                 luns=[
-                    baremetalsolution.Lun(),
-                    baremetalsolution.Lun(),
+                    lun.Lun(),
+                    lun.Lun(),
                 ],
             ),
             RuntimeError,
@@ -6668,7 +5401,7 @@ def test_list_luns_pager(transport_name: str = "grpc"):
 
         results = list(pager)
         assert len(results) == 6
-        assert all(isinstance(i, baremetalsolution.Lun) for i in results)
+        assert all(isinstance(i, lun.Lun) for i in results)
 
 
 def test_list_luns_pages(transport_name: str = "grpc"):
@@ -6681,28 +5414,28 @@ def test_list_luns_pages(transport_name: str = "grpc"):
     with mock.patch.object(type(client.transport.list_luns), "__call__") as call:
         # Set the response to a series of pages.
         call.side_effect = (
-            baremetalsolution.ListLunsResponse(
+            lun.ListLunsResponse(
                 luns=[
-                    baremetalsolution.Lun(),
-                    baremetalsolution.Lun(),
-                    baremetalsolution.Lun(),
+                    lun.Lun(),
+                    lun.Lun(),
+                    lun.Lun(),
                 ],
                 next_page_token="abc",
             ),
-            baremetalsolution.ListLunsResponse(
+            lun.ListLunsResponse(
                 luns=[],
                 next_page_token="def",
             ),
-            baremetalsolution.ListLunsResponse(
+            lun.ListLunsResponse(
                 luns=[
-                    baremetalsolution.Lun(),
+                    lun.Lun(),
                 ],
                 next_page_token="ghi",
             ),
-            baremetalsolution.ListLunsResponse(
+            lun.ListLunsResponse(
                 luns=[
-                    baremetalsolution.Lun(),
-                    baremetalsolution.Lun(),
+                    lun.Lun(),
+                    lun.Lun(),
                 ],
             ),
             RuntimeError,
@@ -6724,28 +5457,28 @@ async def test_list_luns_async_pager():
     ) as call:
         # Set the response to a series of pages.
         call.side_effect = (
-            baremetalsolution.ListLunsResponse(
+            lun.ListLunsResponse(
                 luns=[
-                    baremetalsolution.Lun(),
-                    baremetalsolution.Lun(),
-                    baremetalsolution.Lun(),
+                    lun.Lun(),
+                    lun.Lun(),
+                    lun.Lun(),
                 ],
                 next_page_token="abc",
             ),
-            baremetalsolution.ListLunsResponse(
+            lun.ListLunsResponse(
                 luns=[],
                 next_page_token="def",
             ),
-            baremetalsolution.ListLunsResponse(
+            lun.ListLunsResponse(
                 luns=[
-                    baremetalsolution.Lun(),
+                    lun.Lun(),
                 ],
                 next_page_token="ghi",
             ),
-            baremetalsolution.ListLunsResponse(
+            lun.ListLunsResponse(
                 luns=[
-                    baremetalsolution.Lun(),
-                    baremetalsolution.Lun(),
+                    lun.Lun(),
+                    lun.Lun(),
                 ],
             ),
             RuntimeError,
@@ -6759,7 +5492,7 @@ async def test_list_luns_async_pager():
             responses.append(response)
 
         assert len(responses) == 6
-        assert all(isinstance(i, baremetalsolution.Lun) for i in responses)
+        assert all(isinstance(i, lun.Lun) for i in responses)
 
 
 @pytest.mark.asyncio
@@ -6774,28 +5507,28 @@ async def test_list_luns_async_pages():
     ) as call:
         # Set the response to a series of pages.
         call.side_effect = (
-            baremetalsolution.ListLunsResponse(
+            lun.ListLunsResponse(
                 luns=[
-                    baremetalsolution.Lun(),
-                    baremetalsolution.Lun(),
-                    baremetalsolution.Lun(),
+                    lun.Lun(),
+                    lun.Lun(),
+                    lun.Lun(),
                 ],
                 next_page_token="abc",
             ),
-            baremetalsolution.ListLunsResponse(
+            lun.ListLunsResponse(
                 luns=[],
                 next_page_token="def",
             ),
-            baremetalsolution.ListLunsResponse(
+            lun.ListLunsResponse(
                 luns=[
-                    baremetalsolution.Lun(),
+                    lun.Lun(),
                 ],
                 next_page_token="ghi",
             ),
-            baremetalsolution.ListLunsResponse(
+            lun.ListLunsResponse(
                 luns=[
-                    baremetalsolution.Lun(),
-                    baremetalsolution.Lun(),
+                    lun.Lun(),
+                    lun.Lun(),
                 ],
             ),
             RuntimeError,
@@ -6807,6 +5540,906 @@ async def test_list_luns_async_pages():
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        nfs_share.GetNfsShareRequest,
+        dict,
+    ],
+)
+def test_get_nfs_share(request_type, transport: str = "grpc"):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_nfs_share), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = nfs_share.NfsShare(
+            name="name_value",
+            nfs_share_id="nfs_share_id_value",
+            state=nfs_share.NfsShare.State.PROVISIONED,
+            volume="volume_value",
+        )
+        response = client.get_nfs_share(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == nfs_share.GetNfsShareRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, nfs_share.NfsShare)
+    assert response.name == "name_value"
+    assert response.nfs_share_id == "nfs_share_id_value"
+    assert response.state == nfs_share.NfsShare.State.PROVISIONED
+    assert response.volume == "volume_value"
+
+
+def test_get_nfs_share_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_nfs_share), "__call__") as call:
+        client.get_nfs_share()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == nfs_share.GetNfsShareRequest()
+
+
+@pytest.mark.asyncio
+async def test_get_nfs_share_async(
+    transport: str = "grpc_asyncio", request_type=nfs_share.GetNfsShareRequest
+):
+    client = BareMetalSolutionAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_nfs_share), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            nfs_share.NfsShare(
+                name="name_value",
+                nfs_share_id="nfs_share_id_value",
+                state=nfs_share.NfsShare.State.PROVISIONED,
+                volume="volume_value",
+            )
+        )
+        response = await client.get_nfs_share(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == nfs_share.GetNfsShareRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, nfs_share.NfsShare)
+    assert response.name == "name_value"
+    assert response.nfs_share_id == "nfs_share_id_value"
+    assert response.state == nfs_share.NfsShare.State.PROVISIONED
+    assert response.volume == "volume_value"
+
+
+@pytest.mark.asyncio
+async def test_get_nfs_share_async_from_dict():
+    await test_get_nfs_share_async(request_type=dict)
+
+
+def test_get_nfs_share_field_headers():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = nfs_share.GetNfsShareRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_nfs_share), "__call__") as call:
+        call.return_value = nfs_share.NfsShare()
+        client.get_nfs_share(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_get_nfs_share_field_headers_async():
+    client = BareMetalSolutionAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = nfs_share.GetNfsShareRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_nfs_share), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(nfs_share.NfsShare())
+        await client.get_nfs_share(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_get_nfs_share_flattened():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_nfs_share), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = nfs_share.NfsShare()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.get_nfs_share(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_get_nfs_share_flattened_error():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_nfs_share(
+            nfs_share.GetNfsShareRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_nfs_share_flattened_async():
+    client = BareMetalSolutionAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_nfs_share), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = nfs_share.NfsShare()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(nfs_share.NfsShare())
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.get_nfs_share(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_get_nfs_share_flattened_error_async():
+    client = BareMetalSolutionAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.get_nfs_share(
+            nfs_share.GetNfsShareRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        nfs_share.ListNfsSharesRequest,
+        dict,
+    ],
+)
+def test_list_nfs_shares(request_type, transport: str = "grpc"):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_nfs_shares), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = nfs_share.ListNfsSharesResponse(
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
+        )
+        response = client.list_nfs_shares(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == nfs_share.ListNfsSharesRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListNfsSharesPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
+
+
+def test_list_nfs_shares_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_nfs_shares), "__call__") as call:
+        client.list_nfs_shares()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == nfs_share.ListNfsSharesRequest()
+
+
+@pytest.mark.asyncio
+async def test_list_nfs_shares_async(
+    transport: str = "grpc_asyncio", request_type=nfs_share.ListNfsSharesRequest
+):
+    client = BareMetalSolutionAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_nfs_shares), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            nfs_share.ListNfsSharesResponse(
+                next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
+            )
+        )
+        response = await client.list_nfs_shares(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == nfs_share.ListNfsSharesRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListNfsSharesAsyncPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
+
+
+@pytest.mark.asyncio
+async def test_list_nfs_shares_async_from_dict():
+    await test_list_nfs_shares_async(request_type=dict)
+
+
+def test_list_nfs_shares_field_headers():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = nfs_share.ListNfsSharesRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_nfs_shares), "__call__") as call:
+        call.return_value = nfs_share.ListNfsSharesResponse()
+        client.list_nfs_shares(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_list_nfs_shares_field_headers_async():
+    client = BareMetalSolutionAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = nfs_share.ListNfsSharesRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_nfs_shares), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            nfs_share.ListNfsSharesResponse()
+        )
+        await client.list_nfs_shares(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+def test_list_nfs_shares_flattened():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_nfs_shares), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = nfs_share.ListNfsSharesResponse()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.list_nfs_shares(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+def test_list_nfs_shares_flattened_error():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_nfs_shares(
+            nfs_share.ListNfsSharesRequest(),
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_nfs_shares_flattened_async():
+    client = BareMetalSolutionAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_nfs_shares), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = nfs_share.ListNfsSharesResponse()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            nfs_share.ListNfsSharesResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.list_nfs_shares(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_list_nfs_shares_flattened_error_async():
+    client = BareMetalSolutionAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.list_nfs_shares(
+            nfs_share.ListNfsSharesRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_nfs_shares_pager(transport_name: str = "grpc"):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_nfs_shares), "__call__") as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            nfs_share.ListNfsSharesResponse(
+                nfs_shares=[
+                    nfs_share.NfsShare(),
+                    nfs_share.NfsShare(),
+                    nfs_share.NfsShare(),
+                ],
+                next_page_token="abc",
+            ),
+            nfs_share.ListNfsSharesResponse(
+                nfs_shares=[],
+                next_page_token="def",
+            ),
+            nfs_share.ListNfsSharesResponse(
+                nfs_shares=[
+                    nfs_share.NfsShare(),
+                ],
+                next_page_token="ghi",
+            ),
+            nfs_share.ListNfsSharesResponse(
+                nfs_shares=[
+                    nfs_share.NfsShare(),
+                    nfs_share.NfsShare(),
+                ],
+            ),
+            RuntimeError,
+        )
+
+        metadata = ()
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
+        )
+        pager = client.list_nfs_shares(request={})
+
+        assert pager._metadata == metadata
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, nfs_share.NfsShare) for i in results)
+
+
+def test_list_nfs_shares_pages(transport_name: str = "grpc"):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_nfs_shares), "__call__") as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            nfs_share.ListNfsSharesResponse(
+                nfs_shares=[
+                    nfs_share.NfsShare(),
+                    nfs_share.NfsShare(),
+                    nfs_share.NfsShare(),
+                ],
+                next_page_token="abc",
+            ),
+            nfs_share.ListNfsSharesResponse(
+                nfs_shares=[],
+                next_page_token="def",
+            ),
+            nfs_share.ListNfsSharesResponse(
+                nfs_shares=[
+                    nfs_share.NfsShare(),
+                ],
+                next_page_token="ghi",
+            ),
+            nfs_share.ListNfsSharesResponse(
+                nfs_shares=[
+                    nfs_share.NfsShare(),
+                    nfs_share.NfsShare(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = list(client.list_nfs_shares(request={}).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.asyncio
+async def test_list_nfs_shares_async_pager():
+    client = BareMetalSolutionAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_nfs_shares), "__call__", new_callable=mock.AsyncMock
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            nfs_share.ListNfsSharesResponse(
+                nfs_shares=[
+                    nfs_share.NfsShare(),
+                    nfs_share.NfsShare(),
+                    nfs_share.NfsShare(),
+                ],
+                next_page_token="abc",
+            ),
+            nfs_share.ListNfsSharesResponse(
+                nfs_shares=[],
+                next_page_token="def",
+            ),
+            nfs_share.ListNfsSharesResponse(
+                nfs_shares=[
+                    nfs_share.NfsShare(),
+                ],
+                next_page_token="ghi",
+            ),
+            nfs_share.ListNfsSharesResponse(
+                nfs_shares=[
+                    nfs_share.NfsShare(),
+                    nfs_share.NfsShare(),
+                ],
+            ),
+            RuntimeError,
+        )
+        async_pager = await client.list_nfs_shares(
+            request={},
+        )
+        assert async_pager.next_page_token == "abc"
+        responses = []
+        async for response in async_pager:  # pragma: no branch
+            responses.append(response)
+
+        assert len(responses) == 6
+        assert all(isinstance(i, nfs_share.NfsShare) for i in responses)
+
+
+@pytest.mark.asyncio
+async def test_list_nfs_shares_async_pages():
+    client = BareMetalSolutionAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_nfs_shares), "__call__", new_callable=mock.AsyncMock
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            nfs_share.ListNfsSharesResponse(
+                nfs_shares=[
+                    nfs_share.NfsShare(),
+                    nfs_share.NfsShare(),
+                    nfs_share.NfsShare(),
+                ],
+                next_page_token="abc",
+            ),
+            nfs_share.ListNfsSharesResponse(
+                nfs_shares=[],
+                next_page_token="def",
+            ),
+            nfs_share.ListNfsSharesResponse(
+                nfs_shares=[
+                    nfs_share.NfsShare(),
+                ],
+                next_page_token="ghi",
+            ),
+            nfs_share.ListNfsSharesResponse(
+                nfs_shares=[
+                    nfs_share.NfsShare(),
+                    nfs_share.NfsShare(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = []
+        async for page_ in (
+            await client.list_nfs_shares(request={})
+        ).pages:  # pragma: no branch
+            pages.append(page_)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gcb_nfs_share.UpdateNfsShareRequest,
+        dict,
+    ],
+)
+def test_update_nfs_share(request_type, transport: str = "grpc"):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_nfs_share), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/spam")
+        response = client.update_nfs_share(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gcb_nfs_share.UpdateNfsShareRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_update_nfs_share_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_nfs_share), "__call__") as call:
+        client.update_nfs_share()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gcb_nfs_share.UpdateNfsShareRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_nfs_share_async(
+    transport: str = "grpc_asyncio", request_type=gcb_nfs_share.UpdateNfsShareRequest
+):
+    client = BareMetalSolutionAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_nfs_share), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.update_nfs_share(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gcb_nfs_share.UpdateNfsShareRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_update_nfs_share_async_from_dict():
+    await test_update_nfs_share_async(request_type=dict)
+
+
+def test_update_nfs_share_field_headers():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = gcb_nfs_share.UpdateNfsShareRequest()
+
+    request.nfs_share.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_nfs_share), "__call__") as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.update_nfs_share(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "nfs_share.name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_update_nfs_share_field_headers_async():
+    client = BareMetalSolutionAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = gcb_nfs_share.UpdateNfsShareRequest()
+
+    request.nfs_share.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_nfs_share), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/op")
+        )
+        await client.update_nfs_share(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "nfs_share.name=name_value",
+    ) in kw["metadata"]
+
+
+def test_update_nfs_share_flattened():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_nfs_share), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.update_nfs_share(
+            nfs_share=gcb_nfs_share.NfsShare(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].nfs_share
+        mock_val = gcb_nfs_share.NfsShare(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
+
+
+def test_update_nfs_share_flattened_error():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_nfs_share(
+            gcb_nfs_share.UpdateNfsShareRequest(),
+            nfs_share=gcb_nfs_share.NfsShare(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+@pytest.mark.asyncio
+async def test_update_nfs_share_flattened_async():
+    client = BareMetalSolutionAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_nfs_share), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.update_nfs_share(
+            nfs_share=gcb_nfs_share.NfsShare(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].nfs_share
+        mock_val = gcb_nfs_share.NfsShare(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_update_nfs_share_flattened_error_async():
+    client = BareMetalSolutionAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.update_nfs_share(
+            gcb_nfs_share.UpdateNfsShareRequest(),
+            nfs_share=gcb_nfs_share.NfsShare(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
 
 
 def test_credentials_transport_error():
@@ -6948,24 +6581,24 @@ def test_bare_metal_solution_base_transport():
     methods = (
         "list_instances",
         "get_instance",
+        "update_instance",
         "reset_instance",
+        "start_instance",
+        "stop_instance",
+        "detach_lun",
         "list_volumes",
         "get_volume",
         "update_volume",
+        "resize_volume",
         "list_networks",
+        "list_network_usage",
         "get_network",
-        "list_snapshot_schedule_policies",
-        "get_snapshot_schedule_policy",
-        "create_snapshot_schedule_policy",
-        "update_snapshot_schedule_policy",
-        "delete_snapshot_schedule_policy",
-        "create_volume_snapshot",
-        "restore_volume_snapshot",
-        "delete_volume_snapshot",
-        "get_volume_snapshot",
-        "list_volume_snapshots",
+        "update_network",
         "get_lun",
         "list_luns",
+        "get_nfs_share",
+        "list_nfs_shares",
+        "update_nfs_share",
     )
     for method in methods:
         with pytest.raises(NotImplementedError):
@@ -7413,38 +7046,64 @@ def test_parse_network_path():
     assert expected == actual
 
 
-def test_snapshot_schedule_policy_path():
+def test_nfs_share_path():
     project = "winkle"
     location = "nautilus"
-    snapshot_schedule_policy = "scallop"
-    expected = "projects/{project}/locations/{location}/snapshotSchedulePolicies/{snapshot_schedule_policy}".format(
+    nfs_share = "scallop"
+    expected = "projects/{project}/locations/{location}/nfsShares/{nfs_share}".format(
         project=project,
         location=location,
-        snapshot_schedule_policy=snapshot_schedule_policy,
+        nfs_share=nfs_share,
     )
-    actual = BareMetalSolutionClient.snapshot_schedule_policy_path(
-        project, location, snapshot_schedule_policy
+    actual = BareMetalSolutionClient.nfs_share_path(project, location, nfs_share)
+    assert expected == actual
+
+
+def test_parse_nfs_share_path():
+    expected = {
+        "project": "abalone",
+        "location": "squid",
+        "nfs_share": "clam",
+    }
+    path = BareMetalSolutionClient.nfs_share_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = BareMetalSolutionClient.parse_nfs_share_path(path)
+    assert expected == actual
+
+
+def test_server_network_template_path():
+    project = "whelk"
+    location = "octopus"
+    server_network_template = "oyster"
+    expected = "projects/{project}/locations/{location}/serverNetworkTemplate/{server_network_template}".format(
+        project=project,
+        location=location,
+        server_network_template=server_network_template,
+    )
+    actual = BareMetalSolutionClient.server_network_template_path(
+        project, location, server_network_template
     )
     assert expected == actual
 
 
-def test_parse_snapshot_schedule_policy_path():
+def test_parse_server_network_template_path():
     expected = {
-        "project": "abalone",
-        "location": "squid",
-        "snapshot_schedule_policy": "clam",
+        "project": "nudibranch",
+        "location": "cuttlefish",
+        "server_network_template": "mussel",
     }
-    path = BareMetalSolutionClient.snapshot_schedule_policy_path(**expected)
+    path = BareMetalSolutionClient.server_network_template_path(**expected)
 
     # Check that the path construction is reversible.
-    actual = BareMetalSolutionClient.parse_snapshot_schedule_policy_path(path)
+    actual = BareMetalSolutionClient.parse_server_network_template_path(path)
     assert expected == actual
 
 
 def test_volume_path():
-    project = "whelk"
-    location = "octopus"
-    volume = "oyster"
+    project = "winkle"
+    location = "nautilus"
+    volume = "scallop"
     expected = "projects/{project}/locations/{location}/volumes/{volume}".format(
         project=project,
         location=location,
@@ -7456,9 +7115,9 @@ def test_volume_path():
 
 def test_parse_volume_path():
     expected = {
-        "project": "nudibranch",
-        "location": "cuttlefish",
-        "volume": "mussel",
+        "project": "abalone",
+        "location": "squid",
+        "volume": "clam",
     }
     path = BareMetalSolutionClient.volume_path(**expected)
 
@@ -7467,39 +7126,8 @@ def test_parse_volume_path():
     assert expected == actual
 
 
-def test_volume_snapshot_path():
-    project = "winkle"
-    location = "nautilus"
-    volume = "scallop"
-    snapshot = "abalone"
-    expected = "projects/{project}/locations/{location}/volumes/{volume}/snapshots/{snapshot}".format(
-        project=project,
-        location=location,
-        volume=volume,
-        snapshot=snapshot,
-    )
-    actual = BareMetalSolutionClient.volume_snapshot_path(
-        project, location, volume, snapshot
-    )
-    assert expected == actual
-
-
-def test_parse_volume_snapshot_path():
-    expected = {
-        "project": "squid",
-        "location": "clam",
-        "volume": "whelk",
-        "snapshot": "octopus",
-    }
-    path = BareMetalSolutionClient.volume_snapshot_path(**expected)
-
-    # Check that the path construction is reversible.
-    actual = BareMetalSolutionClient.parse_volume_snapshot_path(path)
-    assert expected == actual
-
-
 def test_common_billing_account_path():
-    billing_account = "oyster"
+    billing_account = "whelk"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -7509,7 +7137,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "nudibranch",
+        "billing_account": "octopus",
     }
     path = BareMetalSolutionClient.common_billing_account_path(**expected)
 
@@ -7519,7 +7147,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "cuttlefish"
+    folder = "oyster"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -7529,7 +7157,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "mussel",
+        "folder": "nudibranch",
     }
     path = BareMetalSolutionClient.common_folder_path(**expected)
 
@@ -7539,7 +7167,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "winkle"
+    organization = "cuttlefish"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -7549,7 +7177,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "nautilus",
+        "organization": "mussel",
     }
     path = BareMetalSolutionClient.common_organization_path(**expected)
 
@@ -7559,7 +7187,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "scallop"
+    project = "winkle"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -7569,7 +7197,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "abalone",
+        "project": "nautilus",
     }
     path = BareMetalSolutionClient.common_project_path(**expected)
 
@@ -7579,8 +7207,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "squid"
-    location = "clam"
+    project = "scallop"
+    location = "abalone"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -7591,8 +7219,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "whelk",
-        "location": "octopus",
+        "project": "squid",
+        "location": "clam",
     }
     path = BareMetalSolutionClient.common_location_path(**expected)
 
