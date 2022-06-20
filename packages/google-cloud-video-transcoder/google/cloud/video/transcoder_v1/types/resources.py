@@ -63,13 +63,16 @@ class Job(proto.Message):
             ``JobTemplate.config.inputs`` when using template. URI of
             the media. Input files must be at least 5 seconds in
             duration and stored in Cloud Storage (for example,
-            ``gs://bucket/inputs/file.mp4``).
+            ``gs://bucket/inputs/file.mp4``). See `Supported input and
+            output
+            formats <https://cloud.google.com/transcoder/docs/concepts/supported-input-and-output-formats>`__.
         output_uri (str):
             Input only. Specify the ``output_uri`` to populate an empty
             ``Job.config.output.uri`` or
             ``JobTemplate.config.output.uri`` when using template. URI
             for the output file(s). For example,
-            ``gs://my-bucket/outputs/``.
+            ``gs://my-bucket/outputs/``. See `Supported input and output
+            formats <https://cloud.google.com/transcoder/docs/concepts/supported-input-and-output-formats>`__.
         template_id (str):
             Input only. Specify the ``template_id`` to use for
             populating ``Job.config``. The default is ``preset/web-hd``.
@@ -100,6 +103,9 @@ class Job(proto.Message):
             effective after job completion. Job should be
             deleted automatically after the given TTL. Enter
             a value between 1 and 90. The default is 30.
+        labels (Mapping[str, str]):
+            The labels associated with this job. You can
+            use these to organize and group your jobs.
         error (google.rpc.status_pb2.Status):
             Output only. An error object that describes the reason for
             the failure. This property is always present when ``state``
@@ -161,6 +167,11 @@ class Job(proto.Message):
         proto.INT32,
         number=15,
     )
+    labels = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=16,
+    )
     error = proto.Field(
         proto.MESSAGE,
         number=17,
@@ -177,6 +188,10 @@ class JobTemplate(proto.Message):
             ``projects/{project_number}/locations/{location}/jobTemplates/{job_template}``
         config (google.cloud.video.transcoder_v1.types.JobConfig):
             The configuration for this template.
+        labels (Mapping[str, str]):
+            The labels associated with this job template.
+            You can use these to organize and group your job
+            templates.
     """
 
     name = proto.Field(
@@ -187,6 +202,11 @@ class JobTemplate(proto.Message):
         proto.MESSAGE,
         number=2,
         message="JobConfig",
+    )
+    labels = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=3,
     )
 
 
@@ -215,6 +235,8 @@ class JobConfig(proto.Message):
             Destination on Pub/Sub.
         sprite_sheets (Sequence[google.cloud.video.transcoder_v1.types.SpriteSheet]):
             List of output sprite sheets.
+            Spritesheets require at least one VideoStream in
+            the Jobconfig.
         overlays (Sequence[google.cloud.video.transcoder_v1.types.Overlay]):
             List of overlays on the output video, in
             descending Z-order.
@@ -283,8 +305,10 @@ class Input(proto.Message):
         uri (str):
             URI of the media. Input files must be at least 5 seconds in
             duration and stored in Cloud Storage (for example,
-            ``gs://bucket/inputs/file.mp4``). If empty, the value will
-            be populated from ``Job.input_uri``.
+            ``gs://bucket/inputs/file.mp4``). If empty, the value is
+            populated from ``Job.input_uri``. See `Supported input and
+            output
+            formats <https://cloud.google.com/transcoder/docs/concepts/supported-input-and-output-formats>`__.
         preprocessing_config (google.cloud.video.transcoder_v1.types.PreprocessingConfig):
             Preprocessing configurations.
     """
@@ -310,8 +334,10 @@ class Output(proto.Message):
     Attributes:
         uri (str):
             URI for the output file(s). For example,
-            ``gs://my-bucket/outputs/``. If empty the value is populated
-            from ``Job.output_uri``.
+            ``gs://my-bucket/outputs/``. If empty, the value is
+            populated from ``Job.output_uri``. See `Supported input and
+            output
+            formats <https://cloud.google.com/transcoder/docs/concepts/supported-input-and-output-formats>`__.
     """
 
     uri = proto.Field(
@@ -455,6 +481,9 @@ class MuxStream(proto.Message):
             -  ``fmp4``- the corresponding file extension is ``.m4s``
             -  ``mp4``
             -  ``vtt``
+
+            See also: `Supported input and output
+            formats <https://cloud.google.com/transcoder/docs/concepts/supported-input-and-output-formats>`__
         elementary_streams (Sequence[str]):
             List of ``ElementaryStream.key``\ s multiplexed in this
             stream.
@@ -902,6 +931,8 @@ class PreprocessingConfig(proto.Message):
     class Color(proto.Message):
         r"""Color preprocessing configuration.
 
+        **Note:** This configuration is not supported.
+
         Attributes:
             saturation (float):
                 Control color saturation of the video. Enter
@@ -936,6 +967,8 @@ class PreprocessingConfig(proto.Message):
     class Denoise(proto.Message):
         r"""Denoise preprocessing configuration.
 
+        **Note:** This configuration is not supported.
+
         Attributes:
             strength (float):
                 Set strength of the denoise. Enter a value
@@ -962,6 +995,8 @@ class PreprocessingConfig(proto.Message):
 
     class Deblock(proto.Message):
         r"""Deblock preprocessing configuration.
+
+        **Note:** This configuration is not supported.
 
         Attributes:
             strength (float):
@@ -1003,9 +1038,13 @@ class PreprocessingConfig(proto.Message):
             high_boost (bool):
                 Enable boosting high frequency components. The default is
                 ``false``.
+
+                **Note:** This field is not supported.
             low_boost (bool):
                 Enable boosting low frequency components. The default is
                 ``false``.
+
+                **Note:** This field is not supported.
         """
 
         lufs = proto.Field(
@@ -1658,11 +1697,12 @@ class VideoStream(proto.Message):
                 Supported rate control modes:
 
                 -  ``vbr`` - variable bitrate
-                -  ``crf`` - constant rate factor
             crf_level (int):
-                Target CRF level. Must be between 10 and 36,
-                where 10 is the highest quality and 36 is the
-                most efficient compression. The default is 21.
+                Target CRF level. Must be between 10 and 36, where 10 is the
+                highest quality and 36 is the most efficient compression.
+                The default is 21.
+
+                **Note:** This field is not supported.
             gop_frame_count (int):
                 Select the GOP size based on the specified
                 frame count. Must be greater than zero.
