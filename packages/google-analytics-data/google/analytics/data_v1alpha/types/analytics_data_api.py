@@ -61,9 +61,12 @@ class RunFunnelReportRequest(proto.Message):
             If specified, next action adds a dimension to the funnel
             visualization sub report response. This next action
             dimension expands each funnel step to the unique values of
-            the next action. For example a breakdown by the
+            the next action. For example a next action of the
             ``eventName`` dimension will create rows for several events
             (i.e. ``session_start`` & ``click``) and the total.
+
+            Next action only supports ``eventName`` and most Page /
+            Screen dimensions like ``pageTitle`` and ``pagePath``.
         funnel_visualization_type (google.analytics.data_v1alpha.types.RunFunnelReportRequest.FunnelVisualizationType):
             The funnel visualization type controls the dimensions
             present in the funnel visualization sub report response. If

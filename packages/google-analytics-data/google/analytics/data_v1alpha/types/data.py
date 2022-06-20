@@ -77,7 +77,7 @@ __protobuf__ = proto.module(
         "SegmentParameterFilterScoping",
         "FunnelFilterExpression",
         "FunnelFilterExpressionList",
-        "FunnelFilter",
+        "FunnelFieldFilter",
         "FunnelEventFilter",
         "FunnelParameterFilterExpression",
         "FunnelParameterFilterExpressionList",
@@ -884,8 +884,12 @@ class FunnelNextAction(proto.Message):
             The dimension column added to the funnel visualization sub
             report response. The next action dimension returns the next
             dimension value of this dimension after the user has
-            attained the ``i``\ th funnel step. ``nextActionDimension``
-            currently only supports the ``eventName`` dimension.
+            attained the ``i``\ th funnel step.
+
+            ``nextActionDimension`` currently only supports
+            ``eventName`` and most Page / Screen dimensions like
+            ``pageTitle`` and ``pagePath``. ``nextActionDimension``
+            cannot be a dimension expression.
         limit (int):
             The maximum number of distinct values of the breakdown
             dimension to return in the response. A ``limit`` of ``5`` is
@@ -2009,8 +2013,8 @@ class FunnelFilterExpression(proto.Message):
             The FunnelFilterExpression is NOT of ``notExpression``.
 
             This field is a member of `oneof`_ ``expr``.
-        funnel_filter (google.analytics.data_v1alpha.types.FunnelFilter):
-            A primitive funnel filter.
+        funnel_field_filter (google.analytics.data_v1alpha.types.FunnelFieldFilter):
+            A funnel filter for a dimension or metric.
 
             This field is a member of `oneof`_ ``expr``.
         funnel_event_filter (google.analytics.data_v1alpha.types.FunnelEventFilter):
@@ -2042,11 +2046,11 @@ class FunnelFilterExpression(proto.Message):
         oneof="expr",
         message="FunnelFilterExpression",
     )
-    funnel_filter = proto.Field(
+    funnel_field_filter = proto.Field(
         proto.MESSAGE,
         number=4,
         oneof="expr",
-        message="FunnelFilter",
+        message="FunnelFieldFilter",
     )
     funnel_event_filter = proto.Field(
         proto.MESSAGE,
@@ -2071,7 +2075,7 @@ class FunnelFilterExpressionList(proto.Message):
     )
 
 
-class FunnelFilter(proto.Message):
+class FunnelFieldFilter(proto.Message):
     r"""An expression to filter dimension or metric values.
 
     This message has `oneof`_ fields (mutually exclusive fields).

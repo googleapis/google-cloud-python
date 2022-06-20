@@ -35,7 +35,7 @@ from .types.data import FilterExpressionList
 from .types.data import Funnel
 from .types.data import FunnelBreakdown
 from .types.data import FunnelEventFilter
-from .types.data import FunnelFilter
+from .types.data import FunnelFieldFilter
 from .types.data import FunnelFilterExpression
 from .types.data import FunnelFilterExpressionList
 from .types.data import FunnelNextAction
@@ -104,7 +104,7 @@ __all__ = (
     "Funnel",
     "FunnelBreakdown",
     "FunnelEventFilter",
-    "FunnelFilter",
+    "FunnelFieldFilter",
     "FunnelFilterExpression",
     "FunnelFilterExpressionList",
     "FunnelNextAction",
