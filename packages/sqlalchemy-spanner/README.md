@@ -30,6 +30,16 @@ During setup the dialect will be registered with entry points.
 
 ## A Minimal App
 
+### Database URL
+In order to connect to a database one have to use its URL on connection creation step. SQLAlchemy 1.3 and 1.4 versions have a bit of difference on this step in a dialect prefix part:
+```python
+# for SQLAlchemy 1.3:
+spanner:///projects/project-id/instances/instance-id/databases/database-id
+
+# for SQLAlchemy 1.4:
+spanner+spanner:///projects/project-id/instances/instance-id/databases/database-id
+```
+
 ### Create a table
 ```python
 from sqlalchemy import (
