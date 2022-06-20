@@ -204,7 +204,7 @@ class Assessment(proto.Message):
     )
     private_password_leak_verification = proto.Field(
         proto.MESSAGE,
-        number=7,
+        number=8,
         message="PrivatePasswordLeakVerification",
     )
 
