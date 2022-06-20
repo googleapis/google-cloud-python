@@ -48,14 +48,14 @@ from google.cloud.sqlalchemy_spanner._opentelemetry_tracing import trace_call
 @listens_for(Pool, "reset")
 def reset_connection(dbapi_conn, connection_record):
     """An event of returning a connection back to a pool."""
-    if dbapi_conn.connection.inside_transaction:
-        dbapi_conn.connection.rollback()
+    if isinstance(dbapi_conn.connection, spanner_dbapi.Connection):
+        if dbapi_conn.connection.inside_transaction:
+            dbapi_conn.connection.rollback()
 
-    if getattr(dbapi_conn.connection, "staleness", None) is not None:
         dbapi_conn.connection.staleness = None
-
-    if getattr(dbapi_conn.connection, "read_only", None) is not None:
         dbapi_conn.connection.read_only = False
+    else:
+        dbapi_conn.connection.rollback()
 
 
 # register a method to get a single value of a JSON object
