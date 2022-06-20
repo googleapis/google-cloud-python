@@ -51,6 +51,8 @@ class ContinuousValidationEvent(proto.Message):
         r"""An auditing event for one Pod.
 
         Attributes:
+            pod_namespace (str):
+                The k8s namespace of the Pod.
             pod (str):
                 The name of the Pod.
             deploy_time (google.protobuf.timestamp_pb2.Timestamp):
@@ -101,6 +103,10 @@ class ContinuousValidationEvent(proto.Message):
                 number=3,
             )
 
+        pod_namespace = proto.Field(
+            proto.STRING,
+            number=7,
+        )
         pod = proto.Field(
             proto.STRING,
             number=1,
