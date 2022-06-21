@@ -18,6 +18,10 @@ docker:
 deep-remove-regex:
   - /owl-bot-staging
 
+deep-preserve-regex:
+  - /owl-bot-staging/v2alpha
+  - /owl-bot-staging/v2beta
+
 deep-copy-regex:
   - source: /google/cloud/functions/(v.*)/.*-py/(.*)
     dest: /owl-bot-staging/$1/$2
