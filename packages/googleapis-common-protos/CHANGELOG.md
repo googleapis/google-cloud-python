@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.56.3](https://github.com/googleapis/python-api-common-protos/compare/v1.56.2...v1.56.3) (2022-06-21)
+
+
+### Bug Fixes
+
+* **deps:** allow protobuf < 5.0.0 ([#112](https://github.com/googleapis/python-api-common-protos/issues/112)) ([67b0231](https://github.com/googleapis/python-api-common-protos/commit/67b02313bf47d86ac84917756ff026e331665637))
+
+
+### Documentation
+
+* fix changelog header to consistent size ([#108](https://github.com/googleapis/python-api-common-protos/issues/108)) ([d315b9f](https://github.com/googleapis/python-api-common-protos/commit/d315b9f23f5dbbce27c965a2b692a8d1dcf03d60))
+
 ## [1.56.2](https://github.com/googleapis/python-api-common-protos/compare/v1.56.1...v1.56.2) (2022-05-26)
 
 
