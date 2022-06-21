@@ -104,8 +104,20 @@ with engine.begin() as connection:
 
 SQLAlchemy uses [Alembic](https://alembic.sqlalchemy.org/en/latest/#) tool to organize database migrations.
 
+Spanner dialect doesn't provide a default migration environment, it's up to user to write it. One thing to be noted here - one should explicitly set `alembic_version` table not to use migration revision id as a primary key:
+```python
+with connectable.connect() as connection:
+    context.configure(
+        connection=connection,
+        target_metadata=target_metadata,
+        version_table_pk=False,  # don't use primary key in the versions table
+    )
+```
+As Spanner restricts changing a primary key value, not setting the flag to `False` can cause migration problems.
+
 **Warning!**  
 A migration script can produce a lot of DDL statements. If each of the statements are executed separately, performance issues can occur. To avoid these, it's highly recommended to use the [Alembic batch context](https://alembic.sqlalchemy.org/en/latest/batch.html) feature to pack DDL statements into groups of statements.
+
 
 ## Features and limitations
 
