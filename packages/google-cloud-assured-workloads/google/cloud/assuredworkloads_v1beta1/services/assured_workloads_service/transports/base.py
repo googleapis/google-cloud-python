@@ -26,7 +26,7 @@ from google.api_core import operations_v1
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
-from google.cloud.assuredworkloads_v1beta1.types import assuredworkloads_v1beta1
+from google.cloud.assuredworkloads_v1beta1.types import assuredworkloads
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
 
@@ -196,7 +196,7 @@ class AssuredWorkloadsServiceTransport(abc.ABC):
     def create_workload(
         self,
     ) -> Callable[
-        [assuredworkloads_v1beta1.CreateWorkloadRequest],
+        [assuredworkloads.CreateWorkloadRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()
@@ -205,11 +205,8 @@ class AssuredWorkloadsServiceTransport(abc.ABC):
     def update_workload(
         self,
     ) -> Callable[
-        [assuredworkloads_v1beta1.UpdateWorkloadRequest],
-        Union[
-            assuredworkloads_v1beta1.Workload,
-            Awaitable[assuredworkloads_v1beta1.Workload],
-        ],
+        [assuredworkloads.UpdateWorkloadRequest],
+        Union[assuredworkloads.Workload, Awaitable[assuredworkloads.Workload]],
     ]:
         raise NotImplementedError()
 
@@ -217,7 +214,7 @@ class AssuredWorkloadsServiceTransport(abc.ABC):
     def delete_workload(
         self,
     ) -> Callable[
-        [assuredworkloads_v1beta1.DeleteWorkloadRequest],
+        [assuredworkloads.DeleteWorkloadRequest],
         Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
     ]:
         raise NotImplementedError()
@@ -226,11 +223,8 @@ class AssuredWorkloadsServiceTransport(abc.ABC):
     def get_workload(
         self,
     ) -> Callable[
-        [assuredworkloads_v1beta1.GetWorkloadRequest],
-        Union[
-            assuredworkloads_v1beta1.Workload,
-            Awaitable[assuredworkloads_v1beta1.Workload],
-        ],
+        [assuredworkloads.GetWorkloadRequest],
+        Union[assuredworkloads.Workload, Awaitable[assuredworkloads.Workload]],
     ]:
         raise NotImplementedError()
 
@@ -238,10 +232,10 @@ class AssuredWorkloadsServiceTransport(abc.ABC):
     def list_workloads(
         self,
     ) -> Callable[
-        [assuredworkloads_v1beta1.ListWorkloadsRequest],
+        [assuredworkloads.ListWorkloadsRequest],
         Union[
-            assuredworkloads_v1beta1.ListWorkloadsResponse,
-            Awaitable[assuredworkloads_v1beta1.ListWorkloadsResponse],
+            assuredworkloads.ListWorkloadsResponse,
+            Awaitable[assuredworkloads.ListWorkloadsResponse],
         ],
     ]:
         raise NotImplementedError()

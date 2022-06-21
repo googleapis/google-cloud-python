@@ -17,14 +17,14 @@
 from .services.assured_workloads_service import AssuredWorkloadsServiceClient
 from .services.assured_workloads_service import AssuredWorkloadsServiceAsyncClient
 
-from .types.assuredworkloads_v1beta1 import CreateWorkloadOperationMetadata
-from .types.assuredworkloads_v1beta1 import CreateWorkloadRequest
-from .types.assuredworkloads_v1beta1 import DeleteWorkloadRequest
-from .types.assuredworkloads_v1beta1 import GetWorkloadRequest
-from .types.assuredworkloads_v1beta1 import ListWorkloadsRequest
-from .types.assuredworkloads_v1beta1 import ListWorkloadsResponse
-from .types.assuredworkloads_v1beta1 import UpdateWorkloadRequest
-from .types.assuredworkloads_v1beta1 import Workload
+from .types.assuredworkloads import CreateWorkloadOperationMetadata
+from .types.assuredworkloads import CreateWorkloadRequest
+from .types.assuredworkloads import DeleteWorkloadRequest
+from .types.assuredworkloads import GetWorkloadRequest
+from .types.assuredworkloads import ListWorkloadsRequest
+from .types.assuredworkloads import ListWorkloadsResponse
+from .types.assuredworkloads import UpdateWorkloadRequest
+from .types.assuredworkloads import Workload
 
 __all__ = (
     "AssuredWorkloadsServiceAsyncClient",

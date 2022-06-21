@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .assuredworkloads_v1beta1 import (
+from .assuredworkloads import (
     CreateWorkloadOperationMetadata,
     CreateWorkloadRequest,
     DeleteWorkloadRequest,

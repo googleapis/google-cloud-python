@@ -36,7 +36,7 @@ from google.api_core import operation_async  # type: ignore
 from google.cloud.assuredworkloads_v1beta1.services.assured_workloads_service import (
     pagers,
 )
-from google.cloud.assuredworkloads_v1beta1.types import assuredworkloads_v1beta1
+from google.cloud.assuredworkloads_v1beta1.types import assuredworkloads
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 from .transports.base import AssuredWorkloadsServiceTransport, DEFAULT_CLIENT_INFO
@@ -217,10 +217,10 @@ class AssuredWorkloadsServiceAsyncClient:
 
     async def create_workload(
         self,
-        request: Union[assuredworkloads_v1beta1.CreateWorkloadRequest, dict] = None,
+        request: Union[assuredworkloads.CreateWorkloadRequest, dict] = None,
         *,
         parent: str = None,
-        workload: assuredworkloads_v1beta1.Workload = None,
+        workload: assuredworkloads.Workload = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
@@ -295,7 +295,7 @@ class AssuredWorkloadsServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = assuredworkloads_v1beta1.CreateWorkloadRequest(request)
+        request = assuredworkloads.CreateWorkloadRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -330,8 +330,8 @@ class AssuredWorkloadsServiceAsyncClient:
         response = operation_async.from_gapic(
             response,
             self._client._transport.operations_client,
-            assuredworkloads_v1beta1.Workload,
-            metadata_type=assuredworkloads_v1beta1.CreateWorkloadOperationMetadata,
+            assuredworkloads.Workload,
+            metadata_type=assuredworkloads.CreateWorkloadOperationMetadata,
         )
 
         # Done; return the response.
@@ -339,14 +339,14 @@ class AssuredWorkloadsServiceAsyncClient:
 
     async def update_workload(
         self,
-        request: Union[assuredworkloads_v1beta1.UpdateWorkloadRequest, dict] = None,
+        request: Union[assuredworkloads.UpdateWorkloadRequest, dict] = None,
         *,
-        workload: assuredworkloads_v1beta1.Workload = None,
+        workload: assuredworkloads.Workload = None,
         update_mask: field_mask_pb2.FieldMask = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> assuredworkloads_v1beta1.Workload:
+    ) -> assuredworkloads.Workload:
         r"""Updates an existing workload. Currently allows updating of
         workload display_name and labels. For force updates don't set
         etag field in the Workload. Only one update operation per
@@ -417,7 +417,7 @@ class AssuredWorkloadsServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = assuredworkloads_v1beta1.UpdateWorkloadRequest(request)
+        request = assuredworkloads.UpdateWorkloadRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -455,7 +455,7 @@ class AssuredWorkloadsServiceAsyncClient:
 
     async def delete_workload(
         self,
-        request: Union[assuredworkloads_v1beta1.DeleteWorkloadRequest, dict] = None,
+        request: Union[assuredworkloads.DeleteWorkloadRequest, dict] = None,
         *,
         name: str = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -509,7 +509,7 @@ class AssuredWorkloadsServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = assuredworkloads_v1beta1.DeleteWorkloadRequest(request)
+        request = assuredworkloads.DeleteWorkloadRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -549,13 +549,13 @@ class AssuredWorkloadsServiceAsyncClient:
 
     async def get_workload(
         self,
-        request: Union[assuredworkloads_v1beta1.GetWorkloadRequest, dict] = None,
+        request: Union[assuredworkloads.GetWorkloadRequest, dict] = None,
         *,
         name: str = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> assuredworkloads_v1beta1.Workload:
+    ) -> assuredworkloads.Workload:
         r"""Gets Assured Workload associated with a CRM Node
 
         .. code-block:: python
@@ -614,7 +614,7 @@ class AssuredWorkloadsServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = assuredworkloads_v1beta1.GetWorkloadRequest(request)
+        request = assuredworkloads.GetWorkloadRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -657,7 +657,7 @@ class AssuredWorkloadsServiceAsyncClient:
 
     async def list_workloads(
         self,
-        request: Union[assuredworkloads_v1beta1.ListWorkloadsRequest, dict] = None,
+        request: Union[assuredworkloads.ListWorkloadsRequest, dict] = None,
         *,
         parent: str = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -722,7 +722,7 @@ class AssuredWorkloadsServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = assuredworkloads_v1beta1.ListWorkloadsRequest(request)
+        request = assuredworkloads.ListWorkloadsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.

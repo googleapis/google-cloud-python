@@ -24,7 +24,7 @@ from typing import (
     Iterator,
 )
 
-from google.cloud.assuredworkloads_v1beta1.types import assuredworkloads_v1beta1
+from google.cloud.assuredworkloads_v1beta1.types import assuredworkloads
 
 
 class ListWorkloadsPager:
@@ -47,9 +47,9 @@ class ListWorkloadsPager:
 
     def __init__(
         self,
-        method: Callable[..., assuredworkloads_v1beta1.ListWorkloadsResponse],
-        request: assuredworkloads_v1beta1.ListWorkloadsRequest,
-        response: assuredworkloads_v1beta1.ListWorkloadsResponse,
+        method: Callable[..., assuredworkloads.ListWorkloadsResponse],
+        request: assuredworkloads.ListWorkloadsRequest,
+        response: assuredworkloads.ListWorkloadsResponse,
         *,
         metadata: Sequence[Tuple[str, str]] = ()
     ):
@@ -66,7 +66,7 @@ class ListWorkloadsPager:
                 sent along with the request as metadata.
         """
         self._method = method
-        self._request = assuredworkloads_v1beta1.ListWorkloadsRequest(request)
+        self._request = assuredworkloads.ListWorkloadsRequest(request)
         self._response = response
         self._metadata = metadata
 
@@ -74,14 +74,14 @@ class ListWorkloadsPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterator[assuredworkloads_v1beta1.ListWorkloadsResponse]:
+    def pages(self) -> Iterator[assuredworkloads.ListWorkloadsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterator[assuredworkloads_v1beta1.Workload]:
+    def __iter__(self) -> Iterator[assuredworkloads.Workload]:
         for page in self.pages:
             yield from page.workloads
 
@@ -109,11 +109,9 @@ class ListWorkloadsAsyncPager:
 
     def __init__(
         self,
-        method: Callable[
-            ..., Awaitable[assuredworkloads_v1beta1.ListWorkloadsResponse]
-        ],
-        request: assuredworkloads_v1beta1.ListWorkloadsRequest,
-        response: assuredworkloads_v1beta1.ListWorkloadsResponse,
+        method: Callable[..., Awaitable[assuredworkloads.ListWorkloadsResponse]],
+        request: assuredworkloads.ListWorkloadsRequest,
+        response: assuredworkloads.ListWorkloadsResponse,
         *,
         metadata: Sequence[Tuple[str, str]] = ()
     ):
@@ -130,7 +128,7 @@ class ListWorkloadsAsyncPager:
                 sent along with the request as metadata.
         """
         self._method = method
-        self._request = assuredworkloads_v1beta1.ListWorkloadsRequest(request)
+        self._request = assuredworkloads.ListWorkloadsRequest(request)
         self._response = response
         self._metadata = metadata
 
@@ -138,16 +136,14 @@ class ListWorkloadsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(
-        self,
-    ) -> AsyncIterator[assuredworkloads_v1beta1.ListWorkloadsResponse]:
+    async def pages(self) -> AsyncIterator[assuredworkloads.ListWorkloadsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterator[assuredworkloads_v1beta1.Workload]:
+    def __aiter__(self) -> AsyncIterator[assuredworkloads.Workload]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.workloads:

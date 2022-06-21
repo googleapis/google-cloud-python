@@ -39,7 +39,7 @@ from google.api_core import operation_async  # type: ignore
 from google.cloud.assuredworkloads_v1beta1.services.assured_workloads_service import (
     pagers,
 )
-from google.cloud.assuredworkloads_v1beta1.types import assuredworkloads_v1beta1
+from google.cloud.assuredworkloads_v1beta1.types import assuredworkloads
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 from .transports.base import AssuredWorkloadsServiceTransport, DEFAULT_CLIENT_INFO
@@ -434,10 +434,10 @@ class AssuredWorkloadsServiceClient(metaclass=AssuredWorkloadsServiceClientMeta)
 
     def create_workload(
         self,
-        request: Union[assuredworkloads_v1beta1.CreateWorkloadRequest, dict] = None,
+        request: Union[assuredworkloads.CreateWorkloadRequest, dict] = None,
         *,
         parent: str = None,
-        workload: assuredworkloads_v1beta1.Workload = None,
+        workload: assuredworkloads.Workload = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
@@ -513,11 +513,11 @@ class AssuredWorkloadsServiceClient(metaclass=AssuredWorkloadsServiceClientMeta)
             )
 
         # Minor optimization to avoid making a copy if the user passes
-        # in a assuredworkloads_v1beta1.CreateWorkloadRequest.
+        # in a assuredworkloads.CreateWorkloadRequest.
         # There's no risk of modifying the input as we've already verified
         # there are no flattened fields.
-        if not isinstance(request, assuredworkloads_v1beta1.CreateWorkloadRequest):
-            request = assuredworkloads_v1beta1.CreateWorkloadRequest(request)
+        if not isinstance(request, assuredworkloads.CreateWorkloadRequest):
+            request = assuredworkloads.CreateWorkloadRequest(request)
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
             if parent is not None:
@@ -547,8 +547,8 @@ class AssuredWorkloadsServiceClient(metaclass=AssuredWorkloadsServiceClientMeta)
         response = operation.from_gapic(
             response,
             self._transport.operations_client,
-            assuredworkloads_v1beta1.Workload,
-            metadata_type=assuredworkloads_v1beta1.CreateWorkloadOperationMetadata,
+            assuredworkloads.Workload,
+            metadata_type=assuredworkloads.CreateWorkloadOperationMetadata,
         )
 
         # Done; return the response.
@@ -556,14 +556,14 @@ class AssuredWorkloadsServiceClient(metaclass=AssuredWorkloadsServiceClientMeta)
 
     def update_workload(
         self,
-        request: Union[assuredworkloads_v1beta1.UpdateWorkloadRequest, dict] = None,
+        request: Union[assuredworkloads.UpdateWorkloadRequest, dict] = None,
         *,
-        workload: assuredworkloads_v1beta1.Workload = None,
+        workload: assuredworkloads.Workload = None,
         update_mask: field_mask_pb2.FieldMask = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> assuredworkloads_v1beta1.Workload:
+    ) -> assuredworkloads.Workload:
         r"""Updates an existing workload. Currently allows updating of
         workload display_name and labels. For force updates don't set
         etag field in the Workload. Only one update operation per
@@ -635,11 +635,11 @@ class AssuredWorkloadsServiceClient(metaclass=AssuredWorkloadsServiceClientMeta)
             )
 
         # Minor optimization to avoid making a copy if the user passes
-        # in a assuredworkloads_v1beta1.UpdateWorkloadRequest.
+        # in a assuredworkloads.UpdateWorkloadRequest.
         # There's no risk of modifying the input as we've already verified
         # there are no flattened fields.
-        if not isinstance(request, assuredworkloads_v1beta1.UpdateWorkloadRequest):
-            request = assuredworkloads_v1beta1.UpdateWorkloadRequest(request)
+        if not isinstance(request, assuredworkloads.UpdateWorkloadRequest):
+            request = assuredworkloads.UpdateWorkloadRequest(request)
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
             if workload is not None:
@@ -672,7 +672,7 @@ class AssuredWorkloadsServiceClient(metaclass=AssuredWorkloadsServiceClientMeta)
 
     def delete_workload(
         self,
-        request: Union[assuredworkloads_v1beta1.DeleteWorkloadRequest, dict] = None,
+        request: Union[assuredworkloads.DeleteWorkloadRequest, dict] = None,
         *,
         name: str = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -727,11 +727,11 @@ class AssuredWorkloadsServiceClient(metaclass=AssuredWorkloadsServiceClientMeta)
             )
 
         # Minor optimization to avoid making a copy if the user passes
-        # in a assuredworkloads_v1beta1.DeleteWorkloadRequest.
+        # in a assuredworkloads.DeleteWorkloadRequest.
         # There's no risk of modifying the input as we've already verified
         # there are no flattened fields.
-        if not isinstance(request, assuredworkloads_v1beta1.DeleteWorkloadRequest):
-            request = assuredworkloads_v1beta1.DeleteWorkloadRequest(request)
+        if not isinstance(request, assuredworkloads.DeleteWorkloadRequest):
+            request = assuredworkloads.DeleteWorkloadRequest(request)
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
             if name is not None:
@@ -757,13 +757,13 @@ class AssuredWorkloadsServiceClient(metaclass=AssuredWorkloadsServiceClientMeta)
 
     def get_workload(
         self,
-        request: Union[assuredworkloads_v1beta1.GetWorkloadRequest, dict] = None,
+        request: Union[assuredworkloads.GetWorkloadRequest, dict] = None,
         *,
         name: str = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> assuredworkloads_v1beta1.Workload:
+    ) -> assuredworkloads.Workload:
         r"""Gets Assured Workload associated with a CRM Node
 
         .. code-block:: python
@@ -823,11 +823,11 @@ class AssuredWorkloadsServiceClient(metaclass=AssuredWorkloadsServiceClientMeta)
             )
 
         # Minor optimization to avoid making a copy if the user passes
-        # in a assuredworkloads_v1beta1.GetWorkloadRequest.
+        # in a assuredworkloads.GetWorkloadRequest.
         # There's no risk of modifying the input as we've already verified
         # there are no flattened fields.
-        if not isinstance(request, assuredworkloads_v1beta1.GetWorkloadRequest):
-            request = assuredworkloads_v1beta1.GetWorkloadRequest(request)
+        if not isinstance(request, assuredworkloads.GetWorkloadRequest):
+            request = assuredworkloads.GetWorkloadRequest(request)
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
             if name is not None:
@@ -856,7 +856,7 @@ class AssuredWorkloadsServiceClient(metaclass=AssuredWorkloadsServiceClientMeta)
 
     def list_workloads(
         self,
-        request: Union[assuredworkloads_v1beta1.ListWorkloadsRequest, dict] = None,
+        request: Union[assuredworkloads.ListWorkloadsRequest, dict] = None,
         *,
         parent: str = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -922,11 +922,11 @@ class AssuredWorkloadsServiceClient(metaclass=AssuredWorkloadsServiceClientMeta)
             )
 
         # Minor optimization to avoid making a copy if the user passes
-        # in a assuredworkloads_v1beta1.ListWorkloadsRequest.
+        # in a assuredworkloads.ListWorkloadsRequest.
         # There's no risk of modifying the input as we've already verified
         # there are no flattened fields.
-        if not isinstance(request, assuredworkloads_v1beta1.ListWorkloadsRequest):
-            request = assuredworkloads_v1beta1.ListWorkloadsRequest(request)
+        if not isinstance(request, assuredworkloads.ListWorkloadsRequest):
+            request = assuredworkloads.ListWorkloadsRequest(request)
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
             if parent is not None:

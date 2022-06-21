@@ -25,7 +25,7 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
 
-from google.cloud.assuredworkloads_v1beta1.types import assuredworkloads_v1beta1
+from google.cloud.assuredworkloads_v1beta1.types import assuredworkloads
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
 from .base import AssuredWorkloadsServiceTransport, DEFAULT_CLIENT_INFO
@@ -254,8 +254,7 @@ class AssuredWorkloadsServiceGrpcAsyncIOTransport(AssuredWorkloadsServiceTranspo
     def create_workload(
         self,
     ) -> Callable[
-        [assuredworkloads_v1beta1.CreateWorkloadRequest],
-        Awaitable[operations_pb2.Operation],
+        [assuredworkloads.CreateWorkloadRequest], Awaitable[operations_pb2.Operation]
     ]:
         r"""Return a callable for the create workload method over gRPC.
 
@@ -274,7 +273,7 @@ class AssuredWorkloadsServiceGrpcAsyncIOTransport(AssuredWorkloadsServiceTranspo
         if "create_workload" not in self._stubs:
             self._stubs["create_workload"] = self.grpc_channel.unary_unary(
                 "/google.cloud.assuredworkloads.v1beta1.AssuredWorkloadsService/CreateWorkload",
-                request_serializer=assuredworkloads_v1beta1.CreateWorkloadRequest.serialize,
+                request_serializer=assuredworkloads.CreateWorkloadRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["create_workload"]
@@ -283,8 +282,7 @@ class AssuredWorkloadsServiceGrpcAsyncIOTransport(AssuredWorkloadsServiceTranspo
     def update_workload(
         self,
     ) -> Callable[
-        [assuredworkloads_v1beta1.UpdateWorkloadRequest],
-        Awaitable[assuredworkloads_v1beta1.Workload],
+        [assuredworkloads.UpdateWorkloadRequest], Awaitable[assuredworkloads.Workload]
     ]:
         r"""Return a callable for the update workload method over gRPC.
 
@@ -306,17 +304,15 @@ class AssuredWorkloadsServiceGrpcAsyncIOTransport(AssuredWorkloadsServiceTranspo
         if "update_workload" not in self._stubs:
             self._stubs["update_workload"] = self.grpc_channel.unary_unary(
                 "/google.cloud.assuredworkloads.v1beta1.AssuredWorkloadsService/UpdateWorkload",
-                request_serializer=assuredworkloads_v1beta1.UpdateWorkloadRequest.serialize,
-                response_deserializer=assuredworkloads_v1beta1.Workload.deserialize,
+                request_serializer=assuredworkloads.UpdateWorkloadRequest.serialize,
+                response_deserializer=assuredworkloads.Workload.deserialize,
             )
         return self._stubs["update_workload"]
 
     @property
     def delete_workload(
         self,
-    ) -> Callable[
-        [assuredworkloads_v1beta1.DeleteWorkloadRequest], Awaitable[empty_pb2.Empty]
-    ]:
+    ) -> Callable[[assuredworkloads.DeleteWorkloadRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete workload method over gRPC.
 
         Deletes the workload. Make sure that workload's direct children
@@ -336,7 +332,7 @@ class AssuredWorkloadsServiceGrpcAsyncIOTransport(AssuredWorkloadsServiceTranspo
         if "delete_workload" not in self._stubs:
             self._stubs["delete_workload"] = self.grpc_channel.unary_unary(
                 "/google.cloud.assuredworkloads.v1beta1.AssuredWorkloadsService/DeleteWorkload",
-                request_serializer=assuredworkloads_v1beta1.DeleteWorkloadRequest.serialize,
+                request_serializer=assuredworkloads.DeleteWorkloadRequest.serialize,
                 response_deserializer=empty_pb2.Empty.FromString,
             )
         return self._stubs["delete_workload"]
@@ -345,8 +341,7 @@ class AssuredWorkloadsServiceGrpcAsyncIOTransport(AssuredWorkloadsServiceTranspo
     def get_workload(
         self,
     ) -> Callable[
-        [assuredworkloads_v1beta1.GetWorkloadRequest],
-        Awaitable[assuredworkloads_v1beta1.Workload],
+        [assuredworkloads.GetWorkloadRequest], Awaitable[assuredworkloads.Workload]
     ]:
         r"""Return a callable for the get workload method over gRPC.
 
@@ -365,8 +360,8 @@ class AssuredWorkloadsServiceGrpcAsyncIOTransport(AssuredWorkloadsServiceTranspo
         if "get_workload" not in self._stubs:
             self._stubs["get_workload"] = self.grpc_channel.unary_unary(
                 "/google.cloud.assuredworkloads.v1beta1.AssuredWorkloadsService/GetWorkload",
-                request_serializer=assuredworkloads_v1beta1.GetWorkloadRequest.serialize,
-                response_deserializer=assuredworkloads_v1beta1.Workload.deserialize,
+                request_serializer=assuredworkloads.GetWorkloadRequest.serialize,
+                response_deserializer=assuredworkloads.Workload.deserialize,
             )
         return self._stubs["get_workload"]
 
@@ -374,8 +369,8 @@ class AssuredWorkloadsServiceGrpcAsyncIOTransport(AssuredWorkloadsServiceTranspo
     def list_workloads(
         self,
     ) -> Callable[
-        [assuredworkloads_v1beta1.ListWorkloadsRequest],
-        Awaitable[assuredworkloads_v1beta1.ListWorkloadsResponse],
+        [assuredworkloads.ListWorkloadsRequest],
+        Awaitable[assuredworkloads.ListWorkloadsResponse],
     ]:
         r"""Return a callable for the list workloads method over gRPC.
 
@@ -394,8 +389,8 @@ class AssuredWorkloadsServiceGrpcAsyncIOTransport(AssuredWorkloadsServiceTranspo
         if "list_workloads" not in self._stubs:
             self._stubs["list_workloads"] = self.grpc_channel.unary_unary(
                 "/google.cloud.assuredworkloads.v1beta1.AssuredWorkloadsService/ListWorkloads",
-                request_serializer=assuredworkloads_v1beta1.ListWorkloadsRequest.serialize,
-                response_deserializer=assuredworkloads_v1beta1.ListWorkloadsResponse.deserialize,
+                request_serializer=assuredworkloads.ListWorkloadsRequest.serialize,
+                response_deserializer=assuredworkloads.ListWorkloadsResponse.deserialize,
             )
         return self._stubs["list_workloads"]
 
