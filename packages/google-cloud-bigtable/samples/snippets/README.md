@@ -3,8 +3,8 @@
 
 ## Python Samples for Cloud Bigtable
 
-This directory contains samples for Cloud Bigtable, which may be used as a refererence for how to use this product. 
-Samples, quickstarts, and other documentation are available at <a href="https://cloud.google.com/bigtable">cloud.google.com</a>.
+This directory contains samples for Cloud Bigtable, which may be used as a reference for how to use this product. 
+Samples, quickstarts, and other documentation are available at [cloud.google.com](https://cloud.google.com/bigtable).
 
 
 ### Snippets
@@ -17,7 +17,7 @@ This folder contains snippets for Python Cloud Bigtable.
 ## Additional Information
 
 You can read the documentation for more details on API usage and use GitHub
-to <a href="https://github.com/googleapis/python-bigtable">browse the source</a> and [report issues][issues].
+to [browse the source](https://github.com/googleapis/python-bigtable) and [report issues][issues].
 
 ### Contributing
 View the [contributing guidelines][contrib_guide], the [Python style guide][py_style] for more information.
