@@ -1,6 +1,18 @@
 # Changelog
 
 
+## [1.1.0](https://github.com/googleapis/gapic-generator-python/compare/v1.0.1...v1.1.0) (2022-06-23)
+
+
+### Features
+
+* adds audience. ([#1312](https://github.com/googleapis/gapic-generator-python/issues/1312)) ([a2c8a1e](https://github.com/googleapis/gapic-generator-python/commit/a2c8a1e01ce62286fc6fa5017397b86abac4a054))
+
+
+### Documentation
+
+* fix changelog header to consistent size ([#1331](https://github.com/googleapis/gapic-generator-python/issues/1331)) ([8110fc6](https://github.com/googleapis/gapic-generator-python/commit/8110fc670528afacf96abb2065893ff3ed654316))
+
 ## [1.0.1](https://github.com/googleapis/gapic-generator-python/compare/v1.0.0...v1.0.1) (2022-06-10)
 
 
