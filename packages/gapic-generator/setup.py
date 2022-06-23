@@ -26,11 +26,11 @@ version = "1.0.1"
 release_status = "Development Status :: 5 - Production/Stable"
 dependencies = [
     "click >= 6.7",
-    "google-api-core >= 2.3.2",
+    "google-api-core >= 2.8.0",
     "googleapis-common-protos >= 1.55.0",
     "grpcio >= 1.24.3",
     "jinja2 >= 2.10",
-    "protobuf >= 3.18.0",
+    "protobuf >= 3.18.0, <4.0.0dev",
     "pypandoc >= 1.4",
     "PyYAML >= 5.1.1",
     "dataclasses < 0.8; python_version < '3.7'",
