@@ -212,7 +212,7 @@ class Leaser(object):
             _LOGGER.debug("Snoozing lease management for %f seconds.", snooze)
             self._stop_event.wait(timeout=snooze)
 
-        _LOGGER.info("%s exiting.", _LEASE_WORKER_NAME)
+        _LOGGER.debug("%s exiting.", _LEASE_WORKER_NAME)
 
     def start(self) -> None:
         with self._operational_lock:

@@ -89,7 +89,7 @@ def create_manager(flow_control=types.FlowControl()):
 
 
 def test_maintain_leases_inactive_manager(caplog):
-    caplog.set_level(logging.INFO)
+    caplog.set_level(logging.DEBUG)
     manager = create_manager()
     manager.is_active = False
 
@@ -107,7 +107,7 @@ def test_maintain_leases_inactive_manager(caplog):
 
 
 def test_maintain_leases_stopped(caplog):
-    caplog.set_level(logging.INFO)
+    caplog.set_level(logging.DEBUG)
     manager = create_manager()
 
     leaser_ = leaser.Leaser(manager)

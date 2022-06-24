@@ -1036,7 +1036,7 @@ def test_heartbeat_inactive():
 
 
 def test_heartbeat_stream_ack_deadline_seconds(caplog):
-    caplog.set_level(logging.INFO)
+    caplog.set_level(logging.DEBUG)
     manager = make_manager()
     manager._rpc = mock.create_autospec(bidi.BidiRpc, instance=True)
     manager._rpc.is_active = True

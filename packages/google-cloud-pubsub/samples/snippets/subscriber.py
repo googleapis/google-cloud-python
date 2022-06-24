@@ -771,14 +771,14 @@ def synchronous_pull_with_lease_management(
                         "ack_deadline_seconds": 15,
                     }
                 )
-                logger.info(f"Reset ack deadline for {msg_data}.")
+                logger.debug(f"Reset ack deadline for {msg_data}.")
 
             # If the process is complete, acknowledge the message.
             else:
                 subscriber.acknowledge(
                     request={"subscription": subscription_path, "ack_ids": [ack_id]}
                 )
-                logger.info(f"Acknowledged {msg_data}.")
+                logger.debug(f"Acknowledged {msg_data}.")
                 processes.pop(process)
     print(
         f"Received and acknowledged {len(response.received_messages)} messages from {subscription_path}."

@@ -48,7 +48,7 @@ class Heartbeater(object):
                 _LOGGER.debug("Sent heartbeat.")
             self._stop_event.wait(timeout=self._period)
 
-        _LOGGER.info("%s exiting.", _HEARTBEAT_WORKER_NAME)
+        _LOGGER.debug("%s exiting.", _HEARTBEAT_WORKER_NAME)
 
     def start(self) -> None:
         with self._operational_lock:
