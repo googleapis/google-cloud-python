@@ -18,9 +18,21 @@
 import io
 import os
 
-import setuptools  # type: ignore
+import setuptools
 
+name = "google-cloud-memcache"
+description = "Memorystore for Memcached API client library"
 version = "1.3.2"
+release_status = "Development Status :: 5 - Production/Stable"
+dependencies = [
+    # NOTE: Maintainers, please do not require google-api-core>=2.x.x
+    # Until this issue is closed
+    # https://github.com/googleapis/google-cloud-python/issues/10566
+    "google-api-core[grpc] >= 1.31.5, <3.0.0dev,!=2.0.*,!=2.1.*,!=2.2.*,!=2.3.0",
+    "proto-plus >= 1.15.0, <2.0.0dev",
+    "protobuf >= 3.19.0, <4.0.0dev",
+]
+url = "https://github.com/googleapis/python-memcache"
 
 package_root = os.path.abspath(os.path.dirname(__file__))
 
@@ -28,38 +40,45 @@ readme_filename = os.path.join(package_root, "README.rst")
 with io.open(readme_filename, encoding="utf-8") as readme_file:
     readme = readme_file.read()
 
+packages = [
+    package
+    for package in setuptools.PEP420PackageFinder.find()
+    if package.startswith("google")
+]
+
+namespaces = ["google"]
+if "google.cloud" in packages:
+    namespaces.append("google.cloud")
+
+
 setuptools.setup(
-    name="google-cloud-memcache",
+    name=name,
     version=version,
+    description=description,
     long_description=readme,
     author="Google LLC",
     author_email="googleapis-packages@google.com",
     license="Apache 2.0",
-    url="https://github.com/googleapis/python-memcache",
-    packages=setuptools.PEP420PackageFinder.find(),
-    namespace_packages=("google", "google.cloud"),
-    platforms="Posix; MacOS X; Windows",
-    include_package_data=True,
-    install_requires=(
-        # NOTE: Maintainers, please do not require google-api-core>=2.x.x
-        # Until this issue is closed
-        # https://github.com/googleapis/google-cloud-python/issues/10566
-        "google-api-core[grpc] >= 1.31.5, <3.0.0dev,!=2.0.*,!=2.1.*,!=2.2.*,!=2.3.0",
-        "proto-plus >= 1.15.0, <2.0.0dev",
-        "protobuf >= 3.19.0, <4.0.0dev",
-    ),
-    python_requires=">=3.6",
+    url=url,
     classifiers=[
-        "Development Status :: 5 - Production/Stable",
+        release_status,
         "Intended Audience :: Developers",
-        "Operating System :: OS Independent",
+        "License :: OSI Approved :: Apache Software License",
+        "Programming Language :: Python",
+        "Programming Language :: Python :: 3",
         "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
+        "Operating System :: OS Independent",
         "Topic :: Internet",
-        "Topic :: Software Development :: Libraries :: Python Modules",
     ],
+    platforms="Posix; MacOS X; Windows",
+    packages=packages,
+    python_requires=">=3.6",
+    namespace_packages=namespaces,
+    install_requires=dependencies,
+    include_package_data=True,
     zip_safe=False,
 )
