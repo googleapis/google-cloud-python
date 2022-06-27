@@ -1,4 +1,5 @@
-# Copyright 2021 Google LLC
+# -*- coding: utf-8 -*-
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -11,22 +12,11 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+#
+from .async_client import PoliciesAsyncClient
+from .client import PoliciesClient
 
-docker:
-  image: gcr.io/cloud-devrel-public-resources/owlbot-python:latest
-
-deep-remove-regex:
-  - /owl-bot-staging
-
-deep-preserve-regex:
-  - /owl-bot-staging/iam/v1
-  - /owl-bot-staging/iam/v1beta
-
-deep-copy-regex:
-  - source: /google/iam/credentials/(v.*)/.*-py/(.*)
-    dest: /owl-bot-staging/iamcredentials/$1/$2
-  - source: /google/iam/(v.*)/.*-py/(.*)
-    dest: /owl-bot-staging/iam/$1/$2
-
-begin-after-commit-hash: 130ce904e5d546c312943d10f48799590f9c0f66
-
+__all__ = (
+    "PoliciesClient",
+    "PoliciesAsyncClient",
+)
