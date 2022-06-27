@@ -26,6 +26,7 @@ API Reference
 
   reference
   dbapi
+  design/index
 
 Migration Guide
 ---------------
