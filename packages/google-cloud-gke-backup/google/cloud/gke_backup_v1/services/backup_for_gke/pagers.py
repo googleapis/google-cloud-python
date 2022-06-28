@@ -1,0 +1,800 @@
+# -*- coding: utf-8 -*-
+# Copyright 2022 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+from typing import (
+    Any,
+    AsyncIterator,
+    Awaitable,
+    Callable,
+    Sequence,
+    Tuple,
+    Optional,
+    Iterator,
+)
+
+from google.cloud.gke_backup_v1.types import backup
+from google.cloud.gke_backup_v1.types import backup_plan
+from google.cloud.gke_backup_v1.types import gkebackup
+from google.cloud.gke_backup_v1.types import restore
+from google.cloud.gke_backup_v1.types import restore_plan
+from google.cloud.gke_backup_v1.types import volume
+
+
+class ListBackupPlansPager:
+    """A pager for iterating through ``list_backup_plans`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.gke_backup_v1.types.ListBackupPlansResponse` object, and
+    provides an ``__iter__`` method to iterate through its
+    ``backup_plans`` field.
+
+    If there are more pages, the ``__iter__`` method will make additional
+    ``ListBackupPlans`` requests and continue to iterate
+    through the ``backup_plans`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.gke_backup_v1.types.ListBackupPlansResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., gkebackup.ListBackupPlansResponse],
+        request: gkebackup.ListBackupPlansRequest,
+        response: gkebackup.ListBackupPlansResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.gke_backup_v1.types.ListBackupPlansRequest):
+                The initial request object.
+            response (google.cloud.gke_backup_v1.types.ListBackupPlansResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = gkebackup.ListBackupPlansRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    def pages(self) -> Iterator[gkebackup.ListBackupPlansResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __iter__(self) -> Iterator[backup_plan.BackupPlan]:
+        for page in self.pages:
+            yield from page.backup_plans
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListBackupPlansAsyncPager:
+    """A pager for iterating through ``list_backup_plans`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.gke_backup_v1.types.ListBackupPlansResponse` object, and
+    provides an ``__aiter__`` method to iterate through its
+    ``backup_plans`` field.
+
+    If there are more pages, the ``__aiter__`` method will make additional
+    ``ListBackupPlans`` requests and continue to iterate
+    through the ``backup_plans`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.gke_backup_v1.types.ListBackupPlansResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., Awaitable[gkebackup.ListBackupPlansResponse]],
+        request: gkebackup.ListBackupPlansRequest,
+        response: gkebackup.ListBackupPlansResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiates the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.gke_backup_v1.types.ListBackupPlansRequest):
+                The initial request object.
+            response (google.cloud.gke_backup_v1.types.ListBackupPlansResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = gkebackup.ListBackupPlansRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    async def pages(self) -> AsyncIterator[gkebackup.ListBackupPlansResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = await self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __aiter__(self) -> AsyncIterator[backup_plan.BackupPlan]:
+        async def async_generator():
+            async for page in self.pages:
+                for response in page.backup_plans:
+                    yield response
+
+        return async_generator()
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListBackupsPager:
+    """A pager for iterating through ``list_backups`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.gke_backup_v1.types.ListBackupsResponse` object, and
+    provides an ``__iter__`` method to iterate through its
+    ``backups`` field.
+
+    If there are more pages, the ``__iter__`` method will make additional
+    ``ListBackups`` requests and continue to iterate
+    through the ``backups`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.gke_backup_v1.types.ListBackupsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., gkebackup.ListBackupsResponse],
+        request: gkebackup.ListBackupsRequest,
+        response: gkebackup.ListBackupsResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.gke_backup_v1.types.ListBackupsRequest):
+                The initial request object.
+            response (google.cloud.gke_backup_v1.types.ListBackupsResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = gkebackup.ListBackupsRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    def pages(self) -> Iterator[gkebackup.ListBackupsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __iter__(self) -> Iterator[backup.Backup]:
+        for page in self.pages:
+            yield from page.backups
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListBackupsAsyncPager:
+    """A pager for iterating through ``list_backups`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.gke_backup_v1.types.ListBackupsResponse` object, and
+    provides an ``__aiter__`` method to iterate through its
+    ``backups`` field.
+
+    If there are more pages, the ``__aiter__`` method will make additional
+    ``ListBackups`` requests and continue to iterate
+    through the ``backups`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.gke_backup_v1.types.ListBackupsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., Awaitable[gkebackup.ListBackupsResponse]],
+        request: gkebackup.ListBackupsRequest,
+        response: gkebackup.ListBackupsResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiates the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.gke_backup_v1.types.ListBackupsRequest):
+                The initial request object.
+            response (google.cloud.gke_backup_v1.types.ListBackupsResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = gkebackup.ListBackupsRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    async def pages(self) -> AsyncIterator[gkebackup.ListBackupsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = await self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __aiter__(self) -> AsyncIterator[backup.Backup]:
+        async def async_generator():
+            async for page in self.pages:
+                for response in page.backups:
+                    yield response
+
+        return async_generator()
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListVolumeBackupsPager:
+    """A pager for iterating through ``list_volume_backups`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.gke_backup_v1.types.ListVolumeBackupsResponse` object, and
+    provides an ``__iter__`` method to iterate through its
+    ``volume_backups`` field.
+
+    If there are more pages, the ``__iter__`` method will make additional
+    ``ListVolumeBackups`` requests and continue to iterate
+    through the ``volume_backups`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.gke_backup_v1.types.ListVolumeBackupsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., gkebackup.ListVolumeBackupsResponse],
+        request: gkebackup.ListVolumeBackupsRequest,
+        response: gkebackup.ListVolumeBackupsResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.gke_backup_v1.types.ListVolumeBackupsRequest):
+                The initial request object.
+            response (google.cloud.gke_backup_v1.types.ListVolumeBackupsResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = gkebackup.ListVolumeBackupsRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    def pages(self) -> Iterator[gkebackup.ListVolumeBackupsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __iter__(self) -> Iterator[volume.VolumeBackup]:
+        for page in self.pages:
+            yield from page.volume_backups
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListVolumeBackupsAsyncPager:
+    """A pager for iterating through ``list_volume_backups`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.gke_backup_v1.types.ListVolumeBackupsResponse` object, and
+    provides an ``__aiter__`` method to iterate through its
+    ``volume_backups`` field.
+
+    If there are more pages, the ``__aiter__`` method will make additional
+    ``ListVolumeBackups`` requests and continue to iterate
+    through the ``volume_backups`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.gke_backup_v1.types.ListVolumeBackupsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., Awaitable[gkebackup.ListVolumeBackupsResponse]],
+        request: gkebackup.ListVolumeBackupsRequest,
+        response: gkebackup.ListVolumeBackupsResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiates the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.gke_backup_v1.types.ListVolumeBackupsRequest):
+                The initial request object.
+            response (google.cloud.gke_backup_v1.types.ListVolumeBackupsResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = gkebackup.ListVolumeBackupsRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    async def pages(self) -> AsyncIterator[gkebackup.ListVolumeBackupsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = await self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __aiter__(self) -> AsyncIterator[volume.VolumeBackup]:
+        async def async_generator():
+            async for page in self.pages:
+                for response in page.volume_backups:
+                    yield response
+
+        return async_generator()
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListRestorePlansPager:
+    """A pager for iterating through ``list_restore_plans`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.gke_backup_v1.types.ListRestorePlansResponse` object, and
+    provides an ``__iter__`` method to iterate through its
+    ``restore_plans`` field.
+
+    If there are more pages, the ``__iter__`` method will make additional
+    ``ListRestorePlans`` requests and continue to iterate
+    through the ``restore_plans`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.gke_backup_v1.types.ListRestorePlansResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., gkebackup.ListRestorePlansResponse],
+        request: gkebackup.ListRestorePlansRequest,
+        response: gkebackup.ListRestorePlansResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.gke_backup_v1.types.ListRestorePlansRequest):
+                The initial request object.
+            response (google.cloud.gke_backup_v1.types.ListRestorePlansResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = gkebackup.ListRestorePlansRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    def pages(self) -> Iterator[gkebackup.ListRestorePlansResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __iter__(self) -> Iterator[restore_plan.RestorePlan]:
+        for page in self.pages:
+            yield from page.restore_plans
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListRestorePlansAsyncPager:
+    """A pager for iterating through ``list_restore_plans`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.gke_backup_v1.types.ListRestorePlansResponse` object, and
+    provides an ``__aiter__`` method to iterate through its
+    ``restore_plans`` field.
+
+    If there are more pages, the ``__aiter__`` method will make additional
+    ``ListRestorePlans`` requests and continue to iterate
+    through the ``restore_plans`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.gke_backup_v1.types.ListRestorePlansResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., Awaitable[gkebackup.ListRestorePlansResponse]],
+        request: gkebackup.ListRestorePlansRequest,
+        response: gkebackup.ListRestorePlansResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiates the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.gke_backup_v1.types.ListRestorePlansRequest):
+                The initial request object.
+            response (google.cloud.gke_backup_v1.types.ListRestorePlansResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = gkebackup.ListRestorePlansRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    async def pages(self) -> AsyncIterator[gkebackup.ListRestorePlansResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = await self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __aiter__(self) -> AsyncIterator[restore_plan.RestorePlan]:
+        async def async_generator():
+            async for page in self.pages:
+                for response in page.restore_plans:
+                    yield response
+
+        return async_generator()
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListRestoresPager:
+    """A pager for iterating through ``list_restores`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.gke_backup_v1.types.ListRestoresResponse` object, and
+    provides an ``__iter__`` method to iterate through its
+    ``restores`` field.
+
+    If there are more pages, the ``__iter__`` method will make additional
+    ``ListRestores`` requests and continue to iterate
+    through the ``restores`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.gke_backup_v1.types.ListRestoresResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., gkebackup.ListRestoresResponse],
+        request: gkebackup.ListRestoresRequest,
+        response: gkebackup.ListRestoresResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.gke_backup_v1.types.ListRestoresRequest):
+                The initial request object.
+            response (google.cloud.gke_backup_v1.types.ListRestoresResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = gkebackup.ListRestoresRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    def pages(self) -> Iterator[gkebackup.ListRestoresResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __iter__(self) -> Iterator[restore.Restore]:
+        for page in self.pages:
+            yield from page.restores
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListRestoresAsyncPager:
+    """A pager for iterating through ``list_restores`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.gke_backup_v1.types.ListRestoresResponse` object, and
+    provides an ``__aiter__`` method to iterate through its
+    ``restores`` field.
+
+    If there are more pages, the ``__aiter__`` method will make additional
+    ``ListRestores`` requests and continue to iterate
+    through the ``restores`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.gke_backup_v1.types.ListRestoresResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., Awaitable[gkebackup.ListRestoresResponse]],
+        request: gkebackup.ListRestoresRequest,
+        response: gkebackup.ListRestoresResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiates the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.gke_backup_v1.types.ListRestoresRequest):
+                The initial request object.
+            response (google.cloud.gke_backup_v1.types.ListRestoresResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = gkebackup.ListRestoresRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    async def pages(self) -> AsyncIterator[gkebackup.ListRestoresResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = await self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __aiter__(self) -> AsyncIterator[restore.Restore]:
+        async def async_generator():
+            async for page in self.pages:
+                for response in page.restores:
+                    yield response
+
+        return async_generator()
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListVolumeRestoresPager:
+    """A pager for iterating through ``list_volume_restores`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.gke_backup_v1.types.ListVolumeRestoresResponse` object, and
+    provides an ``__iter__`` method to iterate through its
+    ``volume_restores`` field.
+
+    If there are more pages, the ``__iter__`` method will make additional
+    ``ListVolumeRestores`` requests and continue to iterate
+    through the ``volume_restores`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.gke_backup_v1.types.ListVolumeRestoresResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., gkebackup.ListVolumeRestoresResponse],
+        request: gkebackup.ListVolumeRestoresRequest,
+        response: gkebackup.ListVolumeRestoresResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.gke_backup_v1.types.ListVolumeRestoresRequest):
+                The initial request object.
+            response (google.cloud.gke_backup_v1.types.ListVolumeRestoresResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = gkebackup.ListVolumeRestoresRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    def pages(self) -> Iterator[gkebackup.ListVolumeRestoresResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __iter__(self) -> Iterator[volume.VolumeRestore]:
+        for page in self.pages:
+            yield from page.volume_restores
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListVolumeRestoresAsyncPager:
+    """A pager for iterating through ``list_volume_restores`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.gke_backup_v1.types.ListVolumeRestoresResponse` object, and
+    provides an ``__aiter__`` method to iterate through its
+    ``volume_restores`` field.
+
+    If there are more pages, the ``__aiter__`` method will make additional
+    ``ListVolumeRestores`` requests and continue to iterate
+    through the ``volume_restores`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.gke_backup_v1.types.ListVolumeRestoresResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., Awaitable[gkebackup.ListVolumeRestoresResponse]],
+        request: gkebackup.ListVolumeRestoresRequest,
+        response: gkebackup.ListVolumeRestoresResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiates the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.gke_backup_v1.types.ListVolumeRestoresRequest):
+                The initial request object.
+            response (google.cloud.gke_backup_v1.types.ListVolumeRestoresResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = gkebackup.ListVolumeRestoresRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    async def pages(self) -> AsyncIterator[gkebackup.ListVolumeRestoresResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = await self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __aiter__(self) -> AsyncIterator[volume.VolumeRestore]:
+        async def async_generator():
+            async for page in self.pages:
+                for response in page.volume_restores:
+                    yield response
+
+        return async_generator()
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)

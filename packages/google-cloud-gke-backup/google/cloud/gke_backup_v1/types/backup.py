@@ -1,0 +1,366 @@
+# -*- coding: utf-8 -*-
+# Copyright 2022 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+import proto  # type: ignore
+
+from google.cloud.gke_backup_v1.types import common
+from google.protobuf import timestamp_pb2  # type: ignore
+
+
+__protobuf__ = proto.module(
+    package="google.cloud.gkebackup.v1",
+    manifest={
+        "Backup",
+    },
+)
+
+
+class Backup(proto.Message):
+    r"""Represents a request to perform a single point-in-time
+    capture of some portion of the state of a GKE cluster, the
+    record of the backup operation itself, and an anchor for the
+    underlying artifacts that comprise the Backup (the config backup
+    and VolumeBackups). Next id: 28
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        name (str):
+            Output only. The fully qualified name of the Backup.
+            projects/\ */locations/*/backupPlans/*/backups/*
+        uid (str):
+            Output only. Server generated global unique identifier of
+            `UUID4 <https://en.wikipedia.org/wiki/Universally_unique_identifier>`__
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The timestamp when this Backup
+            resource was created.
+        update_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The timestamp when this Backup
+            resource was last updated.
+        manual (bool):
+            Output only. This flag indicates whether this
+            Backup resource was created manually by a user
+            or via a schedule in the BackupPlan. A value of
+            True means that the Backup was created manually.
+        labels (Mapping[str, str]):
+            A set of custom labels supplied by user.
+        delete_lock_days (int):
+            Minimum age for this Backup (in days). If this field is set
+            to a non-zero value, the Backup will be "locked" against
+            deletion (either manual or automatic deletion) for the
+            number of days provided (measured from the creation time of
+            the Backup). MUST be an integer value between 0-90
+            (inclusive).
+
+            Defaults to parent BackupPlan's
+            [backup_delete_lock_days][google.cloud.gkebackup.v1.BackupPlan.RetentionPolicy.backup_delete_lock_days]
+            setting and may only be increased (either at creation time
+            or in a subsequent update).
+        delete_lock_expire_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The time at which an existing delete lock will
+            expire for this backup (calculated from create_time +
+            [delete_lock_days][google.cloud.gkebackup.v1.Backup.delete_lock_days]).
+        retain_days (int):
+            The age (in days) after which this Backup will be
+            automatically deleted. Must be an integer value >= 0:
+
+            -  If 0, no automatic deletion will occur for this Backup.
+            -  If not 0, this must be >=
+               [delete_lock_days][google.cloud.gkebackup.v1.Backup.delete_lock_days].
+
+            Once a Backup is created, this value may only be increased.
+
+            Defaults to the parent BackupPlan's
+            [backup_retain_days][google.cloud.gkebackup.v1.BackupPlan.RetentionPolicy.backup_retain_days]
+            value.
+        retain_expire_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The time at which this Backup will be
+            automatically deleted (calculated from create_time +
+            [retain_days][google.cloud.gkebackup.v1.Backup.retain_days]).
+        encryption_key (google.cloud.gke_backup_v1.types.EncryptionKey):
+            Output only. The customer managed encryption key that was
+            used to encrypt the Backup's artifacts. Inherited from the
+            parent BackupPlan's
+            [encryption_key][google.cloud.gkebackup.v1.BackupPlan.BackupConfig.encryption_key]
+            value.
+        all_namespaces (bool):
+            Output only. If True, all namespaces were
+            included in the Backup.
+
+            This field is a member of `oneof`_ ``backup_scope``.
+        selected_namespaces (google.cloud.gke_backup_v1.types.Namespaces):
+            Output only. If set, the list of namespaces
+            that were included in the Backup.
+
+            This field is a member of `oneof`_ ``backup_scope``.
+        selected_applications (google.cloud.gke_backup_v1.types.NamespacedNames):
+            Output only. If set, the list of
+            ProtectedApplications whose resources were
+            included in the Backup.
+
+            This field is a member of `oneof`_ ``backup_scope``.
+        contains_volume_data (bool):
+            Output only. Whether or not the Backup contains volume data.
+            Controlled by the parent BackupPlan's
+            [include_volume_data][google.cloud.gkebackup.v1.BackupPlan.BackupConfig.include_volume_data]
+            value.
+        contains_secrets (bool):
+            Output only. Whether or not the Backup contains Kubernetes
+            Secrets. Controlled by the parent BackupPlan's
+            [include_secrets][google.cloud.gkebackup.v1.BackupPlan.BackupConfig.include_secrets]
+            value.
+        cluster_metadata (google.cloud.gke_backup_v1.types.Backup.ClusterMetadata):
+            Output only. Information about the GKE
+            cluster from which this Backup was created.
+        state (google.cloud.gke_backup_v1.types.Backup.State):
+            Output only. Current state of the Backup
+        state_reason (str):
+            Output only. Human-readable description of why the backup is
+            in the current ``state``.
+        complete_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. Completion time of the Backup
+        resource_count (int):
+            Output only. The total number of Kubernetes
+            resources included in the Backup.
+        volume_count (int):
+            Output only. The total number of volume
+            backups contained in the Backup.
+        size_bytes (int):
+            Output only. The total size of the Backup in
+            bytes = config backup size + sum(volume backup
+            sizes)
+        etag (str):
+            Output only. ``etag`` is used for optimistic concurrency
+            control as a way to help prevent simultaneous updates of a
+            backup from overwriting each other. It is strongly suggested
+            that systems make use of the ``etag`` in the
+            read-modify-write cycle to perform backup updates in order
+            to avoid race conditions: An ``etag`` is returned in the
+            response to ``GetBackup``, and systems are expected to put
+            that etag in the request to ``UpdateBackup`` or
+            ``DeleteBackup`` to ensure that their change will be applied
+            to the same version of the resource.
+        description (str):
+            User specified descriptive string for this
+            Backup.
+        pod_count (int):
+            Output only. The total number of Kubernetes
+            Pods contained in the Backup.
+        config_backup_size_bytes (int):
+            Output only. The size of the config backup in
+            bytes.
+    """
+
+    class State(proto.Enum):
+        r"""State"""
+        STATE_UNSPECIFIED = 0
+        CREATING = 1
+        IN_PROGRESS = 2
+        SUCCEEDED = 3
+        FAILED = 4
+        DELETING = 5
+
+    class ClusterMetadata(proto.Message):
+        r"""Information about the GKE cluster from which this Backup was
+        created.
+
+        This message has `oneof`_ fields (mutually exclusive fields).
+        For each oneof, at most one member field can be set at the same time.
+        Setting any member of the oneof automatically clears all other
+        members.
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+        Attributes:
+            cluster (str):
+                The source cluster from which this Backup was created. Valid
+                formats:
+
+                -  projects/\ */locations/*/clusters/\*
+                -  projects/\ */zones/*/clusters/\*
+
+                This is inherited from the parent BackupPlan's
+                [cluster][google.cloud.gkebackup.v1.BackupPlan.cluster]
+                field.
+            k8s_version (str):
+                The Kubernetes server version of the source
+                cluster.
+            backup_crd_versions (Mapping[str, str]):
+                A list of the Backup for GKE CRD versions
+                found in the cluster.
+            gke_version (str):
+                GKE version
+
+                This field is a member of `oneof`_ ``platform_version``.
+            anthos_version (str):
+                Anthos version
+
+                This field is a member of `oneof`_ ``platform_version``.
+        """
+
+        cluster = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        k8s_version = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+        backup_crd_versions = proto.MapField(
+            proto.STRING,
+            proto.STRING,
+            number=3,
+        )
+        gke_version = proto.Field(
+            proto.STRING,
+            number=4,
+            oneof="platform_version",
+        )
+        anthos_version = proto.Field(
+            proto.STRING,
+            number=5,
+            oneof="platform_version",
+        )
+
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    uid = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
+    )
+    update_time = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=timestamp_pb2.Timestamp,
+    )
+    manual = proto.Field(
+        proto.BOOL,
+        number=5,
+    )
+    labels = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=6,
+    )
+    delete_lock_days = proto.Field(
+        proto.INT32,
+        number=7,
+    )
+    delete_lock_expire_time = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        message=timestamp_pb2.Timestamp,
+    )
+    retain_days = proto.Field(
+        proto.INT32,
+        number=9,
+    )
+    retain_expire_time = proto.Field(
+        proto.MESSAGE,
+        number=10,
+        message=timestamp_pb2.Timestamp,
+    )
+    encryption_key = proto.Field(
+        proto.MESSAGE,
+        number=11,
+        message=common.EncryptionKey,
+    )
+    all_namespaces = proto.Field(
+        proto.BOOL,
+        number=12,
+        oneof="backup_scope",
+    )
+    selected_namespaces = proto.Field(
+        proto.MESSAGE,
+        number=13,
+        oneof="backup_scope",
+        message=common.Namespaces,
+    )
+    selected_applications = proto.Field(
+        proto.MESSAGE,
+        number=14,
+        oneof="backup_scope",
+        message=common.NamespacedNames,
+    )
+    contains_volume_data = proto.Field(
+        proto.BOOL,
+        number=15,
+    )
+    contains_secrets = proto.Field(
+        proto.BOOL,
+        number=16,
+    )
+    cluster_metadata = proto.Field(
+        proto.MESSAGE,
+        number=17,
+        message=ClusterMetadata,
+    )
+    state = proto.Field(
+        proto.ENUM,
+        number=18,
+        enum=State,
+    )
+    state_reason = proto.Field(
+        proto.STRING,
+        number=19,
+    )
+    complete_time = proto.Field(
+        proto.MESSAGE,
+        number=20,
+        message=timestamp_pb2.Timestamp,
+    )
+    resource_count = proto.Field(
+        proto.INT32,
+        number=21,
+    )
+    volume_count = proto.Field(
+        proto.INT32,
+        number=22,
+    )
+    size_bytes = proto.Field(
+        proto.INT64,
+        number=23,
+    )
+    etag = proto.Field(
+        proto.STRING,
+        number=24,
+    )
+    description = proto.Field(
+        proto.STRING,
+        number=25,
+    )
+    pod_count = proto.Field(
+        proto.INT32,
+        number=26,
+    )
+    config_backup_size_bytes = proto.Field(
+        proto.INT64,
+        number=27,
+    )
+
+
+__all__ = tuple(sorted(__protobuf__.manifest))
