@@ -376,7 +376,8 @@ def prerelease_deps(session):
     deps = [dep for dep in deps if dep not in prerel_deps]
     # We use --no-deps to ensure that pre-release versions aren't overwritten
     # by the version ranges in setup.py.
-    session.install(*deps)
+    if deps:
+        session.install(*deps)
     session.install("--no-deps", "-e", ".[all]")
 
     # Print out prerelease package versions
