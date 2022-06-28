@@ -1,4 +1,4 @@
-black==22.3.0
+black==22.6.0
 parameterized==0.8.1
 # google-resumable-media-python requires manual update as this repo isn't templated.
 # python-api-core also requires manual update as it is not templated.
