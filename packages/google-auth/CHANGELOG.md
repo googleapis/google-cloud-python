@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+## [2.9.0](https://github.com/googleapis/google-auth-library-python/compare/v2.8.0...v2.9.0) (2022-06-28)
+
+
+### Features
+
+* pluggable auth support ([#1045](https://github.com/googleapis/google-auth-library-python/issues/1045)) ([de14f4e](https://github.com/googleapis/google-auth-library-python/commit/de14f4e855c081c08f14cb0211a06107e5314bf7))
+
 ## [2.8.0](https://github.com/googleapis/google-auth-library-python/compare/v2.7.0...v2.8.0) (2022-06-14)
 
 
