@@ -125,6 +125,14 @@ for library in s.get_staging_dirs(default_version):
                 RestorePlans in this location""",
     """be unique within the set of RestorePlans in this location""")
 
+    # Workaround generator bug. To be fixed in
+    # https://github.com/googleapis/gapic-generator-python/pull/1343/files
+    s.replace(
+        library / f"tests/unit/gapic/**/*.py",
+        """\n        transports.BackupForGKERestTransport,""",
+        "",
+    )
+
     s.move(library, excludes=["google/cloud/gke_backup/", "setup.py"])
 s.remove_staging_dirs()
 

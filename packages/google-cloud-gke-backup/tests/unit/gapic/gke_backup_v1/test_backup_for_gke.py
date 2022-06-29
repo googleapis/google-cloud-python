@@ -8093,7 +8093,6 @@ def test_backup_for_gke_transport_auth_adc(transport_class):
     [
         transports.BackupForGKEGrpcTransport,
         transports.BackupForGKEGrpcAsyncIOTransport,
-        transports.BackupForGKERestTransport,
     ],
 )
 def test_backup_for_gke_transport_auth_gdch_credentials(transport_class):
