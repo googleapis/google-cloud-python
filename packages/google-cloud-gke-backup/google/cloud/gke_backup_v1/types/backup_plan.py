@@ -34,7 +34,7 @@ class BackupPlan(proto.Message):
     Attributes:
         name (str):
             Output only. The full name of the BackupPlan resource.
-            Format: projects/\ */locations/*/backupPlans/\*
+            Format: ``projects/*/locations/*/backupPlans/*``
         uid (str):
             Output only. Server generated global unique identifier of
             `UUID <https://en.wikipedia.org/wiki/Universally_unique_identifier>`__
@@ -52,8 +52,8 @@ class BackupPlan(proto.Message):
             Required. Immutable. The source cluster from which Backups
             will be created via this BackupPlan. Valid formats:
 
-            -  projects/\ */locations/*/clusters/\*
-            -  projects/\ */zones/*/clusters/\*
+            -  ``projects/*/locations/*/clusters/*``
+            -  ``projects/*/zones/*/clusters/*``
         retention_policy (google.cloud.gke_backup_v1.types.BackupPlan.RetentionPolicy):
             RetentionPolicy governs lifecycle of Backups
             created under this plan.

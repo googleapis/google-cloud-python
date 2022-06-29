@@ -25,6 +25,106 @@ from synthtool.languages import python
 default_version = "v1"
 
 for library in s.get_staging_dirs(default_version):
+    # Apply workarounds to fix the generated docstrings.
+    # Issue filed upstream in https://github.com/googleapis/gapic-generator-python/issues/1345
+    s.replace(
+        library / f"google/cloud/gke_backup_{library.name}/**/*.py",
+        """must:[\n]*
+                 - be between 1 and 63 characters long
+                \(inclusive\)  - consist of only
+                lower-case ASCII letters, numbers, and
+                dashes  - start with a lower-case letter
+                 - end with a lower-case letter or
+                number""",
+        """must:
+
+                 - be between 1 and 63 characters long (inclusive) 
+                 - consist of only lower-case ASCII letters, numbers, and dashes
+                 - start with a lower-case letter
+                 - end with a lower-case letter or number"""
+    )
+    s.replace(
+        library / f"google/cloud/gke_backup_{library.name}/**/*.py",
+        """must:[\n]*
+            - be between 1 and 63 characters long
+            \(inclusive\) - consist of only lower-case ASCII
+            letters, numbers, and dashes - start with a
+            lower-case letter
+            - end with a lower-case letter or number
+            - be unique within the set of BackupPlans in
+            this location""",
+        """must:
+
+            - be between 1 and 63 characters long (inclusive)
+            - consist of only lower-case ASCII letters, numbers, and dashes 
+            - start with a lower-case letter
+            - end with a lower-case letter or number
+            - be unique within the set of BackupPlans in this location""")
+    s.replace(
+        library / f"google/cloud/gke_backup_{library.name}/**/*.py",
+        """must:[\n]*
+             - be between 1 and 63 characters long
+            \(inclusive\)  - consist of only lower-case ASCII
+            letters, numbers, and dashes  - start with a
+            lower-case letter
+             - end with a lower-case letter or number
+             - be unique within the set of Backups in this
+            BackupPlan""",
+        """must:
+
+            - be between 1 and 63 characters long (inclusive)  
+            - consist of only lower-case ASCII letters, numbers, and dashes 
+            - start with a lower-case letter
+            - end with a lower-case letter or number
+            - be unique within the set of Backups in this BackupPlan""")         
+    s.replace(
+        library / f"google/cloud/gke_backup_{library.name}/**/*.py",
+        """must:[\n]*
+             - be between 1 and 63 characters long
+            \(inclusive\)  - consist of only lower-case ASCII
+            letters, numbers, and dashes  - start with a
+            lower-case letter
+             - end with a lower-case letter or number
+             - be unique within the set of RestorePlans in
+            this location""",
+        """must:
+
+            - be between 1 and 63 characters long (inclusive)
+            - consist of only lower-case ASCII letters, numbers, and dashes
+            - start with a lower-case letter
+            - end with a lower-case letter or number
+            - be unique within the set of RestorePlans in this location""")
+    s.replace(
+        library / f"google/cloud/gke_backup_{library.name}/**/*.py",
+        """must:[\n]*
+             - be between 1 and 63 characters long
+            \(inclusive\)  - consist of only lower-case ASCII
+            letters, numbers, and dashes  - start with a
+            lower-case letter
+             - end with a lower-case letter or number
+             - be unique within the set of Restores in this
+            RestorePlan.""",
+        """must:
+
+            - be between 1 and 63 characters long (inclusive)
+            - consist of only lower-case ASCII letters, numbers, and dashes
+            - start with a lower-case letter
+            - end with a lower-case letter or number
+            - be unique within the set of Restores in this RestorePlan.""")
+
+    s.replace(library / f"google/cloud/gke_backup_{library.name}/services/**/*.py",
+    """be unique within the set of Backups
+                in this BackupPlan""",
+    """be unique within the set of Backups in this BackupPlan""")
+    s.replace(library / f"google/cloud/gke_backup_{library.name}/services/**/*.py",
+    """be unique within the set of Restores
+                in this RestorePlan""",
+    """be unique within the set of Restores in this RestorePlan""")
+    s.replace(library / f"google/cloud/gke_backup_{library.name}/services/**/*.py",
+    """be unique within the set of
+                RestorePlans in this location""",
+    """be unique within the set of RestorePlans in this location""")
+
     s.move(library, excludes=["google/cloud/gke_backup/", "setup.py"])
 s.remove_staging_dirs()
 

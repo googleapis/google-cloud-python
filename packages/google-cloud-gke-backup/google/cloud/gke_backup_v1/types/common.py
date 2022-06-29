@@ -83,7 +83,7 @@ class EncryptionKey(proto.Message):
     Attributes:
         gcp_kms_encryption_key (str):
             Google Cloud KMS encryption key. Format:
-            projects/\ */locations/*/keyRings/*/cryptoKeys/*
+            ``projects/*/locations/*/keyRings/*/cryptoKeys/*``
     """
 
     gcp_kms_encryption_key = proto.Field(

@@ -44,7 +44,7 @@ class Backup(proto.Message):
     Attributes:
         name (str):
             Output only. The fully qualified name of the Backup.
-            projects/\ */locations/*/backupPlans/*/backups/*
+            ``projects/*/locations/*/backupPlans/*/backups/*``
         uid (str):
             Output only. Server generated global unique identifier of
             `UUID4 <https://en.wikipedia.org/wiki/Universally_unique_identifier>`__
@@ -193,8 +193,8 @@ class Backup(proto.Message):
                 The source cluster from which this Backup was created. Valid
                 formats:
 
-                -  projects/\ */locations/*/clusters/\*
-                -  projects/\ */zones/*/clusters/\*
+                -  ``projects/*/locations/*/clusters/*``
+                -  ``projects/*/zones/*/clusters/*``
 
                 This is inherited from the parent BackupPlan's
                 [cluster][google.cloud.gkebackup.v1.BackupPlan.cluster]

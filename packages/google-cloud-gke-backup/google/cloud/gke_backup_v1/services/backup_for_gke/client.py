@@ -660,7 +660,7 @@ class BackupForGKEClient(metaclass=BackupForGKEClientMeta):
                 CreateBackupPlan.
             parent (str):
                 Required. The location within which to create the
-                BackupPlan. Format: projects/\ */locations/*
+                BackupPlan. Format: ``projects/*/locations/*``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -793,7 +793,7 @@ class BackupForGKEClient(metaclass=BackupForGKEClientMeta):
                 The request object. Request message for ListBackupPlans.
             parent (str):
                 Required. The location that contains the BackupPlans to
-                list. Format: projects/\ */locations/*
+                list. Format: ``projects/*/locations/*``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -898,7 +898,7 @@ class BackupForGKEClient(metaclass=BackupForGKEClientMeta):
                 The request object. Request message for GetBackupPlan.
             name (str):
                 Required. Fully qualified BackupPlan name. Format:
-                projects/\ */locations/*/backupPlans/\*
+                ``projects/*/locations/*/backupPlans/*``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1133,7 +1133,7 @@ class BackupForGKEClient(metaclass=BackupForGKEClientMeta):
                 DeleteBackupPlan.
             name (str):
                 Required. Fully qualified BackupPlan name. Format:
-                projects/\ */locations/*/backupPlans/\*
+                ``projects/*/locations/*/backupPlans/*``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1254,7 +1254,7 @@ class BackupForGKEClient(metaclass=BackupForGKEClientMeta):
                 The request object. Request message for CreateBackup.
             parent (str):
                 Required. The BackupPlan within which to create the
-                Backup. Format: projects/\ */locations/*/backupPlans/\*
+                Backup. Format: ``projects/*/locations/*/backupPlans/*``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1268,14 +1268,11 @@ class BackupForGKEClient(metaclass=BackupForGKEClientMeta):
                 The client-provided short name for
                 the Backup resource. This name must:
 
-                 - be between 1 and 63 characters long
-                (inclusive)  - consist of only
-                lower-case ASCII letters, numbers, and
-                dashes  - start with a lower-case letter
-                 - end with a lower-case letter or
-                number
-                 - be unique within the set of Backups
-                in this BackupPlan
+                 - be between 1 and 63 characters long (inclusive)
+                 - consist of only lower-case ASCII letters, numbers, and dashes
+                 - start with a lower-case letter
+                 - end with a lower-case letter or number
+                 - be unique within the set of Backups in this BackupPlan
 
                 This corresponds to the ``backup_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1387,7 +1384,7 @@ class BackupForGKEClient(metaclass=BackupForGKEClientMeta):
                 The request object. Request message for ListBackups.
             parent (str):
                 Required. The BackupPlan that contains the Backups to
-                list. Format: projects/\ */locations/*/backupPlans/\*
+                list. Format: ``projects/*/locations/*/backupPlans/*``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1492,7 +1489,7 @@ class BackupForGKEClient(metaclass=BackupForGKEClientMeta):
                 The request object. Request message for GetBackup.
             name (str):
                 Required. Full name of the Backup resource. Format:
-                projects/\ */locations/*/backupPlans/*/backups/*
+                ``projects/*/locations/*/backupPlans/*/backups/*``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1730,7 +1727,7 @@ class BackupForGKEClient(metaclass=BackupForGKEClientMeta):
                 The request object. Request message for DeleteBackup.
             name (str):
                 Required. Name of the Backup resource. Format:
-                projects/\ */locations/*/backupPlans/*/backups/*
+                ``projects/*/locations/*/backupPlans/*/backups/*``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1848,7 +1845,7 @@ class BackupForGKEClient(metaclass=BackupForGKEClientMeta):
             parent (str):
                 Required. The Backup that contains the VolumeBackups to
                 list. Format:
-                projects/\ */locations/*/backupPlans/*/backups/*
+                ``projects/*/locations/*/backupPlans/*/backups/*``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1955,7 +1952,7 @@ class BackupForGKEClient(metaclass=BackupForGKEClientMeta):
             name (str):
                 Required. Full name of the VolumeBackup resource.
                 Format:
-                projects/\ */locations/*/backupPlans/*/backups/*/volumeBackups/\*
+                ``projects/*/locations/*/backupPlans/*/backups/*/volumeBackups/*``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2067,7 +2064,7 @@ class BackupForGKEClient(metaclass=BackupForGKEClientMeta):
                 CreateRestorePlan.
             parent (str):
                 Required. The location within which to create the
-                RestorePlan. Format: projects/\ */locations/*
+                RestorePlan. Format: ``projects/*/locations/*``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2083,14 +2080,12 @@ class BackupForGKEClient(metaclass=BackupForGKEClientMeta):
                 Required. The client-provided short
                 name for the RestorePlan resource. This
                 name must:
-                 - be between 1 and 63 characters long
-                (inclusive)  - consist of only
-                lower-case ASCII letters, numbers, and
-                dashes  - start with a lower-case letter
-                 - end with a lower-case letter or
-                number
-                 - be unique within the set of
-                RestorePlans in this location
+
+                 - be between 1 and 63 characters long (inclusive)
+                 - consist of only lower-case ASCII letters, numbers, and dashes
+                 - start with a lower-case letter
+                 - end with a lower-case letter or number
+                 - be unique within the set of RestorePlans in this location
 
                 This corresponds to the ``restore_plan_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2201,7 +2196,7 @@ class BackupForGKEClient(metaclass=BackupForGKEClientMeta):
                 ListRestorePlans.
             parent (str):
                 Required. The location that contains the RestorePlans to
-                list. Format: projects/\ */locations/*
+                list. Format: ``projects/*/locations/*``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2307,7 +2302,7 @@ class BackupForGKEClient(metaclass=BackupForGKEClientMeta):
                 The request object. Request message for GetRestorePlan.
             name (str):
                 Required. Fully qualified RestorePlan name. Format:
-                projects/\ */locations/*/restorePlans/\*
+                ``projects/*/locations/*/restorePlans/*``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2544,7 +2539,7 @@ class BackupForGKEClient(metaclass=BackupForGKEClientMeta):
                 DeleteRestorePlan.
             name (str):
                 Required. Fully qualified RestorePlan name. Format:
-                projects/\ */locations/*/restorePlans/\*
+                ``projects/*/locations/*/restorePlans/*``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2671,7 +2666,7 @@ class BackupForGKEClient(metaclass=BackupForGKEClientMeta):
             parent (str):
                 Required. The RestorePlan within which to create the
                 Restore. Format:
-                projects/\ */locations/*/restorePlans/\*
+                ``projects/*/locations/*/restorePlans/*``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2687,14 +2682,12 @@ class BackupForGKEClient(metaclass=BackupForGKEClientMeta):
                 Required. The client-provided short
                 name for the Restore resource. This name
                 must:
-                 - be between 1 and 63 characters long
-                (inclusive)  - consist of only
-                lower-case ASCII letters, numbers, and
-                dashes  - start with a lower-case letter
-                 - end with a lower-case letter or
-                number
-                 - be unique within the set of Restores
-                in this RestorePlan.
+
+                 - be between 1 and 63 characters long (inclusive)
+                 - consist of only lower-case ASCII letters, numbers, and dashes
+                 - start with a lower-case letter
+                 - end with a lower-case letter or number
+                 - be unique within the set of Restores in this RestorePlan.
 
                 This corresponds to the ``restore_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2804,7 +2797,7 @@ class BackupForGKEClient(metaclass=BackupForGKEClientMeta):
                 The request object. Request message for ListRestores.
             parent (str):
                 Required. The RestorePlan that contains the Restores to
-                list. Format: projects/\ */locations/*/restorePlans/\*
+                list. Format: ``projects/*/locations/*/restorePlans/*``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2909,7 +2902,7 @@ class BackupForGKEClient(metaclass=BackupForGKEClientMeta):
                 The request object. Request message for GetRestore.
             name (str):
                 Required. Name of the restore resource. Format:
-                projects/\ */locations/*/restorePlans/*/restores/*
+                ``projects/*/locations/*/restorePlans/*/restores/*``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -3141,7 +3134,7 @@ class BackupForGKEClient(metaclass=BackupForGKEClientMeta):
                 The request object. Request message for DeleteRestore.
             name (str):
                 Required. Full name of the Restore Format:
-                projects/\ */locations/*/restorePlans/*/restores/*
+                ``projects/*/locations/*/restorePlans/*/restores/*``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -3259,7 +3252,7 @@ class BackupForGKEClient(metaclass=BackupForGKEClientMeta):
             parent (str):
                 Required. The Restore that contains the VolumeRestores
                 to list. Format:
-                projects/\ */locations/*/restorePlans/*/restores/*
+                ``projects/*/locations/*/restorePlans/*/restores/*``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -3367,7 +3360,7 @@ class BackupForGKEClient(metaclass=BackupForGKEClientMeta):
             name (str):
                 Required. Full name of the VolumeRestore resource.
                 Format:
-                projects/\ */locations/*/restorePlans/*/restores/*/volumeRestores/\*
+                ``projects/*/locations/*/restorePlans/*/restores/*/volumeRestores/*``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this

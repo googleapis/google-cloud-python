@@ -36,7 +36,7 @@ class Restore(proto.Message):
     Attributes:
         name (str):
             Output only. The full name of the Restore resource. Format:
-            projects/\ */locations/*/restorePlans/*/restores/*
+            ``projects/*/locations/*/restorePlans/*/restores/*``
         uid (str):
             Output only. Server generated global unique identifier of
             `UUID <https://en.wikipedia.org/wiki/Universally_unique_identifier>`__
@@ -56,13 +56,13 @@ class Restore(proto.Message):
             source from which this Restore will restore. Note that this
             Backup must be a sub-resource of the RestorePlan's
             [backup_plan][google.cloud.gkebackup.v1.RestorePlan.backup_plan].
-            Format: projects/\ */locations/*/backupPlans/*/backups/*.
+            Format: ``projects/*/locations/*/backupPlans/*/backups/*``.
         cluster (str):
             Output only. The target cluster into which this Restore will
             restore data. Valid formats:
 
-            -  projects/\ */locations/*/clusters/\*
-            -  projects/\ */zones/*/clusters/\*
+            -  ``projects/*/locations/*/clusters/*``
+            -  ``projects/*/zones/*/clusters/*``
 
             Inherited from parent RestorePlan's
             [cluster][google.cloud.gkebackup.v1.RestorePlan.cluster]

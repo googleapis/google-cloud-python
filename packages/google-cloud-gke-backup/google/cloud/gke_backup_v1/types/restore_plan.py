@@ -35,7 +35,7 @@ class RestorePlan(proto.Message):
     Attributes:
         name (str):
             Output only. The full name of the RestorePlan resource.
-            Format: projects/\ */locations/*/restorePlans/*.
+            Format: ``projects/*/locations/*/restorePlans/*``.
         uid (str):
             Output only. Server generated global unique identifier of
             `UUID <https://en.wikipedia.org/wiki/Universally_unique_identifier>`__
@@ -54,15 +54,15 @@ class RestorePlan(proto.Message):
             [BackupPlan][google.cloud.gkebackup.v1.BackupPlan] from
             which Backups may be used as the source for Restores created
             via this RestorePlan. Format:
-            projects/\ */locations/*/backupPlans/*.
+            ``projects/*/locations/*/backupPlans/*``.
         cluster (str):
             Required. Immutable. The target cluster into which Restores
             created via this RestorePlan will restore data. NOTE: the
             cluster's region must be the same as the RestorePlan. Valid
             formats:
 
-            -  projects/\ */locations/*/clusters/\*
-            -  projects/\ */zones/*/clusters/\*
+            -  ``projects/*/locations/*/clusters/*``
+            -  ``projects/*/zones/*/clusters/*``
         restore_config (google.cloud.gke_backup_v1.types.RestoreConfig):
             Required. Configuration of Restores created
             via this RestorePlan.

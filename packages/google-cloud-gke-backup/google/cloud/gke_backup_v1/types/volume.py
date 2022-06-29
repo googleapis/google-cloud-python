@@ -38,7 +38,7 @@ class VolumeBackup(proto.Message):
         name (str):
             Output only. The full name of the VolumeBackup resource.
             Format:
-            projects/\ */locations/*/backupPlans/*/backups/*/volumeBackups/*.
+            ``projects/*/locations/*/backupPlans/*/backups/*/volumeBackups/*``.
         uid (str):
             Output only. Server generated global unique identifier of
             `UUID <https://en.wikipedia.org/wiki/Universally_unique_identifier>`__
@@ -174,7 +174,7 @@ class VolumeRestore(proto.Message):
         name (str):
             Output only. Full name of the VolumeRestore resource.
             Format:
-            projects/\ */locations/*/restorePlans/*/restores/*/volumeRestores/*.
+            ``projects/*/locations/*/restorePlans/*/restores/*/volumeRestores/*``.
         uid (str):
             Output only. Server generated global unique identifier of
             `UUID <https://en.wikipedia.org/wiki/Universally_unique_identifier>`__
@@ -188,7 +188,7 @@ class VolumeRestore(proto.Message):
         volume_backup (str):
             Output only. The full name of the VolumeBackup from which
             the volume will be restored. Format:
-            projects/\ */locations/*/backupPlans/*/backups/*/volumeBackups/*.
+            ``projects/*/locations/*/backupPlans/*/backups/*/volumeBackups/*``.
         target_pvc (google.cloud.gke_backup_v1.types.NamespacedName):
             Output only. The reference to the target
             Kubernetes PVC to be restored.
