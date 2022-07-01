@@ -23,6 +23,7 @@ from google.protobuf import symbol_database
 from proto._file_info import _FileInfo
 from proto.marshal import Marshal
 from proto.marshal import rules
+from proto.utils import has_upb
 
 
 def pytest_runtest_setup(item):
@@ -37,10 +38,14 @@ def pytest_runtest_setup(item):
         mock.patch.object(symbol_database, "Default", return_value=sym_db),
     ]
     if descriptor_pool._USE_C_DESCRIPTORS:
-        from google.protobuf.pyext import _message
 
         item._mocks.append(
-            mock.patch("google.protobuf.pyext._message.default_pool", pool)
+            mock.patch(
+                "google._upb._message.default_pool"
+                if has_upb()
+                else "google.protobuf.pyext._message.default_pool",
+                pool,
+            )
         )
 
     [i.start() for i in item._mocks]

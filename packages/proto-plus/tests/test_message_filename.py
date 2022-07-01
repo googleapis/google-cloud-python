@@ -20,4 +20,7 @@ def test_filename_includes_classname_salt():
     class Foo(proto.Message):
         bar = proto.Field(proto.INT32, number=1)
 
-    assert Foo.pb(Foo()).DESCRIPTOR.file.name == "test_message_filename_foo.proto"
+    assert (
+        Foo.pb(Foo()).DESCRIPTOR.file.name
+        == "test_message_filename__default_package.foo.proto"
+    )

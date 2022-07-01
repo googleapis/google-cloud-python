@@ -29,6 +29,10 @@ from proto.fields import MapField
 from proto.fields import RepeatedField
 from proto.marshal import Marshal
 from proto.primitives import ProtoType
+from proto.utils import has_upb
+
+
+_upb = has_upb()  # Important to cache result here.
 
 
 class MessageMeta(type):
@@ -568,11 +572,21 @@ class Message(metaclass=MessageMeta):
                 # See related issue
                 # https://github.com/googleapis/python-api-core/issues/227
                 if isinstance(value, dict):
-                    keys_to_update = [
-                        item
-                        for item in value
-                        if not hasattr(pb_type, item) and hasattr(pb_type, f"{item}_")
-                    ]
+                    if _upb:
+                        # In UPB, pb_type is MessageMeta which doesn't expose attrs like it used to in Python/CPP.
+                        keys_to_update = [
+                            item
+                            for item in value
+                            if item not in pb_type.DESCRIPTOR.fields_by_name
+                            and f"{item}_" in pb_type.DESCRIPTOR.fields_by_name
+                        ]
+                    else:
+                        keys_to_update = [
+                            item
+                            for item in value
+                            if not hasattr(pb_type, item)
+                            and hasattr(pb_type, f"{item}_")
+                        ]
                     for item in keys_to_update:
                         value[f"{item}_"] = value.pop(item)
 

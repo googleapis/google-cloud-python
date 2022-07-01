@@ -35,6 +35,7 @@ def test_repeated_composite_init():
     assert len(baz.foos) == 1
     assert baz.foos == baz.foos
     assert baz.foos[0].bar == 42
+    assert isinstance(baz.foos[0], Foo)
 
 
 def test_repeated_composite_equality():

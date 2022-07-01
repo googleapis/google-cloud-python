@@ -42,7 +42,8 @@ def unit(session, proto="python"):
     session.env["PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION"] = proto
     session.install("coverage", "pytest", "pytest-cov", "pytz")
     session.install("-e", ".[testing]", "-c", constraints_path)
-
+    if proto == "cpp":  # 4.20 does not have cpp.
+        session.install("protobuf==3.19.0")
     session.run(
         "py.test",
         "-W=error",
@@ -54,7 +55,7 @@ def unit(session, proto="python"):
                 "--cov-config=.coveragerc",
                 "--cov-report=term",
                 "--cov-report=html",
-                os.path.join("tests", ""),
+                "tests",
             ]
         ),
     )
@@ -66,6 +67,11 @@ def unit(session, proto="python"):
 @nox.session(python=PYTHON_VERSIONS)
 def unitcpp(session):
     return unit(session, proto="cpp")
+
+
+@nox.session(python=PYTHON_VERSIONS)
+def unitupb(session):
+    return unit(session, proto="upb")
 
 
 # Just use the most recent version for docs

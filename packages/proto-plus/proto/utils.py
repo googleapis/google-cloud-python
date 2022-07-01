@@ -15,6 +15,16 @@
 import functools
 
 
+def has_upb():
+    try:
+        from google._upb import _message  # pylint: disable=unused-import
+
+        has_upb = True
+    except ImportError:
+        has_upb = False
+    return has_upb
+
+
 def cached_property(fx):
     """Make the callable into a cached property.
 

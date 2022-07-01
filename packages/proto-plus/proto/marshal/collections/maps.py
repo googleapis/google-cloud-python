@@ -15,6 +15,7 @@
 import collections
 
 from proto.utils import cached_property
+from google.protobuf.message import Message
 
 
 class MapComposite(collections.abc.MutableMapping):
@@ -58,15 +59,21 @@ class MapComposite(collections.abc.MutableMapping):
 
     def __setitem__(self, key, value):
         pb_value = self._marshal.to_proto(self._pb_type, value, strict=True)
-
         # Directly setting a key is not allowed; however, protocol buffers
         # is so permissive that querying for the existence of a key will in
         # of itself create it.
         #
         # Therefore, we create a key that way (clearing any fields that may
         # be set) and then merge in our values.
-        self.pb[key].Clear()
-        self.pb[key].MergeFrom(pb_value)
+        # TODO: self.pb[key] should always be Message. Remove this after protobuf fix.
+        # In UPB, sometimes self.pb[key] is not always a proto.
+        # This happens during marshalling when the pb_value is upb.MapCompositeContainer
+        # so it's not marshalled correcrtly (i.e. should be scalar values not composite).
+        if isinstance(self.pb[key], Message):
+            self.pb[key].Clear()
+            self.pb[key].MergeFrom(pb_value)
+        else:
+            self.pb[key] = value
 
     def __delitem__(self, key):
         self.pb.pop(key)

@@ -25,6 +25,7 @@ from proto.marshal import compat
 from proto.marshal.collections import MapComposite
 from proto.marshal.collections import Repeated
 from proto.marshal.collections import RepeatedComposite
+
 from proto.marshal.rules import bytes as pb_bytes
 from proto.marshal.rules import stringy_numbers
 from proto.marshal.rules import dates
@@ -219,7 +220,6 @@ class BaseMarshal:
                     got=pb_value.__class__.__name__,
                 ),
             )
-
         # Return the final value.
         return pb_value
 
