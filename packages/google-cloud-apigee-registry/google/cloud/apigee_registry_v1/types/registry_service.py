@@ -696,7 +696,7 @@ class RollbackApiSpecRequest(proto.Message):
             Required. The revision ID to roll back to.
             It must be a revision of the same spec.
 
-              Example: c7cfa2a8
+            Example: c7cfa2a8
     """
 
     name = proto.Field(
@@ -997,7 +997,7 @@ class RollbackApiDeploymentRequest(proto.Message):
         revision_id (str):
             Required. The revision ID to roll back to.
             It must be a revision of the same deployment.
-              Example: c7cfa2a8
+            Example: c7cfa2a8
     """
 
     name = proto.Field(
