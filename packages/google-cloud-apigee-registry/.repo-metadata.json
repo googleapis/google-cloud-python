@@ -1,0 +1,17 @@
+{
+    "name": "apigeeregistry",
+    "name_pretty": "Apigee Registry API",
+    "api_description": "allows teams to upload and share machine-readable descriptions of APIs that are in use and in development.",
+    "product_documentation": "https://cloud.google.com/apigee/docs/api-hub/get-started-registry-api",
+    "client_documentation": "https://cloud.google.com/python/docs/reference/apigeeregistry/latest",
+    "issue_tracker": "",
+    "release_level": "preview",
+    "language": "python",
+    "library_type": "GAPIC_AUTO",
+    "repo": "googleapis/python-apigee-registry",
+    "distribution_name": "google-cloud-apigee-registry",
+    "api_id": "apigeeregistry.googleapis.com",
+    "default_version": "v1",
+    "codeowner_team": "",
+    "api_shortname": "apigeeregistry"
+}

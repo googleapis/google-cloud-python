@@ -1,0 +1,6182 @@
+{
+  "clientLibrary": {
+    "apis": [
+      {
+        "id": "google.cloud.apigeeregistry.v1",
+        "version": "v1"
+      }
+    ],
+    "language": "PYTHON",
+    "name": "google-cloud-apigee-registry"
+  },
+  "snippets": [
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.apigee_registry_v1.ProvisioningAsyncClient",
+          "shortName": "ProvisioningAsyncClient"
+        },
+        "fullName": "google.cloud.apigee_registry_v1.ProvisioningAsyncClient.create_instance",
+        "method": {
+          "fullName": "google.cloud.apigeeregistry.v1.Provisioning.CreateInstance",
+          "service": {
+            "fullName": "google.cloud.apigeeregistry.v1.Provisioning",
+            "shortName": "Provisioning"
+          },
+          "shortName": "CreateInstance"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.apigee_registry_v1.types.CreateInstanceRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "instance",
+            "type": "google.cloud.apigee_registry_v1.types.Instance"
+          },
+          {
+            "name": "instance_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "create_instance"
+      },
+      "description": "Sample for CreateInstance",
+      "file": "apigeeregistry_v1_generated_provisioning_create_instance_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "apigeeregistry_v1_generated_Provisioning_CreateInstance_async",
+      "segments": [
+        {
+          "end": 53,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 53,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 43,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 50,
+          "start": 44,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 54,
+          "start": 51,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "apigeeregistry_v1_generated_provisioning_create_instance_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.apigee_registry_v1.ProvisioningClient",
+          "shortName": "ProvisioningClient"
+        },
+        "fullName": "google.cloud.apigee_registry_v1.ProvisioningClient.create_instance",
+        "method": {
+          "fullName": "google.cloud.apigeeregistry.v1.Provisioning.CreateInstance",
+          "service": {
+            "fullName": "google.cloud.apigeeregistry.v1.Provisioning",
+            "shortName": "Provisioning"
+          },
+          "shortName": "CreateInstance"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.apigee_registry_v1.types.CreateInstanceRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "instance",
+            "type": "google.cloud.apigee_registry_v1.types.Instance"
+          },
+          {
+            "name": "instance_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "create_instance"
+      },
+      "description": "Sample for CreateInstance",
+      "file": "apigeeregistry_v1_generated_provisioning_create_instance_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "apigeeregistry_v1_generated_Provisioning_CreateInstance_sync",
+      "segments": [
+        {
+          "end": 53,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 53,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 43,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 50,
+          "start": 44,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 54,
+          "start": 51,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "apigeeregistry_v1_generated_provisioning_create_instance_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.apigee_registry_v1.ProvisioningAsyncClient",
+          "shortName": "ProvisioningAsyncClient"
+        },
+        "fullName": "google.cloud.apigee_registry_v1.ProvisioningAsyncClient.delete_instance",
+        "method": {
+          "fullName": "google.cloud.apigeeregistry.v1.Provisioning.DeleteInstance",
+          "service": {
+            "fullName": "google.cloud.apigeeregistry.v1.Provisioning",
+            "shortName": "Provisioning"
+          },
+          "shortName": "DeleteInstance"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.apigee_registry_v1.types.DeleteInstanceRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "delete_instance"
+      },
+      "description": "Sample for DeleteInstance",
+      "file": "apigeeregistry_v1_generated_provisioning_delete_instance_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "apigeeregistry_v1_generated_Provisioning_DeleteInstance_async",
+      "segments": [
+        {
+          "end": 48,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 48,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 49,
+          "start": 46,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "apigeeregistry_v1_generated_provisioning_delete_instance_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.apigee_registry_v1.ProvisioningClient",
+          "shortName": "ProvisioningClient"
+        },
+        "fullName": "google.cloud.apigee_registry_v1.ProvisioningClient.delete_instance",
+        "method": {
+          "fullName": "google.cloud.apigeeregistry.v1.Provisioning.DeleteInstance",
+          "service": {
+            "fullName": "google.cloud.apigeeregistry.v1.Provisioning",
+            "shortName": "Provisioning"
+          },
+          "shortName": "DeleteInstance"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.apigee_registry_v1.types.DeleteInstanceRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "delete_instance"
+      },
+      "description": "Sample for DeleteInstance",
+      "file": "apigeeregistry_v1_generated_provisioning_delete_instance_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "apigeeregistry_v1_generated_Provisioning_DeleteInstance_sync",
+      "segments": [
+        {
+          "end": 48,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 48,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 49,
+          "start": 46,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "apigeeregistry_v1_generated_provisioning_delete_instance_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.apigee_registry_v1.ProvisioningAsyncClient",
+          "shortName": "ProvisioningAsyncClient"
+        },
+        "fullName": "google.cloud.apigee_registry_v1.ProvisioningAsyncClient.get_instance",
+        "method": {
+          "fullName": "google.cloud.apigeeregistry.v1.Provisioning.GetInstance",
+          "service": {
+            "fullName": "google.cloud.apigeeregistry.v1.Provisioning",
+            "shortName": "Provisioning"
+          },
+          "shortName": "GetInstance"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.apigee_registry_v1.types.GetInstanceRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.apigee_registry_v1.types.Instance",
+        "shortName": "get_instance"
+      },
+      "description": "Sample for GetInstance",
+      "file": "apigeeregistry_v1_generated_provisioning_get_instance_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "apigeeregistry_v1_generated_Provisioning_GetInstance_async",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "apigeeregistry_v1_generated_provisioning_get_instance_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.apigee_registry_v1.ProvisioningClient",
+          "shortName": "ProvisioningClient"
+        },
+        "fullName": "google.cloud.apigee_registry_v1.ProvisioningClient.get_instance",
+        "method": {
+          "fullName": "google.cloud.apigeeregistry.v1.Provisioning.GetInstance",
+          "service": {
+            "fullName": "google.cloud.apigeeregistry.v1.Provisioning",
+            "shortName": "Provisioning"
+          },
+          "shortName": "GetInstance"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.apigee_registry_v1.types.GetInstanceRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.apigee_registry_v1.types.Instance",
+        "shortName": "get_instance"
+      },
+      "description": "Sample for GetInstance",
+      "file": "apigeeregistry_v1_generated_provisioning_get_instance_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "apigeeregistry_v1_generated_Provisioning_GetInstance_sync",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "apigeeregistry_v1_generated_provisioning_get_instance_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.apigee_registry_v1.RegistryAsyncClient",
+          "shortName": "RegistryAsyncClient"
+        },
+        "fullName": "google.cloud.apigee_registry_v1.RegistryAsyncClient.create_api_deployment",
+        "method": {
+          "fullName": "google.cloud.apigeeregistry.v1.Registry.CreateApiDeployment",
+          "service": {
+            "fullName": "google.cloud.apigeeregistry.v1.Registry",
+            "shortName": "Registry"
+          },
+          "shortName": "CreateApiDeployment"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.apigee_registry_v1.types.CreateApiDeploymentRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "api_deployment",
+            "type": "google.cloud.apigee_registry_v1.types.ApiDeployment"
+          },
+          {
+            "name": "api_deployment_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.apigee_registry_v1.types.ApiDeployment",
+        "shortName": "create_api_deployment"
+      },
+      "description": "Sample for CreateApiDeployment",
+      "file": "apigeeregistry_v1_generated_registry_create_api_deployment_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "apigeeregistry_v1_generated_Registry_CreateApiDeployment_async",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 39,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 42,
+          "start": 40,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "apigeeregistry_v1_generated_registry_create_api_deployment_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.apigee_registry_v1.RegistryClient",
+          "shortName": "RegistryClient"
+        },
+        "fullName": "google.cloud.apigee_registry_v1.RegistryClient.create_api_deployment",
+        "method": {
+          "fullName": "google.cloud.apigeeregistry.v1.Registry.CreateApiDeployment",
+          "service": {
+            "fullName": "google.cloud.apigeeregistry.v1.Registry",
+            "shortName": "Registry"
+          },
+          "shortName": "CreateApiDeployment"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.apigee_registry_v1.types.CreateApiDeploymentRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "api_deployment",
+            "type": "google.cloud.apigee_registry_v1.types.ApiDeployment"
+          },
+          {
+            "name": "api_deployment_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.apigee_registry_v1.types.ApiDeployment",
+        "shortName": "create_api_deployment"
+      },
+      "description": "Sample for CreateApiDeployment",
+      "file": "apigeeregistry_v1_generated_registry_create_api_deployment_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "apigeeregistry_v1_generated_Registry_CreateApiDeployment_sync",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 39,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 42,
+          "start": 40,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "apigeeregistry_v1_generated_registry_create_api_deployment_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.apigee_registry_v1.RegistryAsyncClient",
+          "shortName": "RegistryAsyncClient"
+        },
+        "fullName": "google.cloud.apigee_registry_v1.RegistryAsyncClient.create_api_spec",
+        "method": {
+          "fullName": "google.cloud.apigeeregistry.v1.Registry.CreateApiSpec",
+          "service": {
+            "fullName": "google.cloud.apigeeregistry.v1.Registry",
+            "shortName": "Registry"
+          },
+          "shortName": "CreateApiSpec"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.apigee_registry_v1.types.CreateApiSpecRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "api_spec",
+            "type": "google.cloud.apigee_registry_v1.types.ApiSpec"
+          },
+          {
+            "name": "api_spec_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.apigee_registry_v1.types.ApiSpec",
+        "shortName": "create_api_spec"
+      },
+      "description": "Sample for CreateApiSpec",
+      "file": "apigeeregistry_v1_generated_registry_create_api_spec_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "apigeeregistry_v1_generated_Registry_CreateApiSpec_async",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 39,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 42,
+          "start": 40,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "apigeeregistry_v1_generated_registry_create_api_spec_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.apigee_registry_v1.RegistryClient",
+          "shortName": "RegistryClient"
+        },
+        "fullName": "google.cloud.apigee_registry_v1.RegistryClient.create_api_spec",
+        "method": {
+          "fullName": "google.cloud.apigeeregistry.v1.Registry.CreateApiSpec",
+          "service": {
+            "fullName": "google.cloud.apigeeregistry.v1.Registry",
+            "shortName": "Registry"
+          },
+          "shortName": "CreateApiSpec"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.apigee_registry_v1.types.CreateApiSpecRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "api_spec",
+            "type": "google.cloud.apigee_registry_v1.types.ApiSpec"
+          },
+          {
+            "name": "api_spec_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.apigee_registry_v1.types.ApiSpec",
+        "shortName": "create_api_spec"
+      },
+      "description": "Sample for CreateApiSpec",
+      "file": "apigeeregistry_v1_generated_registry_create_api_spec_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "apigeeregistry_v1_generated_Registry_CreateApiSpec_sync",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 39,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 42,
+          "start": 40,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "apigeeregistry_v1_generated_registry_create_api_spec_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.apigee_registry_v1.RegistryAsyncClient",
+          "shortName": "RegistryAsyncClient"
+        },
+        "fullName": "google.cloud.apigee_registry_v1.RegistryAsyncClient.create_api_version",
+        "method": {
+          "fullName": "google.cloud.apigeeregistry.v1.Registry.CreateApiVersion",
+          "service": {
+            "fullName": "google.cloud.apigeeregistry.v1.Registry",
+            "shortName": "Registry"
+          },
+          "shortName": "CreateApiVersion"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.apigee_registry_v1.types.CreateApiVersionRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "api_version",
+            "type": "google.cloud.apigee_registry_v1.types.ApiVersion"
+          },
+          {
+            "name": "api_version_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.apigee_registry_v1.types.ApiVersion",
+        "shortName": "create_api_version"
+      },
+      "description": "Sample for CreateApiVersion",
+      "file": "apigeeregistry_v1_generated_registry_create_api_version_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "apigeeregistry_v1_generated_Registry_CreateApiVersion_async",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 39,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 42,
+          "start": 40,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "apigeeregistry_v1_generated_registry_create_api_version_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.apigee_registry_v1.RegistryClient",
+          "shortName": "RegistryClient"
+        },
+        "fullName": "google.cloud.apigee_registry_v1.RegistryClient.create_api_version",
+        "method": {
+          "fullName": "google.cloud.apigeeregistry.v1.Registry.CreateApiVersion",
+          "service": {
+            "fullName": "google.cloud.apigeeregistry.v1.Registry",
+            "shortName": "Registry"
+          },
+          "shortName": "CreateApiVersion"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.apigee_registry_v1.types.CreateApiVersionRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "api_version",
+            "type": "google.cloud.apigee_registry_v1.types.ApiVersion"
+          },
+          {
+            "name": "api_version_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.apigee_registry_v1.types.ApiVersion",
+        "shortName": "create_api_version"
+      },
+      "description": "Sample for CreateApiVersion",
+      "file": "apigeeregistry_v1_generated_registry_create_api_version_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "apigeeregistry_v1_generated_Registry_CreateApiVersion_sync",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 39,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 42,
+          "start": 40,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "apigeeregistry_v1_generated_registry_create_api_version_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.apigee_registry_v1.RegistryAsyncClient",
+          "shortName": "RegistryAsyncClient"
+        },
+        "fullName": "google.cloud.apigee_registry_v1.RegistryAsyncClient.create_api",
+        "method": {
+          "fullName": "google.cloud.apigeeregistry.v1.Registry.CreateApi",
+          "service": {
+            "fullName": "google.cloud.apigeeregistry.v1.Registry",
+            "shortName": "Registry"
+          },
+          "shortName": "CreateApi"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.apigee_registry_v1.types.CreateApiRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "api",
+            "type": "google.cloud.apigee_registry_v1.types.Api"
+          },
+          {
+            "name": "api_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.apigee_registry_v1.types.Api",
+        "shortName": "create_api"
+      },
+      "description": "Sample for CreateApi",
+      "file": "apigeeregistry_v1_generated_registry_create_api_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "apigeeregistry_v1_generated_Registry_CreateApi_async",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 39,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 42,
+          "start": 40,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "apigeeregistry_v1_generated_registry_create_api_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.apigee_registry_v1.RegistryClient",
+          "shortName": "RegistryClient"
+        },
+        "fullName": "google.cloud.apigee_registry_v1.RegistryClient.create_api",
+        "method": {
+          "fullName": "google.cloud.apigeeregistry.v1.Registry.CreateApi",
+          "service": {
+            "fullName": "google.cloud.apigeeregistry.v1.Registry",
+            "shortName": "Registry"
+          },
+          "shortName": "CreateApi"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.apigee_registry_v1.types.CreateApiRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "api",
+            "type": "google.cloud.apigee_registry_v1.types.Api"
+          },
+          {
+            "name": "api_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.apigee_registry_v1.types.Api",
+        "shortName": "create_api"
+      },
+      "description": "Sample for CreateApi",
+      "file": "apigeeregistry_v1_generated_registry_create_api_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "apigeeregistry_v1_generated_Registry_CreateApi_sync",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 39,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 42,
+          "start": 40,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "apigeeregistry_v1_generated_registry_create_api_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.apigee_registry_v1.RegistryAsyncClient",
+          "shortName": "RegistryAsyncClient"
+        },
+        "fullName": "google.cloud.apigee_registry_v1.RegistryAsyncClient.create_artifact",
+        "method": {
+          "fullName": "google.cloud.apigeeregistry.v1.Registry.CreateArtifact",
+          "service": {
+            "fullName": "google.cloud.apigeeregistry.v1.Registry",
+            "shortName": "Registry"
+          },
+          "shortName": "CreateArtifact"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.apigee_registry_v1.types.CreateArtifactRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "artifact",
+            "type": "google.cloud.apigee_registry_v1.types.Artifact"
+          },
+          {
+            "name": "artifact_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.apigee_registry_v1.types.Artifact",
+        "shortName": "create_artifact"
+      },
+      "description": "Sample for CreateArtifact",
+      "file": "apigeeregistry_v1_generated_registry_create_artifact_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "apigeeregistry_v1_generated_Registry_CreateArtifact_async",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 39,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 42,
+          "start": 40,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "apigeeregistry_v1_generated_registry_create_artifact_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.apigee_registry_v1.RegistryClient",
+          "shortName": "RegistryClient"
+        },
+        "fullName": "google.cloud.apigee_registry_v1.RegistryClient.create_artifact",
+        "method": {
+          "fullName": "google.cloud.apigeeregistry.v1.Registry.CreateArtifact",
+          "service": {
+            "fullName": "google.cloud.apigeeregistry.v1.Registry",
+            "shortName": "Registry"
+          },
+          "shortName": "CreateArtifact"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.apigee_registry_v1.types.CreateArtifactRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "artifact",
+            "type": "google.cloud.apigee_registry_v1.types.Artifact"
+          },
+          {
+            "name": "artifact_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.apigee_registry_v1.types.Artifact",
+        "shortName": "create_artifact"
+      },
+      "description": "Sample for CreateArtifact",
+      "file": "apigeeregistry_v1_generated_registry_create_artifact_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "apigeeregistry_v1_generated_Registry_CreateArtifact_sync",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 39,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 42,
+          "start": 40,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "apigeeregistry_v1_generated_registry_create_artifact_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.apigee_registry_v1.RegistryAsyncClient",
+          "shortName": "RegistryAsyncClient"
+        },
+        "fullName": "google.cloud.apigee_registry_v1.RegistryAsyncClient.delete_api_deployment_revision",
+        "method": {
+          "fullName": "google.cloud.apigeeregistry.v1.Registry.DeleteApiDeploymentRevision",
+          "service": {
+            "fullName": "google.cloud.apigeeregistry.v1.Registry",
+            "shortName": "Registry"
+          },
+          "shortName": "DeleteApiDeploymentRevision"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.apigee_registry_v1.types.DeleteApiDeploymentRevisionRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.apigee_registry_v1.types.ApiDeployment",
+        "shortName": "delete_api_deployment_revision"
+      },
+      "description": "Sample for DeleteApiDeploymentRevision",
+      "file": "apigeeregistry_v1_generated_registry_delete_api_deployment_revision_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "apigeeregistry_v1_generated_Registry_DeleteApiDeploymentRevision_async",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "apigeeregistry_v1_generated_registry_delete_api_deployment_revision_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.apigee_registry_v1.RegistryClient",
+          "shortName": "RegistryClient"
+        },
+        "fullName": "google.cloud.apigee_registry_v1.RegistryClient.delete_api_deployment_revision",
+        "method": {
+          "fullName": "google.cloud.apigeeregistry.v1.Registry.DeleteApiDeploymentRevision",
+          "service": {
+            "fullName": "google.cloud.apigeeregistry.v1.Registry",
+            "shortName": "Registry"
+          },
+          "shortName": "DeleteApiDeploymentRevision"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.apigee_registry_v1.types.DeleteApiDeploymentRevisionRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.apigee_registry_v1.types.ApiDeployment",
+        "shortName": "delete_api_deployment_revision"
+      },
+      "description": "Sample for DeleteApiDeploymentRevision",
+      "file": "apigeeregistry_v1_generated_registry_delete_api_deployment_revision_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "apigeeregistry_v1_generated_Registry_DeleteApiDeploymentRevision_sync",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "apigeeregistry_v1_generated_registry_delete_api_deployment_revision_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.apigee_registry_v1.RegistryAsyncClient",
+          "shortName": "RegistryAsyncClient"
+        },
+        "fullName": "google.cloud.apigee_registry_v1.RegistryAsyncClient.delete_api_deployment",
+        "method": {
+          "fullName": "google.cloud.apigeeregistry.v1.Registry.DeleteApiDeployment",
+          "service": {
+            "fullName": "google.cloud.apigeeregistry.v1.Registry",
+            "shortName": "Registry"
+          },
+          "shortName": "DeleteApiDeployment"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.apigee_registry_v1.types.DeleteApiDeploymentRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "shortName": "delete_api_deployment"
+      },
+      "description": "Sample for DeleteApiDeployment",
+      "file": "apigeeregistry_v1_generated_registry_delete_api_deployment_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "apigeeregistry_v1_generated_Registry_DeleteApiDeployment_async",
+      "segments": [
+        {
+          "end": 42,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 42,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "apigeeregistry_v1_generated_registry_delete_api_deployment_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.apigee_registry_v1.RegistryClient",
+          "shortName": "RegistryClient"
+        },
+        "fullName": "google.cloud.apigee_registry_v1.RegistryClient.delete_api_deployment",
+        "method": {
+          "fullName": "google.cloud.apigeeregistry.v1.Registry.DeleteApiDeployment",
+          "service": {
+            "fullName": "google.cloud.apigeeregistry.v1.Registry",
+            "shortName": "Registry"
+          },
+          "shortName": "DeleteApiDeployment"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.apigee_registry_v1.types.DeleteApiDeploymentRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "shortName": "delete_api_deployment"
+      },
+      "description": "Sample for DeleteApiDeployment",
+      "file": "apigeeregistry_v1_generated_registry_delete_api_deployment_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "apigeeregistry_v1_generated_Registry_DeleteApiDeployment_sync",
+      "segments": [
+        {
+          "end": 42,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 42,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "apigeeregistry_v1_generated_registry_delete_api_deployment_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.apigee_registry_v1.RegistryAsyncClient",
+          "shortName": "RegistryAsyncClient"
+        },
+        "fullName": "google.cloud.apigee_registry_v1.RegistryAsyncClient.delete_api_spec_revision",
+        "method": {
+          "fullName": "google.cloud.apigeeregistry.v1.Registry.DeleteApiSpecRevision",
+          "service": {
+            "fullName": "google.cloud.apigeeregistry.v1.Registry",
+            "shortName": "Registry"
+          },
+          "shortName": "DeleteApiSpecRevision"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.apigee_registry_v1.types.DeleteApiSpecRevisionRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.apigee_registry_v1.types.ApiSpec",
+        "shortName": "delete_api_spec_revision"
+      },
+      "description": "Sample for DeleteApiSpecRevision",
+      "file": "apigeeregistry_v1_generated_registry_delete_api_spec_revision_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "apigeeregistry_v1_generated_Registry_DeleteApiSpecRevision_async",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "apigeeregistry_v1_generated_registry_delete_api_spec_revision_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.apigee_registry_v1.RegistryClient",
+          "shortName": "RegistryClient"
+        },
+        "fullName": "google.cloud.apigee_registry_v1.RegistryClient.delete_api_spec_revision",
+        "method": {
+          "fullName": "google.cloud.apigeeregistry.v1.Registry.DeleteApiSpecRevision",
+          "service": {
+            "fullName": "google.cloud.apigeeregistry.v1.Registry",
+            "shortName": "Registry"
+          },
+          "shortName": "DeleteApiSpecRevision"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.apigee_registry_v1.types.DeleteApiSpecRevisionRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.apigee_registry_v1.types.ApiSpec",
+        "shortName": "delete_api_spec_revision"
+      },
+      "description": "Sample for DeleteApiSpecRevision",
+      "file": "apigeeregistry_v1_generated_registry_delete_api_spec_revision_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "apigeeregistry_v1_generated_Registry_DeleteApiSpecRevision_sync",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "apigeeregistry_v1_generated_registry_delete_api_spec_revision_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.apigee_registry_v1.RegistryAsyncClient",
+          "shortName": "RegistryAsyncClient"
+        },
+        "fullName": "google.cloud.apigee_registry_v1.RegistryAsyncClient.delete_api_spec",
+        "method": {
+          "fullName": "google.cloud.apigeeregistry.v1.Registry.DeleteApiSpec",
+          "service": {
+            "fullName": "google.cloud.apigeeregistry.v1.Registry",
+            "shortName": "Registry"
+          },
+          "shortName": "DeleteApiSpec"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.apigee_registry_v1.types.DeleteApiSpecRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "shortName": "delete_api_spec"
+      },
+      "description": "Sample for DeleteApiSpec",
+      "file": "apigeeregistry_v1_generated_registry_delete_api_spec_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "apigeeregistry_v1_generated_Registry_DeleteApiSpec_async",
+      "segments": [
+        {
+          "end": 42,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 42,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "apigeeregistry_v1_generated_registry_delete_api_spec_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.apigee_registry_v1.RegistryClient",
+          "shortName": "RegistryClient"
+        },
+        "fullName": "google.cloud.apigee_registry_v1.RegistryClient.delete_api_spec",
+        "method": {
+          "fullName": "google.cloud.apigeeregistry.v1.Registry.DeleteApiSpec",
+          "service": {
+            "fullName": "google.cloud.apigeeregistry.v1.Registry",
+            "shortName": "Registry"
+          },
+          "shortName": "DeleteApiSpec"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.apigee_registry_v1.types.DeleteApiSpecRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "shortName": "delete_api_spec"
+      },
+      "description": "Sample for DeleteApiSpec",
+      "file": "apigeeregistry_v1_generated_registry_delete_api_spec_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "apigeeregistry_v1_generated_Registry_DeleteApiSpec_sync",
+      "segments": [
+        {
+          "end": 42,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 42,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "apigeeregistry_v1_generated_registry_delete_api_spec_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.apigee_registry_v1.RegistryAsyncClient",
+          "shortName": "RegistryAsyncClient"
+        },
+        "fullName": "google.cloud.apigee_registry_v1.RegistryAsyncClient.delete_api_version",
+        "method": {
+          "fullName": "google.cloud.apigeeregistry.v1.Registry.DeleteApiVersion",
+          "service": {
+            "fullName": "google.cloud.apigeeregistry.v1.Registry",
+            "shortName": "Registry"
+          },
+          "shortName": "DeleteApiVersion"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.apigee_registry_v1.types.DeleteApiVersionRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "shortName": "delete_api_version"
+      },
+      "description": "Sample for DeleteApiVersion",
+      "file": "apigeeregistry_v1_generated_registry_delete_api_version_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "apigeeregistry_v1_generated_Registry_DeleteApiVersion_async",
+      "segments": [
+        {
+          "end": 42,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 42,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "apigeeregistry_v1_generated_registry_delete_api_version_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.apigee_registry_v1.RegistryClient",
+          "shortName": "RegistryClient"
+        },
+        "fullName": "google.cloud.apigee_registry_v1.RegistryClient.delete_api_version",
+        "method": {
+          "fullName": "google.cloud.apigeeregistry.v1.Registry.DeleteApiVersion",
+          "service": {
+            "fullName": "google.cloud.apigeeregistry.v1.Registry",
+            "shortName": "Registry"
+          },
+          "shortName": "DeleteApiVersion"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.apigee_registry_v1.types.DeleteApiVersionRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "shortName": "delete_api_version"
+      },
+      "description": "Sample for DeleteApiVersion",
+      "file": "apigeeregistry_v1_generated_registry_delete_api_version_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "apigeeregistry_v1_generated_Registry_DeleteApiVersion_sync",
+      "segments": [
+        {
+          "end": 42,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 42,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "apigeeregistry_v1_generated_registry_delete_api_version_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.apigee_registry_v1.RegistryAsyncClient",
+          "shortName": "RegistryAsyncClient"
+        },
+        "fullName": "google.cloud.apigee_registry_v1.RegistryAsyncClient.delete_api",
+        "method": {
+          "fullName": "google.cloud.apigeeregistry.v1.Registry.DeleteApi",
+          "service": {
+            "fullName": "google.cloud.apigeeregistry.v1.Registry",
+            "shortName": "Registry"
+          },
+          "shortName": "DeleteApi"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.apigee_registry_v1.types.DeleteApiRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "shortName": "delete_api"
+      },
+      "description": "Sample for DeleteApi",
+      "file": "apigeeregistry_v1_generated_registry_delete_api_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "apigeeregistry_v1_generated_Registry_DeleteApi_async",
+      "segments": [
+        {
+          "end": 42,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 42,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "apigeeregistry_v1_generated_registry_delete_api_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.apigee_registry_v1.RegistryClient",
+          "shortName": "RegistryClient"
+        },
+        "fullName": "google.cloud.apigee_registry_v1.RegistryClient.delete_api",
+        "method": {
+          "fullName": "google.cloud.apigeeregistry.v1.Registry.DeleteApi",
+          "service": {
+            "fullName": "google.cloud.apigeeregistry.v1.Registry",
+            "shortName": "Registry"
+          },
+          "shortName": "DeleteApi"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.apigee_registry_v1.types.DeleteApiRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "shortName": "delete_api"
+      },
+      "description": "Sample for DeleteApi",
+      "file": "apigeeregistry_v1_generated_registry_delete_api_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "apigeeregistry_v1_generated_Registry_DeleteApi_sync",
+      "segments": [
+        {
+          "end": 42,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 42,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "apigeeregistry_v1_generated_registry_delete_api_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.apigee_registry_v1.RegistryAsyncClient",
+          "shortName": "RegistryAsyncClient"
+        },
+        "fullName": "google.cloud.apigee_registry_v1.RegistryAsyncClient.delete_artifact",
+        "method": {
+          "fullName": "google.cloud.apigeeregistry.v1.Registry.DeleteArtifact",
+          "service": {
+            "fullName": "google.cloud.apigeeregistry.v1.Registry",
+            "shortName": "Registry"
+          },
+          "shortName": "DeleteArtifact"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.apigee_registry_v1.types.DeleteArtifactRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "shortName": "delete_artifact"
+      },
+      "description": "Sample for DeleteArtifact",
+      "file": "apigeeregistry_v1_generated_registry_delete_artifact_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "apigeeregistry_v1_generated_Registry_DeleteArtifact_async",
+      "segments": [
+        {
+          "end": 42,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 42,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "apigeeregistry_v1_generated_registry_delete_artifact_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.apigee_registry_v1.RegistryClient",
+          "shortName": "RegistryClient"
+        },
+        "fullName": "google.cloud.apigee_registry_v1.RegistryClient.delete_artifact",
+        "method": {
+          "fullName": "google.cloud.apigeeregistry.v1.Registry.DeleteArtifact",
+          "service": {
+            "fullName": "google.cloud.apigeeregistry.v1.Registry",
+            "shortName": "Registry"
+          },
+          "shortName": "DeleteArtifact"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.apigee_registry_v1.types.DeleteArtifactRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "shortName": "delete_artifact"
+      },
+      "description": "Sample for DeleteArtifact",
+      "file": "apigeeregistry_v1_generated_registry_delete_artifact_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "apigeeregistry_v1_generated_Registry_DeleteArtifact_sync",
+      "segments": [
+        {
+          "end": 42,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 42,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "apigeeregistry_v1_generated_registry_delete_artifact_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.apigee_registry_v1.RegistryAsyncClient",
+          "shortName": "RegistryAsyncClient"
+        },
+        "fullName": "google.cloud.apigee_registry_v1.RegistryAsyncClient.get_api_deployment",
+        "method": {
+          "fullName": "google.cloud.apigeeregistry.v1.Registry.GetApiDeployment",
+          "service": {
+            "fullName": "google.cloud.apigeeregistry.v1.Registry",
+            "shortName": "Registry"
+          },
+          "shortName": "GetApiDeployment"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.apigee_registry_v1.types.GetApiDeploymentRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.apigee_registry_v1.types.ApiDeployment",
+        "shortName": "get_api_deployment"
+      },
+      "description": "Sample for GetApiDeployment",
+      "file": "apigeeregistry_v1_generated_registry_get_api_deployment_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "apigeeregistry_v1_generated_Registry_GetApiDeployment_async",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "apigeeregistry_v1_generated_registry_get_api_deployment_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.apigee_registry_v1.RegistryClient",
+          "shortName": "RegistryClient"
+        },
+        "fullName": "google.cloud.apigee_registry_v1.RegistryClient.get_api_deployment",
+        "method": {
+          "fullName": "google.cloud.apigeeregistry.v1.Registry.GetApiDeployment",
+          "service": {
+            "fullName": "google.cloud.apigeeregistry.v1.Registry",
+            "shortName": "Registry"
+          },
+          "shortName": "GetApiDeployment"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.apigee_registry_v1.types.GetApiDeploymentRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.apigee_registry_v1.types.ApiDeployment",
+        "shortName": "get_api_deployment"
+      },
+      "description": "Sample for GetApiDeployment",
+      "file": "apigeeregistry_v1_generated_registry_get_api_deployment_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "apigeeregistry_v1_generated_Registry_GetApiDeployment_sync",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "apigeeregistry_v1_generated_registry_get_api_deployment_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.apigee_registry_v1.RegistryAsyncClient",
+          "shortName": "RegistryAsyncClient"
+        },
+        "fullName": "google.cloud.apigee_registry_v1.RegistryAsyncClient.get_api_spec_contents",
+        "method": {
+          "fullName": "google.cloud.apigeeregistry.v1.Registry.GetApiSpecContents",
+          "service": {
+            "fullName": "google.cloud.apigeeregistry.v1.Registry",
+            "shortName": "Registry"
+          },
+          "shortName": "GetApiSpecContents"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.apigee_registry_v1.types.GetApiSpecContentsRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api.httpbody_pb2.HttpBody",
+        "shortName": "get_api_spec_contents"
+      },
+      "description": "Sample for GetApiSpecContents",
+      "file": "apigeeregistry_v1_generated_registry_get_api_spec_contents_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "apigeeregistry_v1_generated_Registry_GetApiSpecContents_async",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "apigeeregistry_v1_generated_registry_get_api_spec_contents_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.apigee_registry_v1.RegistryClient",
+          "shortName": "RegistryClient"
+        },
+        "fullName": "google.cloud.apigee_registry_v1.RegistryClient.get_api_spec_contents",
+        "method": {
+          "fullName": "google.cloud.apigeeregistry.v1.Registry.GetApiSpecContents",
+          "service": {
+            "fullName": "google.cloud.apigeeregistry.v1.Registry",
+            "shortName": "Registry"
+          },
+          "shortName": "GetApiSpecContents"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.apigee_registry_v1.types.GetApiSpecContentsRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api.httpbody_pb2.HttpBody",
+        "shortName": "get_api_spec_contents"
+      },
+      "description": "Sample for GetApiSpecContents",
+      "file": "apigeeregistry_v1_generated_registry_get_api_spec_contents_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "apigeeregistry_v1_generated_Registry_GetApiSpecContents_sync",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "apigeeregistry_v1_generated_registry_get_api_spec_contents_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.apigee_registry_v1.RegistryAsyncClient",
+          "shortName": "RegistryAsyncClient"
+        },
+        "fullName": "google.cloud.apigee_registry_v1.RegistryAsyncClient.get_api_spec",
+        "method": {
+          "fullName": "google.cloud.apigeeregistry.v1.Registry.GetApiSpec",
+          "service": {
+            "fullName": "google.cloud.apigeeregistry.v1.Registry",
+            "shortName": "Registry"
+          },
+          "shortName": "GetApiSpec"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.apigee_registry_v1.types.GetApiSpecRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.apigee_registry_v1.types.ApiSpec",
+        "shortName": "get_api_spec"
+      },
+      "description": "Sample for GetApiSpec",
+      "file": "apigeeregistry_v1_generated_registry_get_api_spec_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "apigeeregistry_v1_generated_Registry_GetApiSpec_async",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "apigeeregistry_v1_generated_registry_get_api_spec_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.apigee_registry_v1.RegistryClient",
+          "shortName": "RegistryClient"
+        },
+        "fullName": "google.cloud.apigee_registry_v1.RegistryClient.get_api_spec",
+        "method": {
+          "fullName": "google.cloud.apigeeregistry.v1.Registry.GetApiSpec",
+          "service": {
+            "fullName": "google.cloud.apigeeregistry.v1.Registry",
+            "shortName": "Registry"
+          },
+          "shortName": "GetApiSpec"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.apigee_registry_v1.types.GetApiSpecRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.apigee_registry_v1.types.ApiSpec",
+        "shortName": "get_api_spec"
+      },
+      "description": "Sample for GetApiSpec",
+      "file": "apigeeregistry_v1_generated_registry_get_api_spec_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "apigeeregistry_v1_generated_Registry_GetApiSpec_sync",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "apigeeregistry_v1_generated_registry_get_api_spec_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.apigee_registry_v1.RegistryAsyncClient",
+          "shortName": "RegistryAsyncClient"
+        },
+        "fullName": "google.cloud.apigee_registry_v1.RegistryAsyncClient.get_api_version",
+        "method": {
+          "fullName": "google.cloud.apigeeregistry.v1.Registry.GetApiVersion",
+          "service": {
+            "fullName": "google.cloud.apigeeregistry.v1.Registry",
+            "shortName": "Registry"
+          },
+          "shortName": "GetApiVersion"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.apigee_registry_v1.types.GetApiVersionRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.apigee_registry_v1.types.ApiVersion",
+        "shortName": "get_api_version"
+      },
+      "description": "Sample for GetApiVersion",
+      "file": "apigeeregistry_v1_generated_registry_get_api_version_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "apigeeregistry_v1_generated_Registry_GetApiVersion_async",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "apigeeregistry_v1_generated_registry_get_api_version_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.apigee_registry_v1.RegistryClient",
+          "shortName": "RegistryClient"
+        },
+        "fullName": "google.cloud.apigee_registry_v1.RegistryClient.get_api_version",
+        "method": {
+          "fullName": "google.cloud.apigeeregistry.v1.Registry.GetApiVersion",
+          "service": {
+            "fullName": "google.cloud.apigeeregistry.v1.Registry",
+            "shortName": "Registry"
+          },
+          "shortName": "GetApiVersion"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.apigee_registry_v1.types.GetApiVersionRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.apigee_registry_v1.types.ApiVersion",
+        "shortName": "get_api_version"
+      },
+      "description": "Sample for GetApiVersion",
+      "file": "apigeeregistry_v1_generated_registry_get_api_version_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "apigeeregistry_v1_generated_Registry_GetApiVersion_sync",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "apigeeregistry_v1_generated_registry_get_api_version_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.apigee_registry_v1.RegistryAsyncClient",
+          "shortName": "RegistryAsyncClient"
+        },
+        "fullName": "google.cloud.apigee_registry_v1.RegistryAsyncClient.get_api",
+        "method": {
+          "fullName": "google.cloud.apigeeregistry.v1.Registry.GetApi",
+          "service": {
+            "fullName": "google.cloud.apigeeregistry.v1.Registry",
+            "shortName": "Registry"
+          },
+          "shortName": "GetApi"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.apigee_registry_v1.types.GetApiRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.apigee_registry_v1.types.Api",
+        "shortName": "get_api"
+      },
+      "description": "Sample for GetApi",
+      "file": "apigeeregistry_v1_generated_registry_get_api_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "apigeeregistry_v1_generated_Registry_GetApi_async",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "apigeeregistry_v1_generated_registry_get_api_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.apigee_registry_v1.RegistryClient",
+          "shortName": "RegistryClient"
+        },
+        "fullName": "google.cloud.apigee_registry_v1.RegistryClient.get_api",
+        "method": {
+          "fullName": "google.cloud.apigeeregistry.v1.Registry.GetApi",
+          "service": {
+            "fullName": "google.cloud.apigeeregistry.v1.Registry",
+            "shortName": "Registry"
+          },
+          "shortName": "GetApi"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.apigee_registry_v1.types.GetApiRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.apigee_registry_v1.types.Api",
+        "shortName": "get_api"
+      },
+      "description": "Sample for GetApi",
+      "file": "apigeeregistry_v1_generated_registry_get_api_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "apigeeregistry_v1_generated_Registry_GetApi_sync",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "apigeeregistry_v1_generated_registry_get_api_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.apigee_registry_v1.RegistryAsyncClient",
+          "shortName": "RegistryAsyncClient"
+        },
+        "fullName": "google.cloud.apigee_registry_v1.RegistryAsyncClient.get_artifact_contents",
+        "method": {
+          "fullName": "google.cloud.apigeeregistry.v1.Registry.GetArtifactContents",
+          "service": {
+            "fullName": "google.cloud.apigeeregistry.v1.Registry",
+            "shortName": "Registry"
+          },
+          "shortName": "GetArtifactContents"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.apigee_registry_v1.types.GetArtifactContentsRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api.httpbody_pb2.HttpBody",
+        "shortName": "get_artifact_contents"
+      },
+      "description": "Sample for GetArtifactContents",
+      "file": "apigeeregistry_v1_generated_registry_get_artifact_contents_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "apigeeregistry_v1_generated_Registry_GetArtifactContents_async",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "apigeeregistry_v1_generated_registry_get_artifact_contents_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.apigee_registry_v1.RegistryClient",
+          "shortName": "RegistryClient"
+        },
+        "fullName": "google.cloud.apigee_registry_v1.RegistryClient.get_artifact_contents",
+        "method": {
+          "fullName": "google.cloud.apigeeregistry.v1.Registry.GetArtifactContents",
+          "service": {
+            "fullName": "google.cloud.apigeeregistry.v1.Registry",
+            "shortName": "Registry"
+          },
+          "shortName": "GetArtifactContents"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.apigee_registry_v1.types.GetArtifactContentsRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api.httpbody_pb2.HttpBody",
+        "shortName": "get_artifact_contents"
+      },
+      "description": "Sample for GetArtifactContents",
+      "file": "apigeeregistry_v1_generated_registry_get_artifact_contents_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "apigeeregistry_v1_generated_Registry_GetArtifactContents_sync",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "apigeeregistry_v1_generated_registry_get_artifact_contents_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.apigee_registry_v1.RegistryAsyncClient",
+          "shortName": "RegistryAsyncClient"
+        },
+        "fullName": "google.cloud.apigee_registry_v1.RegistryAsyncClient.get_artifact",
+        "method": {
+          "fullName": "google.cloud.apigeeregistry.v1.Registry.GetArtifact",
+          "service": {
+            "fullName": "google.cloud.apigeeregistry.v1.Registry",
+            "shortName": "Registry"
+          },
+          "shortName": "GetArtifact"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.apigee_registry_v1.types.GetArtifactRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.apigee_registry_v1.types.Artifact",
+        "shortName": "get_artifact"
+      },
+      "description": "Sample for GetArtifact",
+      "file": "apigeeregistry_v1_generated_registry_get_artifact_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "apigeeregistry_v1_generated_Registry_GetArtifact_async",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "apigeeregistry_v1_generated_registry_get_artifact_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.apigee_registry_v1.RegistryClient",
+          "shortName": "RegistryClient"
+        },
+        "fullName": "google.cloud.apigee_registry_v1.RegistryClient.get_artifact",
+        "method": {
+          "fullName": "google.cloud.apigeeregistry.v1.Registry.GetArtifact",
+          "service": {
+            "fullName": "google.cloud.apigeeregistry.v1.Registry",
+            "shortName": "Registry"
+          },
+          "shortName": "GetArtifact"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.apigee_registry_v1.types.GetArtifactRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.apigee_registry_v1.types.Artifact",
+        "shortName": "get_artifact"
+      },
+      "description": "Sample for GetArtifact",
+      "file": "apigeeregistry_v1_generated_registry_get_artifact_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "apigeeregistry_v1_generated_Registry_GetArtifact_sync",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "apigeeregistry_v1_generated_registry_get_artifact_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.apigee_registry_v1.RegistryAsyncClient",
+          "shortName": "RegistryAsyncClient"
+        },
+        "fullName": "google.cloud.apigee_registry_v1.RegistryAsyncClient.list_api_deployment_revisions",
+        "method": {
+          "fullName": "google.cloud.apigeeregistry.v1.Registry.ListApiDeploymentRevisions",
+          "service": {
+            "fullName": "google.cloud.apigeeregistry.v1.Registry",
+            "shortName": "Registry"
+          },
+          "shortName": "ListApiDeploymentRevisions"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.apigee_registry_v1.types.ListApiDeploymentRevisionsRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.apigee_registry_v1.services.registry.pagers.ListApiDeploymentRevisionsAsyncPager",
+        "shortName": "list_api_deployment_revisions"
+      },
+      "description": "Sample for ListApiDeploymentRevisions",
+      "file": "apigeeregistry_v1_generated_registry_list_api_deployment_revisions_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "apigeeregistry_v1_generated_Registry_ListApiDeploymentRevisions_async",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "apigeeregistry_v1_generated_registry_list_api_deployment_revisions_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.apigee_registry_v1.RegistryClient",
+          "shortName": "RegistryClient"
+        },
+        "fullName": "google.cloud.apigee_registry_v1.RegistryClient.list_api_deployment_revisions",
+        "method": {
+          "fullName": "google.cloud.apigeeregistry.v1.Registry.ListApiDeploymentRevisions",
+          "service": {
+            "fullName": "google.cloud.apigeeregistry.v1.Registry",
+            "shortName": "Registry"
+          },
+          "shortName": "ListApiDeploymentRevisions"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.apigee_registry_v1.types.ListApiDeploymentRevisionsRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.apigee_registry_v1.services.registry.pagers.ListApiDeploymentRevisionsPager",
+        "shortName": "list_api_deployment_revisions"
+      },
+      "description": "Sample for ListApiDeploymentRevisions",
+      "file": "apigeeregistry_v1_generated_registry_list_api_deployment_revisions_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "apigeeregistry_v1_generated_Registry_ListApiDeploymentRevisions_sync",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "apigeeregistry_v1_generated_registry_list_api_deployment_revisions_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.apigee_registry_v1.RegistryAsyncClient",
+          "shortName": "RegistryAsyncClient"
+        },
+        "fullName": "google.cloud.apigee_registry_v1.RegistryAsyncClient.list_api_deployments",
+        "method": {
+          "fullName": "google.cloud.apigeeregistry.v1.Registry.ListApiDeployments",
+          "service": {
+            "fullName": "google.cloud.apigeeregistry.v1.Registry",
+            "shortName": "Registry"
+          },
+          "shortName": "ListApiDeployments"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.apigee_registry_v1.types.ListApiDeploymentsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.apigee_registry_v1.services.registry.pagers.ListApiDeploymentsAsyncPager",
+        "shortName": "list_api_deployments"
+      },
+      "description": "Sample for ListApiDeployments",
+      "file": "apigeeregistry_v1_generated_registry_list_api_deployments_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "apigeeregistry_v1_generated_Registry_ListApiDeployments_async",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "apigeeregistry_v1_generated_registry_list_api_deployments_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.apigee_registry_v1.RegistryClient",
+          "shortName": "RegistryClient"
+        },
+        "fullName": "google.cloud.apigee_registry_v1.RegistryClient.list_api_deployments",
+        "method": {
+          "fullName": "google.cloud.apigeeregistry.v1.Registry.ListApiDeployments",
+          "service": {
+            "fullName": "google.cloud.apigeeregistry.v1.Registry",
+            "shortName": "Registry"
+          },
+          "shortName": "ListApiDeployments"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.apigee_registry_v1.types.ListApiDeploymentsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.apigee_registry_v1.services.registry.pagers.ListApiDeploymentsPager",
+        "shortName": "list_api_deployments"
+      },
+      "description": "Sample for ListApiDeployments",
+      "file": "apigeeregistry_v1_generated_registry_list_api_deployments_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "apigeeregistry_v1_generated_Registry_ListApiDeployments_sync",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "apigeeregistry_v1_generated_registry_list_api_deployments_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.apigee_registry_v1.RegistryAsyncClient",
+          "shortName": "RegistryAsyncClient"
+        },
+        "fullName": "google.cloud.apigee_registry_v1.RegistryAsyncClient.list_api_spec_revisions",
+        "method": {
+          "fullName": "google.cloud.apigeeregistry.v1.Registry.ListApiSpecRevisions",
+          "service": {
+            "fullName": "google.cloud.apigeeregistry.v1.Registry",
+            "shortName": "Registry"
+          },
+          "shortName": "ListApiSpecRevisions"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.apigee_registry_v1.types.ListApiSpecRevisionsRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.apigee_registry_v1.services.registry.pagers.ListApiSpecRevisionsAsyncPager",
+        "shortName": "list_api_spec_revisions"
+      },
+      "description": "Sample for ListApiSpecRevisions",
+      "file": "apigeeregistry_v1_generated_registry_list_api_spec_revisions_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "apigeeregistry_v1_generated_Registry_ListApiSpecRevisions_async",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "apigeeregistry_v1_generated_registry_list_api_spec_revisions_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.apigee_registry_v1.RegistryClient",
+          "shortName": "RegistryClient"
+        },
+        "fullName": "google.cloud.apigee_registry_v1.RegistryClient.list_api_spec_revisions",
+        "method": {
+          "fullName": "google.cloud.apigeeregistry.v1.Registry.ListApiSpecRevisions",
+          "service": {
+            "fullName": "google.cloud.apigeeregistry.v1.Registry",
+            "shortName": "Registry"
+          },
+          "shortName": "ListApiSpecRevisions"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.apigee_registry_v1.types.ListApiSpecRevisionsRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.apigee_registry_v1.services.registry.pagers.ListApiSpecRevisionsPager",
+        "shortName": "list_api_spec_revisions"
+      },
+      "description": "Sample for ListApiSpecRevisions",
+      "file": "apigeeregistry_v1_generated_registry_list_api_spec_revisions_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "apigeeregistry_v1_generated_Registry_ListApiSpecRevisions_sync",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "apigeeregistry_v1_generated_registry_list_api_spec_revisions_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.apigee_registry_v1.RegistryAsyncClient",
+          "shortName": "RegistryAsyncClient"
+        },
+        "fullName": "google.cloud.apigee_registry_v1.RegistryAsyncClient.list_api_specs",
+        "method": {
+          "fullName": "google.cloud.apigeeregistry.v1.Registry.ListApiSpecs",
+          "service": {
+            "fullName": "google.cloud.apigeeregistry.v1.Registry",
+            "shortName": "Registry"
+          },
+          "shortName": "ListApiSpecs"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.apigee_registry_v1.types.ListApiSpecsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.apigee_registry_v1.services.registry.pagers.ListApiSpecsAsyncPager",
+        "shortName": "list_api_specs"
+      },
+      "description": "Sample for ListApiSpecs",
+      "file": "apigeeregistry_v1_generated_registry_list_api_specs_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "apigeeregistry_v1_generated_Registry_ListApiSpecs_async",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "apigeeregistry_v1_generated_registry_list_api_specs_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.apigee_registry_v1.RegistryClient",
+          "shortName": "RegistryClient"
+        },
+        "fullName": "google.cloud.apigee_registry_v1.RegistryClient.list_api_specs",
+        "method": {
+          "fullName": "google.cloud.apigeeregistry.v1.Registry.ListApiSpecs",
+          "service": {
+            "fullName": "google.cloud.apigeeregistry.v1.Registry",
+            "shortName": "Registry"
+          },
+          "shortName": "ListApiSpecs"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.apigee_registry_v1.types.ListApiSpecsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.apigee_registry_v1.services.registry.pagers.ListApiSpecsPager",
+        "shortName": "list_api_specs"
+      },
+      "description": "Sample for ListApiSpecs",
+      "file": "apigeeregistry_v1_generated_registry_list_api_specs_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "apigeeregistry_v1_generated_Registry_ListApiSpecs_sync",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "apigeeregistry_v1_generated_registry_list_api_specs_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.apigee_registry_v1.RegistryAsyncClient",
+          "shortName": "RegistryAsyncClient"
+        },
+        "fullName": "google.cloud.apigee_registry_v1.RegistryAsyncClient.list_api_versions",
+        "method": {
+          "fullName": "google.cloud.apigeeregistry.v1.Registry.ListApiVersions",
+          "service": {
+            "fullName": "google.cloud.apigeeregistry.v1.Registry",
+            "shortName": "Registry"
+          },
+          "shortName": "ListApiVersions"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.apigee_registry_v1.types.ListApiVersionsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.apigee_registry_v1.services.registry.pagers.ListApiVersionsAsyncPager",
+        "shortName": "list_api_versions"
+      },
+      "description": "Sample for ListApiVersions",
+      "file": "apigeeregistry_v1_generated_registry_list_api_versions_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "apigeeregistry_v1_generated_Registry_ListApiVersions_async",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "apigeeregistry_v1_generated_registry_list_api_versions_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.apigee_registry_v1.RegistryClient",
+          "shortName": "RegistryClient"
+        },
+        "fullName": "google.cloud.apigee_registry_v1.RegistryClient.list_api_versions",
+        "method": {
+          "fullName": "google.cloud.apigeeregistry.v1.Registry.ListApiVersions",
+          "service": {
+            "fullName": "google.cloud.apigeeregistry.v1.Registry",
+            "shortName": "Registry"
+          },
+          "shortName": "ListApiVersions"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.apigee_registry_v1.types.ListApiVersionsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.apigee_registry_v1.services.registry.pagers.ListApiVersionsPager",
+        "shortName": "list_api_versions"
+      },
+      "description": "Sample for ListApiVersions",
+      "file": "apigeeregistry_v1_generated_registry_list_api_versions_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "apigeeregistry_v1_generated_Registry_ListApiVersions_sync",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "apigeeregistry_v1_generated_registry_list_api_versions_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.apigee_registry_v1.RegistryAsyncClient",
+          "shortName": "RegistryAsyncClient"
+        },
+        "fullName": "google.cloud.apigee_registry_v1.RegistryAsyncClient.list_apis",
+        "method": {
+          "fullName": "google.cloud.apigeeregistry.v1.Registry.ListApis",
+          "service": {
+            "fullName": "google.cloud.apigeeregistry.v1.Registry",
+            "shortName": "Registry"
+          },
+          "shortName": "ListApis"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.apigee_registry_v1.types.ListApisRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.apigee_registry_v1.services.registry.pagers.ListApisAsyncPager",
+        "shortName": "list_apis"
+      },
+      "description": "Sample for ListApis",
+      "file": "apigeeregistry_v1_generated_registry_list_apis_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "apigeeregistry_v1_generated_Registry_ListApis_async",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "apigeeregistry_v1_generated_registry_list_apis_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.apigee_registry_v1.RegistryClient",
+          "shortName": "RegistryClient"
+        },
+        "fullName": "google.cloud.apigee_registry_v1.RegistryClient.list_apis",
+        "method": {
+          "fullName": "google.cloud.apigeeregistry.v1.Registry.ListApis",
+          "service": {
+            "fullName": "google.cloud.apigeeregistry.v1.Registry",
+            "shortName": "Registry"
+          },
+          "shortName": "ListApis"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.apigee_registry_v1.types.ListApisRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.apigee_registry_v1.services.registry.pagers.ListApisPager",
+        "shortName": "list_apis"
+      },
+      "description": "Sample for ListApis",
+      "file": "apigeeregistry_v1_generated_registry_list_apis_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "apigeeregistry_v1_generated_Registry_ListApis_sync",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "apigeeregistry_v1_generated_registry_list_apis_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.apigee_registry_v1.RegistryAsyncClient",
+          "shortName": "RegistryAsyncClient"
+        },
+        "fullName": "google.cloud.apigee_registry_v1.RegistryAsyncClient.list_artifacts",
+        "method": {
+          "fullName": "google.cloud.apigeeregistry.v1.Registry.ListArtifacts",
+          "service": {
+            "fullName": "google.cloud.apigeeregistry.v1.Registry",
+            "shortName": "Registry"
+          },
+          "shortName": "ListArtifacts"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.apigee_registry_v1.types.ListArtifactsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.apigee_registry_v1.services.registry.pagers.ListArtifactsAsyncPager",
+        "shortName": "list_artifacts"
+      },
+      "description": "Sample for ListArtifacts",
+      "file": "apigeeregistry_v1_generated_registry_list_artifacts_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "apigeeregistry_v1_generated_Registry_ListArtifacts_async",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "apigeeregistry_v1_generated_registry_list_artifacts_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.apigee_registry_v1.RegistryClient",
+          "shortName": "RegistryClient"
+        },
+        "fullName": "google.cloud.apigee_registry_v1.RegistryClient.list_artifacts",
+        "method": {
+          "fullName": "google.cloud.apigeeregistry.v1.Registry.ListArtifacts",
+          "service": {
+            "fullName": "google.cloud.apigeeregistry.v1.Registry",
+            "shortName": "Registry"
+          },
+          "shortName": "ListArtifacts"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.apigee_registry_v1.types.ListArtifactsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.apigee_registry_v1.services.registry.pagers.ListArtifactsPager",
+        "shortName": "list_artifacts"
+      },
+      "description": "Sample for ListArtifacts",
+      "file": "apigeeregistry_v1_generated_registry_list_artifacts_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "apigeeregistry_v1_generated_Registry_ListArtifacts_sync",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "apigeeregistry_v1_generated_registry_list_artifacts_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.apigee_registry_v1.RegistryAsyncClient",
+          "shortName": "RegistryAsyncClient"
+        },
+        "fullName": "google.cloud.apigee_registry_v1.RegistryAsyncClient.replace_artifact",
+        "method": {
+          "fullName": "google.cloud.apigeeregistry.v1.Registry.ReplaceArtifact",
+          "service": {
+            "fullName": "google.cloud.apigeeregistry.v1.Registry",
+            "shortName": "Registry"
+          },
+          "shortName": "ReplaceArtifact"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.apigee_registry_v1.types.ReplaceArtifactRequest"
+          },
+          {
+            "name": "artifact",
+            "type": "google.cloud.apigee_registry_v1.types.Artifact"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.apigee_registry_v1.types.Artifact",
+        "shortName": "replace_artifact"
+      },
+      "description": "Sample for ReplaceArtifact",
+      "file": "apigeeregistry_v1_generated_registry_replace_artifact_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "apigeeregistry_v1_generated_Registry_ReplaceArtifact_async",
+      "segments": [
+        {
+          "end": 43,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 43,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 37,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 44,
+          "start": 41,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "apigeeregistry_v1_generated_registry_replace_artifact_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.apigee_registry_v1.RegistryClient",
+          "shortName": "RegistryClient"
+        },
+        "fullName": "google.cloud.apigee_registry_v1.RegistryClient.replace_artifact",
+        "method": {
+          "fullName": "google.cloud.apigeeregistry.v1.Registry.ReplaceArtifact",
+          "service": {
+            "fullName": "google.cloud.apigeeregistry.v1.Registry",
+            "shortName": "Registry"
+          },
+          "shortName": "ReplaceArtifact"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.apigee_registry_v1.types.ReplaceArtifactRequest"
+          },
+          {
+            "name": "artifact",
+            "type": "google.cloud.apigee_registry_v1.types.Artifact"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.apigee_registry_v1.types.Artifact",
+        "shortName": "replace_artifact"
+      },
+      "description": "Sample for ReplaceArtifact",
+      "file": "apigeeregistry_v1_generated_registry_replace_artifact_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "apigeeregistry_v1_generated_Registry_ReplaceArtifact_sync",
+      "segments": [
+        {
+          "end": 43,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 43,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 37,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 44,
+          "start": 41,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "apigeeregistry_v1_generated_registry_replace_artifact_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.apigee_registry_v1.RegistryAsyncClient",
+          "shortName": "RegistryAsyncClient"
+        },
+        "fullName": "google.cloud.apigee_registry_v1.RegistryAsyncClient.rollback_api_deployment",
+        "method": {
+          "fullName": "google.cloud.apigeeregistry.v1.Registry.RollbackApiDeployment",
+          "service": {
+            "fullName": "google.cloud.apigeeregistry.v1.Registry",
+            "shortName": "Registry"
+          },
+          "shortName": "RollbackApiDeployment"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.apigee_registry_v1.types.RollbackApiDeploymentRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.apigee_registry_v1.types.ApiDeployment",
+        "shortName": "rollback_api_deployment"
+      },
+      "description": "Sample for RollbackApiDeployment",
+      "file": "apigeeregistry_v1_generated_registry_rollback_api_deployment_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "apigeeregistry_v1_generated_Registry_RollbackApiDeployment_async",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 39,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 42,
+          "start": 40,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "apigeeregistry_v1_generated_registry_rollback_api_deployment_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.apigee_registry_v1.RegistryClient",
+          "shortName": "RegistryClient"
+        },
+        "fullName": "google.cloud.apigee_registry_v1.RegistryClient.rollback_api_deployment",
+        "method": {
+          "fullName": "google.cloud.apigeeregistry.v1.Registry.RollbackApiDeployment",
+          "service": {
+            "fullName": "google.cloud.apigeeregistry.v1.Registry",
+            "shortName": "Registry"
+          },
+          "shortName": "RollbackApiDeployment"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.apigee_registry_v1.types.RollbackApiDeploymentRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.apigee_registry_v1.types.ApiDeployment",
+        "shortName": "rollback_api_deployment"
+      },
+      "description": "Sample for RollbackApiDeployment",
+      "file": "apigeeregistry_v1_generated_registry_rollback_api_deployment_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "apigeeregistry_v1_generated_Registry_RollbackApiDeployment_sync",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 39,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 42,
+          "start": 40,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "apigeeregistry_v1_generated_registry_rollback_api_deployment_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.apigee_registry_v1.RegistryAsyncClient",
+          "shortName": "RegistryAsyncClient"
+        },
+        "fullName": "google.cloud.apigee_registry_v1.RegistryAsyncClient.rollback_api_spec",
+        "method": {
+          "fullName": "google.cloud.apigeeregistry.v1.Registry.RollbackApiSpec",
+          "service": {
+            "fullName": "google.cloud.apigeeregistry.v1.Registry",
+            "shortName": "Registry"
+          },
+          "shortName": "RollbackApiSpec"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.apigee_registry_v1.types.RollbackApiSpecRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.apigee_registry_v1.types.ApiSpec",
+        "shortName": "rollback_api_spec"
+      },
+      "description": "Sample for RollbackApiSpec",
+      "file": "apigeeregistry_v1_generated_registry_rollback_api_spec_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "apigeeregistry_v1_generated_Registry_RollbackApiSpec_async",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 39,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 42,
+          "start": 40,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "apigeeregistry_v1_generated_registry_rollback_api_spec_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.apigee_registry_v1.RegistryClient",
+          "shortName": "RegistryClient"
+        },
+        "fullName": "google.cloud.apigee_registry_v1.RegistryClient.rollback_api_spec",
+        "method": {
+          "fullName": "google.cloud.apigeeregistry.v1.Registry.RollbackApiSpec",
+          "service": {
+            "fullName": "google.cloud.apigeeregistry.v1.Registry",
+            "shortName": "Registry"
+          },
+          "shortName": "RollbackApiSpec"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.apigee_registry_v1.types.RollbackApiSpecRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.apigee_registry_v1.types.ApiSpec",
+        "shortName": "rollback_api_spec"
+      },
+      "description": "Sample for RollbackApiSpec",
+      "file": "apigeeregistry_v1_generated_registry_rollback_api_spec_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "apigeeregistry_v1_generated_Registry_RollbackApiSpec_sync",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 39,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 42,
+          "start": 40,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "apigeeregistry_v1_generated_registry_rollback_api_spec_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.apigee_registry_v1.RegistryAsyncClient",
+          "shortName": "RegistryAsyncClient"
+        },
+        "fullName": "google.cloud.apigee_registry_v1.RegistryAsyncClient.tag_api_deployment_revision",
+        "method": {
+          "fullName": "google.cloud.apigeeregistry.v1.Registry.TagApiDeploymentRevision",
+          "service": {
+            "fullName": "google.cloud.apigeeregistry.v1.Registry",
+            "shortName": "Registry"
+          },
+          "shortName": "TagApiDeploymentRevision"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.apigee_registry_v1.types.TagApiDeploymentRevisionRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.apigee_registry_v1.types.ApiDeployment",
+        "shortName": "tag_api_deployment_revision"
+      },
+      "description": "Sample for TagApiDeploymentRevision",
+      "file": "apigeeregistry_v1_generated_registry_tag_api_deployment_revision_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "apigeeregistry_v1_generated_Registry_TagApiDeploymentRevision_async",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 39,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 42,
+          "start": 40,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "apigeeregistry_v1_generated_registry_tag_api_deployment_revision_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.apigee_registry_v1.RegistryClient",
+          "shortName": "RegistryClient"
+        },
+        "fullName": "google.cloud.apigee_registry_v1.RegistryClient.tag_api_deployment_revision",
+        "method": {
+          "fullName": "google.cloud.apigeeregistry.v1.Registry.TagApiDeploymentRevision",
+          "service": {
+            "fullName": "google.cloud.apigeeregistry.v1.Registry",
+            "shortName": "Registry"
+          },
+          "shortName": "TagApiDeploymentRevision"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.apigee_registry_v1.types.TagApiDeploymentRevisionRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.apigee_registry_v1.types.ApiDeployment",
+        "shortName": "tag_api_deployment_revision"
+      },
+      "description": "Sample for TagApiDeploymentRevision",
+      "file": "apigeeregistry_v1_generated_registry_tag_api_deployment_revision_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "apigeeregistry_v1_generated_Registry_TagApiDeploymentRevision_sync",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 39,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 42,
+          "start": 40,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "apigeeregistry_v1_generated_registry_tag_api_deployment_revision_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.apigee_registry_v1.RegistryAsyncClient",
+          "shortName": "RegistryAsyncClient"
+        },
+        "fullName": "google.cloud.apigee_registry_v1.RegistryAsyncClient.tag_api_spec_revision",
+        "method": {
+          "fullName": "google.cloud.apigeeregistry.v1.Registry.TagApiSpecRevision",
+          "service": {
+            "fullName": "google.cloud.apigeeregistry.v1.Registry",
+            "shortName": "Registry"
+          },
+          "shortName": "TagApiSpecRevision"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.apigee_registry_v1.types.TagApiSpecRevisionRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.apigee_registry_v1.types.ApiSpec",
+        "shortName": "tag_api_spec_revision"
+      },
+      "description": "Sample for TagApiSpecRevision",
+      "file": "apigeeregistry_v1_generated_registry_tag_api_spec_revision_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "apigeeregistry_v1_generated_Registry_TagApiSpecRevision_async",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 39,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 42,
+          "start": 40,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "apigeeregistry_v1_generated_registry_tag_api_spec_revision_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.apigee_registry_v1.RegistryClient",
+          "shortName": "RegistryClient"
+        },
+        "fullName": "google.cloud.apigee_registry_v1.RegistryClient.tag_api_spec_revision",
+        "method": {
+          "fullName": "google.cloud.apigeeregistry.v1.Registry.TagApiSpecRevision",
+          "service": {
+            "fullName": "google.cloud.apigeeregistry.v1.Registry",
+            "shortName": "Registry"
+          },
+          "shortName": "TagApiSpecRevision"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.apigee_registry_v1.types.TagApiSpecRevisionRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.apigee_registry_v1.types.ApiSpec",
+        "shortName": "tag_api_spec_revision"
+      },
+      "description": "Sample for TagApiSpecRevision",
+      "file": "apigeeregistry_v1_generated_registry_tag_api_spec_revision_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "apigeeregistry_v1_generated_Registry_TagApiSpecRevision_sync",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 39,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 42,
+          "start": 40,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "apigeeregistry_v1_generated_registry_tag_api_spec_revision_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.apigee_registry_v1.RegistryAsyncClient",
+          "shortName": "RegistryAsyncClient"
+        },
+        "fullName": "google.cloud.apigee_registry_v1.RegistryAsyncClient.update_api_deployment",
+        "method": {
+          "fullName": "google.cloud.apigeeregistry.v1.Registry.UpdateApiDeployment",
+          "service": {
+            "fullName": "google.cloud.apigeeregistry.v1.Registry",
+            "shortName": "Registry"
+          },
+          "shortName": "UpdateApiDeployment"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.apigee_registry_v1.types.UpdateApiDeploymentRequest"
+          },
+          {
+            "name": "api_deployment",
+            "type": "google.cloud.apigee_registry_v1.types.ApiDeployment"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.apigee_registry_v1.types.ApiDeployment",
+        "shortName": "update_api_deployment"
+      },
+      "description": "Sample for UpdateApiDeployment",
+      "file": "apigeeregistry_v1_generated_registry_update_api_deployment_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "apigeeregistry_v1_generated_Registry_UpdateApiDeployment_async",
+      "segments": [
+        {
+          "end": 43,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 43,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 37,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 44,
+          "start": 41,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "apigeeregistry_v1_generated_registry_update_api_deployment_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.apigee_registry_v1.RegistryClient",
+          "shortName": "RegistryClient"
+        },
+        "fullName": "google.cloud.apigee_registry_v1.RegistryClient.update_api_deployment",
+        "method": {
+          "fullName": "google.cloud.apigeeregistry.v1.Registry.UpdateApiDeployment",
+          "service": {
+            "fullName": "google.cloud.apigeeregistry.v1.Registry",
+            "shortName": "Registry"
+          },
+          "shortName": "UpdateApiDeployment"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.apigee_registry_v1.types.UpdateApiDeploymentRequest"
+          },
+          {
+            "name": "api_deployment",
+            "type": "google.cloud.apigee_registry_v1.types.ApiDeployment"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.apigee_registry_v1.types.ApiDeployment",
+        "shortName": "update_api_deployment"
+      },
+      "description": "Sample for UpdateApiDeployment",
+      "file": "apigeeregistry_v1_generated_registry_update_api_deployment_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "apigeeregistry_v1_generated_Registry_UpdateApiDeployment_sync",
+      "segments": [
+        {
+          "end": 43,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 43,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 37,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 44,
+          "start": 41,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "apigeeregistry_v1_generated_registry_update_api_deployment_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.apigee_registry_v1.RegistryAsyncClient",
+          "shortName": "RegistryAsyncClient"
+        },
+        "fullName": "google.cloud.apigee_registry_v1.RegistryAsyncClient.update_api_spec",
+        "method": {
+          "fullName": "google.cloud.apigeeregistry.v1.Registry.UpdateApiSpec",
+          "service": {
+            "fullName": "google.cloud.apigeeregistry.v1.Registry",
+            "shortName": "Registry"
+          },
+          "shortName": "UpdateApiSpec"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.apigee_registry_v1.types.UpdateApiSpecRequest"
+          },
+          {
+            "name": "api_spec",
+            "type": "google.cloud.apigee_registry_v1.types.ApiSpec"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.apigee_registry_v1.types.ApiSpec",
+        "shortName": "update_api_spec"
+      },
+      "description": "Sample for UpdateApiSpec",
+      "file": "apigeeregistry_v1_generated_registry_update_api_spec_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "apigeeregistry_v1_generated_Registry_UpdateApiSpec_async",
+      "segments": [
+        {
+          "end": 43,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 43,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 37,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 44,
+          "start": 41,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "apigeeregistry_v1_generated_registry_update_api_spec_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.apigee_registry_v1.RegistryClient",
+          "shortName": "RegistryClient"
+        },
+        "fullName": "google.cloud.apigee_registry_v1.RegistryClient.update_api_spec",
+        "method": {
+          "fullName": "google.cloud.apigeeregistry.v1.Registry.UpdateApiSpec",
+          "service": {
+            "fullName": "google.cloud.apigeeregistry.v1.Registry",
+            "shortName": "Registry"
+          },
+          "shortName": "UpdateApiSpec"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.apigee_registry_v1.types.UpdateApiSpecRequest"
+          },
+          {
+            "name": "api_spec",
+            "type": "google.cloud.apigee_registry_v1.types.ApiSpec"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.apigee_registry_v1.types.ApiSpec",
+        "shortName": "update_api_spec"
+      },
+      "description": "Sample for UpdateApiSpec",
+      "file": "apigeeregistry_v1_generated_registry_update_api_spec_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "apigeeregistry_v1_generated_Registry_UpdateApiSpec_sync",
+      "segments": [
+        {
+          "end": 43,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 43,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 37,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 44,
+          "start": 41,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "apigeeregistry_v1_generated_registry_update_api_spec_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.apigee_registry_v1.RegistryAsyncClient",
+          "shortName": "RegistryAsyncClient"
+        },
+        "fullName": "google.cloud.apigee_registry_v1.RegistryAsyncClient.update_api_version",
+        "method": {
+          "fullName": "google.cloud.apigeeregistry.v1.Registry.UpdateApiVersion",
+          "service": {
+            "fullName": "google.cloud.apigeeregistry.v1.Registry",
+            "shortName": "Registry"
+          },
+          "shortName": "UpdateApiVersion"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.apigee_registry_v1.types.UpdateApiVersionRequest"
+          },
+          {
+            "name": "api_version",
+            "type": "google.cloud.apigee_registry_v1.types.ApiVersion"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.apigee_registry_v1.types.ApiVersion",
+        "shortName": "update_api_version"
+      },
+      "description": "Sample for UpdateApiVersion",
+      "file": "apigeeregistry_v1_generated_registry_update_api_version_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "apigeeregistry_v1_generated_Registry_UpdateApiVersion_async",
+      "segments": [
+        {
+          "end": 43,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 43,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 37,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 44,
+          "start": 41,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "apigeeregistry_v1_generated_registry_update_api_version_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.apigee_registry_v1.RegistryClient",
+          "shortName": "RegistryClient"
+        },
+        "fullName": "google.cloud.apigee_registry_v1.RegistryClient.update_api_version",
+        "method": {
+          "fullName": "google.cloud.apigeeregistry.v1.Registry.UpdateApiVersion",
+          "service": {
+            "fullName": "google.cloud.apigeeregistry.v1.Registry",
+            "shortName": "Registry"
+          },
+          "shortName": "UpdateApiVersion"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.apigee_registry_v1.types.UpdateApiVersionRequest"
+          },
+          {
+            "name": "api_version",
+            "type": "google.cloud.apigee_registry_v1.types.ApiVersion"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.apigee_registry_v1.types.ApiVersion",
+        "shortName": "update_api_version"
+      },
+      "description": "Sample for UpdateApiVersion",
+      "file": "apigeeregistry_v1_generated_registry_update_api_version_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "apigeeregistry_v1_generated_Registry_UpdateApiVersion_sync",
+      "segments": [
+        {
+          "end": 43,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 43,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 37,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 44,
+          "start": 41,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "apigeeregistry_v1_generated_registry_update_api_version_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.apigee_registry_v1.RegistryAsyncClient",
+          "shortName": "RegistryAsyncClient"
+        },
+        "fullName": "google.cloud.apigee_registry_v1.RegistryAsyncClient.update_api",
+        "method": {
+          "fullName": "google.cloud.apigeeregistry.v1.Registry.UpdateApi",
+          "service": {
+            "fullName": "google.cloud.apigeeregistry.v1.Registry",
+            "shortName": "Registry"
+          },
+          "shortName": "UpdateApi"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.apigee_registry_v1.types.UpdateApiRequest"
+          },
+          {
+            "name": "api",
+            "type": "google.cloud.apigee_registry_v1.types.Api"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.apigee_registry_v1.types.Api",
+        "shortName": "update_api"
+      },
+      "description": "Sample for UpdateApi",
+      "file": "apigeeregistry_v1_generated_registry_update_api_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "apigeeregistry_v1_generated_Registry_UpdateApi_async",
+      "segments": [
+        {
+          "end": 43,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 43,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 37,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 44,
+          "start": 41,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "apigeeregistry_v1_generated_registry_update_api_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.apigee_registry_v1.RegistryClient",
+          "shortName": "RegistryClient"
+        },
+        "fullName": "google.cloud.apigee_registry_v1.RegistryClient.update_api",
+        "method": {
+          "fullName": "google.cloud.apigeeregistry.v1.Registry.UpdateApi",
+          "service": {
+            "fullName": "google.cloud.apigeeregistry.v1.Registry",
+            "shortName": "Registry"
+          },
+          "shortName": "UpdateApi"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.apigee_registry_v1.types.UpdateApiRequest"
+          },
+          {
+            "name": "api",
+            "type": "google.cloud.apigee_registry_v1.types.Api"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.apigee_registry_v1.types.Api",
+        "shortName": "update_api"
+      },
+      "description": "Sample for UpdateApi",
+      "file": "apigeeregistry_v1_generated_registry_update_api_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "apigeeregistry_v1_generated_Registry_UpdateApi_sync",
+      "segments": [
+        {
+          "end": 43,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 43,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 37,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 44,
+          "start": 41,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "apigeeregistry_v1_generated_registry_update_api_sync.py"
+    }
+  ]
+}
