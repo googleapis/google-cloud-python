@@ -5488,7 +5488,6 @@ def test_azure_clusters_transport_auth_adc(transport_class):
     [
         transports.AzureClustersGrpcTransport,
         transports.AzureClustersGrpcAsyncIOTransport,
-        transports.AzureClustersRestTransport,
     ],
 )
 def test_azure_clusters_transport_auth_gdch_credentials(transport_class):

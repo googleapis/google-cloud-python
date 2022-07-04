@@ -4235,7 +4235,6 @@ def test_aws_clusters_transport_auth_adc(transport_class):
     [
         transports.AwsClustersGrpcTransport,
         transports.AwsClustersGrpcAsyncIOTransport,
-        transports.AwsClustersRestTransport,
     ],
 )
 def test_aws_clusters_transport_auth_gdch_credentials(transport_class):
