@@ -1,0 +1,17 @@
+{
+    "name": "gkemulticloud",
+    "name_pretty": "Anthos Multicloud",
+    "api_description": "An API for provisioning and managing GKE clusters running on AWS and Azure infrastructure through a centralized Google Cloud backed control plane.",
+    "product_documentation": "https://cloud.google.com/gkemulticloud",
+    "client_documentation": "https://cloud.google.com/python/docs/reference/gkemulticloud/latest",
+    "issue_tracker": "",
+    "release_level": "preview",
+    "language": "python",
+    "library_type": "GAPIC_AUTO",
+    "repo": "googleapis/python-gke-multicloud",
+    "distribution_name": "google-cloud-gke-multicloud",
+    "api_id": "gkemulticloud.googleapis.com",
+    "default_version": "v1",
+    "codeowner_team": "",
+    "api_shortname": "gkemulticloud"
+}

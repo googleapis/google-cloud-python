@@ -1,0 +1,317 @@
+ {
+  "comment": "This file maps proto services/RPCs to the corresponding library clients/methods",
+  "language": "python",
+  "libraryPackage": "google.cloud.gke_multicloud_v1",
+  "protoPackage": "google.cloud.gkemulticloud.v1",
+  "schema": "1.0",
+  "services": {
+    "AwsClusters": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "AwsClustersClient",
+          "rpcs": {
+            "CreateAwsCluster": {
+              "methods": [
+                "create_aws_cluster"
+              ]
+            },
+            "CreateAwsNodePool": {
+              "methods": [
+                "create_aws_node_pool"
+              ]
+            },
+            "DeleteAwsCluster": {
+              "methods": [
+                "delete_aws_cluster"
+              ]
+            },
+            "DeleteAwsNodePool": {
+              "methods": [
+                "delete_aws_node_pool"
+              ]
+            },
+            "GenerateAwsAccessToken": {
+              "methods": [
+                "generate_aws_access_token"
+              ]
+            },
+            "GetAwsCluster": {
+              "methods": [
+                "get_aws_cluster"
+              ]
+            },
+            "GetAwsNodePool": {
+              "methods": [
+                "get_aws_node_pool"
+              ]
+            },
+            "GetAwsServerConfig": {
+              "methods": [
+                "get_aws_server_config"
+              ]
+            },
+            "ListAwsClusters": {
+              "methods": [
+                "list_aws_clusters"
+              ]
+            },
+            "ListAwsNodePools": {
+              "methods": [
+                "list_aws_node_pools"
+              ]
+            },
+            "UpdateAwsCluster": {
+              "methods": [
+                "update_aws_cluster"
+              ]
+            },
+            "UpdateAwsNodePool": {
+              "methods": [
+                "update_aws_node_pool"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "AwsClustersAsyncClient",
+          "rpcs": {
+            "CreateAwsCluster": {
+              "methods": [
+                "create_aws_cluster"
+              ]
+            },
+            "CreateAwsNodePool": {
+              "methods": [
+                "create_aws_node_pool"
+              ]
+            },
+            "DeleteAwsCluster": {
+              "methods": [
+                "delete_aws_cluster"
+              ]
+            },
+            "DeleteAwsNodePool": {
+              "methods": [
+                "delete_aws_node_pool"
+              ]
+            },
+            "GenerateAwsAccessToken": {
+              "methods": [
+                "generate_aws_access_token"
+              ]
+            },
+            "GetAwsCluster": {
+              "methods": [
+                "get_aws_cluster"
+              ]
+            },
+            "GetAwsNodePool": {
+              "methods": [
+                "get_aws_node_pool"
+              ]
+            },
+            "GetAwsServerConfig": {
+              "methods": [
+                "get_aws_server_config"
+              ]
+            },
+            "ListAwsClusters": {
+              "methods": [
+                "list_aws_clusters"
+              ]
+            },
+            "ListAwsNodePools": {
+              "methods": [
+                "list_aws_node_pools"
+              ]
+            },
+            "UpdateAwsCluster": {
+              "methods": [
+                "update_aws_cluster"
+              ]
+            },
+            "UpdateAwsNodePool": {
+              "methods": [
+                "update_aws_node_pool"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "AzureClusters": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "AzureClustersClient",
+          "rpcs": {
+            "CreateAzureClient": {
+              "methods": [
+                "create_azure_client"
+              ]
+            },
+            "CreateAzureCluster": {
+              "methods": [
+                "create_azure_cluster"
+              ]
+            },
+            "CreateAzureNodePool": {
+              "methods": [
+                "create_azure_node_pool"
+              ]
+            },
+            "DeleteAzureClient": {
+              "methods": [
+                "delete_azure_client"
+              ]
+            },
+            "DeleteAzureCluster": {
+              "methods": [
+                "delete_azure_cluster"
+              ]
+            },
+            "DeleteAzureNodePool": {
+              "methods": [
+                "delete_azure_node_pool"
+              ]
+            },
+            "GenerateAzureAccessToken": {
+              "methods": [
+                "generate_azure_access_token"
+              ]
+            },
+            "GetAzureClient": {
+              "methods": [
+                "get_azure_client"
+              ]
+            },
+            "GetAzureCluster": {
+              "methods": [
+                "get_azure_cluster"
+              ]
+            },
+            "GetAzureNodePool": {
+              "methods": [
+                "get_azure_node_pool"
+              ]
+            },
+            "GetAzureServerConfig": {
+              "methods": [
+                "get_azure_server_config"
+              ]
+            },
+            "ListAzureClients": {
+              "methods": [
+                "list_azure_clients"
+              ]
+            },
+            "ListAzureClusters": {
+              "methods": [
+                "list_azure_clusters"
+              ]
+            },
+            "ListAzureNodePools": {
+              "methods": [
+                "list_azure_node_pools"
+              ]
+            },
+            "UpdateAzureCluster": {
+              "methods": [
+                "update_azure_cluster"
+              ]
+            },
+            "UpdateAzureNodePool": {
+              "methods": [
+                "update_azure_node_pool"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "AzureClustersAsyncClient",
+          "rpcs": {
+            "CreateAzureClient": {
+              "methods": [
+                "create_azure_client"
+              ]
+            },
+            "CreateAzureCluster": {
+              "methods": [
+                "create_azure_cluster"
+              ]
+            },
+            "CreateAzureNodePool": {
+              "methods": [
+                "create_azure_node_pool"
+              ]
+            },
+            "DeleteAzureClient": {
+              "methods": [
+                "delete_azure_client"
+              ]
+            },
+            "DeleteAzureCluster": {
+              "methods": [
+                "delete_azure_cluster"
+              ]
+            },
+            "DeleteAzureNodePool": {
+              "methods": [
+                "delete_azure_node_pool"
+              ]
+            },
+            "GenerateAzureAccessToken": {
+              "methods": [
+                "generate_azure_access_token"
+              ]
+            },
+            "GetAzureClient": {
+              "methods": [
+                "get_azure_client"
+              ]
+            },
+            "GetAzureCluster": {
+              "methods": [
+                "get_azure_cluster"
+              ]
+            },
+            "GetAzureNodePool": {
+              "methods": [
+                "get_azure_node_pool"
+              ]
+            },
+            "GetAzureServerConfig": {
+              "methods": [
+                "get_azure_server_config"
+              ]
+            },
+            "ListAzureClients": {
+              "methods": [
+                "list_azure_clients"
+              ]
+            },
+            "ListAzureClusters": {
+              "methods": [
+                "list_azure_clusters"
+              ]
+            },
+            "ListAzureNodePools": {
+              "methods": [
+                "list_azure_node_pools"
+              ]
+            },
+            "UpdateAzureCluster": {
+              "methods": [
+                "update_azure_cluster"
+              ]
+            },
+            "UpdateAzureNodePool": {
+              "methods": [
+                "update_azure_node_pool"
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}
