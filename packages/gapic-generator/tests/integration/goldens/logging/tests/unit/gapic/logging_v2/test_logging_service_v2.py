@@ -2307,7 +2307,6 @@ def test_logging_service_v2_transport_auth_adc(transport_class):
     [
         transports.LoggingServiceV2GrpcTransport,
         transports.LoggingServiceV2GrpcAsyncIOTransport,
-        transports.LoggingServiceV2RestTransport,
     ],
 )
 def test_logging_service_v2_transport_auth_gdch_credentials(transport_class):

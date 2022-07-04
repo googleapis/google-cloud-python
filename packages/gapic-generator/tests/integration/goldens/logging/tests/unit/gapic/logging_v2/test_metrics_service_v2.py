@@ -2158,7 +2158,6 @@ def test_metrics_service_v2_transport_auth_adc(transport_class):
     [
         transports.MetricsServiceV2GrpcTransport,
         transports.MetricsServiceV2GrpcAsyncIOTransport,
-        transports.MetricsServiceV2RestTransport,
     ],
 )
 def test_metrics_service_v2_transport_auth_gdch_credentials(transport_class):

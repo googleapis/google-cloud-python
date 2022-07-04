@@ -2152,7 +2152,6 @@ def test_eventarc_transport_auth_adc(transport_class):
     [
         transports.EventarcGrpcTransport,
         transports.EventarcGrpcAsyncIOTransport,
-        transports.EventarcRestTransport,
     ],
 )
 def test_eventarc_transport_auth_gdch_credentials(transport_class):
