@@ -1,0 +1,17 @@
+{
+    "name": "batch",
+    "name_pretty": "Cloud Batch",
+    "api_description": "",
+    "product_documentation": "https://cloud.google.com/",
+    "client_documentation": "https://cloud.google.com/python/docs/reference/batch/latest",
+    "issue_tracker": "",
+    "release_level": "preview",
+    "language": "python",
+    "library_type": "GAPIC_AUTO",
+    "repo": "googleapis/python-batch",
+    "distribution_name": "google-cloud-batch",
+    "api_id": "batch.googleapis.com",
+    "default_version": "v1",
+    "codeowner_team": "",
+    "api_shortname": "batch"
+}
