@@ -25,6 +25,12 @@ from synthtool.languages import python
 default_version = "v1"
 
 for library in s.get_staging_dirs(default_version):
+    # work around issue with docstring
+    s.replace(library / "google/cloud/**/*.py",
+        """\"projects/\*/secrets/\*/versions/\*\"""",
+        """`projects/*/secrets/*/versions/*`""",
+    )
+
     s.move(library, excludes=["google/cloud/batch/", "setup.py"])
 s.remove_staging_dirs()
 

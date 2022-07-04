@@ -221,11 +221,11 @@ class Runnable(proto.Message):
                 'goog-internal'.
             username (str):
                 Optional username for logging in to a docker registry. If
-                username matches "projects/*/secrets/*/versions/*" then
+                username matches `projects/*/secrets/*/versions/*` then
                 Batch will read the username from the Secret Manager.
             password (str):
                 Optional password for logging in to a docker registry. If
-                password matches "projects/*/secrets/*/versions/*" then
+                password matches `projects/*/secrets/*/versions/*` then
                 Batch will read the password from the Secret Manager;
         """
 
