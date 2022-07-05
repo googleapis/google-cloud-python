@@ -17,6 +17,7 @@ import hashlib
 import pickle
 import pkg_resources
 import pytest
+import time
 
 from google.cloud import spanner_v1
 from google.cloud._helpers import UTC
@@ -447,6 +448,7 @@ def test_staleness(shared_instance, dbapi_database):
     cursor = conn.cursor()
 
     before_insert = datetime.datetime.utcnow().replace(tzinfo=UTC)
+    time.sleep(0.25)
 
     cursor.execute(
         """
