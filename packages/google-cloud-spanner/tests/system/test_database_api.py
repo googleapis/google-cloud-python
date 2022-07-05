@@ -129,6 +129,7 @@ def test_create_database_pitr_success(
 
 def test_create_database_with_default_leader_success(
     not_emulator,  # Default leader setting not supported by the emulator
+    not_postgres,
     multiregion_instance,
     databases_to_delete,
 ):
@@ -270,6 +271,7 @@ def test_update_ddl_w_pitr_success(
 
 def test_update_ddl_w_default_leader_success(
     not_emulator,
+    not_postgres,
     multiregion_instance,
     databases_to_delete,
 ):

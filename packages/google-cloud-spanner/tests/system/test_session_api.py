@@ -200,13 +200,29 @@ else:
 def sessions_database(shared_instance, database_operation_timeout, database_dialect):
     database_name = _helpers.unique_id("test_sessions", separator="_")
     pool = spanner_v1.BurstyPool(labels={"testcase": "session_api"})
-    sessions_database = shared_instance.database(
-        database_name,
-        ddl_statements=_helpers.DDL_STATEMENTS,
-        pool=pool,
-    )
-    operation = sessions_database.create()
-    operation.result(database_operation_timeout)  # raises on failure / timeout.
+
+    if database_dialect == DatabaseDialect.POSTGRESQL:
+        sessions_database = shared_instance.database(
+            database_name,
+            pool=pool,
+            database_dialect=database_dialect,
+        )
+
+        operation = sessions_database.create()
+        operation.result(database_operation_timeout)
+
+        operation = sessions_database.update_ddl(ddl_statements=_helpers.DDL_STATEMENTS)
+        operation.result(database_operation_timeout)
+
+    else:
+        sessions_database = shared_instance.database(
+            database_name,
+            ddl_statements=_helpers.DDL_STATEMENTS,
+            pool=pool,
+        )
+
+        operation = sessions_database.create()
+        operation.result(database_operation_timeout)
 
     _helpers.retry_has_all_dll(sessions_database.reload)()
     # Some tests expect there to be a session present in the pool.
@@ -1322,16 +1338,32 @@ def test_read_w_index(
     # Create an alternate dataase w/ index.
     extra_ddl = ["CREATE INDEX contacts_by_last_name ON contacts(last_name)"]
     pool = spanner_v1.BurstyPool(labels={"testcase": "read_w_index"})
-    temp_db = shared_instance.database(
-        _helpers.unique_id("test_read", separator="_"),
-        ddl_statements=_helpers.DDL_STATEMENTS + extra_ddl,
-        pool=pool,
-        database_dialect=database_dialect,
-    )
-    operation = temp_db.create()
-    databases_to_delete.append(temp_db)
-    operation.result(database_operation_timeout)  # raises on failure / timeout.
 
+    if database_dialect == DatabaseDialect.POSTGRESQL:
+        temp_db = shared_instance.database(
+            _helpers.unique_id("test_read", separator="_"),
+            pool=pool,
+            database_dialect=database_dialect,
+        )
+        operation = temp_db.create()
+        operation.result(database_operation_timeout)
+
+        operation = temp_db.update_ddl(
+            ddl_statements=_helpers.DDL_STATEMENTS + extra_ddl,
+        )
+        operation.result(database_operation_timeout)
+
+    else:
+        temp_db = shared_instance.database(
+            _helpers.unique_id("test_read", separator="_"),
+            ddl_statements=_helpers.DDL_STATEMENTS + extra_ddl,
+            pool=pool,
+            database_dialect=database_dialect,
+        )
+        operation = temp_db.create()
+        operation.result(database_operation_timeout)  # raises on failure / timeout.
+
+    databases_to_delete.append(temp_db)
     committed = _set_up_table(temp_db, row_count)
 
     with temp_db.snapshot(read_timestamp=committed) as snapshot:
@@ -2040,7 +2072,7 @@ def test_execute_sql_w_date_bindings(sessions_database, not_postgres, database_d
 
 
 def test_execute_sql_w_numeric_bindings(
-    not_emulator, not_postgres, sessions_database, database_dialect
+    not_emulator, sessions_database, database_dialect
 ):
     if database_dialect == DatabaseDialect.POSTGRESQL:
         _bind_test_helper(
@@ -2060,7 +2092,9 @@ def test_execute_sql_w_numeric_bindings(
         )
 
 
-def test_execute_sql_w_json_bindings(not_emulator, sessions_database, database_dialect):
+def test_execute_sql_w_json_bindings(
+    not_emulator, not_postgres, sessions_database, database_dialect
+):
     _bind_test_helper(
         sessions_database,
         database_dialect,

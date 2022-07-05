@@ -58,6 +58,14 @@ def not_postgres(database_dialect):
 
 
 @pytest.fixture(scope="session")
+def not_google_standard_sql(database_dialect):
+    if database_dialect == DatabaseDialect.GOOGLE_STANDARD_SQL:
+        pytest.skip(
+            f"{_helpers.DATABASE_DIALECT_ENVVAR} set to GOOGLE_STANDARD_SQL in environment."
+        )
+
+
+@pytest.fixture(scope="session")
 def database_dialect():
     return (
         DatabaseDialect[_helpers.DATABASE_DIALECT]
@@ -169,14 +177,27 @@ def shared_instance(
 def shared_database(shared_instance, database_operation_timeout, database_dialect):
     database_name = _helpers.unique_id("test_database")
     pool = spanner_v1.BurstyPool(labels={"testcase": "database_api"})
-    database = shared_instance.database(
-        database_name,
-        ddl_statements=_helpers.DDL_STATEMENTS,
-        pool=pool,
-        database_dialect=database_dialect,
-    )
-    operation = database.create()
-    operation.result(database_operation_timeout)  # raises on failure / timeout.
+    if database_dialect == DatabaseDialect.POSTGRESQL:
+        database = shared_instance.database(
+            database_name,
+            pool=pool,
+            database_dialect=database_dialect,
+        )
+        operation = database.create()
+        operation.result(database_operation_timeout)  # raises on failure / timeout.
+
+        operation = database.update_ddl(ddl_statements=_helpers.DDL_STATEMENTS)
+        operation.result(database_operation_timeout)  # raises on failure / timeout.
+
+    else:
+        database = shared_instance.database(
+            database_name,
+            ddl_statements=_helpers.DDL_STATEMENTS,
+            pool=pool,
+            database_dialect=database_dialect,
+        )
+        operation = database.create()
+        operation.result(database_operation_timeout)  # raises on failure / timeout.
 
     yield database
 

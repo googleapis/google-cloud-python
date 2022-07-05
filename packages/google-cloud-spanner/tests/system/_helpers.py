@@ -117,7 +117,7 @@ def scrub_instance_ignore_not_found(to_scrub):
 
 
 def cleanup_old_instances(spanner_client):
-    cutoff = int(time.time()) - 2 * 60 * 60  # two hour ago
+    cutoff = int(time.time()) - 3 * 60 * 60  # three hour ago
     instance_filter = "labels.python-spanner-systests:true"
 
     for instance_pb in spanner_client.list_instances(filter_=instance_filter):
