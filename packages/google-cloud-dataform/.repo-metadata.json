@@ -1,0 +1,17 @@
+{
+    "name": "dataform",
+    "name_pretty": "Cloud Dataform",
+    "api_description": "",
+    "product_documentation": "https://cloud.google.com",
+    "client_documentation": "https://cloud.google.com/python/docs/reference/dataform/latest",
+    "issue_tracker": "",
+    "release_level": "preview",
+    "language": "python",
+    "library_type": "GAPIC_AUTO",
+    "repo": "googleapis/python-dataform",
+    "distribution_name": "google-cloud-dataform",
+    "api_id": "dataform.googleapis.com",
+    "default_version": "v1alpha2",
+    "codeowner_team": "",
+    "api_shortname": "dataform"
+}
