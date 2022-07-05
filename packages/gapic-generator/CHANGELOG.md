@@ -1,6 +1,13 @@
 # Changelog
 
 
+## [1.1.1](https://github.com/googleapis/gapic-generator-python/compare/v1.1.0...v1.1.1) (2022-07-04)
+
+
+### Bug Fixes
+
+* resolve issue where rest test appears in grpc-only client ([#1343](https://github.com/googleapis/gapic-generator-python/issues/1343)) ([22cd2ca](https://github.com/googleapis/gapic-generator-python/commit/22cd2cafe830f383229f0e556beead05e63a055c))
+
 ## [1.1.0](https://github.com/googleapis/gapic-generator-python/compare/v1.0.1...v1.1.0) (2022-06-23)
 
 
