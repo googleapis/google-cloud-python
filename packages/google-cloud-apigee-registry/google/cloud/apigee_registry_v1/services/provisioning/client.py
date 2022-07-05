@@ -1049,7 +1049,7 @@ class ProvisioningClient(metaclass=ProvisioningClientMeta):
                 based on attributes about the request and/or target
                 resource. JSON Example.
 
-            .. code-block:: python
+                .. code-block:: python
 
                     {
                       "bindings": [
@@ -1074,8 +1074,11 @@ class ProvisioningClient(metaclass=ProvisioningClientMeta):
                         }
                       ]
                     }
+
                 **YAML Example**
+
                 ::
+
                     bindings:
                     - members:
                       - user:mike@example.com
@@ -1090,6 +1093,7 @@ class ProvisioningClient(metaclass=ProvisioningClientMeta):
                         title: expirable access
                         description: Does not grant access after Sep 2020
                         expression: request.time < timestamp('2020-10-01T00:00:00.000Z')
+
                 For a description of IAM and its features, see the `IAM
                 developer's
                 guide <https://cloud.google.com/iam/docs>`__.
@@ -1164,7 +1168,7 @@ class ProvisioningClient(metaclass=ProvisioningClientMeta):
                 based on attributes about the request and/or target
                 resource. JSON Example.
 
-            .. code-block:: python
+                .. code-block:: python
 
                     {
                       "bindings": [
@@ -1189,8 +1193,11 @@ class ProvisioningClient(metaclass=ProvisioningClientMeta):
                         }
                       ]
                     }
+
                 **YAML Example**
+
                 ::
+
                     bindings:
                     - members:
                       - user:mike@example.com
@@ -1205,6 +1212,7 @@ class ProvisioningClient(metaclass=ProvisioningClientMeta):
                         title: expirable access
                         description: Does not grant access after Sep 2020
                         expression: request.time < timestamp('2020-10-01T00:00:00.000Z')
+
                 For a description of IAM and its features, see the `IAM
                 developer's
                 guide <https://cloud.google.com/iam/docs>`__.
