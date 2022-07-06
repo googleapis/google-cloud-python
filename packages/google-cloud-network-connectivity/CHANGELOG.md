@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.4.0](https://github.com/googleapis/python-network-connectivity/compare/v1.3.2...v1.4.0) (2022-07-06)
+
+
+### Features
+
+* add audience parameter ([48691e0](https://github.com/googleapis/python-network-connectivity/commit/48691e0cd53288d8fbb0c44053deddad78065d34))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core >= 2.8.0 ([#185](https://github.com/googleapis/python-network-connectivity/issues/185)) ([48691e0](https://github.com/googleapis/python-network-connectivity/commit/48691e0cd53288d8fbb0c44053deddad78065d34))
+* require python 3.7+ ([#187](https://github.com/googleapis/python-network-connectivity/issues/187)) ([b9a58aa](https://github.com/googleapis/python-network-connectivity/commit/b9a58aabfe17cb39f8fd47f3164f5cbd183d0500))
+
 ## [1.3.2](https://github.com/googleapis/python-network-connectivity/compare/v1.3.1...v1.3.2) (2022-06-03)
 
 
