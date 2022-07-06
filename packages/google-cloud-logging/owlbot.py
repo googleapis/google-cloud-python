@@ -67,6 +67,7 @@ s.move(templated_files,
         "docs/multiprocessing.rst",
         ".github/workflows", # exclude gh actions as credentials are needed for tests
         ".github/auto-label.yaml",
+        "README.rst", # This repo has a customized README
         ])
 
 # adjust .trampolinerc for environment tests
