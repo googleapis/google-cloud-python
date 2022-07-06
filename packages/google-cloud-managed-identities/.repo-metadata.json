@@ -12,5 +12,6 @@
     "api_id": "managedidentities.googleapis.com",
     "default_version": "v1",
     "codeowner_team": "",
-    "api_shortname": "managedidentities"
+    "api_shortname": "managedidentities",
+    "api_description": "is a highly available, hardened Google Cloud service running actual Microsoft AD that enables you to manage authentication and authorization for your AD-dependent workloads, automate AD server maintenance and security configuration, and connect your on-premises AD domain to the cloud."
 }
