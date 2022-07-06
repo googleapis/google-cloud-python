@@ -1,6 +1,7 @@
 {
     "name": "websecurityscanner",
     "name_pretty": "Cloud Security Scanner",
+    "api_description": "identifies security vulnerabilities in your App Engine, Compute Engine, and Google Kubernetes Engine web applications. It crawls your application, following all links within the scope of your starting URLs, and attempts to exercise as many user inputs and event handlers as possible.",
     "product_documentation": "https://cloud.google.com/security-scanner/docs/",
     "client_documentation": "https://cloud.google.com/python/docs/reference/websecurityscanner/latest",
     "issue_tracker": "https://issuetracker.google.com/savedsearches/559748",
