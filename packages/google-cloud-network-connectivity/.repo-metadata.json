@@ -1,6 +1,7 @@
 {
     "name": "networkconnectivity",
     "name_pretty": "Network Connectivity Center",
+    "api_description": "The Network Connectivity API will be home to various services which provide information pertaining to network connectivity.  This includes information like interconnects, VPNs, VPCs, routing information, ip address details, etc. This information will help customers verify their network configurations and helps them to discover misconfigurations, inconsistencies, etc.",
     "product_documentation": "https://cloud.google.com/network-connectivity/",
     "client_documentation": "https://cloud.google.com/python/docs/reference/networkconnectivity/latest",
     "issue_tracker": "",
