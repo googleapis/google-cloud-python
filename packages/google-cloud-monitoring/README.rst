@@ -1,22 +1,20 @@
-Python Client for Cloud Monitoring API
-=======================================================
+Python Client for Stackdriver Monitoring API
+============================================
 
-|ga| |pypi| |versions| 
+|stable| |pypi| |versions|
 
-`Cloud Monitoring API`_: Manages your Cloud Monitoring data and
-configurations. Most projects must be associated with a Google Cloud account,
-with a few exceptions as noted on the individual method pages.
+`Stackdriver Monitoring API`_: collects metrics, events, and metadata from Google Cloud, Amazon Web Services (AWS), hosted uptime probes, and application instrumentation. Using the BindPlane service, you can also collect this data from over 150 common application components, on-premise systems, and hybrid cloud systems. Stackdriver ingests that data and generates insights via dashboards, charts, and alerts. BindPlane is included with your Google Cloud project at no additional cost.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
 
-.. |ga| image:: https://img.shields.io/badge/support-GA-gold.svg
-   :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#general-availability
+.. |stable| image:: https://img.shields.io/badge/support-stable-gold.svg
+   :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#stability-levels
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-monitoring.svg
    :target: https://pypi.org/project/google-cloud-monitoring/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-monitoring.svg
    :target: https://pypi.org/project/google-cloud-monitoring/
-.. _Cloud Monitoring API: https://cloud.google.com/monitoring/api/ref_v3/rest/
+.. _Stackdriver Monitoring API: https://cloud.google.com/monitoring/docs
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/monitoring/latest
 .. _Product Documentation:  https://cloud.google.com/monitoring/docs
 
@@ -27,12 +25,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the Cloud Monitoring API.`_
+3. `Enable the Stackdriver Monitoring API.`_
 4. `Setup Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Cloud Monitoring API.:  https://cloud.google.com/monitoring/api/enable-api
+.. _Enable the Stackdriver Monitoring API.:  https://cloud.google.com/monitoring/docs
 .. _Setup Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -49,15 +47,25 @@ dependencies.
 .. _`virtualenv`: https://virtualenv.pypa.io/en/latest/
 
 
+Code samples and snippets
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Code samples and snippets live in the `samples/` folder.
+
+
 Supported Python Versions
 ^^^^^^^^^^^^^^^^^^^^^^^^^
-Python >= 3.6
+Our client libraries are compatible with all current [active](https://devguide.python.org/devcycle/#in-development-main-branch) and [maintenance](https://devguide.python.org/devcycle/#maintenance-branches) versions of
+Python.
+
+Python >= 3.7
 
 Unsupported Python Versions
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Python == 2.7.
+Python <= 3.6
 
-The last version of this library compatible with Python 2.7 is google-cloud-monitoring==1.1.0.
+If you are using an [end-of-life](https://devguide.python.org/devcycle/#end-of-life-branches)
+version of Python, we recommend that you update as soon as possible to an actively supported version.
 
 
 Mac/Linux
@@ -81,12 +89,15 @@ Windows
     <your-env>\Scripts\activate
     <your-env>\Scripts\pip.exe install google-cloud-monitoring
 
-
 Next Steps
 ~~~~~~~~~~
 
-
--  Read the `Client Library Documentation`_ for Cloud Monitoring API
+-  Read the `Client Library Documentation`_ for Stackdriver Monitoring API
    to see other available methods on the client.
--  Read the `Product documentation`_ to learn more about the product and see
-   How-to Guides.
+-  Read the `Stackdriver Monitoring API Product documentation`_ to learn
+   more about the product and see How-to Guides.
+-  View this `README`_ to see the full list of Cloud
+   APIs that we cover.
+
+.. _Stackdriver Monitoring API Product documentation:  https://cloud.google.com/monitoring/docs
+.. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
