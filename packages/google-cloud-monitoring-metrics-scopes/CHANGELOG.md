@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.2.0](https://github.com/googleapis/python-monitoring-metrics-scopes/compare/v1.1.2...v1.2.0) (2022-07-06)
+
+
+### Features
+
+* add audience parameter ([4516587](https://github.com/googleapis/python-monitoring-metrics-scopes/commit/4516587e9284af1041949066788c8cce84ac5bc9))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core >= 2.8.0 ([#76](https://github.com/googleapis/python-monitoring-metrics-scopes/issues/76)) ([4516587](https://github.com/googleapis/python-monitoring-metrics-scopes/commit/4516587e9284af1041949066788c8cce84ac5bc9))
+* require python 3.7+ ([#78](https://github.com/googleapis/python-monitoring-metrics-scopes/issues/78)) ([8c95cf9](https://github.com/googleapis/python-monitoring-metrics-scopes/commit/8c95cf981df325d68214d4dd61482ffe5a2dfd69))
+
 ## [1.1.2](https://github.com/googleapis/python-monitoring-metrics-scopes/compare/v1.1.1...v1.1.2) (2022-06-03)
 
 
