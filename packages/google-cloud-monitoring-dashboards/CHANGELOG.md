@@ -1,5 +1,18 @@
 # Changelog
 
+## [2.7.0](https://github.com/googleapis/python-monitoring-dashboards/compare/v2.6.1...v2.7.0) (2022-07-06)
+
+
+### Features
+
+* add audience parameter ([8c52ea0](https://github.com/googleapis/python-monitoring-dashboards/commit/8c52ea02e35a08630506b8f6064f3a73bf423aff))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core >= 2.8.0 ([#205](https://github.com/googleapis/python-monitoring-dashboards/issues/205)) ([8c52ea0](https://github.com/googleapis/python-monitoring-dashboards/commit/8c52ea02e35a08630506b8f6064f3a73bf423aff))
+* require python 3.7+ ([#207](https://github.com/googleapis/python-monitoring-dashboards/issues/207)) ([a355b12](https://github.com/googleapis/python-monitoring-dashboards/commit/a355b1229a03176a35fb23a53ab6d61f5b21b12e))
+
 ## [2.6.1](https://github.com/googleapis/python-monitoring-dashboards/compare/v2.6.0...v2.6.1) (2022-06-06)
 
 
