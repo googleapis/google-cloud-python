@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.4.0](https://github.com/googleapis/python-memcache/compare/v1.3.2...v1.4.0) (2022-07-06)
+
+
+### Features
+
+* add audience parameter ([9ef3f98](https://github.com/googleapis/python-memcache/commit/9ef3f98e1fb6d73ff9a0f3a9dc9fd74c60ba8c78))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core >= 2.8.0 ([#194](https://github.com/googleapis/python-memcache/issues/194)) ([9ef3f98](https://github.com/googleapis/python-memcache/commit/9ef3f98e1fb6d73ff9a0f3a9dc9fd74c60ba8c78))
+* exclude tests directory in packaging ([#195](https://github.com/googleapis/python-memcache/issues/195)) ([bfc330b](https://github.com/googleapis/python-memcache/commit/bfc330ba0db806ae59a1880414fb6404d78c3ea1))
+* require python 3.7+ ([#198](https://github.com/googleapis/python-memcache/issues/198)) ([a792592](https://github.com/googleapis/python-memcache/commit/a792592877e7ff83d5afe631dcf4d2246d33966c))
+
 ## [1.3.2](https://github.com/googleapis/python-memcache/compare/v1.3.1...v1.3.2) (2022-06-06)
 
 
