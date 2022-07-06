@@ -1,6 +1,7 @@
 {
     "name": "mediatranslation",
     "name_pretty": "Media Translation",
+    "api_description": "provides enterprise quality translation from/to various media types.",
     "product_documentation": "https://cloud.google.com/media-translation",
     "client_documentation": "https://cloud.google.com/python/docs/reference/mediatranslation/latest",
     "issue_tracker": "",
