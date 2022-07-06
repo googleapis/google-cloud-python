@@ -13,5 +13,6 @@
     "requires_billing": true,
     "default_version": "v1",
     "codeowner_team": "",
-    "api_shortname": "monitoring-dashboards"
+    "api_shortname": "monitoring-dashboards",
+    "api_description": "are one way for you to view and analyze metric data. The Cloud Console provides predefined dashboards that require no setup or configuration. You can also define custom dashboards. With custom dashboards, you have complete control over the charts that are displayed and their configuration."
 }
