@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.4.0](https://github.com/googleapis/python-network-management/compare/v1.3.3...v1.4.0) (2022-07-06)
+
+
+### Features
+
+* add audience parameter ([1c1818b](https://github.com/googleapis/python-network-management/commit/1c1818b9da7593743322889af11aca4a71082bd7))
+* introduce a projects_missing_permissions field in the AbortInfo structure ([1c1818b](https://github.com/googleapis/python-network-management/commit/1c1818b9da7593743322889af11aca4a71082bd7))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core >= 2.8.0 ([#120](https://github.com/googleapis/python-network-management/issues/120)) ([1c1818b](https://github.com/googleapis/python-network-management/commit/1c1818b9da7593743322889af11aca4a71082bd7))
+* require python 3.7+ ([#122](https://github.com/googleapis/python-network-management/issues/122)) ([ef51d0b](https://github.com/googleapis/python-network-management/commit/ef51d0b21cc02f28aa4c986d4241a2cd83065309))
+
 ## [1.3.3](https://github.com/googleapis/python-network-management/compare/v1.3.2...v1.3.3) (2022-06-03)
 
 
