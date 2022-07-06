@@ -1012,6 +1012,11 @@ class AbortInfo(proto.Message):
             Causes that the analysis is aborted.
         resource_uri (str):
             URI of the resource that caused the abort.
+        projects_missing_permission (Sequence[str]):
+            List of project IDs that the user has specified in the
+            request but does not have permission to access network
+            configs. Analysis is aborted in this case with the
+            PERMISSION_DENIED cause.
     """
 
     class Cause(proto.Enum):
@@ -1040,6 +1045,10 @@ class AbortInfo(proto.Message):
     resource_uri = proto.Field(
         proto.STRING,
         number=2,
+    )
+    projects_missing_permission = proto.RepeatedField(
+        proto.STRING,
+        number=3,
     )
 
 
