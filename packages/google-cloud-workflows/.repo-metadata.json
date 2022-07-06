@@ -1,6 +1,7 @@
 {
     "name": "workflows",
     "name_pretty": "Cloud Workflows",
+    "api_description": "Orchestrate and automate Google Cloud and HTTP-based API services with serverless workflows.",
     "product_documentation": "https://cloud.google.com/workflows/",
     "client_documentation": "https://cloud.google.com/python/docs/reference/workflows/latest",
     "issue_tracker": "https://issuetracker.google.com/savedsearches/559729",
