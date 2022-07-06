@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.7.0](https://github.com/googleapis/python-workflows/compare/v1.6.3...v1.7.0) (2022-07-06)
+
+
+### Features
+
+* add audience parameter ([c4a8a8d](https://github.com/googleapis/python-workflows/commit/c4a8a8d5109b91a2a0af176044ab79b20f2bcf60))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core >= 2.8.0 ([c4a8a8d](https://github.com/googleapis/python-workflows/commit/c4a8a8d5109b91a2a0af176044ab79b20f2bcf60))
+* require python >= 3.7 ([#195](https://github.com/googleapis/python-workflows/issues/195)) ([6315169](https://github.com/googleapis/python-workflows/commit/6315169c0696cc8807c13c89c992d60ad8970f2e))
+
 ## [1.6.3](https://github.com/googleapis/python-workflows/compare/v1.6.2...v1.6.3) (2022-06-03)
 
 
