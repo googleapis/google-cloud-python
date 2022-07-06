@@ -3,6 +3,19 @@
 [PyPI History][1]
 
 [1]: https://pypi.org/project/google-cloud-webrisk/#history
+## [1.8.0](https://github.com/googleapis/python-webrisk/compare/v1.7.2...v1.8.0) (2022-07-06)
+
+
+### Features
+
+* add audience parameter ([#209](https://github.com/googleapis/python-webrisk/issues/209)) ([4dca3f3](https://github.com/googleapis/python-webrisk/commit/4dca3f3f45ea62c1c63453d2daeb57e0e307d02e))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core >= 2.8.0 ([4dca3f3](https://github.com/googleapis/python-webrisk/commit/4dca3f3f45ea62c1c63453d2daeb57e0e307d02e))
+* require python 3.7+ ([#211](https://github.com/googleapis/python-webrisk/issues/211)) ([5722c0a](https://github.com/googleapis/python-webrisk/commit/5722c0a47a5876e3852c1ef8b855d3821e9d8d65))
+
 ## [1.7.2](https://github.com/googleapis/python-webrisk/compare/v1.7.1...v1.7.2) (2022-06-06)
 
 
