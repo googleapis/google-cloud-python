@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-cloud-websecurityscanner/#history
 
+## [1.8.0](https://github.com/googleapis/python-websecurityscanner/compare/v1.7.2...v1.8.0) (2022-07-06)
+
+
+### Features
+
+* add audience parameter ([10edd37](https://github.com/googleapis/python-websecurityscanner/commit/10edd37827549da80ce48255a67fb1327d52926e))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core >= 2.8.0 ([#211](https://github.com/googleapis/python-websecurityscanner/issues/211)) ([10edd37](https://github.com/googleapis/python-websecurityscanner/commit/10edd37827549da80ce48255a67fb1327d52926e))
+* require python 3.7+ ([#213](https://github.com/googleapis/python-websecurityscanner/issues/213)) ([e389140](https://github.com/googleapis/python-websecurityscanner/commit/e38914035b3e9e9849fe18e3c5d4b382d18bc24a))
+
 ## [1.7.2](https://github.com/googleapis/python-websecurityscanner/compare/v1.7.1...v1.7.2) (2022-06-06)
 
 
