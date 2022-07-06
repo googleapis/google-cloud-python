@@ -1,6 +1,7 @@
 {
     "name": "networkmanagement",
-    "name_pretty": "Network Management API",
+    "name_pretty": "Network Management",
+    "api_description": "provides a collection of network performance monitoring and diagnostic capabilities.",
     "product_documentation": "https://cloud.google.com/network-management",
     "client_documentation": "https://cloud.google.com/python/docs/reference/networkmanagement/latest",
     "issue_tracker": "",
