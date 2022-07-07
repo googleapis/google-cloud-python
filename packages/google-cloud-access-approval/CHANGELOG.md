@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.7.0](https://github.com/googleapis/python-access-approval/compare/v1.6.1...v1.7.0) (2022-07-07)
+
+
+### Features
+
+* add audience parameter ([b3c2d7a](https://github.com/googleapis/python-access-approval/commit/b3c2d7a2392ebd40a431209337cbcb41746a21f9))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core >= 2.8.0 ([#217](https://github.com/googleapis/python-access-approval/issues/217)) ([b3c2d7a](https://github.com/googleapis/python-access-approval/commit/b3c2d7a2392ebd40a431209337cbcb41746a21f9))
+* require python 3.7+ ([#219](https://github.com/googleapis/python-access-approval/issues/219)) ([461fef4](https://github.com/googleapis/python-access-approval/commit/461fef4971ff0be2f07c1d47dc9bbe463c4c4327))
+
 ## [1.6.1](https://github.com/googleapis/python-access-approval/compare/v1.6.0...v1.6.1) (2022-06-03)
 
 
