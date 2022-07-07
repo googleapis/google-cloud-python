@@ -23,7 +23,7 @@ from _pytest.capture import CaptureFixture
 import backoff
 from flaky import flaky
 from google.api_core.exceptions import NotFound
-from google.cloud import pubsub_v1
+from google.cloud import bigquery, pubsub_v1
 import pytest
 
 import subscriber
@@ -31,6 +31,7 @@ import subscriber
 # This uuid is shared across tests which run in parallel.
 UUID = uuid.uuid4().hex
 PY_VERSION = f"{sys.version_info.major}.{sys.version_info.minor}"
+UNDERSCORE_PY_VERSION = PY_VERSION.replace(".", "_")
 PROJECT_ID = os.environ["GOOGLE_CLOUD_PROJECT"]
 TOPIC = f"subscription-test-topic-{PY_VERSION}-{UUID}"
 DEAD_LETTER_TOPIC = f"subscription-test-dead-letter-topic-{PY_VERSION}-{UUID}"
@@ -42,6 +43,8 @@ REGIONAL_ENDPOINT = "us-east1-pubsub.googleapis.com:443"
 DEFAULT_MAX_DELIVERY_ATTEMPTS = 5
 UPDATED_MAX_DELIVERY_ATTEMPTS = 20
 FILTER = 'attributes.author="unknown"'
+BIGQUERY_DATASET_ID = f"python_samples_dataset_{UNDERSCORE_PY_VERSION}_{UUID}"
+BIGQUERY_TABLE_ID = f"python_samples_table_{UNDERSCORE_PY_VERSION}_{UUID}"
 
 C = TypeVar("C", bound=Callable[..., Any])
 
@@ -540,6 +543,61 @@ def test_update_push_subscription(
     out, _ = capsys.readouterr()
     assert "Subscription updated" in out
     assert f"{push_subscription_for_update_name}" in out
+
+    # Clean up.
+    subscriber_client.delete_subscription(request={"subscription": subscription_path})
+
+
+@pytest.fixture(scope="module")
+def bigquery_table() -> Generator[str, None, None]:
+    client = bigquery.Client()
+    dataset = bigquery.Dataset(f"{PROJECT_ID}.{BIGQUERY_DATASET_ID}")
+    dataset.location = "US"
+    dataset = client.create_dataset(dataset)
+
+    table_id = f"{PROJECT_ID}.{BIGQUERY_DATASET_ID}.{BIGQUERY_TABLE_ID}"
+    schema = [
+        bigquery.SchemaField("data", "STRING", mode="REQUIRED"),
+        bigquery.SchemaField("message_id", "STRING", mode="REQUIRED"),
+        bigquery.SchemaField("attributes", "STRING", mode="REQUIRED"),
+        bigquery.SchemaField("subscription_name", "STRING", mode="REQUIRED"),
+        bigquery.SchemaField("publish_time", "TIMESTAMP", mode="REQUIRED"),
+    ]
+
+    table = bigquery.Table(table_id, schema=schema)
+    table = client.create_table(table)
+
+    yield table_id
+
+    client.delete_dataset(dataset, delete_contents=True)
+
+
+def test_create_bigquery_subscription(
+    subscriber_client: pubsub_v1.SubscriberClient,
+    topic: str,
+    bigquery_table: str,
+    capsys: CaptureFixture[str],
+) -> None:
+    bigquery_subscription_for_create_name = (
+        f"subscription-test-subscription-bigquery-for-create-{PY_VERSION}-{UUID}"
+    )
+
+    subscription_path = subscriber_client.subscription_path(
+        PROJECT_ID, bigquery_subscription_for_create_name
+    )
+    try:
+        subscriber_client.delete_subscription(
+            request={"subscription": subscription_path}
+        )
+    except NotFound:
+        pass
+
+    subscriber.create_bigquery_subscription(
+        PROJECT_ID, TOPIC, bigquery_subscription_for_create_name, bigquery_table
+    )
+
+    out, _ = capsys.readouterr()
+    assert f"{bigquery_subscription_for_create_name}" in out
 
     # Clean up.
     subscriber_client.delete_subscription(request={"subscription": subscription_path})

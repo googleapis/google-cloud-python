@@ -273,6 +273,42 @@ def create_subscription_with_exactly_once_delivery(
     # [END pubsub_create_subscription_with_exactly_once_delivery]
 
 
+def create_bigquery_subscription(
+    project_id: str, topic_id: str, subscription_id: str, bigquery_table_id: str
+) -> None:
+    """Create a new BigQuery subscription on the given topic."""
+    # [START pubsub_create_bigquery_subscription]
+    from google.cloud import pubsub_v1
+
+    # TODO(developer)
+    # project_id = "your-project-id"
+    # topic_id = "your-topic-id"
+    # subscription_id = "your-subscription-id"
+    # bigquery_table_id = "your-project.your-dataset.your-table"
+
+    publisher = pubsub_v1.PublisherClient()
+    subscriber = pubsub_v1.SubscriberClient()
+    topic_path = publisher.topic_path(project_id, topic_id)
+    subscription_path = subscriber.subscription_path(project_id, subscription_id)
+
+    bigquery_config = pubsub_v1.types.BigQueryConfig(table=bigquery_table_id, write_metadata=True)
+
+    # Wrap the subscriber in a 'with' block to automatically call close() to
+    # close the underlying gRPC channel when done.
+    with subscriber:
+        subscription = subscriber.create_subscription(
+            request={
+                "name": subscription_path,
+                "topic": topic_path,
+                "bigquery_config": bigquery_config,
+            }
+        )
+
+    print(f"BigQuery subscription created: {subscription}.")
+    print(f"Table for subscription is: {bigquery_table_id}")
+    # [END pubsub_create_bigquery_subscription]
+
+
 def delete_subscription(project_id: str, subscription_id: str) -> None:
     """Deletes an existing Pub/Sub topic."""
     # [START pubsub_delete_subscription]
@@ -922,6 +958,14 @@ if __name__ == "__main__":  # noqa
         "subscription_id"
     )
 
+    create_bigquery_subscription_parser = subparsers.add_parser(
+        "create-biquery",
+        help=create_bigquery_subscription.__doc__,
+    )
+    create_bigquery_subscription_parser.add_argument("topic_id")
+    create_bigquery_subscription_parser.add_argument("subscription_id")
+    create_bigquery_subscription_parser.add_argument("bigquery_table_id")
+
     delete_parser = subparsers.add_parser("delete", help=delete_subscription.__doc__)
     delete_parser.add_argument("subscription_id")
 
@@ -1049,6 +1093,13 @@ if __name__ == "__main__":  # noqa
     elif args.command == "create-with-exactly-once":
         create_subscription_with_exactly_once_delivery(
             args.project_id, args.topic_id, args.subscription_id
+        )
+    elif args.command == "create-bigquery":
+        create_bigquery_subscription(
+            args.project_id,
+            args.topic_id,
+            args.subscription_id,
+            args.bigquery_table_id,
         )
     elif args.command == "delete":
         delete_subscription(args.project_id, args.subscription_id)
