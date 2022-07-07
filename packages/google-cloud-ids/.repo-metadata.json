@@ -12,5 +12,6 @@
     "api_id": "ids.googleapis.com",
     "default_version": "v1",
     "codeowner_team": "",
-    "api_shortname": "ids"
+    "api_shortname": "ids",
+    "api_description": " monitors your networks, and it alerts you when it detects malicious activity. Cloud IDS is powered by Palo Alto Networks."
 }
