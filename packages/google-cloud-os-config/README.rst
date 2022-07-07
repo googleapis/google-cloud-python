@@ -1,21 +1,20 @@
-Python Client for Cloud OS Config
-=================================================
+Python Client for OS Config API
+===============================
 
-|GA| |pypi| |versions|
+|stable| |pypi| |versions|
 
-`Cloud OS Config API`_: OS management tools that can be used for patch management,
-patch compliance, and configuration management on VM instances.
+`OS Config API`_: provides OS management tools that can be used for patch management, patch compliance, and configuration management on VM instances.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
 
-.. |GA| image:: https://img.shields.io/badge/support-GA-gold.svg
-   :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#general-availability
+.. |stable| image:: https://img.shields.io/badge/support-stable-gold.svg
+   :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#stability-levels
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-os-config.svg
    :target: https://pypi.org/project/google-cloud-os-config/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-os-config.svg
    :target: https://pypi.org/project/google-cloud-os-config/
-.. _Cloud OS Config API: https://cloud.google.com/compute/docs/manage-os
+.. _OS Config API: https://cloud.google.com/compute/docs/manage-os
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/osconfig/latest
 .. _Product Documentation:  https://cloud.google.com/compute/docs/manage-os
 
@@ -26,12 +25,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the Cloud OS Config API.`_
+3. `Enable the OS Config API.`_
 4. `Setup Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Cloud OS Config API.:  https://cloud.google.com/compute/docs/osconfig/
+.. _Enable the OS Config API.:  https://cloud.google.com/compute/docs/manage-os
 .. _Setup Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -46,6 +45,27 @@ install permissions, and without clashing with the installed system
 dependencies.
 
 .. _`virtualenv`: https://virtualenv.pypa.io/en/latest/
+
+
+Code samples and snippets
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Code samples and snippets live in the `samples/` folder.
+
+
+Supported Python Versions
+^^^^^^^^^^^^^^^^^^^^^^^^^
+Our client libraries are compatible with all current [active](https://devguide.python.org/devcycle/#in-development-main-branch) and [maintenance](https://devguide.python.org/devcycle/#maintenance-branches) versions of
+Python.
+
+Python >= 3.7
+
+Unsupported Python Versions
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Python <= 3.6
+
+If you are using an [end-of-life](https://devguide.python.org/devcycle/#end-of-life-branches)
+version of Python, we recommend that you update as soon as possible to an actively supported version.
 
 
 Mac/Linux
@@ -72,12 +92,12 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for Cloud OS COnfig API
-   API to see other available methods on the client.
--  Read the `Cloud OS Config API Product documentation`_ to learn
+-  Read the `Client Library Documentation`_ for OS Config API
+   to see other available methods on the client.
+-  Read the `OS Config API Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Cloud OS Config API Product documentation:  https://cloud.google.com/compute/docs/osconfig/
+.. _OS Config API Product documentation:  https://cloud.google.com/compute/docs/manage-os
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst

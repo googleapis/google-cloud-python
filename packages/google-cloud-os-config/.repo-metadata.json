@@ -1,7 +1,7 @@
 {
     "name": "osconfig",
     "name_pretty": "OS Config",
-    "product_documentation": "https://cloud.google.com/compute/docs/osconfig/",
+    "product_documentation": "https://cloud.google.com/compute/docs/manage-os",
     "client_documentation": "https://cloud.google.com/python/docs/reference/osconfig/latest",
     "issue_tracker": "",
     "release_level": "stable",
@@ -12,5 +12,6 @@
     "api_id": "osconfig.googleapis.com",
     "default_version": "v1",
     "codeowner_team": "",
-    "api_shortname": "osconfig"
+    "api_shortname": "osconfig",
+    "api_description": "provides OS management tools that can be used for patch management, patch compliance, and configuration management on VM instances."
 }
