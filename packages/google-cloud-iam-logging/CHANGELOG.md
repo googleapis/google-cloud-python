@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.3](https://github.com/googleapis/python-iam-logging/compare/v1.0.2...v1.0.3) (2022-07-07)
+
+
+### Bug Fixes
+
+* require python 3.7+ ([#101](https://github.com/googleapis/python-iam-logging/issues/101)) ([147d1c3](https://github.com/googleapis/python-iam-logging/commit/147d1c329493cdb35bfe0d53c87231ff470c1a6c))
+
 ## [1.0.2](https://github.com/googleapis/python-iam-logging/compare/v1.0.1...v1.0.2) (2022-06-03)
 
 
