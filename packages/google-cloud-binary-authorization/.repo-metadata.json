@@ -12,5 +12,6 @@
     "api_id": "binaryauthorization.googleapis.com",
     "codeowner_team": "@googleapis/aap-dpes",
     "default_version": "v1",
-    "api_shortname": "binaryauthorization"
+    "api_shortname": "binaryauthorization",
+    "api_description": " is a service on Google Cloud that provides centralized software supply-chain security for applications that run on Google Kubernetes Engine (GKE) and Anthos clusters on VMware"
 }
