@@ -12,5 +12,6 @@
     "api_id": "composer.googleapis.com",
     "default_version": "v1",
     "codeowner_team": "",
-    "api_shortname": "composer"
+    "api_shortname": "composer",
+    "api_description": "is a managed Apache Airflow service that helps you create, schedule, monitor and manage workflows. Cloud Composer automation helps you create Airflow environments quickly and use Airflow-native tools, such as the powerful Airflow web interface and command line tools, so you can focus on your workflows and not your infrastructure."
 }
