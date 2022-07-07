@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-cloud-language/#history
 
+## [2.5.0](https://github.com/googleapis/python-language/compare/v2.4.3...v2.5.0) (2022-07-07)
+
+
+### Features
+
+* add audience parameter ([592e7f8](https://github.com/googleapis/python-language/commit/592e7f85503f40373263b4d36118d6e4542f48cf))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core >= 2.8.0 ([#334](https://github.com/googleapis/python-language/issues/334)) ([592e7f8](https://github.com/googleapis/python-language/commit/592e7f85503f40373263b4d36118d6e4542f48cf))
+* require python 3.7+ ([#336](https://github.com/googleapis/python-language/issues/336)) ([b36b40f](https://github.com/googleapis/python-language/commit/b36b40f1ea7a32ccc3b99c7bb815c89cdd75ff53))
+
 ## [2.4.3](https://github.com/googleapis/python-language/compare/v2.4.2...v2.4.3) (2022-06-06)
 
 
