@@ -433,6 +433,7 @@ class ManagedNotebookServiceClient(metaclass=ManagedNotebookServiceClientMeta):
                 quota_project_id=client_options.quota_project_id,
                 client_info=client_info,
                 always_use_jwt_access=True,
+                api_audience=client_options.api_audience,
             )
 
     def list_runtimes(
