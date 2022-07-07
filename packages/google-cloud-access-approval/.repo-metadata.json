@@ -1,6 +1,7 @@
 {
     "name": "accessapproval",
     "name_pretty": "Access Approval",
+    "api_description": "enables controlling access to your organization's data by Google personnel.",
     "product_documentation": "https://cloud.google.com/access-approval",
     "client_documentation": "https://cloud.google.com/python/docs/reference/accessapproval/latest",
     "issue_tracker": "",
