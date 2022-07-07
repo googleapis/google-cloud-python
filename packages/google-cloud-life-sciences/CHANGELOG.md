@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.6.0](https://github.com/googleapis/python-life-sciences/compare/v0.5.2...v0.6.0) (2022-07-07)
+
+
+### Features
+
+* add audience parameter ([5ca3fac](https://github.com/googleapis/python-life-sciences/commit/5ca3fac060eb0172fc3e301e6a202b0fd4443f28))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core >= 2.8.0 ([#111](https://github.com/googleapis/python-life-sciences/issues/111)) ([5ca3fac](https://github.com/googleapis/python-life-sciences/commit/5ca3fac060eb0172fc3e301e6a202b0fd4443f28))
+* require python 3.7+ ([#113](https://github.com/googleapis/python-life-sciences/issues/113)) ([d76d314](https://github.com/googleapis/python-life-sciences/commit/d76d314d35fb1d6029b23e11f9b91661be6e3714))
+
 ## [0.5.2](https://github.com/googleapis/python-life-sciences/compare/v0.5.1...v0.5.2) (2022-06-03)
 
 
