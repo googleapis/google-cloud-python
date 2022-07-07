@@ -13,5 +13,6 @@
     "requires_billing": true,
     "default_version": "v1",
     "codeowner_team": "@googleapis/cdpe-cloudai",
-    "api_shortname": "language"
+    "api_shortname": "language",
+    "api_description": "provides natural language understanding technologies to developers, including sentiment analysis, entity analysis, entity sentiment analysis, content classification, and syntax analysis. This API is part of the larger Cloud Machine Learning API family."
 }

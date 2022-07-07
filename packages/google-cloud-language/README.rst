@@ -1,35 +1,22 @@
-Python Client for Google Cloud Natural Language
-===============================================
+Python Client for Natural Language API
+======================================
 
-|GA| |pypi| |versions| 
+|stable| |pypi| |versions|
 
-The `Google Cloud Natural Language`_ API can be used to reveal the
-structure and meaning of text via powerful machine
-learning models. You can use it to extract information about
-people, places, events and much more, mentioned in text documents,
-news articles or blog posts. You can use it to understand
-sentiment about your product on social media or parse intent from
-customer conversations happening in a call center or a messaging
-app. You can analyze text uploaded in your request or integrate
-with your document storage on Google Cloud Storage.
+`Natural Language API`_: provides natural language understanding technologies to developers, including sentiment analysis, entity analysis, entity sentiment analysis, content classification, and syntax analysis. This API is part of the larger Cloud Machine Learning API family.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
 
-.. |GA| image:: https://img.shields.io/badge/support-GA-gold.svg
-   :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#general-availability
+.. |stable| image:: https://img.shields.io/badge/support-stable-gold.svg
+   :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#stability-levels
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-language.svg
    :target: https://pypi.org/project/google-cloud-language/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-language.svg
    :target: https://pypi.org/project/google-cloud-language/
-.. _Google Cloud Natural Language: https://cloud.google.com/natural-language/
-.. _Product Documentation:  https://cloud.google.com/natural-language/docs
+.. _Natural Language API: https://cloud.google.com/natural-language/docs/
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/language/latest
-
-.. note::
-
-    This library currently does not run on Google App Engine Standard.
-    We are actively working on adding this support.
+.. _Product Documentation:  https://cloud.google.com/natural-language/docs/
 
 Quick Start
 -----------
@@ -38,12 +25,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the Google Cloud Language API.`_
+3. `Enable the Natural Language API.`_
 4. `Setup Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Google Cloud Language API.:  https://cloud.google.com/natural-language
+.. _Enable the Natural Language API.:  https://cloud.google.com/natural-language/docs/
 .. _Setup Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -60,15 +47,25 @@ dependencies.
 .. _`virtualenv`: https://virtualenv.pypa.io/en/latest/
 
 
+Code samples and snippets
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Code samples and snippets live in the `samples/` folder.
+
+
 Supported Python Versions
 ^^^^^^^^^^^^^^^^^^^^^^^^^
-Python >= 3.6
+Our client libraries are compatible with all current [active](https://devguide.python.org/devcycle/#in-development-main-branch) and [maintenance](https://devguide.python.org/devcycle/#maintenance-branches) versions of
+Python.
+
+Python >= 3.7
 
 Unsupported Python Versions
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Python == 2.7. 
+Python <= 3.6
 
-The last version of this library compatible with Python 2.7 is google-cloud-language=1.3.0
+If you are using an [end-of-life](https://devguide.python.org/devcycle/#end-of-life-branches)
+version of Python, we recommend that you update as soon as possible to an actively supported version.
 
 
 Mac/Linux
@@ -92,13 +89,15 @@ Windows
     <your-env>\Scripts\activate
     <your-env>\Scripts\pip.exe install google-cloud-language
 
-
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Usage documentation`_ for the language client
-   to see available methods on the client.
--  Read the `Product documentation`_ to learn
+-  Read the `Client Library Documentation`_ for Natural Language API
+   to see other available methods on the client.
+-  Read the `Natural Language API Product documentation`_ to learn
    more about the product and see How-to Guides.
+-  View this `README`_ to see the full list of Cloud
+   APIs that we cover.
 
-.. _Usage documentation: https://cloud.google.com/python/docs/reference/language/latest
+.. _Natural Language API Product documentation:  https://cloud.google.com/natural-language/docs/
+.. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
