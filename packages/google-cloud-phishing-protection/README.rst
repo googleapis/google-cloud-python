@@ -1,20 +1,22 @@
 Python Client for Phishing Protection API
 =========================================
 
-|beta| |pypi| |versions|
+|preview| |pypi| |versions|
+
+`Phishing Protection API`_: helps prevent users from accessing phishing sites by identifying various signals associated with malicious content, including the use of your brand assets, classifying malicious content that uses your brand and reporting the unsafe URLs to Google Safe Browsing. Once a site is propagated to Safe Browsing, users will see warnings across more than 4 billion devices.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
 
-.. |beta| image:: https://img.shields.io/badge/support-beta-orange.svg
-   :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#beta-support
+.. |preview| image:: https://img.shields.io/badge/support-preview-orange.svg
+   :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#stability-levels
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-phishing-protection.svg
    :target: https://pypi.org/project/google-cloud-phishing-protection/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-phishing-protection.svg
    :target: https://pypi.org/project/google-cloud-phishing-protection/
-
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/phishingprotection/latest/
-.. _Product Documentation:  https://cloud.google.com/phishing-protection
+.. _Phishing Protection API: https://cloud.google.com/phishing-protection/docs/
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/phishingprotection/latest
+.. _Product Documentation:  https://cloud.google.com/phishing-protection/docs/
 
 Quick Start
 -----------
@@ -28,18 +30,8 @@ In order to use this library, you first need to go through the following steps:
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Phishing Protection API.:  https://cloud.google.com/phishing-protection
+.. _Enable the Phishing Protection API.:  https://cloud.google.com/phishing-protection/docs/
 .. _Setup Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
-
-Supported Python Versions
-^^^^^^^^^^^^^^^^^^^^^^^^^
-Python >= 3.6
-
-Unsupported Python Versions
-^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Python == 2.7.
-
-The last version of this library compatible with Python 2.7 is google-cloud-phishing-protection==0.4.0.
 
 Installation
 ~~~~~~~~~~~~
@@ -53,6 +45,27 @@ install permissions, and without clashing with the installed system
 dependencies.
 
 .. _`virtualenv`: https://virtualenv.pypa.io/en/latest/
+
+
+Code samples and snippets
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Code samples and snippets live in the `samples/` folder.
+
+
+Supported Python Versions
+^^^^^^^^^^^^^^^^^^^^^^^^^
+Our client libraries are compatible with all current [active](https://devguide.python.org/devcycle/#in-development-main-branch) and [maintenance](https://devguide.python.org/devcycle/#maintenance-branches) versions of
+Python.
+
+Python >= 3.7
+
+Unsupported Python Versions
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Python <= 3.6
+
+If you are using an [end-of-life](https://devguide.python.org/devcycle/#end-of-life-branches)
+version of Python, we recommend that you update as soon as possible to an actively supported version.
 
 
 Mac/Linux
@@ -80,11 +93,11 @@ Next Steps
 ~~~~~~~~~~
 
 -  Read the `Client Library Documentation`_ for Phishing Protection API
-   API to see other available methods on the client.
+   to see other available methods on the client.
 -  Read the `Phishing Protection API Product documentation`_ to learn
    more about the product and see How-to Guides.
--  View this `repository’s main README`_ to see the full list of Cloud
+-  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Phishing Protection API Product documentation:  https://cloud.google.com/phishing-protection
-.. _repository’s main README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
+.. _Phishing Protection API Product documentation:  https://cloud.google.com/phishing-protection/docs/
+.. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
