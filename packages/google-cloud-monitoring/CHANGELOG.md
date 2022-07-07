@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-cloud-monitoring/#history
 
+## [2.10.0](https://github.com/googleapis/python-monitoring/compare/v2.9.2...v2.10.0) (2022-07-06)
+
+
+### Features
+
+* add audience parameter ([0bf6561](https://github.com/googleapis/python-monitoring/commit/0bf6561dd3f6184ae6d6e9e52522aa1460430718))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core >= 2.8.0 ([#457](https://github.com/googleapis/python-monitoring/issues/457)) ([0bf6561](https://github.com/googleapis/python-monitoring/commit/0bf6561dd3f6184ae6d6e9e52522aa1460430718))
+* require python 3.7+ ([#459](https://github.com/googleapis/python-monitoring/issues/459)) ([1ff6e13](https://github.com/googleapis/python-monitoring/commit/1ff6e13af83764128e8f0e43b7c5f89b12939889))
+
 ## [2.9.2](https://github.com/googleapis/python-monitoring/compare/v2.9.1...v2.9.2) (2022-06-06)
 
 

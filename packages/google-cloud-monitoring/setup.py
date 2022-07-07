@@ -22,7 +22,7 @@ import setuptools
 
 name = "google-cloud-monitoring"
 description = "Stackdriver Monitoring API client library"
-version = "2.9.2"
+version = "2.10.0"
 # Should be one of:
 # 'Development Status :: 3 - Alpha'
 # 'Development Status :: 4 - Beta'
