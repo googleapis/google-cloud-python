@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.4.0](https://github.com/googleapis/python-orchestration-airflow/compare/v1.3.2...v1.4.0) (2022-07-07)
+
+
+### Features
+
+* add audience parameter ([1e74b80](https://github.com/googleapis/python-orchestration-airflow/commit/1e74b80e426d74c36bd0792082d29e4e618d08a4))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core >= 2.8.0 ([#116](https://github.com/googleapis/python-orchestration-airflow/issues/116)) ([1e74b80](https://github.com/googleapis/python-orchestration-airflow/commit/1e74b80e426d74c36bd0792082d29e4e618d08a4))
+* require python 3.7+ ([#118](https://github.com/googleapis/python-orchestration-airflow/issues/118)) ([891963c](https://github.com/googleapis/python-orchestration-airflow/commit/891963c483d34f285695e2b680ec798a0b70def4))
+
 ## [1.3.2](https://github.com/googleapis/python-orchestration-airflow/compare/v1.3.1...v1.3.2) (2022-06-03)
 
 
