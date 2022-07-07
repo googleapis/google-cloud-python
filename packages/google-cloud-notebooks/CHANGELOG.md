@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.4.0](https://github.com/googleapis/python-notebooks/compare/v1.3.2...v1.4.0) (2022-07-07)
+
+
+### Features
+
+* add audience parameter ([9d37f0d](https://github.com/googleapis/python-notebooks/commit/9d37f0d7563d606d3e7be98e38eb4c98b1e87875))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core >= 2.8.0 ([#176](https://github.com/googleapis/python-notebooks/issues/176)) ([9d37f0d](https://github.com/googleapis/python-notebooks/commit/9d37f0d7563d606d3e7be98e38eb4c98b1e87875))
+* require python 3.7+ ([#178](https://github.com/googleapis/python-notebooks/issues/178)) ([1dfe877](https://github.com/googleapis/python-notebooks/commit/1dfe8778fc29cb493120165987e2c234b7546e00))
+
 ## [1.3.2](https://github.com/googleapis/python-notebooks/compare/v1.3.1...v1.3.2) (2022-06-03)
 
 
