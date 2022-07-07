@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.5.0](https://github.com/googleapis/python-managed-identities/compare/v1.4.2...v1.5.0) (2022-07-06)
+
+
+### Features
+
+* add audience parameter ([27bd9b1](https://github.com/googleapis/python-managed-identities/commit/27bd9b1ed5ab0297a72203d1a03780e3c35fc7db))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core >= 2.8.0 ([#156](https://github.com/googleapis/python-managed-identities/issues/156)) ([27bd9b1](https://github.com/googleapis/python-managed-identities/commit/27bd9b1ed5ab0297a72203d1a03780e3c35fc7db))
+* require python 3.7+ ([#158](https://github.com/googleapis/python-managed-identities/issues/158)) ([f738bc7](https://github.com/googleapis/python-managed-identities/commit/f738bc74a8688172fa29bb0f0929c9dc99afc33f))
+
 ## [1.4.2](https://github.com/googleapis/python-managed-identities/compare/v1.4.1...v1.4.2) (2022-06-03)
 
 
