@@ -64,7 +64,7 @@ Python >= 3.7
 
 Deprecated Python Versions
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
-Python == 2.7.
+Python <= 3.6.
 
 The last version of this library compatible with Python 2.7 is google-cloud-pubsub==1.7.0.
 
