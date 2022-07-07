@@ -141,7 +141,7 @@ def _publish_messages(
     publisher_client: pubsub_v1.PublisherClient,
     topic: str,
     message_num: int = 5,
-    **attrs: Any,
+    **attrs: Any,  # noqa: ANN401
 ) -> List[str]:
     message_ids = []
     for n in range(message_num):

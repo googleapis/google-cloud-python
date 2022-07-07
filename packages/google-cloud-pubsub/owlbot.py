@@ -341,19 +341,6 @@ for library in s.get_staging_dirs(default_version):
         "pip install google-pubsub",
         "pip install google-cloud-pubsub",
     )
-
-    s.move(
-        library,
-        excludes=[
-            "docs/**/*",
-            "nox.py",
-            "README.rst",
-            "setup.py",
-            f"google/cloud/pubsub_{library.name}/__init__.py",
-            f"google/cloud/pubsub_{library.name}/types.py",
-        ],
-    )
-
 s.remove_staging_dirs()
 
 # ----------------------------------------------------------------------------
@@ -367,7 +354,7 @@ templated_files = gcp.CommonTemplates().py_library(
     system_test_python_versions=["3.10"],
     system_test_external_dependencies=["psutil"],
 )
-s.move(templated_files, excludes=[".coveragerc", ".github/CODEOWNERS"])
+s.move(templated_files, excludes=["README.rst", ".coveragerc", ".github/CODEOWNERS"])
 python.configure_previous_major_version_branches()
 # ----------------------------------------------------------------------------
 # Samples templates
