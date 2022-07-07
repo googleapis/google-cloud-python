@@ -12,5 +12,6 @@
     "api_id": "cloudprivatecatalog.googleapis.com",
     "default_version": "v1beta1",
     "codeowner_team": "",
-    "api_shortname": "cloudprivatecatalog"
+    "api_shortname": "cloudprivatecatalog",
+    "api_description": "allows developers and cloud admins to make their solutions discoverable to their internal enterprise users. Cloud admins can manage their solutions and ensure their users are always launching the latest versions."
 }

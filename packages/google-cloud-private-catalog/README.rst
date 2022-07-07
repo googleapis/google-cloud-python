@@ -1,23 +1,22 @@
 Python Client for Private Catalog API
 =====================================
 
-|beta| |pypi| |versions|
+|preview| |pypi| |versions|
 
-`Private Catalog API`_: enables cloud admins to control distribution, ensure internal compliance, 
-and increase discoverability for solutions within an enterprise.
+`Private Catalog API`_: allows developers and cloud admins to make their solutions discoverable to their internal enterprise users. Cloud admins can manage their solutions and ensure their users are always launching the latest versions.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
 
-.. |beta| image:: https://img.shields.io/badge/support-beta-orange.svg
-   :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#beta-support
+.. |preview| image:: https://img.shields.io/badge/support-preview-orange.svg
+   :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#stability-levels
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-private-catalog.svg
    :target: https://pypi.org/project/google-cloud-private-catalog/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-private-catalog.svg
    :target: https://pypi.org/project/google-cloud-private-catalog/
 .. _Private Catalog API: https://cloud.google.com/private-catalog/
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/cloudprivatecatalog/latest
-.. _Product Documentation:  https://cloud.google.com/private-catalog/docs
+.. _Product Documentation:  https://cloud.google.com/private-catalog/
 
 Quick Start
 -----------
@@ -31,7 +30,7 @@ In order to use this library, you first need to go through the following steps:
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Private Catalog API.:  https://cloud.google.com/private-catalog/docs/quickstart#before_you_begin
+.. _Enable the Private Catalog API.:  https://cloud.google.com/private-catalog/
 .. _Setup Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -46,6 +45,27 @@ install permissions, and without clashing with the installed system
 dependencies.
 
 .. _`virtualenv`: https://virtualenv.pypa.io/en/latest/
+
+
+Code samples and snippets
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Code samples and snippets live in the `samples/` folder.
+
+
+Supported Python Versions
+^^^^^^^^^^^^^^^^^^^^^^^^^
+Our client libraries are compatible with all current [active](https://devguide.python.org/devcycle/#in-development-main-branch) and [maintenance](https://devguide.python.org/devcycle/#maintenance-branches) versions of
+Python.
+
+Python >= 3.7
+
+Unsupported Python Versions
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Python <= 3.6
+
+If you are using an [end-of-life](https://devguide.python.org/devcycle/#end-of-life-branches)
+version of Python, we recommend that you update as soon as possible to an actively supported version.
 
 
 Mac/Linux
@@ -79,5 +99,5 @@ Next Steps
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Private Catalog API Product documentation:  https://cloud.google.com/private-catalog/docs/
+.. _Private Catalog API Product documentation:  https://cloud.google.com/private-catalog/
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
