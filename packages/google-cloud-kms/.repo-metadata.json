@@ -25,5 +25,6 @@
     ],
     "default_version": "v1",
     "codeowner_team": "",
-    "api_shortname": "cloudkms"
+    "api_shortname": "cloudkms",
+    "api_description": "a cloud-hosted key management service that lets you manage cryptographic keys for your cloud services the same way you do on-premises. You can generate, use, rotate, and destroy AES256, RSA 2048, RSA 3072, RSA 4096, EC P256, and EC P384 cryptographic keys. Cloud KMS is integrated with Cloud IAM and Cloud Audit Logging so that you can manage permissions on individual keys and monitor how these are used. Use Cloud KMS to protect secrets and other sensitive data that you need to store in Google Cloud Platform."
 }
