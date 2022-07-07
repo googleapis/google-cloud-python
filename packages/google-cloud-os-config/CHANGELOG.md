@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.12.0](https://github.com/googleapis/python-os-config/compare/v1.11.2...v1.12.0) (2022-07-07)
+
+
+### Features
+
+* add audience parameter ([d700d11](https://github.com/googleapis/python-os-config/commit/d700d1171f2ceab7aaf362eeff385c9733cf456c))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core >= 2.8.0 ([#213](https://github.com/googleapis/python-os-config/issues/213)) ([d700d11](https://github.com/googleapis/python-os-config/commit/d700d1171f2ceab7aaf362eeff385c9733cf456c))
+* require python 3.7+ ([#215](https://github.com/googleapis/python-os-config/issues/215)) ([397e04d](https://github.com/googleapis/python-os-config/commit/397e04d1b76dc8d5145109140ac41be84609adac))
+
 ## [1.11.2](https://github.com/googleapis/python-os-config/compare/v1.11.1...v1.11.2) (2022-06-03)
 
 
