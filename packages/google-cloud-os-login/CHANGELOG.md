@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-cloud-oslogin/#history
 
+## [2.7.0](https://github.com/googleapis/python-oslogin/compare/v2.6.2...v2.7.0) (2022-07-07)
+
+
+### Features
+
+* add audience parameter ([994fde5](https://github.com/googleapis/python-oslogin/commit/994fde5ef2418a801649dec5d59f48c5fc996de0))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core >= 2.8.0 ([#200](https://github.com/googleapis/python-oslogin/issues/200)) ([994fde5](https://github.com/googleapis/python-oslogin/commit/994fde5ef2418a801649dec5d59f48c5fc996de0))
+* require python 3.7+ ([#202](https://github.com/googleapis/python-oslogin/issues/202)) ([c8f9bcd](https://github.com/googleapis/python-oslogin/commit/c8f9bcdd6ad9a4a380556261ef173e24aeb9a4fa))
+
 ## [2.6.2](https://github.com/googleapis/python-oslogin/compare/v2.6.1...v2.6.2) (2022-06-03)
 
 
