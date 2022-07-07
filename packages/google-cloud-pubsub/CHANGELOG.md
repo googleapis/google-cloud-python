@@ -5,6 +5,14 @@
 [1]: https://pypi.org/project/google-cloud-pubsub/#history
 
 
+## [2.13.1](https://github.com/googleapis/python-pubsub/compare/v2.13.0...v2.13.1) (2022-07-07)
+
+
+### Bug Fixes
+
+* change info logs to debug ([#693](https://github.com/googleapis/python-pubsub/issues/693)) ([950fbce](https://github.com/googleapis/python-pubsub/commit/950fbce009fd56a55feea971f8e6083fa84d54fc))
+* require python 3.7+ ([#730](https://github.com/googleapis/python-pubsub/issues/730)) ([0d949b8](https://github.com/googleapis/python-pubsub/commit/0d949b8da096d1b0a5e26f607b1cd79fb560252a))
+
 ## [2.13.0](https://github.com/googleapis/python-pubsub/compare/v2.12.1...v2.13.0) (2022-06-06)
 
 
