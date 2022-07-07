@@ -24,15 +24,10 @@ description = "Access Approval API client library"
 version = "1.6.1"
 release_status = "Development Status :: 5 - Production/Stable"
 dependencies = [
-    # NOTE: Maintainers, please do not require google-api-core>=2.x.x
-    # Until this issue is closed
-    # https://github.com/googleapis/google-cloud-python/issues/10566
-    "google-api-core[grpc] >= 1.31.5, <3.0.0dev,!=2.0.*,!=2.1.*,!=2.2.*,!=2.3.0",
+    "google-api-core[grpc] >= 2.8.0, <3.0.0dev",
     "proto-plus >= 1.15.0, <2.0.0dev",
     "protobuf >= 3.19.0, <4.0.0dev",
 ]
-
-extras = {"libcst": "libcst >= 0.2.5"}
 
 package_root = os.path.abspath(os.path.dirname(__file__))
 
@@ -79,7 +74,6 @@ setuptools.setup(
     scripts=["scripts/fixup_accessapproval_v1_keywords.py"],
     namespace_packages=namespaces,
     install_requires=dependencies,
-    extras_require=extras,
     include_package_data=True,
     zip_safe=False,
 )
