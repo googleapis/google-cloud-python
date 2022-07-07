@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.9.0](https://github.com/googleapis/python-media-translation/compare/v0.8.2...v0.9.0) (2022-07-06)
+
+
+### Features
+
+* add audience parameter ([35f1645](https://github.com/googleapis/python-media-translation/commit/35f16459e97385433c16180e16f85554ae489f91))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core >= 2.8.0 ([#199](https://github.com/googleapis/python-media-translation/issues/199)) ([35f1645](https://github.com/googleapis/python-media-translation/commit/35f16459e97385433c16180e16f85554ae489f91))
+* require python 3.7+ ([#201](https://github.com/googleapis/python-media-translation/issues/201)) ([c19d2de](https://github.com/googleapis/python-media-translation/commit/c19d2de6524b08a09c1367cb04227ab2212373a9))
+
 ## [0.8.2](https://github.com/googleapis/python-media-translation/compare/v0.8.1...v0.8.2) (2022-06-06)
 
 
