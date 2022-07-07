@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.5.0](https://github.com/googleapis/python-policy-troubleshooter/compare/v1.4.2...v1.5.0) (2022-07-07)
+
+
+### Features
+
+* add audience parameter ([b5f39fb](https://github.com/googleapis/python-policy-troubleshooter/commit/b5f39fbbe4c1bdab14216c948e751d54cec191f4))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core >= 2.8.0 ([#133](https://github.com/googleapis/python-policy-troubleshooter/issues/133)) ([b5f39fb](https://github.com/googleapis/python-policy-troubleshooter/commit/b5f39fbbe4c1bdab14216c948e751d54cec191f4))
+* require python 3.7+ ([#135](https://github.com/googleapis/python-policy-troubleshooter/issues/135)) ([9948450](https://github.com/googleapis/python-policy-troubleshooter/commit/9948450fba4287213fc06a9914f599ce4f7a3db9))
+
 ## [1.4.2](https://github.com/googleapis/python-policy-troubleshooter/compare/v1.4.1...v1.4.2) (2022-06-03)
 
 
