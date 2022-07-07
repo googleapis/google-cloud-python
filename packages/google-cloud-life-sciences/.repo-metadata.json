@@ -12,5 +12,6 @@
     "api_id": "lifesciences.googleapis.com",
     "default_version": "v2beta",
     "codeowner_team": "",
-    "api_shortname": "lifesciences"
+    "api_shortname": "lifesciences",
+    "api_description": "is a suite of services and tools for managing, processing, and transforming life sciences data."
 }
