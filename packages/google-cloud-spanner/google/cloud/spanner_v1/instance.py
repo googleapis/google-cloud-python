@@ -17,6 +17,7 @@
 import google.api_core.operation
 from google.api_core.exceptions import InvalidArgument
 import re
+import typing
 
 from google.protobuf.empty_pb2 import Empty
 from google.protobuf.field_mask_pb2 import FieldMask
@@ -42,7 +43,7 @@ _INSTANCE_NAME_RE = re.compile(
 DEFAULT_NODE_COUNT = 1
 PROCESSING_UNITS_PER_NODE = 1000
 
-_OPERATION_METADATA_MESSAGES = (
+_OPERATION_METADATA_MESSAGES: typing.Tuple = (
     backup.Backup,
     backup.CreateBackupMetadata,
     backup.CopyBackupMetadata,

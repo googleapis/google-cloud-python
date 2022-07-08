@@ -102,7 +102,7 @@ class _SnapshotBase(_SessionWrapper):
     """
 
     _multi_use = False
-    _read_only = True
+    _read_only: bool = True
     _transaction_id = None
     _read_request_count = 0
     _execute_sql_count = 0
