@@ -331,42 +331,15 @@ def docfx(session):
 def prerelease_deps(session):
     """Run all tests with prerelease versions of dependencies installed."""
 
-    prerel_deps = [
-        "protobuf",
-        # dependency of grpc
-        "six",
-        "googleapis-common-protos",
-        "google-auth",
-        "grpcio",
-        "grpcio-status",
-        "google-api-core",
-        "proto-plus",
-        # dependencies of google-auth
-        "cryptography",
-        "pyasn1",
-        "google-cloud-testutils",
-        # dependencies of google-cloud-testutils"
-        "click",
-    ]
-
-    for dep in prerel_deps:
-        session.install("--pre", "--no-deps", "--upgrade", dep)
-
-    # Remaining dependencies
-    other_deps = ["requests"]
-    session.install(*other_deps)
-
-    # Don't overwrite prerelease packages.
-    unit_test_deps = [
-        dep for dep in UNIT_TEST_STANDARD_DEPENDENCIES if dep not in prerel_deps
-    ]
-    session.install(*unit_test_deps)
-
-    # Don't overwrite prerelease packages.
-    system_deps = [
-        dep for dep in SYSTEM_TEST_STANDARD_DEPENDENCIES if dep not in prerel_deps
-    ]
-    session.install(*system_deps)
+    # Install all dependencies
+    session.install("-e", ".[all, tests, tracing]")
+    session.install(*UNIT_TEST_STANDARD_DEPENDENCIES)
+    system_deps_all = (
+        SYSTEM_TEST_STANDARD_DEPENDENCIES
+        + SYSTEM_TEST_EXTERNAL_DEPENDENCIES
+        + SYSTEM_TEST_EXTRAS
+    )
+    session.install(*system_deps_all)
 
     # Because we test minimum dependency versions on the minimum Python
     # version, the first version we test with in the unit tests sessions has a
@@ -387,14 +360,37 @@ def prerelease_deps(session):
         )
     ]
 
-    # Don't overwrite prerelease packages.
-    constraints_deps = [dep for dep in constraints_deps if dep not in prerel_deps]
-    if constraints_deps:
-        session.install(*constraints_deps)
+    session.install(*constraints_deps)
 
-    # We use --no-deps to ensure that pre-release versions aren't overwritten
-    # by the version ranges in setup.py.
-    session.install("--no-deps", "-e", ".[all]")
+    if os.path.exists("samples/snippets/requirements.txt"):
+        session.install("-r", "samples/snippets/requirements.txt")
+
+    if os.path.exists("samples/snippets/requirements-test.txt"):
+        session.install("-r", "samples/snippets/requirements-test.txt")
+
+    prerel_deps = [
+        "protobuf",
+        # dependency of grpc
+        "six",
+        "googleapis-common-protos",
+        "grpcio",
+        "grpcio-status",
+        "google-api-core",
+        "proto-plus",
+        "google-cloud-testutils",
+        # dependencies of google-cloud-testutils"
+        "click",
+    ]
+
+    for dep in prerel_deps:
+        session.install("--pre", "--no-deps", "--upgrade", dep)
+
+    # Remaining dependencies
+    other_deps = [
+        "requests",
+        "google-auth",
+    ]
+    session.install(*other_deps)
 
     # Print out prerelease package versions
     session.run(
@@ -403,5 +399,16 @@ def prerelease_deps(session):
     session.run("python", "-c", "import grpc; print(grpc.__version__)")
 
     session.run("py.test", "tests/unit")
-    session.run("py.test", "tests/system")
-    session.run("py.test", "samples/snippets")
+
+    system_test_path = os.path.join("tests", "system.py")
+    system_test_folder_path = os.path.join("tests", "system")
+
+    # Only run system tests if found.
+    if os.path.exists(system_test_path) or os.path.exists(system_test_folder_path):
+        session.run("py.test", "tests/system")
+
+    snippets_test_path = os.path.join("samples", "snippets")
+
+    # Only run samples tests if found.
+    if os.path.exists(snippets_test_path):
+        session.run("py.test", "samples/snippets")
