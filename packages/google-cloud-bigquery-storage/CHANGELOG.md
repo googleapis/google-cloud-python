@@ -4,6 +4,22 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery-storage/#history
 
+## [2.14.0](https://github.com/googleapis/python-bigquery-storage/compare/v2.13.2...v2.14.0) (2022-07-08)
+
+
+### Features
+
+* add audience parameter ([346c719](https://github.com/googleapis/python-bigquery-storage/commit/346c7199e2bd85c77403f1288988c2d64b435ee8))
+* add fields to eventually contain row level errors ([346c719](https://github.com/googleapis/python-bigquery-storage/commit/346c7199e2bd85c77403f1288988c2d64b435ee8))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core >= 2.8.0 ([346c719](https://github.com/googleapis/python-bigquery-storage/commit/346c7199e2bd85c77403f1288988c2d64b435ee8))
+* handle AttributeError in bigquery_storage writer ([#414](https://github.com/googleapis/python-bigquery-storage/issues/414)) ([2cb641a](https://github.com/googleapis/python-bigquery-storage/commit/2cb641a7e0e8bfde23693b4f59f6b914520d7364))
+* Modify client lib retry policy for CreateWriteStream with longer backoff, more error code and longer overall time ([346c719](https://github.com/googleapis/python-bigquery-storage/commit/346c7199e2bd85c77403f1288988c2d64b435ee8))
+* require python 3.7+ ([#468](https://github.com/googleapis/python-bigquery-storage/issues/468)) ([c13b1e5](https://github.com/googleapis/python-bigquery-storage/commit/c13b1e5e59e8ce2794b339809ce9f6a0ba66439c))
+
 ## [2.13.2](https://github.com/googleapis/python-bigquery-storage/compare/v2.13.1...v2.13.2) (2022-06-06)
 
 
