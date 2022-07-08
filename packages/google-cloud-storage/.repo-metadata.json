@@ -13,5 +13,6 @@
     "requires_billing": true,
     "default_version": "",
     "codeowner_team": "@googleapis/cloud-storage-dpe",
-    "api_shortname": "storage"
+    "api_shortname": "storage",
+    "api_description": "is a durable and highly available object storage service. Google Cloud Storage is almost infinitely scalable and guarantees consistency: when a write succeeds, the latest copy of the object will be returned to any GET, globally."
 }

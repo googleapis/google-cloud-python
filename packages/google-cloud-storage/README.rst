@@ -1,25 +1,22 @@
-Python Client for Google Cloud Storage
-======================================
+Python Client for Google Cloud Storage API
+==========================================
 
-|GA| |pypi| |versions|
+|stable| |pypi| |versions|
 
-`Google Cloud Storage`_ allows you to store data on
-Google infrastructure with very high reliability, performance and
-availability, and can be used to distribute large data objects to users
-via direct download.
+`Google Cloud Storage API`_: is a durable and highly available object storage service. Google Cloud Storage is almost infinitely scalable and guarantees consistency: when a write succeeds, the latest copy of the object will be returned to any GET, globally.
 
 - `Client Library Documentation`_
-- `Storage API docs`_
+- `Product Documentation`_
 
-.. |GA| image:: https://img.shields.io/badge/support-GA-gold.svg
-   :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#general-availability
+.. |stable| image:: https://img.shields.io/badge/support-stable-gold.svg
+   :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#stability-levels
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-storage.svg
-   :target: https://pypi.org/project/google-cloud-storage
+   :target: https://pypi.org/project/google-cloud-storage/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-storage.svg
-   :target: https://pypi.org/project/google-cloud-storage
-.. _Google Cloud Storage: https://cloud.google.com/storage/docs
-.. _Client Library Documentation: https://googleapis.dev/python/storage/latest
-.. _Storage API docs: https://cloud.google.com/storage/docs/json_api/v1
+   :target: https://pypi.org/project/google-cloud-storage/
+.. _Google Cloud Storage API: https://cloud.google.com/storage
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/storage/latest
+.. _Product Documentation:  https://cloud.google.com/storage
 
 Quick Start
 -----------
@@ -34,51 +31,52 @@ In order to use this library, you first need to go through the following steps:
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
 .. _Enable the Google Cloud Storage API.:  https://cloud.google.com/storage
-.. _Setup Authentication.: https://cloud.google.com/storage/docs/reference/libraries#setting_up_authentication
+.. _Setup Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
 ~~~~~~~~~~~~
 
-`Set up a Python development environment`_ and install this library in a `venv`.
-`venv`_ is a tool to create isolated Python environments. The basic problem it
-addresses is one of dependencies and versions, and indirectly permissions.
+Install this library in a `virtualenv`_ using pip. `virtualenv`_ is a tool to
+create isolated Python environments. The basic problem it addresses is one of
+dependencies and versions, and indirectly permissions.
 
-Make sure you're using Python 3.7 or later, which includes `venv`_ by default.
-With `venv`, it's possible to install this library without needing system
+With `virtualenv`_, it's possible to install this library without needing system
 install permissions, and without clashing with the installed system
 dependencies.
 
-.. _Set up a Python development environment: https://cloud.google.com/python/docs/setup
-.. _`venv`: https://docs.python.org/3/library/venv.html
+.. _`virtualenv`: https://virtualenv.pypa.io/en/latest/
+
+
+Code samples and snippets
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Code samples and snippets live in the `samples/` folder.
 
 
 Supported Python Versions
 ^^^^^^^^^^^^^^^^^^^^^^^^^
-Python >= 3.7
+Our client libraries are compatible with all current [active](https://devguide.python.org/devcycle/#in-development-main-branch) and [maintenance](https://devguide.python.org/devcycle/#maintenance-branches) versions of
+Python.
 
-Deprecated Python Versions
-^^^^^^^^^^^^^^^^^^^^^^^^^^
+Python >= 3.7
 
 Unsupported Python Versions
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Python <= 3.6
 
-Python == 3.6: the last released version which supported Python 3.6 was
-``google-cloud-storage 2.0.0``, released 2022-01-12.
+If you are using an [end-of-life](https://devguide.python.org/devcycle/#end-of-life-branches)
+version of Python, we recommend that you update as soon as possible to an actively supported version.
 
-Python == 3.5: the last released version which supported Python 3.5 was
-``google-cloud-storage 1.32.0``, released 2020-10-16.
-
-Python == 2.7: the last released version which supported Python 2.7 was
-``google-cloud-storage 1.44.0``, released 2022-01-05.
 
 Mac/Linux
 ^^^^^^^^^
 
 .. code-block:: console
 
-    python -m venv env
-    source env/bin/activate
-    pip install google-cloud-storage
+    pip install virtualenv
+    virtualenv <your-env>
+    source <your-env>/bin/activate
+    <your-env>/bin/pip install google-cloud-storage
 
 
 Windows
@@ -86,40 +84,20 @@ Windows
 
 .. code-block:: console
 
-    py -m venv env
-    .\env\Scripts\activate
-    pip install google-cloud-storage
+    pip install virtualenv
+    virtualenv <your-env>
+    <your-env>\Scripts\activate
+    <your-env>\Scripts\pip.exe install google-cloud-storage
 
+Next Steps
+~~~~~~~~~~
 
-Example Usage
-~~~~~~~~~~~~~
+-  Read the `Client Library Documentation`_ for Google Cloud Storage API
+   to see other available methods on the client.
+-  Read the `Google Cloud Storage API Product documentation`_ to learn
+   more about the product and see How-to Guides.
+-  View this `README`_ to see the full list of Cloud
+   APIs that we cover.
 
-.. code:: python
-
-    # Imports the Google Cloud client library
-    from google.cloud import storage
-
-    # Instantiates a client
-    client = storage.Client()
-
-    # Creates a new bucket and uploads an object
-    new_bucket = client.create_bucket('new-bucket-id')
-    new_blob = new_bucket.blob('remote/path/storage.txt')
-    new_blob.upload_from_filename(filename='/local/path.txt')
-
-    # Retrieve an existing bucket
-    # https://console.cloud.google.com/storage/browser/[bucket-id]/
-    bucket = client.get_bucket('bucket-id')
-    # Then do other things...
-    blob = bucket.get_blob('remote/path/to/file.txt')
-    print(blob.download_as_bytes())
-    blob.upload_from_string('New contents!')
-
-
-What's Next
-~~~~~~~~~~~
-
-Now that you've set up your Python client for Cloud Storage,
-you can get started running `Storage samples.`_
-
-.. _Storage samples.: https://github.com/googleapis/python-storage/tree/main/samples
+.. _Google Cloud Storage API Product documentation:  https://cloud.google.com/storage
+.. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
