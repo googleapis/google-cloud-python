@@ -26,7 +26,9 @@ __protobuf__ = proto.module(
 
 
 class TableSchema(proto.Message):
-    r"""Schema of a table.
+    r"""Schema of a table. This schema is a subset of
+    google.cloud.bigquery.v2.TableSchema containing information
+    necessary to generate valid message to write to BigQuery.
 
     Attributes:
         fields (Sequence[google.cloud.bigquery_storage_v1.types.TableFieldSchema]):

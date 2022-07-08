@@ -48,6 +48,7 @@ from google.cloud.bigquery_storage_v1.types.storage import FlushRowsResponse
 from google.cloud.bigquery_storage_v1.types.storage import GetWriteStreamRequest
 from google.cloud.bigquery_storage_v1.types.storage import ReadRowsRequest
 from google.cloud.bigquery_storage_v1.types.storage import ReadRowsResponse
+from google.cloud.bigquery_storage_v1.types.storage import RowError
 from google.cloud.bigquery_storage_v1.types.storage import SplitReadStreamRequest
 from google.cloud.bigquery_storage_v1.types.storage import SplitReadStreamResponse
 from google.cloud.bigquery_storage_v1.types.storage import StorageError
@@ -86,6 +87,7 @@ __all__ = (
     "GetWriteStreamRequest",
     "ReadRowsRequest",
     "ReadRowsResponse",
+    "RowError",
     "SplitReadStreamRequest",
     "SplitReadStreamResponse",
     "StorageError",

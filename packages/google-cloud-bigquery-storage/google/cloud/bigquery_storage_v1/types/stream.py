@@ -60,6 +60,7 @@ class ReadSession(proto.Message):
             assigned and currently cannot be specified or updated.
         data_format (google.cloud.bigquery_storage_v1.types.DataFormat):
             Immutable. Data format of the output data.
+            DATA_FORMAT_UNSPECIFIED not supported.
         avro_schema (google.cloud.bigquery_storage_v1.types.AvroSchema):
             Output only. Avro schema.
 

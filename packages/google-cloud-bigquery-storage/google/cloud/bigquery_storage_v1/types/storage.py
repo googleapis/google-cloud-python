@@ -46,6 +46,7 @@ __protobuf__ = proto.module(
         "FlushRowsRequest",
         "FlushRowsResponse",
         "StorageError",
+        "RowError",
     },
 )
 
@@ -60,17 +61,18 @@ class CreateReadSessionRequest(proto.Message):
         read_session (google.cloud.bigquery_storage_v1.types.ReadSession):
             Required. Session to be created.
         max_stream_count (int):
-            Max initial number of streams. If unset or
-            zero, the server will provide a value of streams
-            so as to produce reasonable throughput. Must be
-            non-negative. The number of streams may be lower
-            than the requested number, depending on the
-            amount parallelism that is reasonable for the
-            table. Error will be returned if the max count
-            is greater than the current system max limit of
-            1,000.
+            Max initial number of streams. If unset or zero, the server
+            will provide a value of streams so as to produce reasonable
+            throughput. Must be non-negative. The number of streams may
+            be lower than the requested number, depending on the amount
+            parallelism that is reasonable for the table. There is a
+            default system max limit of 1,000.
 
-            Streams must be read starting from offset 0.
+            This must be greater than or equal to
+            preferred_min_stream_count. Typically, clients should either
+            leave this unset to let the system to determine an upper
+            bound OR set this a size for the maximum "units of work" it
+            can gracefully handle.
     """
 
     parent = proto.Field(
@@ -471,6 +473,11 @@ class AppendRowsResponse(proto.Message):
             to user so that user can use it to input new
             type of message. It will be empty when no schema
             updates have occurred.
+        row_errors (Sequence[google.cloud.bigquery_storage_v1.types.RowError]):
+            If a request failed due to corrupted rows, no
+            rows in the batch will be appended. The API will
+            return row level error info, so that the caller
+            can remove the bad rows and retry the request.
     """
 
     class AppendResult(proto.Message):
@@ -505,6 +512,11 @@ class AppendRowsResponse(proto.Message):
         proto.MESSAGE,
         number=3,
         message=table.TableSchema,
+    )
+    row_errors = proto.RepeatedField(
+        proto.MESSAGE,
+        number=4,
+        message="RowError",
     )
 
 
@@ -683,6 +695,39 @@ class StorageError(proto.Message):
         number=2,
     )
     error_message = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class RowError(proto.Message):
+    r"""The message that presents row level error info in a request.
+
+    Attributes:
+        index (int):
+            Index of the malformed row in the request.
+        code (google.cloud.bigquery_storage_v1.types.RowError.RowErrorCode):
+            Structured error reason for a row error.
+        message (str):
+            Description of the issue encountered when
+            processing the row.
+    """
+
+    class RowErrorCode(proto.Enum):
+        r"""Error code for ``RowError``."""
+        ROW_ERROR_CODE_UNSPECIFIED = 0
+        FIELDS_ERROR = 1
+
+    index = proto.Field(
+        proto.INT64,
+        number=1,
+    )
+    code = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=RowErrorCode,
+    )
+    message = proto.Field(
         proto.STRING,
         number=3,
     )

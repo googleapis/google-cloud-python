@@ -59,6 +59,7 @@ class BigQueryWriteTransport(abc.ABC):
         quota_project_id: Optional[str] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
         always_use_jwt_access: Optional[bool] = False,
+        api_audience: Optional[str] = None,
         **kwargs,
     ) -> None:
         """Instantiate the transport.
@@ -86,11 +87,6 @@ class BigQueryWriteTransport(abc.ABC):
                 be used for service account credentials.
         """
 
-        # Save the hostname. Default to port 443 (HTTPS) if none is specified.
-        if ":" not in host:
-            host += ":443"
-        self._host = host
-
         scopes_kwargs = {"scopes": scopes, "default_scopes": self.AUTH_SCOPES}
 
         # Save the scopes.
@@ -111,6 +107,11 @@ class BigQueryWriteTransport(abc.ABC):
             credentials, _ = google.auth.default(
                 **scopes_kwargs, quota_project_id=quota_project_id
             )
+            # Don't apply audience if the credentials file passed from user.
+            if hasattr(credentials, "with_gdch_audience"):
+                credentials = credentials.with_gdch_audience(
+                    api_audience if api_audience else host
+                )
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -123,22 +124,28 @@ class BigQueryWriteTransport(abc.ABC):
         # Save the credentials.
         self._credentials = credentials
 
+        # Save the hostname. Default to port 443 (HTTPS) if none is specified.
+        if ":" not in host:
+            host += ":443"
+        self._host = host
+
     def _prep_wrapped_messages(self, client_info):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
             self.create_write_stream: gapic_v1.method.wrap_method(
                 self.create_write_stream,
                 default_retry=retries.Retry(
-                    initial=0.1,
-                    maximum=60.0,
+                    initial=10.0,
+                    maximum=120.0,
                     multiplier=1.3,
                     predicate=retries.if_exception_type(
                         core_exceptions.DeadlineExceeded,
+                        core_exceptions.ResourceExhausted,
                         core_exceptions.ServiceUnavailable,
                     ),
-                    deadline=600.0,
+                    deadline=1200.0,
                 ),
-                default_timeout=600.0,
+                default_timeout=1200.0,
                 client_info=client_info,
             ),
             self.append_rows: gapic_v1.method.wrap_method(
