@@ -55,12 +55,11 @@ setuptools.setup(
     include_package_data=True,
     install_requires=dependencies,
     extras_require=extras,
-    python_requires=">=3.6",
+    python_requires=">=3.7",
     classifiers=[
         release_status,
         "Intended Audience :: Developers",
         "Operating System :: OS Independent",
-        "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",

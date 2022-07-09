@@ -2,7 +2,7 @@
 
 .. include:: multiprocessing.rst
 
-This package includes clients for multiple versions of Service Control API.
+This package includes clients for multiple versions of Service Control.
 By default, you will get version ``servicecontrol_v1``.
 
 

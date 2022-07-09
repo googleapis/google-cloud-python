@@ -1,6 +1,6 @@
 {
     "name": "servicecontrol",
-    "name_pretty": "Service Control API",
+    "name_pretty": "Service Control",
     "product_documentation": "https://cloud.google.com/service-infrastructure/docs/overview/",
     "client_documentation": "https://cloud.google.com/python/docs/reference/servicecontrol/latest",
     "issue_tracker": "",
@@ -12,5 +12,6 @@
     "api_id": "servicecontrol.googleapis.com",
     "default_version": "v1",
     "codeowner_team": "",
-    "api_shortname": "servicecontrol"
+    "api_shortname": "servicecontrol",
+    "api_description": " is a foundational platform for creating, managing, securing, and consuming APIs and services across organizations. It is used by Google APIs, Cloud APIs, Cloud Endpoints, and API Gateway."
 }
