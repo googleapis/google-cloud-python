@@ -1,15 +1,15 @@
 Python Client for Transcoder API
-=================================================
+================================
 
-|ga| |pypi| |versions|
+|stable| |pypi| |versions|
 
-`Transcoder API`_: This API converts video files into formats suitable for consumer distribution.
+`Transcoder API`_: allows you to transcode videos into a variety of formats. The Transcoder API benefits broadcasters, production companies, businesses, and individuals looking to transform their video content for use across a variety of user devices.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
 
-.. |ga| image:: https://img.shields.io/badge/support-ga-gold.svg
-   :target: https://github.com/googleapis/google-cloud-python/blob/master/README.rst#ga-support
+.. |stable| image:: https://img.shields.io/badge/support-stable-gold.svg
+   :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#stability-levels
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-video-transcoder.svg
    :target: https://pypi.org/project/google-cloud-video-transcoder/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-video-transcoder.svg
@@ -47,6 +47,27 @@ dependencies.
 .. _`virtualenv`: https://virtualenv.pypa.io/en/latest/
 
 
+Code samples and snippets
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Code samples and snippets live in the `samples/` folder.
+
+
+Supported Python Versions
+^^^^^^^^^^^^^^^^^^^^^^^^^
+Our client libraries are compatible with all current [active](https://devguide.python.org/devcycle/#in-development-main-branch) and [maintenance](https://devguide.python.org/devcycle/#maintenance-branches) versions of
+Python.
+
+Python >= 3.7
+
+Unsupported Python Versions
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Python <= 3.6
+
+If you are using an [end-of-life](https://devguide.python.org/devcycle/#end-of-life-branches)
+version of Python, we recommend that you update as soon as possible to an actively supported version.
+
+
 Mac/Linux
 ^^^^^^^^^
 
@@ -68,18 +89,15 @@ Windows
     <your-env>\Scripts\activate
     <your-env>\Scripts\pip.exe install google-cloud-video-transcoder
 
-
 Next Steps
 ~~~~~~~~~~
 
--  See the `Samples`_.
--  Read the `Client Library Documentation`_ for Cloud Transcoder API
-   API to see other available methods on the client.
+-  Read the `Client Library Documentation`_ for Transcoder API
+   to see other available methods on the client.
 -  Read the `Transcoder API Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Samples: https://github.com/googleapis/python-video-transcoder/blob/main/samples/snippets/README.md
-.. _Transcoder API Product documentation: https://cloud.google.com/transcoder/docs
+.. _Transcoder API Product documentation:  https://cloud.google.com/transcoder
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst

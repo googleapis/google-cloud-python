@@ -12,5 +12,6 @@
     "api_id": "transcoder.googleapis.com",
     "default_version": "v1",
     "codeowner_team": "@googleapis/cdpe-cloudai",
-    "api_shortname": "transcoder"
+    "api_shortname": "transcoder",
+    "api_description": "allows you to transcode videos into a variety of formats. The Transcoder API benefits broadcasters, production companies, businesses, and individuals looking to transform their video content for use across a variety of user devices."
 }
