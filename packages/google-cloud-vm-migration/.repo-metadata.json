@@ -12,5 +12,6 @@
     "api_id": "vmmigration.googleapis.com",
     "default_version": "v1",
     "codeowner_team": "@googleapis/api-compute",
-    "api_shortname": "vmmigration"
+    "api_shortname": "vmmigration",
+    "api_description": " for Compute Engine migrates VMs from your on-premises data center into Compute Engine."
 }
