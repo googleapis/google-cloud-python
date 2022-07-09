@@ -431,6 +431,7 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
                 quota_project_id=client_options.quota_project_id,
                 client_info=client_info,
                 always_use_jwt_access=True,
+                api_audience=client_options.api_audience,
             )
 
     def delete_log(
