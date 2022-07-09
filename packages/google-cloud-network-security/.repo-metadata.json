@@ -1,6 +1,6 @@
 {
     "name": "networksecurity",
-    "name_pretty": "Network Security API",
+    "name_pretty": "Network Security",
     "product_documentation": "https://cloud.google.com/traffic-director/docs/reference/network-security/rest",
     "client_documentation": "https://cloud.google.com/python/docs/reference/networksecurity/latest",
     "issue_tracker": "",
