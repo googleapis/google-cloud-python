@@ -13,5 +13,6 @@
     "requires_billing": false,
     "default_version": "v2",
     "codeowner_team": "@googleapis/api-bigquery",
-    "api_shortname": "bigquery"
+    "api_shortname": "bigquery",
+    "api_description": "is a fully managed, NoOps, low cost data analytics service.\nData can be streamed into BigQuery at millions of rows per second to enable real-time analysis.\nWith BigQuery you can easily deploy Petabyte-scale Databases."
 }
