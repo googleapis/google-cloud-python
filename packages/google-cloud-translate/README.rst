@@ -1,28 +1,22 @@
-Python Client for Google Cloud Translation
-==========================================
+Python Client for Cloud Translation API
+=======================================
 
-|GA| |pypi| |versions| 
+|stable| |pypi| |versions|
 
-With `Google Cloud Translation`_, you can dynamically translate text between
-thousands of language pairs. The Google Cloud Translation API lets websites
-and programs integrate with Google Cloud Translation programmatically. Google
-Cloud Translation is available as a paid service. See the `Pricing`_ and
-`FAQ`_ pages for details.
+`Cloud Translation API`_: can dynamically translate text between thousands of language pairs. Translation lets websites and programs programmatically integrate with the translation service.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
 
-.. |GA| image:: https://img.shields.io/badge/support-GA-gold.svg
-   :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#general-availability
+.. |stable| image:: https://img.shields.io/badge/support-stable-gold.svg
+   :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#stability-levels
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-translate.svg
    :target: https://pypi.org/project/google-cloud-translate/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-translate.svg
    :target: https://pypi.org/project/google-cloud-translate/
-.. _Google Cloud Translation: https://cloud.google.com/translate/
-.. _Pricing: https://cloud.google.com/translate/pricing
-.. _FAQ: https://cloud.google.com/translate/faq
+.. _Cloud Translation API: https://cloud.google.com/translate/docs/
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/translation/latest
-.. _Product Documentation: https://cloud.google.com/translate/docs
+.. _Product Documentation:  https://cloud.google.com/translate/docs/
 
 Quick Start
 -----------
@@ -31,12 +25,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the Google Cloud Translate API.`_
+3. `Enable the Cloud Translation API.`_
 4. `Setup Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Google Cloud Translate API.:  https://cloud.google.com/translate
+.. _Enable the Cloud Translation API.:  https://cloud.google.com/translate/docs/
 .. _Setup Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -53,14 +47,25 @@ dependencies.
 .. _`virtualenv`: https://virtualenv.pypa.io/en/latest/
 
 
+Code samples and snippets
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Code samples and snippets live in the `samples/` folder.
+
+
 Supported Python Versions
 ^^^^^^^^^^^^^^^^^^^^^^^^^
-Python >= 3.6
+Our client libraries are compatible with all current [active](https://devguide.python.org/devcycle/#in-development-main-branch) and [maintenance](https://devguide.python.org/devcycle/#maintenance-branches) versions of
+Python.
 
-Deprecated Python Versions
-^^^^^^^^^^^^^^^^^^^^^^^^^^
-Python == 2.7.
-The last version of this library compatible with Python 2.7 is google-cloud-translate==2.0.1.
+Python >= 3.7
+
+Unsupported Python Versions
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Python <= 3.6
+
+If you are using an [end-of-life](https://devguide.python.org/devcycle/#end-of-life-branches)
+version of Python, we recommend that you update as soon as possible to an actively supported version.
 
 
 Mac/Linux
@@ -84,23 +89,15 @@ Windows
     <your-env>\Scripts\activate
     <your-env>\Scripts\pip.exe install google-cloud-translate
 
-Samples
------------
+Next Steps
+~~~~~~~~~~
 
-The `samples folder`_ contains all of the Cloud Translation API code snippets
-found in `its documentation`_ as well as complete sample apps:
+-  Read the `Client Library Documentation`_ for Cloud Translation API
+   to see other available methods on the client.
+-  Read the `Cloud Translation API Product documentation`_ to learn
+   more about the product and see How-to Guides.
+-  View this `README`_ to see the full list of Cloud
+   APIs that we cover.
 
-- `Mini Google Translate "MVP"`_ app
-
-  - Shows how to use the API in a Python/Flask web app
-  - Deployable locally or any on-prem or cloud host supporting Flask apps
-  - Also deployable to `Google Cloud serverless hosting platforms`_ (`App Engine`_, `Cloud Functions`_, or `Cloud Run`_) with only minor configuration changes
-
-.. _samples folder: samples
-.. _its documentation: https://cloud.google.com/translate/docs
-.. _Mini Google Translate "MVP": https://github.com/googlecodelabs/cloud-nebulous-serverless-python
-.. _Google Cloud serverless hosting platforms: https://cloud.google.com/serverless#serverless-products
-.. _App Engine: https://cloud.google.com/appengine
-.. _Cloud Functions: https://cloud.google.com/functions
-.. _Cloud Run: https://cloud.google.com/run
-
+.. _Cloud Translation API Product documentation:  https://cloud.google.com/translate/docs/
+.. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
