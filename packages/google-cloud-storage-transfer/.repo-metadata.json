@@ -12,5 +12,6 @@
     "api_id": "storagetransfer.googleapis.com",
     "default_version": "v1",
     "codeowner_team": "@googleapis/cloud-storage-dpe",
-    "api_shortname": "storagetransfer"
+    "api_shortname": "storagetransfer",
+    "api_description": "Secure, low-cost services for transferring data from cloud or on-premises sources."
 }

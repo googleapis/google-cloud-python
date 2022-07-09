@@ -1,26 +1,22 @@
-Python Client for Cloud Storage Transfer API
-============================================
+Python Client for Storage Transfer Service API
+==============================================
 
-|GA| |pypi| |versions|
+|stable| |pypi| |versions|
 
-`Storage Transfer Service`_ is a product that enables you to:
-- Move or backup data to a Cloud Storage bucket either from other cloud storage providers or from your on-premises storage.
-- Move data from one Cloud Storage bucket to another, so that it is available to different groups of users or applications.
-- Periodically move data as part of a data processing pipeline or analytical workflow.
-
+`Storage Transfer Service API`_: Secure, low-cost services for transferring data from cloud or on-premises sources.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
 
-.. |GA| image:: https://img.shields.io/badge/support-ga-gold.svg
-   :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#general-availability
+.. |stable| image:: https://img.shields.io/badge/support-stable-gold.svg
+   :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#stability-levels
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-storage-transfer.svg
    :target: https://pypi.org/project/google-cloud-storage-transfer/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-storage-transfer.svg
    :target: https://pypi.org/project/google-cloud-storage-transfer/
-.. _Storage Transfer Service: https://cloud.google.com/storage-transfer
+.. _Storage Transfer Service API: https://cloud.google.com/storage-transfer/
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/storagetransfer/latest
-.. _Product Documentation:  https://cloud.google.com/storage-transfer/docs
+.. _Product Documentation:  https://cloud.google.com/storage-transfer/
 
 Quick Start
 -----------
@@ -29,12 +25,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the Storage Transfer API.`_
+3. `Enable the Storage Transfer Service API.`_
 4. `Setup Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Storage Transfer API.:  https://cloud.google.com/storage-transfer/docs/how-to
+.. _Enable the Storage Transfer Service API.:  https://cloud.google.com/storage-transfer/
 .. _Setup Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -49,6 +45,27 @@ install permissions, and without clashing with the installed system
 dependencies.
 
 .. _`virtualenv`: https://virtualenv.pypa.io/en/latest/
+
+
+Code samples and snippets
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Code samples and snippets live in the `samples/` folder.
+
+
+Supported Python Versions
+^^^^^^^^^^^^^^^^^^^^^^^^^
+Our client libraries are compatible with all current [active](https://devguide.python.org/devcycle/#in-development-main-branch) and [maintenance](https://devguide.python.org/devcycle/#maintenance-branches) versions of
+Python.
+
+Python >= 3.7
+
+Unsupported Python Versions
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Python <= 3.6
+
+If you are using an [end-of-life](https://devguide.python.org/devcycle/#end-of-life-branches)
+version of Python, we recommend that you update as soon as possible to an actively supported version.
 
 
 Mac/Linux
@@ -75,12 +92,12 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for Storage Transfer Service
+-  Read the `Client Library Documentation`_ for Storage Transfer Service API
    to see other available methods on the client.
--  Read the `Storage Transfer Service Product documentation`_ to learn
+-  Read the `Storage Transfer Service API Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Storage Transfer Service Product documentation:  https://cloud.google.com/storage-transfer/docs
+.. _Storage Transfer Service API Product documentation:  https://cloud.google.com/storage-transfer/
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
