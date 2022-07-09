@@ -1,7 +1,7 @@
 {
     "name": "livestream",
-    "name_pretty": "Live Stream API",
-    "product_documentation": "",
+    "name_pretty": "Live Stream",
+    "product_documentation": "https://cloud.google.com/livestream/docs",
     "client_documentation": "https://cloud.google.com/python/docs/reference/livestream/latest",
     "issue_tracker": "",
     "release_level": "preview",
@@ -12,5 +12,6 @@
     "api_id": "livestream.googleapis.com",
     "default_version": "v1",
     "codeowner_team": "",
-    "api_shortname": "livestream"
+    "api_shortname": "livestream",
+    "api_description": "transcodes mezzanine live signals into direct-to-consumer streaming formats, including Dynamic Adaptive Streaming over HTTP (DASH/MPEG-DASH), and HTTP Live Streaming (HLS), for multiple device platforms."
 }
