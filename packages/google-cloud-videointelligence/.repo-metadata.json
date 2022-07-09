@@ -1,6 +1,6 @@
 {
     "name": "videointelligence",
-    "name_pretty": "Cloud Video Intelligence",
+    "name_pretty": "Video Intelligence",
     "product_documentation": "https://cloud.google.com/video-intelligence/docs/",
     "client_documentation": "https://cloud.google.com/python/docs/reference/videointelligence/latest",
     "issue_tracker": "https://issuetracker.google.com/savedsearches/5084810",
@@ -13,5 +13,6 @@
     "requires_billing": true,
     "default_version": "v1",
     "codeowner_team": "@googleapis/cdpe-cloudai",
-    "api_shortname": "videointelligence"
+    "api_shortname": "videointelligence",
+    "api_description": "makes videos searchable, and discoverable, by extracting metadata with an easy to use API. You can now search every moment of every video file in your catalog and find every occurrence as well as its significance. It quickly annotates videos stored in Google Cloud Storage, and helps you identify key nouns entities of your video, and when they occur within the video. Separate signal from noise, by retrieving relevant information at the video, shot or per frame."
 }

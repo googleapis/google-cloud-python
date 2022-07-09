@@ -2,7 +2,7 @@
 
 .. include:: multiprocessing.rst
 
-This package includes clients for multiple versions of Cloud Video Intelligence.
+This package includes clients for multiple versions of Video Intelligence.
 By default, you will get version ``videointelligence_v1``.
 
 
