@@ -1,24 +1,22 @@
-Python Client for Google Cloud Memorystore for Redis API
-========================================================
+Python Client for Cloud Redis API
+=================================
 
-|ga| |pypi| |versions| 
+|stable| |pypi| |versions|
 
-`Google Cloud Memorystore for Redis API`_: The Google Cloud Memorystore for
-Redis API is used for creating and managing Redis instances on the Google
-Cloud Platform.
+`Cloud Redis API`_: is a fully managed Redis service for the Google Cloud. Applications running on Google Cloud can achieve extreme performance by leveraging the highly scalable, available, secure Redis service without the burden of managing complex Redis deployments.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
 
-.. |ga| image:: https://img.shields.io/badge/support-GA-gold.svg
-   :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#general-availability
+.. |stable| image:: https://img.shields.io/badge/support-stable-gold.svg
+   :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#stability-levels
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-redis.svg
    :target: https://pypi.org/project/google-cloud-redis/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-redis.svg
    :target: https://pypi.org/project/google-cloud-redis/
-.. _Google Cloud Memorystore for Redis API: https://cloud.google.com/memorystore/
+.. _Cloud Redis API: https://cloud.google.com/memorystore/docs/redis/
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/redis/latest
-.. _Product Documentation:  https://cloud.google.com/memorystore/
+.. _Product Documentation:  https://cloud.google.com/memorystore/docs/redis/
 
 Quick Start
 -----------
@@ -27,12 +25,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the Google Cloud Memorystore for Redis API.`_
+3. `Enable the Cloud Redis API.`_
 4. `Setup Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Google Cloud Memorystore for Redis API.:  https://console.cloud.google.com/apis/library/redis.googleapis.com
+.. _Enable the Cloud Redis API.:  https://cloud.google.com/memorystore/docs/redis/
 .. _Setup Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -49,15 +47,25 @@ dependencies.
 .. _`virtualenv`: https://virtualenv.pypa.io/en/latest/
 
 
+Code samples and snippets
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Code samples and snippets live in the `samples/` folder.
+
+
 Supported Python Versions
 ^^^^^^^^^^^^^^^^^^^^^^^^^
-Python >= 3.6
+Our client libraries are compatible with all current [active](https://devguide.python.org/devcycle/#in-development-main-branch) and [maintenance](https://devguide.python.org/devcycle/#maintenance-branches) versions of
+Python.
 
-Deprecated Python Versions
-^^^^^^^^^^^^^^^^^^^^^^^^^^
-Python == 2.7.
+Python >= 3.7
 
-The last version of this library compatible with Python 2.7 is google-cloud-redis==1.0.0.
+Unsupported Python Versions
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Python <= 3.6
+
+If you are using an [end-of-life](https://devguide.python.org/devcycle/#end-of-life-branches)
+version of Python, we recommend that you update as soon as possible to an actively supported version.
 
 
 Mac/Linux
@@ -84,7 +92,12 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for Google Cloud Memorystore for
-   Redis API to see other available methods on the client.
--  Read the `Product documentation`_ to learn more about the product and see
-   How-to Guides.
+-  Read the `Client Library Documentation`_ for Cloud Redis API
+   to see other available methods on the client.
+-  Read the `Cloud Redis API Product documentation`_ to learn
+   more about the product and see How-to Guides.
+-  View this `README`_ to see the full list of Cloud
+   APIs that we cover.
+
+.. _Cloud Redis API Product documentation:  https://cloud.google.com/memorystore/docs/redis/
+.. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
