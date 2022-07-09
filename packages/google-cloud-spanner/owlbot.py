@@ -148,6 +148,7 @@ s.move(
     excludes=[
         ".coveragerc",
         ".github/workflows",  # exclude gh actions as credentials are needed for tests
+        "README.rst",
     ],
 )
 
@@ -222,6 +223,9 @@ skip_tests_if_env_var_not_set = """# Sanity check: Only run tests if the environ
         session.skip(
             "Credentials or emulator host must be set via environment variable"
         )
+    # If POSTGRESQL tests and Emulator, skip the tests
+    if os.environ.get("SPANNER_EMULATOR_HOST") and database_dialect == "POSTGRESQL":
+        session.skip("Postgresql is not supported by Emulator yet.")
 """
 
 place_before(
@@ -245,6 +249,38 @@ s.replace(
     "noxfile.py",
     r"""session.install\("-e", "."\)""",
     """session.install("-e", ".[tracing]")""",
+)
+
+# Apply manual changes from PR https://github.com/googleapis/python-spanner/pull/759
+s.replace(
+    "noxfile.py",
+    """@nox.session\(python=SYSTEM_TEST_PYTHON_VERSIONS\)
+def system\(session\):""",
+    """@nox.session(python=SYSTEM_TEST_PYTHON_VERSIONS)
+@nox.parametrize("database_dialect", ["GOOGLE_STANDARD_SQL", "POSTGRESQL"])
+def system(session, database_dialect):""",
+)
+
+s.replace("noxfile.py",
+    """system_test_path,
+            \*session.posargs""",
+    """system_test_path,
+             *session.posargs,
+            env={
+                "SPANNER_DATABASE_DIALECT": database_dialect,
+                "SKIP_BACKUP_TESTS": "true",
+            },"""
+)
+
+s.replace("noxfile.py",
+    """system_test_folder_path,
+            \*session.posargs""",
+    """system_test_folder_path,
+             *session.posargs,
+            env={
+                "SPANNER_DATABASE_DIALECT": database_dialect,
+                "SKIP_BACKUP_TESTS": "true",
+            },"""
 )
 
 s.replace(
