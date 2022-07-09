@@ -1,23 +1,22 @@
 Python Client for Cloud Tasks API
 =================================
 
-|GA| |pypi| |versions| 
+|stable| |pypi| |versions|
 
-`Cloud Tasks API`_: Manages the execution of large numbers of distributed
-requests.
+`Cloud Tasks API`_: a fully managed service that allows you to manage the execution, dispatch and delivery of a large number of distributed tasks. You can asynchronously perform work outside of a user request. Your tasks can be executed on App Engine or any arbitrary HTTP endpoint.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
 
-.. |GA| image:: https://img.shields.io/badge/support-GA-gold.svg
-   :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#general-availability
+.. |stable| image:: https://img.shields.io/badge/support-stable-gold.svg
+   :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#stability-levels
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-tasks.svg
    :target: https://pypi.org/project/google-cloud-tasks/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-tasks.svg
    :target: https://pypi.org/project/google-cloud-tasks/
-.. _Cloud Tasks API: https://cloud.google.com/tasks
+.. _Cloud Tasks API: https://cloud.google.com/tasks/docs/
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/cloudtasks/latest
-.. _Product Documentation:  https://cloud.google.com/tasks
+.. _Product Documentation:  https://cloud.google.com/tasks/docs/
 
 Quick Start
 -----------
@@ -31,7 +30,7 @@ In order to use this library, you first need to go through the following steps:
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Cloud Tasks API.:  https://console.cloud.google.com/apis/library/cloudtasks.googleapis.com
+.. _Enable the Cloud Tasks API.:  https://cloud.google.com/tasks/docs/
 .. _Setup Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -48,15 +47,25 @@ dependencies.
 .. _`virtualenv`: https://virtualenv.pypa.io/en/latest/
 
 
+Code samples and snippets
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Code samples and snippets live in the `samples/` folder.
+
+
 Supported Python Versions
 ^^^^^^^^^^^^^^^^^^^^^^^^^
-Python >= 3.6
+Our client libraries are compatible with all current [active](https://devguide.python.org/devcycle/#in-development-main-branch) and [maintenance](https://devguide.python.org/devcycle/#maintenance-branches) versions of
+Python.
 
-Deprecated Python Versions
-^^^^^^^^^^^^^^^^^^^^^^^^^^
-Python == 2.7.
+Python >= 3.7
 
-The last version of this library compatible with Python 2.7 is google-cloud-tasks==1.5.0.
+Unsupported Python Versions
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Python <= 3.6
+
+If you are using an [end-of-life](https://devguide.python.org/devcycle/#end-of-life-branches)
+version of Python, we recommend that you update as soon as possible to an actively supported version.
 
 
 Mac/Linux
@@ -87,5 +96,8 @@ Next Steps
    to see other available methods on the client.
 -  Read the `Cloud Tasks API Product documentation`_ to learn
    more about the product and see How-to Guides.
+-  View this `README`_ to see the full list of Cloud
+   APIs that we cover.
 
-.. _Cloud Tasks API Product documentation:  https://cloud.google.com/tasks
+.. _Cloud Tasks API Product documentation:  https://cloud.google.com/tasks/docs/
+.. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst

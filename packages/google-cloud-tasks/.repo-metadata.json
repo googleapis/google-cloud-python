@@ -13,5 +13,6 @@
     "requires_billing": true,
     "default_version": "v2",
     "codeowner_team": "@googleapis/aap-dpes",
-    "api_shortname": "cloudtasks"
+    "api_shortname": "cloudtasks",
+    "api_description": "a fully managed service that allows you to manage the execution, dispatch and delivery of a large number of distributed tasks. You can asynchronously perform work outside of a user request. Your tasks can be executed on App Engine or any arbitrary HTTP endpoint."
 }
