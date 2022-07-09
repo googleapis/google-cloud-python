@@ -1,6 +1,6 @@
 {
     "name": "servicemanagement",
-    "name_pretty": "Service Management API",
+    "name_pretty": "Service Management",
     "product_documentation": "https://cloud.google.com/service-infrastructure/docs/overview/",
     "client_documentation": "https://cloud.google.com/python/docs/reference/servicemanagement/latest",
     "issue_tracker": "",
@@ -12,5 +12,6 @@
     "api_id": "servicemanagement.googleapis.com",
     "default_version": "v1",
     "codeowner_team": "",
-    "api_shortname": "servicemanagement"
+    "api_shortname": "servicemanagement",
+    "api_description": "is a foundational platform for creating, managing, securing, and consuming APIs and services across organizations. It is used by Google APIs, Cloud APIs, Cloud Endpoints, and API Gateway. Service Infrastructure provides a wide range of features to service consumers and service producers, including authentication, authorization, auditing, rate limiting, analytics, billing, logging, and monitoring."
 }
