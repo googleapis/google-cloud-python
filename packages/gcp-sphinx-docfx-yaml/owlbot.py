@@ -47,5 +47,6 @@ s.move(
         ".gitignore",
         "renovate.json",
         ".github/workflows", # exclude templated gh actions
+	"README.rst",
     ],
 )
