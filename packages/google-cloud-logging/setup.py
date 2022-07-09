@@ -29,16 +29,10 @@ version = "3.1.2"
 # 'Development Status :: 5 - Production/Stable'
 release_status = "Development Status :: 5 - Production/Stable"
 dependencies = [
-    # NOTE: Maintainers, please do not require google-api-core>=2.x.x
-    # Until this issue is closed
-    # https://github.com/googleapis/google-cloud-python/issues/10566
-    "google-api-core[grpc] >= 1.31.5, <3.0.0dev,!=2.0.*,!=2.1.*,!=2.2.*,!=2.3.0",
+    "google-api-core[grpc] >= 2.8.0, <3.0.0dev",
     "google-cloud-appengine-logging>=0.1.0, <2.0.0dev",
     "google-cloud-audit-log >= 0.1.0, < 1.0.0dev",
-    # NOTE: Maintainers, please do not require google-api-core>=2.x.x
-    # Until this issue is closed
-    # https://github.com/googleapis/google-cloud-python/issues/10566
-    "google-cloud-core >= 1.4.1, <3.0.0dev",
+    "google-cloud-core >= 2.0.0, <3.0.0dev",
     "grpc-google-iam-v1 >=0.12.4, <1.0.0dev",
     "proto-plus >= 1.15.0, <2.0.0dev",
     "protobuf >= 3.19.0, <4.0.0dev",
