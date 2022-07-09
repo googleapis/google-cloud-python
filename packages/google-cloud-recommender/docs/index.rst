@@ -2,7 +2,7 @@
 
 .. include:: multiprocessing.rst
 
-This package includes clients for multiple versions of Cloud Recommender API.
+This package includes clients for multiple versions of Cloud Recommender.
 By default, you will get version ``recommender_v1``.
 
 
