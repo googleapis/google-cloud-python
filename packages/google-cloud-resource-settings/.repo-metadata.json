@@ -1,7 +1,7 @@
 {
     "name": "resourcesettings",
     "name_pretty": "Resource Settings",
-    "product_documentation": "https://cloud.google.com/resource-settings",
+    "product_documentation": "https://cloud.google.com/resource-manager/docs/reference/resource-settings/rest",
     "client_documentation": "https://cloud.google.com/python/docs/reference/resourcesettings/latest",
     "issue_tracker": "",
     "release_level": "stable",
@@ -12,5 +12,6 @@
     "default_version": "v1",
     "codeowner_team": "",
     "api_shortname": "resourcesettings",
-    "library_type": "GAPIC_AUTO"
+    "library_type": "GAPIC_AUTO",
+    "api_description": "allows users to control and modify the behavior of their GCP resources (e.g., VM, firewall, Project, etc.) across the Cloud Resource Hierarchy."
 }
