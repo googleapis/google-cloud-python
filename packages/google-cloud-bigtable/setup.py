@@ -80,7 +80,6 @@ setuptools.setup(
         "Intended Audience :: Developers",
         "License :: OSI Approved :: Apache Software License",
         "Programming Language :: Python",
-        "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
@@ -97,7 +96,7 @@ setuptools.setup(
         "scripts/fixup_bigtable_v2_keywords.py",
         "scripts/fixup_bigtable_admin_v2_keywords.py",
     ],
-    python_requires=">=3.6",
+    python_requires=">=3.7",
     include_package_data=True,
     zip_safe=False,
 )

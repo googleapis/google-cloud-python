@@ -86,13 +86,12 @@ s.remove_staging_dirs()
 # ----------------------------------------------------------------------------
 templated_files = common.py_library(
     samples=True,  # set to True only if there are samples
-    unit_test_python_versions=["3.6", "3.7", "3.8", "3.9", "3.10"],
     split_system_tests=True,
     microgenerator=True,
     cov_level=100,
 )
 
-s.move(templated_files, excludes=[".coveragerc"])
+s.move(templated_files, excludes=[".coveragerc", "README.rst"])
 
 # ----------------------------------------------------------------------------
 # Customize noxfile.py
