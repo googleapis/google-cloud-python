@@ -14,7 +14,6 @@
 
 """Classes for representing collections for the Google Cloud Firestore API."""
 import random
-import sys
 
 from google.api_core import retry as retries
 
@@ -483,11 +482,6 @@ def _auto_id() -> str:
         str: A 20 character string composed of digits, uppercase and
         lowercase and letters.
     """
-    if sys.version_info < (3, 7):
-        # TODO: remove when 3.6 support is discontinued.
-        # On python 3.6, random will provide the same results when forked. Reseed
-        # on each iteration to avoid collisions.
-        random.seed()
 
     return "".join(random.choice(_AUTO_ID_CHARS) for _ in range(20))
 

@@ -1,28 +1,22 @@
-Python Client for Google Cloud Firestore
-========================================
+Python Client for Cloud Firestore API
+=====================================
 
-|GA| |pypi| |versions| 
+|stable| |pypi| |versions|
 
-The `Google Cloud Firestore`_ API is a flexible, scalable
-database for mobile, web, and server development from Firebase and Google
-Cloud Platform. Like Firebase Realtime Database, it keeps your data in
-sync across client apps through realtime listeners and offers offline support
-for mobile and web so you can build responsive apps that work regardless of
-network latency or Internet connectivity. Cloud Firestore also offers seamless
-integration with other Firebase and Google Cloud Platform products,
-including Cloud Functions.
+`Cloud Firestore API`_: is a fully-managed NoSQL document database for mobile, web, and server development from Firebase and Google Cloud Platform.  It's backed by a multi-region replicated database that ensures once data is committed, it's durable even in the face of unexpected disasters. Not only that, but despite being a distributed database, it's also strongly consistent and offers seamless integration with other Firebase and Google Cloud Platform products, including Google Cloud Functions.
 
--  `Product Documentation`_
--  `Client Library Documentation`_
+- `Client Library Documentation`_
+- `Product Documentation`_
 
-.. |GA| image:: https://img.shields.io/badge/support-GA-gold.svg
-   :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#general-availability
+.. |stable| image:: https://img.shields.io/badge/support-stable-gold.svg
+   :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#stability-levels
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-firestore.svg
    :target: https://pypi.org/project/google-cloud-firestore/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-firestore.svg
-.. _Google Cloud Firestore: https://cloud.google.com/firestore/
-.. _Product Documentation: https://cloud.google.com/firestore/docs/
+   :target: https://pypi.org/project/google-cloud-firestore/
+.. _Cloud Firestore API: https://cloud.google.com/firestore
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/firestore/latest
+.. _Product Documentation:  https://cloud.google.com/firestore
 
 Quick Start
 -----------
@@ -31,12 +25,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the Google Cloud Firestore API.`_
+3. `Enable the Cloud Firestore API.`_
 4. `Setup Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Google Cloud Firestore API.:  https://cloud.google.com/firestore
+.. _Enable the Cloud Firestore API.:  https://cloud.google.com/firestore
 .. _Setup Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -53,16 +47,26 @@ dependencies.
 .. _`virtualenv`: https://virtualenv.pypa.io/en/latest/
 
 
+Code samples and snippets
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Code samples and snippets live in the `samples/` folder.
+
+
 Supported Python Versions
 ^^^^^^^^^^^^^^^^^^^^^^^^^
-Python >= 3.6
+Our client libraries are compatible with all current [active](https://devguide.python.org/devcycle/#in-development-main-branch) and [maintenance](https://devguide.python.org/devcycle/#maintenance-branches) versions of
+Python.
 
-Deprecated Python Versions
-^^^^^^^^^^^^^^^^^^^^^^^^^^
-Python == 2.7.
+Python >= 3.7
 
-The last version of this library compatible with Python 2.7 is
-google-cloud-firestore==1.9.0.
+Unsupported Python Versions
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Python <= 3.6
+
+If you are using an [end-of-life](https://devguide.python.org/devcycle/#end-of-life-branches)
+version of Python, we recommend that you update as soon as possible to an actively supported version.
+
 
 Mac/Linux
 ^^^^^^^^^
@@ -85,33 +89,15 @@ Windows
     <your-env>\Scripts\activate
     <your-env>\Scripts\pip.exe install google-cloud-firestore
 
-
-Example Usage
-~~~~~~~~~~~~~
-
-.. code:: python
-
-    from google.cloud import firestore
-
-    # Add a new document
-    db = firestore.Client()
-    doc_ref = db.collection(u'users').document(u'alovelace')
-    doc_ref.set({
-        u'first': u'Ada',
-        u'last': u'Lovelace',
-        u'born': 1815
-    })
-
-    # Then query for documents
-    users_ref = db.collection(u'users')
-
-    for doc in users_ref.stream():
-        print(u'{} => {}'.format(doc.id, doc.to_dict()))
-
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for Google Cloud Firestore API
+-  Read the `Client Library Documentation`_ for Cloud Firestore API
    to see other available methods on the client.
--  Read the `Product Documentation`_ to learn
+-  Read the `Cloud Firestore API Product documentation`_ to learn
    more about the product and see How-to Guides.
+-  View this `README`_ to see the full list of Cloud
+   APIs that we cover.
+
+.. _Cloud Firestore API Product documentation:  https://cloud.google.com/firestore
+.. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst

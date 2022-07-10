@@ -24,6 +24,7 @@ import functools
 import logging
 import time
 
+from dataclasses import dataclass
 from typing import Callable, Dict, List, Optional, Union, TYPE_CHECKING
 
 from google.rpc import status_pb2  # type: ignore
@@ -828,174 +829,68 @@ class BaseOperationRetry:
             )  # pragma: NO COVER
 
 
-try:
-    from dataclasses import dataclass
+@dataclass
+class BulkWriterOptions:
+    initial_ops_per_second: int = 500
+    max_ops_per_second: int = 500
+    mode: SendMode = SendMode.parallel
+    retry: BulkRetry = BulkRetry.linear
 
-    @dataclass
-    class BulkWriterOptions:
-        initial_ops_per_second: int = 500
-        max_ops_per_second: int = 500
-        mode: SendMode = SendMode.parallel
-        retry: BulkRetry = BulkRetry.linear
 
-    @dataclass
-    class BulkWriteFailure:
-        operation: BulkWriterOperation
-        # https://grpc.github.io/grpc/core/md_doc_statuscodes.html
-        code: int
-        message: str
+@dataclass
+class BulkWriteFailure:
+    operation: BulkWriterOperation
+    # https://grpc.github.io/grpc/core/md_doc_statuscodes.html
+    code: int
+    message: str
 
-        @property
-        def attempts(self) -> int:
-            return self.operation.attempts
+    @property
+    def attempts(self) -> int:
+        return self.operation.attempts
 
-    @dataclass
-    class OperationRetry(BaseOperationRetry):
-        """Container for an additional attempt at an operation, scheduled for
-        the future."""
 
-        operation: BulkWriterOperation
-        run_at: datetime.datetime
+@dataclass
+class OperationRetry(BaseOperationRetry):
+    """Container for an additional attempt at an operation, scheduled for
+    the future."""
 
-    @dataclass
-    class BulkWriterCreateOperation(BulkWriterOperation):
-        """Container for BulkWriter.create() operations."""
+    operation: BulkWriterOperation
+    run_at: datetime.datetime
 
-        reference: BaseDocumentReference
-        document_data: Dict
-        attempts: int = 0
 
-    @dataclass
-    class BulkWriterUpdateOperation(BulkWriterOperation):
-        """Container for BulkWriter.update() operations."""
+@dataclass
+class BulkWriterCreateOperation(BulkWriterOperation):
+    """Container for BulkWriter.create() operations."""
 
-        reference: BaseDocumentReference
-        field_updates: Dict
-        option: Optional[_helpers.WriteOption]
-        attempts: int = 0
+    reference: BaseDocumentReference
+    document_data: Dict
+    attempts: int = 0
 
-    @dataclass
-    class BulkWriterSetOperation(BulkWriterOperation):
-        """Container for BulkWriter.set() operations."""
 
-        reference: BaseDocumentReference
-        document_data: Dict
-        merge: Union[bool, list] = False
-        attempts: int = 0
+@dataclass
+class BulkWriterUpdateOperation(BulkWriterOperation):
+    """Container for BulkWriter.update() operations."""
 
-    @dataclass
-    class BulkWriterDeleteOperation(BulkWriterOperation):
-        """Container for BulkWriter.delete() operations."""
+    reference: BaseDocumentReference
+    field_updates: Dict
+    option: Optional[_helpers.WriteOption]
+    attempts: int = 0
 
-        reference: BaseDocumentReference
-        option: Optional[_helpers.WriteOption]
-        attempts: int = 0
 
-except ImportError:
+@dataclass
+class BulkWriterSetOperation(BulkWriterOperation):
+    """Container for BulkWriter.set() operations."""
 
-    # Note: When support for Python 3.6 is dropped and `dataclasses` is reliably
-    # in the stdlib, this entire section can be dropped in favor of the dataclass
-    # versions above. Additonally, the methods on `BaseOperationRetry` can be added
-    # directly to `OperationRetry` and `BaseOperationRetry` can be deleted.
+    reference: BaseDocumentReference
+    document_data: Dict
+    merge: Union[bool, list] = False
+    attempts: int = 0
 
-    class BulkWriterOptions:
-        def __init__(
-            self,
-            initial_ops_per_second: int = 500,
-            max_ops_per_second: int = 500,
-            mode: SendMode = SendMode.parallel,
-            retry: BulkRetry = BulkRetry.linear,
-        ):
-            self.initial_ops_per_second = initial_ops_per_second
-            self.max_ops_per_second = max_ops_per_second
-            self.mode = mode
-            self.retry = retry
 
-        def __eq__(self, other):
-            if not isinstance(other, self.__class__):  # pragma: NO COVER
-                return NotImplemented
-            return self.__dict__ == other.__dict__
+@dataclass
+class BulkWriterDeleteOperation(BulkWriterOperation):
+    """Container for BulkWriter.delete() operations."""
 
-    class BulkWriteFailure:
-        def __init__(
-            self,
-            operation: BulkWriterOperation,
-            # https://grpc.github.io/grpc/core/md_doc_statuscodes.html
-            code: int,
-            message: str,
-        ):
-            self.operation = operation
-            self.code = code
-            self.message = message
-
-        @property
-        def attempts(self) -> int:
-            return self.operation.attempts
-
-    class OperationRetry(BaseOperationRetry):
-        """Container for an additional attempt at an operation, scheduled for
-        the future."""
-
-        def __init__(
-            self,
-            operation: BulkWriterOperation,
-            run_at: datetime.datetime,
-        ):
-            self.operation = operation
-            self.run_at = run_at
-
-    class BulkWriterCreateOperation(BulkWriterOperation):
-        """Container for BulkWriter.create() operations."""
-
-        def __init__(
-            self,
-            reference: BaseDocumentReference,
-            document_data: Dict,
-            attempts: int = 0,
-        ):
-            self.reference = reference
-            self.document_data = document_data
-            self.attempts = attempts
-
-    class BulkWriterUpdateOperation(BulkWriterOperation):
-        """Container for BulkWriter.update() operations."""
-
-        def __init__(
-            self,
-            reference: BaseDocumentReference,
-            field_updates: Dict,
-            option: Optional[_helpers.WriteOption],
-            attempts: int = 0,
-        ):
-            self.reference = reference
-            self.field_updates = field_updates
-            self.option = option
-            self.attempts = attempts
-
-    class BulkWriterSetOperation(BulkWriterOperation):
-        """Container for BulkWriter.set() operations."""
-
-        def __init__(
-            self,
-            reference: BaseDocumentReference,
-            document_data: Dict,
-            merge: Union[bool, list] = False,
-            attempts: int = 0,
-        ):
-            self.reference = reference
-            self.document_data = document_data
-            self.merge = merge
-            self.attempts = attempts
-
-    class BulkWriterDeleteOperation(BulkWriterOperation):
-        """Container for BulkWriter.delete() operations."""
-
-        def __init__(
-            self,
-            reference: BaseDocumentReference,
-            option: Optional[_helpers.WriteOption],
-            attempts: int = 0,
-        ):
-            self.reference = reference
-            self.option = option
-            self.attempts = attempts
+    reference: BaseDocumentReference
+    option: Optional[_helpers.WriteOption]
+    attempts: int = 0
