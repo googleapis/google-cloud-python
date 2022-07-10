@@ -32,9 +32,12 @@ to `Python Development Environment Setup Guide`_ for Google Cloud Platform.
 
 Supported Python Versions
 -------------------------
-Python >= 3.6
+Python >= 3.7
 
 Unsupported Python Versions
 ---------------------------
 Python == 2.7: the last version of this library which supported Python 2.7
 is ``google.cloud.core 1.7.2``.
+
+Python == 3.6: the last version of this library which supported Python 3.6
+is ``google.cloud.core 2.3.1``.

@@ -26,7 +26,6 @@ common = gcp.CommonTemplates()
 templated_files = common.py_library(
     microgenerator=True,
     cov_level=100,
-    unit_test_python_versions=["3.6", "3.7", "3.8", "3.9", "3.10"],
 )
 s.move(
     templated_files,
@@ -36,6 +35,7 @@ s.move(
         ".flake8",
         ".coveragerc",
         "setup.cfg",
+	"README.rst",
     ],
 )
 
