@@ -12,5 +12,6 @@
     "api_id": "analyticshub.googleapis.com",
     "default_version": "v1beta1",
     "codeowner_team": "",
-    "api_shortname": "analyticshub"
+    "api_shortname": "analyticshub",
+    "api_description": "is a data exchange that allows you to efficiently and securely exchange data assets across organizations to address challenges of data reliability and cost."
 }
