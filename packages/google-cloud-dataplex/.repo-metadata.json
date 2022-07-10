@@ -1,6 +1,6 @@
 {
     "name": "dataplex",
-    "name_pretty": "Cloud Dataplex API",
+    "name_pretty": "Cloud Dataplex",
     "product_documentation": "https://cloud.google.com/dataplex",
     "client_documentation": "https://cloud.google.com/python/docs/reference/dataplex/latest",
     "issue_tracker": "",
@@ -12,5 +12,6 @@
     "api_id": "dataplex.googleapis.com",
     "default_version": "v1",
     "codeowner_team": "",
-    "api_shortname": "dataplex"
+    "api_shortname": "dataplex",
+    "api_description": "provides intelligent data fabric that enables organizations to centrally manage, monitor, and govern their data across data lakes, data warehouses, and data marts with consistent controls, providing access to trusted data and powering analytics at scale."
 }
