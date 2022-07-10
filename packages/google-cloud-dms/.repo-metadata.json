@@ -12,5 +12,6 @@
     "api_id": "datamigration.googleapis.com",
     "default_version": "v1",
     "codeowner_team": "",
-    "api_shortname": "datamigration"
+    "api_shortname": "datamigration",
+    "api_description": "makes it easier for you to migrate your data to Google Cloud. This service helps you lift and shift your MySQL and PostgreSQL workloads into Cloud SQL."
 }
