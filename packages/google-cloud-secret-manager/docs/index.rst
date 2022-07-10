@@ -2,7 +2,7 @@
 
 .. include:: multiprocessing.rst
 
-This package includes clients for multiple versions of Cloud Secret Manager.
+This package includes clients for multiple versions of Secret Manager.
 By default, you will get version ``secretmanager_v1``.
 
 

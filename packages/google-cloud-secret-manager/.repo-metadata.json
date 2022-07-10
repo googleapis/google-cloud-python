@@ -1,6 +1,6 @@
 {
     "name": "secretmanager",
-    "name_pretty": "Cloud Secret Manager",
+    "name_pretty": "Secret Manager",
     "product_documentation": "https://cloud.google.com/secret-manager/",
     "client_documentation": "https://cloud.google.com/python/docs/reference/secretmanager/latest",
     "issue_tracker": "",
@@ -12,5 +12,6 @@
     "api_id": "secretmanager.googleapis.com",
     "default_version": "v1",
     "codeowner_team": "",
-    "api_shortname": "secretmanager"
+    "api_shortname": "secretmanager",
+    "api_description": "Stores, manages, and secures access to application secrets."
 }
