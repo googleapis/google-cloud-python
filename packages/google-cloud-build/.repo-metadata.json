@@ -13,5 +13,6 @@
     "codeowner_team": "@googleapis/aap-dpes",
     "requires_billing": false,
     "default_version": "v1",
-    "api_shortname": "cloudbuild"
+    "api_shortname": "cloudbuild",
+    "api_description": "lets you build software quickly across all languages. Get complete control over defining custom workflows for building, testing, and deploying across multiple environments such as VMs, serverless, Kubernetes, or Firebase."
 }
