@@ -238,6 +238,7 @@ s.move(
         ".coveragerc", # microgenerator has a good .coveragerc file
         ".github/snippet-bot.yml",
         ".github/workflows", # exclude templated gh actions as tests require credentials
+	"README.rst",
     ]
 )
 

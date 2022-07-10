@@ -35,11 +35,11 @@ dependencies.
 
 Supported Python Versions
 ^^^^^^^^^^^^^^^^^^^^^^^^^
-Python >= 3.6
+Python >= 3.7
 
 Deprecated Python Versions
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
-Python == 2.7.
+Python == 2.7, Python == 3.6.
 
 The last version of this library compatible with Python 2.7 is grafeas==0.4.1.
 

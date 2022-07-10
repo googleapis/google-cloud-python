@@ -1,6 +1,7 @@
 {
     "name": "grafeas",
     "name_pretty": "Grafeas",
+    "api_description": "An implementation of the Grafeas API, which stores, and enables querying and retrieval of critical metadata about all of your software artifacts.",
     "product_documentation": "https://grafeas.io",
     "client_documentation": "https://googleapis.dev/python/grafeas/latest",
     "issue_tracker": "",
