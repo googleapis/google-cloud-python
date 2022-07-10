@@ -12,5 +12,6 @@
     "api_id": "compute.googleapis.com",
     "codeowner_team": "@googleapis/api-compute",
     "default_version": "v1",
-    "api_shortname": "compute"
+    "api_shortname": "compute",
+    "api_description": "delivers virtual machines running in Google's innovative data centers and worldwide fiber network. Compute Engine's tooling and workflow support enable scaling from single instances to global, load-balanced cloud computing. Compute Engine's VMs boot quickly, come with persistent disk storage, deliver consistent performance and are available in many configurations."
 }

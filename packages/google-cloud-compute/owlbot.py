@@ -53,10 +53,7 @@ templated_files = gcp.CommonTemplates().py_library(
     versions=gcp.common.detect_versions(path="./google", default_first=True),
 )
 
-s.move(templated_files, excludes=[".coveragerc"]) # the microgenerator has a good coveragerc file
-
-# Work around bug in templates https://github.com/googleapis/synthtool/pull/1335
-s.replace(".github/workflows/unittest.yml", "--fail-under=100", "--fail-under=98")
+s.move(templated_files, excludes=[".coveragerc", "README.rst"])
 
 python.py_samples(skip_readmes=True)
 
