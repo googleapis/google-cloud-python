@@ -33,7 +33,6 @@ extras_by_python = {
     "3.10": ["tests", "geography"],
 }
 templated_files = common.py_library(
-    unit_test_python_versions=["3.6", "3.7", "3.8", "3.9", "3.10"],
     system_test_python_versions=["3.8", "3.10"],
     cov_level=100,
     unit_test_extras=extras,
@@ -47,6 +46,7 @@ s.move(templated_files, excludes=[
     "docs/multiprocessing.rst",
     # exclude gh actions as credentials are needed for tests
     ".github/workflows",
+    "README.rst",
 ])
 
 # ----------------------------------------------------------------------------
