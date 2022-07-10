@@ -1,6 +1,7 @@
 {
     "name": "source",
     "name_pretty": "Source Context",
+    "product_documentation": "https://cloud.google.com",
     "client_documentation": "https://cloud.google.com/python/docs/reference/source/latest",
     "issue_tracker": "http://github.com/googleapis/python-source-context/issues",
     "release_level": "stable",
