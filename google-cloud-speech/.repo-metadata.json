@@ -13,5 +13,6 @@
     "requires_billing": false,
     "default_version": "v1",
     "codeowner_team": "@googleapis/cdpe-cloudai",
-    "api_shortname": "speech"
+    "api_shortname": "speech",
+    "api_description": "enables easy integration of Google speech recognition technologies into developer applications. Send audio and receive a text transcription from the Speech-to-Text API service."
 }
