@@ -3,19 +3,19 @@ Python Client for Cloud Optimization API
 
 |stable| |pypi| |versions|
 
-`Cloud Optimization API`_: 
+`Cloud Optimization API`_: is a managed routing service that takes your list of orders, vehicles, constraints, and objectives and returns the most efficient plan for your entire fleet in near real-time.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
 
 .. |stable| image:: https://img.shields.io/badge/support-stable-gold.svg
-   :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#general-availability
+   :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#stability-levels
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-optimization.svg
    :target: https://pypi.org/project/google-cloud-optimization/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-optimization.svg
    :target: https://pypi.org/project/google-cloud-optimization/
-.. _Cloud Optimization API: https://cloud.google.com/optimization
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/optimization/latest
+.. _Cloud Optimization API: https://cloud.google.com/optimization/docs
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/cloudoptimization/latest
 .. _Product Documentation:  https://cloud.google.com/optimization/docs
 
 Quick Start
@@ -47,9 +47,25 @@ dependencies.
 .. _`virtualenv`: https://virtualenv.pypa.io/en/latest/
 
 
+Code samples and snippets
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Code samples and snippets live in the `samples/` folder.
+
+
 Supported Python Versions
 ^^^^^^^^^^^^^^^^^^^^^^^^^
-Python >= 3.6
+Our client libraries are compatible with all current [active](https://devguide.python.org/devcycle/#in-development-main-branch) and [maintenance](https://devguide.python.org/devcycle/#maintenance-branches) versions of
+Python.
+
+Python >= 3.7
+
+Unsupported Python Versions
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Python <= 3.6
+
+If you are using an [end-of-life](https://devguide.python.org/devcycle/#end-of-life-branches)
+version of Python, we recommend that you update as soon as possible to an actively supported version.
 
 
 Mac/Linux
@@ -77,11 +93,11 @@ Next Steps
 ~~~~~~~~~~
 
 -  Read the `Client Library Documentation`_ for Cloud Optimization API
-   API to see other available methods on the client.
+   to see other available methods on the client.
 -  Read the `Cloud Optimization API Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Cloud Optimization API Product documentation: https://cloud.google.com/optimization/docs
+.. _Cloud Optimization API Product documentation:  https://cloud.google.com/optimization/docs
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
