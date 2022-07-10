@@ -13,5 +13,6 @@
     "requires_billing": false,
     "codeowner_team": "@googleapis/api-logging",
     "default_version": "v1beta1",
-    "api_shortname": "clouderrorreporting"
+    "api_shortname": "clouderrorreporting",
+    "api_description": "counts, analyzes and aggregates the crashes in your running cloud services.  A centralized error management interface displays the results with sorting and filtering capabilities. A dedicated view shows the error details: time chart, occurrences, affected user count, first and last seen dates and a cleaned exception stack trace. Opt-in to receive email and mobile alerts on new errors."
 }
