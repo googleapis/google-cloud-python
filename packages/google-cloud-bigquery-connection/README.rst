@@ -1,24 +1,22 @@
-Python Client for BigQuery Connection
-=================================================
+Python Client for BigQuery Connection API
+=========================================
 
-|GA| |pypi| |versions|
+|stable| |pypi| |versions|
 
 `BigQuery Connection API`_: Manage BigQuery connections to external data sources.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
-- `Introduction to BigQuery external data sources`_
 
-.. |GA| image:: https://img.shields.io/badge/support-ga-gold.svg
-   :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#general-availability
+.. |stable| image:: https://img.shields.io/badge/support-stable-gold.svg
+   :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#stability-levels
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-bigquery-connection.svg
    :target: https://pypi.org/project/google-cloud-bigquery-connection/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-bigquery-connection.svg
    :target: https://pypi.org/project/google-cloud-bigquery-connection/
-.. _BigQuery Connection API: https://cloud.google.com/bigquery/docs/reference/bigqueryconnection/rest
+.. _BigQuery Connection API: https://cloud.google.com/bigquery/docs/reference/bigqueryconnection
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/bigqueryconnection/latest
-.. _Product Documentation:  https://cloud.google.com/bigquery/docs/reference/bigqueryconnection/rest
-.. _Introduction to BigQuery external data sources:  https://cloud.google.com/bigquery/external-data-sources
+.. _Product Documentation:  https://cloud.google.com/bigquery/docs/reference/bigqueryconnection
 
 Quick Start
 -----------
@@ -32,7 +30,7 @@ In order to use this library, you first need to go through the following steps:
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the BigQuery Connection API.:  https://console.cloud.google.com/apis/library/bigqueryconnection.googleapis.com
+.. _Enable the BigQuery Connection API.:  https://cloud.google.com/bigquery/docs/reference/bigqueryconnection
 .. _Setup Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -47,6 +45,27 @@ install permissions, and without clashing with the installed system
 dependencies.
 
 .. _`virtualenv`: https://virtualenv.pypa.io/en/latest/
+
+
+Code samples and snippets
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Code samples and snippets live in the `samples/` folder.
+
+
+Supported Python Versions
+^^^^^^^^^^^^^^^^^^^^^^^^^
+Our client libraries are compatible with all current [active](https://devguide.python.org/devcycle/#in-development-main-branch) and [maintenance](https://devguide.python.org/devcycle/#maintenance-branches) versions of
+Python.
+
+Python >= 3.7
+
+Unsupported Python Versions
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Python <= 3.6
+
+If you are using an [end-of-life](https://devguide.python.org/devcycle/#end-of-life-branches)
+version of Python, we recommend that you update as soon as possible to an actively supported version.
 
 
 Mac/Linux
@@ -73,12 +92,12 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for BigQuery Connection
-   API to see other available methods on the client.
+-  Read the `Client Library Documentation`_ for BigQuery Connection API
+   to see other available methods on the client.
 -  Read the `BigQuery Connection API Product documentation`_ to learn
    more about the product and see How-to Guides.
--  View this `repository’s main README`_ to see the full list of Cloud
+-  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _BigQuery Connection API Product documentation:  https://cloud.google.com/bigquery/docs/reference/bigqueryconnection/rest
-.. _repository’s main README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
+.. _BigQuery Connection API Product documentation:  https://cloud.google.com/bigquery/docs/reference/bigqueryconnection
+.. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst

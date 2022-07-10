@@ -1,6 +1,7 @@
 {
     "name": "bigqueryconnection",
-    "name_pretty": "Google BigQuery Connection",
+    "name_pretty": "BigQuery Connection",
+    "api_description": "Manage BigQuery connections to external data sources.",
     "product_documentation": "https://cloud.google.com/bigquery/docs/reference/bigqueryconnection",
     "client_documentation": "https://cloud.google.com/python/docs/reference/bigqueryconnection/latest",
     "issue_tracker": "",
