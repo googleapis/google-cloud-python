@@ -12,5 +12,6 @@
     "api_id": "eventarc.googleapis.com",
     "default_version": "v1",
     "codeowner_team": "@googleapis/aap-dpes",
-    "api_shortname": "eventarc"
+    "api_shortname": "eventarc",
+    "api_description": "lets you asynchronously deliver events from Google services, SaaS, and your own apps using loosely coupled services that react to state changes. Eventarc requires no infrastructure management, you can optimize productivity and costs while building a modern, event-driven solution."
 }
