@@ -1,25 +1,22 @@
 Python Client for Cloud Speech API
 ==================================
 
+|stable| |pypi| |versions|
 
-|GA| |pypi| |versions| 
-
-The `Cloud Speech API`_ enables developers to convert audio to text by applying
-powerful neural network models.  The API recognizes over 80 languages and
-variants, to support your global user base.
+`Cloud Speech API`_: enables easy integration of Google speech recognition technologies into developer applications. Send audio and receive a text transcription from the Speech-to-Text API service.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
 
-.. |GA| image:: https://img.shields.io/badge/support-GA-gold.svg
-   :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#general-availability
+.. |stable| image:: https://img.shields.io/badge/support-stable-gold.svg
+   :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#stability-levels
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-speech.svg
    :target: https://pypi.org/project/google-cloud-speech/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-speech.svg
    :target: https://pypi.org/project/google-cloud-speech/
-.. _Cloud Speech API: https://cloud.google.com/speech
+.. _Cloud Speech API: https://cloud.google.com/speech-to-text/docs/
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/speech/latest
-.. _Product Documentation:  https://cloud.google.com/speech
+.. _Product Documentation:  https://cloud.google.com/speech-to-text/docs/
 
 Quick Start
 -----------
@@ -33,7 +30,7 @@ In order to use this library, you first need to go through the following steps:
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Cloud Speech API.:  https://cloud.google.com/speech
+.. _Enable the Cloud Speech API.:  https://cloud.google.com/speech-to-text/docs/
 .. _Setup Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -50,13 +47,25 @@ dependencies.
 .. _`virtualenv`: https://virtualenv.pypa.io/en/latest/
 
 
+Code samples and snippets
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Code samples and snippets live in the `samples/` folder.
+
+
 Supported Python Versions
 ^^^^^^^^^^^^^^^^^^^^^^^^^
-Python >= 3.5
+Our client libraries are compatible with all current [active](https://devguide.python.org/devcycle/#in-development-main-branch) and [maintenance](https://devguide.python.org/devcycle/#maintenance-branches) versions of
+Python.
 
-Deprecated Python Versions
-^^^^^^^^^^^^^^^^^^^^^^^^^^
-Python == 2.7. Python 2.7 support will be removed on January 1, 2020.
+Python >= 3.7
+
+Unsupported Python Versions
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Python <= 3.6
+
+If you are using an [end-of-life](https://devguide.python.org/devcycle/#end-of-life-branches)
+version of Python, we recommend that you update as soon as possible to an actively supported version.
 
 
 Mac/Linux
@@ -80,12 +89,15 @@ Windows
     <your-env>\Scripts\activate
     <your-env>\Scripts\pip.exe install google-cloud-speech
 
-
 Next Steps
 ~~~~~~~~~~
 
 -  Read the `Client Library Documentation`_ for Cloud Speech API
-   API to see other available methods on the client.
--  Read the `Product documentation`_ to learn
+   to see other available methods on the client.
+-  Read the `Cloud Speech API Product documentation`_ to learn
    more about the product and see How-to Guides.
+-  View this `README`_ to see the full list of Cloud
    APIs that we cover.
+
+.. _Cloud Speech API Product documentation:  https://cloud.google.com/speech-to-text/docs/
+.. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
