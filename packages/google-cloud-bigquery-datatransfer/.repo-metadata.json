@@ -1,6 +1,6 @@
 {
     "name": "bigquerydatatransfer",
-    "name_pretty": "Google BigQuery Data Transfer Service",
+    "name_pretty": "BigQuery Data Transfer",
     "product_documentation": "https://cloud.google.com/bigquery/transfer/",
     "client_documentation": "https://cloud.google.com/python/docs/reference/bigquerydatatransfer/latest",
     "issue_tracker": "https://issuetracker.google.com/savedsearches/559654",
@@ -13,5 +13,6 @@
     "requires_billing": true,
     "default_version": "v1",
     "codeowner_team": "@googleapis/api-bigquery",
-    "api_shortname": "bigquerydatatransfer"
+    "api_shortname": "bigquerydatatransfer",
+    "api_description": "allows users to transfer data from partner SaaS applications to Google BigQuery on a scheduled, managed basis."
 }
