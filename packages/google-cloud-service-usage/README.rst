@@ -1,24 +1,22 @@
 Python Client for Service Usage API
 ===================================
 
-|ga| |pypi| |versions|
+|stable| |pypi| |versions|
 
-`Service Usage`_: is an infrastructure service of Google Cloud that lets you list and manage other APIs 
-and services in your Cloud projects. You can list and manage Google Cloud services and their APIs, as 
-well as services created using Cloud Endpoints.
+`Service Usage API`_: is an infrastructure service of Google Cloud that lets you list and manage other APIs and services in your Cloud projects.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
 
-.. |ga| image:: https://img.shields.io/badge/support-ga-gold.svg
-   :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#ga-support
+.. |stable| image:: https://img.shields.io/badge/support-stable-gold.svg
+   :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#stability-levels
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-service-usage.svg
    :target: https://pypi.org/project/google-cloud-service-usage/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-service-usage.svg
    :target: https://pypi.org/project/google-cloud-service-usage/
-.. _Service Usage: https://cloud.google.com/service-usage
+.. _Service Usage API: https://cloud.google.com/service-usage
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/serviceusage/latest
-.. _Product Documentation:  https://cloud.google.com/service-usage/docs
+.. _Product Documentation:  https://cloud.google.com/service-usage
 
 Quick Start
 -----------
@@ -32,7 +30,7 @@ In order to use this library, you first need to go through the following steps:
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Service Usage API.:  https://cloud.google.com/service-usage/docs/getting-started#enable
+.. _Enable the Service Usage API.:  https://cloud.google.com/service-usage
 .. _Setup Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -47,6 +45,27 @@ install permissions, and without clashing with the installed system
 dependencies.
 
 .. _`virtualenv`: https://virtualenv.pypa.io/en/latest/
+
+
+Code samples and snippets
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Code samples and snippets live in the `samples/` folder.
+
+
+Supported Python Versions
+^^^^^^^^^^^^^^^^^^^^^^^^^
+Our client libraries are compatible with all current [active](https://devguide.python.org/devcycle/#in-development-main-branch) and [maintenance](https://devguide.python.org/devcycle/#maintenance-branches) versions of
+Python.
+
+Python >= 3.7
+
+Unsupported Python Versions
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Python <= 3.6
+
+If you are using an [end-of-life](https://devguide.python.org/devcycle/#end-of-life-branches)
+version of Python, we recommend that you update as soon as possible to an actively supported version.
 
 
 Mac/Linux
@@ -80,5 +99,5 @@ Next Steps
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Service Usage API Product documentation:  https://cloud.google.com/service-usage/docs
+.. _Service Usage API Product documentation:  https://cloud.google.com/service-usage
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
