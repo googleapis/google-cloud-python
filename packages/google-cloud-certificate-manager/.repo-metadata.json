@@ -1,7 +1,7 @@
 {
     "name": "certificatemanager",
-    "name_pretty": "Certificate Manager API",
-    "product_documentation": "",
+    "name_pretty": "Certificate Manager",
+    "product_documentation": "https://cloud.google.com/python/docs/reference/certificatemanager/latest",
     "client_documentation": "https://cloud.google.com/python/docs/reference/certificatemanager/latest",
     "issue_tracker": "",
     "release_level": "preview",
@@ -12,5 +12,6 @@
     "api_id": "certificatemanager.googleapis.com",
     "default_version": "v1",
     "codeowner_team": "",
-    "api_shortname": "certificatemanager"
+    "api_shortname": "certificatemanager",
+    "api_description": "lets you acquire and manage TLS (SSL) certificates for use with Cloud Load Balancing."
 }
