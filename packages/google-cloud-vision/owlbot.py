@@ -113,10 +113,7 @@ templated_files = common.py_library(
    cov_level=99,
    system_test_external_dependencies=["google-cloud-storage"]
 )
-s.move(templated_files, excludes=[".coveragerc"])  # microgenerator has a good .coveragerc file
-
-# Work around bug in templates https://github.com/googleapis/synthtool/pull/1335
-s.replace(".github/workflows/unittest.yml", "--fail-under=100", "--fail-under=99")
+s.move(templated_files, excludes=[".coveragerc", "README.rst"])
 
 python.configure_previous_major_version_branches()
 

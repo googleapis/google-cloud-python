@@ -1,7 +1,7 @@
 Python Client for Google Cloud Vision
 =====================================
 
-|GA| |pypi| |versions| 
+|GA| |pypi| |versions|
 
 The `Google Cloud Vision`_  API enables developers to
 understand the content of an image by encapsulating powerful machine

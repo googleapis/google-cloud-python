@@ -13,5 +13,6 @@
     "requires_billing": false,
     "default_version": "v1",
     "codeowner_team": "@googleapis/cdpe-cloudai",
-    "api_shortname": "vision"
+    "api_shortname": "vision",
+    "api_description": "allows developers to easily integrate vision detection features within applications, including image labeling, face and landmark detection, optical character recognition (OCR), and tagging of explicit content."
 }
