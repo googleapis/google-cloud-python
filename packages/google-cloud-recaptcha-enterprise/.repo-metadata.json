@@ -12,5 +12,6 @@
     "api_id": "recaptchaenterprise.googleapis.com",
     "default_version": "v1",
     "codeowner_team": "",
-    "api_shortname": "recaptchaenterprise"
+    "api_shortname": "recaptchaenterprise",
+    "api_description": "protect your website from fraudulent activity like scraping, credential stuffing, and automated account creation."
 }
