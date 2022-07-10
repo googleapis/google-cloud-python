@@ -1,24 +1,22 @@
-Python Client for Google Kubernetes Engine API
-==============================================
+Python Client for Kubernetes Engine API
+=======================================
 
-|ga| |pypi| |versions|
+|stable| |pypi| |versions|
 
-`Google Kubernetes Engine API`_: The Google Kubernetes Engine API is used for
-building and managing container based applications, powered by the open source
-Kubernetes technology.
+`Kubernetes Engine API`_: The Google Kubernetes Engine API is used for building and managing container based applications, powered by the open source Kubernetes technology.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
 
-.. |ga| image:: https://img.shields.io/badge/support-ga-gold.svg
-   :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#ga-support
+.. |stable| image:: https://img.shields.io/badge/support-stable-gold.svg
+   :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#stability-levels
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-container.svg
    :target: https://pypi.org/project/google-cloud-container/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-container.svg
    :target: https://pypi.org/project/google-cloud-container/
-.. _Google Kubernetes Engine API: https://cloud.google.com/kubernetes-engine
+.. _Kubernetes Engine API: https://cloud.google.com/kubernetes-engine/
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/container/latest
-.. _Product Documentation:  https://cloud.google.com/kubernetes-engine
+.. _Product Documentation:  https://cloud.google.com/kubernetes-engine/
 
 Quick Start
 -----------
@@ -26,11 +24,13 @@ Quick Start
 In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
-2. `Enable the Google Container Engine API.`_
-3. `Setup Authentication.`_
+2. `Enable billing for your project.`_
+3. `Enable the Kubernetes Engine API.`_
+4. `Setup Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
-.. _Enable the Google Container Engine API.:  https://cloud.google.com/container
+.. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
+.. _Enable the Kubernetes Engine API.:  https://cloud.google.com/kubernetes-engine/
 .. _Setup Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -47,15 +47,25 @@ dependencies.
 .. _`virtualenv`: https://virtualenv.pypa.io/en/latest/
 
 
+Code samples and snippets
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Code samples and snippets live in the `samples/` folder.
+
+
 Supported Python Versions
 ^^^^^^^^^^^^^^^^^^^^^^^^^
-Python >= 3.6
+Our client libraries are compatible with all current [active](https://devguide.python.org/devcycle/#in-development-main-branch) and [maintenance](https://devguide.python.org/devcycle/#maintenance-branches) versions of
+Python.
 
-Deprecated Python Versions
-^^^^^^^^^^^^^^^^^^^^^^^^^^
-Python == 2.7.
+Python >= 3.7
 
-The last version of this library compatible with Python 2.7 is google-cloud-container==1.0.1
+Unsupported Python Versions
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Python <= 3.6
+
+If you are using an [end-of-life](https://devguide.python.org/devcycle/#end-of-life-branches)
+version of Python, we recommend that you update as soon as possible to an actively supported version.
 
 
 Mac/Linux
@@ -79,25 +89,15 @@ Windows
     <your-env>\Scripts\activate
     <your-env>\Scripts\pip.exe install google-cloud-container
 
-Once you have the virtual environment setup and activated, you can install the library:
-
-.. code-block:: console
-   
-   pip install google-cloud-container
-
-Using the client library
-~~~~~~~~~~~~~~~~~~~~~~~~
-
-See the examples in the `samples`_ directory. You can start with `quickstart.py`_.
-
-.. _samples: /samples
-.. _quickstart.py: /samples/snippets/quickstart.py
-
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client API Documentation`_ to see other available methods on the client.
--  Read the `Product documentation`_ to learn more about the product and see
-   How-to Guides.
+-  Read the `Client Library Documentation`_ for Kubernetes Engine API
+   to see other available methods on the client.
+-  Read the `Kubernetes Engine API Product documentation`_ to learn
+   more about the product and see How-to Guides.
+-  View this `README`_ to see the full list of Cloud
+   APIs that we cover.
 
-.. _Client API Documentation: https://cloud.google.com/python/docs/reference/container/latest
+.. _Kubernetes Engine API Product documentation:  https://cloud.google.com/kubernetes-engine/
+.. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
