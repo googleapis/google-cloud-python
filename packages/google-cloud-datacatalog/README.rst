@@ -1,17 +1,15 @@
 Python Client for Google Cloud Data Catalog API
 ===============================================
 
-|ga| |pypi| |versions|
+|stable| |pypi| |versions|
 
-`Google Cloud Data Catalog API`_: Google Cloud Data Catalog API provides features to attach metadata to
-Google Cloud Platform resources like BigQuery Tables. Key critical resources
-include: Entries (Data Catalog representation of a cloud resource).
+`Google Cloud Data Catalog API`_: is a fully managed and highly scalable data discovery and metadata management service.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
 
-.. |ga| image:: https://img.shields.io/badge/support-GA-gold.svg
-   :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#general-availability
+.. |stable| image:: https://img.shields.io/badge/support-stable-gold.svg
+   :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#stability-levels
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-datacatalog.svg
    :target: https://pypi.org/project/google-cloud-datacatalog/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-datacatalog.svg
@@ -35,17 +33,6 @@ In order to use this library, you first need to go through the following steps:
 .. _Enable the Google Cloud Data Catalog API.:  https://cloud.google.com/data-catalog
 .. _Setup Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
-
-Supported Python Versions
-^^^^^^^^^^^^^^^^^^^^^^^^^
-Python >= 3.6
-
-Deprecated Python Versions
-^^^^^^^^^^^^^^^^^^^^^^^^^^
-Python == 2.7.
-
-The last version of this library compatible with Python 2.7 is google-cloud-datacatalog==1.0.0.
-
 Installation
 ~~~~~~~~~~~~
 
@@ -58,6 +45,27 @@ install permissions, and without clashing with the installed system
 dependencies.
 
 .. _`virtualenv`: https://virtualenv.pypa.io/en/latest/
+
+
+Code samples and snippets
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Code samples and snippets live in the `samples/` folder.
+
+
+Supported Python Versions
+^^^^^^^^^^^^^^^^^^^^^^^^^
+Our client libraries are compatible with all current [active](https://devguide.python.org/devcycle/#in-development-main-branch) and [maintenance](https://devguide.python.org/devcycle/#maintenance-branches) versions of
+Python.
+
+Python >= 3.7
+
+Unsupported Python Versions
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Python <= 3.6
+
+If you are using an [end-of-life](https://devguide.python.org/devcycle/#end-of-life-branches)
+version of Python, we recommend that you update as soon as possible to an actively supported version.
 
 
 Mac/Linux
@@ -85,7 +93,7 @@ Next Steps
 ~~~~~~~~~~
 
 -  Read the `Client Library Documentation`_ for Google Cloud Data Catalog API
-   API to see other available methods on the client.
+   to see other available methods on the client.
 -  Read the `Google Cloud Data Catalog API Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud

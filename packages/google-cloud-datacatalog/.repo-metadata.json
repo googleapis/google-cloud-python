@@ -13,5 +13,6 @@
     "requires_billing": true,
     "default_version": "v1",
     "codeowner_team": "",
-    "api_shortname": "datacatalog"
+    "api_shortname": "datacatalog",
+    "api_description": "is a fully managed and highly scalable data discovery and metadata management service."
 }
