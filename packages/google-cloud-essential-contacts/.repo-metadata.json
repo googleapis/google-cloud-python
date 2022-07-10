@@ -1,6 +1,6 @@
 {
     "name": "essentialcontacts",
-    "name_pretty": "Essential Contacts API",
+    "name_pretty": "Essential Contacts",
     "product_documentation": "https://cloud.google.com/resource-manager/docs/managing-notification-contacts/",
     "client_documentation": "https://cloud.google.com/python/docs/reference/essentialcontacts/latest",
     "issue_tracker": "",
@@ -12,5 +12,6 @@
     "api_id": "essentialcontacts.googleapis.com",
     "default_version": "v1",
     "codeowner_team": "",
-    "api_shortname": "essentialcontacts"
+    "api_shortname": "essentialcontacts",
+    "api_description": "helps you customize who receives notifications by providing your own list of contacts in many Google Cloud services."
 }
