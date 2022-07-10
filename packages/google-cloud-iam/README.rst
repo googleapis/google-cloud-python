@@ -1,25 +1,22 @@
-Python Client for IAM API
-================================================================
+Python Client for Cloud Identity and Access Management API
+==========================================================
 
-|ga| |pypi| |versions|
+|stable| |pypi| |versions|
 
-`IAM API`_: Manages identity and access control for Google Cloud Platform resources, including the
-creation of service accounts, which you can use to authenticate to Google and make API calls.
+`Cloud Identity and Access Management API`_: Manages identity and access control for Google Cloud Platform resources, including the creation of service accounts, which you can use to authenticate to Google and make API calls.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
 
-.. |ga| image:: https://img.shields.io/badge/support-GA-gold.svg
-   :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#general-availability
+.. |stable| image:: https://img.shields.io/badge/support-stable-gold.svg
+   :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#stability-levels
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-iam.svg
    :target: https://pypi.org/project/google-cloud-iam/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-iam.svg
    :target: https://pypi.org/project/google-cloud-iam/
-
-.. _IAM API: https://cloud.google.com/iam
-
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/iam/latest
-.. _Product Documentation:  https://cloud.google.com/iam
+.. _Cloud Identity and Access Management API: https://cloud.google.com/iam/docs/
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/iamcredentials/latest
+.. _Product Documentation:  https://cloud.google.com/iam/docs/
 
 Quick Start
 -----------
@@ -28,12 +25,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the IAM API.`_
+3. `Enable the Cloud Identity and Access Management API.`_
 4. `Setup Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the IAM API.:  https://console.cloud.google.com/flows/enableapi?apiid=iam
+.. _Enable the Cloud Identity and Access Management API.:  https://cloud.google.com/iam/docs/
 .. _Setup Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -49,15 +46,26 @@ dependencies.
 
 .. _`virtualenv`: https://virtualenv.pypa.io/en/latest/
 
+
+Code samples and snippets
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Code samples and snippets live in the `samples/` folder.
+
+
 Supported Python Versions
 ^^^^^^^^^^^^^^^^^^^^^^^^^
-Python >= 3.6
+Our client libraries are compatible with all current [active](https://devguide.python.org/devcycle/#in-development-main-branch) and [maintenance](https://devguide.python.org/devcycle/#maintenance-branches) versions of
+Python.
 
-Deprecated Python Versions
-^^^^^^^^^^^^^^^^^^^^^^^^^^
-Python == 2.7.
+Python >= 3.7
 
-The last version of this library compatible with Python 2.7 is google-cloud-iam==1.0.1.
+Unsupported Python Versions
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Python <= 3.6
+
+If you are using an [end-of-life](https://devguide.python.org/devcycle/#end-of-life-branches)
+version of Python, we recommend that you update as soon as possible to an actively supported version.
 
 
 Mac/Linux
@@ -84,12 +92,12 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for IAM API
+-  Read the `Client Library Documentation`_ for Cloud Identity and Access Management API
    to see other available methods on the client.
--  Read the `IAM API Product documentation`_ to learn
+-  Read the `Cloud Identity and Access Management API Product documentation`_ to learn
    more about the product and see How-to Guides.
--  View this `repository’s main README`_ to see the full list of Cloud
+-  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _IAM API Product documentation:  https://cloud.google.com/iam
-.. _repository’s main README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
+.. _Cloud Identity and Access Management API Product documentation:  https://cloud.google.com/iam/docs/
+.. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
