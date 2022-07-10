@@ -12,5 +12,6 @@
     "api_id": "cloudshell.googleapis.com",
     "default_version": "v1",
     "codeowner_team": "@googleapis/aap-dpes",
-    "api_shortname": "cloudshell"
+    "api_shortname": "cloudshell",
+    "api_description": "is an interactive shell environment for Google Cloud that makes it easy for you to learn and experiment with Google Cloud and manage your projects and resources from your web browser."
 }
