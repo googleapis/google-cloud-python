@@ -1,22 +1,22 @@
-Python Client for Recommendations AI
-=================================================
+Python Client for Recommendations AI API
+========================================
 
-|beta| |pypi| |versions|
+|preview| |pypi| |versions|
 
-`Cloud Recommendations AI API`_: Deliver highly personalized product recommendations at scale.
+`Recommendations AI API`_: delivers highly personalized product recommendations at scale.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
 
-.. |beta| image:: https://img.shields.io/badge/support-beta-orange.svg
-   :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#beta-support
+.. |preview| image:: https://img.shields.io/badge/support-preview-orange.svg
+   :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#stability-levels
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-recommendations-ai.svg
    :target: https://pypi.org/project/google-cloud-recommendations-ai/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-recommendations-ai.svg
    :target: https://pypi.org/project/google-cloud-recommendations-ai/
-.. _Cloud Recommendations AI API: https://cloud.google.com/recommendations-ai
+.. _Recommendations AI API: https://cloud.google.com/recommendations-ai/
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/recommendationengine/latest
-.. _Product Documentation:  https://cloud.google.com/recommendations-ai
+.. _Product Documentation:  https://cloud.google.com/recommendations-ai/
 
 Quick Start
 -----------
@@ -30,7 +30,7 @@ In order to use this library, you first need to go through the following steps:
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Recommendations AI API.:  https://cloud.google.com/recommendations-ai
+.. _Enable the Recommendations AI API.:  https://cloud.google.com/recommendations-ai/
 .. _Setup Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -45,6 +45,27 @@ install permissions, and without clashing with the installed system
 dependencies.
 
 .. _`virtualenv`: https://virtualenv.pypa.io/en/latest/
+
+
+Code samples and snippets
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Code samples and snippets live in the `samples/` folder.
+
+
+Supported Python Versions
+^^^^^^^^^^^^^^^^^^^^^^^^^
+Our client libraries are compatible with all current [active](https://devguide.python.org/devcycle/#in-development-main-branch) and [maintenance](https://devguide.python.org/devcycle/#maintenance-branches) versions of
+Python.
+
+Python >= 3.7
+
+Unsupported Python Versions
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Python <= 3.6
+
+If you are using an [end-of-life](https://devguide.python.org/devcycle/#end-of-life-branches)
+version of Python, we recommend that you update as soon as possible to an actively supported version.
 
 
 Mac/Linux
@@ -71,12 +92,12 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for Cloud Billing API
-   API to see other available methods on the client.
+-  Read the `Client Library Documentation`_ for Recommendations AI API
+   to see other available methods on the client.
 -  Read the `Recommendations AI API Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Recommendations AI API Product documentation:  https://cloud.google.com/recommendations-ai
+.. _Recommendations AI API Product documentation:  https://cloud.google.com/recommendations-ai/
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst

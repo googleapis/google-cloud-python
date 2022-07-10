@@ -12,5 +12,6 @@
     "api_id": "recommendationengine.googleapis.com",
     "default_version": "v1beta1",
     "codeowner_team": "",
-    "api_shortname": "recommendationengine"
+    "api_shortname": "recommendationengine",
+    "api_description": "delivers highly personalized product recommendations at scale."
 }
