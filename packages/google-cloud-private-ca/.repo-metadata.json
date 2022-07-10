@@ -12,5 +12,6 @@
     "api_id": "privateca.googleapis.com",
     "default_version": "v1",
     "codeowner_team": "",
-    "api_shortname": "privateca"
+    "api_shortname": "privateca",
+    "api_description": "simplifies the deployment and management of private CAs without managing infrastructure."
 }
