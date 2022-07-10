@@ -12,5 +12,6 @@
     "api_id": "dataflow.googleapis.com",
     "default_version": "v1beta3",
     "codeowner_team": "",
-    "api_shortname": "dataflow"
+    "api_shortname": "dataflow",
+    "api_description": "Unified stream and batch data processing that's serverless, fast, and cost-effective."
 }
