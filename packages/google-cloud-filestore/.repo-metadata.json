@@ -12,5 +12,6 @@
     "api_id": "file.googleapis.com",
     "default_version": "v1",
     "codeowner_team": "",
-    "api_shortname": "file"
+    "api_shortname": "file",
+    "api_description": "Filestore instances are fully managed NFS file servers on Google Cloud for use with applications running on Compute Engine virtual machines (VMs) instances or Google Kubernetes Engine clusters."
 }
