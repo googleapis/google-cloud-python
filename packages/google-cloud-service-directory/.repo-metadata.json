@@ -12,5 +12,6 @@
     "api_id": "servicedirectory.googleapis.com",
     "default_version": "v1",
     "codeowner_team": "",
-    "api_shortname": "servicedirectory"
+    "api_shortname": "servicedirectory",
+    "api_description": "Allows the registration and lookup of services."
 }
