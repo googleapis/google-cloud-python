@@ -31,11 +31,12 @@ s.move(
         "MANIFEST.in",  # no 'google' package
         "noxfile.py",  # noxfile is non-standard
         "docs/**/*",  # no docs to publish
-        ".kokoro/docs/",  
+        ".kokoro/docs/",
         ".kokoro/publish-docs.sh",
         "CONTRIBUTING.rst",
         "renovate.json", # no bundle, ignore test resources
         ".github/workflows/docs.yml", # no docs to publish
+	"README.rst",
     ],
 )
 
