@@ -13,5 +13,6 @@
     "requires_billing": true,
     "default_version": "v1",
     "codeowner_team": "",
-    "api_shortname": "billingbudgets"
+    "api_shortname": "billingbudgets",
+    "api_description": "The Cloud Billing Budget API stores Cloud Billing budgets, which define a budget plan and the rules to execute as spend is tracked against that plan."
 }

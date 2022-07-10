@@ -1,19 +1,17 @@
 Python Client for Cloud Billing Budget API
-=====================================================
+==========================================
 
-|GA| |pypi| |versions|
+|stable| |pypi| |versions|
 
-`Cloud Billing Budget API`_: The Cloud Billing Budget API stores Cloud Billing budgets, which define a
-budget plan and the rules to execute as spend is tracked against that
-plan.
+`Cloud Billing Budget API`_: The Cloud Billing Budget API stores Cloud Billing budgets, which define a budget plan and the rules to execute as spend is tracked against that plan.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
 
-.. |GA| image:: https://img.shields.io/badge/support-ga-gold.svg
-   :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#general-availability
+.. |stable| image:: https://img.shields.io/badge/support-stable-gold.svg
+   :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#stability-levels
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-billing-budgets.svg
-   :target: https://pypi.org/project/google-cloud-billing-budgets
+   :target: https://pypi.org/project/google-cloud-billing-budgets/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-billing-budgets.svg
    :target: https://pypi.org/project/google-cloud-billing-budgets/
 .. _Cloud Billing Budget API: https://cloud.google.com/billing/docs/how-to/budget-api-overview
@@ -48,15 +46,27 @@ dependencies.
 
 .. _`virtualenv`: https://virtualenv.pypa.io/en/latest/
 
+
+Code samples and snippets
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Code samples and snippets live in the `samples/` folder.
+
+
 Supported Python Versions
 ^^^^^^^^^^^^^^^^^^^^^^^^^
-Python >= 3.6
+Our client libraries are compatible with all current [active](https://devguide.python.org/devcycle/#in-development-main-branch) and [maintenance](https://devguide.python.org/devcycle/#maintenance-branches) versions of
+Python.
 
-Deprecated Python Versions
-^^^^^^^^^^^^^^^^^^^^^^^^^^
-Python == 2.7.
+Python >= 3.7
 
-The last version of this library compatible with Python 2.7 is google-cloud-billing-budgets==0.4.0.
+Unsupported Python Versions
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Python <= 3.6
+
+If you are using an [end-of-life](https://devguide.python.org/devcycle/#end-of-life-branches)
+version of Python, we recommend that you update as soon as possible to an actively supported version.
+
 
 Mac/Linux
 ^^^^^^^^^
@@ -82,8 +92,8 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for Cloud Billing Budget
-   API to see other available methods on the client.
+-  Read the `Client Library Documentation`_ for Cloud Billing Budget API
+   to see other available methods on the client.
 -  Read the `Cloud Billing Budget API Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
