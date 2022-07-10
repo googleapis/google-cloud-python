@@ -12,5 +12,6 @@
     "api_id": "vpcaccess.googleapis.com",
     "default_version": "v1",
     "codeowner_team": "",
-    "api_shortname": "vpcaccess"
+    "api_shortname": "vpcaccess",
+    "api_description": "provides networking functionality to Compute Engine virtual machine (VM) instances, Google Kubernetes Engine (GKE) containers, and the App Engine flexible environment. VPC provides networking for your cloud-based services that is global, scalable, and flexible."
 }
