@@ -1,23 +1,22 @@
-Python Client for Identity-Aware Proxy
-======================================
+Python Client for Identity-Aware Proxy API
+==========================================
 
-|ga| |pypi| |versions|
+|stable| |pypi| |versions|
 
-`Identity-Aware Proxy`_: Identity-Aware Proxy includes a number of features that can be used to protect 
-access to Google Cloud hosted resources and applications hosted on Google Cloud.
+`Identity-Aware Proxy API`_: Identity-Aware Proxy includes a number of features that can be used to protect access to Google Cloud hosted resources and applications hosted on Google Cloud.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
 
-.. |ga| image:: https://img.shields.io/badge/support-ga-gold.svg
-   :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#general-availability
+.. |stable| image:: https://img.shields.io/badge/support-stable-gold.svg
+   :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#stability-levels
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-iap.svg
    :target: https://pypi.org/project/google-cloud-iap/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-iap.svg
    :target: https://pypi.org/project/google-cloud-iap/
-.. _Identity-Aware Proxy: https://cloud.google.com/iap
+.. _Identity-Aware Proxy API: https://cloud.google.com/iap
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/iap/latest
-.. _Product Documentation:  https://cloud.google.com/iap/docs
+.. _Product Documentation:  https://cloud.google.com/iap
 
 Quick Start
 -----------
@@ -26,12 +25,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Follow the quickstart guide for Identity-Aware Proxy.`_
+3. `Enable the Identity-Aware Proxy API.`_
 4. `Setup Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Follow the quickstart guide for Identity-Aware Proxy.:  https://cloud.google.com/iap/docs/quickstarts
+.. _Enable the Identity-Aware Proxy API.:  https://cloud.google.com/iap
 .. _Setup Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -46,6 +45,27 @@ install permissions, and without clashing with the installed system
 dependencies.
 
 .. _`virtualenv`: https://virtualenv.pypa.io/en/latest/
+
+
+Code samples and snippets
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Code samples and snippets live in the `samples/` folder.
+
+
+Supported Python Versions
+^^^^^^^^^^^^^^^^^^^^^^^^^
+Our client libraries are compatible with all current [active](https://devguide.python.org/devcycle/#in-development-main-branch) and [maintenance](https://devguide.python.org/devcycle/#maintenance-branches) versions of
+Python.
+
+Python >= 3.7
+
+Unsupported Python Versions
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Python <= 3.6
+
+If you are using an [end-of-life](https://devguide.python.org/devcycle/#end-of-life-branches)
+version of Python, we recommend that you update as soon as possible to an actively supported version.
 
 
 Mac/Linux
@@ -72,12 +92,12 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for Identity-Aware Proxy
+-  Read the `Client Library Documentation`_ for Identity-Aware Proxy API
    to see other available methods on the client.
--  Read the `Identity-Aware Proxy Product documentation`_ to learn
+-  Read the `Identity-Aware Proxy API Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Identity-Aware Proxy Product documentation:  https://cloud.google.com/iap/docs
+.. _Identity-Aware Proxy API Product documentation:  https://cloud.google.com/iap
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
