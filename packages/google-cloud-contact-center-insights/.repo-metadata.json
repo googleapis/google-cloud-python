@@ -1,6 +1,6 @@
 {
     "name": "contactcenterinsights",
-    "name_pretty": "Contact Center AI Insights API",
+    "name_pretty": "Contact Center AI Insights",
     "product_documentation": "https://cloud.google.com/contact-center/insights/docs",
     "client_documentation": "https://cloud.google.com/python/docs/reference/contactcenterinsights/latest",
     "issue_tracker": "",
@@ -12,5 +12,6 @@
     "api_id": "contactcenterinsights.googleapis.com",
     "codeowner_team": "@googleapis/api-contact-center-insights",
     "default_version": "v1",
-    "api_shortname": "contactcenterinsights"
+    "api_shortname": "contactcenterinsights",
+    "api_description": " helps users detect and visualize patterns in their contact center data."
 }
