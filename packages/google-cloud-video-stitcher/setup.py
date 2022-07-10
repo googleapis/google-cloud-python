@@ -43,7 +43,7 @@ setuptools.setup(
         "proto-plus >= 1.19.7, <2.0.0dev",
         "protobuf >= 3.19.0, <4.0.0dev",
     ),
-    python_requires=">=3.6",
+    python_requires=">=3.7",
     classifiers=[
         "Development Status :: 4 - Beta",
         "Intended Audience :: Developers",
