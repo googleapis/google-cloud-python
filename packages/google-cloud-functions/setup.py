@@ -54,7 +54,7 @@ setuptools.setup(
         "protobuf >= 3.19.0, <4.0.0dev",
         "grpc-google-iam-v1 >= 0.12.4, <1.0.0dev",
     ),
-    python_requires=">=3.6",
+    python_requires=">=3.7",
     scripts=[
         "scripts/fixup_functions_v1_keywords.py",
     ],
@@ -62,7 +62,6 @@ setuptools.setup(
         "Development Status :: 5 - Production/Stable",
         "Intended Audience :: Developers",
         "Operating System :: OS Independent",
-        "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
