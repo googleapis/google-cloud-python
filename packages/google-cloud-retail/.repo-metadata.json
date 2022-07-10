@@ -1,6 +1,6 @@
 {
     "name": "retail",
-    "name_pretty": "Retail API",
+    "name_pretty": "Retail",
     "product_documentation": "https://cloud.google.com/retail/docs/",
     "client_documentation": "https://cloud.google.com/python/docs/reference/retail/latest",
     "issue_tracker": "",
@@ -12,5 +12,6 @@
     "api_id": "retail.googleapis.com",
     "default_version": "v2",
     "codeowner_team": "@googleapis/cloud-retail-team",
-    "api_shortname": "retail"
+    "api_shortname": "retail",
+    "api_description": "Cloud Retail service enables customers to build end-to-end personalized recommendation systems without requiring a high level of expertise in machine learning, recommendation system, or Google Cloud."
 }
