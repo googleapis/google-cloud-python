@@ -1,6 +1,6 @@
 {
     "name": "cloudscheduler",
-    "name_pretty": "Google Cloud Scheduler",
+    "name_pretty": "Cloud Scheduler",
     "product_documentation": "https://cloud.google.com/scheduler/docs",
     "client_documentation": "https://cloud.google.com/python/docs/reference/cloudscheduler/latest",
     "issue_tracker": "https://issuetracker.google.com/savedsearches/5411429",
@@ -13,5 +13,6 @@
     "requires_billing": true,
     "default_version": "v1",
     "codeowner_team": "@googleapis/aap-dpes",
-    "api_shortname": "cloudscheduler"
+    "api_shortname": "cloudscheduler",
+    "api_description": "lets you set up scheduled units of work to be executed at defined times or regular intervals. These work units are commonly known as cron jobs. Typical use cases might include sending out a report email on a daily basis, updating some cached data every 10 minutes, or updating some summary information once an hour."
 }

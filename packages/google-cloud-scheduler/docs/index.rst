@@ -2,7 +2,7 @@
 
 .. include:: multiprocessing.rst
 
-This package includes clients for multiple versions of Google Cloud Scheduler.
+This package includes clients for multiple versions of Cloud Scheduler.
 By default, you will get version ``scheduler_v1``.
 
 
