@@ -1,7 +1,7 @@
 {
     "name": "networkservices",
     "name_pretty": "Network Services",
-    "product_documentation": "",
+    "product_documentation": "https://cloud.google.com",
     "client_documentation": "https://cloud.google.com/python/docs/reference/networkservices/latest",
     "issue_tracker": "",
     "release_level": "preview",
