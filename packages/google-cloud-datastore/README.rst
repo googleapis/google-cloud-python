@@ -1,26 +1,26 @@
-Python Client for Google Cloud Datastore
-========================================
+Python Client for Google Cloud Datastore API
+============================================
 
-|GA| |pypi| |versions| 
+|stable| |pypi| |versions|
 
-`Google Cloud Datastore API`_ is a fully managed, schemaless database for
-storing non-relational data. Cloud Datastore automatically scales with your
-users and supports ACID transactions, high availability of reads and writes,
-strong consistency for reads and ancestor queries, and eventual consistency for
-all other queries.
+`Google Cloud Datastore API`_: is a fully managed, schemaless database for
+storing non-relational data. Cloud Datastore automatically scales with
+your users and supports ACID transactions, high availability of reads and
+writes, strong consistency for reads and ancestor queries, and eventual
+consistency for all other queries.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
 
-.. |GA| image:: https://img.shields.io/badge/support-GA-gold.svg
-   :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#general-availability
+.. |stable| image:: https://img.shields.io/badge/support-stable-gold.svg
+   :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#stability-levels
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-datastore.svg
    :target: https://pypi.org/project/google-cloud-datastore/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-datastore.svg
    :target: https://pypi.org/project/google-cloud-datastore/
-.. _Google Cloud Datastore API: https://cloud.google.com/datastore/docs
-.. _Product Documentation:  https://cloud.google.com/datastore/docs
+.. _Google Cloud Datastore API: https://cloud.google.com/datastore
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/datastore/latest
+.. _Product Documentation:  https://cloud.google.com/datastore
 
 Quick Start
 -----------
@@ -51,11 +51,26 @@ dependencies.
 .. _`virtualenv`: https://virtualenv.pypa.io/en/latest/
 
 
+Code samples and snippets
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Code samples and snippets live in the `samples/` folder.
+
+
 Supported Python Versions
 ^^^^^^^^^^^^^^^^^^^^^^^^^
-Python >= 3.6
+Our client libraries are compatible with all current [active](https://devguide.python.org/devcycle/#in-development-main-branch) and [maintenance](https://devguide.python.org/devcycle/#maintenance-branches) versions of
+Python.
 
-The last version of this library compatible with Python 2.7 is google-cloud-datastore==1.15.3 
+Python >= 3.7
+
+Unsupported Python Versions
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Python <= 3.6
+
+If you are using an [end-of-life](https://devguide.python.org/devcycle/#end-of-life-branches)
+version of Python, we recommend that you update as soon as possible to an actively supported version.
+
 
 Mac/Linux
 ^^^^^^^^^
@@ -78,31 +93,15 @@ Windows
     <your-env>\Scripts\activate
     <your-env>\Scripts\pip.exe install google-cloud-datastore
 
-
-Example Usage
-~~~~~~~~~~~~~
-
-.. code:: python
-
-    from google.cloud import datastore
-    # Create, populate and persist an entity with keyID=1234
-    client = datastore.Client()
-    key = client.key('EntityKind', 1234)
-    entity = datastore.Entity(key=key)
-    entity.update({
-        'foo': u'bar',
-        'baz': 1337,
-        'qux': False,
-    })
-    client.put(entity)
-    # Then get by key for this entity
-    result = client.get(key)
-    print(result)
-
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for Google Cloud Datastore
-   API to see other available methods on the client.
--  Read the `Product documentation`_ to learn
+-  Read the `Client Library Documentation`_ for Google Cloud Datastore API
+   to see other available methods on the client.
+-  Read the `Google Cloud Datastore API Product documentation`_ to learn
    more about the product and see How-to Guides.
+-  View this `README`_ to see the full list of Cloud
+   APIs that we cover.
+
+.. _Google Cloud Datastore API Product documentation:  https://cloud.google.com/datastore
+.. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst

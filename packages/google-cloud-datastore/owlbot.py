@@ -98,7 +98,6 @@ s.remove_staging_dirs()
 templated_files = common.py_library(
     microgenerator=True,
     split_system_tests=True,
-    unit_test_python_versions=["3.6", "3.7", "3.8", "3.9", "3.10"],
     cov_level=100,
 )
 s.move(
@@ -181,13 +180,8 @@ assert 1 == s.replace(
 def docfx\(session\):
 """,
     """\
-@nox.session(python="3.6")
+@nox.session(python=DEFAULT_PYTHON_VERSION)
 def doctests(session):
-    # Doctests run against Python 3.6 only.
-    # It is difficult to make doctests run against both Python 2 and Python 3
-    # because they test string output equivalence, which is difficult to
-    # make match (e.g. unicode literals starting with "u").
-
     # Install all test dependencies, then install this package into the
     # virtualenv's dist-packages.
     session.install("mock", "pytest", "sphinx", "google-cloud-testutils")
