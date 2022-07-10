@@ -2,7 +2,7 @@
 
 .. include:: multiprocessing.rst
 
-This package includes clients for multiple versions of Cloud Document Understanding API.
+This package includes clients for multiple versions of Document AI.
 By default, you will get version ``documentai_v1``.
 
 
