@@ -1,6 +1,6 @@
 {
     "name": "cloudresourcemanager",
-    "name_pretty": "Google Cloud Resource Manager API",
+    "name_pretty": "Resource Manager",
     "product_documentation": "https://cloud.google.com/resource-manager",
     "client_documentation": "https://cloud.google.com/python/docs/reference/cloudresourcemanager/latest",
     "issue_tracker": "https://issuetracker.google.com/savedsearches/559757",
@@ -13,5 +13,6 @@
     "requires_billing": true,
     "default_version": "v3",
     "codeowner_team": "",
-    "api_shortname": "cloudresourcemanager"
+    "api_shortname": "cloudresourcemanager",
+    "api_description": "provides methods that you can use to programmatically manage your projects in the Google Cloud Platform."
 }

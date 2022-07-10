@@ -1,22 +1,20 @@
-Python Client for Google Cloud Resource Manager
-===============================================
+Python Client for Resource Manager API
+======================================
 
-|ga| |pypi| |versions| 
+|stable| |pypi| |versions|
 
-`Google Cloud Resource Manager`_ API provides methods that you can use
-to programmatically manage your projects in the Google Cloud Platform.
-With this API, you can do the following:
+`Resource Manager API`_: provides methods that you can use to programmatically manage your projects in the Google Cloud Platform.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
 
-.. |ga| image:: https://img.shields.io/badge/support-ga-gold.svg
-   :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#ga-support
+.. |stable| image:: https://img.shields.io/badge/support-stable-gold.svg
+   :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#stability-levels
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-resource-manager.svg
    :target: https://pypi.org/project/google-cloud-resource-manager/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-resource-manager.svg
    :target: https://pypi.org/project/google-cloud-resource-manager/
-.. _Google Cloud Resource Manager: https://cloud.google.com/resource-manager
+.. _Resource Manager API: https://cloud.google.com/resource-manager
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/cloudresourcemanager/latest
 .. _Product Documentation:  https://cloud.google.com/resource-manager
 
@@ -32,7 +30,7 @@ In order to use this library, you first need to go through the following steps:
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Resource Manager API.:  https://cloud.google.com/resource-manager/docs/quickstart-organizations#before-you-begin
+.. _Enable the Resource Manager API.:  https://cloud.google.com/resource-manager
 .. _Setup Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -47,6 +45,27 @@ install permissions, and without clashing with the installed system
 dependencies.
 
 .. _`virtualenv`: https://virtualenv.pypa.io/en/latest/
+
+
+Code samples and snippets
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Code samples and snippets live in the `samples/` folder.
+
+
+Supported Python Versions
+^^^^^^^^^^^^^^^^^^^^^^^^^
+Our client libraries are compatible with all current [active](https://devguide.python.org/devcycle/#in-development-main-branch) and [maintenance](https://devguide.python.org/devcycle/#maintenance-branches) versions of
+Python.
+
+Python >= 3.7
+
+Unsupported Python Versions
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Python <= 3.6
+
+If you are using an [end-of-life](https://devguide.python.org/devcycle/#end-of-life-branches)
+version of Python, we recommend that you update as soon as possible to an actively supported version.
 
 
 Mac/Linux
@@ -73,12 +92,12 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for Resource Manager
+-  Read the `Client Library Documentation`_ for Resource Manager API
    to see other available methods on the client.
--  Read the `Resource Manager Product documentation`_ to learn
+-  Read the `Resource Manager API Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Resource Manager Product documentation:  https://cloud.google.com/resource-manager/docs
+.. _Resource Manager API Product documentation:  https://cloud.google.com/resource-manager
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
