@@ -627,10 +627,6 @@ def test_query_data_with_query_options(capsys, instance_id, sample_database):
     assert "VenueId: 42, VenueName: Venue 42, LastUpdateTime:" in out
 
 
-@pytest.mark.skip(
-    "Failure is due to the package being missing on the backend."
-    "See: https://github.com/googleapis/python-spanner/issues/421"
-)
 @pytest.mark.dependency(depends=["insert_datatypes_data"])
 def test_create_client_with_query_options(capsys, instance_id, sample_database):
     snippets.create_client_with_query_options(instance_id, sample_database.database_id)

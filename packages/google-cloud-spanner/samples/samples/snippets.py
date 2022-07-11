@@ -2035,7 +2035,7 @@ def create_client_with_query_options(instance_id, database_id):
     spanner_client = spanner.Client(
         query_options={
             "optimizer_version": "1",
-            "optimizer_statistics_package": "auto_20191128_14_47_22UTC",
+            "optimizer_statistics_package": "latest",
         }
     )
     instance = spanner_client.instance(instance_id)
