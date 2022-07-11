@@ -808,7 +808,7 @@ You can also pass a mapping object.
         # Check that nothing much changes otherwise.
         summary = \
 """
-.. note::
+.. literalinclude::
     note that these are not supported yet, so they will be ignored for now.
 
 And any other documentation that the source code would have could go here.
@@ -833,6 +833,48 @@ And any other documentation that the source code would have could go here.
         with self.assertRaises(ValueError):
             _parse_docstring_summary(summary)
 
+        # Check that notices are processed properly.
+        summary_want = \
+"""<aside class="note">
+<b>Note:</b>
+this is a note.
+</aside>
+<aside class="caution">
+<b>Caution:</b>
+another type of notice.
+</aside>
+<aside class="key-term">
+<b>Key Term:</b>
+hyphenated term notice.
+</aside>"""
+
+        summary = \
+"""
+.. note::
+\n    this is a note.
+
+
+.. caution::
+\n    another type of notice.
+
+
+.. key-term::
+\n    hyphenated term notice.
+"""
+
+        summary_got, attributes_got = _parse_docstring_summary(summary)
+        self.assertEqual(summary_got, summary_want)
+        self.assertEqual(attributes_got, attributes_want)
+
+        # Check that exception is raised if block is not formatted properly.
+
+        summary = \
+"""
+.. warning::
+this is not a properly formatted warning.
+"""
+        with self.assertRaises(ValueError):
+            _parse_docstring_summary(summary)
 
     def test_parse_docstring_summary_attributes(self):
         # Test parsing docstring with attributes.

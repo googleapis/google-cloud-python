@@ -101,6 +101,33 @@ CODEBLOCK = "code-block"
 CODE = "code"
 PACKAGE = "package"
 
+# DevSite specific notices that can be used.
+NOTE = 'note'
+CAUTION = 'caution'
+WARNING = 'warning'
+IMPORTANT = 'special'
+KEYPOINT = 'key-point'
+KEYTERM = 'key-term'
+OBJECTIVE = 'objective'
+SUCCESS = 'success'
+BETA = 'beta'
+PREVIEW = 'preview'
+DEPRECATED = 'deprecated'
+
+NOTICES = {
+    NOTE: 'Note',
+    CAUTION: 'Caution',
+    WARNING: 'Warning',
+    IMPORTANT: 'Important',
+    KEYPOINT: 'Key Point',
+    KEYTERM: 'Key Term',
+    OBJECTIVE: 'Objective',
+    SUCCESS: 'Success',
+    BETA: 'Beta',
+    PREVIEW: 'Preview',
+    DEPRECATED: 'deprecated',
+}
+
 # Disable blib2to3 output that clutters debugging log.
 logging.getLogger("blib2to3").setLevel(logging.ERROR)
 
@@ -407,6 +434,9 @@ def _parse_docstring_summary(summary):
     attribute_type_token = ":type:"
     keyword = name = description = var_type = ""
 
+    notice_open_tag = '<aside class="{notice_tag}">\n<b>{notice_name}:</b>'
+    notice_close_tag = '</aside>'
+
     # We need to separate in chunks, which is defined by 3 newline breaks.
     # Otherwise when parsing for code and blocks of stuff, we will not be able
     # to have the entire context when just splitting by single newlines.
@@ -468,6 +498,24 @@ def _parse_docstring_summary(summary):
 
                 continue
 
+        elif keyword and keyword in NOTICES:
+            # Determine how much code block is indented to format properly.
+            if tab_space == -1:
+                parts = [split_part for split_part in part.split("\n") if split_part]
+                tab_space = len(parts[0]) - len(parts[0].lstrip(" "))
+                if tab_space == 0:
+                    raise ValueError("Content in the block should be indented."\
+                                     f"Please check the docstring: \n{summary}")
+            if not part.startswith(" "*tab_space):
+                if notice_body:
+                    parts = [indent_code_left(part, tab_space) for part in notice_body]
+                    summary_parts.append("\n".join(parts))
+
+                summary_parts.append(notice_close_tag)
+                keyword = ""
+            notice_body.append(part)
+            continue
+
         # Parse keywords if found.
         # lstrip is added to parse code blocks that are not formatted well.
         if part.lstrip('\n').startswith('..'):
@@ -491,6 +539,24 @@ def _parse_docstring_summary(summary):
                 found_name = False
                 name = part.split("::")[1].strip()
 
+            # Extracts the notice content and format it.
+            elif keyword and keyword in NOTICES:
+                summary_parts.append(notice_open_tag.format(
+                    notice_tag=keyword, notice_name=NOTICES[keyword]))
+                tab_space = -1
+                notice_body = []
+                parts = [split_part for split_part in part.split("\n") if split_part][1:]
+                if not parts:
+                    continue
+                tab_space = len(parts[0]) - len(parts[0].lstrip(" "))
+                if tab_space == 0:
+                    raise ValueError("Content in the block should be indented."\
+                                     f"Please check the docstring: \n{summary}")
+                parts = [indent_code_left(part, tab_space) for part in parts]
+                summary_parts.append("\n".join(parts))
+                summary_parts.append(notice_close_tag)
+                keyword = ""
+
             # Reserve for additional parts
             # elif keyword == keyword:
             else:
@@ -507,6 +573,13 @@ def _parse_docstring_summary(summary):
             summary_parts.append("\n\n".join(parts))
         if summary_parts[-1] != "```\n":
             summary_parts.append("```\n")
+
+    if keyword and keyword in NOTICES:
+        if notice_body:
+            parts = [indent_code_left(part, tab_space) for part in notice_body]
+            summary_parts.append("\n\n".join(parts))
+        if summary_parts[-1] != notice_close_tag:
+            summary_parts.append(notice_close_tag)
 
     # Requires 2 newline chars to properly show on cloud site.
     return "\n".join(summary_parts), attributes
