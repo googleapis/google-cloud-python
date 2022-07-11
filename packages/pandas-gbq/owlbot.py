@@ -55,6 +55,7 @@ s.move(
         # Mulit-processing note isn't relevant, as pandas_gbq is responsible for
         # creating clients, not the end user.
         "docs/multiprocessing.rst",
+	"README.rst",
     ],
 )
 

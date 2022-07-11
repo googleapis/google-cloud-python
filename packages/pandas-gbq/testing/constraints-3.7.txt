@@ -16,3 +16,4 @@ pandas==0.24.2
 pyarrow==3.0.0
 pydata-google-auth==0.1.2
 tqdm==4.23.0
+protobuf==3.19.0
