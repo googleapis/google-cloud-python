@@ -41,6 +41,8 @@ ASCENDING = "timestamp asc"
 """Query string to order by ascending timestamps."""
 DESCENDING = "timestamp desc"
 """Query string to order by decending timestamps."""
+_instrumentation_emitted = False
+"""Flag for whether instrumentation info has been emitted"""
 
 
 __all__ = (
