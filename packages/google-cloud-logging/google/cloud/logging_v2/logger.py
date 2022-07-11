@@ -23,6 +23,7 @@ from google.cloud.logging_v2.entries import StructEntry
 from google.cloud.logging_v2.entries import TextEntry
 from google.cloud.logging_v2.resource import Resource
 from google.cloud.logging_v2.handlers._monitored_resources import detect_resource
+from google.cloud.logging_v2._instrumentation import _add_instrumentation
 
 import google.protobuf.message
 
@@ -134,6 +135,7 @@ class Logger(object):
         kw["log_name"] = kw.pop("log_name", self.full_name)
         kw["labels"] = kw.pop("labels", self.labels)
         kw["resource"] = kw.pop("resource", self.default_resource)
+        partial_success = False
 
         severity = kw.get("severity", None)
         if isinstance(severity, str) and not severity.isupper():
@@ -155,7 +157,13 @@ class Logger(object):
             entry = _entry_class(**kw)
 
         api_repr = entry.to_api_repr()
-        client.logging_api.write_entries([api_repr])
+        entries = [api_repr]
+        if google.cloud.logging_v2._instrumentation_emitted is False:
+            partial_success = True
+            entries = _add_instrumentation(entries, **kw)
+            google.cloud.logging_v2._instrumentation_emitted = True
+
+        client.logging_api.write_entries(entries, partial_success=partial_success)
 
     def log_empty(self, *, client=None, **kw):
         """Log an empty message

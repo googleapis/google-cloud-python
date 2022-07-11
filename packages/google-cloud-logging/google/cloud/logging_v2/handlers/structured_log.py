@@ -16,10 +16,13 @@
 """
 import collections
 import json
+import logging
 import logging.handlers
 
 from google.cloud.logging_v2.handlers.handlers import CloudLoggingFilter
 from google.cloud.logging_v2.handlers.handlers import _format_and_parse_message
+import google.cloud.logging_v2
+from google.cloud.logging_v2._instrumentation import _create_diagnostic_entry
 
 GCP_FORMAT = (
     "{%(_payload_str)s"
@@ -84,3 +87,13 @@ class StructuredLogHandler(logging.StreamHandler):
         # convert to GCP structred logging format
         gcp_payload = self._gcp_formatter.format(record)
         return gcp_payload
+
+    def emit(self, record):
+        if google.cloud.logging_v2._instrumentation_emitted is False:
+            self.emit_instrumentation_info()
+        super().emit(record)
+
+    def emit_instrumentation_info(self):
+        google.cloud.logging_v2._instrumentation_emitted = True
+        diagnostic_object = _create_diagnostic_entry().to_api_repr()
+        logging.info(diagnostic_object)

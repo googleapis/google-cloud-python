@@ -34,6 +34,12 @@ class TestLogger(unittest.TestCase):
     LOGGER_NAME = "logger-name"
     TIME_FORMAT = '"%Y-%m-%dT%H:%M:%S.%f%z"'
 
+    def setUp(self):
+        import google.cloud.logging_v2
+
+        # Test instrumentation behavior in only one test
+        google.cloud.logging_v2._instrumentation_emitted = True
+
     @staticmethod
     def _get_target_class():
         from google.cloud.logging import Logger
@@ -975,6 +981,43 @@ class TestLogger(unittest.TestCase):
         self.assertIsNone(entry.logger)
         self.assertEqual(entry.log_name, LOG_NAME)
 
+    def test_first_log_emits_instrumentation(self):
+        from google.cloud.logging_v2.handlers._monitored_resources import (
+            detect_resource,
+        )
+        from google.cloud.logging_v2._instrumentation import _create_diagnostic_entry
+        import google.cloud.logging_v2
+
+        google.cloud.logging_v2._instrumentation_emitted = False
+        DEFAULT_LABELS = {"foo": "spam"}
+        resource = detect_resource(self.PROJECT)
+        instrumentation_entry = _create_diagnostic_entry(
+            resource=resource,
+            labels=DEFAULT_LABELS,
+        ).to_api_repr()
+        instrumentation_entry["logName"] = "projects/%s/logs/%s" % (
+            self.PROJECT,
+            self.LOGGER_NAME,
+        )
+        ENTRIES = [
+            instrumentation_entry,
+            {
+                "logName": "projects/%s/logs/%s" % (self.PROJECT, self.LOGGER_NAME),
+                "resource": resource._to_dict(),
+                "labels": DEFAULT_LABELS,
+            },
+        ]
+        client = _Client(self.PROJECT)
+        api = client.logging_api = _DummyLoggingAPI()
+        logger = self._make_one(self.LOGGER_NAME, client=client, labels=DEFAULT_LABELS)
+        logger.log_empty()
+        self.assertEqual(api._write_entries_called_with, (ENTRIES, None, None, None))
+
+        ENTRIES = ENTRIES[-1:]
+        api = client.logging_api = _DummyLoggingAPI()
+        logger.log_empty()
+        self.assertEqual(api._write_entries_called_with, (ENTRIES, None, None, None))
+
 
 class TestBatch(unittest.TestCase):
 
@@ -1645,7 +1688,15 @@ class _DummyLoggingAPI(object):
 
     _write_entries_called_with = None
 
-    def write_entries(self, entries, *, logger_name=None, resource=None, labels=None):
+    def write_entries(
+        self,
+        entries,
+        *,
+        logger_name=None,
+        resource=None,
+        labels=None,
+        partial_success=False,
+    ):
         self._write_entries_called_with = (entries, logger_name, resource, labels)
 
     def logger_delete(self, logger_name):
