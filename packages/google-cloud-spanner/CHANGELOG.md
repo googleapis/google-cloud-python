@@ -4,6 +4,21 @@
 
 [1]: https://pypi.org/project/google-cloud-spanner/#history
 
+## [3.16.0](https://github.com/googleapis/python-spanner/compare/v3.15.1...v3.16.0) (2022-07-11)
+
+
+### Features
+
+* Automated Release Blessing ([#767](https://github.com/googleapis/python-spanner/issues/767)) ([19caf44](https://github.com/googleapis/python-spanner/commit/19caf44489e0af915405466960cf83bea4d3a579))
+* python typing ([#646](https://github.com/googleapis/python-spanner/issues/646)) ([169019f](https://github.com/googleapis/python-spanner/commit/169019f283b4fc1f82be928de8e61477bd7f33ca))
+
+
+### Bug Fixes
+
+* [@421](https://github.com/421) ([#769](https://github.com/googleapis/python-spanner/issues/769)) ([58640a1](https://github.com/googleapis/python-spanner/commit/58640a1e013fb24dde403706ae32c851112128c9))
+* add pause for the staleness test ([#762](https://github.com/googleapis/python-spanner/issues/762)) ([bb7f1db](https://github.com/googleapis/python-spanner/commit/bb7f1db57a0d06800ff7c81336756676fc7ec109))
+* require python 3.7+ ([#768](https://github.com/googleapis/python-spanner/issues/768)) ([f2c273d](https://github.com/googleapis/python-spanner/commit/f2c273d592ddc7d2c5de5ee6284d3b4ecba8a3c1))
+
 ## [3.15.1](https://github.com/googleapis/python-spanner/compare/v3.15.0...v3.15.1) (2022-06-17)
 
 
