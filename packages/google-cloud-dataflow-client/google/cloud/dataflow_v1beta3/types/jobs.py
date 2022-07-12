@@ -119,7 +119,7 @@ class Job(proto.Message):
             the existing Job.
 
             The name must match the regular expression
-            ``[a-z]([-a-z0-9]{0,38}[a-z0-9])?``
+            ``[a-z]([-a-z0-9]{0,1022}[a-z0-9])?``
         type_ (google.cloud.dataflow_v1beta3.types.JobType):
             The type of Cloud Dataflow job.
         environment (google.cloud.dataflow_v1beta3.types.Environment):
