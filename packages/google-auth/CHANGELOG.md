@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+## [2.9.1](https://github.com/googleapis/google-auth-library-python/compare/v2.9.0...v2.9.1) (2022-07-12)
+
+
+### Bug Fixes
+
+* there was a raise missing for throwing exceptions ([#1077](https://github.com/googleapis/google-auth-library-python/issues/1077)) ([d1f17b0](https://github.com/googleapis/google-auth-library-python/commit/d1f17b0ba71d90bff2402fde38bdbe51bc6481f9))
+
 ## [2.9.0](https://github.com/googleapis/google-auth-library-python/compare/v2.8.0...v2.9.0) (2022-06-28)
 
 
