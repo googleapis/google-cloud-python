@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.3](https://github.com/googleapis/python-test-utils/compare/v1.3.2...v1.3.3) (2022-07-10)
+
+
+### Bug Fixes
+
+* require python 3.7+ ([#107](https://github.com/googleapis/python-test-utils/issues/107)) ([eb41a45](https://github.com/googleapis/python-test-utils/commit/eb41a4549c218f3bed3f57acc78872ae0d0bf2bf))
+
 ## [1.3.2](https://github.com/googleapis/python-test-utils/compare/v1.3.1...v1.3.2) (2022-06-06)
 
 
