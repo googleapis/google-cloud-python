@@ -77,6 +77,9 @@ class VodSession(proto.Message):
         manifest_options (google.cloud.video.stitcher_v1.types.ManifestOptions):
             Additional options that affect the output of
             the manifest.
+        asset_id (str):
+            Output only. The generated ID of the
+            VodSession's source media.
     """
 
     name = proto.Field(
@@ -113,6 +116,10 @@ class VodSession(proto.Message):
         proto.MESSAGE,
         number=9,
         message="ManifestOptions",
+    )
+    asset_id = proto.Field(
+        proto.STRING,
+        number=10,
     )
 
 
@@ -287,6 +294,9 @@ class LiveSession(proto.Message):
         manifest_options (google.cloud.video.stitcher_v1.types.ManifestOptions):
             Additional options that affect the output of
             the manifest.
+        stream_id (str):
+            Output only. The generated ID of the
+            LiveSession's source stream.
     """
 
     class StitchingPolicy(proto.Enum):
@@ -296,7 +306,6 @@ class LiveSession(proto.Message):
         """
         STITCHING_POLICY_UNSPECIFIED = 0
         COMPLETE_AD = 1
-        COMPLETE_POD = 2
         CUT_CURRENT = 3
 
     name = proto.Field(
@@ -343,6 +352,10 @@ class LiveSession(proto.Message):
         proto.MESSAGE,
         number=10,
         message="ManifestOptions",
+    )
+    stream_id = proto.Field(
+        proto.STRING,
+        number=11,
     )
 
 

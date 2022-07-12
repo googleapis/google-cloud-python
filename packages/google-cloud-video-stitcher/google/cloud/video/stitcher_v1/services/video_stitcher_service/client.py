@@ -579,6 +579,7 @@ class VideoStitcherServiceClient(metaclass=VideoStitcherServiceClientMeta):
                 quota_project_id=client_options.quota_project_id,
                 client_info=client_info,
                 always_use_jwt_access=True,
+                api_audience=client_options.api_audience,
             )
 
     def create_cdn_key(
@@ -2482,15 +2483,6 @@ class VideoStitcherServiceClient(metaclass=VideoStitcherServiceClientMeta):
                 Required. The project and location in which the live
                 session should be created, in the form of
                 ``projects/{project_number}/locations/{location}``.
-
-                Valid locations:
-
-                -  ``-`` (Video Stitcher API will pick a location that
-                   is closest to the caller.)
-                -  ``us-east1``
-                -  ``us-west1``
-                -  ``us-central1``
-                -  ``europe-west1``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
