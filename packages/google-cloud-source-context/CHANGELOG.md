@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.5](https://github.com/googleapis/python-source-context/compare/v1.2.4...v1.2.5) (2022-07-10)
+
+
+### Bug Fixes
+
+* require python 3.7+ ([#97](https://github.com/googleapis/python-source-context/issues/97)) ([e0b928e](https://github.com/googleapis/python-source-context/commit/e0b928e6407ca720867150b22a304dee3daea5f6))
+
 ## [1.2.4](https://github.com/googleapis/python-source-context/compare/v1.2.3...v1.2.4) (2022-06-03)
 
 
