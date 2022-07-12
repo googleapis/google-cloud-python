@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.6.0](https://github.com/googleapis/python-private-catalog/compare/v0.5.2...v0.6.0) (2022-07-07)
+
+
+### Features
+
+* add audience parameter ([b37c874](https://github.com/googleapis/python-private-catalog/commit/b37c874fb54c9b8acdd2b7f94d64b0c8b8793610))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core >= 2.8.0 ([#129](https://github.com/googleapis/python-private-catalog/issues/129)) ([b37c874](https://github.com/googleapis/python-private-catalog/commit/b37c874fb54c9b8acdd2b7f94d64b0c8b8793610))
+* require python 3.7+ ([#131](https://github.com/googleapis/python-private-catalog/issues/131)) ([1d3fb49](https://github.com/googleapis/python-private-catalog/commit/1d3fb499db542429bd97f06d887be527df45ae88))
+
 ## [0.5.2](https://github.com/googleapis/python-private-catalog/compare/v0.5.1...v0.5.2) (2022-06-03)
 
 

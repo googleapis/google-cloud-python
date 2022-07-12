@@ -20,7 +20,7 @@ import setuptools  # type: ignore
 
 name = "google-cloud-private-catalog"
 description = "Private Catalog API client library"
-version = "0.5.2"
+version = "0.6.0"
 release_status = "Development Status :: 4 - Beta"
 dependencies = [
     "google-api-core[grpc] >= 2.8.0, <3.0.0dev",
