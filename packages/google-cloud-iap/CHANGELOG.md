@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.5.0](https://github.com/googleapis/python-iap/compare/v1.4.1...v1.5.0) (2022-07-12)
+
+
+### Features
+
+* add audience parameter ([01dc926](https://github.com/googleapis/python-iap/commit/01dc926fe83c7e774aefa7d5b859aa0c8a606e8e))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core >= 2.8.0 ([#110](https://github.com/googleapis/python-iap/issues/110)) ([01dc926](https://github.com/googleapis/python-iap/commit/01dc926fe83c7e774aefa7d5b859aa0c8a606e8e))
+* require python 3.7+ ([#112](https://github.com/googleapis/python-iap/issues/112)) ([7230d5f](https://github.com/googleapis/python-iap/commit/7230d5f2d9b15c970d56305a823886858b3d23c9))
+
 ## [1.4.1](https://github.com/googleapis/python-iap/compare/v1.4.0...v1.4.1) (2022-06-03)
 
 
