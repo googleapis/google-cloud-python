@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-runtimeconfig/#history
 
+## [0.33.2](https://github.com/googleapis/python-runtimeconfig/compare/v0.33.1...v0.33.2) (2022-07-10)
+
+
+### Bug Fixes
+
+* require python 3.7+ ([#154](https://github.com/googleapis/python-runtimeconfig/issues/154)) ([3872130](https://github.com/googleapis/python-runtimeconfig/commit/38721304e4ddacbec3c57a6c03dc3f21d91b62f3))
+
 ## [0.33.1](https://github.com/googleapis/python-runtimeconfig/compare/v0.33.0...v0.33.1) (2022-06-06)
 
 
