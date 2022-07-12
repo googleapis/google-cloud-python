@@ -4098,6 +4098,28 @@ def test_grafeas_transport_auth_adc(transport_class):
 
 
 @pytest.mark.parametrize(
+    "transport_class",
+    [
+        transports.GrafeasGrpcTransport,
+        transports.GrafeasGrpcAsyncIOTransport,
+    ],
+)
+def test_grafeas_transport_auth_gdch_credentials(transport_class):
+    host = "https://language.com"
+    api_audience_tests = [None, "https://language2.com"]
+    api_audience_expect = [host, "https://language2.com"]
+    for t, e in zip(api_audience_tests, api_audience_expect):
+        with mock.patch.object(google.auth, "default", autospec=True) as adc:
+            gdch_mock = mock.MagicMock()
+            type(gdch_mock).with_gdch_audience = mock.PropertyMock(
+                return_value=gdch_mock
+            )
+            adc.return_value = (gdch_mock, None)
+            transport_class(host=host, api_audience=t)
+            gdch_mock.with_gdch_audience.assert_called_once_with(e)
+
+
+@pytest.mark.parametrize(
     "transport_class,grpc_helpers",
     [
         (transports.GrafeasGrpcTransport, grpc_helpers),

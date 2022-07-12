@@ -213,6 +213,7 @@ def test_grafeas_host_no_port.*?def test_grafeas_grpc_transport_channel""",
 \]\)
 def test_api_key_credentials.*?client_info=transports.base.DEFAULT_CLIENT_INFO,
                 always_use_jwt_access=True,
+                api_audience=None,
             \)""",
     """""",
 
