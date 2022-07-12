@@ -21,7 +21,7 @@ import setuptools
 
 name = "google-cloud-ids"
 description = "Cloud IDS API client library"
-version = "1.1.2"
+version = "1.2.0"
 url = "https://github.com/googleapis/python-ids"
 release_status = "Development Status :: 5 - Production/Stable"
 dependencies = [

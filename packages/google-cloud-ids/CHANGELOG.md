@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.2.0](https://github.com/googleapis/python-ids/compare/v1.1.2...v1.2.0) (2022-07-12)
+
+
+### Features
+
+* add audience parameter ([6f977e1](https://github.com/googleapis/python-ids/commit/6f977e1b2b9c8a1e721430fdd7a4abb6f00cbdf1))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core >= 2.8.0 ([#59](https://github.com/googleapis/python-ids/issues/59)) ([6f977e1](https://github.com/googleapis/python-ids/commit/6f977e1b2b9c8a1e721430fdd7a4abb6f00cbdf1))
+* require python 3.7+ ([#61](https://github.com/googleapis/python-ids/issues/61)) ([62079cc](https://github.com/googleapis/python-ids/commit/62079ccf399b78a4da7af94337a099732872ce98))
+
 ## [1.1.2](https://github.com/googleapis/python-ids/compare/v1.1.1...v1.1.2) (2022-06-03)
 
 
