@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.5.0](https://github.com/googleapis/sphinx-docfx-yaml/compare/v1.4.8...v1.5.0) (2022-07-11)
+
+
+### Features
+
+* support devsite notices ([#222](https://github.com/googleapis/sphinx-docfx-yaml/issues/222)) ([0da9224](https://github.com/googleapis/sphinx-docfx-yaml/commit/0da9224712f846485bdcc13807904b7e5e094e34))
+
+
+### Bug Fixes
+
+* include dependency for librarytest ([#218](https://github.com/googleapis/sphinx-docfx-yaml/issues/218)) ([420780b](https://github.com/googleapis/sphinx-docfx-yaml/commit/420780bf873bd0fc993fbbaa98833649bf0b2762))
+
 ### [1.4.8](https://github.com/googleapis/sphinx-docfx-yaml/compare/v1.4.7...v1.4.8) (2022-05-24)
 
 
