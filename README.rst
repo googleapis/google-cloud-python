@@ -112,7 +112,7 @@ Libraries
    * - `BigQuery Connection <https://github.com/googleapis/python-bigquery-connection>`_
      - |stable|
      - |PyPI-google-cloud-bigquery-connection|
-   * - `BigQuery Data Transfer Service <https://github.com/googleapis/python-bigquery-datatransfer>`_
+   * - `BigQuery Data Transfer <https://github.com/googleapis/python-bigquery-datatransfer>`_
      - |stable|
      - |PyPI-google-cloud-bigquery-datatransfer|
    * - `BigQuery Logging Protos <https://github.com/googleapis/python-bigquery-logging>`_
@@ -151,7 +151,7 @@ Libraries
    * - `Compute Engine <https://github.com/googleapis/python-compute>`_
      - |stable|
      - |PyPI-google-cloud-compute|
-   * - `Contact Center AI Insights API <https://github.com/googleapis/python-contact-center-insights>`_
+   * - `Contact Center AI Insights <https://github.com/googleapis/python-contact-center-insights>`_
      - |stable|
      - |PyPI-google-cloud-contact-center-insights|
    * - `Container Analysis <https://github.com/googleapis/python-containeranalysis>`_
@@ -169,7 +169,7 @@ Libraries
    * - `Database Migration Service <https://github.com/googleapis/python-dms>`_
      - |stable|
      - |PyPI-google-cloud-dms|
-   * - `Dataplex API <https://github.com/googleapis/python-dataplex>`_
+   * - `Dataplex <https://github.com/googleapis/python-dataplex>`_
      - |stable|
      - |PyPI-google-cloud-dataplex|
    * - `Dataproc <https://github.com/googleapis/python-dataproc>`_
@@ -196,13 +196,13 @@ Libraries
    * - `Dialogflow CX <https://github.com/googleapis/python-dialogflow-cx>`_
      - |stable|
      - |PyPI-google-cloud-dialogflow-cx|
-   * - `Document Understanding API <https://github.com/googleapis/python-documentai>`_
+   * - `Document AI <https://github.com/googleapis/python-documentai>`_
      - |stable|
      - |PyPI-google-cloud-documentai|
    * - `Domains <https://github.com/googleapis/python-domains>`_
      - |stable|
      - |PyPI-google-cloud-domains|
-   * - `Essential Contacts API <https://github.com/googleapis/python-essential-contacts>`_
+   * - `Essential Contacts <https://github.com/googleapis/python-essential-contacts>`_
      - |stable|
      - |PyPI-google-cloud-essential-contacts|
    * - `Eventarc <https://github.com/googleapis/python-eventarc>`_
@@ -217,7 +217,7 @@ Libraries
    * - `Functions <https://github.com/googleapis/python-functions>`_
      - |stable|
      - |PyPI-google-cloud-functions|
-   * - `GKE Hub API <https://github.com/googleapis/python-gke-hub>`_
+   * - `GKE Hub <https://github.com/googleapis/python-gke-hub>`_
      - |stable|
      - |PyPI-google-cloud-gke-hub|
    * - `Game Servers <https://github.com/googleapis/python-game-servers>`_
@@ -262,7 +262,7 @@ Libraries
    * - `Memorystore for Memcached <https://github.com/googleapis/python-memcache>`_
      - |stable|
      - |PyPI-google-cloud-memcache|
-   * - `Metrics Scopes API <https://github.com/googleapis/python-monitoring-metrics-scopes>`_
+   * - `Metrics Scopes <https://github.com/googleapis/python-monitoring-metrics-scopes>`_
      - |stable|
      - |PyPI-google-cloud-monitoring-metrics-scopes|
    * - `Monitoring Dashboards <https://github.com/googleapis/python-monitoring-dashboards>`_
@@ -277,7 +277,7 @@ Libraries
    * - `Network Connectivity Center <https://github.com/googleapis/python-network-connectivity>`_
      - |stable|
      - |PyPI-google-cloud-network-connectivity|
-   * - `Network Management API <https://github.com/googleapis/python-network-management>`_
+   * - `Network Management <https://github.com/googleapis/python-network-management>`_
      - |stable|
      - |PyPI-google-cloud-network-management|
    * - `OS Login <https://github.com/googleapis/python-oslogin>`_
@@ -298,19 +298,19 @@ Libraries
    * - `Pub/Sub Lite <https://github.com/googleapis/python-pubsublite>`_
      - |stable|
      - |PyPI-google-cloud-pubsublite|
-   * - `Recommender API <https://github.com/googleapis/python-recommender>`_
+   * - `Recommender <https://github.com/googleapis/python-recommender>`_
      - |stable|
      - |PyPI-google-cloud-recommender|
    * - `Redis <https://github.com/googleapis/python-redis>`_
      - |stable|
      - |PyPI-google-cloud-redis|
-   * - `Resource Manager API <https://github.com/googleapis/python-resource-manager>`_
+   * - `Resource Manager <https://github.com/googleapis/python-resource-manager>`_
      - |stable|
      - |PyPI-google-cloud-resource-manager|
    * - `Resource Settings <https://github.com/googleapis/python-resource-settings>`_
      - |stable|
      - |PyPI-google-cloud-resource-settings|
-   * - `Retail API <https://github.com/googleapis/python-retail>`_
+   * - `Retail <https://github.com/googleapis/python-retail>`_
      - |stable|
      - |PyPI-google-cloud-retail|
    * - `Scheduler <https://github.com/googleapis/python-scheduler>`_
@@ -325,13 +325,13 @@ Libraries
    * - `Security Scanner <https://github.com/googleapis/python-websecurityscanner>`_
      - |stable|
      - |PyPI-google-cloud-websecurityscanner|
-   * - `Service Control API <https://github.com/googleapis/python-service-control>`_
+   * - `Service Control <https://github.com/googleapis/python-service-control>`_
      - |stable|
      - |PyPI-google-cloud-service-control|
    * - `Service Directory <https://github.com/googleapis/python-service-directory>`_
      - |stable|
      - |PyPI-google-cloud-service-directory|
-   * - `Service Management API <https://github.com/googleapis/python-service-management>`_
+   * - `Service Management <https://github.com/googleapis/python-service-management>`_
      - |stable|
      - |PyPI-google-cloud-service-management|
    * - `Service Usage <https://github.com/googleapis/python-service-usage>`_
@@ -409,12 +409,24 @@ Libraries
    * - `Analytics Data API <https://github.com/googleapis/python-analytics-data>`_
      - |preview|
      - |PyPI-google-analytics-data|
+   * - `Anthos Multicloud <https://github.com/googleapis/python-gke-multicloud>`_
+     - |preview|
+     - |PyPI-google-cloud-gke-multicloud|
+   * - `Apigee Registry API <https://github.com/googleapis/python-apigee-registry>`_
+     - |preview|
+     - |PyPI-google-cloud-apigee-registry|
    * - `Area 120 Tables API <https://github.com/googleapis/python-area120-tables>`_
      - |preview|
      - |PyPI-google-area120-tables|
    * - `Audit Log <https://github.com/googleapis/python-audit-log>`_
      - |preview|
      - |PyPI-google-cloud-audit-log|
+   * - `Backup for GKE <https://github.com/googleapis/python-gke-backup>`_
+     - |preview|
+     - |PyPI-google-cloud-gke-backup|
+   * - `Batch <https://github.com/googleapis/python-batch>`_
+     - |preview|
+     - |PyPI-google-cloud-batch|
    * - `BigQuery Analytics Hub <https://github.com/googleapis/python-bigquery-data-exchange>`_
      - |preview|
      - |PyPI-google-cloud-bigquery-data-exchange|
@@ -424,7 +436,7 @@ Libraries
    * - `BigQuery connector for pandas <https://github.com/googleapis/python-bigquery-pandas>`_
      - |preview|
      - |PyPI-pandas-gbq|
-   * - `Certificate Manager API <https://github.com/googleapis/python-certificate-manager>`_
+   * - `Certificate Manager <https://github.com/googleapis/python-certificate-manager>`_
      - |preview|
      - |PyPI-google-cloud-certificate-manager|
    * - `DNS <https://github.com/googleapis/python-dns>`_
@@ -439,25 +451,28 @@ Libraries
    * - `Dataflow <https://github.com/googleapis/python-dataflow-client>`_
      - |preview|
      - |PyPI-google-cloud-dataflow-client|
+   * - `Dataform <https://github.com/googleapis/python-dataform>`_
+     - |preview|
+     - |PyPI-google-cloud-dataform|
    * - `Error Reporting <https://github.com/googleapis/python-error-reporting>`_
      - |preview|
      - |PyPI-google-cloud-error-reporting|
    * - `Eventarc Publishing <https://github.com/googleapis/python-eventarc-publishing>`_
      - |preview|
      - |PyPI-google-cloud-eventarc-publishing|
-   * - `GKE Connect Gateway API <https://github.com/googleapis/python-gke-connect-gateway>`_
+   * - `GKE Connect Gateway <https://github.com/googleapis/python-gke-connect-gateway>`_
      - |preview|
      - |PyPI-google-cloud-gke-connect-gateway|
    * - `Life Sciences <https://github.com/googleapis/python-life-sciences>`_
      - |preview|
      - |PyPI-google-cloud-life-sciences|
-   * - `Live Stream API <https://github.com/googleapis/python-video-live-stream>`_
+   * - `Live Stream <https://github.com/googleapis/python-video-live-stream>`_
      - |preview|
      - |PyPI-google-cloud-video-live-stream|
    * - `Media Translation <https://github.com/googleapis/python-media-translation>`_
      - |preview|
      - |PyPI-google-cloud-media-translation|
-   * - `Network Security API <https://github.com/googleapis/python-network-security>`_
+   * - `Network Security <https://github.com/googleapis/python-network-security>`_
      - |preview|
      - |PyPI-google-cloud-network-security|
    * - `Network Services <https://github.com/googleapis/python-network-services>`_
@@ -711,10 +726,18 @@ Libraries
      :target: https://pypi.org/project/google-analytics-admin
 .. |PyPI-google-analytics-data| image:: https://img.shields.io/pypi/v/google-analytics-data.svg
      :target: https://pypi.org/project/google-analytics-data
+.. |PyPI-google-cloud-gke-multicloud| image:: https://img.shields.io/pypi/v/google-cloud-gke-multicloud.svg
+     :target: https://pypi.org/project/google-cloud-gke-multicloud
+.. |PyPI-google-cloud-apigee-registry| image:: https://img.shields.io/pypi/v/google-cloud-apigee-registry.svg
+     :target: https://pypi.org/project/google-cloud-apigee-registry
 .. |PyPI-google-area120-tables| image:: https://img.shields.io/pypi/v/google-area120-tables.svg
      :target: https://pypi.org/project/google-area120-tables
 .. |PyPI-google-cloud-audit-log| image:: https://img.shields.io/pypi/v/google-cloud-audit-log.svg
      :target: https://pypi.org/project/google-cloud-audit-log
+.. |PyPI-google-cloud-gke-backup| image:: https://img.shields.io/pypi/v/google-cloud-gke-backup.svg
+     :target: https://pypi.org/project/google-cloud-gke-backup
+.. |PyPI-google-cloud-batch| image:: https://img.shields.io/pypi/v/google-cloud-batch.svg
+     :target: https://pypi.org/project/google-cloud-batch
 .. |PyPI-google-cloud-bigquery-data-exchange| image:: https://img.shields.io/pypi/v/google-cloud-bigquery-data-exchange.svg
      :target: https://pypi.org/project/google-cloud-bigquery-data-exchange
 .. |PyPI-google-cloud-bigquery-migration| image:: https://img.shields.io/pypi/v/google-cloud-bigquery-migration.svg
@@ -731,6 +754,8 @@ Libraries
      :target: https://pypi.org/project/google-cloud-data-qna
 .. |PyPI-google-cloud-dataflow-client| image:: https://img.shields.io/pypi/v/google-cloud-dataflow-client.svg
      :target: https://pypi.org/project/google-cloud-dataflow-client
+.. |PyPI-google-cloud-dataform| image:: https://img.shields.io/pypi/v/google-cloud-dataform.svg
+     :target: https://pypi.org/project/google-cloud-dataform
 .. |PyPI-google-cloud-error-reporting| image:: https://img.shields.io/pypi/v/google-cloud-error-reporting.svg
      :target: https://pypi.org/project/google-cloud-error-reporting
 .. |PyPI-google-cloud-eventarc-publishing| image:: https://img.shields.io/pypi/v/google-cloud-eventarc-publishing.svg
