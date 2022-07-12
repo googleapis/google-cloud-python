@@ -549,6 +549,7 @@ class RouteInfo(proto.Message):
         NEXT_HOP_INTERNET_GATEWAY = 8
         NEXT_HOP_BLACKHOLE = 9
         NEXT_HOP_ILB = 10
+        NEXT_HOP_ROUTER_APPLIANCE = 11
 
     route_type = proto.Field(
         proto.ENUM,
@@ -1036,6 +1037,7 @@ class AbortInfo(proto.Message):
         MISMATCHED_SOURCE_NETWORK = 12
         DESTINATION_ENDPOINT_NOT_FOUND = 13
         MISMATCHED_DESTINATION_NETWORK = 14
+        UNSUPPORTED = 15
 
     cause = proto.Field(
         proto.ENUM,
