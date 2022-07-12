@@ -100,7 +100,7 @@ def _make_iam_token_request(
     )
 
     if response.status != http_client.OK:
-        exceptions.RefreshError(_REFRESH_ERROR, response_body)
+        raise exceptions.RefreshError(_REFRESH_ERROR, response_body)
 
     try:
         token_response = json.loads(response_body)
