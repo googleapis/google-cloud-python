@@ -4,6 +4,21 @@
 
 [1]: https://pypi.org/project/google-cloud-logging/#history
 
+## [3.2.0](https://github.com/googleapis/python-logging/compare/v3.1.2...v3.2.0) (2022-07-11)
+
+
+### Features
+
+* add audience parameter ([a2eed8c](https://github.com/googleapis/python-logging/commit/a2eed8c5de4f5ee995b6b7392c0e94dc72e56415))
+* Add support for library instrumentation ([#551](https://github.com/googleapis/python-logging/issues/551)) ([8ba0023](https://github.com/googleapis/python-logging/commit/8ba002386560f2b94756c8cd0e32a8b61cdeb78b))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core >= 2.8.0 ([#575](https://github.com/googleapis/python-logging/issues/575)) ([a2eed8c](https://github.com/googleapis/python-logging/commit/a2eed8c5de4f5ee995b6b7392c0e94dc72e56415))
+* **deps:** require google-cloud-core >= 2.0.0 ([a2eed8c](https://github.com/googleapis/python-logging/commit/a2eed8c5de4f5ee995b6b7392c0e94dc72e56415))
+* require python 3.7+ ([#580](https://github.com/googleapis/python-logging/issues/580)) ([0b3eb52](https://github.com/googleapis/python-logging/commit/0b3eb5255f3294f9631deec3425a89cb06dc2c14))
+
 ## [3.1.2](https://github.com/googleapis/python-logging/compare/v3.1.1...v3.1.2) (2022-06-03)
 
 
