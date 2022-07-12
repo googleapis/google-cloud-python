@@ -5,6 +5,19 @@
 [1]: https://pypi.org/project/google-cloud-phishing-protection/#history
 
 
+## [1.6.0](https://github.com/googleapis/python-phishingprotection/compare/v1.5.2...v1.6.0) (2022-07-07)
+
+
+### Features
+
+* add audience parameter ([5843373](https://github.com/googleapis/python-phishingprotection/commit/5843373ee54bcf7523eeed6e48888737048fd406))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core >= 2.8.0 ([#194](https://github.com/googleapis/python-phishingprotection/issues/194)) ([5843373](https://github.com/googleapis/python-phishingprotection/commit/5843373ee54bcf7523eeed6e48888737048fd406))
+* require python 3.7+ ([#196](https://github.com/googleapis/python-phishingprotection/issues/196)) ([6c26881](https://github.com/googleapis/python-phishingprotection/commit/6c26881e47da859cba0370233412e9d8445c4a51))
+
 ## [1.5.2](https://github.com/googleapis/python-phishingprotection/compare/v1.5.1...v1.5.2) (2022-06-06)
 
 
