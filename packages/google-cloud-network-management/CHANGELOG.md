@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.0](https://github.com/googleapis/python-network-management/compare/v1.4.0...v1.5.0) (2022-07-12)
+
+
+### Features
+
+* add new abort cause and new route next hop type ([#124](https://github.com/googleapis/python-network-management/issues/124)) ([d4363e4](https://github.com/googleapis/python-network-management/commit/d4363e46fd8647a7f46fcc8e6981a73273c471ce))
+
 ## [1.4.0](https://github.com/googleapis/python-network-management/compare/v1.3.3...v1.4.0) (2022-07-06)
 
 
