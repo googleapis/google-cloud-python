@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.56.4](https://github.com/googleapis/python-api-common-protos/compare/v1.56.3...v1.56.4) (2022-07-12)
+
+
+### Bug Fixes
+
+* require python 3.7+ ([#119](https://github.com/googleapis/python-api-common-protos/issues/119)) ([507b58d](https://github.com/googleapis/python-api-common-protos/commit/507b58dfa0516aedf57880b384e92cda97152398))
+
 ## [1.56.3](https://github.com/googleapis/python-api-common-protos/compare/v1.56.2...v1.56.3) (2022-06-21)
 
 
