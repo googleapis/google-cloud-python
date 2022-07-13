@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.5.0](https://github.com/googleapis/python-network-security/compare/v0.4.2...v0.5.0) (2022-07-13)
+
+
+### Features
+
+* add audience parameter ([5e99e7e](https://github.com/googleapis/python-network-security/commit/5e99e7ed2ed3ac60009d237ab8131ed6ca0725a9))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.32.0,>=2.8.0 ([#110](https://github.com/googleapis/python-network-security/issues/110)) ([a700dc2](https://github.com/googleapis/python-network-security/commit/a700dc2c70e91e92540d819e412a91b1253e2f40))
+* require python 3.7+ ([#108](https://github.com/googleapis/python-network-security/issues/108)) ([dea6632](https://github.com/googleapis/python-network-security/commit/dea6632f8b376ec619260f2207d996f1994d46e5))
+
 ## [0.4.2](https://github.com/googleapis/python-network-security/compare/v0.4.1...v0.4.2) (2022-06-03)
 
 
