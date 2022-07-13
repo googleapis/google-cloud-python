@@ -324,7 +324,7 @@ View the [source code](https://github.com/googleapis/python-storage/blob/main/sa
 View the [source code](https://github.com/googleapis/python-storage/blob/main/samples/snippets/storage_create_bucket_dual_region.py). To run this sample:
 
 
-`python storage_create_bucket_dual_region.py <BUCKET_NAME> <REGION_1> <REGION_2>`
+`python storage_create_bucket_dual_region.py <BUCKET_NAME> <LOCATION> <REGION_1> <REGION_2>`
 
 -----
 ### Create Bucket Notifications

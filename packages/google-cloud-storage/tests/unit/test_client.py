@@ -1451,6 +1451,44 @@ class TestClient(unittest.TestCase):
             _target_object=bucket,
         )
 
+    def test_create_bucket_w_custom_dual_region(self):
+        project = "PROJECT"
+        bucket_name = "bucket-name"
+        location = "US"
+        data_locations = ["US-EAST1", "US-WEST1"]
+        api_response = {
+            "location": location,
+            "customPlacementConfig": {"dataLocations": data_locations},
+            "name": bucket_name,
+        }
+        credentials = _make_credentials()
+        client = self._make_one(project=project, credentials=credentials)
+        client._post_resource = mock.Mock()
+        client._post_resource.return_value = api_response
+
+        bucket = client.create_bucket(
+            bucket_name, location=location, data_locations=data_locations
+        )
+
+        self.assertEqual(bucket.location, location)
+        self.assertEqual(bucket.data_locations, data_locations)
+
+        expected_path = "/b"
+        expected_data = {
+            "location": location,
+            "customPlacementConfig": {"dataLocations": data_locations},
+            "name": bucket_name,
+        }
+        expected_query_params = {"project": project}
+        client._post_resource.assert_called_once_with(
+            expected_path,
+            expected_data,
+            query_params=expected_query_params,
+            timeout=self._get_default_timeout(),
+            retry=DEFAULT_RETRY,
+            _target_object=bucket,
+        )
+
     def test_create_bucket_w_explicit_project(self):
         project = "PROJECT"
         other_project = "other-project-123"

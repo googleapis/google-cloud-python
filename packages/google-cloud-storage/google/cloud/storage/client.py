@@ -602,6 +602,7 @@ class Client(ClientWithProject):
             google.cloud.exceptions.NotFound
                 If the bucket is not found.
         """
+
         return self._connection.api_request(
             method="POST",
             path=path,
@@ -847,6 +848,7 @@ class Client(ClientWithProject):
         project=None,
         user_project=None,
         location=None,
+        data_locations=None,
         predefined_acl=None,
         predefined_default_object_acl=None,
         timeout=_DEFAULT_TIMEOUT,
@@ -876,7 +878,11 @@ class Client(ClientWithProject):
             location (str):
                 (Optional) The location of the bucket. If not passed,
                 the default location, US, will be used. If specifying a dual-region,
-                can be specified as a string, e.g., 'US-CENTRAL1+US-WEST1'. See:
+                `data_locations` should be set in conjunction.. See:
+                https://cloud.google.com/storage/docs/locations
+            data_locations (list of str):
+                (Optional) The list of regional locations of a custom dual-region bucket.
+                Dual-regions require exactly 2 regional locations. See:
                 https://cloud.google.com/storage/docs/locations
             predefined_acl (str):
                 (Optional) Name of predefined ACL to apply to bucket. See:
@@ -978,6 +984,9 @@ class Client(ClientWithProject):
 
         if location is not None:
             properties["location"] = location
+
+        if data_locations is not None:
+            properties["customPlacementConfig"] = {"dataLocations": data_locations}
 
         api_response = self._post_resource(
             "/b",

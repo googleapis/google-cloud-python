@@ -2419,12 +2419,26 @@ class Bucket(_PropertyMixin):
         self._location = value
 
     @property
+    def data_locations(self):
+        """Retrieve the list of regional locations for custom dual-region buckets.
+
+        See https://cloud.google.com/storage/docs/json_api/v1/buckets and
+        https://cloud.google.com/storage/docs/locations
+
+        Returns ``None`` if the property has not been set before creation,
+        if the bucket's resource has not been loaded from the server,
+        or if the bucket is not a dual-regions bucket.
+        :rtype: list of str or ``NoneType``
+        """
+        custom_placement_config = self._properties.get("customPlacementConfig", {})
+        return custom_placement_config.get("dataLocations")
+
+    @property
     def location_type(self):
-        """Retrieve or set the location type for the bucket.
+        """Retrieve the location type for the bucket.
 
         See https://cloud.google.com/storage/docs/storage-classes
 
-        :setter: Set the location type for this bucket.
         :getter: Gets the the location type for this bucket.
 
         :rtype: str or ``NoneType``

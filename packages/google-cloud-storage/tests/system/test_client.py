@@ -68,21 +68,21 @@ def test_create_bucket_dual_region(storage_client, buckets_to_delete):
     from google.cloud.storage.constants import DUAL_REGION_LOCATION_TYPE
 
     new_bucket_name = _helpers.unique_name("dual-region-bucket")
-    region_1 = "US-EAST1"
-    region_2 = "US-WEST1"
-    dual_region = f"{region_1}+{region_2}"
+    location = "US"
+    data_locations = ["US-EAST1", "US-WEST1"]
 
     with pytest.raises(exceptions.NotFound):
         storage_client.get_bucket(new_bucket_name)
 
     created = _helpers.retry_429_503(storage_client.create_bucket)(
-        new_bucket_name, location=dual_region
+        new_bucket_name, location=location, data_locations=data_locations
     )
     buckets_to_delete.append(created)
 
     assert created.name == new_bucket_name
-    assert created.location == dual_region
+    assert created.location == location
     assert created.location_type == DUAL_REGION_LOCATION_TYPE
+    assert created.data_locations == data_locations
 
 
 def test_list_buckets(storage_client, buckets_to_delete):
