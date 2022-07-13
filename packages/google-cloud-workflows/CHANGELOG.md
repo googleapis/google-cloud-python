@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.7.1](https://github.com/googleapis/python-workflows/compare/v1.7.0...v1.7.1) (2022-07-13)
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.32.0,>=2.8.0 ([#198](https://github.com/googleapis/python-workflows/issues/198)) ([cbd80e8](https://github.com/googleapis/python-workflows/commit/cbd80e85d218f70c0fce4e7d613cef664a30ebe3))
+
 ## [1.7.0](https://github.com/googleapis/python-workflows/compare/v1.6.3...v1.7.0) (2022-07-06)
 
 
