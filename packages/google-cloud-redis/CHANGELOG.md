@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-cloud-redis/#history
 
+## [2.9.0](https://github.com/googleapis/python-redis/compare/v2.8.1...v2.9.0) (2022-07-13)
+
+
+### Features
+
+* add audience parameter ([0bc27ec](https://github.com/googleapis/python-redis/commit/0bc27ece4d5c5d41807d6438e159dbe663dbc377))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.32.0,>=2.8.0 ([#210](https://github.com/googleapis/python-redis/issues/210)) ([74a944f](https://github.com/googleapis/python-redis/commit/74a944f94044a03da6cc0a8e3a304033fd51f749))
+* require python 3.7+ ([#208](https://github.com/googleapis/python-redis/issues/208)) ([668735f](https://github.com/googleapis/python-redis/commit/668735f784949ac569d176825be3502ccc9a46ff))
+
 ## [2.8.1](https://github.com/googleapis/python-redis/compare/v2.8.0...v2.8.1) (2022-06-06)
 
 
