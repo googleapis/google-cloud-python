@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.7.1](https://github.com/googleapis/python-access-approval/compare/v1.7.0...v1.7.1) (2022-07-13)
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.32.0,>=2.8.0 ([#221](https://github.com/googleapis/python-access-approval/issues/221)) ([0f07e6d](https://github.com/googleapis/python-access-approval/commit/0f07e6dea7e5bb117a98b7bd89e8b91eb6a2b20b))
+
 ## [1.7.0](https://github.com/googleapis/python-access-approval/compare/v1.6.1...v1.7.0) (2022-07-07)
 
 
