@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.4.0](https://github.com/googleapis/python-org-policy/compare/v1.3.3...v1.4.0) (2022-07-13)
+
+
+### Features
+
+* add audience parameter ([7f7d384](https://github.com/googleapis/python-org-policy/commit/7f7d384c1757403c4646133e47daeb6f3d433f14))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.32.0,>=2.8.0 ([#167](https://github.com/googleapis/python-org-policy/issues/167)) ([62f870a](https://github.com/googleapis/python-org-policy/commit/62f870a794649142d076ec5480b6172a782933f3))
+* require python 3.7+ ([#165](https://github.com/googleapis/python-org-policy/issues/165)) ([ebafb70](https://github.com/googleapis/python-org-policy/commit/ebafb705032a43e2b3e4b96e7a93288bd4a217d0))
+
 ## [1.3.3](https://github.com/googleapis/python-org-policy/compare/v1.3.2...v1.3.3) (2022-06-03)
 
 
