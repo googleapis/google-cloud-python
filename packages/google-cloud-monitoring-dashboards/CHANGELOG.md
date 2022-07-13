@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.7.1](https://github.com/googleapis/python-monitoring-dashboards/compare/v2.7.0...v2.7.1) (2022-07-13)
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.32.0,>=2.8.0 ([#209](https://github.com/googleapis/python-monitoring-dashboards/issues/209)) ([192233f](https://github.com/googleapis/python-monitoring-dashboards/commit/192233f6a38a9a14f61829591d70b8ccf940a061))
+
 ## [2.7.0](https://github.com/googleapis/python-monitoring-dashboards/compare/v2.6.1...v2.7.0) (2022-07-06)
 
 
