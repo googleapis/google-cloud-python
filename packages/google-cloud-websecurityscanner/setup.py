@@ -21,7 +21,7 @@ import setuptools
 
 name = "google-cloud-websecurityscanner"
 description = ("Google Cloud Web Security Scanner API client library",)
-version = "1.8.0"
+version = "1.8.1"
 # Should be one of:
 # 'Development Status :: 3 - Alpha'
 # 'Development Status :: 4 - Beta'
