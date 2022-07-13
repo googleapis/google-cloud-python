@@ -22,7 +22,7 @@ import setuptools
 
 name = "google-cloud-memcache"
 description = "Memorystore for Memcached API client library"
-version = "1.4.0"
+version = "1.4.1"
 release_status = "Development Status :: 5 - Production/Stable"
 dependencies = [
     "google-api-core[grpc] >= 1.32.0, <3.0.0dev,!=2.0.*,!=2.1.*,!=2.2.*,!=2.3.*,!=2.4.*,!=2.5.*,!=2.6.*,!=2.7.*",

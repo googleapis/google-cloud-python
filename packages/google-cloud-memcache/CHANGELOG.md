@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.1](https://github.com/googleapis/python-memcache/compare/v1.4.0...v1.4.1) (2022-07-13)
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.32.0,>=2.8.0 ([#199](https://github.com/googleapis/python-memcache/issues/199)) ([aa7978e](https://github.com/googleapis/python-memcache/commit/aa7978edd9b6fbe831775622ed3066e39112c2b1))
+
 ## [1.4.0](https://github.com/googleapis/python-memcache/compare/v1.3.2...v1.4.0) (2022-07-06)
 
 
