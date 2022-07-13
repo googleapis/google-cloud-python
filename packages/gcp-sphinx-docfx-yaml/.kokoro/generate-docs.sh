@@ -115,8 +115,20 @@ for package in $(echo "${python_bucket_items}" | cut -d "-" -f 5- | rev | cut -d
     # Build YAML tarballs for Cloud-RAD.
     nox -s docfx
 
+    # Update specific names to be up to date.
+    name=$(jq --raw-output '.name // empty' .repo-metadata.json)
+    if [[ "${name}" == "translation" ]]; then
+      name="translate"
+    fi
+    if [[ "${name}" == "clouderroreporting" ]]; then
+      name="clouderrorreporting"
+    fi
+    if [[ "${name}" == "iam" ]]; then
+      name="iamcredentials"
+    fi
+
     python3 -m docuploader create-metadata \
-      --name=$(jq --raw-output '.name // empty' .repo-metadata.json) \
+      --name=${name} \
       --version=$(python3 setup.py --version) \
       --language=$(jq --raw-output '.language // empty' .repo-metadata.json) \
       --distribution-name=$(python3 setup.py --name) \
