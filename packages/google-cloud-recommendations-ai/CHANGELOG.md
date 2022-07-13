@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.7.0](https://github.com/googleapis/python-recommendations-ai/compare/v0.6.2...v0.7.0) (2022-07-13)
+
+
+### Features
+
+* add audience parameter ([8a7307a](https://github.com/googleapis/python-recommendations-ai/commit/8a7307a5c7bcefdb150724ec04dffa848dbc2956))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.32.0,>=2.8.0 ([#165](https://github.com/googleapis/python-recommendations-ai/issues/165)) ([90b8038](https://github.com/googleapis/python-recommendations-ai/commit/90b80386887a10bc61cec5f947314ea027a18889))
+* require python 3.7+ ([#163](https://github.com/googleapis/python-recommendations-ai/issues/163)) ([0a1954c](https://github.com/googleapis/python-recommendations-ai/commit/0a1954cc2b8b04ab0b5e1fb6f1e95a18f129d6b7))
+
 ## [0.6.2](https://github.com/googleapis/python-recommendations-ai/compare/v0.6.1...v0.6.2) (2022-06-06)
 
 
