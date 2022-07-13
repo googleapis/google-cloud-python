@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.5.0](https://github.com/googleapis/python-service-control/compare/v1.4.2...v1.5.0) (2022-07-13)
+
+
+### Features
+
+* add audience parameter ([dd7d949](https://github.com/googleapis/python-service-control/commit/dd7d9491c0f8cc99b83f67329eda7cc2e5291afe))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.32.0,>=2.8.0 ([#155](https://github.com/googleapis/python-service-control/issues/155)) ([1277168](https://github.com/googleapis/python-service-control/commit/12771683f29f337dae4ffabfb847499ee6f8bee7))
+* require python 3.7+ ([#153](https://github.com/googleapis/python-service-control/issues/153)) ([e5ba791](https://github.com/googleapis/python-service-control/commit/e5ba7911fb6c38df3161790b67497702a084ad68))
+
 ## [1.4.2](https://github.com/googleapis/python-service-control/compare/v1.4.1...v1.4.2) (2022-06-03)
 
 
