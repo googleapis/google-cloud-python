@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.1](https://github.com/googleapis/python-notebooks/compare/v1.4.0...v1.4.1) (2022-07-13)
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.32.0,>=2.8.0 ([#180](https://github.com/googleapis/python-notebooks/issues/180)) ([f3235d9](https://github.com/googleapis/python-notebooks/commit/f3235d98fae31fb5728594131a74466785ac7cc4))
+
 ## [1.4.0](https://github.com/googleapis/python-notebooks/compare/v1.3.2...v1.4.0) (2022-07-07)
 
 
