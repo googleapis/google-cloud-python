@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.9.1](https://github.com/googleapis/python-media-translation/compare/v0.9.0...v0.9.1) (2022-07-13)
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.32.0,>=2.8.0 ([#203](https://github.com/googleapis/python-media-translation/issues/203)) ([57407d6](https://github.com/googleapis/python-media-translation/commit/57407d6cfa6a854b59dcca5e7730ac401196c021))
+
 ## [0.9.0](https://github.com/googleapis/python-media-translation/compare/v0.8.2...v0.9.0) (2022-07-06)
 
 
