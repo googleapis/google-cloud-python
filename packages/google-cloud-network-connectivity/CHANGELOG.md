@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.1](https://github.com/googleapis/python-network-connectivity/compare/v1.4.0...v1.4.1) (2022-07-13)
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.32.0,>=2.8.0 ([#190](https://github.com/googleapis/python-network-connectivity/issues/190)) ([7b0e8a6](https://github.com/googleapis/python-network-connectivity/commit/7b0e8a6e3283a7cda78e6a75ce898e8f096ce1ce))
+
 ## [1.4.0](https://github.com/googleapis/python-network-connectivity/compare/v1.3.2...v1.4.0) (2022-07-06)
 
 
