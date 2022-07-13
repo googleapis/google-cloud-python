@@ -5,6 +5,13 @@
 [1]: https://pypi.org/project/google-cloud-pubsub/#history
 
 
+## [2.13.3](https://github.com/googleapis/python-pubsub/compare/v2.13.2...v2.13.3) (2022-07-13)
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.32.0,>=2.8.0 ([#735](https://github.com/googleapis/python-pubsub/issues/735)) ([a5624fb](https://github.com/googleapis/python-pubsub/commit/a5624fbee2951c7f0c3e413d7d399a41fa0aa4bf))
+
 ## [2.13.2](https://github.com/googleapis/python-pubsub/compare/v2.13.1...v2.13.2) (2022-07-08)
 
 
