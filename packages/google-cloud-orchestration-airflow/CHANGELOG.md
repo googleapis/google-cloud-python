@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.1](https://github.com/googleapis/python-orchestration-airflow/compare/v1.4.0...v1.4.1) (2022-07-13)
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.32.0,>=2.8.0 ([#120](https://github.com/googleapis/python-orchestration-airflow/issues/120)) ([3fcf6fc](https://github.com/googleapis/python-orchestration-airflow/commit/3fcf6fc44f0d58f7d9da00a434748be0723292b6))
+
 ## [1.4.0](https://github.com/googleapis/python-orchestration-airflow/compare/v1.3.2...v1.4.0) (2022-07-07)
 
 
