@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.1](https://github.com/googleapis/python-iap/compare/v1.5.0...v1.5.1) (2022-07-13)
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.32.0,>=2.8.0 ([#114](https://github.com/googleapis/python-iap/issues/114)) ([ecf5c0e](https://github.com/googleapis/python-iap/commit/ecf5c0ef344578bc32474b1b6b13216faa2ebcbb))
+
 ## [1.5.0](https://github.com/googleapis/python-iap/compare/v1.4.1...v1.5.0) (2022-07-12)
 
 
