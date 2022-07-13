@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.12.1](https://github.com/googleapis/python-os-config/compare/v1.12.0...v1.12.1) (2022-07-13)
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.32.0,>=2.8.0 ([#218](https://github.com/googleapis/python-os-config/issues/218)) ([50330f2](https://github.com/googleapis/python-os-config/commit/50330f24ebe9bcc6851725ad6669331a9349020b))
+
 ## [1.12.0](https://github.com/googleapis/python-os-config/compare/v1.11.2...v1.12.0) (2022-07-07)
 
 
