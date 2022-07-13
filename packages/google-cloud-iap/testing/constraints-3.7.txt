@@ -4,7 +4,7 @@
 # Pin the version to the lower bound.
 # e.g., if setup.py has "google-cloud-foo >= 1.14.0, < 2.0.0dev",
 # Then this file should have google-cloud-foo==1.14.0
-google-api-core==2.8.0
+google-api-core==1.32.0
 proto-plus==1.15.0
 grpc-google-iam-v1==0.12.4
 protobuf==3.19.0
