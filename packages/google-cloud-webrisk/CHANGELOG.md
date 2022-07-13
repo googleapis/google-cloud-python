@@ -3,6 +3,13 @@
 [PyPI History][1]
 
 [1]: https://pypi.org/project/google-cloud-webrisk/#history
+## [1.8.1](https://github.com/googleapis/python-webrisk/compare/v1.8.0...v1.8.1) (2022-07-13)
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.32.0,>=2.8.0 ([#213](https://github.com/googleapis/python-webrisk/issues/213)) ([22b0969](https://github.com/googleapis/python-webrisk/commit/22b0969ea75d05c8f8de1a5a76eee0b87a8e0e87))
+
 ## [1.8.0](https://github.com/googleapis/python-webrisk/compare/v1.7.2...v1.8.0) (2022-07-06)
 
 
