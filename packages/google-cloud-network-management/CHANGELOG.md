@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.1](https://github.com/googleapis/python-network-management/compare/v1.5.0...v1.5.1) (2022-07-13)
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.32.0,>=2.8.0 ([#126](https://github.com/googleapis/python-network-management/issues/126)) ([16528e5](https://github.com/googleapis/python-network-management/commit/16528e51ce0997ad258a03f074d0253bcd14d1fe))
+
 ## [1.5.0](https://github.com/googleapis/python-network-management/compare/v1.4.0...v1.5.0) (2022-07-12)
 
 
