@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-cloud-resource-manager/#history
 
+## [1.6.0](https://github.com/googleapis/python-resource-manager/compare/v1.5.1...v1.6.0) (2022-07-13)
+
+
+### Features
+
+* add audience parameter ([eed6fed](https://github.com/googleapis/python-resource-manager/commit/eed6fed2a45127e987e8363577b8efd8a50f66a1))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.32.0,>=2.8.0 ([#213](https://github.com/googleapis/python-resource-manager/issues/213)) ([333ea44](https://github.com/googleapis/python-resource-manager/commit/333ea44734db53f94b557f4bba8953df81ba4121))
+* require python 3.7+ ([#211](https://github.com/googleapis/python-resource-manager/issues/211)) ([2b2ec9f](https://github.com/googleapis/python-resource-manager/commit/2b2ec9fc09b08d09c02605593c2cd24d007882e1))
+
 ## [1.5.1](https://github.com/googleapis/python-resource-manager/compare/v1.5.0...v1.5.1) (2022-06-06)
 
 
