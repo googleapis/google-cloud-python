@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-language/#history
 
+## [2.5.1](https://github.com/googleapis/python-language/compare/v2.5.0...v2.5.1) (2022-07-13)
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.32.0,>=2.8.0 ([#339](https://github.com/googleapis/python-language/issues/339)) ([b971d59](https://github.com/googleapis/python-language/commit/b971d5995aad01f97ddde1caf2039ea64ae45c31))
+
 ## [2.5.0](https://github.com/googleapis/python-language/compare/v2.4.3...v2.5.0) (2022-07-07)
 
 
