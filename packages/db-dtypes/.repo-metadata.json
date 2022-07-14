@@ -1,6 +1,7 @@
 {
     "name": "db-dtypes",
     "name_pretty": "Pandas Data Types for SQL systems (BigQuery, Spanner)",
+    "product_documentation": "https://pandas.pydata.org/pandas-docs/stable/ecosystem.html#ecosystem-extensions",
     "client_documentation": "https://googleapis.dev/python/db-dtypes/latest/index.html",
     "release_level": "stable",
     "language": "python",
@@ -9,5 +10,6 @@
     "distribution_name": "db-dtypes",
     "api_id": "bigquery.googleapis.com",
     "default_version": "",
-    "codeowner_team": "@googleapis/api-bigquery"
+    "codeowner_team": "@googleapis/api-bigquery",
+    "api_description": "Pandas extension data types for data from SQL systems such as BigQuery."
 }
