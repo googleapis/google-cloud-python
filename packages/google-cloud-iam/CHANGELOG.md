@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-cloud-iam/#history
 
+## [2.8.0](https://github.com/googleapis/python-iam/compare/v2.7.0...v2.8.0) (2022-07-14)
+
+
+### Features
+
+* add audience parameter ([5638e04](https://github.com/googleapis/python-iam/commit/5638e04fd5aadeb61f56f770f264a81d4dbcbf91))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.32.0,>=2.8.0 ([#207](https://github.com/googleapis/python-iam/issues/207)) ([5638e04](https://github.com/googleapis/python-iam/commit/5638e04fd5aadeb61f56f770f264a81d4dbcbf91))
+* require python 3.7+ ([#211](https://github.com/googleapis/python-iam/issues/211)) ([c4f23cd](https://github.com/googleapis/python-iam/commit/c4f23cd689143ff5f9607d4d83b445153d2f3de1))
+
 ## [2.7.0](https://github.com/googleapis/python-iam/compare/v2.6.2...v2.7.0) (2022-06-27)
 
 
