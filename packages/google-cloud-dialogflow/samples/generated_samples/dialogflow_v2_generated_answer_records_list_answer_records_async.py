@@ -34,7 +34,6 @@ async def sample_list_answer_records():
     # Initialize request argument(s)
     request = dialogflow_v2.ListAnswerRecordsRequest(
         parent="parent_value",
-        filter="filter_value",
     )
 
     # Make the request

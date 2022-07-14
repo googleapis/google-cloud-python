@@ -39,7 +39,7 @@ def partition(
 class dialogflowCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
-        'analyze_content': ('participant', 'text_input', 'event_input', 'reply_audio_config', 'query_params', 'assist_query_params', 'cx_parameters', 'message_send_time', 'request_id', ),
+        'analyze_content': ('participant', 'text_input', 'audio_input', 'event_input', 'reply_audio_config', 'query_params', 'assist_query_params', 'cx_parameters', 'cx_current_page', 'message_send_time', 'request_id', ),
         'batch_create_entities': ('parent', 'entities', 'language_code', ),
         'batch_create_messages': ('parent', 'requests', ),
         'batch_delete_entities': ('parent', 'entity_values', 'language_code', ),
@@ -93,7 +93,7 @@ class dialogflowCallTransformer(cst.CSTTransformer):
         'get_version': ('name', ),
         'import_agent': ('parent', 'agent_uri', 'agent_content', ),
         'import_documents': ('parent', 'document_template', 'gcs_source', 'import_gcs_custom_metadata', ),
-        'list_answer_records': ('parent', 'page_size', 'page_token', ),
+        'list_answer_records': ('parent', 'filter', 'page_size', 'page_token', ),
         'list_contexts': ('parent', 'page_size', 'page_token', ),
         'list_conversation_profiles': ('parent', 'page_size', 'page_token', ),
         'list_conversations': ('parent', 'page_size', 'page_token', 'filter', ),
@@ -112,7 +112,7 @@ class dialogflowCallTransformer(cst.CSTTransformer):
         'search_agents': ('parent', 'page_size', 'page_token', ),
         'set_agent': ('agent', 'update_mask', ),
         'set_suggestion_feature_config': ('conversation_profile', 'participant_role', 'suggestion_feature_config', ),
-        'streaming_analyze_content': ('participant', 'audio_config', 'text_config', 'reply_audio_config', 'input_audio', 'input_text', 'input_dtmf', 'query_params', 'assist_query_params', 'cx_parameters', 'enable_partial_automated_agent_reply', ),
+        'streaming_analyze_content': ('participant', 'audio_config', 'text_config', 'reply_audio_config', 'input_audio', 'input_text', 'input_dtmf', 'query_params', 'assist_query_params', 'cx_parameters', 'cx_current_page', 'enable_partial_automated_agent_reply', ),
         'streaming_detect_intent': ('session', 'query_input', 'query_params', 'single_utterance', 'output_audio_config', 'output_audio_config_mask', 'input_audio', ),
         'suggest_articles': ('parent', 'latest_message', 'context_size', 'assist_query_params', ),
         'suggest_faq_answers': ('parent', 'latest_message', 'context_size', 'assist_query_params', ),

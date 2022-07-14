@@ -30,6 +30,8 @@ from google.cloud.dialogflow_v2.types import conversation_model
 from google.cloud.dialogflow_v2.types import (
     conversation_model as gcd_conversation_model,
 )
+from google.cloud.location import locations_pb2  # type: ignore
+from google.longrunning import operations_pb2
 from google.longrunning import operations_pb2  # type: ignore
 
 try:
@@ -62,6 +64,7 @@ class ConversationModelsTransport(abc.ABC):
         quota_project_id: Optional[str] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
         always_use_jwt_access: Optional[bool] = False,
+        api_audience: Optional[str] = None,
         **kwargs,
     ) -> None:
         """Instantiate the transport.
@@ -89,11 +92,6 @@ class ConversationModelsTransport(abc.ABC):
                 be used for service account credentials.
         """
 
-        # Save the hostname. Default to port 443 (HTTPS) if none is specified.
-        if ":" not in host:
-            host += ":443"
-        self._host = host
-
         scopes_kwargs = {"scopes": scopes, "default_scopes": self.AUTH_SCOPES}
 
         # Save the scopes.
@@ -114,6 +112,11 @@ class ConversationModelsTransport(abc.ABC):
             credentials, _ = google.auth.default(
                 **scopes_kwargs, quota_project_id=quota_project_id
             )
+            # Don't apply audience if the credentials file passed from user.
+            if hasattr(credentials, "with_gdch_audience"):
+                credentials = credentials.with_gdch_audience(
+                    api_audience if api_audience else host
+                )
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -125,6 +128,11 @@ class ConversationModelsTransport(abc.ABC):
 
         # Save the credentials.
         self._credentials = credentials
+
+        # Save the hostname. Default to port 443 (HTTPS) if none is specified.
+        if ":" not in host:
+            host += ":443"
+        self._host = host
 
     def _prep_wrapped_messages(self, client_info):
         # Precompute the wrapped methods.
@@ -280,6 +288,54 @@ class ConversationModelsTransport(abc.ABC):
     ) -> Callable[
         [conversation_model.CreateConversationModelEvaluationRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_operations(
+        self,
+    ) -> Callable[
+        [operations_pb2.ListOperationsRequest],
+        Union[
+            operations_pb2.ListOperationsResponse,
+            Awaitable[operations_pb2.ListOperationsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_operation(
+        self,
+    ) -> Callable[
+        [operations_pb2.GetOperationRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def cancel_operation(
+        self,
+    ) -> Callable[[operations_pb2.CancelOperationRequest], None,]:
+        raise NotImplementedError()
+
+    @property
+    def get_location(
+        self,
+    ) -> Callable[
+        [locations_pb2.GetLocationRequest],
+        Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_locations(
+        self,
+    ) -> Callable[
+        [locations_pb2.ListLocationsRequest],
+        Union[
+            locations_pb2.ListLocationsResponse,
+            Awaitable[locations_pb2.ListLocationsResponse],
+        ],
     ]:
         raise NotImplementedError()
 

@@ -110,10 +110,11 @@ class ListAnswerRecordsRequest(proto.Message):
             reverse chronological order. Format:
             ``projects/<Project ID>/locations/<Location ID>``.
         filter (str):
-            Required. Filters to restrict results to specific answer
-            records. Filter on answer record type. Currently predicates
-            on ``type`` is supported, valid values are
-            ``ARTICLE_ANSWER``, ``FAQ_ANSWER``.
+            Optional. Filters to restrict results to specific answer
+            records.
+
+            Marked deprecated as it hasn't been, and isn't currently,
+            supported.
 
             For more information about filtering, see `API
             Filtering <https://aip.dev/160>`__.

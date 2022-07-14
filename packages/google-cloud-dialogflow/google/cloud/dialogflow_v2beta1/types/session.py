@@ -452,8 +452,10 @@ class QueryResult(proto.Message):
                collected, or if the matched intent doesn't contain any
                required parameters.
         cancels_slot_filling (bool):
-            Indicates whether the conversational query
-            triggers a cancellation for slot filling.
+            Indicates whether the conversational query triggers a
+            cancellation for slot filling. For more information, see the
+            `cancel slot filling
+            documentation <https://cloud.google.com/dialogflow/es/docs/intents-actions-parameters#cancel>`__.
         fulfillment_text (str):
             The text to be pronounced to the user or shown on the
             screen. Note: This is a legacy field,

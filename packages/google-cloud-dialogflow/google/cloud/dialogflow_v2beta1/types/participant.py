@@ -33,6 +33,7 @@ __protobuf__ = proto.module(
         "ListParticipantsRequest",
         "ListParticipantsResponse",
         "UpdateParticipantRequest",
+        "AudioInput",
         "OutputAudio",
         "AutomatedAgentReply",
         "SuggestionFeature",
@@ -362,6 +363,32 @@ class UpdateParticipantRequest(proto.Message):
     )
 
 
+class AudioInput(proto.Message):
+    r"""Represents the natural language speech audio to be processed.
+
+    Attributes:
+        config (google.cloud.dialogflow_v2beta1.types.InputAudioConfig):
+            Required. Instructs the speech recognizer how
+            to process the speech audio.
+        audio (bytes):
+            Required. The natural language speech audio
+            to be processed. A single request can contain up
+            to 1 minute of speech audio data. The
+            transcribed text cannot contain more than 256
+            bytes.
+    """
+
+    config = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=gcd_audio_config.InputAudioConfig,
+    )
+    audio = proto.Field(
+        proto.BYTES,
+        number=2,
+    )
+
+
 class OutputAudio(proto.Message):
     r"""Represents the natural language speech audio to be played to
     the end user.
@@ -574,6 +601,11 @@ class AnalyzeContentRequest(proto.Message):
             The natural language text to be processed.
 
             This field is a member of `oneof`_ ``input``.
+        audio_input (google.cloud.dialogflow_v2beta1.types.AudioInput):
+            The natural language speech audio to be
+            processed.
+
+            This field is a member of `oneof`_ ``input``.
         event_input (google.cloud.dialogflow_v2beta1.types.EventInput):
             An input event to send to Dialogflow.
 
@@ -598,6 +630,20 @@ class AnalyzeContentRequest(proto.Message):
 
             Note: this field should only be used if you are
             connecting to a Dialogflow CX agent.
+        cx_current_page (str):
+            The unique identifier of the CX page to override the
+            ``current_page`` in the session. Format:
+            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>/pages/<Page ID>``.
+
+            If ``cx_current_page`` is specified, the previous state of
+            the session will be ignored by Dialogflow CX, including the
+            [previous page][QueryResult.current_page] and the [previous
+            session parameters][QueryResult.parameters]. In most cases,
+            ``cx_current_page`` and ``cx_parameters`` should be
+            configured together to direct a session to a specific state.
+
+            Note: this field should only be used if you are connecting
+            to a Dialogflow CX agent.
         message_send_time (google.protobuf.timestamp_pb2.Timestamp):
             Optional. The send time of the message from
             end user or human agent's perspective. It is
@@ -632,6 +678,12 @@ class AnalyzeContentRequest(proto.Message):
         oneof="input",
         message=session.TextInput,
     )
+    audio_input = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        oneof="input",
+        message="AudioInput",
+    )
     event_input = proto.Field(
         proto.MESSAGE,
         number=8,
@@ -657,6 +709,10 @@ class AnalyzeContentRequest(proto.Message):
         proto.MESSAGE,
         number=18,
         message=struct_pb2.Struct,
+    )
+    cx_current_page = proto.Field(
+        proto.STRING,
+        number=20,
     )
     message_send_time = proto.Field(
         proto.MESSAGE,
@@ -902,6 +958,20 @@ class StreamingAnalyzeContentRequest(proto.Message):
 
             Note: this field should only be used if you are
             connecting to a Dialogflow CX agent.
+        cx_current_page (str):
+            The unique identifier of the CX page to override the
+            ``current_page`` in the session. Format:
+            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>/pages/<Page ID>``.
+
+            If ``cx_current_page`` is specified, the previous state of
+            the session will be ignored by Dialogflow CX, including the
+            [previous page][QueryResult.current_page] and the [previous
+            session parameters][QueryResult.parameters]. In most cases,
+            ``cx_current_page`` and ``cx_parameters`` should be
+            configured together to direct a session to a specific state.
+
+            Note: this field should only be used if you are connecting
+            to a Dialogflow CX agent.
         enable_partial_automated_agent_reply (bool):
             Enable partial virtual agent responses. If this flag is not
             enabled, response stream still contains only one final
@@ -961,6 +1031,10 @@ class StreamingAnalyzeContentRequest(proto.Message):
         proto.MESSAGE,
         number=13,
         message=struct_pb2.Struct,
+    )
+    cx_current_page = proto.Field(
+        proto.STRING,
+        number=15,
     )
     enable_partial_automated_agent_reply = proto.Field(
         proto.BOOL,

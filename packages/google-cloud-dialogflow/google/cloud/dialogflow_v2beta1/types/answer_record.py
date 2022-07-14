@@ -335,6 +335,15 @@ class ListAnswerRecordsRequest(proto.Message):
             Required. The project to list all answer records for in
             reverse chronological order. Format:
             ``projects/<Project ID>/locations/<Location ID>``.
+        filter (str):
+            Optional. Filters to restrict results to specific answer
+            records.
+
+            Marked deprecated as it hasn't been, and isn't currently,
+            supported.
+
+            For more information about filtering, see `API
+            Filtering <https://aip.dev/160>`__.
         page_size (int):
             Optional. The maximum number of records to
             return in a single page. The server may return
@@ -350,6 +359,10 @@ class ListAnswerRecordsRequest(proto.Message):
     parent = proto.Field(
         proto.STRING,
         number=1,
+    )
+    filter = proto.Field(
+        proto.STRING,
+        number=2,
     )
     page_size = proto.Field(
         proto.INT32,
