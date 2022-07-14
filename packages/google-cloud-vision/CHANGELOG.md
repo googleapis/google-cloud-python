@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-cloud-vision/#history
 
+## [2.8.0](https://github.com/googleapis/python-vision/compare/v2.7.3...v2.8.0) (2022-07-14)
+
+
+### Features
+
+* add audience parameter ([#455](https://github.com/googleapis/python-vision/issues/455)) ([1d8fe5f](https://github.com/googleapis/python-vision/commit/1d8fe5f5bf4d61b759766e5bf11a50937710e9a5))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.32.0,>=2.8.0 ([1d8fe5f](https://github.com/googleapis/python-vision/commit/1d8fe5f5bf4d61b759766e5bf11a50937710e9a5))
+* require python 3.7+ ([#452](https://github.com/googleapis/python-vision/issues/452)) ([401bd73](https://github.com/googleapis/python-vision/commit/401bd73afd6c2e5e2c776249fe647858384c0433))
+
 ## [2.7.3](https://github.com/googleapis/python-vision/compare/v2.7.2...v2.7.3) (2022-06-06)
 
 
