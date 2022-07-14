@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-cloud-kms/#history
 
+## [2.12.0](https://github.com/googleapis/python-kms/compare/v2.11.2...v2.12.0) (2022-07-14)
+
+
+### Features
+
+* add audience parameter ([06a4096](https://github.com/googleapis/python-kms/commit/06a4096a61c8b2ed14ccbf88f386203e2c8dc54e))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.32.0,>=2.8.0 ([#315](https://github.com/googleapis/python-kms/issues/315)) ([82ab556](https://github.com/googleapis/python-kms/commit/82ab556b8aec33d75e99c151f01b7e2c4aa6a719))
+* require python 3.7+ ([#313](https://github.com/googleapis/python-kms/issues/313)) ([28d244f](https://github.com/googleapis/python-kms/commit/28d244f1347337f9294a9c3445df426c28b7d1d3))
+
 ## [2.11.2](https://github.com/googleapis/python-kms/compare/v2.11.1...v2.11.2) (2022-06-03)
 
 
