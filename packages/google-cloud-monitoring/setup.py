@@ -29,7 +29,7 @@ version = "2.10.0"
 # 'Development Status :: 5 - Production/Stable'
 release_status = "Development Status :: 5 - Production/Stable"
 dependencies = [
-    "google-api-core[grpc] >= 2.8.0, <3.0.0dev",
+    "google-api-core[grpc] >= 1.32.0, <3.0.0dev,!=2.0.*,!=2.1.*,!=2.2.*,!=2.3.*,!=2.4.*,!=2.5.*,!=2.6.*,!=2.7.*",
     "proto-plus >= 1.15.0, <2.0.0dev",
     "protobuf >= 3.19.0, <4.0.0dev",
 ]
