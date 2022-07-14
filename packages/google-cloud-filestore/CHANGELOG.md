@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.2.0](https://github.com/googleapis/python-filestore/compare/v1.1.3...v1.2.0) (2022-07-14)
+
+
+### Features
+
+* add audience parameter ([061c4e6](https://github.com/googleapis/python-filestore/commit/061c4e66c1a5d70f5b3e087b373b5ee986ad79d3))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.32.0,>=2.8.0 ([#86](https://github.com/googleapis/python-filestore/issues/86)) ([061c4e6](https://github.com/googleapis/python-filestore/commit/061c4e66c1a5d70f5b3e087b373b5ee986ad79d3))
+* require python 3.7+ ([#88](https://github.com/googleapis/python-filestore/issues/88)) ([990fe7a](https://github.com/googleapis/python-filestore/commit/990fe7a5fac7f896ae1012b5f3b043e4769718cd))
+
 ## [1.1.3](https://github.com/googleapis/python-filestore/compare/v1.1.2...v1.1.3) (2022-06-03)
 
 
