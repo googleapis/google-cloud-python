@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.8.0](https://github.com/googleapis/python-functions/compare/v1.7.0...v1.8.0) (2022-07-14)
+
+
+### Features
+
+* add audience parameter ([10a61fa](https://github.com/googleapis/python-functions/commit/10a61fa9fd9b0f343a2acfab83dea95011984e34))
+* generate v2 ([#195](https://github.com/googleapis/python-functions/issues/195)) ([10a61fa](https://github.com/googleapis/python-functions/commit/10a61fa9fd9b0f343a2acfab83dea95011984e34))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.32.0,>=2.8.0 ([10a61fa](https://github.com/googleapis/python-functions/commit/10a61fa9fd9b0f343a2acfab83dea95011984e34))
+* require python 3.7+ ([#197](https://github.com/googleapis/python-functions/issues/197)) ([6ed2206](https://github.com/googleapis/python-functions/commit/6ed2206eabbdad9a297d19a8b6893cc00b839dcc))
+
 ## [1.7.0](https://github.com/googleapis/python-functions/compare/v1.6.0...v1.7.0) (2022-06-06)
 
 
