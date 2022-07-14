@@ -22,13 +22,14 @@ from google.api_core import gapic_v1, operations_v1
 from google.api_core import retry as retries
 import google.auth  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
+from google.cloud.location import locations_pb2  # type: ignore
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 import pkg_resources
 
-from google.cloud.functions_v1.types import functions
+from google.cloud.functions_v2.types import functions
 
 try:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
@@ -40,8 +41,8 @@ except pkg_resources.DistributionNotFound:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
 
 
-class CloudFunctionsServiceTransport(abc.ABC):
-    """Abstract transport class for CloudFunctionsService."""
+class FunctionServiceTransport(abc.ABC):
+    """Abstract transport class for FunctionService."""
 
     AUTH_SCOPES = ("https://www.googleapis.com/auth/cloud-platform",)
 
@@ -130,74 +131,29 @@ class CloudFunctionsServiceTransport(abc.ABC):
     def _prep_wrapped_messages(self, client_info):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
-            self.list_functions: gapic_v1.method.wrap_method(
-                self.list_functions,
-                default_retry=retries.Retry(
-                    initial=0.1,
-                    maximum=60.0,
-                    multiplier=1.3,
-                    predicate=retries.if_exception_type(
-                        core_exceptions.DeadlineExceeded,
-                        core_exceptions.ServiceUnavailable,
-                    ),
-                    deadline=600.0,
-                ),
-                default_timeout=600.0,
-                client_info=client_info,
-            ),
             self.get_function: gapic_v1.method.wrap_method(
                 self.get_function,
-                default_retry=retries.Retry(
-                    initial=0.1,
-                    maximum=60.0,
-                    multiplier=1.3,
-                    predicate=retries.if_exception_type(
-                        core_exceptions.DeadlineExceeded,
-                        core_exceptions.ServiceUnavailable,
-                    ),
-                    deadline=600.0,
-                ),
-                default_timeout=600.0,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_functions: gapic_v1.method.wrap_method(
+                self.list_functions,
+                default_timeout=None,
                 client_info=client_info,
             ),
             self.create_function: gapic_v1.method.wrap_method(
                 self.create_function,
-                default_timeout=600.0,
+                default_timeout=None,
                 client_info=client_info,
             ),
             self.update_function: gapic_v1.method.wrap_method(
                 self.update_function,
-                default_retry=retries.Retry(
-                    initial=0.1,
-                    maximum=60.0,
-                    multiplier=1.3,
-                    predicate=retries.if_exception_type(
-                        core_exceptions.DeadlineExceeded,
-                        core_exceptions.ServiceUnavailable,
-                    ),
-                    deadline=600.0,
-                ),
-                default_timeout=600.0,
+                default_timeout=None,
                 client_info=client_info,
             ),
             self.delete_function: gapic_v1.method.wrap_method(
                 self.delete_function,
-                default_retry=retries.Retry(
-                    initial=0.1,
-                    maximum=60.0,
-                    multiplier=1.3,
-                    predicate=retries.if_exception_type(
-                        core_exceptions.DeadlineExceeded,
-                        core_exceptions.ServiceUnavailable,
-                    ),
-                    deadline=600.0,
-                ),
-                default_timeout=600.0,
-                client_info=client_info,
-            ),
-            self.call_function: gapic_v1.method.wrap_method(
-                self.call_function,
-                default_timeout=600.0,
+                default_timeout=None,
                 client_info=client_info,
             ),
             self.generate_upload_url: gapic_v1.method.wrap_method(
@@ -210,18 +166,8 @@ class CloudFunctionsServiceTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.set_iam_policy: gapic_v1.method.wrap_method(
-                self.set_iam_policy,
-                default_timeout=None,
-                client_info=client_info,
-            ),
-            self.get_iam_policy: gapic_v1.method.wrap_method(
-                self.get_iam_policy,
-                default_timeout=None,
-                client_info=client_info,
-            ),
-            self.test_iam_permissions: gapic_v1.method.wrap_method(
-                self.test_iam_permissions,
+            self.list_runtimes: gapic_v1.method.wrap_method(
+                self.list_runtimes,
                 default_timeout=None,
                 client_info=client_info,
             ),
@@ -242,6 +188,15 @@ class CloudFunctionsServiceTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
+    def get_function(
+        self,
+    ) -> Callable[
+        [functions.GetFunctionRequest],
+        Union[functions.Function, Awaitable[functions.Function]],
+    ]:
+        raise NotImplementedError()
+
+    @property
     def list_functions(
         self,
     ) -> Callable[
@@ -249,15 +204,6 @@ class CloudFunctionsServiceTransport(abc.ABC):
         Union[
             functions.ListFunctionsResponse, Awaitable[functions.ListFunctionsResponse]
         ],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def get_function(
-        self,
-    ) -> Callable[
-        [functions.GetFunctionRequest],
-        Union[functions.CloudFunction, Awaitable[functions.CloudFunction]],
     ]:
         raise NotImplementedError()
 
@@ -289,17 +235,6 @@ class CloudFunctionsServiceTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
-    def call_function(
-        self,
-    ) -> Callable[
-        [functions.CallFunctionRequest],
-        Union[
-            functions.CallFunctionResponse, Awaitable[functions.CallFunctionResponse]
-        ],
-    ]:
-        raise NotImplementedError()
-
-    @property
     def generate_upload_url(
         self,
     ) -> Callable[
@@ -320,6 +255,38 @@ class CloudFunctionsServiceTransport(abc.ABC):
             functions.GenerateDownloadUrlResponse,
             Awaitable[functions.GenerateDownloadUrlResponse],
         ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_runtimes(
+        self,
+    ) -> Callable[
+        [functions.ListRuntimesRequest],
+        Union[
+            functions.ListRuntimesResponse, Awaitable[functions.ListRuntimesResponse]
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_operations(
+        self,
+    ) -> Callable[
+        [operations_pb2.ListOperationsRequest],
+        Union[
+            operations_pb2.ListOperationsResponse,
+            Awaitable[operations_pb2.ListOperationsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_operation(
+        self,
+    ) -> Callable[
+        [operations_pb2.GetOperationRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()
 
@@ -354,8 +321,20 @@ class CloudFunctionsServiceTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
+    def list_locations(
+        self,
+    ) -> Callable[
+        [locations_pb2.ListLocationsRequest],
+        Union[
+            locations_pb2.ListLocationsResponse,
+            Awaitable[locations_pb2.ListLocationsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
     def kind(self) -> str:
         raise NotImplementedError()
 
 
-__all__ = ("CloudFunctionsServiceTransport",)
+__all__ = ("FunctionServiceTransport",)

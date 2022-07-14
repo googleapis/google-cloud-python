@@ -36,22 +36,24 @@ except AttributeError:  # pragma: NO COVER
 
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
+from google.cloud.location import locations_pb2  # type: ignore
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
-from google.protobuf import duration_pb2  # type: ignore
+from google.longrunning import operations_pb2
 from google.protobuf import empty_pb2  # type: ignore
+from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 
-from google.cloud.functions_v1.services.cloud_functions_service import pagers
-from google.cloud.functions_v1.types import functions, operations
+from google.cloud.functions_v2.services.function_service import pagers
+from google.cloud.functions_v2.types import functions
 
-from .transports.base import DEFAULT_CLIENT_INFO, CloudFunctionsServiceTransport
-from .transports.grpc import CloudFunctionsServiceGrpcTransport
-from .transports.grpc_asyncio import CloudFunctionsServiceGrpcAsyncIOTransport
+from .transports.base import DEFAULT_CLIENT_INFO, FunctionServiceTransport
+from .transports.grpc import FunctionServiceGrpcTransport
+from .transports.grpc_asyncio import FunctionServiceGrpcAsyncIOTransport
 
 
-class CloudFunctionsServiceClientMeta(type):
-    """Metaclass for the CloudFunctionsService client.
+class FunctionServiceClientMeta(type):
+    """Metaclass for the FunctionService client.
 
     This provides class-level methods for building and retrieving
     support objects (e.g. transport) without polluting the client instance
@@ -60,14 +62,14 @@ class CloudFunctionsServiceClientMeta(type):
 
     _transport_registry = (
         OrderedDict()
-    )  # type: Dict[str, Type[CloudFunctionsServiceTransport]]
-    _transport_registry["grpc"] = CloudFunctionsServiceGrpcTransport
-    _transport_registry["grpc_asyncio"] = CloudFunctionsServiceGrpcAsyncIOTransport
+    )  # type: Dict[str, Type[FunctionServiceTransport]]
+    _transport_registry["grpc"] = FunctionServiceGrpcTransport
+    _transport_registry["grpc_asyncio"] = FunctionServiceGrpcAsyncIOTransport
 
     def get_transport_class(
         cls,
         label: str = None,
-    ) -> Type[CloudFunctionsServiceTransport]:
+    ) -> Type[FunctionServiceTransport]:
         """Returns an appropriate transport class.
 
         Args:
@@ -86,9 +88,13 @@ class CloudFunctionsServiceClientMeta(type):
         return next(iter(cls._transport_registry.values()))
 
 
-class CloudFunctionsServiceClient(metaclass=CloudFunctionsServiceClientMeta):
-    """A service that application uses to manipulate triggers and
-    functions.
+class FunctionServiceClient(metaclass=FunctionServiceClientMeta):
+    """Google Cloud Functions is used to deploy functions that are executed
+    by Google in response to various events. Data connected with that
+    event is passed to a function as the input data.
+
+    A **function** is a resource which describes a function that should
+    be executed and how it is triggered.
     """
 
     @staticmethod
@@ -137,7 +143,7 @@ class CloudFunctionsServiceClient(metaclass=CloudFunctionsServiceClientMeta):
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            CloudFunctionsServiceClient: The constructed client.
+            FunctionServiceClient: The constructed client.
         """
         credentials = service_account.Credentials.from_service_account_info(info)
         kwargs["credentials"] = credentials
@@ -155,7 +161,7 @@ class CloudFunctionsServiceClient(metaclass=CloudFunctionsServiceClientMeta):
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            CloudFunctionsServiceClient: The constructed client.
+            FunctionServiceClient: The constructed client.
         """
         credentials = service_account.Credentials.from_service_account_file(filename)
         kwargs["credentials"] = credentials
@@ -164,22 +170,88 @@ class CloudFunctionsServiceClient(metaclass=CloudFunctionsServiceClientMeta):
     from_service_account_json = from_service_account_file
 
     @property
-    def transport(self) -> CloudFunctionsServiceTransport:
+    def transport(self) -> FunctionServiceTransport:
         """Returns the transport used by the client instance.
 
         Returns:
-            CloudFunctionsServiceTransport: The transport used by the client
+            FunctionServiceTransport: The transport used by the client
                 instance.
         """
         return self._transport
 
     @staticmethod
-    def cloud_function_path(
+    def build_path(
+        project: str,
+        location: str,
+        build: str,
+    ) -> str:
+        """Returns a fully-qualified build string."""
+        return "projects/{project}/locations/{location}/builds/{build}".format(
+            project=project,
+            location=location,
+            build=build,
+        )
+
+    @staticmethod
+    def parse_build_path(path: str) -> Dict[str, str]:
+        """Parses a build path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/builds/(?P<build>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def channel_path(
+        project: str,
+        location: str,
+        channel: str,
+    ) -> str:
+        """Returns a fully-qualified channel string."""
+        return "projects/{project}/locations/{location}/channels/{channel}".format(
+            project=project,
+            location=location,
+            channel=channel,
+        )
+
+    @staticmethod
+    def parse_channel_path(path: str) -> Dict[str, str]:
+        """Parses a channel path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/channels/(?P<channel>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def connector_path(
+        project: str,
+        location: str,
+        connector: str,
+    ) -> str:
+        """Returns a fully-qualified connector string."""
+        return "projects/{project}/locations/{location}/connectors/{connector}".format(
+            project=project,
+            location=location,
+            connector=connector,
+        )
+
+    @staticmethod
+    def parse_connector_path(path: str) -> Dict[str, str]:
+        """Parses a connector path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/connectors/(?P<connector>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def function_path(
         project: str,
         location: str,
         function: str,
     ) -> str:
-        """Returns a fully-qualified cloud_function string."""
+        """Returns a fully-qualified function string."""
         return "projects/{project}/locations/{location}/functions/{function}".format(
             project=project,
             location=location,
@@ -187,34 +259,10 @@ class CloudFunctionsServiceClient(metaclass=CloudFunctionsServiceClientMeta):
         )
 
     @staticmethod
-    def parse_cloud_function_path(path: str) -> Dict[str, str]:
-        """Parses a cloud_function path into its component segments."""
+    def parse_function_path(path: str) -> Dict[str, str]:
+        """Parses a function path into its component segments."""
         m = re.match(
             r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/functions/(?P<function>.+?)$",
-            path,
-        )
-        return m.groupdict() if m else {}
-
-    @staticmethod
-    def crypto_key_path(
-        project: str,
-        location: str,
-        key_ring: str,
-        crypto_key: str,
-    ) -> str:
-        """Returns a fully-qualified crypto_key string."""
-        return "projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}".format(
-            project=project,
-            location=location,
-            key_ring=key_ring,
-            crypto_key=crypto_key,
-        )
-
-    @staticmethod
-    def parse_crypto_key_path(path: str) -> Dict[str, str]:
-        """Parses a crypto_key path into its component segments."""
-        m = re.match(
-            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/keyRings/(?P<key_ring>.+?)/cryptoKeys/(?P<crypto_key>.+?)$",
             path,
         )
         return m.groupdict() if m else {}
@@ -239,6 +287,91 @@ class CloudFunctionsServiceClient(metaclass=CloudFunctionsServiceClientMeta):
         """Parses a repository path into its component segments."""
         m = re.match(
             r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/repositories/(?P<repository>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def service_path(
+        project: str,
+        location: str,
+        service: str,
+    ) -> str:
+        """Returns a fully-qualified service string."""
+        return "projects/{project}/locations/{location}/services/{service}".format(
+            project=project,
+            location=location,
+            service=service,
+        )
+
+    @staticmethod
+    def parse_service_path(path: str) -> Dict[str, str]:
+        """Parses a service path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/services/(?P<service>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def topic_path(
+        project: str,
+        topic: str,
+    ) -> str:
+        """Returns a fully-qualified topic string."""
+        return "projects/{project}/topics/{topic}".format(
+            project=project,
+            topic=topic,
+        )
+
+    @staticmethod
+    def parse_topic_path(path: str) -> Dict[str, str]:
+        """Parses a topic path into its component segments."""
+        m = re.match(r"^projects/(?P<project>.+?)/topics/(?P<topic>.+?)$", path)
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def trigger_path(
+        project: str,
+        location: str,
+        trigger: str,
+    ) -> str:
+        """Returns a fully-qualified trigger string."""
+        return "projects/{project}/locations/{location}/triggers/{trigger}".format(
+            project=project,
+            location=location,
+            trigger=trigger,
+        )
+
+    @staticmethod
+    def parse_trigger_path(path: str) -> Dict[str, str]:
+        """Parses a trigger path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/triggers/(?P<trigger>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def worker_pool_path(
+        project: str,
+        location: str,
+        worker_pool: str,
+    ) -> str:
+        """Returns a fully-qualified worker_pool string."""
+        return (
+            "projects/{project}/locations/{location}/workerPools/{worker_pool}".format(
+                project=project,
+                location=location,
+                worker_pool=worker_pool,
+            )
+        )
+
+    @staticmethod
+    def parse_worker_pool_path(path: str) -> Dict[str, str]:
+        """Parses a worker_pool path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/workerPools/(?P<worker_pool>.+?)$",
             path,
         )
         return m.groupdict() if m else {}
@@ -391,11 +524,11 @@ class CloudFunctionsServiceClient(metaclass=CloudFunctionsServiceClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, CloudFunctionsServiceTransport, None] = None,
+        transport: Union[str, FunctionServiceTransport, None] = None,
         client_options: Optional[client_options_lib.ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
-        """Instantiates the cloud functions service client.
+        """Instantiates the function service client.
 
         Args:
             credentials (Optional[google.auth.credentials.Credentials]): The
@@ -403,7 +536,7 @@ class CloudFunctionsServiceClient(metaclass=CloudFunctionsServiceClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, CloudFunctionsServiceTransport]): The
+            transport (Union[str, FunctionServiceTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
             client_options (google.api_core.client_options.ClientOptions): Custom options for the
@@ -450,8 +583,8 @@ class CloudFunctionsServiceClient(metaclass=CloudFunctionsServiceClientMeta):
         # Save or instantiate the transport.
         # Ordinarily, we provide the transport, but allowing a custom transport
         # instance provides an extensibility point for unusual situations.
-        if isinstance(transport, CloudFunctionsServiceTransport):
-            # transport is a CloudFunctionsServiceTransport instance.
+        if isinstance(transport, FunctionServiceTransport):
+            # transport is a FunctionServiceTransport instance.
             if credentials or client_options.credentials_file or api_key_value:
                 raise ValueError(
                     "When providing a transport instance, "
@@ -486,92 +619,6 @@ class CloudFunctionsServiceClient(metaclass=CloudFunctionsServiceClientMeta):
                 api_audience=client_options.api_audience,
             )
 
-    def list_functions(
-        self,
-        request: Union[functions.ListFunctionsRequest, dict] = None,
-        *,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> pagers.ListFunctionsPager:
-        r"""Returns a list of functions that belong to the
-        requested project.
-
-        .. code-block:: python
-
-            from google.cloud import functions_v1
-
-            def sample_list_functions():
-                # Create a client
-                client = functions_v1.CloudFunctionsServiceClient()
-
-                # Initialize request argument(s)
-                request = functions_v1.ListFunctionsRequest(
-                )
-
-                # Make the request
-                page_result = client.list_functions(request=request)
-
-                # Handle the response
-                for response in page_result:
-                    print(response)
-
-        Args:
-            request (Union[google.cloud.functions_v1.types.ListFunctionsRequest, dict]):
-                The request object. Request for the `ListFunctions`
-                method.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-
-        Returns:
-            google.cloud.functions_v1.services.cloud_functions_service.pagers.ListFunctionsPager:
-                Response for the ListFunctions method.
-
-                Iterating over this object will yield results and
-                resolve additional pages automatically.
-
-        """
-        # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a functions.ListFunctionsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
-        if not isinstance(request, functions.ListFunctionsRequest):
-            request = functions.ListFunctionsRequest(request)
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.list_functions]
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
-
-        # Send the request.
-        response = rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # This method is paged; wrap the response in a pager, which provides
-        # an `__iter__` convenience method.
-        response = pagers.ListFunctionsPager(
-            method=rpc,
-            request=request,
-            response=response,
-            metadata=metadata,
-        )
-
-        # Done; return the response.
-        return response
-
     def get_function(
         self,
         request: Union[functions.GetFunctionRequest, dict] = None,
@@ -580,20 +627,20 @@ class CloudFunctionsServiceClient(metaclass=CloudFunctionsServiceClientMeta):
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> functions.CloudFunction:
+    ) -> functions.Function:
         r"""Returns a function with the given name from the
         requested project.
 
         .. code-block:: python
 
-            from google.cloud import functions_v1
+            from google.cloud import functions_v2
 
             def sample_get_function():
                 # Create a client
-                client = functions_v1.CloudFunctionsServiceClient()
+                client = functions_v2.FunctionServiceClient()
 
                 # Initialize request argument(s)
-                request = functions_v1.GetFunctionRequest(
+                request = functions_v2.GetFunctionRequest(
                     name="name_value",
                 )
 
@@ -604,7 +651,7 @@ class CloudFunctionsServiceClient(metaclass=CloudFunctionsServiceClientMeta):
                 print(response)
 
         Args:
-            request (Union[google.cloud.functions_v1.types.GetFunctionRequest, dict]):
+            request (Union[google.cloud.functions_v2.types.GetFunctionRequest, dict]):
                 The request object. Request for the `GetFunction`
                 method.
             name (str):
@@ -621,11 +668,11 @@ class CloudFunctionsServiceClient(metaclass=CloudFunctionsServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.functions_v1.types.CloudFunction:
+            google.cloud.functions_v2.types.Function:
                 Describes a Cloud Function that
                 contains user computation executed in
-                response to an event. It encapsulate
-                function and triggers configurations.
+                response to an event. It encapsulates
+                function and trigger configurations.
 
         """
         # Create or coerce a protobuf request object.
@@ -670,12 +717,127 @@ class CloudFunctionsServiceClient(metaclass=CloudFunctionsServiceClientMeta):
         # Done; return the response.
         return response
 
+    def list_functions(
+        self,
+        request: Union[functions.ListFunctionsRequest, dict] = None,
+        *,
+        parent: str = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListFunctionsPager:
+        r"""Returns a list of functions that belong to the
+        requested project.
+
+        .. code-block:: python
+
+            from google.cloud import functions_v2
+
+            def sample_list_functions():
+                # Create a client
+                client = functions_v2.FunctionServiceClient()
+
+                # Initialize request argument(s)
+                request = functions_v2.ListFunctionsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_functions(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
+        Args:
+            request (Union[google.cloud.functions_v2.types.ListFunctionsRequest, dict]):
+                The request object. Request for the `ListFunctions`
+                method.
+            parent (str):
+                Required. The project and location from which the
+                function should be listed, specified in the format
+                ``projects/*/locations/*`` If you want to list functions
+                in all locations, use "-" in place of a location. When
+                listing functions in all locations, if one or more
+                location(s) are unreachable, the response will contain
+                functions from all reachable locations along with the
+                names of any unreachable locations.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.functions_v2.services.function_service.pagers.ListFunctionsPager:
+                Response for the ListFunctions method.
+
+                Iterating over this object will yield results and
+                resolve additional pages automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a functions.ListFunctionsRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, functions.ListFunctionsRequest):
+            request = functions.ListFunctionsRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.list_functions]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.ListFunctionsPager(
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
     def create_function(
         self,
         request: Union[functions.CreateFunctionRequest, dict] = None,
         *,
-        location: str = None,
-        function: functions.CloudFunction = None,
+        parent: str = None,
+        function: functions.Function = None,
+        function_id: str = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
@@ -686,19 +848,15 @@ class CloudFunctionsServiceClient(metaclass=CloudFunctionsServiceClientMeta):
 
         .. code-block:: python
 
-            from google.cloud import functions_v1
+            from google.cloud import functions_v2
 
             def sample_create_function():
                 # Create a client
-                client = functions_v1.CloudFunctionsServiceClient()
+                client = functions_v2.FunctionServiceClient()
 
                 # Initialize request argument(s)
-                function = functions_v1.CloudFunction()
-                function.source_archive_url = "source_archive_url_value"
-
-                request = functions_v1.CreateFunctionRequest(
-                    location="location_value",
-                    function=function,
+                request = functions_v2.CreateFunctionRequest(
+                    parent="parent_value",
                 )
 
                 # Make the request
@@ -712,20 +870,30 @@ class CloudFunctionsServiceClient(metaclass=CloudFunctionsServiceClientMeta):
                 print(response)
 
         Args:
-            request (Union[google.cloud.functions_v1.types.CreateFunctionRequest, dict]):
+            request (Union[google.cloud.functions_v2.types.CreateFunctionRequest, dict]):
                 The request object. Request for the `CreateFunction`
                 method.
-            location (str):
+            parent (str):
                 Required. The project and location in which the function
                 should be created, specified in the format
                 ``projects/*/locations/*``
 
-                This corresponds to the ``location`` field
+                This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            function (google.cloud.functions_v1.types.CloudFunction):
+            function (google.cloud.functions_v2.types.Function):
                 Required. Function to be created.
                 This corresponds to the ``function`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            function_id (str):
+                The ID to use for the function, which will become the
+                final component of the function's resource name.
+
+                This value should be 4-63 characters, and valid
+                characters are /[a-z][0-9]-/.
+
+                This corresponds to the ``function_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -738,15 +906,15 @@ class CloudFunctionsServiceClient(metaclass=CloudFunctionsServiceClientMeta):
             google.api_core.operation.Operation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be :class:`google.cloud.functions_v1.types.CloudFunction` Describes a Cloud Function that contains user computation executed in
-                   response to an event. It encapsulate function and
-                   triggers configurations.
+                The result type for the operation will be :class:`google.cloud.functions_v2.types.Function` Describes a Cloud Function that contains user computation executed in
+                   response to an event. It encapsulates function and
+                   trigger configurations.
 
         """
         # Create or coerce a protobuf request object.
         # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        has_flattened_params = any([location, function])
+        has_flattened_params = any([parent, function, function_id])
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -761,10 +929,12 @@ class CloudFunctionsServiceClient(metaclass=CloudFunctionsServiceClientMeta):
             request = functions.CreateFunctionRequest(request)
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-            if location is not None:
-                request.location = location
+            if parent is not None:
+                request.parent = parent
             if function is not None:
                 request.function = function
+            if function_id is not None:
+                request.function_id = function_id
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -773,7 +943,7 @@ class CloudFunctionsServiceClient(metaclass=CloudFunctionsServiceClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("location", request.location),)),
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
         )
 
         # Send the request.
@@ -788,8 +958,8 @@ class CloudFunctionsServiceClient(metaclass=CloudFunctionsServiceClientMeta):
         response = operation.from_gapic(
             response,
             self._transport.operations_client,
-            functions.CloudFunction,
-            metadata_type=operations.OperationMetadataV1,
+            functions.Function,
+            metadata_type=functions.OperationMetadata,
         )
 
         # Done; return the response.
@@ -799,7 +969,8 @@ class CloudFunctionsServiceClient(metaclass=CloudFunctionsServiceClientMeta):
         self,
         request: Union[functions.UpdateFunctionRequest, dict] = None,
         *,
-        function: functions.CloudFunction = None,
+        function: functions.Function = None,
+        update_mask: field_mask_pb2.FieldMask = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
@@ -808,18 +979,14 @@ class CloudFunctionsServiceClient(metaclass=CloudFunctionsServiceClientMeta):
 
         .. code-block:: python
 
-            from google.cloud import functions_v1
+            from google.cloud import functions_v2
 
             def sample_update_function():
                 # Create a client
-                client = functions_v1.CloudFunctionsServiceClient()
+                client = functions_v2.FunctionServiceClient()
 
                 # Initialize request argument(s)
-                function = functions_v1.CloudFunction()
-                function.source_archive_url = "source_archive_url_value"
-
-                request = functions_v1.UpdateFunctionRequest(
-                    function=function,
+                request = functions_v2.UpdateFunctionRequest(
                 )
 
                 # Make the request
@@ -833,14 +1000,23 @@ class CloudFunctionsServiceClient(metaclass=CloudFunctionsServiceClientMeta):
                 print(response)
 
         Args:
-            request (Union[google.cloud.functions_v1.types.UpdateFunctionRequest, dict]):
+            request (Union[google.cloud.functions_v2.types.UpdateFunctionRequest, dict]):
                 The request object. Request for the `UpdateFunction`
                 method.
-            function (google.cloud.functions_v1.types.CloudFunction):
+            function (google.cloud.functions_v2.types.Function):
                 Required. New version of the
                 function.
 
                 This corresponds to the ``function`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            update_mask (google.protobuf.field_mask_pb2.FieldMask):
+                The list of fields to be updated.
+                If no field mask is provided, all
+                provided fields in the request will be
+                updated.
+
+                This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -853,15 +1029,15 @@ class CloudFunctionsServiceClient(metaclass=CloudFunctionsServiceClientMeta):
             google.api_core.operation.Operation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be :class:`google.cloud.functions_v1.types.CloudFunction` Describes a Cloud Function that contains user computation executed in
-                   response to an event. It encapsulate function and
-                   triggers configurations.
+                The result type for the operation will be :class:`google.cloud.functions_v2.types.Function` Describes a Cloud Function that contains user computation executed in
+                   response to an event. It encapsulates function and
+                   trigger configurations.
 
         """
         # Create or coerce a protobuf request object.
         # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        has_flattened_params = any([function])
+        has_flattened_params = any([function, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -878,6 +1054,8 @@ class CloudFunctionsServiceClient(metaclass=CloudFunctionsServiceClientMeta):
             # request, apply these.
             if function is not None:
                 request.function = function
+            if update_mask is not None:
+                request.update_mask = update_mask
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -903,8 +1081,8 @@ class CloudFunctionsServiceClient(metaclass=CloudFunctionsServiceClientMeta):
         response = operation.from_gapic(
             response,
             self._transport.operations_client,
-            functions.CloudFunction,
-            metadata_type=operations.OperationMetadataV1,
+            functions.Function,
+            metadata_type=functions.OperationMetadata,
         )
 
         # Done; return the response.
@@ -926,14 +1104,14 @@ class CloudFunctionsServiceClient(metaclass=CloudFunctionsServiceClientMeta):
 
         .. code-block:: python
 
-            from google.cloud import functions_v1
+            from google.cloud import functions_v2
 
             def sample_delete_function():
                 # Create a client
-                client = functions_v1.CloudFunctionsServiceClient()
+                client = functions_v2.FunctionServiceClient()
 
                 # Initialize request argument(s)
-                request = functions_v1.DeleteFunctionRequest(
+                request = functions_v2.DeleteFunctionRequest(
                     name="name_value",
                 )
 
@@ -948,7 +1126,7 @@ class CloudFunctionsServiceClient(metaclass=CloudFunctionsServiceClientMeta):
                 print(response)
 
         Args:
-            request (Union[google.cloud.functions_v1.types.DeleteFunctionRequest, dict]):
+            request (Union[google.cloud.functions_v2.types.DeleteFunctionRequest, dict]):
                 The request object. Request for the `DeleteFunction`
                 method.
             name (str):
@@ -1027,114 +1205,7 @@ class CloudFunctionsServiceClient(metaclass=CloudFunctionsServiceClientMeta):
             response,
             self._transport.operations_client,
             empty_pb2.Empty,
-            metadata_type=operations.OperationMetadataV1,
-        )
-
-        # Done; return the response.
-        return response
-
-    def call_function(
-        self,
-        request: Union[functions.CallFunctionRequest, dict] = None,
-        *,
-        name: str = None,
-        data: str = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> functions.CallFunctionResponse:
-        r"""Synchronously invokes a deployed Cloud Function. To be used for
-        testing purposes as very limited traffic is allowed. For more
-        information on the actual limits, refer to `Rate
-        Limits <https://cloud.google.com/functions/quotas#rate_limits>`__.
-
-        .. code-block:: python
-
-            from google.cloud import functions_v1
-
-            def sample_call_function():
-                # Create a client
-                client = functions_v1.CloudFunctionsServiceClient()
-
-                # Initialize request argument(s)
-                request = functions_v1.CallFunctionRequest(
-                    name="name_value",
-                    data="data_value",
-                )
-
-                # Make the request
-                response = client.call_function(request=request)
-
-                # Handle the response
-                print(response)
-
-        Args:
-            request (Union[google.cloud.functions_v1.types.CallFunctionRequest, dict]):
-                The request object. Request for the `CallFunction`
-                method.
-            name (str):
-                Required. The name of the function to
-                be called.
-
-                This corresponds to the ``name`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            data (str):
-                Required. Input to be passed to the
-                function.
-
-                This corresponds to the ``data`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-
-        Returns:
-            google.cloud.functions_v1.types.CallFunctionResponse:
-                Response of CallFunction method.
-        """
-        # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
-        has_flattened_params = any([name, data])
-        if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
-
-        # Minor optimization to avoid making a copy if the user passes
-        # in a functions.CallFunctionRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
-        if not isinstance(request, functions.CallFunctionRequest):
-            request = functions.CallFunctionRequest(request)
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-            if name is not None:
-                request.name = name
-            if data is not None:
-                request.data = data
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.call_function]
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
-
-        # Send the request.
-        response = rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
+            metadata_type=functions.OperationMetadata,
         )
 
         # Done; return the response.
@@ -1160,7 +1231,6 @@ class CloudFunctionsServiceClient(metaclass=CloudFunctionsServiceClientMeta):
         follow these restrictions:
 
         -  Source file type should be a zip file.
-        -  Source file size should not exceed 100MB limit.
         -  No credentials should be attached - the signed URLs provide
            access to the target bucket using internal service identity;
            if credentials were attached, the identity from the
@@ -1171,7 +1241,6 @@ class CloudFunctionsServiceClient(metaclass=CloudFunctionsServiceClientMeta):
         specified:
 
         -  ``content-type: application/zip``
-        -  ``x-goog-content-length-range: 0,104857600``
 
         And this header SHOULD NOT be specified:
 
@@ -1179,14 +1248,15 @@ class CloudFunctionsServiceClient(metaclass=CloudFunctionsServiceClientMeta):
 
         .. code-block:: python
 
-            from google.cloud import functions_v1
+            from google.cloud import functions_v2
 
             def sample_generate_upload_url():
                 # Create a client
-                client = functions_v1.CloudFunctionsServiceClient()
+                client = functions_v2.FunctionServiceClient()
 
                 # Initialize request argument(s)
-                request = functions_v1.GenerateUploadUrlRequest(
+                request = functions_v2.GenerateUploadUrlRequest(
+                    parent="parent_value",
                 )
 
                 # Make the request
@@ -1196,7 +1266,7 @@ class CloudFunctionsServiceClient(metaclass=CloudFunctionsServiceClientMeta):
                 print(response)
 
         Args:
-            request (Union[google.cloud.functions_v1.types.GenerateUploadUrlRequest, dict]):
+            request (Union[google.cloud.functions_v2.types.GenerateUploadUrlRequest, dict]):
                 The request object. Request of `GenerateSourceUploadUrl`
                 method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -1206,7 +1276,7 @@ class CloudFunctionsServiceClient(metaclass=CloudFunctionsServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.functions_v1.types.GenerateUploadUrlResponse:
+            google.cloud.functions_v2.types.GenerateUploadUrlResponse:
                 Response of GenerateSourceUploadUrl method.
         """
         # Create or coerce a protobuf request object.
@@ -1248,21 +1318,22 @@ class CloudFunctionsServiceClient(metaclass=CloudFunctionsServiceClientMeta):
     ) -> functions.GenerateDownloadUrlResponse:
         r"""Returns a signed URL for downloading deployed
         function source code. The URL is only valid for a
-        limited period and should be used within minutes after
+        limited period and should be used within 30 minutes of
         generation.
         For more information about the signed URL usage see:
         https://cloud.google.com/storage/docs/access-control/signed-urls
 
         .. code-block:: python
 
-            from google.cloud import functions_v1
+            from google.cloud import functions_v2
 
             def sample_generate_download_url():
                 # Create a client
-                client = functions_v1.CloudFunctionsServiceClient()
+                client = functions_v2.FunctionServiceClient()
 
                 # Initialize request argument(s)
-                request = functions_v1.GenerateDownloadUrlRequest(
+                request = functions_v2.GenerateDownloadUrlRequest(
+                    name="name_value",
                 )
 
                 # Make the request
@@ -1272,7 +1343,7 @@ class CloudFunctionsServiceClient(metaclass=CloudFunctionsServiceClientMeta):
                 print(response)
 
         Args:
-            request (Union[google.cloud.functions_v1.types.GenerateDownloadUrlRequest, dict]):
+            request (Union[google.cloud.functions_v2.types.GenerateDownloadUrlRequest, dict]):
                 The request object. Request of `GenerateDownloadUrl`
                 method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -1282,7 +1353,7 @@ class CloudFunctionsServiceClient(metaclass=CloudFunctionsServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.functions_v1.types.GenerateDownloadUrlResponse:
+            google.cloud.functions_v2.types.GenerateDownloadUrlResponse:
                 Response of GenerateDownloadUrl method.
         """
         # Create or coerce a protobuf request object.
@@ -1314,41 +1385,49 @@ class CloudFunctionsServiceClient(metaclass=CloudFunctionsServiceClientMeta):
         # Done; return the response.
         return response
 
-    def set_iam_policy(
+    def list_runtimes(
         self,
-        request: Union[iam_policy_pb2.SetIamPolicyRequest, dict] = None,
+        request: Union[functions.ListRuntimesRequest, dict] = None,
         *,
+        parent: str = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> policy_pb2.Policy:
-        r"""Sets the IAM access control policy on the specified
-        function. Replaces any existing policy.
+    ) -> functions.ListRuntimesResponse:
+        r"""Returns a list of runtimes that are supported for the
+        requested project.
 
         .. code-block:: python
 
-            from google.cloud import functions_v1
-            from google.iam.v1 import iam_policy_pb2  # type: ignore
+            from google.cloud import functions_v2
 
-            def sample_set_iam_policy():
+            def sample_list_runtimes():
                 # Create a client
-                client = functions_v1.CloudFunctionsServiceClient()
+                client = functions_v2.FunctionServiceClient()
 
                 # Initialize request argument(s)
-                request = iam_policy_pb2.SetIamPolicyRequest(
-                    resource="resource_value",
+                request = functions_v2.ListRuntimesRequest(
+                    parent="parent_value",
                 )
 
                 # Make the request
-                response = client.set_iam_policy(request=request)
+                response = client.list_runtimes(request=request)
 
                 # Handle the response
                 print(response)
 
         Args:
-            request (Union[google.iam.v1.iam_policy_pb2.SetIamPolicyRequest, dict]):
-                The request object. Request message for `SetIamPolicy`
+            request (Union[google.cloud.functions_v2.types.ListRuntimesRequest, dict]):
+                The request object. Request for the `ListRuntimes`
                 method.
+            parent (str):
+                Required. The project and location from which the
+                runtimes should be listed, specified in the format
+                ``projects/*/locations/*``
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1356,301 +1435,38 @@ class CloudFunctionsServiceClient(metaclass=CloudFunctionsServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.iam.v1.policy_pb2.Policy:
-                An Identity and Access Management (IAM) policy, which specifies access
-                   controls for Google Cloud resources.
-
-                   A Policy is a collection of bindings. A binding binds
-                   one or more members, or principals, to a single role.
-                   Principals can be user accounts, service accounts,
-                   Google groups, and domains (such as G Suite). A role
-                   is a named list of permissions; each role can be an
-                   IAM predefined role or a user-created custom role.
-
-                   For some types of Google Cloud resources, a binding
-                   can also specify a condition, which is a logical
-                   expression that allows access to a resource only if
-                   the expression evaluates to true. A condition can add
-                   constraints based on attributes of the request, the
-                   resource, or both. To learn which resources support
-                   conditions in their IAM policies, see the [IAM
-                   documentation](\ https://cloud.google.com/iam/help/conditions/resource-policies).
-
-                   **JSON example:**
-
-                      {
-                         "bindings": [
-                            {
-                               "role":
-                               "roles/resourcemanager.organizationAdmin",
-                               "members": [ "user:mike@example.com",
-                               "group:admins@example.com",
-                               "domain:google.com",
-                               "serviceAccount:my-project-id@appspot.gserviceaccount.com"
-                               ]
-
-                            }, { "role":
-                            "roles/resourcemanager.organizationViewer",
-                            "members": [ "user:eve@example.com" ],
-                            "condition": { "title": "expirable access",
-                            "description": "Does not grant access after
-                            Sep 2020", "expression": "request.time <
-                            timestamp('2020-10-01T00:00:00.000Z')", } }
-
-                         ], "etag": "BwWWja0YfJA=", "version": 3
-
-                      }
-
-                   **YAML example:**
-
-                      bindings: - members: - user:\ mike@example.com -
-                      group:\ admins@example.com - domain:google.com -
-                      serviceAccount:\ my-project-id@appspot.gserviceaccount.com
-                      role: roles/resourcemanager.organizationAdmin -
-                      members: - user:\ eve@example.com role:
-                      roles/resourcemanager.organizationViewer
-                      condition: title: expirable access description:
-                      Does not grant access after Sep 2020 expression:
-                      request.time <
-                      timestamp('2020-10-01T00:00:00.000Z') etag:
-                      BwWWja0YfJA= version: 3
-
-                   For a description of IAM and its features, see the
-                   [IAM
-                   documentation](\ https://cloud.google.com/iam/docs/).
-
+            google.cloud.functions_v2.types.ListRuntimesResponse:
+                Response for the ListRuntimes method.
         """
         # Create or coerce a protobuf request object.
-        if isinstance(request, dict):
-            # The request isn't a proto-plus wrapped type,
-            # so it must be constructed via keyword expansion.
-            request = iam_policy_pb2.SetIamPolicyRequest(**request)
-        elif not request:
-            # Null request, just make one.
-            request = iam_policy_pb2.SetIamPolicyRequest()
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a functions.ListRuntimesRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, functions.ListRuntimesRequest):
+            request = functions.ListRuntimesRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.set_iam_policy]
+        rpc = self._transport._wrapped_methods[self._transport.list_runtimes]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),
-        )
-
-        # Send the request.
-        response = rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # Done; return the response.
-        return response
-
-    def get_iam_policy(
-        self,
-        request: Union[iam_policy_pb2.GetIamPolicyRequest, dict] = None,
-        *,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> policy_pb2.Policy:
-        r"""Gets the IAM access control policy for a function.
-        Returns an empty policy if the function exists and does
-        not have a policy set.
-
-        .. code-block:: python
-
-            from google.cloud import functions_v1
-            from google.iam.v1 import iam_policy_pb2  # type: ignore
-
-            def sample_get_iam_policy():
-                # Create a client
-                client = functions_v1.CloudFunctionsServiceClient()
-
-                # Initialize request argument(s)
-                request = iam_policy_pb2.GetIamPolicyRequest(
-                    resource="resource_value",
-                )
-
-                # Make the request
-                response = client.get_iam_policy(request=request)
-
-                # Handle the response
-                print(response)
-
-        Args:
-            request (Union[google.iam.v1.iam_policy_pb2.GetIamPolicyRequest, dict]):
-                The request object. Request message for `GetIamPolicy`
-                method.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-
-        Returns:
-            google.iam.v1.policy_pb2.Policy:
-                An Identity and Access Management (IAM) policy, which specifies access
-                   controls for Google Cloud resources.
-
-                   A Policy is a collection of bindings. A binding binds
-                   one or more members, or principals, to a single role.
-                   Principals can be user accounts, service accounts,
-                   Google groups, and domains (such as G Suite). A role
-                   is a named list of permissions; each role can be an
-                   IAM predefined role or a user-created custom role.
-
-                   For some types of Google Cloud resources, a binding
-                   can also specify a condition, which is a logical
-                   expression that allows access to a resource only if
-                   the expression evaluates to true. A condition can add
-                   constraints based on attributes of the request, the
-                   resource, or both. To learn which resources support
-                   conditions in their IAM policies, see the [IAM
-                   documentation](\ https://cloud.google.com/iam/help/conditions/resource-policies).
-
-                   **JSON example:**
-
-                      {
-                         "bindings": [
-                            {
-                               "role":
-                               "roles/resourcemanager.organizationAdmin",
-                               "members": [ "user:mike@example.com",
-                               "group:admins@example.com",
-                               "domain:google.com",
-                               "serviceAccount:my-project-id@appspot.gserviceaccount.com"
-                               ]
-
-                            }, { "role":
-                            "roles/resourcemanager.organizationViewer",
-                            "members": [ "user:eve@example.com" ],
-                            "condition": { "title": "expirable access",
-                            "description": "Does not grant access after
-                            Sep 2020", "expression": "request.time <
-                            timestamp('2020-10-01T00:00:00.000Z')", } }
-
-                         ], "etag": "BwWWja0YfJA=", "version": 3
-
-                      }
-
-                   **YAML example:**
-
-                      bindings: - members: - user:\ mike@example.com -
-                      group:\ admins@example.com - domain:google.com -
-                      serviceAccount:\ my-project-id@appspot.gserviceaccount.com
-                      role: roles/resourcemanager.organizationAdmin -
-                      members: - user:\ eve@example.com role:
-                      roles/resourcemanager.organizationViewer
-                      condition: title: expirable access description:
-                      Does not grant access after Sep 2020 expression:
-                      request.time <
-                      timestamp('2020-10-01T00:00:00.000Z') etag:
-                      BwWWja0YfJA= version: 3
-
-                   For a description of IAM and its features, see the
-                   [IAM
-                   documentation](\ https://cloud.google.com/iam/docs/).
-
-        """
-        # Create or coerce a protobuf request object.
-        if isinstance(request, dict):
-            # The request isn't a proto-plus wrapped type,
-            # so it must be constructed via keyword expansion.
-            request = iam_policy_pb2.GetIamPolicyRequest(**request)
-        elif not request:
-            # Null request, just make one.
-            request = iam_policy_pb2.GetIamPolicyRequest()
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.get_iam_policy]
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),
-        )
-
-        # Send the request.
-        response = rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # Done; return the response.
-        return response
-
-    def test_iam_permissions(
-        self,
-        request: Union[iam_policy_pb2.TestIamPermissionsRequest, dict] = None,
-        *,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> iam_policy_pb2.TestIamPermissionsResponse:
-        r"""Tests the specified permissions against the IAM access control
-        policy for a function. If the function does not exist, this will
-        return an empty set of permissions, not a NOT_FOUND error.
-
-        .. code-block:: python
-
-            from google.cloud import functions_v1
-            from google.iam.v1 import iam_policy_pb2  # type: ignore
-
-            def sample_test_iam_permissions():
-                # Create a client
-                client = functions_v1.CloudFunctionsServiceClient()
-
-                # Initialize request argument(s)
-                request = iam_policy_pb2.TestIamPermissionsRequest(
-                    resource="resource_value",
-                    permissions=['permissions_value_1', 'permissions_value_2'],
-                )
-
-                # Make the request
-                response = client.test_iam_permissions(request=request)
-
-                # Handle the response
-                print(response)
-
-        Args:
-            request (Union[google.iam.v1.iam_policy_pb2.TestIamPermissionsRequest, dict]):
-                The request object. Request message for
-                `TestIamPermissions` method.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-
-        Returns:
-            google.iam.v1.iam_policy_pb2.TestIamPermissionsResponse:
-                Response message for TestIamPermissions method.
-        """
-        # Create or coerce a protobuf request object.
-        if isinstance(request, dict):
-            # The request isn't a proto-plus wrapped type,
-            # so it must be constructed via keyword expansion.
-            request = iam_policy_pb2.TestIamPermissionsRequest(**request)
-        elif not request:
-            # Null request, just make one.
-            request = iam_policy_pb2.TestIamPermissionsRequest()
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.test_iam_permissions]
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
         )
 
         # Send the request.
@@ -1677,6 +1493,464 @@ class CloudFunctionsServiceClient(metaclass=CloudFunctionsServiceClientMeta):
         """
         self.transport.close()
 
+    def list_operations(
+        self,
+        request: operations_pb2.ListOperationsRequest = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operations_pb2.ListOperationsResponse:
+        r"""Lists operations that match the specified filter in the request.
+
+        Args:
+            request (:class:`~.operations_pb2.ListOperationsRequest`):
+                The request object. Request message for
+                `ListOperations` method.
+            retry (google.api_core.retry.Retry): Designation of what errors,
+                    if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        Returns:
+            ~.operations_pb2.ListOperationsResponse:
+                Response message for ``ListOperations`` method.
+        """
+        # Create or coerce a protobuf request object.
+        # The request isn't a proto-plus wrapped type,
+        # so it must be constructed via keyword expansion.
+        if isinstance(request, dict):
+            request = operations_pb2.ListOperationsRequest(**request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method.wrap_method(
+            self._transport.list_operations,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def get_operation(
+        self,
+        request: operations_pb2.GetOperationRequest = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operations_pb2.Operation:
+        r"""Gets the latest state of a long-running operation.
+
+        Args:
+            request (:class:`~.operations_pb2.GetOperationRequest`):
+                The request object. Request message for
+                `GetOperation` method.
+            retry (google.api_core.retry.Retry): Designation of what errors,
+                    if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        Returns:
+            ~.operations_pb2.Operation:
+                An ``Operation`` object.
+        """
+        # Create or coerce a protobuf request object.
+        # The request isn't a proto-plus wrapped type,
+        # so it must be constructed via keyword expansion.
+        if isinstance(request, dict):
+            request = operations_pb2.GetOperationRequest(**request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method.wrap_method(
+            self._transport.get_operation,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def set_iam_policy(
+        self,
+        request: iam_policy_pb2.SetIamPolicyRequest = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> policy_pb2.Policy:
+        r"""Sets the IAM access control policy on the specified function.
+
+        Replaces any existing policy.
+
+        Args:
+            request (:class:`~.iam_policy_pb2.SetIamPolicyRequest`):
+                The request object. Request message for `SetIamPolicy`
+                method.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        Returns:
+            ~.policy_pb2.Policy:
+                Defines an Identity and Access Management (IAM) policy.
+                It is used to specify access control policies for Cloud
+                Platform resources.
+                A ``Policy`` is a collection of ``bindings``. A
+                ``binding`` binds one or more ``members`` to a single
+                ``role``. Members can be user accounts, service
+                accounts, Google groups, and domains (such as G Suite).
+                A ``role`` is a named list of permissions (defined by
+                IAM or configured by users). A ``binding`` can
+                optionally specify a ``condition``, which is a logic
+                expression that further constrains the role binding
+                based on attributes about the request and/or target
+                resource. JSON Example.
+
+                .. code-block:: python
+
+                    {
+                      "bindings": [
+                        {
+                          "role": "roles/resourcemanager.organizationAdmin",
+                          "members": [
+                            "user:mike@example.com",
+                            "group:admins@example.com",
+                            "domain:google.com",
+                            "serviceAccount:my-project-id@appspot.gserviceaccount.com"
+                          ]
+                        },
+                        {
+                          "role": "roles/resourcemanager.organizationViewer",
+                          "members": ["user:eve@example.com"],
+                          "condition": {
+                            "title": "expirable access",
+                            "description": "Does not grant access after Sep 2020",
+                            "expression": "request.time <
+                            timestamp('2020-10-01T00:00:00.000Z')",
+                          }
+                        }
+                      ]
+                    }
+
+                **YAML Example**
+
+                ::
+
+                    bindings:
+                    - members:
+                      - user:mike@example.com
+                      - group:admins@example.com
+                      - domain:google.com
+                      - serviceAccount:my-project-id@appspot.gserviceaccount.com
+                      role: roles/resourcemanager.organizationAdmin
+                    - members:
+                      - user:eve@example.com
+                      role: roles/resourcemanager.organizationViewer
+                      condition:
+                        title: expirable access
+                        description: Does not grant access after Sep 2020
+                        expression: request.time < timestamp('2020-10-01T00:00:00.000Z')
+
+                For a description of IAM and its features, see the `IAM
+                developer's
+                guide <https://cloud.google.com/iam/docs>`__.
+        """
+        # Create or coerce a protobuf request object.
+
+        # The request isn't a proto-plus wrapped type,
+        # so it must be constructed via keyword expansion.
+        if isinstance(request, dict):
+            request = iam_policy_pb2.SetIamPolicyRequest(**request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method.wrap_method(
+            self._transport.set_iam_policy,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def get_iam_policy(
+        self,
+        request: iam_policy_pb2.GetIamPolicyRequest = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> policy_pb2.Policy:
+        r"""Gets the IAM access control policy for a function.
+
+        Returns an empty policy if the function exists and does not have a
+        policy set.
+
+        Args:
+            request (:class:`~.iam_policy_pb2.GetIamPolicyRequest`):
+                The request object. Request message for `GetIamPolicy`
+                method.
+            retry (google.api_core.retry.Retry): Designation of what errors, if
+                any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        Returns:
+            ~.policy_pb2.Policy:
+                Defines an Identity and Access Management (IAM) policy.
+                It is used to specify access control policies for Cloud
+                Platform resources.
+                A ``Policy`` is a collection of ``bindings``. A
+                ``binding`` binds one or more ``members`` to a single
+                ``role``. Members can be user accounts, service
+                accounts, Google groups, and domains (such as G Suite).
+                A ``role`` is a named list of permissions (defined by
+                IAM or configured by users). A ``binding`` can
+                optionally specify a ``condition``, which is a logic
+                expression that further constrains the role binding
+                based on attributes about the request and/or target
+                resource. JSON Example.
+
+                .. code-block:: python
+
+                    {
+                      "bindings": [
+                        {
+                          "role": "roles/resourcemanager.organizationAdmin",
+                          "members": [
+                            "user:mike@example.com",
+                            "group:admins@example.com",
+                            "domain:google.com",
+                            "serviceAccount:my-project-id@appspot.gserviceaccount.com"
+                          ]
+                        },
+                        {
+                          "role": "roles/resourcemanager.organizationViewer",
+                          "members": ["user:eve@example.com"],
+                          "condition": {
+                            "title": "expirable access",
+                            "description": "Does not grant access after Sep 2020",
+                            "expression": "request.time <
+                            timestamp('2020-10-01T00:00:00.000Z')",
+                          }
+                        }
+                      ]
+                    }
+
+                **YAML Example**
+
+                ::
+
+                    bindings:
+                    - members:
+                      - user:mike@example.com
+                      - group:admins@example.com
+                      - domain:google.com
+                      - serviceAccount:my-project-id@appspot.gserviceaccount.com
+                      role: roles/resourcemanager.organizationAdmin
+                    - members:
+                      - user:eve@example.com
+                      role: roles/resourcemanager.organizationViewer
+                      condition:
+                        title: expirable access
+                        description: Does not grant access after Sep 2020
+                        expression: request.time < timestamp('2020-10-01T00:00:00.000Z')
+
+                For a description of IAM and its features, see the `IAM
+                developer's
+                guide <https://cloud.google.com/iam/docs>`__.
+        """
+        # Create or coerce a protobuf request object.
+
+        # The request isn't a proto-plus wrapped type,
+        # so it must be constructed via keyword expansion.
+        if isinstance(request, dict):
+            request = iam_policy_pb2.GetIamPolicyRequest(**request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method.wrap_method(
+            self._transport.get_iam_policy,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def test_iam_permissions(
+        self,
+        request: iam_policy_pb2.TestIamPermissionsRequest = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> iam_policy_pb2.TestIamPermissionsResponse:
+        r"""Tests the specified IAM permissions against the IAM access control
+            policy for a function.
+
+        If the function does not exist, this will return an empty set
+        of permissions, not a NOT_FOUND error.
+
+        Args:
+            request (:class:`~.iam_policy_pb2.TestIamPermissionsRequest`):
+                The request object. Request message for
+                `TestIamPermissions` method.
+            retry (google.api_core.retry.Retry): Designation of what errors,
+                 if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        Returns:
+            ~.iam_policy_pb2.TestIamPermissionsResponse:
+                Response message for ``TestIamPermissions`` method.
+        """
+        # Create or coerce a protobuf request object.
+
+        # The request isn't a proto-plus wrapped type,
+        # so it must be constructed via keyword expansion.
+        if isinstance(request, dict):
+            request = iam_policy_pb2.TestIamPermissionsRequest(**request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method.wrap_method(
+            self._transport.test_iam_permissions,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def list_locations(
+        self,
+        request: locations_pb2.ListLocationsRequest = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> locations_pb2.ListLocationsResponse:
+        r"""Lists information about the supported locations for this service.
+
+        Args:
+            request (:class:`~.location_pb2.ListLocationsRequest`):
+                The request object. Request message for
+                `ListLocations` method.
+            retry (google.api_core.retry.Retry): Designation of what errors,
+                 if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        Returns:
+            ~.location_pb2.ListLocationsResponse:
+                Response message for ``ListLocations`` method.
+        """
+        # Create or coerce a protobuf request object.
+        # The request isn't a proto-plus wrapped type,
+        # so it must be constructed via keyword expansion.
+        if isinstance(request, dict):
+            request = locations_pb2.ListLocationsRequest(**request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method.wrap_method(
+            self._transport.list_locations,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
 
 try:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
@@ -1688,4 +1962,4 @@ except pkg_resources.DistributionNotFound:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
 
 
-__all__ = ("CloudFunctionsServiceClient",)
+__all__ = ("FunctionServiceClient",)
