@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-cloud-speech/#history
 
+## [2.15.0](https://github.com/googleapis/python-speech/compare/v2.14.1...v2.15.0) (2022-07-14)
+
+
+### Features
+
+* add audience parameter ([068f8e8](https://github.com/googleapis/python-speech/commit/068f8e87ec08b82f957b461d397370e38faccd29))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.32.0,>=2.8.0 ([#416](https://github.com/googleapis/python-speech/issues/416)) ([87ad726](https://github.com/googleapis/python-speech/commit/87ad7260dfd6298a85c3caaa26504228c70802a4))
+* require python 3.7+ ([#414](https://github.com/googleapis/python-speech/issues/414)) ([8961725](https://github.com/googleapis/python-speech/commit/896172595815520f06b2a8260516032e2d06c79c))
+
 ## [2.14.1](https://github.com/googleapis/python-speech/compare/v2.14.0...v2.14.1) (2022-06-06)
 
 
