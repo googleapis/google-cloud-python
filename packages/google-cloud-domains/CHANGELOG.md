@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.2.0](https://github.com/googleapis/python-domains/compare/v1.1.3...v1.2.0) (2022-07-14)
+
+
+### Features
+
+* add audience parameter ([1f81100](https://github.com/googleapis/python-domains/commit/1f811006bf8610a3b99bc42db360f40749e4f9f5))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.32.0,>=2.8.0 ([#153](https://github.com/googleapis/python-domains/issues/153)) ([1f81100](https://github.com/googleapis/python-domains/commit/1f811006bf8610a3b99bc42db360f40749e4f9f5))
+* require python 3.7+ ([#155](https://github.com/googleapis/python-domains/issues/155)) ([c072c18](https://github.com/googleapis/python-domains/commit/c072c181d93eb12dd5ede96030dd27c21d597da8))
+
 ## [1.1.3](https://github.com/googleapis/python-domains/compare/v1.1.2...v1.1.3) (2022-06-03)
 
 
