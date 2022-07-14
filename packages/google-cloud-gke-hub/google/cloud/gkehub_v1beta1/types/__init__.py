@@ -14,11 +14,13 @@
 # limitations under the License.
 #
 from .membership import (
+    ApplianceCluster,
     Authority,
     ConnectAgent,
     ConnectAgentResource,
     CreateMembershipRequest,
     DeleteMembershipRequest,
+    EdgeCluster,
     GenerateConnectManifestRequest,
     GenerateConnectManifestResponse,
     GenerateExclusivityManifestRequest,
@@ -44,11 +46,13 @@ from .membership import (
 )
 
 __all__ = (
+    "ApplianceCluster",
     "Authority",
     "ConnectAgent",
     "ConnectAgentResource",
     "CreateMembershipRequest",
     "DeleteMembershipRequest",
+    "EdgeCluster",
     "GenerateConnectManifestRequest",
     "GenerateConnectManifestResponse",
     "GenerateExclusivityManifestRequest",

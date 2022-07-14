@@ -31,6 +31,8 @@ __protobuf__ = proto.module(
         "GkeCluster",
         "OnPremCluster",
         "MultiCloudCluster",
+        "EdgeCluster",
+        "ApplianceCluster",
         "KubernetesMetadata",
         "Authority",
         "MembershipState",
@@ -228,12 +230,24 @@ class MembershipEndpoint(proto.Message):
             This field is a member of `oneof`_ ``type``.
         on_prem_cluster (google.cloud.gkehub_v1beta1.types.OnPremCluster):
             Optional. Specific information for a GKE
-            On-Prem cluster.
+            On-Prem cluster. An onprem user-cluster who has
+            no resourceLink is not allowed to use this
+            field, it should have a nil "type" instead.
 
             This field is a member of `oneof`_ ``type``.
         multi_cloud_cluster (google.cloud.gkehub_v1beta1.types.MultiCloudCluster):
             Optional. Specific information for a GKE
             Multi-Cloud cluster.
+
+            This field is a member of `oneof`_ ``type``.
+        edge_cluster (google.cloud.gkehub_v1beta1.types.EdgeCluster):
+            Optional. Specific information for a Google
+            Edge cluster.
+
+            This field is a member of `oneof`_ ``type``.
+        appliance_cluster (google.cloud.gkehub_v1beta1.types.ApplianceCluster):
+            Optional. Specific information for a GDC Edge
+            Appliance cluster.
 
             This field is a member of `oneof`_ ``type``.
         kubernetes_metadata (google.cloud.gkehub_v1beta1.types.KubernetesMetadata):
@@ -269,6 +283,18 @@ class MembershipEndpoint(proto.Message):
         number=8,
         oneof="type",
         message="MultiCloudCluster",
+    )
+    edge_cluster = proto.Field(
+        proto.MESSAGE,
+        number=9,
+        oneof="type",
+        message="EdgeCluster",
+    )
+    appliance_cluster = proto.Field(
+        proto.MESSAGE,
+        number=10,
+        oneof="type",
+        message="ApplianceCluster",
     )
     kubernetes_metadata = proto.Field(
         proto.MESSAGE,
@@ -442,7 +468,6 @@ class OnPremCluster(proto.Message):
         resource_link (str):
             Immutable. Self-link of the GCP resource for
             the GKE On-Prem cluster. For example:
-
             //gkeonprem.googleapis.com/projects/my-project/locations/us-west1-a/vmwareClusters/my-cluster
             //gkeonprem.googleapis.com/projects/my-project/locations/us-west1-a/bareMetalClusters/my-cluster
         cluster_missing (bool):
@@ -452,7 +477,17 @@ class OnPremCluster(proto.Message):
         admin_cluster (bool):
             Immutable. Whether the cluster is an admin
             cluster.
+        cluster_type (google.cloud.gkehub_v1beta1.types.OnPremCluster.ClusterType):
+            Immutable. The on prem cluster's type.
     """
+
+    class ClusterType(proto.Enum):
+        r"""ClusterType describes on prem cluster's type."""
+        CLUSTERTYPE_UNSPECIFIED = 0
+        BOOTSTRAP = 1
+        HYBRID = 2
+        STANDALONE = 3
+        USER = 4
 
     resource_link = proto.Field(
         proto.STRING,
@@ -465,6 +500,11 @@ class OnPremCluster(proto.Message):
     admin_cluster = proto.Field(
         proto.BOOL,
         number=3,
+    )
+    cluster_type = proto.Field(
+        proto.ENUM,
+        number=4,
+        enum=ClusterType,
     )
 
 
@@ -492,6 +532,42 @@ class MultiCloudCluster(proto.Message):
     cluster_missing = proto.Field(
         proto.BOOL,
         number=2,
+    )
+
+
+class EdgeCluster(proto.Message):
+    r"""EdgeCluster contains information specific to Google Edge
+    Clusters.
+
+    Attributes:
+        resource_link (str):
+            Immutable. Self-link of the GCP resource for
+            the Edge Cluster. For example:
+
+            //edgecontainer.googleapis.com/projects/my-project/locations/us-west1-a/clusters/my-cluster
+    """
+
+    resource_link = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class ApplianceCluster(proto.Message):
+    r"""ApplianceCluster contains information specific to GDC Edge
+    Appliance Clusters.
+
+    Attributes:
+        resource_link (str):
+            Immutable. Self-link of the GCP resource for
+            the Appliance Cluster. For example:
+
+            //transferappliance.googleapis.com/projects/my-project/locations/us-west1-a/appliances/my-appliance
+    """
+
+    resource_link = proto.Field(
+        proto.STRING,
+        number=1,
     )
 
 

@@ -17,11 +17,13 @@
 from .services.gke_hub_membership_service import GkeHubMembershipServiceClient
 from .services.gke_hub_membership_service import GkeHubMembershipServiceAsyncClient
 
+from .types.membership import ApplianceCluster
 from .types.membership import Authority
 from .types.membership import ConnectAgent
 from .types.membership import ConnectAgentResource
 from .types.membership import CreateMembershipRequest
 from .types.membership import DeleteMembershipRequest
+from .types.membership import EdgeCluster
 from .types.membership import GenerateConnectManifestRequest
 from .types.membership import GenerateConnectManifestResponse
 from .types.membership import GenerateExclusivityManifestRequest
@@ -47,11 +49,13 @@ from .types.membership import ValidateExclusivityResponse
 
 __all__ = (
     "GkeHubMembershipServiceAsyncClient",
+    "ApplianceCluster",
     "Authority",
     "ConnectAgent",
     "ConnectAgentResource",
     "CreateMembershipRequest",
     "DeleteMembershipRequest",
+    "EdgeCluster",
     "GenerateConnectManifestRequest",
     "GenerateConnectManifestResponse",
     "GenerateExclusivityManifestRequest",
