@@ -821,6 +821,11 @@ class PartitionQueryRequest(proto.Message):
             A second call to PartitionQuery will return up to 2
             partitions, to complete the total of 10 specified in
             ``partition_count``.
+        read_time (google.protobuf.timestamp_pb2.Timestamp):
+            Reads documents as they were at the given
+            time. This may not be older than 270 seconds.
+
+            This field is a member of `oneof`_ ``consistency_selector``.
     """
 
     parent = proto.Field(
@@ -844,6 +849,12 @@ class PartitionQueryRequest(proto.Message):
     page_size = proto.Field(
         proto.INT32,
         number=5,
+    )
+    read_time = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        oneof="consistency_selector",
+        message=timestamp_pb2.Timestamp,
     )
 
 
@@ -1330,6 +1341,9 @@ class ListCollectionIdsRequest(proto.Message):
     r"""The request for
     [Firestore.ListCollectionIds][google.firestore.v1.Firestore.ListCollectionIds].
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         parent (str):
             Required. The parent document. In the format:
@@ -1341,6 +1355,11 @@ class ListCollectionIdsRequest(proto.Message):
         page_token (str):
             A page token. Must be a value from
             [ListCollectionIdsResponse][google.firestore.v1.ListCollectionIdsResponse].
+        read_time (google.protobuf.timestamp_pb2.Timestamp):
+            Reads documents as they were at the given
+            time. This may not be older than 270 seconds.
+
+            This field is a member of `oneof`_ ``consistency_selector``.
     """
 
     parent = proto.Field(
@@ -1354,6 +1373,12 @@ class ListCollectionIdsRequest(proto.Message):
     page_token = proto.Field(
         proto.STRING,
         number=3,
+    )
+    read_time = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        oneof="consistency_selector",
+        message=timestamp_pb2.Timestamp,
     )
 
 
