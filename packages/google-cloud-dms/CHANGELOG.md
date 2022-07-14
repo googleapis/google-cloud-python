@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.4.0](https://github.com/googleapis/python-dms/compare/v1.3.2...v1.4.0) (2022-07-14)
+
+
+### Features
+
+* add audience parameter ([256aec4](https://github.com/googleapis/python-dms/commit/256aec45fe7b5e0e11e336e9560b88a85cd5c65f))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.32.0,>=2.8.0 ([#129](https://github.com/googleapis/python-dms/issues/129)) ([256aec4](https://github.com/googleapis/python-dms/commit/256aec45fe7b5e0e11e336e9560b88a85cd5c65f))
+* require python 3.7+ ([#131](https://github.com/googleapis/python-dms/issues/131)) ([83822f1](https://github.com/googleapis/python-dms/commit/83822f13d600dc36158ef8b62217e6e3544d9b87))
+
 ## [1.3.2](https://github.com/googleapis/python-dms/compare/v1.3.1...v1.3.2) (2022-06-03)
 
 
