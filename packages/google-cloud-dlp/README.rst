@@ -1,24 +1,22 @@
-Python Client for Cloud Data Loss Prevention (DLP) API
-======================================================
+Python Client for Cloud Data Loss Prevention API
+================================================
 
-|GA| |pypi| |versions| 
+|stable| |pypi| |versions|
 
-`Cloud Data Loss Prevention (DLP) API`_: Provides methods for detection, risk analysis, and de-identification of
-privacy-sensitive fragments in text, images, and Google Cloud Platform
-storage repositories.
+`Cloud Data Loss Prevention API`_: provides programmatic access to a powerful detection engine for personally identifiable information and other privacy-sensitive data in unstructured data streams, like text blocks and images.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
 
-.. |GA| image:: https://img.shields.io/badge/support-GA-gold.svg
-   :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#general-availability
+.. |stable| image:: https://img.shields.io/badge/support-stable-gold.svg
+   :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#stability-levels
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-dlp.svg
    :target: https://pypi.org/project/google-cloud-dlp/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-dlp.svg
    :target: https://pypi.org/project/google-cloud-dlp/
-.. _Cloud Data Loss Prevention (DLP) API: https://cloud.google.com/dlp
+.. _Cloud Data Loss Prevention API: https://cloud.google.com/dlp/docs/
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/dlp/latest
-.. _Product Documentation:  https://cloud.google.com/dlp
+.. _Product Documentation:  https://cloud.google.com/dlp/docs/
 
 Quick Start
 -----------
@@ -27,12 +25,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the Cloud Data Loss Prevention (DLP) API.`_
+3. `Enable the Cloud Data Loss Prevention API.`_
 4. `Setup Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Cloud Data Loss Prevention (DLP) API.:  https://cloud.google.com/dlp
+.. _Enable the Cloud Data Loss Prevention API.:  https://cloud.google.com/dlp/docs/
 .. _Setup Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -49,15 +47,25 @@ dependencies.
 .. _`virtualenv`: https://virtualenv.pypa.io/en/latest/
 
 
+Code samples and snippets
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Code samples and snippets live in the `samples/` folder.
+
+
 Supported Python Versions
 ^^^^^^^^^^^^^^^^^^^^^^^^^
-Python >= 3.6
+Our client libraries are compatible with all current [active](https://devguide.python.org/devcycle/#in-development-main-branch) and [maintenance](https://devguide.python.org/devcycle/#maintenance-branches) versions of
+Python.
 
-Deprecated Python Versions
-^^^^^^^^^^^^^^^^^^^^^^^^^^
-Python == 2.7.
+Python >= 3.7
 
-The last version of this library compatible with Python 2.7 is google-cloud-dlp==1.1.0.
+Unsupported Python Versions
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Python <= 3.6
+
+If you are using an [end-of-life](https://devguide.python.org/devcycle/#end-of-life-branches)
+version of Python, we recommend that you update as soon as possible to an actively supported version.
 
 
 Mac/Linux
@@ -81,33 +89,15 @@ Windows
     <your-env>\Scripts\activate
     <your-env>\Scripts\pip.exe install google-cloud-dlp
 
-Preview
-~~~~~~~
-
-DlpServiceClient
-^^^^^^^^^^^^^^^^
-
-.. code:: py
-
-    from google.cloud import dlp_v2
-
-    client = dlp_v2.DlpServiceClient()
-
-    name = 'EMAIL_ADDRESS'
-    info_types_element = {'name': name}
-    info_types = [info_types_element]
-    inspect_config = {'info_types': info_types}
-    type_ = 'text/plain'
-    value = 'My email is example@example.com.'
-    items_element = {'type': type_, 'value': value}
-    items = [items_element]
-
-    response = client.inspect_content(inspect_config, items)
-
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for Cloud Data Loss Prevention
-   (DLP) API to see other available methods on the client.
--  Read the `Product documentation`_ to
-   learn more about the product and see How-to Guides.
+-  Read the `Client Library Documentation`_ for Cloud Data Loss Prevention API
+   to see other available methods on the client.
+-  Read the `Cloud Data Loss Prevention API Product documentation`_ to learn
+   more about the product and see How-to Guides.
+-  View this `README`_ to see the full list of Cloud
+   APIs that we cover.
+
+.. _Cloud Data Loss Prevention API Product documentation:  https://cloud.google.com/dlp/docs/
+.. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst

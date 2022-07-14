@@ -13,5 +13,6 @@
     "requires_billing": true,
     "default_version": "v2",
     "codeowner_team": "",
-    "api_shortname": "dlp"
+    "api_shortname": "dlp",
+    "api_description": "provides programmatic access to a powerful detection engine for personally identifiable information and other privacy-sensitive data in unstructured data streams, like text blocks and images."
 }
