@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-cloud-translate/#history
 
+## [3.8.0](https://github.com/googleapis/python-translate/compare/v3.7.4...v3.8.0) (2022-07-14)
+
+
+### Features
+
+* add audience parameter ([b665051](https://github.com/googleapis/python-translate/commit/b665051e24faff0a2715a0aeac29e6f97139e1c9))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.32.0,>=2.8.0 ([#409](https://github.com/googleapis/python-translate/issues/409)) ([b665051](https://github.com/googleapis/python-translate/commit/b665051e24faff0a2715a0aeac29e6f97139e1c9))
+* require python 3.7+ ([#411](https://github.com/googleapis/python-translate/issues/411)) ([a0cbe87](https://github.com/googleapis/python-translate/commit/a0cbe87f78a4df99509fd4f82154105d53a6a0ee))
+
 ## [3.7.4](https://github.com/googleapis/python-translate/compare/v3.7.3...v3.7.4) (2022-06-06)
 
 
