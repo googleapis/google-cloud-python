@@ -631,7 +631,7 @@ transmitted in chunks until completion:
 
    >>> response0 = upload.transmit_next_chunk(transport)
    >>> response0
-   <Response [HTTPStatus.PERMANENT_REDIRECT]>
+   <Response [308]>
    >>> upload.finished
    False
    >>> upload.bytes_uploaded == upload.chunk_size
@@ -639,7 +639,7 @@ transmitted in chunks until completion:
    >>>
    >>> response1 = upload.transmit_next_chunk(transport)
    >>> response1
-   <Response [HTTPStatus.PERMANENT_REDIRECT]>
+   <Response [308]>
    >>> upload.finished
    False
    >>> upload.bytes_uploaded == 2 * upload.chunk_size

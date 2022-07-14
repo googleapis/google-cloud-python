@@ -121,7 +121,7 @@ def docfx(session):
 def doctest(session):
     """Run the doctests."""
     session.install("-e", ".[requests]")
-    session.install("sphinx", "alabaster", "recommonmark")
+    session.install("sphinx==4.0.1", "alabaster", "recommonmark")
     session.install(
         "sphinx",
         "sphinx_rtd_theme",
