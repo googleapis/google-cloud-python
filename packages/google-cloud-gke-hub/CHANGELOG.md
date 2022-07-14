@@ -1,5 +1,21 @@
 # Changelog
 
+## [1.5.0](https://github.com/googleapis/python-gke-hub/compare/v1.4.3...v1.5.0) (2022-07-14)
+
+
+### Features
+
+* add ApplianceCluster as a new membershipEndpoint type ([2dee166](https://github.com/googleapis/python-gke-hub/commit/2dee166eedebae754c85227256ec34ba700ce796))
+* add audience parameter ([2dee166](https://github.com/googleapis/python-gke-hub/commit/2dee166eedebae754c85227256ec34ba700ce796))
+* add ClusterType field in MembershipEndpoint.OnPremCluster ([2dee166](https://github.com/googleapis/python-gke-hub/commit/2dee166eedebae754c85227256ec34ba700ce796))
+* add EdgeCluster as a new membershipEndpoint type ([2dee166](https://github.com/googleapis/python-gke-hub/commit/2dee166eedebae754c85227256ec34ba700ce796))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.32.0,>=2.8.0 ([#172](https://github.com/googleapis/python-gke-hub/issues/172)) ([2dee166](https://github.com/googleapis/python-gke-hub/commit/2dee166eedebae754c85227256ec34ba700ce796))
+* require python 3.7+ ([#183](https://github.com/googleapis/python-gke-hub/issues/183)) ([dd7e9c7](https://github.com/googleapis/python-gke-hub/commit/dd7e9c78298df7cfccbb9dd446878ff75d0e7097))
+
 ## [1.4.3](https://github.com/googleapis/python-gke-hub/compare/v1.4.2...v1.4.3) (2022-06-03)
 
 
