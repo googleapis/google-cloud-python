@@ -15,7 +15,7 @@ Python Client for Dialogflow CX API
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-dialogflow-cx.svg
    :target: https://pypi.org/project/google-cloud-dialogflow-cx/
 .. _Dialogflow CX API: https://cloud.google.com/dialogflow/cx/docs
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/dialogflow/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/dialogflow-cx/latest
 .. _Product Documentation:  https://cloud.google.com/dialogflow/cx/docs
 
 Quick Start
@@ -55,18 +55,22 @@ Code samples and snippets live in the `samples/` folder.
 
 Supported Python Versions
 ^^^^^^^^^^^^^^^^^^^^^^^^^
-Our client libraries are compatible with all current [active](https://devguide.python.org/devcycle/#in-development-main-branch) and [maintenance](https://devguide.python.org/devcycle/#maintenance-branches) versions of
+Our client libraries are compatible with all current `active`_ and `maintenance`_ versions of
 Python.
 
 Python >= 3.7
+
+.. _active: https://devguide.python.org/devcycle/#in-development-main-branch
+.. _maintenance: https://devguide.python.org/devcycle/#maintenance-branches
 
 Unsupported Python Versions
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Python <= 3.6
 
-If you are using an [end-of-life](https://devguide.python.org/devcycle/#end-of-life-branches)
+If you are using an `end-of-life`_
 version of Python, we recommend that you update as soon as possible to an actively supported version.
 
+.. _end-of-life: https://devguide.python.org/devcycle/#end-of-life-branches
 
 Mac/Linux
 ^^^^^^^^^
