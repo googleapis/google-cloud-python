@@ -4,6 +4,20 @@
 
 [1]: https://pypi.org/project/grafeas/#history
 
+## [1.5.0](https://github.com/googleapis/python-grafeas/compare/v1.4.5...v1.5.0) (2022-07-14)
+
+
+### Features
+
+* Add `Digest`, `FileLocation` and `License` ([#186](https://github.com/googleapis/python-grafeas/issues/186)) ([69b5e8b](https://github.com/googleapis/python-grafeas/commit/69b5e8b7fe9162f93a2141a30a94e0bf637af433))
+* add audience parameter ([59cb75d](https://github.com/googleapis/python-grafeas/commit/59cb75d9b2beeaaa25ab4cd057bcbd5efc5796d7))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.32.0,>=2.8.0 ([#196](https://github.com/googleapis/python-grafeas/issues/196)) ([61bc475](https://github.com/googleapis/python-grafeas/commit/61bc475542fec60ed8a8ff6b4aecf66e61b5a53a))
+* require python 3.7+ ([#195](https://github.com/googleapis/python-grafeas/issues/195)) ([08f46fd](https://github.com/googleapis/python-grafeas/commit/08f46fdaf38d76c31f97616e3f9e379e496b189a))
+
 ## [1.4.5](https://github.com/googleapis/python-grafeas/compare/v1.4.4...v1.4.5) (2022-06-03)
 
 
