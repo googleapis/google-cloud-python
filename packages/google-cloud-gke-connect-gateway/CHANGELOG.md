@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.6.0](https://github.com/googleapis/python-gke-connect-gateway/compare/v0.5.2...v0.6.0) (2022-07-14)
+
+
+### Features
+
+* add audience parameter ([3bb5062](https://github.com/googleapis/python-gke-connect-gateway/commit/3bb5062e9780db7e171248560038c4d0cfc375c6))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.32.0,>=2.8.0 ([#113](https://github.com/googleapis/python-gke-connect-gateway/issues/113)) ([78d4801](https://github.com/googleapis/python-gke-connect-gateway/commit/78d4801f8113ca3dc36e302aac9734934bf7df7c))
+* require python 3.7+ ([#111](https://github.com/googleapis/python-gke-connect-gateway/issues/111)) ([f9c42bb](https://github.com/googleapis/python-gke-connect-gateway/commit/f9c42bb4da63ed293393931fa2532434fc39e27a))
+
 ## [0.5.2](https://github.com/googleapis/python-gke-connect-gateway/compare/v0.5.1...v0.5.2) (2022-06-03)
 
 
