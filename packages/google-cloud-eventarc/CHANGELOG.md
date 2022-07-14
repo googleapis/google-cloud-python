@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.6.0](https://github.com/googleapis/python-eventarc/compare/v1.5.1...v1.6.0) (2022-07-14)
+
+
+### Features
+
+* add audience parameter ([535338c](https://github.com/googleapis/python-eventarc/commit/535338c0130d289b390ef0dd17bf8e2bbbc15f3c))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.32.0,>=2.8.0 ([#150](https://github.com/googleapis/python-eventarc/issues/150)) ([535338c](https://github.com/googleapis/python-eventarc/commit/535338c0130d289b390ef0dd17bf8e2bbbc15f3c))
+* require python 3.7+ ([#152](https://github.com/googleapis/python-eventarc/issues/152)) ([0db4414](https://github.com/googleapis/python-eventarc/commit/0db4414f426b81be060e4fc49d829d4304c76530))
+
 ## [1.5.1](https://github.com/googleapis/python-eventarc/compare/v1.5.0...v1.5.1) (2022-06-03)
 
 
