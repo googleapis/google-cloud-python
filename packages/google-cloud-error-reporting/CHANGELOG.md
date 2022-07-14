@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-cloud-error-reporting/#history
 
+## [1.6.0](https://github.com/googleapis/python-error-reporting/compare/v1.5.3...v1.6.0) (2022-07-14)
+
+
+### Features
+
+* add audience parameter ([f53a2fa](https://github.com/googleapis/python-error-reporting/commit/f53a2fa49567035a1a3bb94d13444dd65bd104c6))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.32.0,>=2.8.0 ([#354](https://github.com/googleapis/python-error-reporting/issues/354)) ([f53a2fa](https://github.com/googleapis/python-error-reporting/commit/f53a2fa49567035a1a3bb94d13444dd65bd104c6))
+* require python 3.7+ ([#358](https://github.com/googleapis/python-error-reporting/issues/358)) ([ab0a9ba](https://github.com/googleapis/python-error-reporting/commit/ab0a9bacf9594ce3ff4c521413a20a2995533032))
+
 ## [1.5.3](https://github.com/googleapis/python-error-reporting/compare/v1.5.2...v1.5.3) (2022-06-07)
 
 
