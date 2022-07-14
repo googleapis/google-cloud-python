@@ -16,6 +16,7 @@
 import proto  # type: ignore
 
 from google.cloud.dialogflowcx_v3.types import test_case
+from google.cloud.dialogflowcx_v3.types import webhook
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 
@@ -79,6 +80,9 @@ class Environment(proto.Message):
         test_cases_config (google.cloud.dialogflowcx_v3.types.Environment.TestCasesConfig):
             The test cases config for continuous tests of
             this environment.
+        webhook_config (google.cloud.dialogflowcx_v3.types.Environment.WebhookConfig):
+            The webhook configuration for this
+            environment.
     """
 
     class VersionConfig(proto.Message):
@@ -128,6 +132,25 @@ class Environment(proto.Message):
             number=3,
         )
 
+    class WebhookConfig(proto.Message):
+        r"""Configuration for webhooks.
+
+        Attributes:
+            webhook_overrides (Sequence[google.cloud.dialogflowcx_v3.types.Webhook]):
+                The list of webhooks to override for the agent environment.
+                The webhook must exist in the agent. You can override fields
+                in
+                [``generic_web_service``][google.cloud.dialogflow.cx.v3.Webhook.generic_web_service]
+                and
+                [``service_directory``][google.cloud.dialogflow.cx.v3.Webhook.service_directory].
+        """
+
+        webhook_overrides = proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=webhook.Webhook,
+        )
+
     name = proto.Field(
         proto.STRING,
         number=1,
@@ -154,6 +177,11 @@ class Environment(proto.Message):
         proto.MESSAGE,
         number=7,
         message=TestCasesConfig,
+    )
+    webhook_config = proto.Field(
+        proto.MESSAGE,
+        number=10,
+        message=WebhookConfig,
     )
 
 
