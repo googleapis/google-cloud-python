@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.3.0](https://github.com/googleapis/python-eventarc-publishing/compare/v0.2.1...v0.3.0) (2022-07-14)
+
+
+### Features
+
+* add audience parameter ([b6c7635](https://github.com/googleapis/python-eventarc-publishing/commit/b6c7635ba61bc3c031dce4ef0a5b9035e738915e))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.32.0,>=2.8.0 ([#46](https://github.com/googleapis/python-eventarc-publishing/issues/46)) ([b6c7635](https://github.com/googleapis/python-eventarc-publishing/commit/b6c7635ba61bc3c031dce4ef0a5b9035e738915e))
+* require python 3.7+ ([#48](https://github.com/googleapis/python-eventarc-publishing/issues/48)) ([a258d4c](https://github.com/googleapis/python-eventarc-publishing/commit/a258d4cb7c8d1e07e3542c9b3814a75455418ff1))
+
 ## [0.2.1](https://github.com/googleapis/python-eventarc-publishing/compare/v0.2.0...v0.2.1) (2022-06-03)
 
 

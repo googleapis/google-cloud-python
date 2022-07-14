@@ -22,7 +22,7 @@ import setuptools
 
 name = "google-cloud-eventarc-publishing"
 description = "Eventarc Publishing API client library"
-version = "0.2.1"
+version = "0.3.0"
 url = "https://github.com/googleapis/python-eventarc-publishing"
 release_status = "Development Status :: 4 - Beta"
 dependencies = [
