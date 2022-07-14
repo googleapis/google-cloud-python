@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.2.0](https://github.com/googleapis/python-essential-contacts/compare/v1.1.2...v1.2.0) (2022-07-14)
+
+
+### Features
+
+* add audience parameter ([f5ffbce](https://github.com/googleapis/python-essential-contacts/commit/f5ffbce9df326bb39a343f242d14e47f47895c4c))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.32.0,>=2.8.0 ([#126](https://github.com/googleapis/python-essential-contacts/issues/126)) ([f5ffbce](https://github.com/googleapis/python-essential-contacts/commit/f5ffbce9df326bb39a343f242d14e47f47895c4c))
+* require python 3.7+ ([#128](https://github.com/googleapis/python-essential-contacts/issues/128)) ([e1c5c59](https://github.com/googleapis/python-essential-contacts/commit/e1c5c59ab261512f7205b7d474831bc2110db9ae))
+
 ## [1.1.2](https://github.com/googleapis/python-essential-contacts/compare/v1.1.1...v1.1.2) (2022-06-03)
 
 
