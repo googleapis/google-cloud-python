@@ -33,14 +33,14 @@ def gapic_generator_python():
         urls = ["https://github.com/bazelbuild/bazel-skylib/archive/2169ae1c374aab4a09aa90e65efe1a3aad4e279b.tar.gz"],
     )
 
-    _grpc_version = "1.43.0"
-    _grpc_sha256 = "9647220c699cea4dafa92ec0917c25c7812be51a18143af047e20f3fb05adddc"
+    _grpc_version = "1.47.0"
+    _grpc_sha256 = "edf25f4db6c841853b7a29d61b0980b516dc31a1b6cdc399bcf24c1446a4a249"
     _maybe(
         http_archive,
         name = "com_github_grpc_grpc",
         sha256 = _grpc_sha256,
         strip_prefix = "grpc-{}".format(_grpc_version),
-        url = "https://github.com/grpc/grpc/archive/v{}.tar.gz".format(_grpc_version),
+        url = "https://github.com/grpc/grpc/archive/v{}.zip".format(_grpc_version),
     )
 
     _maybe(

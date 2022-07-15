@@ -12,9 +12,19 @@ http_archive(
     url = "https://github.com/bazelbuild/bazel-skylib/releases/download/{0}/bazel_skylib-{0}.tar.gz".format(_bazel_skylib_version),
 )
 
-_rules_python_version = "0.5.0"
+_io_bazel_rules_go_version = "0.33.0"
+http_archive(
+    name = "io_bazel_rules_go",
+    sha256 = "685052b498b6ddfe562ca7a97736741d87916fe536623afb7da2824c0211c369",
+    urls = [
+        "https://mirror.bazel.build/github.com/bazelbuild/rules_go/releases/download/v{0}/rules_go-v{0}.zip".format(_io_bazel_rules_go_version),
+        "https://github.com/bazelbuild/rules_go/releases/download/v{0}/rules_go-v{0}.zip".format(_io_bazel_rules_go_version),
+    ],
+)
 
-_rules_python_sha256 = "a2fd4c2a8bcf897b718e5643040b03d9528ac6179f6990774b7c19b2dc6cd96b"
+_rules_python_version = "0.9.0"
+
+_rules_python_sha256 = "5fa3c738d33acca3b97622a13a741129f67ef43f5fdfcec63b29374cc0574c29"
 
 http_archive(
     name = "rules_python",
@@ -49,10 +59,6 @@ protobuf_deps()
 load("@com_github_grpc_grpc//bazel:grpc_deps.bzl", "grpc_deps")
 
 grpc_deps()
-
-load("@com_github_grpc_grpc//bazel:grpc_extra_deps.bzl", "grpc_extra_deps")
-
-grpc_extra_deps()
 
 load("@build_bazel_rules_apple//apple:repositories.bzl", "apple_rules_dependencies")
 
