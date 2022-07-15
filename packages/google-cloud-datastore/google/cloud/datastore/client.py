@@ -123,6 +123,7 @@ def _extended_lookup(
     transaction_id=None,
     retry=None,
     timeout=None,
+    read_time=None,
 ):
     """Repeat lookup until all keys found (unless stop requested).
 
@@ -157,7 +158,7 @@ def _extended_lookup(
     :type transaction_id: str
     :param transaction_id: If passed, make the request in the scope of
                            the given transaction.  Incompatible with
-                           ``eventual==True``.
+                           ``eventual==True`` or ``read_time``.
 
     :type retry: :class:`google.api_core.retry.Retry`
     :param retry:
@@ -169,6 +170,12 @@ def _extended_lookup(
         Time, in seconds, to wait for the request to complete.
         Note that if ``retry`` is specified, the timeout applies
         to each individual attempt.
+
+    :type read_time: datetime
+    :param read_time:
+        (Optional) Read time to use for read consistency. Incompatible with
+        ``eventual==True`` or ``transaction_id``.
+        This feature is in private preview.
 
     :rtype: list of :class:`.entity_pb2.Entity`
     :returns: The requested entities.
@@ -186,7 +193,7 @@ def _extended_lookup(
     results = []
 
     loop_num = 0
-    read_options = helpers.get_read_options(eventual, transaction_id)
+    read_options = helpers.get_read_options(eventual, transaction_id, read_time)
     while loop_num < _MAX_LOOPS:  # loop against possible deferred.
         loop_num += 1
         lookup_response = datastore_api.lookup(
@@ -401,6 +408,7 @@ class Client(ClientWithProject):
         eventual=False,
         retry=None,
         timeout=None,
+        read_time=None,
     ):
         """Retrieve an entity from a single key (if it exists).
 
@@ -430,7 +438,8 @@ class Client(ClientWithProject):
         :type eventual: bool
         :param eventual: (Optional) Defaults to strongly consistent (False).
                          Setting True will use eventual consistency, but cannot
-                         be used inside a transaction or will raise ValueError.
+                         be used inside a transaction or with read_time, or will
+                         raise ValueError.
 
         :type retry: :class:`google.api_core.retry.Retry`
         :param retry:
@@ -443,10 +452,16 @@ class Client(ClientWithProject):
             Note that if ``retry`` is specified, the timeout applies
             to each individual attempt.
 
+        :type read_time: datetime
+        :param read_time: Read the entity from the specified time (may be null).
+                          Cannot be used with eventual consistency or inside a
+                          transaction, or will raise ValueError. This feature is in private preview.
+
         :rtype: :class:`google.cloud.datastore.entity.Entity` or ``NoneType``
         :returns: The requested entity if it exists.
 
-        :raises: :class:`ValueError` if eventual is True and in a transaction.
+        :raises: :class:`ValueError` if more than one of ``eventual==True``,
+            ``transaction``, and ``read_time`` is specified.
         """
         entities = self.get_multi(
             keys=[key],
@@ -456,6 +471,7 @@ class Client(ClientWithProject):
             eventual=eventual,
             retry=retry,
             timeout=timeout,
+            read_time=read_time,
         )
         if entities:
             return entities[0]
@@ -469,6 +485,7 @@ class Client(ClientWithProject):
         eventual=False,
         retry=None,
         timeout=None,
+        read_time=None,
     ):
         """Retrieve entities, along with their attributes.
 
@@ -506,11 +523,15 @@ class Client(ClientWithProject):
             Note that if ``retry`` is specified, the timeout applies
             to each individual attempt.
 
+        :type read_time: datetime
+        :param read_time: (Optional) Read time to use for read consistency. This feature is in private preview.
+
         :rtype: list of :class:`google.cloud.datastore.entity.Entity`
         :returns: The requested entities.
         :raises: :class:`ValueError` if one or more of ``keys`` has a project
-                 which does not match our project.
-        :raises: :class:`ValueError` if eventual is True and in a transaction.
+                 which does not match our project; or if more than one of
+                 ``eventual==True``, ``transaction``, and ``read_time`` is
+                 specified.
         """
         if not keys:
             return []
@@ -533,6 +554,7 @@ class Client(ClientWithProject):
             transaction_id=transaction and transaction.id,
             retry=retry,
             timeout=timeout,
+            read_time=read_time,
         )
 
         if missing is not None:

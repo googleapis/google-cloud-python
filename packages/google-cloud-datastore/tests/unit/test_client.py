@@ -367,6 +367,7 @@ def test_client_get_miss():
         eventual=False,
         retry=None,
         timeout=None,
+        read_time=None,
     )
 
 
@@ -389,6 +390,7 @@ def test_client_get_hit():
         eventual=False,
         retry=None,
         timeout=None,
+        read_time=None,
     )
 
 
@@ -649,6 +651,50 @@ def test_client_get_multi_hit_w_transaction():
     assert result["foo"] == "Foo"
 
     read_options = datastore_pb2.ReadOptions(transaction=txn_id)
+    ds_api.lookup.assert_called_once_with(
+        request={
+            "project_id": PROJECT,
+            "keys": [key.to_protobuf()],
+            "read_options": read_options,
+        }
+    )
+
+
+def test_client_get_multi_hit_w_read_time():
+    from datetime import datetime
+
+    from google.cloud.datastore.key import Key
+    from google.cloud.datastore_v1.types import datastore as datastore_pb2
+    from google.protobuf.timestamp_pb2 import Timestamp
+
+    read_time = datetime.utcfromtimestamp(1641058200.123456)
+    read_time_pb = Timestamp(seconds=1641058200, nanos=123456000)
+    kind = "Kind"
+    id_ = 1234
+    path = [{"kind": kind, "id": id_}]
+
+    # Make a found entity pb to be returned from mock backend.
+    entity_pb = _make_entity_pb(PROJECT, kind, id_, "foo", "Foo")
+
+    # Make a connection to return the entity pb.
+    creds = _make_credentials()
+    client = _make_client(credentials=creds)
+    lookup_response = _make_lookup_response(results=[entity_pb])
+    ds_api = _make_datastore_api(lookup_response=lookup_response)
+    client._datastore_api_internal = ds_api
+
+    key = Key(kind, id_, project=PROJECT)
+    (result,) = client.get_multi([key], read_time=read_time)
+    new_key = result.key
+
+    # Check the returned value is as expected.
+    assert new_key is not key
+    assert new_key.project == PROJECT
+    assert new_key.path == path
+    assert list(result) == ["foo"]
+    assert result["foo"] == "Foo"
+
+    read_options = datastore_pb2.ReadOptions(read_time=read_time_pb)
     ds_api.lookup.assert_called_once_with(
         request={
             "project_id": PROJECT,

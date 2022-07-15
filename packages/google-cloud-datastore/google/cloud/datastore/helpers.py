@@ -29,6 +29,7 @@ from google.cloud.datastore_v1.types import datastore as datastore_pb2
 from google.cloud.datastore_v1.types import entity as entity_pb2
 from google.cloud.datastore.entity import Entity
 from google.cloud.datastore.key import Key
+from google.protobuf import timestamp_pb2
 
 
 def _get_meaning(value_pb, is_list=False):
@@ -230,7 +231,7 @@ def entity_to_protobuf(entity):
     return entity_pb
 
 
-def get_read_options(eventual, transaction_id):
+def get_read_options(eventual, transaction_id, read_time=None):
     """Validate rules for read options, and assign to the request.
 
     Helper method for ``lookup()`` and ``run_query``.
@@ -242,21 +243,34 @@ def get_read_options(eventual, transaction_id):
     :type transaction_id: bytes
     :param transaction_id: A transaction identifier (may be null).
 
+    :type read_time: datetime
+    :param read_time: Read data from the specified time (may be null). This feature is in private preview.
+
     :rtype: :class:`.datastore_pb2.ReadOptions`
     :returns: The read options corresponding to the inputs.
-    :raises: :class:`ValueError` if ``eventual`` is ``True`` and the
-             ``transaction_id`` is not ``None``.
+    :raises: :class:`ValueError` if more than one of ``eventual==True``,
+            ``transaction``, and ``read_time`` is specified.
     """
     if transaction_id is None:
         if eventual:
-            return datastore_pb2.ReadOptions(
-                read_consistency=datastore_pb2.ReadOptions.ReadConsistency.EVENTUAL
-            )
+            if read_time is not None:
+                raise ValueError("eventual must be False when read_time is specified")
+            else:
+                return datastore_pb2.ReadOptions(
+                    read_consistency=datastore_pb2.ReadOptions.ReadConsistency.EVENTUAL
+                )
         else:
-            return datastore_pb2.ReadOptions()
+            if read_time is None:
+                return datastore_pb2.ReadOptions()
+            else:
+                read_time_pb = timestamp_pb2.Timestamp()
+                read_time_pb.FromDatetime(read_time)
+                return datastore_pb2.ReadOptions(read_time=read_time_pb)
     else:
         if eventual:
             raise ValueError("eventual must be False when in a transaction")
+        elif read_time is not None:
+            raise ValueError("transaction and read_time are mutual exclusive")
         else:
             return datastore_pb2.ReadOptions(transaction=transaction_id)
 

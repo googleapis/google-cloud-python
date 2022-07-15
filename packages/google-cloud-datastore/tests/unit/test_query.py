@@ -11,6 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+import datetime
 
 import mock
 import pytest
@@ -555,12 +556,13 @@ def test_iterator__process_query_results_bad_enum():
         iterator._process_query_results(response_pb)
 
 
-def _next_page_helper(txn_id=None, retry=None, timeout=None):
+def _next_page_helper(txn_id=None, retry=None, timeout=None, read_time=None):
     from google.api_core import page_iterator
+    from google.cloud.datastore.query import Query
     from google.cloud.datastore_v1.types import datastore as datastore_pb2
     from google.cloud.datastore_v1.types import entity as entity_pb2
     from google.cloud.datastore_v1.types import query as query_pb2
-    from google.cloud.datastore.query import Query
+    from google.protobuf.timestamp_pb2 import Timestamp
 
     more_enum = query_pb2.QueryResultBatch.MoreResultsType.NOT_FINISHED
     result = _make_query_response([], b"", more_enum, 0)
@@ -581,7 +583,11 @@ def _next_page_helper(txn_id=None, retry=None, timeout=None):
     if timeout is not None:
         kwargs["timeout"] = timeout
 
-    iterator = _make_iterator(query, client, **kwargs)
+    it_kwargs = kwargs.copy()
+    if read_time is not None:
+        it_kwargs["read_time"] = read_time
+
+    iterator = _make_iterator(query, client, **it_kwargs)
 
     page = iterator._next_page()
 
@@ -589,10 +595,14 @@ def _next_page_helper(txn_id=None, retry=None, timeout=None):
     assert page._parent is iterator
 
     partition_id = entity_pb2.PartitionId(project_id=project)
-    if txn_id is None:
-        read_options = datastore_pb2.ReadOptions()
-    else:
+    if txn_id is not None:
         read_options = datastore_pb2.ReadOptions(transaction=txn_id)
+    elif read_time is not None:
+        read_time_pb = Timestamp()
+        read_time_pb.FromDatetime(read_time)
+        read_options = datastore_pb2.ReadOptions(read_time=read_time_pb)
+    else:
+        read_options = datastore_pb2.ReadOptions()
     empty_query = query_pb2.Query()
     ds_api.run_query.assert_called_once_with(
         request={
@@ -620,6 +630,11 @@ def test_iterator__next_page_w_timeout():
 def test_iterator__next_page_in_transaction():
     txn_id = b"1xo1md\xe2\x98\x83"
     _next_page_helper(txn_id)
+
+
+def test_iterator__next_page_w_read_time():
+    read_time = datetime.datetime.utcfromtimestamp(1641058200.123456)
+    _next_page_helper(read_time=read_time)
 
 
 def test_iterator__next_page_no_more():

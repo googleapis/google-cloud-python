@@ -357,6 +357,7 @@ class Query(object):
         eventual=False,
         retry=None,
         timeout=None,
+        read_time=None,
     ):
         """Execute the Query; return an iterator for the matching entities.
 
@@ -412,7 +413,8 @@ class Query(object):
         :param eventual: (Optional) Defaults to strongly consistent (False).
                                     Setting True will use eventual consistency,
                                     but cannot be used inside a transaction or
-                                    will raise ValueError.
+                                    with read_time, otherwise will raise
+                                    ValueError.
 
         :type retry: :class:`google.api_core.retry.Retry`
         :param retry:
@@ -424,6 +426,11 @@ class Query(object):
             Time, in seconds, to wait for the request to complete.
             Note that if ``retry`` is specified, the timeout applies
             to each individual attempt.
+
+        :type read_time: datetime
+        :param read_time:
+            (Optional) use read_time read consistency, cannot be used inside a
+            transaction or with eventual consistency, or will raise ValueError.
 
         :rtype: :class:`Iterator`
         :returns: The iterator for the query.
@@ -441,6 +448,7 @@ class Query(object):
             eventual=eventual,
             retry=retry,
             timeout=timeout,
+            read_time=read_time,
         )
 
 
@@ -473,7 +481,7 @@ class Iterator(page_iterator.Iterator):
     :param eventual: (Optional) Defaults to strongly consistent (False).
                                 Setting True will use eventual consistency,
                                 but cannot be used inside a transaction or
-                                will raise ValueError.
+                                with read_time, otherwise will raise ValueError.
 
     :type retry: :class:`google.api_core.retry.Retry`
     :param retry:
@@ -485,6 +493,11 @@ class Iterator(page_iterator.Iterator):
         Time, in seconds, to wait for the request to complete.
         Note that if ``retry`` is specified, the timeout applies
         to each individual attempt.
+
+    :type read_time: datetime
+    :param read_time: (Optional) Runs the query with read time consistency.
+                      Cannot be used with eventual consistency or inside a
+                      transaction, otherwise will raise ValueError. This feature is in private preview.
     """
 
     next_page_token = None
@@ -500,6 +513,7 @@ class Iterator(page_iterator.Iterator):
         eventual=False,
         retry=None,
         timeout=None,
+        read_time=None,
     ):
         super(Iterator, self).__init__(
             client=client,
@@ -513,6 +527,7 @@ class Iterator(page_iterator.Iterator):
         self._eventual = eventual
         self._retry = retry
         self._timeout = timeout
+        self._read_time = read_time
         # The attributes below will change over the life of the iterator.
         self._more_results = True
         self._skipped_results = 0
@@ -593,7 +608,9 @@ class Iterator(page_iterator.Iterator):
             transaction_id = None
         else:
             transaction_id = transaction.id
-        read_options = helpers.get_read_options(self._eventual, transaction_id)
+        read_options = helpers.get_read_options(
+            self._eventual, transaction_id, self._read_time
+        )
 
         partition_id = entity_pb2.PartitionId(
             project_id=self._query.project, namespace_id=self._query.namespace

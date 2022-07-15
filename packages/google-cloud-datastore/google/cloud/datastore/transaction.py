@@ -16,6 +16,7 @@
 
 from google.cloud.datastore.batch import Batch
 from google.cloud.datastore_v1.types import TransactionOptions
+from google.protobuf import timestamp_pb2
 
 
 def _make_retry_timeout_kwargs(retry, timeout):
@@ -141,18 +142,35 @@ class Transaction(Batch):
 
     :type read_only: bool
     :param read_only: indicates the transaction is read only.
+
+    :type read_time: datetime
+    :param read_time: (Optional) Time at which the transaction reads entities.
+                      Only allowed when ``read_only=True``. This feature is in private preview.
+
+    :raises: :class:`ValueError` if read_time is specified when
+             ``read_only=False``.
     """
 
     _status = None
 
-    def __init__(self, client, read_only=False):
+    def __init__(self, client, read_only=False, read_time=None):
         super(Transaction, self).__init__(client)
         self._id = None
 
         if read_only:
-            options = TransactionOptions(read_only=TransactionOptions.ReadOnly())
+            if read_time is not None:
+                read_time_pb = timestamp_pb2.Timestamp()
+                read_time_pb.FromDatetime(read_time)
+                options = TransactionOptions(
+                    read_only=TransactionOptions.ReadOnly(read_time=read_time_pb)
+                )
+            else:
+                options = TransactionOptions(read_only=TransactionOptions.ReadOnly())
         else:
-            options = TransactionOptions()
+            if read_time is not None:
+                raise ValueError("read_time is only allowed in read only transaction.")
+            else:
+                options = TransactionOptions()
 
         self._options = options
 

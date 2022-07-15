@@ -44,6 +44,34 @@ def test_transaction_constructor_read_only():
     assert xact._options == options
 
 
+def test_transaction_constructor_w_read_time():
+    from datetime import datetime
+
+    project = "PROJECT"
+    id_ = 850302
+    read_time = datetime.utcfromtimestamp(1641058200.123456)
+    ds_api = _make_datastore_api(xact=id_)
+    client = _Client(project, datastore_api=ds_api)
+    options = _make_options(read_only=True, read_time=read_time)
+
+    xact = _make_transaction(client, read_only=True, read_time=read_time)
+
+    assert xact._options == options
+
+
+def test_transaction_constructor_read_write_w_read_time():
+    from datetime import datetime
+
+    project = "PROJECT"
+    id_ = 850302
+    read_time = datetime.utcfromtimestamp(1641058200.123456)
+    ds_api = _make_datastore_api(xact=id_)
+    client = _Client(project, datastore_api=ds_api)
+
+    with pytest.raises(ValueError):
+        _make_transaction(client, read_only=False, read_time=read_time)
+
+
 def test_transaction_current():
     from google.cloud.datastore_v1.types import datastore as datastore_pb2
 
@@ -125,6 +153,24 @@ def test_transaction_begin_w_readonly():
     assert xact.id == id_
 
     expected_request = _make_begin_request(project, read_only=True)
+    ds_api.begin_transaction.assert_called_once_with(request=expected_request)
+
+
+def test_transaction_begin_w_read_time():
+    from datetime import datetime
+
+    project = "PROJECT"
+    id_ = 889
+    read_time = datetime.utcfromtimestamp(1641058200.123456)
+    ds_api = _make_datastore_api(xact_id=id_)
+    client = _Client(project, datastore_api=ds_api)
+    xact = _make_transaction(client, read_only=True, read_time=read_time)
+
+    xact.begin()
+
+    assert xact.id == id_
+
+    expected_request = _make_begin_request(project, read_only=True, read_time=read_time)
     ds_api.begin_transaction.assert_called_once_with(request=expected_request)
 
 
@@ -413,13 +459,20 @@ class _NoCommitBatch(object):
         self._client._pop_batch()
 
 
-def _make_options(read_only=False, previous_transaction=None):
+def _make_options(read_only=False, previous_transaction=None, read_time=None):
     from google.cloud.datastore_v1.types import TransactionOptions
+    from google.protobuf.timestamp_pb2 import Timestamp
 
     kw = {}
 
     if read_only:
-        kw["read_only"] = TransactionOptions.ReadOnly()
+        read_only_kw = {}
+        if read_time is not None:
+            read_time_pb = Timestamp()
+            read_time_pb.FromDatetime(read_time)
+            read_only_kw["read_time"] = read_time_pb
+
+        kw["read_only"] = TransactionOptions.ReadOnly(**read_only_kw)
 
     return TransactionOptions(**kw)
 
@@ -430,8 +483,8 @@ def _make_transaction(client, **kw):
     return Transaction(client, **kw)
 
 
-def _make_begin_request(project, read_only=False):
-    expected_options = _make_options(read_only=read_only)
+def _make_begin_request(project, read_only=False, read_time=None):
+    expected_options = _make_options(read_only=read_only, read_time=read_time)
     return {
         "project_id": project,
         "transaction_options": expected_options,

@@ -495,40 +495,81 @@ def test_w_nothing_in_pb():
         key_from_protobuf(pb)
 
 
-def test__get_read_options_w_eventual_w_txn():
+def test__get_read_options_w_eventual_w_txn_wo_read_time():
     from google.cloud.datastore.helpers import get_read_options
 
     with pytest.raises(ValueError):
-        get_read_options(True, b"123")
+        get_read_options(True, b"123", None)
 
 
-def test__get_read_options_w_eventual_wo_txn():
-    from google.cloud.datastore_v1.types import datastore as datastore_pb2
+def test__get_read_options_w_eventual_wo_txn_wo_read_time():
     from google.cloud.datastore.helpers import get_read_options
+    from google.cloud.datastore_v1.types import datastore as datastore_pb2
 
-    read_options = get_read_options(True, None)
+    read_options = get_read_options(True, None, None)
     expected = datastore_pb2.ReadOptions(
         read_consistency=datastore_pb2.ReadOptions.ReadConsistency.EVENTUAL
     )
     assert read_options == expected
 
 
-def test__get_read_options_w_default_w_txn():
-    from google.cloud.datastore_v1.types import datastore as datastore_pb2
+def test__get_read_options_w_evntual_w_txn_w_read_time():
+    from datetime import datetime
+
     from google.cloud.datastore.helpers import get_read_options
 
+    with pytest.raises(ValueError):
+        get_read_options(True, b"123", datetime(2022, 1, 1, 17, 30, 0, 123456))
+
+
+def test__get_read_options_w_evntual_wo_txn_w_read_time():
+    from datetime import datetime
+
+    from google.cloud.datastore.helpers import get_read_options
+
+    with pytest.raises(ValueError):
+        get_read_options(True, None, datetime(2022, 1, 1, 17, 30, 0, 123456))
+
+
+def test__get_read_options_w_default_w_txn_wo_read_time():
+    from google.cloud.datastore.helpers import get_read_options
+    from google.cloud.datastore_v1.types import datastore as datastore_pb2
+
     txn_id = b"123abc-easy-as"
-    read_options = get_read_options(False, txn_id)
+    read_options = get_read_options(False, txn_id, None)
     expected = datastore_pb2.ReadOptions(transaction=txn_id)
     assert read_options == expected
 
 
-def test__get_read_options_w_default_wo_txn():
+def test__get_read_options_w_default_wo_txn_wo_read_time():
+    from google.cloud.datastore.helpers import get_read_options
     from google.cloud.datastore_v1.types import datastore as datastore_pb2
+
+    read_options = get_read_options(False, None, None)
+    expected = datastore_pb2.ReadOptions()
+    assert read_options == expected
+
+
+def test__get_read_options_w_default_w_txn_w_read_time():
+    from datetime import datetime
+
     from google.cloud.datastore.helpers import get_read_options
 
-    read_options = get_read_options(False, None)
-    expected = datastore_pb2.ReadOptions()
+    with pytest.raises(ValueError):
+        get_read_options(False, b"123", datetime(2022, 1, 1, 17, 30, 0, 123456))
+
+
+def test__get_read_options_w_default_wo_txn_w_read_time():
+    from datetime import datetime
+
+    from google.cloud.datastore.helpers import get_read_options
+    from google.cloud.datastore_v1.types import datastore as datastore_pb2
+    from google.protobuf.timestamp_pb2 import Timestamp
+
+    read_time = datetime.utcfromtimestamp(1641058200.123456)
+    read_time_pb = Timestamp(seconds=1641058200, nanos=123456000)
+    read_options = get_read_options(False, None, read_time)
+    expected = datastore_pb2.ReadOptions(read_time=read_time_pb)
     assert read_options == expected
 
 
