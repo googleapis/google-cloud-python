@@ -249,7 +249,7 @@ class Zone(proto.Message):
         name (str):
             Output only. The relative resource name of the zone, of the
             form:
-            ``projects/{project_number}/locations/{location_id}/lakes/{lake_id}/zones/{zone_id}``
+            ``projects/{project_number}/locations/{location_id}/lakes/{lake_id}/zones/{zone_id}``.
         display_name (str):
             Optional. User friendly display name.
         uid (str):

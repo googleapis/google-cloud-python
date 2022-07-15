@@ -148,7 +148,7 @@ class DeleteLakeRequest(proto.Message):
     Attributes:
         name (str):
             Required. The resource name of the lake:
-            ``projects/{project_number}/locations/{location_id}/lakes/{lake_id}``
+            ``projects/{project_number}/locations/{location_id}/lakes/{lake_id}``.
     """
 
     name = proto.Field(
@@ -243,7 +243,7 @@ class ListLakeActionsRequest(proto.Message):
     Attributes:
         parent (str):
             Required. The resource name of the parent lake:
-            ``projects/{project_number}/locations/{location_id}/lakes/{lake_id}``
+            ``projects/{project_number}/locations/{location_id}/lakes/{lake_id}``.
         page_size (int):
             Optional. Maximum number of actions to
             return. The service may return fewer than this
@@ -535,7 +535,7 @@ class CreateAssetRequest(proto.Message):
     Attributes:
         parent (str):
             Required. The resource name of the parent zone:
-            ``projects/{project_number}/locations/{location_id}/lakes/{lake_id}/zones/{zone_id}``
+            ``projects/{project_number}/locations/{location_id}/lakes/{lake_id}/zones/{zone_id}``.
         asset_id (str):
             Required. Asset identifier. This ID will be used to generate
             names such as table names when publishing metadata to Hive
@@ -967,7 +967,7 @@ class GetTaskRequest(proto.Message):
     Attributes:
         name (str):
             Required. The resource name of the task:
-            ``projects/{project_number}/locations/{location_id}/lakes/{lake_id}/tasks/{tasks_id}``
+            ``projects/{project_number}/locations/{location_id}/lakes/{lake_id}/tasks/{tasks_id}``.
     """
 
     name = proto.Field(
@@ -1073,7 +1073,7 @@ class CreateEnvironmentRequest(proto.Message):
     Attributes:
         parent (str):
             Required. The resource name of the parent lake:
-            projects/{project_id}/locations/{location_id}/lakes/{lake_id}
+            ``projects/{project_id}/locations/{location_id}/lakes/{lake_id}``.
         environment_id (str):
             Required. Environment identifier.
 
@@ -1144,7 +1144,7 @@ class DeleteEnvironmentRequest(proto.Message):
     Attributes:
         name (str):
             Required. The resource name of the environment:
-            projects/{project_id}/locations/{location_id}/lakes/{lake_id}/environments/{environment_id}\`
+            ``projects/{project_id}/locations/{location_id}/lakes/{lake_id}/environments/{environment_id}``.
     """
 
     name = proto.Field(
@@ -1159,7 +1159,7 @@ class ListEnvironmentsRequest(proto.Message):
     Attributes:
         parent (str):
             Required. The resource name of the parent lake:
-            projects/{project_id}/locations/{location_id}/lakes/{lake_id}
+            ``projects/{project_id}/locations/{location_id}/lakes/{lake_id}``.
         page_size (int):
             Optional. Maximum number of environments to
             return. The service may return fewer than this
@@ -1233,7 +1233,7 @@ class GetEnvironmentRequest(proto.Message):
     Attributes:
         name (str):
             Required. The resource name of the environment:
-            projects/{project_id}/locations/{location_id}/lakes/{lake_id}/environments/{environment_id}
+            ``projects/{project_id}/locations/{location_id}/lakes/{lake_id}/environments/{environment_id}``.
     """
 
     name = proto.Field(
@@ -1248,7 +1248,7 @@ class ListSessionsRequest(proto.Message):
     Attributes:
         parent (str):
             Required. The resource name of the parent environment:
-            projects/{project_number}/locations/{location_id}/lakes/{lake_id}/environment/{environment_id}
+            ``projects/{project_number}/locations/{location_id}/lakes/{lake_id}/environment/{environment_id}``.
         page_size (int):
             Optional. Maximum number of sessions to
             return. The service may return fewer than this
@@ -1261,6 +1261,18 @@ class ListSessionsRequest(proto.Message):
             subsequent page. When paginating, all other parameters
             provided to ``ListSessions`` must match the call that
             provided the page token.
+        filter (str):
+            Optional. Filter request. The following ``mode`` filter is
+            supported to return only the sessions belonging to the
+            requester when the mode is USER and return sessions of all
+            the users when the mode is ADMIN. When no filter is sent
+            default to USER mode. NOTE: When the mode is ADMIN, the
+            requester should have
+            ``dataplex.environments.listAllSessions`` permission to list
+            all sessions, in absence of the permission, the request
+            fails.
+
+            mode = ADMIN \| USER
     """
 
     parent = proto.Field(
@@ -1274,6 +1286,10 @@ class ListSessionsRequest(proto.Message):
     page_token = proto.Field(
         proto.STRING,
         number=3,
+    )
+    filter = proto.Field(
+        proto.STRING,
+        number=4,
     )
 
 

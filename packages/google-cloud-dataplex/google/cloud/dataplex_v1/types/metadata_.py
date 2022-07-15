@@ -109,8 +109,8 @@ class DeleteEntityRequest(proto.Message):
             Required. The resource name of the entity:
             ``projects/{project_number}/locations/{location_id}/lakes/{lake_id}/zones/{zone_id}/entities/{entity_id}``.
         etag (str):
-            Required. The etag associated with the
-            partition if it was previously retrieved.
+            Required. The etag associated with the entity, which can be
+            retrieved with a [GetEntity][] request.
     """
 
     name = proto.Field(
@@ -152,9 +152,9 @@ class ListEntitiesRequest(proto.Message):
             -  Entity ID: ?filter="id=entityID"
             -  Asset ID: ?filter="asset=assetID"
             -  Data path ?filter="data_path=gs://my-bucket"
-            -  Is HIVE compatible: ?filter=”hive_compatible=true”
+            -  Is HIVE compatible: ?filter="hive_compatible=true"
             -  Is BigQuery compatible:
-               ?filter=”bigquery_compatible=true”
+               ?filter="bigquery_compatible=true".
     """
 
     class EntityView(proto.Enum):
@@ -265,13 +265,13 @@ class ListPartitionsRequest(proto.Message):
             provided the page token.
         filter (str):
             Optional. Filter the partitions returned to the caller using
-            a key vslue pair expression. The filter expression supports:
+            a key value pair expression. Supported operators and syntax:
 
-            -  logical operators: AND, OR
+            -  logic operators: AND, OR
             -  comparison operators: <, >, >=, <= ,=, !=
             -  LIKE operators:
 
-               -  The right hand of a LIKE operator supports “.” and “*”
+               -  The right hand of a LIKE operator supports "." and "*"
                   for wildcard searches, for example "value1 LIKE
                   ".*oo.*"
 
@@ -349,7 +349,7 @@ class DeletePartitionRequest(proto.Message):
             must be provided.
         etag (str):
             Optional. The etag associated with the
-            partition if it was previously retrieved.
+            partition.
     """
 
     name = proto.Field(
@@ -417,7 +417,7 @@ class Entity(proto.Message):
             ``projects/{project_number}/locations/{location_id}/lakes/{lake_id}/zones/{zone_id}/entities/{id}``.
         display_name (str):
             Optional. Display name must be shorter than
-            or equal to 63 characters.
+            or equal to 256 characters.
         description (str):
             Optional. User friendly longer description
             text. Must be shorter than or equal to 1024
@@ -435,11 +435,11 @@ class Entity(proto.Message):
             request will override the existing value.
             The ID must contain only letters (a-z, A-Z),
             numbers (0-9), and underscores. Must begin with
-            a letter.
+            a letter and consist of 256 or fewer characters.
         etag (str):
-            Optional. The etag for this entity. Required
-            for update and delete requests. Must match the
-            server's etag.
+            Optional. The etag associated with the entity, which can be
+            retrieved with a [GetEntity][] request. Required for update
+            and delete requests.
         type_ (google.cloud.dataplex_v1.types.Entity.Type):
             Required. Immutable. The type of entity.
         asset (str):
@@ -610,18 +610,12 @@ class Partition(proto.Message):
 
     Attributes:
         name (str):
-            Output only. The values must be HTML URL
-            encoded two times before constructing the path.
-            For example, if you have a value of "US:CA",
-            encoded it two times and you get "US%253ACA".
-            Then if you have the 2nd value is
-            "CA#Sunnyvale", encoded two times and you get
-            "CA%2523Sunnyvale". The partition values path is
-            "US%253ACA/CA%2523Sunnyvale". The final URL will
-            be
-            "https://.../partitions/US%253ACA/CA%2523Sunnyvale".
-            The name field in the responses will always have
-            the encoded format.
+            Output only. Partition values used in the HTTP URL must be
+            double encoded. For example,
+            ``url_encode(url_encode(value))`` can be used to encode
+            "US:CA/CA#Sunnyvale so that the request URL ends with
+            "/partitions/US%253ACA/CA%2523Sunnyvale". The name field in
+            the response retains the encoded format.
         values (Sequence[str]):
             Required. Immutable. The set of values
             representing the partition, which correspond to
@@ -660,33 +654,24 @@ class Schema(proto.Message):
 
     Attributes:
         user_managed (bool):
-            Required. Whether the schema is user-managed or managed by
-            the service.
+            Required. Set to ``true`` if user-managed or ``false`` if
+            managed by Dataplex. The default is ``false`` (managed by
+            Dataplex).
 
-            -  Set user_manage to false if you would like Dataplex to
-               help you manage the schema. You will get the full service
-               provided by Dataplex discovery, including new data
-               discovery, schema inference and schema evolution. You can
-               still provide input the schema of the entities, for
-               example renaming a schema field, changing CSV or Json
-               options if you think the discovered values are not as
-               accurate. Dataplex will consider your input as the
-               initial schema (as if they were produced by the previous
-               discovery run), and will evolve schema or flag actions
-               based on that.
-            -  Set user_manage to true if you would like to fully manage
-               the entity schema by yourself. This is useful when you
-               would like to manually specify the schema for a table. In
-               this case, the schema defined by the user is guaranteed
-               to be kept unchanged and would not be overwritten. But
-               this also means Dataplex will not provide schema
-               evolution management for you. Dataplex will still be able
-               to manage partition registration (i.e., keeping the list
-               of partitions up to date) when Dataplex discovery is
-               turned on and user_managed is set to true.
+            -  Set to ``false``\ to enable Dataplex discovery to update
+               the schema. including new data discovery, schema
+               inference, and schema evolution. Users retain the ability
+               to input and edit the schema. Dataplex treats schema
+               input by the user as though produced by a previous
+               Dataplex discovery operation, and it will evolve the
+               schema and take action based on that treatment.
+
+            -  Set to ``true`` to fully manage the entity schema. This
+               setting guarantees that Dataplex will not change schema
+               fields.
         fields (Sequence[google.cloud.dataplex_v1.types.Schema.SchemaField]):
-            Optional. The sequence of fields describing
-            data in table entities.
+            Optional. The sequence of fields describing data in table
+            entities. **Note:** BigQuery SchemaFields are immutable.
         partition_fields (Sequence[google.cloud.dataplex_v1.types.Schema.PartitionField]):
             Optional. The sequence of fields describing
             the partition structure in entities. If this
@@ -735,9 +720,10 @@ class Schema(proto.Message):
 
         Attributes:
             name (str):
-                Required. The name of the field. The maximum length is 767
-                characters. The name must begins with a letter and not
-                contains ``:`` and ``.``.
+                Required. The name of the field. Must contain
+                only letters, numbers and underscores, with a
+                maximum length of 767 characters, and must begin
+                with a letter or underscore.
             description (str):
                 Optional. User friendly field description.
                 Must be less than or equal to 1024 characters.
@@ -774,16 +760,17 @@ class Schema(proto.Message):
         )
 
     class PartitionField(proto.Message):
-        r"""Represents a key field within the entity's partition
-        structure. You could have up to 20 partition fields, but only
-        the first 10 partitions have the filtering ability due to
-        performance consideration.
+        r"""Represents a key field within the entity's partition structure. You
+        could have up to 20 partition fields, but only the first 10
+        partitions have the filtering ability due to performance
+        consideration. **Note:** Partition fields are immutable.
 
         Attributes:
             name (str):
-                Required. Partition name is editable if only
-                the partition style is not HIVE compatible. The
-                maximum length allowed is 767 characters.
+                Required. Partition field name must consist
+                of letters, numbers, and underscores only, with
+                a maximum of length of 256 characters, and must
+                begin with a letter or underscore..
             type_ (google.cloud.dataplex_v1.types.Schema.Type):
                 Required. Immutable. The type of field.
         """
@@ -841,7 +828,8 @@ class StorageFormat(proto.Message):
         mime_type (str):
             Required. The mime type descriptor for the
             data. Must match the pattern {type}/{subtype}.
-            Supported values: - application/x-parquet
+            Supported values:
+            - application/x-parquet
             - application/x-avro
             - application/x-orc
             - application/x-tfrecord
@@ -903,8 +891,9 @@ class StorageFormat(proto.Message):
                 values. Defaults to ','.
             quote (str):
                 Optional. The character used to quote column
-                values. Accepts '"' and '''. Defaults to '"' if
-                unspecified.
+                values. Accepts '"' (double quotation mark) or
+                ''' (single quotation mark). Defaults to '"'
+                (double quotation mark) if unspecified.
         """
 
         encoding = proto.Field(

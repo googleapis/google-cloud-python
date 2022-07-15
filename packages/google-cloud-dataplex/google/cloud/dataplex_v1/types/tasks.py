@@ -64,6 +64,9 @@ class Task(proto.Message):
         execution_spec (google.cloud.dataplex_v1.types.Task.ExecutionSpec):
             Required. Spec related to how a task is
             executed.
+        execution_status (google.cloud.dataplex_v1.types.Task.ExecutionStatus):
+            Output only. Status of the latest task
+            executions.
         spark (google.cloud.dataplex_v1.types.Task.SparkTaskConfig):
             Config related to running custom Spark tasks.
 
@@ -98,10 +101,12 @@ class Task(proto.Message):
 
             Attributes:
                 executors_count (int):
-                    Optional. Total number of job executors.
+                    Optional. Total number of job executors. Executor Count
+                    should be between 2 and 100. [Default=2]
                 max_executors_count (int):
                     Optional. Max configurable executors. If max_executors_count
-                    > executors_count, then auto-scaling is enabled.
+                    > executors_count, then auto-scaling is enabled. Max
+                    Executor Count should be between 2 and 1000. [Default=1000]
             """
 
             executors_count = proto.Field(
@@ -118,15 +123,18 @@ class Task(proto.Message):
             execution.
 
             Attributes:
+                image (str):
+                    Optional. Container image to use.
                 java_jars (Sequence[str]):
-                    Optional. A list of Java JARS to add to the classpath. Valid
-                    input includes Cloud Storage URIs to Jar binaries. For
-                    example, ``gs://bucket-name/my/path/to/file.jar``.
+                    Optional. A list of Java JARS to add to the
+                    classpath. Valid input includes Cloud Storage
+                    URIs to Jar binaries. For example,
+                    gs://bucket-name/my/path/to/file.jar
                 python_packages (Sequence[str]):
-                    Optional. A list of python packages to be installed. Valid
-                    formats include Cloud Storage URI to a PIP installable
-                    library. For example,
-                    ``gs://bucket-name/my/path/to/lib.tar.gz``.
+                    Optional. A list of python packages to be
+                    installed. Valid formats include Cloud Storage
+                    URI to a PIP installable library. For example,
+                    gs://bucket-name/my/path/to/lib.tar.gz
                 properties (Mapping[str, str]):
                     Optional. Override to common configuration of open source
                     components installed on the Dataproc cluster. The properties
@@ -136,6 +144,10 @@ class Task(proto.Message):
                     properties <https://cloud.google.com/dataproc/docs/concepts/cluster-properties>`__.
             """
 
+            image = proto.Field(
+                proto.STRING,
+                number=1,
+            )
             java_jars = proto.RepeatedField(
                 proto.STRING,
                 number=2,
@@ -299,9 +311,19 @@ class Task(proto.Message):
                 Required. Service account to use to execute a
                 task. If not provided, the default Compute
                 service account for the project is used.
+            project (str):
+                Optional. The project in which jobs are run. By default, the
+                project containing the Lake is used. If a project is
+                provided, the
+                [ExecutionSpec.service_account][google.cloud.dataplex.v1.Task.ExecutionSpec.service_account]
+                must belong to this project.
             max_job_execution_lifetime (google.protobuf.duration_pb2.Duration):
                 Optional. The maximum duration after which
                 the job execution is expired.
+            kms_key (str):
+                Optional. The Cloud KMS key to use for encryption, of the
+                form:
+                ``projects/{project_number}/locations/{location_id}/keyRings/{key-ring-name}/cryptoKeys/{key-name}``.
         """
 
         args = proto.MapField(
@@ -313,10 +335,18 @@ class Task(proto.Message):
             proto.STRING,
             number=5,
         )
+        project = proto.Field(
+            proto.STRING,
+            number=7,
+        )
         max_job_execution_lifetime = proto.Field(
             proto.MESSAGE,
             number=8,
             message=duration_pb2.Duration,
+        )
+        kms_key = proto.Field(
+            proto.STRING,
+            number=9,
         )
 
     class SparkTaskConfig(proto.Message):
@@ -415,6 +445,27 @@ class Task(proto.Message):
             message="Task.InfrastructureSpec",
         )
 
+    class ExecutionStatus(proto.Message):
+        r"""Status of the task execution (e.g. Jobs).
+
+        Attributes:
+            update_time (google.protobuf.timestamp_pb2.Timestamp):
+                Output only. Last update time of the status.
+            latest_job (google.cloud.dataplex_v1.types.Job):
+                Output only. latest job execution
+        """
+
+        update_time = proto.Field(
+            proto.MESSAGE,
+            number=3,
+            message=timestamp_pb2.Timestamp,
+        )
+        latest_job = proto.Field(
+            proto.MESSAGE,
+            number=9,
+            message="Job",
+        )
+
     name = proto.Field(
         proto.STRING,
         number=1,
@@ -460,6 +511,11 @@ class Task(proto.Message):
         proto.MESSAGE,
         number=101,
         message=ExecutionSpec,
+    )
+    execution_status = proto.Field(
+        proto.MESSAGE,
+        number=201,
+        message=ExecutionStatus,
     )
     spark = proto.Field(
         proto.MESSAGE,

@@ -140,6 +140,10 @@ class DiscoveryEvent(proto.Message):
                 The name is the fully-qualified resource name.
             type_ (google.cloud.dataplex_v1.types.DiscoveryEvent.EntityType):
                 The type of the containing entity resource.
+            sampled_data_locations (Sequence[str]):
+                The locations of the data items (e.g., a
+                Cloud Storage objects) sampled for metadata
+                inference.
         """
 
         partition = proto.Field(
@@ -154,6 +158,10 @@ class DiscoveryEvent(proto.Message):
             proto.ENUM,
             number=3,
             enum="DiscoveryEvent.EntityType",
+        )
+        sampled_data_locations = proto.RepeatedField(
+            proto.STRING,
+            number=4,
         )
 
     class ActionDetails(proto.Message):
