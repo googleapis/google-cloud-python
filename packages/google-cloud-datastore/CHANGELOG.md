@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-datastore/#history
 
+## [2.8.0](https://github.com/googleapis/python-datastore/compare/v2.7.2...v2.8.0) (2022-07-15)
+
+
+### Features
+
+* Add read_time support for get and query ([#334](https://github.com/googleapis/python-datastore/issues/334)) ([58b4b74](https://github.com/googleapis/python-datastore/commit/58b4b74c968a0e50702303ec37377e9c7e05347d))
+
 ## [2.7.2](https://github.com/googleapis/python-datastore/compare/v2.7.1...v2.7.2) (2022-07-10)
 
 
