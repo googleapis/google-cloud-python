@@ -281,6 +281,7 @@ class TargetTcpProxiesRestTransport(TargetTcpProxiesTransport):
         always_use_jwt_access: Optional[bool] = False,
         url_scheme: str = "https",
         interceptor: Optional[TargetTcpProxiesRestInterceptor] = None,
+        api_audience: Optional[str] = None,
     ) -> None:
         """Instantiate the transport.
 
@@ -333,6 +334,7 @@ class TargetTcpProxiesRestTransport(TargetTcpProxiesTransport):
             credentials=credentials,
             client_info=client_info,
             always_use_jwt_access=always_use_jwt_access,
+            api_audience=api_audience,
         )
         self._session = AuthorizedSession(
             self._credentials, default_host=self.DEFAULT_HOST

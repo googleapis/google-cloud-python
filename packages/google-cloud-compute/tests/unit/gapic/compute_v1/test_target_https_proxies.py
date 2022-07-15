@@ -232,6 +232,7 @@ def test_target_https_proxies_client_client_options(
             quota_project_id=None,
             client_info=transports.base.DEFAULT_CLIENT_INFO,
             always_use_jwt_access=True,
+            api_audience=None,
         )
 
     # Check the case api_endpoint is not provided and GOOGLE_API_USE_MTLS_ENDPOINT is
@@ -249,6 +250,7 @@ def test_target_https_proxies_client_client_options(
                 quota_project_id=None,
                 client_info=transports.base.DEFAULT_CLIENT_INFO,
                 always_use_jwt_access=True,
+                api_audience=None,
             )
 
     # Check the case api_endpoint is not provided and GOOGLE_API_USE_MTLS_ENDPOINT is
@@ -266,6 +268,7 @@ def test_target_https_proxies_client_client_options(
                 quota_project_id=None,
                 client_info=transports.base.DEFAULT_CLIENT_INFO,
                 always_use_jwt_access=True,
+                api_audience=None,
             )
 
     # Check the case api_endpoint is not provided and GOOGLE_API_USE_MTLS_ENDPOINT has
@@ -295,6 +298,25 @@ def test_target_https_proxies_client_client_options(
             quota_project_id="octopus",
             client_info=transports.base.DEFAULT_CLIENT_INFO,
             always_use_jwt_access=True,
+            api_audience=None,
+        )
+    # Check the case api_endpoint is provided
+    options = client_options.ClientOptions(
+        api_audience="https://language.googleapis.com"
+    )
+    with mock.patch.object(transport_class, "__init__") as patched:
+        patched.return_value = None
+        client = client_class(client_options=options, transport=transport_name)
+        patched.assert_called_once_with(
+            credentials=None,
+            credentials_file=None,
+            host=client.DEFAULT_ENDPOINT,
+            scopes=None,
+            client_cert_source_for_mtls=None,
+            quota_project_id=None,
+            client_info=transports.base.DEFAULT_CLIENT_INFO,
+            always_use_jwt_access=True,
+            api_audience="https://language.googleapis.com",
         )
 
 
@@ -355,6 +377,7 @@ def test_target_https_proxies_client_mtls_env_auto(
                 quota_project_id=None,
                 client_info=transports.base.DEFAULT_CLIENT_INFO,
                 always_use_jwt_access=True,
+                api_audience=None,
             )
 
     # Check the case ADC client cert is provided. Whether client cert is used depends on
@@ -389,6 +412,7 @@ def test_target_https_proxies_client_mtls_env_auto(
                         quota_project_id=None,
                         client_info=transports.base.DEFAULT_CLIENT_INFO,
                         always_use_jwt_access=True,
+                        api_audience=None,
                     )
 
     # Check the case client_cert_source and ADC client cert are not provided.
@@ -411,6 +435,7 @@ def test_target_https_proxies_client_mtls_env_auto(
                     quota_project_id=None,
                     client_info=transports.base.DEFAULT_CLIENT_INFO,
                     always_use_jwt_access=True,
+                    api_audience=None,
                 )
 
 
@@ -513,6 +538,7 @@ def test_target_https_proxies_client_client_options_scopes(
             quota_project_id=None,
             client_info=transports.base.DEFAULT_CLIENT_INFO,
             always_use_jwt_access=True,
+            api_audience=None,
         )
 
 
@@ -545,6 +571,7 @@ def test_target_https_proxies_client_client_options_credentials_file(
             quota_project_id=None,
             client_info=transports.base.DEFAULT_CLIENT_INFO,
             always_use_jwt_access=True,
+            api_audience=None,
         )
 
 
@@ -1534,6 +1561,7 @@ def test_get_rest(request_type):
         # Designate an appropriate value for the returned response.
         return_value = compute.TargetHttpsProxy(
             authorization_policy="authorization_policy_value",
+            certificate_map="certificate_map_value",
             creation_timestamp="creation_timestamp_value",
             description="description_value",
             fingerprint="fingerprint_value",
@@ -1561,6 +1589,7 @@ def test_get_rest(request_type):
     # Establish that the response is the type that we expect.
     assert isinstance(response, compute.TargetHttpsProxy)
     assert response.authorization_policy == "authorization_policy_value"
+    assert response.certificate_map == "certificate_map_value"
     assert response.creation_timestamp == "creation_timestamp_value"
     assert response.description == "description_value"
     assert response.fingerprint == "fingerprint_value"
@@ -1826,6 +1855,7 @@ def test_insert_rest(request_type):
     request_init = {"project": "sample1"}
     request_init["target_https_proxy_resource"] = {
         "authorization_policy": "authorization_policy_value",
+        "certificate_map": "certificate_map_value",
         "creation_timestamp": "creation_timestamp_value",
         "description": "description_value",
         "fingerprint": "fingerprint_value",
@@ -2060,6 +2090,7 @@ def test_insert_rest_bad_request(
     request_init = {"project": "sample1"}
     request_init["target_https_proxy_resource"] = {
         "authorization_policy": "authorization_policy_value",
+        "certificate_map": "certificate_map_value",
         "creation_timestamp": "creation_timestamp_value",
         "description": "description_value",
         "fingerprint": "fingerprint_value",
@@ -2174,6 +2205,7 @@ def test_insert_unary_rest(request_type):
     request_init = {"project": "sample1"}
     request_init["target_https_proxy_resource"] = {
         "authorization_policy": "authorization_policy_value",
+        "certificate_map": "certificate_map_value",
         "creation_timestamp": "creation_timestamp_value",
         "description": "description_value",
         "fingerprint": "fingerprint_value",
@@ -2386,6 +2418,7 @@ def test_insert_unary_rest_bad_request(
     request_init = {"project": "sample1"}
     request_init["target_https_proxy_resource"] = {
         "authorization_policy": "authorization_policy_value",
+        "certificate_map": "certificate_map_value",
         "creation_timestamp": "creation_timestamp_value",
         "description": "description_value",
         "fingerprint": "fingerprint_value",
@@ -2837,6 +2870,7 @@ def test_patch_rest(request_type):
     request_init = {"project": "sample1", "target_https_proxy": "sample2"}
     request_init["target_https_proxy_resource"] = {
         "authorization_policy": "authorization_policy_value",
+        "certificate_map": "certificate_map_value",
         "creation_timestamp": "creation_timestamp_value",
         "description": "description_value",
         "fingerprint": "fingerprint_value",
@@ -3074,6 +3108,7 @@ def test_patch_rest_bad_request(
     request_init = {"project": "sample1", "target_https_proxy": "sample2"}
     request_init["target_https_proxy_resource"] = {
         "authorization_policy": "authorization_policy_value",
+        "certificate_map": "certificate_map_value",
         "creation_timestamp": "creation_timestamp_value",
         "description": "description_value",
         "fingerprint": "fingerprint_value",
@@ -3190,6 +3225,7 @@ def test_patch_unary_rest(request_type):
     request_init = {"project": "sample1", "target_https_proxy": "sample2"}
     request_init["target_https_proxy_resource"] = {
         "authorization_policy": "authorization_policy_value",
+        "certificate_map": "certificate_map_value",
         "creation_timestamp": "creation_timestamp_value",
         "description": "description_value",
         "fingerprint": "fingerprint_value",
@@ -3407,6 +3443,7 @@ def test_patch_unary_rest_bad_request(
     request_init = {"project": "sample1", "target_https_proxy": "sample2"}
     request_init["target_https_proxy_resource"] = {
         "authorization_policy": "authorization_policy_value",
+        "certificate_map": "certificate_map_value",
         "creation_timestamp": "creation_timestamp_value",
         "description": "description_value",
         "fingerprint": "fingerprint_value",
@@ -3501,6 +3538,640 @@ def test_patch_unary_rest_flattened_error(transport: str = "rest"):
 
 
 def test_patch_unary_rest_error():
+    client = TargetHttpsProxiesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        compute.SetCertificateMapTargetHttpsProxyRequest,
+        dict,
+    ],
+)
+def test_set_certificate_map_rest(request_type):
+    client = TargetHttpsProxiesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "target_https_proxy": "sample2"}
+    request_init["target_https_proxies_set_certificate_map_request_resource"] = {
+        "certificate_map": "certificate_map_value"
+    }
+    request = request_type(request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = compute.Operation(
+            client_operation_id="client_operation_id_value",
+            creation_timestamp="creation_timestamp_value",
+            description="description_value",
+            end_time="end_time_value",
+            http_error_message="http_error_message_value",
+            http_error_status_code=2374,
+            id=205,
+            insert_time="insert_time_value",
+            kind="kind_value",
+            name="name_value",
+            operation_group_id="operation_group_id_value",
+            operation_type="operation_type_value",
+            progress=885,
+            region="region_value",
+            self_link="self_link_value",
+            start_time="start_time_value",
+            status=compute.Operation.Status.DONE,
+            status_message="status_message_value",
+            target_id=947,
+            target_link="target_link_value",
+            user="user_value",
+            zone="zone_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = compute.Operation.to_json(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.set_certificate_map(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, extended_operation.ExtendedOperation)
+    assert response.client_operation_id == "client_operation_id_value"
+    assert response.creation_timestamp == "creation_timestamp_value"
+    assert response.description == "description_value"
+    assert response.end_time == "end_time_value"
+    assert response.http_error_message == "http_error_message_value"
+    assert response.http_error_status_code == 2374
+    assert response.id == 205
+    assert response.insert_time == "insert_time_value"
+    assert response.kind == "kind_value"
+    assert response.name == "name_value"
+    assert response.operation_group_id == "operation_group_id_value"
+    assert response.operation_type == "operation_type_value"
+    assert response.progress == 885
+    assert response.region == "region_value"
+    assert response.self_link == "self_link_value"
+    assert response.start_time == "start_time_value"
+    assert response.status == compute.Operation.Status.DONE
+    assert response.status_message == "status_message_value"
+    assert response.target_id == 947
+    assert response.target_link == "target_link_value"
+    assert response.user == "user_value"
+    assert response.zone == "zone_value"
+
+
+def test_set_certificate_map_rest_required_fields(
+    request_type=compute.SetCertificateMapTargetHttpsProxyRequest,
+):
+    transport_class = transports.TargetHttpsProxiesRestTransport
+
+    request_init = {}
+    request_init["project"] = ""
+    request_init["target_https_proxy"] = ""
+    request = request_type(request_init)
+    jsonified_request = json.loads(
+        request_type.to_json(
+            request, including_default_value_fields=False, use_integers_for_enums=False
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).set_certificate_map._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["project"] = "project_value"
+    jsonified_request["targetHttpsProxy"] = "target_https_proxy_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).set_certificate_map._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("request_id",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "project" in jsonified_request
+    assert jsonified_request["project"] == "project_value"
+    assert "targetHttpsProxy" in jsonified_request
+    assert jsonified_request["targetHttpsProxy"] == "target_https_proxy_value"
+
+    client = TargetHttpsProxiesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = compute.Operation()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": request_init,
+            }
+            transcode_result["body"] = {}
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = compute.Operation.to_json(return_value)
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.set_certificate_map(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_set_certificate_map_rest_unset_required_fields():
+    transport = transports.TargetHttpsProxiesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.set_certificate_map._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(("requestId",))
+        & set(
+            (
+                "project",
+                "targetHttpsProxiesSetCertificateMapRequestResource",
+                "targetHttpsProxy",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_set_certificate_map_rest_interceptors(null_interceptor):
+    transport = transports.TargetHttpsProxiesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.TargetHttpsProxiesRestInterceptor(),
+    )
+    client = TargetHttpsProxiesClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.TargetHttpsProxiesRestInterceptor, "post_set_certificate_map"
+    ) as post, mock.patch.object(
+        transports.TargetHttpsProxiesRestInterceptor, "pre_set_certificate_map"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": None,
+            "query_params": {},
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = compute.Operation.to_json(compute.Operation())
+
+        request = compute.SetCertificateMapTargetHttpsProxyRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = compute.Operation
+
+        client.set_certificate_map(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_set_certificate_map_rest_bad_request(
+    transport: str = "rest",
+    request_type=compute.SetCertificateMapTargetHttpsProxyRequest,
+):
+    client = TargetHttpsProxiesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "target_https_proxy": "sample2"}
+    request_init["target_https_proxies_set_certificate_map_request_resource"] = {
+        "certificate_map": "certificate_map_value"
+    }
+    request = request_type(request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.set_certificate_map(request)
+
+
+def test_set_certificate_map_rest_flattened():
+    client = TargetHttpsProxiesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = compute.Operation()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"project": "sample1", "target_https_proxy": "sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            project="project_value",
+            target_https_proxy="target_https_proxy_value",
+            target_https_proxies_set_certificate_map_request_resource=compute.TargetHttpsProxiesSetCertificateMapRequest(
+                certificate_map="certificate_map_value"
+            ),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = compute.Operation.to_json(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.set_certificate_map(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/compute/v1/projects/{project}/global/targetHttpsProxies/{target_https_proxy}/setCertificateMap"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_set_certificate_map_rest_flattened_error(transport: str = "rest"):
+    client = TargetHttpsProxiesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.set_certificate_map(
+            compute.SetCertificateMapTargetHttpsProxyRequest(),
+            project="project_value",
+            target_https_proxy="target_https_proxy_value",
+            target_https_proxies_set_certificate_map_request_resource=compute.TargetHttpsProxiesSetCertificateMapRequest(
+                certificate_map="certificate_map_value"
+            ),
+        )
+
+
+def test_set_certificate_map_rest_error():
+    client = TargetHttpsProxiesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        compute.SetCertificateMapTargetHttpsProxyRequest,
+        dict,
+    ],
+)
+def test_set_certificate_map_unary_rest(request_type):
+    client = TargetHttpsProxiesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "target_https_proxy": "sample2"}
+    request_init["target_https_proxies_set_certificate_map_request_resource"] = {
+        "certificate_map": "certificate_map_value"
+    }
+    request = request_type(request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = compute.Operation(
+            client_operation_id="client_operation_id_value",
+            creation_timestamp="creation_timestamp_value",
+            description="description_value",
+            end_time="end_time_value",
+            http_error_message="http_error_message_value",
+            http_error_status_code=2374,
+            id=205,
+            insert_time="insert_time_value",
+            kind="kind_value",
+            name="name_value",
+            operation_group_id="operation_group_id_value",
+            operation_type="operation_type_value",
+            progress=885,
+            region="region_value",
+            self_link="self_link_value",
+            start_time="start_time_value",
+            status=compute.Operation.Status.DONE,
+            status_message="status_message_value",
+            target_id=947,
+            target_link="target_link_value",
+            user="user_value",
+            zone="zone_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = compute.Operation.to_json(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.set_certificate_map_unary(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, compute.Operation)
+
+
+def test_set_certificate_map_unary_rest_required_fields(
+    request_type=compute.SetCertificateMapTargetHttpsProxyRequest,
+):
+    transport_class = transports.TargetHttpsProxiesRestTransport
+
+    request_init = {}
+    request_init["project"] = ""
+    request_init["target_https_proxy"] = ""
+    request = request_type(request_init)
+    jsonified_request = json.loads(
+        request_type.to_json(
+            request, including_default_value_fields=False, use_integers_for_enums=False
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).set_certificate_map._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["project"] = "project_value"
+    jsonified_request["targetHttpsProxy"] = "target_https_proxy_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).set_certificate_map._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("request_id",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "project" in jsonified_request
+    assert jsonified_request["project"] == "project_value"
+    assert "targetHttpsProxy" in jsonified_request
+    assert jsonified_request["targetHttpsProxy"] == "target_https_proxy_value"
+
+    client = TargetHttpsProxiesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = compute.Operation()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": request_init,
+            }
+            transcode_result["body"] = {}
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = compute.Operation.to_json(return_value)
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.set_certificate_map_unary(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_set_certificate_map_unary_rest_unset_required_fields():
+    transport = transports.TargetHttpsProxiesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.set_certificate_map._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(("requestId",))
+        & set(
+            (
+                "project",
+                "targetHttpsProxiesSetCertificateMapRequestResource",
+                "targetHttpsProxy",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_set_certificate_map_unary_rest_interceptors(null_interceptor):
+    transport = transports.TargetHttpsProxiesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.TargetHttpsProxiesRestInterceptor(),
+    )
+    client = TargetHttpsProxiesClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.TargetHttpsProxiesRestInterceptor, "post_set_certificate_map"
+    ) as post, mock.patch.object(
+        transports.TargetHttpsProxiesRestInterceptor, "pre_set_certificate_map"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": None,
+            "query_params": {},
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = compute.Operation.to_json(compute.Operation())
+
+        request = compute.SetCertificateMapTargetHttpsProxyRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = compute.Operation
+
+        client.set_certificate_map_unary(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_set_certificate_map_unary_rest_bad_request(
+    transport: str = "rest",
+    request_type=compute.SetCertificateMapTargetHttpsProxyRequest,
+):
+    client = TargetHttpsProxiesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "target_https_proxy": "sample2"}
+    request_init["target_https_proxies_set_certificate_map_request_resource"] = {
+        "certificate_map": "certificate_map_value"
+    }
+    request = request_type(request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.set_certificate_map_unary(request)
+
+
+def test_set_certificate_map_unary_rest_flattened():
+    client = TargetHttpsProxiesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = compute.Operation()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"project": "sample1", "target_https_proxy": "sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            project="project_value",
+            target_https_proxy="target_https_proxy_value",
+            target_https_proxies_set_certificate_map_request_resource=compute.TargetHttpsProxiesSetCertificateMapRequest(
+                certificate_map="certificate_map_value"
+            ),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = compute.Operation.to_json(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.set_certificate_map_unary(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/compute/v1/projects/{project}/global/targetHttpsProxies/{target_https_proxy}/setCertificateMap"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_set_certificate_map_unary_rest_flattened_error(transport: str = "rest"):
+    client = TargetHttpsProxiesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.set_certificate_map_unary(
+            compute.SetCertificateMapTargetHttpsProxyRequest(),
+            project="project_value",
+            target_https_proxy="target_https_proxy_value",
+            target_https_proxies_set_certificate_map_request_resource=compute.TargetHttpsProxiesSetCertificateMapRequest(
+                certificate_map="certificate_map_value"
+            ),
+        )
+
+
+def test_set_certificate_map_unary_rest_error():
     client = TargetHttpsProxiesClient(
         credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
@@ -6128,6 +6799,7 @@ def test_target_https_proxies_base_transport():
         "insert",
         "list",
         "patch",
+        "set_certificate_map",
         "set_quic_override",
         "set_ssl_certificates",
         "set_ssl_policy",
@@ -6286,6 +6958,9 @@ def test_target_https_proxies_client_transport_session_collision(transport_name)
     assert session1 != session2
     session1 = client1.transport.patch._session
     session2 = client2.transport.patch._session
+    assert session1 != session2
+    session1 = client1.transport.set_certificate_map._session
+    session2 = client2.transport.set_certificate_map._session
     assert session1 != session2
     session1 = client1.transport.set_quic_override._session
     session2 = client2.transport.set_quic_override._session
@@ -6486,4 +7161,5 @@ def test_api_key_credentials(client_class, transport_class):
                 quota_project_id=None,
                 client_info=transports.base.DEFAULT_CLIENT_INFO,
                 always_use_jwt_access=True,
+                api_audience=None,
             )

@@ -1511,6 +1511,10 @@ from google.cloud.compute_v1.types.compute import SetBackendServiceTargetSslProx
 from google.cloud.compute_v1.types.compute import SetBackendServiceTargetTcpProxyRequest
 from google.cloud.compute_v1.types.compute import SetBackupTargetPoolRequest
 from google.cloud.compute_v1.types.compute import (
+    SetCertificateMapTargetHttpsProxyRequest,
+)
+from google.cloud.compute_v1.types.compute import SetCertificateMapTargetSslProxyRequest
+from google.cloud.compute_v1.types.compute import (
     SetCommonInstanceMetadataProjectRequest,
 )
 from google.cloud.compute_v1.types.compute import SetDefaultNetworkTierProjectRequest
@@ -1662,6 +1666,9 @@ from google.cloud.compute_v1.types.compute import TargetHttpProxyAggregatedList
 from google.cloud.compute_v1.types.compute import TargetHttpProxyList
 from google.cloud.compute_v1.types.compute import TargetHttpsProxiesScopedList
 from google.cloud.compute_v1.types.compute import (
+    TargetHttpsProxiesSetCertificateMapRequest,
+)
+from google.cloud.compute_v1.types.compute import (
     TargetHttpsProxiesSetQuicOverrideRequest,
 )
 from google.cloud.compute_v1.types.compute import (
@@ -1686,6 +1693,9 @@ from google.cloud.compute_v1.types.compute import TargetPoolsScopedList
 from google.cloud.compute_v1.types.compute import TargetReference
 from google.cloud.compute_v1.types.compute import (
     TargetSslProxiesSetBackendServiceRequest,
+)
+from google.cloud.compute_v1.types.compute import (
+    TargetSslProxiesSetCertificateMapRequest,
 )
 from google.cloud.compute_v1.types.compute import TargetSslProxiesSetProxyHeaderRequest
 from google.cloud.compute_v1.types.compute import (
@@ -2926,6 +2936,8 @@ __all__ = (
     "SetBackendServiceTargetSslProxyRequest",
     "SetBackendServiceTargetTcpProxyRequest",
     "SetBackupTargetPoolRequest",
+    "SetCertificateMapTargetHttpsProxyRequest",
+    "SetCertificateMapTargetSslProxyRequest",
     "SetCommonInstanceMetadataProjectRequest",
     "SetDefaultNetworkTierProjectRequest",
     "SetDeletionProtectionInstanceRequest",
@@ -3039,6 +3051,7 @@ __all__ = (
     "TargetHttpProxyAggregatedList",
     "TargetHttpProxyList",
     "TargetHttpsProxiesScopedList",
+    "TargetHttpsProxiesSetCertificateMapRequest",
     "TargetHttpsProxiesSetQuicOverrideRequest",
     "TargetHttpsProxiesSetSslCertificatesRequest",
     "TargetHttpsProxy",
@@ -3059,6 +3072,7 @@ __all__ = (
     "TargetPoolsScopedList",
     "TargetReference",
     "TargetSslProxiesSetBackendServiceRequest",
+    "TargetSslProxiesSetCertificateMapRequest",
     "TargetSslProxiesSetProxyHeaderRequest",
     "TargetSslProxiesSetSslCertificatesRequest",
     "TargetSslProxy",

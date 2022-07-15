@@ -1120,6 +1120,8 @@ from .types.compute import ServiceAttachmentsScopedList
 from .types.compute import SetBackendServiceTargetSslProxyRequest
 from .types.compute import SetBackendServiceTargetTcpProxyRequest
 from .types.compute import SetBackupTargetPoolRequest
+from .types.compute import SetCertificateMapTargetHttpsProxyRequest
+from .types.compute import SetCertificateMapTargetSslProxyRequest
 from .types.compute import SetCommonInstanceMetadataProjectRequest
 from .types.compute import SetDefaultNetworkTierProjectRequest
 from .types.compute import SetDeletionProtectionInstanceRequest
@@ -1233,6 +1235,7 @@ from .types.compute import TargetHttpProxy
 from .types.compute import TargetHttpProxyAggregatedList
 from .types.compute import TargetHttpProxyList
 from .types.compute import TargetHttpsProxiesScopedList
+from .types.compute import TargetHttpsProxiesSetCertificateMapRequest
 from .types.compute import TargetHttpsProxiesSetQuicOverrideRequest
 from .types.compute import TargetHttpsProxiesSetSslCertificatesRequest
 from .types.compute import TargetHttpsProxy
@@ -1253,6 +1256,7 @@ from .types.compute import TargetPoolsRemoveInstanceRequest
 from .types.compute import TargetPoolsScopedList
 from .types.compute import TargetReference
 from .types.compute import TargetSslProxiesSetBackendServiceRequest
+from .types.compute import TargetSslProxiesSetCertificateMapRequest
 from .types.compute import TargetSslProxiesSetProxyHeaderRequest
 from .types.compute import TargetSslProxiesSetSslCertificatesRequest
 from .types.compute import TargetSslProxy
@@ -2444,6 +2448,8 @@ __all__ = (
     "SetBackendServiceTargetSslProxyRequest",
     "SetBackendServiceTargetTcpProxyRequest",
     "SetBackupTargetPoolRequest",
+    "SetCertificateMapTargetHttpsProxyRequest",
+    "SetCertificateMapTargetSslProxyRequest",
     "SetCommonInstanceMetadataProjectRequest",
     "SetDefaultNetworkTierProjectRequest",
     "SetDeletionProtectionInstanceRequest",
@@ -2564,6 +2570,7 @@ __all__ = (
     "TargetHttpProxyList",
     "TargetHttpsProxiesClient",
     "TargetHttpsProxiesScopedList",
+    "TargetHttpsProxiesSetCertificateMapRequest",
     "TargetHttpsProxiesSetQuicOverrideRequest",
     "TargetHttpsProxiesSetSslCertificatesRequest",
     "TargetHttpsProxy",
@@ -2587,6 +2594,7 @@ __all__ = (
     "TargetReference",
     "TargetSslProxiesClient",
     "TargetSslProxiesSetBackendServiceRequest",
+    "TargetSslProxiesSetCertificateMapRequest",
     "TargetSslProxiesSetProxyHeaderRequest",
     "TargetSslProxiesSetSslCertificatesRequest",
     "TargetSslProxy",

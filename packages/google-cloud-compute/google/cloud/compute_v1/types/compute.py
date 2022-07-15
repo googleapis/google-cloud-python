@@ -1032,6 +1032,8 @@ __protobuf__ = proto.module(
         "SetBackendServiceTargetSslProxyRequest",
         "SetBackendServiceTargetTcpProxyRequest",
         "SetBackupTargetPoolRequest",
+        "SetCertificateMapTargetHttpsProxyRequest",
+        "SetCertificateMapTargetSslProxyRequest",
         "SetCommonInstanceMetadataProjectRequest",
         "SetDefaultNetworkTierProjectRequest",
         "SetDeletionProtectionInstanceRequest",
@@ -1145,6 +1147,7 @@ __protobuf__ = proto.module(
         "TargetHttpProxyAggregatedList",
         "TargetHttpProxyList",
         "TargetHttpsProxiesScopedList",
+        "TargetHttpsProxiesSetCertificateMapRequest",
         "TargetHttpsProxiesSetQuicOverrideRequest",
         "TargetHttpsProxiesSetSslCertificatesRequest",
         "TargetHttpsProxy",
@@ -1165,6 +1168,7 @@ __protobuf__ = proto.module(
         "TargetPoolsScopedList",
         "TargetReference",
         "TargetSslProxiesSetBackendServiceRequest",
+        "TargetSslProxiesSetCertificateMapRequest",
         "TargetSslProxiesSetProxyHeaderRequest",
         "TargetSslProxiesSetSslCertificatesRequest",
         "TargetSslProxy",
@@ -2814,6 +2818,10 @@ class AddRuleSecurityPolicyRequest(proto.Message):
             Name of the security policy to update.
         security_policy_rule_resource (google.cloud.compute_v1.types.SecurityPolicyRule):
             The body resource for this request
+        validate_only (bool):
+            If true, the request will not be committed.
+
+            This field is a member of `oneof`_ ``_validate_only``.
     """
 
     project = proto.Field(
@@ -2828,6 +2836,11 @@ class AddRuleSecurityPolicyRequest(proto.Message):
         proto.MESSAGE,
         number=402693443,
         message="SecurityPolicyRule",
+    )
+    validate_only = proto.Field(
+        proto.BOOL,
+        number=242744629,
+        optional=True,
     )
 
 
@@ -3136,6 +3149,7 @@ class Address(proto.Message):
         IPSEC_INTERCONNECT = 340437251
         NAT_AUTO = 163666477
         PRIVATE_SERVICE_CONNECT = 48134724
+        SERVERLESS = 270492508
         SHARED_LOADBALANCER_VIP = 294447572
         VPC_PEERING = 400800170
 
@@ -3468,13 +3482,16 @@ class AggregatedListAcceleratorTypesRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, an
-            operator, and the value that you want to use for filtering.
-            The value must be a string, a number, or a boolean. The
-            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
-            ``>=`` or ``:``. For example, if you are filtering Compute
-            Engine instances, you can exclude instances named
-            ``example-instance`` by specifying
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. If you want to use AIP-160, your expression must
+            specify the field name, an operator, and the value that you
+            want to use for filtering. The value must be a string, a
+            number, or a boolean. The operator must be either ``=``,
+            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
+            if you are filtering Compute Engine instances, you can
+            exclude instances named ``example-instance`` by specifying
             ``name != example-instance``. The ``:`` operator can be used
             with string fields to match substrings. For non-string
             fields it is equivalent to the ``=`` operator. The ``:*``
@@ -3492,6 +3509,19 @@ class AggregatedListAcceleratorTypesRequest(proto.Message):
             However, you can include ``AND`` and ``OR`` expressions
             explicitly. For example:
             ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``.
 
             This field is a member of `oneof`_ ``_filter``.
         include_all_scopes (bool):
@@ -3588,13 +3618,16 @@ class AggregatedListAddressesRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, an
-            operator, and the value that you want to use for filtering.
-            The value must be a string, a number, or a boolean. The
-            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
-            ``>=`` or ``:``. For example, if you are filtering Compute
-            Engine instances, you can exclude instances named
-            ``example-instance`` by specifying
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. If you want to use AIP-160, your expression must
+            specify the field name, an operator, and the value that you
+            want to use for filtering. The value must be a string, a
+            number, or a boolean. The operator must be either ``=``,
+            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
+            if you are filtering Compute Engine instances, you can
+            exclude instances named ``example-instance`` by specifying
             ``name != example-instance``. The ``:`` operator can be used
             with string fields to match substrings. For non-string
             fields it is equivalent to the ``=`` operator. The ``:*``
@@ -3612,6 +3645,19 @@ class AggregatedListAddressesRequest(proto.Message):
             However, you can include ``AND`` and ``OR`` expressions
             explicitly. For example:
             ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``.
 
             This field is a member of `oneof`_ ``_filter``.
         include_all_scopes (bool):
@@ -3708,13 +3754,16 @@ class AggregatedListAutoscalersRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, an
-            operator, and the value that you want to use for filtering.
-            The value must be a string, a number, or a boolean. The
-            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
-            ``>=`` or ``:``. For example, if you are filtering Compute
-            Engine instances, you can exclude instances named
-            ``example-instance`` by specifying
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. If you want to use AIP-160, your expression must
+            specify the field name, an operator, and the value that you
+            want to use for filtering. The value must be a string, a
+            number, or a boolean. The operator must be either ``=``,
+            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
+            if you are filtering Compute Engine instances, you can
+            exclude instances named ``example-instance`` by specifying
             ``name != example-instance``. The ``:`` operator can be used
             with string fields to match substrings. For non-string
             fields it is equivalent to the ``=`` operator. The ``:*``
@@ -3732,6 +3781,19 @@ class AggregatedListAutoscalersRequest(proto.Message):
             However, you can include ``AND`` and ``OR`` expressions
             explicitly. For example:
             ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``.
 
             This field is a member of `oneof`_ ``_filter``.
         include_all_scopes (bool):
@@ -3828,13 +3890,16 @@ class AggregatedListBackendServicesRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, an
-            operator, and the value that you want to use for filtering.
-            The value must be a string, a number, or a boolean. The
-            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
-            ``>=`` or ``:``. For example, if you are filtering Compute
-            Engine instances, you can exclude instances named
-            ``example-instance`` by specifying
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. If you want to use AIP-160, your expression must
+            specify the field name, an operator, and the value that you
+            want to use for filtering. The value must be a string, a
+            number, or a boolean. The operator must be either ``=``,
+            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
+            if you are filtering Compute Engine instances, you can
+            exclude instances named ``example-instance`` by specifying
             ``name != example-instance``. The ``:`` operator can be used
             with string fields to match substrings. For non-string
             fields it is equivalent to the ``=`` operator. The ``:*``
@@ -3852,6 +3917,19 @@ class AggregatedListBackendServicesRequest(proto.Message):
             However, you can include ``AND`` and ``OR`` expressions
             explicitly. For example:
             ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``.
 
             This field is a member of `oneof`_ ``_filter``.
         include_all_scopes (bool):
@@ -3948,13 +4026,16 @@ class AggregatedListDiskTypesRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, an
-            operator, and the value that you want to use for filtering.
-            The value must be a string, a number, or a boolean. The
-            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
-            ``>=`` or ``:``. For example, if you are filtering Compute
-            Engine instances, you can exclude instances named
-            ``example-instance`` by specifying
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. If you want to use AIP-160, your expression must
+            specify the field name, an operator, and the value that you
+            want to use for filtering. The value must be a string, a
+            number, or a boolean. The operator must be either ``=``,
+            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
+            if you are filtering Compute Engine instances, you can
+            exclude instances named ``example-instance`` by specifying
             ``name != example-instance``. The ``:`` operator can be used
             with string fields to match substrings. For non-string
             fields it is equivalent to the ``=`` operator. The ``:*``
@@ -3972,6 +4053,19 @@ class AggregatedListDiskTypesRequest(proto.Message):
             However, you can include ``AND`` and ``OR`` expressions
             explicitly. For example:
             ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``.
 
             This field is a member of `oneof`_ ``_filter``.
         include_all_scopes (bool):
@@ -4068,13 +4162,16 @@ class AggregatedListDisksRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, an
-            operator, and the value that you want to use for filtering.
-            The value must be a string, a number, or a boolean. The
-            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
-            ``>=`` or ``:``. For example, if you are filtering Compute
-            Engine instances, you can exclude instances named
-            ``example-instance`` by specifying
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. If you want to use AIP-160, your expression must
+            specify the field name, an operator, and the value that you
+            want to use for filtering. The value must be a string, a
+            number, or a boolean. The operator must be either ``=``,
+            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
+            if you are filtering Compute Engine instances, you can
+            exclude instances named ``example-instance`` by specifying
             ``name != example-instance``. The ``:`` operator can be used
             with string fields to match substrings. For non-string
             fields it is equivalent to the ``=`` operator. The ``:*``
@@ -4092,6 +4189,19 @@ class AggregatedListDisksRequest(proto.Message):
             However, you can include ``AND`` and ``OR`` expressions
             explicitly. For example:
             ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``.
 
             This field is a member of `oneof`_ ``_filter``.
         include_all_scopes (bool):
@@ -4188,13 +4298,16 @@ class AggregatedListForwardingRulesRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, an
-            operator, and the value that you want to use for filtering.
-            The value must be a string, a number, or a boolean. The
-            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
-            ``>=`` or ``:``. For example, if you are filtering Compute
-            Engine instances, you can exclude instances named
-            ``example-instance`` by specifying
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. If you want to use AIP-160, your expression must
+            specify the field name, an operator, and the value that you
+            want to use for filtering. The value must be a string, a
+            number, or a boolean. The operator must be either ``=``,
+            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
+            if you are filtering Compute Engine instances, you can
+            exclude instances named ``example-instance`` by specifying
             ``name != example-instance``. The ``:`` operator can be used
             with string fields to match substrings. For non-string
             fields it is equivalent to the ``=`` operator. The ``:*``
@@ -4212,6 +4325,19 @@ class AggregatedListForwardingRulesRequest(proto.Message):
             However, you can include ``AND`` and ``OR`` expressions
             explicitly. For example:
             ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``.
 
             This field is a member of `oneof`_ ``_filter``.
         include_all_scopes (bool):
@@ -4308,13 +4434,16 @@ class AggregatedListGlobalOperationsRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, an
-            operator, and the value that you want to use for filtering.
-            The value must be a string, a number, or a boolean. The
-            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
-            ``>=`` or ``:``. For example, if you are filtering Compute
-            Engine instances, you can exclude instances named
-            ``example-instance`` by specifying
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. If you want to use AIP-160, your expression must
+            specify the field name, an operator, and the value that you
+            want to use for filtering. The value must be a string, a
+            number, or a boolean. The operator must be either ``=``,
+            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
+            if you are filtering Compute Engine instances, you can
+            exclude instances named ``example-instance`` by specifying
             ``name != example-instance``. The ``:`` operator can be used
             with string fields to match substrings. For non-string
             fields it is equivalent to the ``=`` operator. The ``:*``
@@ -4332,6 +4461,19 @@ class AggregatedListGlobalOperationsRequest(proto.Message):
             However, you can include ``AND`` and ``OR`` expressions
             explicitly. For example:
             ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``.
 
             This field is a member of `oneof`_ ``_filter``.
         include_all_scopes (bool):
@@ -4428,13 +4570,16 @@ class AggregatedListHealthChecksRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, an
-            operator, and the value that you want to use for filtering.
-            The value must be a string, a number, or a boolean. The
-            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
-            ``>=`` or ``:``. For example, if you are filtering Compute
-            Engine instances, you can exclude instances named
-            ``example-instance`` by specifying
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. If you want to use AIP-160, your expression must
+            specify the field name, an operator, and the value that you
+            want to use for filtering. The value must be a string, a
+            number, or a boolean. The operator must be either ``=``,
+            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
+            if you are filtering Compute Engine instances, you can
+            exclude instances named ``example-instance`` by specifying
             ``name != example-instance``. The ``:`` operator can be used
             with string fields to match substrings. For non-string
             fields it is equivalent to the ``=`` operator. The ``:*``
@@ -4452,6 +4597,19 @@ class AggregatedListHealthChecksRequest(proto.Message):
             However, you can include ``AND`` and ``OR`` expressions
             explicitly. For example:
             ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``.
 
             This field is a member of `oneof`_ ``_filter``.
         include_all_scopes (bool):
@@ -4548,13 +4706,16 @@ class AggregatedListInstanceGroupManagersRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, an
-            operator, and the value that you want to use for filtering.
-            The value must be a string, a number, or a boolean. The
-            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
-            ``>=`` or ``:``. For example, if you are filtering Compute
-            Engine instances, you can exclude instances named
-            ``example-instance`` by specifying
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. If you want to use AIP-160, your expression must
+            specify the field name, an operator, and the value that you
+            want to use for filtering. The value must be a string, a
+            number, or a boolean. The operator must be either ``=``,
+            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
+            if you are filtering Compute Engine instances, you can
+            exclude instances named ``example-instance`` by specifying
             ``name != example-instance``. The ``:`` operator can be used
             with string fields to match substrings. For non-string
             fields it is equivalent to the ``=`` operator. The ``:*``
@@ -4572,6 +4733,19 @@ class AggregatedListInstanceGroupManagersRequest(proto.Message):
             However, you can include ``AND`` and ``OR`` expressions
             explicitly. For example:
             ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``.
 
             This field is a member of `oneof`_ ``_filter``.
         include_all_scopes (bool):
@@ -4668,13 +4842,16 @@ class AggregatedListInstanceGroupsRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, an
-            operator, and the value that you want to use for filtering.
-            The value must be a string, a number, or a boolean. The
-            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
-            ``>=`` or ``:``. For example, if you are filtering Compute
-            Engine instances, you can exclude instances named
-            ``example-instance`` by specifying
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. If you want to use AIP-160, your expression must
+            specify the field name, an operator, and the value that you
+            want to use for filtering. The value must be a string, a
+            number, or a boolean. The operator must be either ``=``,
+            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
+            if you are filtering Compute Engine instances, you can
+            exclude instances named ``example-instance`` by specifying
             ``name != example-instance``. The ``:`` operator can be used
             with string fields to match substrings. For non-string
             fields it is equivalent to the ``=`` operator. The ``:*``
@@ -4692,6 +4869,19 @@ class AggregatedListInstanceGroupsRequest(proto.Message):
             However, you can include ``AND`` and ``OR`` expressions
             explicitly. For example:
             ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``.
 
             This field is a member of `oneof`_ ``_filter``.
         include_all_scopes (bool):
@@ -4788,13 +4978,16 @@ class AggregatedListInstancesRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, an
-            operator, and the value that you want to use for filtering.
-            The value must be a string, a number, or a boolean. The
-            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
-            ``>=`` or ``:``. For example, if you are filtering Compute
-            Engine instances, you can exclude instances named
-            ``example-instance`` by specifying
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. If you want to use AIP-160, your expression must
+            specify the field name, an operator, and the value that you
+            want to use for filtering. The value must be a string, a
+            number, or a boolean. The operator must be either ``=``,
+            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
+            if you are filtering Compute Engine instances, you can
+            exclude instances named ``example-instance`` by specifying
             ``name != example-instance``. The ``:`` operator can be used
             with string fields to match substrings. For non-string
             fields it is equivalent to the ``=`` operator. The ``:*``
@@ -4812,6 +5005,19 @@ class AggregatedListInstancesRequest(proto.Message):
             However, you can include ``AND`` and ``OR`` expressions
             explicitly. For example:
             ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``.
 
             This field is a member of `oneof`_ ``_filter``.
         include_all_scopes (bool):
@@ -4908,13 +5114,16 @@ class AggregatedListInterconnectAttachmentsRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, an
-            operator, and the value that you want to use for filtering.
-            The value must be a string, a number, or a boolean. The
-            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
-            ``>=`` or ``:``. For example, if you are filtering Compute
-            Engine instances, you can exclude instances named
-            ``example-instance`` by specifying
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. If you want to use AIP-160, your expression must
+            specify the field name, an operator, and the value that you
+            want to use for filtering. The value must be a string, a
+            number, or a boolean. The operator must be either ``=``,
+            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
+            if you are filtering Compute Engine instances, you can
+            exclude instances named ``example-instance`` by specifying
             ``name != example-instance``. The ``:`` operator can be used
             with string fields to match substrings. For non-string
             fields it is equivalent to the ``=`` operator. The ``:*``
@@ -4932,6 +5141,19 @@ class AggregatedListInterconnectAttachmentsRequest(proto.Message):
             However, you can include ``AND`` and ``OR`` expressions
             explicitly. For example:
             ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``.
 
             This field is a member of `oneof`_ ``_filter``.
         include_all_scopes (bool):
@@ -5028,13 +5250,16 @@ class AggregatedListMachineTypesRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, an
-            operator, and the value that you want to use for filtering.
-            The value must be a string, a number, or a boolean. The
-            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
-            ``>=`` or ``:``. For example, if you are filtering Compute
-            Engine instances, you can exclude instances named
-            ``example-instance`` by specifying
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. If you want to use AIP-160, your expression must
+            specify the field name, an operator, and the value that you
+            want to use for filtering. The value must be a string, a
+            number, or a boolean. The operator must be either ``=``,
+            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
+            if you are filtering Compute Engine instances, you can
+            exclude instances named ``example-instance`` by specifying
             ``name != example-instance``. The ``:`` operator can be used
             with string fields to match substrings. For non-string
             fields it is equivalent to the ``=`` operator. The ``:*``
@@ -5052,6 +5277,19 @@ class AggregatedListMachineTypesRequest(proto.Message):
             However, you can include ``AND`` and ``OR`` expressions
             explicitly. For example:
             ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``.
 
             This field is a member of `oneof`_ ``_filter``.
         include_all_scopes (bool):
@@ -5149,13 +5387,16 @@ class AggregatedListNetworkEdgeSecurityServicesRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, an
-            operator, and the value that you want to use for filtering.
-            The value must be a string, a number, or a boolean. The
-            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
-            ``>=`` or ``:``. For example, if you are filtering Compute
-            Engine instances, you can exclude instances named
-            ``example-instance`` by specifying
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. If you want to use AIP-160, your expression must
+            specify the field name, an operator, and the value that you
+            want to use for filtering. The value must be a string, a
+            number, or a boolean. The operator must be either ``=``,
+            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
+            if you are filtering Compute Engine instances, you can
+            exclude instances named ``example-instance`` by specifying
             ``name != example-instance``. The ``:`` operator can be used
             with string fields to match substrings. For non-string
             fields it is equivalent to the ``=`` operator. The ``:*``
@@ -5173,6 +5414,19 @@ class AggregatedListNetworkEdgeSecurityServicesRequest(proto.Message):
             However, you can include ``AND`` and ``OR`` expressions
             explicitly. For example:
             ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``.
 
             This field is a member of `oneof`_ ``_filter``.
         include_all_scopes (bool):
@@ -5269,13 +5523,16 @@ class AggregatedListNetworkEndpointGroupsRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, an
-            operator, and the value that you want to use for filtering.
-            The value must be a string, a number, or a boolean. The
-            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
-            ``>=`` or ``:``. For example, if you are filtering Compute
-            Engine instances, you can exclude instances named
-            ``example-instance`` by specifying
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. If you want to use AIP-160, your expression must
+            specify the field name, an operator, and the value that you
+            want to use for filtering. The value must be a string, a
+            number, or a boolean. The operator must be either ``=``,
+            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
+            if you are filtering Compute Engine instances, you can
+            exclude instances named ``example-instance`` by specifying
             ``name != example-instance``. The ``:`` operator can be used
             with string fields to match substrings. For non-string
             fields it is equivalent to the ``=`` operator. The ``:*``
@@ -5293,6 +5550,19 @@ class AggregatedListNetworkEndpointGroupsRequest(proto.Message):
             However, you can include ``AND`` and ``OR`` expressions
             explicitly. For example:
             ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``.
 
             This field is a member of `oneof`_ ``_filter``.
         include_all_scopes (bool):
@@ -5389,13 +5659,16 @@ class AggregatedListNodeGroupsRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, an
-            operator, and the value that you want to use for filtering.
-            The value must be a string, a number, or a boolean. The
-            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
-            ``>=`` or ``:``. For example, if you are filtering Compute
-            Engine instances, you can exclude instances named
-            ``example-instance`` by specifying
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. If you want to use AIP-160, your expression must
+            specify the field name, an operator, and the value that you
+            want to use for filtering. The value must be a string, a
+            number, or a boolean. The operator must be either ``=``,
+            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
+            if you are filtering Compute Engine instances, you can
+            exclude instances named ``example-instance`` by specifying
             ``name != example-instance``. The ``:`` operator can be used
             with string fields to match substrings. For non-string
             fields it is equivalent to the ``=`` operator. The ``:*``
@@ -5413,6 +5686,19 @@ class AggregatedListNodeGroupsRequest(proto.Message):
             However, you can include ``AND`` and ``OR`` expressions
             explicitly. For example:
             ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``.
 
             This field is a member of `oneof`_ ``_filter``.
         include_all_scopes (bool):
@@ -5509,13 +5795,16 @@ class AggregatedListNodeTemplatesRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, an
-            operator, and the value that you want to use for filtering.
-            The value must be a string, a number, or a boolean. The
-            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
-            ``>=`` or ``:``. For example, if you are filtering Compute
-            Engine instances, you can exclude instances named
-            ``example-instance`` by specifying
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. If you want to use AIP-160, your expression must
+            specify the field name, an operator, and the value that you
+            want to use for filtering. The value must be a string, a
+            number, or a boolean. The operator must be either ``=``,
+            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
+            if you are filtering Compute Engine instances, you can
+            exclude instances named ``example-instance`` by specifying
             ``name != example-instance``. The ``:`` operator can be used
             with string fields to match substrings. For non-string
             fields it is equivalent to the ``=`` operator. The ``:*``
@@ -5533,6 +5822,19 @@ class AggregatedListNodeTemplatesRequest(proto.Message):
             However, you can include ``AND`` and ``OR`` expressions
             explicitly. For example:
             ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``.
 
             This field is a member of `oneof`_ ``_filter``.
         include_all_scopes (bool):
@@ -5629,13 +5931,16 @@ class AggregatedListNodeTypesRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, an
-            operator, and the value that you want to use for filtering.
-            The value must be a string, a number, or a boolean. The
-            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
-            ``>=`` or ``:``. For example, if you are filtering Compute
-            Engine instances, you can exclude instances named
-            ``example-instance`` by specifying
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. If you want to use AIP-160, your expression must
+            specify the field name, an operator, and the value that you
+            want to use for filtering. The value must be a string, a
+            number, or a boolean. The operator must be either ``=``,
+            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
+            if you are filtering Compute Engine instances, you can
+            exclude instances named ``example-instance`` by specifying
             ``name != example-instance``. The ``:`` operator can be used
             with string fields to match substrings. For non-string
             fields it is equivalent to the ``=`` operator. The ``:*``
@@ -5653,6 +5958,19 @@ class AggregatedListNodeTypesRequest(proto.Message):
             However, you can include ``AND`` and ``OR`` expressions
             explicitly. For example:
             ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``.
 
             This field is a member of `oneof`_ ``_filter``.
         include_all_scopes (bool):
@@ -5749,13 +6067,16 @@ class AggregatedListPacketMirroringsRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, an
-            operator, and the value that you want to use for filtering.
-            The value must be a string, a number, or a boolean. The
-            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
-            ``>=`` or ``:``. For example, if you are filtering Compute
-            Engine instances, you can exclude instances named
-            ``example-instance`` by specifying
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. If you want to use AIP-160, your expression must
+            specify the field name, an operator, and the value that you
+            want to use for filtering. The value must be a string, a
+            number, or a boolean. The operator must be either ``=``,
+            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
+            if you are filtering Compute Engine instances, you can
+            exclude instances named ``example-instance`` by specifying
             ``name != example-instance``. The ``:`` operator can be used
             with string fields to match substrings. For non-string
             fields it is equivalent to the ``=`` operator. The ``:*``
@@ -5773,6 +6094,19 @@ class AggregatedListPacketMirroringsRequest(proto.Message):
             However, you can include ``AND`` and ``OR`` expressions
             explicitly. For example:
             ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``.
 
             This field is a member of `oneof`_ ``_filter``.
         include_all_scopes (bool):
@@ -5869,13 +6203,16 @@ class AggregatedListPublicDelegatedPrefixesRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, an
-            operator, and the value that you want to use for filtering.
-            The value must be a string, a number, or a boolean. The
-            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
-            ``>=`` or ``:``. For example, if you are filtering Compute
-            Engine instances, you can exclude instances named
-            ``example-instance`` by specifying
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. If you want to use AIP-160, your expression must
+            specify the field name, an operator, and the value that you
+            want to use for filtering. The value must be a string, a
+            number, or a boolean. The operator must be either ``=``,
+            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
+            if you are filtering Compute Engine instances, you can
+            exclude instances named ``example-instance`` by specifying
             ``name != example-instance``. The ``:`` operator can be used
             with string fields to match substrings. For non-string
             fields it is equivalent to the ``=`` operator. The ``:*``
@@ -5893,6 +6230,19 @@ class AggregatedListPublicDelegatedPrefixesRequest(proto.Message):
             However, you can include ``AND`` and ``OR`` expressions
             explicitly. For example:
             ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``.
 
             This field is a member of `oneof`_ ``_filter``.
         include_all_scopes (bool):
@@ -5989,13 +6339,16 @@ class AggregatedListRegionCommitmentsRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, an
-            operator, and the value that you want to use for filtering.
-            The value must be a string, a number, or a boolean. The
-            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
-            ``>=`` or ``:``. For example, if you are filtering Compute
-            Engine instances, you can exclude instances named
-            ``example-instance`` by specifying
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. If you want to use AIP-160, your expression must
+            specify the field name, an operator, and the value that you
+            want to use for filtering. The value must be a string, a
+            number, or a boolean. The operator must be either ``=``,
+            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
+            if you are filtering Compute Engine instances, you can
+            exclude instances named ``example-instance`` by specifying
             ``name != example-instance``. The ``:`` operator can be used
             with string fields to match substrings. For non-string
             fields it is equivalent to the ``=`` operator. The ``:*``
@@ -6013,6 +6366,19 @@ class AggregatedListRegionCommitmentsRequest(proto.Message):
             However, you can include ``AND`` and ``OR`` expressions
             explicitly. For example:
             ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``.
 
             This field is a member of `oneof`_ ``_filter``.
         include_all_scopes (bool):
@@ -6109,13 +6475,16 @@ class AggregatedListReservationsRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, an
-            operator, and the value that you want to use for filtering.
-            The value must be a string, a number, or a boolean. The
-            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
-            ``>=`` or ``:``. For example, if you are filtering Compute
-            Engine instances, you can exclude instances named
-            ``example-instance`` by specifying
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. If you want to use AIP-160, your expression must
+            specify the field name, an operator, and the value that you
+            want to use for filtering. The value must be a string, a
+            number, or a boolean. The operator must be either ``=``,
+            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
+            if you are filtering Compute Engine instances, you can
+            exclude instances named ``example-instance`` by specifying
             ``name != example-instance``. The ``:`` operator can be used
             with string fields to match substrings. For non-string
             fields it is equivalent to the ``=`` operator. The ``:*``
@@ -6133,6 +6502,19 @@ class AggregatedListReservationsRequest(proto.Message):
             However, you can include ``AND`` and ``OR`` expressions
             explicitly. For example:
             ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``.
 
             This field is a member of `oneof`_ ``_filter``.
         include_all_scopes (bool):
@@ -6229,13 +6611,16 @@ class AggregatedListResourcePoliciesRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, an
-            operator, and the value that you want to use for filtering.
-            The value must be a string, a number, or a boolean. The
-            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
-            ``>=`` or ``:``. For example, if you are filtering Compute
-            Engine instances, you can exclude instances named
-            ``example-instance`` by specifying
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. If you want to use AIP-160, your expression must
+            specify the field name, an operator, and the value that you
+            want to use for filtering. The value must be a string, a
+            number, or a boolean. The operator must be either ``=``,
+            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
+            if you are filtering Compute Engine instances, you can
+            exclude instances named ``example-instance`` by specifying
             ``name != example-instance``. The ``:`` operator can be used
             with string fields to match substrings. For non-string
             fields it is equivalent to the ``=`` operator. The ``:*``
@@ -6253,6 +6638,19 @@ class AggregatedListResourcePoliciesRequest(proto.Message):
             However, you can include ``AND`` and ``OR`` expressions
             explicitly. For example:
             ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``.
 
             This field is a member of `oneof`_ ``_filter``.
         include_all_scopes (bool):
@@ -6349,13 +6747,16 @@ class AggregatedListRoutersRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, an
-            operator, and the value that you want to use for filtering.
-            The value must be a string, a number, or a boolean. The
-            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
-            ``>=`` or ``:``. For example, if you are filtering Compute
-            Engine instances, you can exclude instances named
-            ``example-instance`` by specifying
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. If you want to use AIP-160, your expression must
+            specify the field name, an operator, and the value that you
+            want to use for filtering. The value must be a string, a
+            number, or a boolean. The operator must be either ``=``,
+            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
+            if you are filtering Compute Engine instances, you can
+            exclude instances named ``example-instance`` by specifying
             ``name != example-instance``. The ``:`` operator can be used
             with string fields to match substrings. For non-string
             fields it is equivalent to the ``=`` operator. The ``:*``
@@ -6373,6 +6774,19 @@ class AggregatedListRoutersRequest(proto.Message):
             However, you can include ``AND`` and ``OR`` expressions
             explicitly. For example:
             ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``.
 
             This field is a member of `oneof`_ ``_filter``.
         include_all_scopes (bool):
@@ -6469,13 +6883,16 @@ class AggregatedListSecurityPoliciesRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, an
-            operator, and the value that you want to use for filtering.
-            The value must be a string, a number, or a boolean. The
-            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
-            ``>=`` or ``:``. For example, if you are filtering Compute
-            Engine instances, you can exclude instances named
-            ``example-instance`` by specifying
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. If you want to use AIP-160, your expression must
+            specify the field name, an operator, and the value that you
+            want to use for filtering. The value must be a string, a
+            number, or a boolean. The operator must be either ``=``,
+            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
+            if you are filtering Compute Engine instances, you can
+            exclude instances named ``example-instance`` by specifying
             ``name != example-instance``. The ``:`` operator can be used
             with string fields to match substrings. For non-string
             fields it is equivalent to the ``=`` operator. The ``:*``
@@ -6493,6 +6910,19 @@ class AggregatedListSecurityPoliciesRequest(proto.Message):
             However, you can include ``AND`` and ``OR`` expressions
             explicitly. For example:
             ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``.
 
             This field is a member of `oneof`_ ``_filter``.
         include_all_scopes (bool):
@@ -6589,13 +7019,16 @@ class AggregatedListServiceAttachmentsRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, an
-            operator, and the value that you want to use for filtering.
-            The value must be a string, a number, or a boolean. The
-            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
-            ``>=`` or ``:``. For example, if you are filtering Compute
-            Engine instances, you can exclude instances named
-            ``example-instance`` by specifying
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. If you want to use AIP-160, your expression must
+            specify the field name, an operator, and the value that you
+            want to use for filtering. The value must be a string, a
+            number, or a boolean. The operator must be either ``=``,
+            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
+            if you are filtering Compute Engine instances, you can
+            exclude instances named ``example-instance`` by specifying
             ``name != example-instance``. The ``:`` operator can be used
             with string fields to match substrings. For non-string
             fields it is equivalent to the ``=`` operator. The ``:*``
@@ -6613,6 +7046,19 @@ class AggregatedListServiceAttachmentsRequest(proto.Message):
             However, you can include ``AND`` and ``OR`` expressions
             explicitly. For example:
             ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``.
 
             This field is a member of `oneof`_ ``_filter``.
         include_all_scopes (bool):
@@ -6709,13 +7155,16 @@ class AggregatedListSslCertificatesRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, an
-            operator, and the value that you want to use for filtering.
-            The value must be a string, a number, or a boolean. The
-            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
-            ``>=`` or ``:``. For example, if you are filtering Compute
-            Engine instances, you can exclude instances named
-            ``example-instance`` by specifying
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. If you want to use AIP-160, your expression must
+            specify the field name, an operator, and the value that you
+            want to use for filtering. The value must be a string, a
+            number, or a boolean. The operator must be either ``=``,
+            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
+            if you are filtering Compute Engine instances, you can
+            exclude instances named ``example-instance`` by specifying
             ``name != example-instance``. The ``:`` operator can be used
             with string fields to match substrings. For non-string
             fields it is equivalent to the ``=`` operator. The ``:*``
@@ -6733,6 +7182,19 @@ class AggregatedListSslCertificatesRequest(proto.Message):
             However, you can include ``AND`` and ``OR`` expressions
             explicitly. For example:
             ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``.
 
             This field is a member of `oneof`_ ``_filter``.
         include_all_scopes (bool):
@@ -6829,13 +7291,16 @@ class AggregatedListSubnetworksRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, an
-            operator, and the value that you want to use for filtering.
-            The value must be a string, a number, or a boolean. The
-            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
-            ``>=`` or ``:``. For example, if you are filtering Compute
-            Engine instances, you can exclude instances named
-            ``example-instance`` by specifying
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. If you want to use AIP-160, your expression must
+            specify the field name, an operator, and the value that you
+            want to use for filtering. The value must be a string, a
+            number, or a boolean. The operator must be either ``=``,
+            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
+            if you are filtering Compute Engine instances, you can
+            exclude instances named ``example-instance`` by specifying
             ``name != example-instance``. The ``:`` operator can be used
             with string fields to match substrings. For non-string
             fields it is equivalent to the ``=`` operator. The ``:*``
@@ -6853,6 +7318,19 @@ class AggregatedListSubnetworksRequest(proto.Message):
             However, you can include ``AND`` and ``OR`` expressions
             explicitly. For example:
             ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``.
 
             This field is a member of `oneof`_ ``_filter``.
         include_all_scopes (bool):
@@ -6949,13 +7427,16 @@ class AggregatedListTargetHttpProxiesRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, an
-            operator, and the value that you want to use for filtering.
-            The value must be a string, a number, or a boolean. The
-            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
-            ``>=`` or ``:``. For example, if you are filtering Compute
-            Engine instances, you can exclude instances named
-            ``example-instance`` by specifying
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. If you want to use AIP-160, your expression must
+            specify the field name, an operator, and the value that you
+            want to use for filtering. The value must be a string, a
+            number, or a boolean. The operator must be either ``=``,
+            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
+            if you are filtering Compute Engine instances, you can
+            exclude instances named ``example-instance`` by specifying
             ``name != example-instance``. The ``:`` operator can be used
             with string fields to match substrings. For non-string
             fields it is equivalent to the ``=`` operator. The ``:*``
@@ -6973,6 +7454,19 @@ class AggregatedListTargetHttpProxiesRequest(proto.Message):
             However, you can include ``AND`` and ``OR`` expressions
             explicitly. For example:
             ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``.
 
             This field is a member of `oneof`_ ``_filter``.
         include_all_scopes (bool):
@@ -7069,13 +7563,16 @@ class AggregatedListTargetHttpsProxiesRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, an
-            operator, and the value that you want to use for filtering.
-            The value must be a string, a number, or a boolean. The
-            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
-            ``>=`` or ``:``. For example, if you are filtering Compute
-            Engine instances, you can exclude instances named
-            ``example-instance`` by specifying
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. If you want to use AIP-160, your expression must
+            specify the field name, an operator, and the value that you
+            want to use for filtering. The value must be a string, a
+            number, or a boolean. The operator must be either ``=``,
+            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
+            if you are filtering Compute Engine instances, you can
+            exclude instances named ``example-instance`` by specifying
             ``name != example-instance``. The ``:`` operator can be used
             with string fields to match substrings. For non-string
             fields it is equivalent to the ``=`` operator. The ``:*``
@@ -7093,6 +7590,19 @@ class AggregatedListTargetHttpsProxiesRequest(proto.Message):
             However, you can include ``AND`` and ``OR`` expressions
             explicitly. For example:
             ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``.
 
             This field is a member of `oneof`_ ``_filter``.
         include_all_scopes (bool):
@@ -7189,13 +7699,16 @@ class AggregatedListTargetInstancesRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, an
-            operator, and the value that you want to use for filtering.
-            The value must be a string, a number, or a boolean. The
-            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
-            ``>=`` or ``:``. For example, if you are filtering Compute
-            Engine instances, you can exclude instances named
-            ``example-instance`` by specifying
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. If you want to use AIP-160, your expression must
+            specify the field name, an operator, and the value that you
+            want to use for filtering. The value must be a string, a
+            number, or a boolean. The operator must be either ``=``,
+            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
+            if you are filtering Compute Engine instances, you can
+            exclude instances named ``example-instance`` by specifying
             ``name != example-instance``. The ``:`` operator can be used
             with string fields to match substrings. For non-string
             fields it is equivalent to the ``=`` operator. The ``:*``
@@ -7213,6 +7726,19 @@ class AggregatedListTargetInstancesRequest(proto.Message):
             However, you can include ``AND`` and ``OR`` expressions
             explicitly. For example:
             ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``.
 
             This field is a member of `oneof`_ ``_filter``.
         include_all_scopes (bool):
@@ -7309,13 +7835,16 @@ class AggregatedListTargetPoolsRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, an
-            operator, and the value that you want to use for filtering.
-            The value must be a string, a number, or a boolean. The
-            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
-            ``>=`` or ``:``. For example, if you are filtering Compute
-            Engine instances, you can exclude instances named
-            ``example-instance`` by specifying
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. If you want to use AIP-160, your expression must
+            specify the field name, an operator, and the value that you
+            want to use for filtering. The value must be a string, a
+            number, or a boolean. The operator must be either ``=``,
+            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
+            if you are filtering Compute Engine instances, you can
+            exclude instances named ``example-instance`` by specifying
             ``name != example-instance``. The ``:`` operator can be used
             with string fields to match substrings. For non-string
             fields it is equivalent to the ``=`` operator. The ``:*``
@@ -7333,6 +7862,19 @@ class AggregatedListTargetPoolsRequest(proto.Message):
             However, you can include ``AND`` and ``OR`` expressions
             explicitly. For example:
             ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``.
 
             This field is a member of `oneof`_ ``_filter``.
         include_all_scopes (bool):
@@ -7429,13 +7971,16 @@ class AggregatedListTargetVpnGatewaysRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, an
-            operator, and the value that you want to use for filtering.
-            The value must be a string, a number, or a boolean. The
-            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
-            ``>=`` or ``:``. For example, if you are filtering Compute
-            Engine instances, you can exclude instances named
-            ``example-instance`` by specifying
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. If you want to use AIP-160, your expression must
+            specify the field name, an operator, and the value that you
+            want to use for filtering. The value must be a string, a
+            number, or a boolean. The operator must be either ``=``,
+            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
+            if you are filtering Compute Engine instances, you can
+            exclude instances named ``example-instance`` by specifying
             ``name != example-instance``. The ``:`` operator can be used
             with string fields to match substrings. For non-string
             fields it is equivalent to the ``=`` operator. The ``:*``
@@ -7453,6 +7998,19 @@ class AggregatedListTargetVpnGatewaysRequest(proto.Message):
             However, you can include ``AND`` and ``OR`` expressions
             explicitly. For example:
             ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``.
 
             This field is a member of `oneof`_ ``_filter``.
         include_all_scopes (bool):
@@ -7549,13 +8107,16 @@ class AggregatedListUrlMapsRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, an
-            operator, and the value that you want to use for filtering.
-            The value must be a string, a number, or a boolean. The
-            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
-            ``>=`` or ``:``. For example, if you are filtering Compute
-            Engine instances, you can exclude instances named
-            ``example-instance`` by specifying
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. If you want to use AIP-160, your expression must
+            specify the field name, an operator, and the value that you
+            want to use for filtering. The value must be a string, a
+            number, or a boolean. The operator must be either ``=``,
+            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
+            if you are filtering Compute Engine instances, you can
+            exclude instances named ``example-instance`` by specifying
             ``name != example-instance``. The ``:`` operator can be used
             with string fields to match substrings. For non-string
             fields it is equivalent to the ``=`` operator. The ``:*``
@@ -7573,6 +8134,19 @@ class AggregatedListUrlMapsRequest(proto.Message):
             However, you can include ``AND`` and ``OR`` expressions
             explicitly. For example:
             ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``.
 
             This field is a member of `oneof`_ ``_filter``.
         include_all_scopes (bool):
@@ -7669,13 +8243,16 @@ class AggregatedListVpnGatewaysRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, an
-            operator, and the value that you want to use for filtering.
-            The value must be a string, a number, or a boolean. The
-            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
-            ``>=`` or ``:``. For example, if you are filtering Compute
-            Engine instances, you can exclude instances named
-            ``example-instance`` by specifying
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. If you want to use AIP-160, your expression must
+            specify the field name, an operator, and the value that you
+            want to use for filtering. The value must be a string, a
+            number, or a boolean. The operator must be either ``=``,
+            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
+            if you are filtering Compute Engine instances, you can
+            exclude instances named ``example-instance`` by specifying
             ``name != example-instance``. The ``:`` operator can be used
             with string fields to match substrings. For non-string
             fields it is equivalent to the ``=`` operator. The ``:*``
@@ -7693,6 +8270,19 @@ class AggregatedListVpnGatewaysRequest(proto.Message):
             However, you can include ``AND`` and ``OR`` expressions
             explicitly. For example:
             ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``.
 
             This field is a member of `oneof`_ ``_filter``.
         include_all_scopes (bool):
@@ -7789,13 +8379,16 @@ class AggregatedListVpnTunnelsRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, an
-            operator, and the value that you want to use for filtering.
-            The value must be a string, a number, or a boolean. The
-            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
-            ``>=`` or ``:``. For example, if you are filtering Compute
-            Engine instances, you can exclude instances named
-            ``example-instance`` by specifying
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. If you want to use AIP-160, your expression must
+            specify the field name, an operator, and the value that you
+            want to use for filtering. The value must be a string, a
+            number, or a boolean. The operator must be either ``=``,
+            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
+            if you are filtering Compute Engine instances, you can
+            exclude instances named ``example-instance`` by specifying
             ``name != example-instance``. The ``:`` operator can be used
             with string fields to match substrings. For non-string
             fields it is equivalent to the ``=`` operator. The ``:*``
@@ -7813,6 +8406,19 @@ class AggregatedListVpnTunnelsRequest(proto.Message):
             However, you can include ``AND`` and ``OR`` expressions
             explicitly. For example:
             ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``.
 
             This field is a member of `oneof`_ ``_filter``.
         include_all_scopes (bool):
@@ -8040,7 +8646,7 @@ class AllocationSpecificSKUAllocationReservedInstanceProperties(proto.Message):
 
 class AllocationSpecificSKUReservation(proto.Message):
     r"""This reservation type allows to pre allocate specific
-    instance configuration. Next ID: 5
+    instance configuration. Next ID: 6
 
     Attributes:
         assured_count (int):
@@ -8620,8 +9226,10 @@ class AttachedDiskInitializeParams(proto.Message):
     r"""[Input Only] Specifies the parameters for a new disk that will be
     created alongside the new instance. Use initialization parameters to
     create boot disks or local SSDs attached to the new instance. This
-    property is mutually exclusive with the source property; you can
-    only define one or the other, but not both.
+    field is persisted and returned for instanceTemplate and not
+    returned in the context of instance. This property is mutually
+    exclusive with the source property; you can only define one or the
+    other, but not both.
 
     Attributes:
         description (str):
@@ -10476,8 +11084,8 @@ class BackendBucketCdnPolicyCacheKeyPolicy(proto.Message):
             used in the cache key.
         query_string_whitelist (Sequence[str]):
             Names of query string parameters to include
-            in cache keys. All other parameters will be
-            excluded. '&' and '=' will be percent encoded
+            in cache keys. Default parameters are always
+            included. '&' and '=' will be percent encoded
             and not treated as delimiters.
     """
 
@@ -10618,10 +11226,10 @@ class BackendService(proto.Message):
             Director and requires GENERATED_COOKIE or HTTP_COOKIE
             session affinity. If set to 0, the cookie is non-persistent
             and lasts only until the end of the browser session (or
-            equivalent). The maximum allowed value is one day (86,400).
-            Not supported when the backend service is referenced by a
-            URL map that is bound to target gRPC proxy that has
-            validateForProxyless field set to true.
+            equivalent). The maximum allowed value is two weeks
+            (1,209,600). Not supported when the backend service is
+            referenced by a URL map that is bound to target gRPC proxy
+            that has validateForProxyless field set to true.
 
             This field is a member of `oneof`_ ``_affinity_cookie_ttl_sec``.
         backends (Sequence[google.cloud.compute_v1.types.Backend]):
@@ -10899,6 +11507,10 @@ class BackendService(proto.Message):
             [Output Only] Server-defined URL for the resource.
 
             This field is a member of `oneof`_ ``_self_link``.
+        service_bindings (Sequence[str]):
+            URLs of networkservices.ServiceBinding resources. Can only
+            be set if load balancing scheme is INTERNAL_SELF_MANAGED. If
+            set, lists of backends and health checks must be both empty.
         session_affinity (str):
             Type of session affinity to use. The default is NONE. Only
             NONE and HEADER_FIELD are supported when the backend service
@@ -11195,6 +11807,10 @@ class BackendService(proto.Message):
         proto.STRING,
         number=456214797,
         optional=True,
+    )
+    service_bindings = proto.RepeatedField(
+        proto.STRING,
+        number=133581016,
     )
     session_affinity = proto.Field(
         proto.STRING,
@@ -12056,7 +12672,7 @@ class BackendServiceLogConfig(proto.Message):
             1]. This configures the sampling rate of requests to the
             load balancer where 1.0 means all logged requests are
             reported and 0.0 means no logged requests are reported. The
-            default value is 1.0.
+            default value is 0.0.
 
             This field is a member of `oneof`_ ``_sample_rate``.
     """
@@ -12566,16 +13182,16 @@ class Binding(proto.Message):
 
             This field is a member of `oneof`_ ``_condition``.
         members (Sequence[str]):
-            Specifies the principals requesting access for a Cloud
-            Platform resource. ``members`` can have the following
-            values: \* ``allUsers``: A special identifier that
-            represents anyone who is on the internet; with or without a
-            Google account. \* ``allAuthenticatedUsers``: A special
-            identifier that represents anyone who is authenticated with
-            a Google account or a service account. \*
-            ``user:{emailid}``: An email address that represents a
-            specific Google account. For example, ``alice@example.com``
-            . \* ``serviceAccount:{emailid}``: An email address that
+            Specifies the principals requesting access for a Google
+            Cloud resource. ``members`` can have the following values:
+            \* ``allUsers``: A special identifier that represents anyone
+            who is on the internet; with or without a Google account. \*
+            ``allAuthenticatedUsers``: A special identifier that
+            represents anyone who is authenticated with a Google account
+            or a service account. \* ``user:{emailid}``: An email
+            address that represents a specific Google account. For
+            example, ``alice@example.com`` . \*
+            ``serviceAccount:{emailid}``: An email address that
             represents a service account. For example,
             ``my-other-app@appspot.gserviceaccount.com``. \*
             ``group:{emailid}``: An email address that represents a
@@ -13376,6 +13992,7 @@ class Commitment(proto.Message):
         GENERAL_PURPOSE_N2D = 232471400
         GENERAL_PURPOSE_T2D = 232477166
         MEMORY_OPTIMIZED = 281753417
+        MEMORY_OPTIMIZED_M3 = 276301372
         TYPE_UNSPECIFIED = 437714322
 
     auto_renew = proto.Field(
@@ -21540,26 +22157,33 @@ class ForwardingRule(proto.Message):
 
     Attributes:
         I_p_address (str):
-            IP address that this forwarding rule serves. When a client
-            sends traffic to this IP address, the forwarding rule
-            directs the traffic to the target that you specify in the
-            forwarding rule. If you don't specify a reserved IP address,
-            an ephemeral IP address is assigned. Methods for specifying
-            an IP address: \* IPv4 dotted decimal, as in ``100.1.2.3``
-            \* Full URL, as in
+            IP address for which this forwarding rule accepts traffic.
+            When a client sends traffic to this IP address, the
+            forwarding rule directs the traffic to the referenced target
+            or backendService. While creating a forwarding rule,
+            specifying an IPAddress is required under the following
+            circumstances: - When the target is set to targetGrpcProxy
+            and validateForProxyless is set to true, the IPAddress
+            should be set to 0.0.0.0. - When the target is a Private
+            Service Connect Google APIs bundle, you must specify an
+            IPAddress. Otherwise, you can optionally specify an IP
+            address that references an existing static (reserved) IP
+            address resource. When omitted, Google Cloud assigns an
+            ephemeral IP address. Use one of the following formats to
+            specify an IP address while creating a forwarding rule: \*
+            IP address number, as in ``100.1.2.3`` \* Full resource URL,
+            as in
             https://www.googleapis.com/compute/v1/projects/project_id/regions/region
             /addresses/address-name \* Partial URL or by name, as in: -
             projects/project_id/regions/region/addresses/address-name -
             regions/region/addresses/address-name -
-            global/addresses/address-name - address-name The
-            loadBalancingScheme and the forwarding rule's target
-            determine the type of IP address that you can use. For
-            detailed information, see `IP address
+            global/addresses/address-name - address-name The forwarding
+            rule's target or backendService, and in most cases, also the
+            loadBalancingScheme, determine the type of IP address that
+            you can use. For detailed information, see `IP address
             specifications <https://cloud.google.com/load-balancing/docs/forwarding-rule-concepts#ip_address_specifications>`__.
-            Must be set to ``0.0.0.0`` when the target is
-            targetGrpcProxy that has validateForProxyless field set to
-            true. For Private Service Connect forwarding rules that
-            forward traffic to Google APIs, IP address must be provided.
+            When reading an IPAddress, the API always returns the IP
+            address number.
 
             This field is a member of `oneof`_ ``_I_p_address``.
         I_p_protocol (str):
@@ -21739,6 +22363,13 @@ class ForwardingRule(proto.Message):
             values.
 
             This field is a member of `oneof`_ ``_network_tier``.
+        no_automate_dns_zone (bool):
+            This is used in PSC consumer ForwardingRule
+            to control whether it should try to
+            auto-generate a DNS zone or not. Non-PSC
+            forwarding rules do not use this field.
+
+            This field is a member of `oneof`_ ``_no_automate_dns_zone``.
         port_range (str):
             This field can be used only if: - Load balancing scheme is
             one of EXTERNAL, INTERNAL_SELF_MANAGED or INTERNAL_MANAGED -
@@ -21982,6 +22613,11 @@ class ForwardingRule(proto.Message):
     network_tier = proto.Field(
         proto.STRING,
         number=517397843,
+        optional=True,
+    )
+    no_automate_dns_zone = proto.Field(
+        proto.BOOL,
+        number=64546991,
         optional=True,
     )
     port_range = proto.Field(
@@ -24028,13 +24664,16 @@ class GetNatMappingInfoRoutersRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, an
-            operator, and the value that you want to use for filtering.
-            The value must be a string, a number, or a boolean. The
-            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
-            ``>=`` or ``:``. For example, if you are filtering Compute
-            Engine instances, you can exclude instances named
-            ``example-instance`` by specifying
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. If you want to use AIP-160, your expression must
+            specify the field name, an operator, and the value that you
+            want to use for filtering. The value must be a string, a
+            number, or a boolean. The operator must be either ``=``,
+            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
+            if you are filtering Compute Engine instances, you can
+            exclude instances named ``example-instance`` by specifying
             ``name != example-instance``. The ``:`` operator can be used
             with string fields to match substrings. For non-string
             fields it is equivalent to the ``=`` operator. The ``:*``
@@ -24052,6 +24691,19 @@ class GetNatMappingInfoRoutersRequest(proto.Message):
             However, you can include ``AND`` and ``OR`` expressions
             explicitly. For example:
             ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -25759,13 +26411,16 @@ class GetXpnResourcesProjectsRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, an
-            operator, and the value that you want to use for filtering.
-            The value must be a string, a number, or a boolean. The
-            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
-            ``>=`` or ``:``. For example, if you are filtering Compute
-            Engine instances, you can exclude instances named
-            ``example-instance`` by specifying
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. If you want to use AIP-160, your expression must
+            specify the field name, an operator, and the value that you
+            want to use for filtering. The value must be a string, a
+            number, or a boolean. The operator must be either ``=``,
+            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
+            if you are filtering Compute Engine instances, you can
+            exclude instances named ``example-instance`` by specifying
             ``name != example-instance``. The ``:`` operator can be used
             with string fields to match substrings. For non-string
             fields it is equivalent to the ``=`` operator. The ``:*``
@@ -25783,6 +26438,19 @@ class GetXpnResourcesProjectsRequest(proto.Message):
             However, you can include ``AND`` and ``OR`` expressions
             explicitly. For example:
             ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -26662,10 +27330,11 @@ class HealthCheck(proto.Message):
             This field is a member of `oneof`_ ``_timeout_sec``.
         type_ (str):
             Specifies the type of the healthCheck, either
-            TCP, SSL, HTTP, HTTPS or HTTP2. Exactly one of
-            the protocol-specific health check field must be
-            specified, which must match type field. Check
-            the Type enum for the list of possible values.
+            TCP, SSL, HTTP, HTTPS, HTTP2 or GRPC. Exactly
+            one of the protocol-specific health check fields
+            must be specified, which must match type field.
+            Check the Type enum for the list of possible
+            values.
 
             This field is a member of `oneof`_ ``_type``.
         unhealthy_threshold (int):
@@ -26678,8 +27347,9 @@ class HealthCheck(proto.Message):
 
     class Type(proto.Enum):
         r"""Specifies the type of the healthCheck, either TCP, SSL, HTTP,
-        HTTPS or HTTP2. Exactly one of the protocol-specific health
-        check field must be specified, which must match type field.
+        HTTPS, HTTP2 or GRPC. Exactly one of the protocol-specific
+        health check fields must be specified, which must match type
+        field.
         """
         UNDEFINED_TYPE = 0
         GRPC = 2196510
@@ -27475,10 +28145,11 @@ class HostRule(proto.Message):
             The list of host patterns to match. They must be valid
             hostnames with optional port numbers in the format
             host:port. \* matches any string of ([a-z0-9-.]*). In that
-            case, \* must be the first character and must be followed in
-            the pattern by either - or .. \* based matching is not
-            supported when the URL map is bound to a target gRPC proxy
-            that has the validateForProxyless field set to true.
+            case, \* must be the first character, and if followed by
+            anything, the immediate following character must be either -
+            or .. \* based matching is not supported when the URL map is
+            bound to a target gRPC proxy that has the
+            validateForProxyless field set to true.
         path_matcher (str):
             The name of the PathMatcher to use to match
             the path portion of the URL if the hostRule
@@ -28087,7 +28758,11 @@ class HttpRouteAction(proto.Message):
             percentage of requests. timeout and retry_policy is ignored
             by clients that are configured with a fault_injection_policy
             if: 1. The traffic is generated by fault injection AND 2.
-            The fault injection is not a delay fault injection.
+            The fault injection is not a delay fault injection. Fault
+            injection is not supported with the global external HTTP(S)
+            load balancer (classic). To see which load balancers support
+            fault injection, see Load balancing: Routing and traffic
+            management features.
 
             This field is a member of `oneof`_ ``_fault_injection_policy``.
         max_stream_duration (google.cloud.compute_v1.types.Duration):
@@ -28654,9 +29329,9 @@ class Image(proto.Message):
             This field is a member of `oneof`_ ``_source_snapshot_id``.
         source_type (str):
             The type of the image used to create this
-            disk. The default and only value is RAW Check
-            the SourceType enum for the list of possible
-            values.
+            disk. The default and only valid value is RAW.
+            Check the SourceType enum for the list of
+            possible values.
 
             This field is a member of `oneof`_ ``_source_type``.
         status (str):
@@ -28674,7 +29349,7 @@ class Image(proto.Message):
 
     class SourceType(proto.Enum):
         r"""The type of the image used to create this disk. The default
-        and only value is RAW
+        and only valid value is RAW.
         """
         UNDEFINED_SOURCE_TYPE = 0
         RAW = 80904
@@ -31598,6 +32273,10 @@ class InsertSecurityPolicyRequest(proto.Message):
             This field is a member of `oneof`_ ``_request_id``.
         security_policy_resource (google.cloud.compute_v1.types.SecurityPolicy):
             The body resource for this request
+        validate_only (bool):
+            If true, the request will not be committed.
+
+            This field is a member of `oneof`_ ``_validate_only``.
     """
 
     project = proto.Field(
@@ -31613,6 +32292,11 @@ class InsertSecurityPolicyRequest(proto.Message):
         proto.MESSAGE,
         number=216159612,
         message="SecurityPolicy",
+    )
+    validate_only = proto.Field(
+        proto.BOOL,
+        number=242744629,
+        optional=True,
     )
 
 
@@ -33958,13 +34642,13 @@ class InstanceGroupManagerStatusStateful(proto.Message):
             group has stateful configuration, that is, if you have
             configured any items in a stateful policy or in per-instance
             configs. The group might report that it has no stateful
-            config even when there is still some preserved state on a
-            managed instance, for example, if you have deleted all PICs
-            but not yet applied those deletions.
+            configuration even when there is still some preserved state
+            on a managed instance, for example, if you have deleted all
+            PICs but not yet applied those deletions.
 
             This field is a member of `oneof`_ ``_has_stateful_config``.
         per_instance_configs (google.cloud.compute_v1.types.InstanceGroupManagerStatusStatefulPerInstanceConfigs):
-            [Output Only] Status of per-instance configs on the
+            [Output Only] Status of per-instance configurations on the
             instance.
 
             This field is a member of `oneof`_ ``_per_instance_configs``.
@@ -33989,9 +34673,10 @@ class InstanceGroupManagerStatusStatefulPerInstanceConfigs(proto.Message):
     Attributes:
         all_effective (bool):
             A bit indicating if all of the group's
-            per-instance configs (listed in the output of a
-            listPerInstanceConfigs API call) have status
-            EFFECTIVE or there are no per-instance-configs.
+            per-instance configurations (listed in the
+            output of a listPerInstanceConfigs API call)
+            have status EFFECTIVE or there are no
+            per-instance-configs.
 
             This field is a member of `oneof`_ ``_all_effective``.
     """
@@ -34079,16 +34764,22 @@ class InstanceGroupManagerUpdatePolicy(proto.Message):
             This field is a member of `oneof`_ ``_max_unavailable``.
         minimal_action (str):
             Minimal action to be taken on an instance.
-            You can specify either RESTART to restart
-            existing instances or REPLACE to delete and
-            create new instances from the target template.
-            If you specify a RESTART, the Updater will
-            attempt to perform that action only. However, if
-            the Updater determines that the minimal action
-            you specify is not enough to perform the update,
-            it might perform a more disruptive action. Check
-            the MinimalAction enum for the list of possible
-            values.
+            Use this option to minimize disruption as much
+            as possible or to apply a more disruptive action
+            than is necessary. - To limit disruption as much
+            as possible, set the minimal action to REFRESH.
+            If your update requires a more disruptive
+            action, Compute Engine performs the necessary
+            action to execute the update. - To apply a more
+            disruptive action than is strictly necessary,
+            set the minimal action to RESTART or REPLACE.
+            For example, Compute Engine does not need to
+            restart a VM to change its metadata. But if your
+            application reads instance metadata only when a
+            VM is restarted, you can set the minimal action
+            to RESTART in order to pick up metadata changes.
+            Check the MinimalAction enum for the list of
+            possible values.
 
             This field is a member of `oneof`_ ``_minimal_action``.
         most_disruptive_allowed_action (str):
@@ -34139,15 +34830,20 @@ class InstanceGroupManagerUpdatePolicy(proto.Message):
         UNDEFINED_INSTANCE_REDISTRIBUTION_TYPE = 0
 
     class MinimalAction(proto.Enum):
-        r"""Minimal action to be taken on an instance. You can specify
-        either RESTART to restart existing instances or REPLACE to
-        delete and create new instances from the target template. If you
-        specify a RESTART, the Updater will attempt to perform that
-        action only. However, if the Updater determines that the minimal
-        action you specify is not enough to perform the update, it might
-        perform a more disruptive action. Additional supported values
-        which may be not listed in the enum directly due to technical
-        reasons: NONE
+        r"""Minimal action to be taken on an instance. Use this option to
+        minimize disruption as much as possible or to apply a more
+        disruptive action than is necessary. - To limit disruption as
+        much as possible, set the minimal action to REFRESH. If your
+        update requires a more disruptive action, Compute Engine
+        performs the necessary action to execute the update. - To apply
+        a more disruptive action than is strictly necessary, set the
+        minimal action to RESTART or REPLACE. For example, Compute
+        Engine does not need to restart a VM to change its metadata. But
+        if your application reads instance metadata only when a VM is
+        restarted, you can set the minimal action to RESTART in order to
+        pick up metadata changes. Additional supported values which may
+        be not listed in the enum directly due to technical reasons:
+        NONE
         REFRESH
         REPLACE
         RESTART
@@ -34582,8 +35278,8 @@ class InstanceGroupManagersPatchPerInstanceConfigsReq(proto.Message):
 
     Attributes:
         per_instance_configs (Sequence[google.cloud.compute_v1.types.PerInstanceConfig]):
-            The list of per-instance configs to insert or
-            patch on this managed instance group.
+            The list of per-instance configurations to
+            insert or patch on this managed instance group.
     """
 
     per_instance_configs = proto.RepeatedField(
@@ -34701,8 +35397,8 @@ class InstanceGroupManagersUpdatePerInstanceConfigsReq(proto.Message):
 
     Attributes:
         per_instance_configs (Sequence[google.cloud.compute_v1.types.PerInstanceConfig]):
-            The list of per-instance configs to insert or
-            patch on this managed instance group.
+            The list of per-instance configurations to
+            insert or patch on this managed instance group.
     """
 
     per_instance_configs = proto.RepeatedField(
@@ -38531,13 +39227,16 @@ class ListAcceleratorTypesRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, an
-            operator, and the value that you want to use for filtering.
-            The value must be a string, a number, or a boolean. The
-            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
-            ``>=`` or ``:``. For example, if you are filtering Compute
-            Engine instances, you can exclude instances named
-            ``example-instance`` by specifying
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. If you want to use AIP-160, your expression must
+            specify the field name, an operator, and the value that you
+            want to use for filtering. The value must be a string, a
+            number, or a boolean. The operator must be either ``=``,
+            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
+            if you are filtering Compute Engine instances, you can
+            exclude instances named ``example-instance`` by specifying
             ``name != example-instance``. The ``:`` operator can be used
             with string fields to match substrings. For non-string
             fields it is equivalent to the ``=`` operator. The ``:*``
@@ -38555,6 +39254,19 @@ class ListAcceleratorTypesRequest(proto.Message):
             However, you can include ``AND`` and ``OR`` expressions
             explicitly. For example:
             ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -38639,13 +39351,16 @@ class ListAddressesRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, an
-            operator, and the value that you want to use for filtering.
-            The value must be a string, a number, or a boolean. The
-            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
-            ``>=`` or ``:``. For example, if you are filtering Compute
-            Engine instances, you can exclude instances named
-            ``example-instance`` by specifying
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. If you want to use AIP-160, your expression must
+            specify the field name, an operator, and the value that you
+            want to use for filtering. The value must be a string, a
+            number, or a boolean. The operator must be either ``=``,
+            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
+            if you are filtering Compute Engine instances, you can
+            exclude instances named ``example-instance`` by specifying
             ``name != example-instance``. The ``:`` operator can be used
             with string fields to match substrings. For non-string
             fields it is equivalent to the ``=`` operator. The ``:*``
@@ -38663,6 +39378,19 @@ class ListAddressesRequest(proto.Message):
             However, you can include ``AND`` and ``OR`` expressions
             explicitly. For example:
             ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -38766,13 +39494,16 @@ class ListAutoscalersRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, an
-            operator, and the value that you want to use for filtering.
-            The value must be a string, a number, or a boolean. The
-            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
-            ``>=`` or ``:``. For example, if you are filtering Compute
-            Engine instances, you can exclude instances named
-            ``example-instance`` by specifying
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. If you want to use AIP-160, your expression must
+            specify the field name, an operator, and the value that you
+            want to use for filtering. The value must be a string, a
+            number, or a boolean. The operator must be either ``=``,
+            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
+            if you are filtering Compute Engine instances, you can
+            exclude instances named ``example-instance`` by specifying
             ``name != example-instance``. The ``:`` operator can be used
             with string fields to match substrings. For non-string
             fields it is equivalent to the ``=`` operator. The ``:*``
@@ -38790,6 +39521,19 @@ class ListAutoscalersRequest(proto.Message):
             However, you can include ``AND`` and ``OR`` expressions
             explicitly. For example:
             ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -38874,13 +39618,16 @@ class ListAvailableFeaturesSslPoliciesRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, an
-            operator, and the value that you want to use for filtering.
-            The value must be a string, a number, or a boolean. The
-            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
-            ``>=`` or ``:``. For example, if you are filtering Compute
-            Engine instances, you can exclude instances named
-            ``example-instance`` by specifying
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. If you want to use AIP-160, your expression must
+            specify the field name, an operator, and the value that you
+            want to use for filtering. The value must be a string, a
+            number, or a boolean. The operator must be either ``=``,
+            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
+            if you are filtering Compute Engine instances, you can
+            exclude instances named ``example-instance`` by specifying
             ``name != example-instance``. The ``:`` operator can be used
             with string fields to match substrings. For non-string
             fields it is equivalent to the ``=`` operator. The ``:*``
@@ -38898,6 +39645,19 @@ class ListAvailableFeaturesSslPoliciesRequest(proto.Message):
             However, you can include ``AND`` and ``OR`` expressions
             explicitly. For example:
             ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -38976,13 +39736,16 @@ class ListBackendBucketsRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, an
-            operator, and the value that you want to use for filtering.
-            The value must be a string, a number, or a boolean. The
-            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
-            ``>=`` or ``:``. For example, if you are filtering Compute
-            Engine instances, you can exclude instances named
-            ``example-instance`` by specifying
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. If you want to use AIP-160, your expression must
+            specify the field name, an operator, and the value that you
+            want to use for filtering. The value must be a string, a
+            number, or a boolean. The operator must be either ``=``,
+            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
+            if you are filtering Compute Engine instances, you can
+            exclude instances named ``example-instance`` by specifying
             ``name != example-instance``. The ``:`` operator can be used
             with string fields to match substrings. For non-string
             fields it is equivalent to the ``=`` operator. The ``:*``
@@ -39000,6 +39763,19 @@ class ListBackendBucketsRequest(proto.Message):
             However, you can include ``AND`` and ``OR`` expressions
             explicitly. For example:
             ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -39078,13 +39854,16 @@ class ListBackendServicesRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, an
-            operator, and the value that you want to use for filtering.
-            The value must be a string, a number, or a boolean. The
-            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
-            ``>=`` or ``:``. For example, if you are filtering Compute
-            Engine instances, you can exclude instances named
-            ``example-instance`` by specifying
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. If you want to use AIP-160, your expression must
+            specify the field name, an operator, and the value that you
+            want to use for filtering. The value must be a string, a
+            number, or a boolean. The operator must be either ``=``,
+            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
+            if you are filtering Compute Engine instances, you can
+            exclude instances named ``example-instance`` by specifying
             ``name != example-instance``. The ``:`` operator can be used
             with string fields to match substrings. For non-string
             fields it is equivalent to the ``=`` operator. The ``:*``
@@ -39102,6 +39881,19 @@ class ListBackendServicesRequest(proto.Message):
             However, you can include ``AND`` and ``OR`` expressions
             explicitly. For example:
             ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -39180,13 +39972,16 @@ class ListDiskTypesRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, an
-            operator, and the value that you want to use for filtering.
-            The value must be a string, a number, or a boolean. The
-            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
-            ``>=`` or ``:``. For example, if you are filtering Compute
-            Engine instances, you can exclude instances named
-            ``example-instance`` by specifying
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. If you want to use AIP-160, your expression must
+            specify the field name, an operator, and the value that you
+            want to use for filtering. The value must be a string, a
+            number, or a boolean. The operator must be either ``=``,
+            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
+            if you are filtering Compute Engine instances, you can
+            exclude instances named ``example-instance`` by specifying
             ``name != example-instance``. The ``:`` operator can be used
             with string fields to match substrings. For non-string
             fields it is equivalent to the ``=`` operator. The ``:*``
@@ -39204,6 +39999,19 @@ class ListDiskTypesRequest(proto.Message):
             However, you can include ``AND`` and ``OR`` expressions
             explicitly. For example:
             ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -39288,13 +40096,16 @@ class ListDisksRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, an
-            operator, and the value that you want to use for filtering.
-            The value must be a string, a number, or a boolean. The
-            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
-            ``>=`` or ``:``. For example, if you are filtering Compute
-            Engine instances, you can exclude instances named
-            ``example-instance`` by specifying
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. If you want to use AIP-160, your expression must
+            specify the field name, an operator, and the value that you
+            want to use for filtering. The value must be a string, a
+            number, or a boolean. The operator must be either ``=``,
+            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
+            if you are filtering Compute Engine instances, you can
+            exclude instances named ``example-instance`` by specifying
             ``name != example-instance``. The ``:`` operator can be used
             with string fields to match substrings. For non-string
             fields it is equivalent to the ``=`` operator. The ``:*``
@@ -39312,6 +40123,19 @@ class ListDisksRequest(proto.Message):
             However, you can include ``AND`` and ``OR`` expressions
             explicitly. For example:
             ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -39396,13 +40220,16 @@ class ListErrorsInstanceGroupManagersRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, an
-            operator, and the value that you want to use for filtering.
-            The value must be a string, a number, or a boolean. The
-            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
-            ``>=`` or ``:``. For example, if you are filtering Compute
-            Engine instances, you can exclude instances named
-            ``example-instance`` by specifying
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. If you want to use AIP-160, your expression must
+            specify the field name, an operator, and the value that you
+            want to use for filtering. The value must be a string, a
+            number, or a boolean. The operator must be either ``=``,
+            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
+            if you are filtering Compute Engine instances, you can
+            exclude instances named ``example-instance`` by specifying
             ``name != example-instance``. The ``:`` operator can be used
             with string fields to match substrings. For non-string
             fields it is equivalent to the ``=`` operator. The ``:*``
@@ -39420,6 +40247,19 @@ class ListErrorsInstanceGroupManagersRequest(proto.Message):
             However, you can include ``AND`` and ``OR`` expressions
             explicitly. For example:
             ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``.
 
             This field is a member of `oneof`_ ``_filter``.
         instance_group_manager (str):
@@ -39515,13 +40355,16 @@ class ListErrorsRegionInstanceGroupManagersRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, an
-            operator, and the value that you want to use for filtering.
-            The value must be a string, a number, or a boolean. The
-            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
-            ``>=`` or ``:``. For example, if you are filtering Compute
-            Engine instances, you can exclude instances named
-            ``example-instance`` by specifying
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. If you want to use AIP-160, your expression must
+            specify the field name, an operator, and the value that you
+            want to use for filtering. The value must be a string, a
+            number, or a boolean. The operator must be either ``=``,
+            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
+            if you are filtering Compute Engine instances, you can
+            exclude instances named ``example-instance`` by specifying
             ``name != example-instance``. The ``:`` operator can be used
             with string fields to match substrings. For non-string
             fields it is equivalent to the ``=`` operator. The ``:*``
@@ -39539,6 +40382,19 @@ class ListErrorsRegionInstanceGroupManagersRequest(proto.Message):
             However, you can include ``AND`` and ``OR`` expressions
             explicitly. For example:
             ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``.
 
             This field is a member of `oneof`_ ``_filter``.
         instance_group_manager (str):
@@ -39633,13 +40489,16 @@ class ListExternalVpnGatewaysRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, an
-            operator, and the value that you want to use for filtering.
-            The value must be a string, a number, or a boolean. The
-            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
-            ``>=`` or ``:``. For example, if you are filtering Compute
-            Engine instances, you can exclude instances named
-            ``example-instance`` by specifying
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. If you want to use AIP-160, your expression must
+            specify the field name, an operator, and the value that you
+            want to use for filtering. The value must be a string, a
+            number, or a boolean. The operator must be either ``=``,
+            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
+            if you are filtering Compute Engine instances, you can
+            exclude instances named ``example-instance`` by specifying
             ``name != example-instance``. The ``:`` operator can be used
             with string fields to match substrings. For non-string
             fields it is equivalent to the ``=`` operator. The ``:*``
@@ -39657,6 +40516,19 @@ class ListExternalVpnGatewaysRequest(proto.Message):
             However, you can include ``AND`` and ``OR`` expressions
             explicitly. For example:
             ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -39735,13 +40607,16 @@ class ListFirewallPoliciesRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, an
-            operator, and the value that you want to use for filtering.
-            The value must be a string, a number, or a boolean. The
-            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
-            ``>=`` or ``:``. For example, if you are filtering Compute
-            Engine instances, you can exclude instances named
-            ``example-instance`` by specifying
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. If you want to use AIP-160, your expression must
+            specify the field name, an operator, and the value that you
+            want to use for filtering. The value must be a string, a
+            number, or a boolean. The operator must be either ``=``,
+            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
+            if you are filtering Compute Engine instances, you can
+            exclude instances named ``example-instance`` by specifying
             ``name != example-instance``. The ``:`` operator can be used
             with string fields to match substrings. For non-string
             fields it is equivalent to the ``=`` operator. The ``:*``
@@ -39759,6 +40634,19 @@ class ListFirewallPoliciesRequest(proto.Message):
             However, you can include ``AND`` and ``OR`` expressions
             explicitly. For example:
             ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -39840,13 +40728,16 @@ class ListFirewallsRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, an
-            operator, and the value that you want to use for filtering.
-            The value must be a string, a number, or a boolean. The
-            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
-            ``>=`` or ``:``. For example, if you are filtering Compute
-            Engine instances, you can exclude instances named
-            ``example-instance`` by specifying
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. If you want to use AIP-160, your expression must
+            specify the field name, an operator, and the value that you
+            want to use for filtering. The value must be a string, a
+            number, or a boolean. The operator must be either ``=``,
+            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
+            if you are filtering Compute Engine instances, you can
+            exclude instances named ``example-instance`` by specifying
             ``name != example-instance``. The ``:`` operator can be used
             with string fields to match substrings. For non-string
             fields it is equivalent to the ``=`` operator. The ``:*``
@@ -39864,6 +40755,19 @@ class ListFirewallsRequest(proto.Message):
             However, you can include ``AND`` and ``OR`` expressions
             explicitly. For example:
             ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -39942,13 +40846,16 @@ class ListForwardingRulesRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, an
-            operator, and the value that you want to use for filtering.
-            The value must be a string, a number, or a boolean. The
-            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
-            ``>=`` or ``:``. For example, if you are filtering Compute
-            Engine instances, you can exclude instances named
-            ``example-instance`` by specifying
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. If you want to use AIP-160, your expression must
+            specify the field name, an operator, and the value that you
+            want to use for filtering. The value must be a string, a
+            number, or a boolean. The operator must be either ``=``,
+            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
+            if you are filtering Compute Engine instances, you can
+            exclude instances named ``example-instance`` by specifying
             ``name != example-instance``. The ``:`` operator can be used
             with string fields to match substrings. For non-string
             fields it is equivalent to the ``=`` operator. The ``:*``
@@ -39966,6 +40873,19 @@ class ListForwardingRulesRequest(proto.Message):
             However, you can include ``AND`` and ``OR`` expressions
             explicitly. For example:
             ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -40050,13 +40970,16 @@ class ListGlobalAddressesRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, an
-            operator, and the value that you want to use for filtering.
-            The value must be a string, a number, or a boolean. The
-            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
-            ``>=`` or ``:``. For example, if you are filtering Compute
-            Engine instances, you can exclude instances named
-            ``example-instance`` by specifying
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. If you want to use AIP-160, your expression must
+            specify the field name, an operator, and the value that you
+            want to use for filtering. The value must be a string, a
+            number, or a boolean. The operator must be either ``=``,
+            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
+            if you are filtering Compute Engine instances, you can
+            exclude instances named ``example-instance`` by specifying
             ``name != example-instance``. The ``:`` operator can be used
             with string fields to match substrings. For non-string
             fields it is equivalent to the ``=`` operator. The ``:*``
@@ -40074,6 +40997,19 @@ class ListGlobalAddressesRequest(proto.Message):
             However, you can include ``AND`` and ``OR`` expressions
             explicitly. For example:
             ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -40152,13 +41088,16 @@ class ListGlobalForwardingRulesRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, an
-            operator, and the value that you want to use for filtering.
-            The value must be a string, a number, or a boolean. The
-            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
-            ``>=`` or ``:``. For example, if you are filtering Compute
-            Engine instances, you can exclude instances named
-            ``example-instance`` by specifying
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. If you want to use AIP-160, your expression must
+            specify the field name, an operator, and the value that you
+            want to use for filtering. The value must be a string, a
+            number, or a boolean. The operator must be either ``=``,
+            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
+            if you are filtering Compute Engine instances, you can
+            exclude instances named ``example-instance`` by specifying
             ``name != example-instance``. The ``:`` operator can be used
             with string fields to match substrings. For non-string
             fields it is equivalent to the ``=`` operator. The ``:*``
@@ -40176,6 +41115,19 @@ class ListGlobalForwardingRulesRequest(proto.Message):
             However, you can include ``AND`` and ``OR`` expressions
             explicitly. For example:
             ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -40254,13 +41206,16 @@ class ListGlobalNetworkEndpointGroupsRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, an
-            operator, and the value that you want to use for filtering.
-            The value must be a string, a number, or a boolean. The
-            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
-            ``>=`` or ``:``. For example, if you are filtering Compute
-            Engine instances, you can exclude instances named
-            ``example-instance`` by specifying
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. If you want to use AIP-160, your expression must
+            specify the field name, an operator, and the value that you
+            want to use for filtering. The value must be a string, a
+            number, or a boolean. The operator must be either ``=``,
+            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
+            if you are filtering Compute Engine instances, you can
+            exclude instances named ``example-instance`` by specifying
             ``name != example-instance``. The ``:`` operator can be used
             with string fields to match substrings. For non-string
             fields it is equivalent to the ``=`` operator. The ``:*``
@@ -40278,6 +41233,19 @@ class ListGlobalNetworkEndpointGroupsRequest(proto.Message):
             However, you can include ``AND`` and ``OR`` expressions
             explicitly. For example:
             ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -40356,13 +41324,16 @@ class ListGlobalOperationsRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, an
-            operator, and the value that you want to use for filtering.
-            The value must be a string, a number, or a boolean. The
-            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
-            ``>=`` or ``:``. For example, if you are filtering Compute
-            Engine instances, you can exclude instances named
-            ``example-instance`` by specifying
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. If you want to use AIP-160, your expression must
+            specify the field name, an operator, and the value that you
+            want to use for filtering. The value must be a string, a
+            number, or a boolean. The operator must be either ``=``,
+            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
+            if you are filtering Compute Engine instances, you can
+            exclude instances named ``example-instance`` by specifying
             ``name != example-instance``. The ``:`` operator can be used
             with string fields to match substrings. For non-string
             fields it is equivalent to the ``=`` operator. The ``:*``
@@ -40380,6 +41351,19 @@ class ListGlobalOperationsRequest(proto.Message):
             However, you can include ``AND`` and ``OR`` expressions
             explicitly. For example:
             ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -40458,13 +41442,16 @@ class ListGlobalOrganizationOperationsRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, an
-            operator, and the value that you want to use for filtering.
-            The value must be a string, a number, or a boolean. The
-            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
-            ``>=`` or ``:``. For example, if you are filtering Compute
-            Engine instances, you can exclude instances named
-            ``example-instance`` by specifying
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. If you want to use AIP-160, your expression must
+            specify the field name, an operator, and the value that you
+            want to use for filtering. The value must be a string, a
+            number, or a boolean. The operator must be either ``=``,
+            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
+            if you are filtering Compute Engine instances, you can
+            exclude instances named ``example-instance`` by specifying
             ``name != example-instance``. The ``:`` operator can be used
             with string fields to match substrings. For non-string
             fields it is equivalent to the ``=`` operator. The ``:*``
@@ -40482,6 +41469,19 @@ class ListGlobalOrganizationOperationsRequest(proto.Message):
             However, you can include ``AND`` and ``OR`` expressions
             explicitly. For example:
             ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -40563,13 +41563,16 @@ class ListGlobalPublicDelegatedPrefixesRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, an
-            operator, and the value that you want to use for filtering.
-            The value must be a string, a number, or a boolean. The
-            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
-            ``>=`` or ``:``. For example, if you are filtering Compute
-            Engine instances, you can exclude instances named
-            ``example-instance`` by specifying
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. If you want to use AIP-160, your expression must
+            specify the field name, an operator, and the value that you
+            want to use for filtering. The value must be a string, a
+            number, or a boolean. The operator must be either ``=``,
+            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
+            if you are filtering Compute Engine instances, you can
+            exclude instances named ``example-instance`` by specifying
             ``name != example-instance``. The ``:`` operator can be used
             with string fields to match substrings. For non-string
             fields it is equivalent to the ``=`` operator. The ``:*``
@@ -40587,6 +41590,19 @@ class ListGlobalPublicDelegatedPrefixesRequest(proto.Message):
             However, you can include ``AND`` and ``OR`` expressions
             explicitly. For example:
             ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -40665,13 +41681,16 @@ class ListHealthChecksRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, an
-            operator, and the value that you want to use for filtering.
-            The value must be a string, a number, or a boolean. The
-            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
-            ``>=`` or ``:``. For example, if you are filtering Compute
-            Engine instances, you can exclude instances named
-            ``example-instance`` by specifying
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. If you want to use AIP-160, your expression must
+            specify the field name, an operator, and the value that you
+            want to use for filtering. The value must be a string, a
+            number, or a boolean. The operator must be either ``=``,
+            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
+            if you are filtering Compute Engine instances, you can
+            exclude instances named ``example-instance`` by specifying
             ``name != example-instance``. The ``:`` operator can be used
             with string fields to match substrings. For non-string
             fields it is equivalent to the ``=`` operator. The ``:*``
@@ -40689,6 +41708,19 @@ class ListHealthChecksRequest(proto.Message):
             However, you can include ``AND`` and ``OR`` expressions
             explicitly. For example:
             ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -40767,13 +41799,16 @@ class ListImagesRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, an
-            operator, and the value that you want to use for filtering.
-            The value must be a string, a number, or a boolean. The
-            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
-            ``>=`` or ``:``. For example, if you are filtering Compute
-            Engine instances, you can exclude instances named
-            ``example-instance`` by specifying
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. If you want to use AIP-160, your expression must
+            specify the field name, an operator, and the value that you
+            want to use for filtering. The value must be a string, a
+            number, or a boolean. The operator must be either ``=``,
+            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
+            if you are filtering Compute Engine instances, you can
+            exclude instances named ``example-instance`` by specifying
             ``name != example-instance``. The ``:`` operator can be used
             with string fields to match substrings. For non-string
             fields it is equivalent to the ``=`` operator. The ``:*``
@@ -40791,6 +41826,19 @@ class ListImagesRequest(proto.Message):
             However, you can include ``AND`` and ``OR`` expressions
             explicitly. For example:
             ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -40869,13 +41917,16 @@ class ListInstanceGroupManagersRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, an
-            operator, and the value that you want to use for filtering.
-            The value must be a string, a number, or a boolean. The
-            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
-            ``>=`` or ``:``. For example, if you are filtering Compute
-            Engine instances, you can exclude instances named
-            ``example-instance`` by specifying
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. If you want to use AIP-160, your expression must
+            specify the field name, an operator, and the value that you
+            want to use for filtering. The value must be a string, a
+            number, or a boolean. The operator must be either ``=``,
+            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
+            if you are filtering Compute Engine instances, you can
+            exclude instances named ``example-instance`` by specifying
             ``name != example-instance``. The ``:`` operator can be used
             with string fields to match substrings. For non-string
             fields it is equivalent to the ``=`` operator. The ``:*``
@@ -40893,6 +41944,19 @@ class ListInstanceGroupManagersRequest(proto.Message):
             However, you can include ``AND`` and ``OR`` expressions
             explicitly. For example:
             ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -40978,13 +42042,16 @@ class ListInstanceGroupsRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, an
-            operator, and the value that you want to use for filtering.
-            The value must be a string, a number, or a boolean. The
-            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
-            ``>=`` or ``:``. For example, if you are filtering Compute
-            Engine instances, you can exclude instances named
-            ``example-instance`` by specifying
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. If you want to use AIP-160, your expression must
+            specify the field name, an operator, and the value that you
+            want to use for filtering. The value must be a string, a
+            number, or a boolean. The operator must be either ``=``,
+            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
+            if you are filtering Compute Engine instances, you can
+            exclude instances named ``example-instance`` by specifying
             ``name != example-instance``. The ``:`` operator can be used
             with string fields to match substrings. For non-string
             fields it is equivalent to the ``=`` operator. The ``:*``
@@ -41002,6 +42069,19 @@ class ListInstanceGroupsRequest(proto.Message):
             However, you can include ``AND`` and ``OR`` expressions
             explicitly. For example:
             ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -41087,13 +42167,16 @@ class ListInstanceTemplatesRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, an
-            operator, and the value that you want to use for filtering.
-            The value must be a string, a number, or a boolean. The
-            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
-            ``>=`` or ``:``. For example, if you are filtering Compute
-            Engine instances, you can exclude instances named
-            ``example-instance`` by specifying
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. If you want to use AIP-160, your expression must
+            specify the field name, an operator, and the value that you
+            want to use for filtering. The value must be a string, a
+            number, or a boolean. The operator must be either ``=``,
+            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
+            if you are filtering Compute Engine instances, you can
+            exclude instances named ``example-instance`` by specifying
             ``name != example-instance``. The ``:`` operator can be used
             with string fields to match substrings. For non-string
             fields it is equivalent to the ``=`` operator. The ``:*``
@@ -41111,6 +42194,19 @@ class ListInstanceTemplatesRequest(proto.Message):
             However, you can include ``AND`` and ``OR`` expressions
             explicitly. For example:
             ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -41189,13 +42285,16 @@ class ListInstancesInstanceGroupsRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, an
-            operator, and the value that you want to use for filtering.
-            The value must be a string, a number, or a boolean. The
-            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
-            ``>=`` or ``:``. For example, if you are filtering Compute
-            Engine instances, you can exclude instances named
-            ``example-instance`` by specifying
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. If you want to use AIP-160, your expression must
+            specify the field name, an operator, and the value that you
+            want to use for filtering. The value must be a string, a
+            number, or a boolean. The operator must be either ``=``,
+            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
+            if you are filtering Compute Engine instances, you can
+            exclude instances named ``example-instance`` by specifying
             ``name != example-instance``. The ``:`` operator can be used
             with string fields to match substrings. For non-string
             fields it is equivalent to the ``=`` operator. The ``:*``
@@ -41213,6 +42312,19 @@ class ListInstancesInstanceGroupsRequest(proto.Message):
             However, you can include ``AND`` and ``OR`` expressions
             explicitly. For example:
             ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``.
 
             This field is a member of `oneof`_ ``_filter``.
         instance_group (str):
@@ -41312,13 +42424,16 @@ class ListInstancesRegionInstanceGroupsRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, an
-            operator, and the value that you want to use for filtering.
-            The value must be a string, a number, or a boolean. The
-            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
-            ``>=`` or ``:``. For example, if you are filtering Compute
-            Engine instances, you can exclude instances named
-            ``example-instance`` by specifying
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. If you want to use AIP-160, your expression must
+            specify the field name, an operator, and the value that you
+            want to use for filtering. The value must be a string, a
+            number, or a boolean. The operator must be either ``=``,
+            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
+            if you are filtering Compute Engine instances, you can
+            exclude instances named ``example-instance`` by specifying
             ``name != example-instance``. The ``:`` operator can be used
             with string fields to match substrings. For non-string
             fields it is equivalent to the ``=`` operator. The ``:*``
@@ -41336,6 +42451,19 @@ class ListInstancesRegionInstanceGroupsRequest(proto.Message):
             However, you can include ``AND`` and ``OR`` expressions
             explicitly. For example:
             ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``.
 
             This field is a member of `oneof`_ ``_filter``.
         instance_group (str):
@@ -41434,13 +42562,16 @@ class ListInstancesRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, an
-            operator, and the value that you want to use for filtering.
-            The value must be a string, a number, or a boolean. The
-            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
-            ``>=`` or ``:``. For example, if you are filtering Compute
-            Engine instances, you can exclude instances named
-            ``example-instance`` by specifying
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. If you want to use AIP-160, your expression must
+            specify the field name, an operator, and the value that you
+            want to use for filtering. The value must be a string, a
+            number, or a boolean. The operator must be either ``=``,
+            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
+            if you are filtering Compute Engine instances, you can
+            exclude instances named ``example-instance`` by specifying
             ``name != example-instance``. The ``:`` operator can be used
             with string fields to match substrings. For non-string
             fields it is equivalent to the ``=`` operator. The ``:*``
@@ -41458,6 +42589,19 @@ class ListInstancesRequest(proto.Message):
             However, you can include ``AND`` and ``OR`` expressions
             explicitly. For example:
             ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -41542,13 +42686,16 @@ class ListInterconnectAttachmentsRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, an
-            operator, and the value that you want to use for filtering.
-            The value must be a string, a number, or a boolean. The
-            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
-            ``>=`` or ``:``. For example, if you are filtering Compute
-            Engine instances, you can exclude instances named
-            ``example-instance`` by specifying
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. If you want to use AIP-160, your expression must
+            specify the field name, an operator, and the value that you
+            want to use for filtering. The value must be a string, a
+            number, or a boolean. The operator must be either ``=``,
+            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
+            if you are filtering Compute Engine instances, you can
+            exclude instances named ``example-instance`` by specifying
             ``name != example-instance``. The ``:`` operator can be used
             with string fields to match substrings. For non-string
             fields it is equivalent to the ``=`` operator. The ``:*``
@@ -41566,6 +42713,19 @@ class ListInterconnectAttachmentsRequest(proto.Message):
             However, you can include ``AND`` and ``OR`` expressions
             explicitly. For example:
             ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -41650,13 +42810,16 @@ class ListInterconnectLocationsRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, an
-            operator, and the value that you want to use for filtering.
-            The value must be a string, a number, or a boolean. The
-            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
-            ``>=`` or ``:``. For example, if you are filtering Compute
-            Engine instances, you can exclude instances named
-            ``example-instance`` by specifying
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. If you want to use AIP-160, your expression must
+            specify the field name, an operator, and the value that you
+            want to use for filtering. The value must be a string, a
+            number, or a boolean. The operator must be either ``=``,
+            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
+            if you are filtering Compute Engine instances, you can
+            exclude instances named ``example-instance`` by specifying
             ``name != example-instance``. The ``:`` operator can be used
             with string fields to match substrings. For non-string
             fields it is equivalent to the ``=`` operator. The ``:*``
@@ -41674,6 +42837,19 @@ class ListInterconnectLocationsRequest(proto.Message):
             However, you can include ``AND`` and ``OR`` expressions
             explicitly. For example:
             ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -41752,13 +42928,16 @@ class ListInterconnectsRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, an
-            operator, and the value that you want to use for filtering.
-            The value must be a string, a number, or a boolean. The
-            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
-            ``>=`` or ``:``. For example, if you are filtering Compute
-            Engine instances, you can exclude instances named
-            ``example-instance`` by specifying
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. If you want to use AIP-160, your expression must
+            specify the field name, an operator, and the value that you
+            want to use for filtering. The value must be a string, a
+            number, or a boolean. The operator must be either ``=``,
+            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
+            if you are filtering Compute Engine instances, you can
+            exclude instances named ``example-instance`` by specifying
             ``name != example-instance``. The ``:`` operator can be used
             with string fields to match substrings. For non-string
             fields it is equivalent to the ``=`` operator. The ``:*``
@@ -41776,6 +42955,19 @@ class ListInterconnectsRequest(proto.Message):
             However, you can include ``AND`` and ``OR`` expressions
             explicitly. For example:
             ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -41854,13 +43046,16 @@ class ListLicensesRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, an
-            operator, and the value that you want to use for filtering.
-            The value must be a string, a number, or a boolean. The
-            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
-            ``>=`` or ``:``. For example, if you are filtering Compute
-            Engine instances, you can exclude instances named
-            ``example-instance`` by specifying
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. If you want to use AIP-160, your expression must
+            specify the field name, an operator, and the value that you
+            want to use for filtering. The value must be a string, a
+            number, or a boolean. The operator must be either ``=``,
+            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
+            if you are filtering Compute Engine instances, you can
+            exclude instances named ``example-instance`` by specifying
             ``name != example-instance``. The ``:`` operator can be used
             with string fields to match substrings. For non-string
             fields it is equivalent to the ``=`` operator. The ``:*``
@@ -41878,6 +43073,19 @@ class ListLicensesRequest(proto.Message):
             However, you can include ``AND`` and ``OR`` expressions
             explicitly. For example:
             ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -41956,13 +43164,16 @@ class ListMachineImagesRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, an
-            operator, and the value that you want to use for filtering.
-            The value must be a string, a number, or a boolean. The
-            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
-            ``>=`` or ``:``. For example, if you are filtering Compute
-            Engine instances, you can exclude instances named
-            ``example-instance`` by specifying
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. If you want to use AIP-160, your expression must
+            specify the field name, an operator, and the value that you
+            want to use for filtering. The value must be a string, a
+            number, or a boolean. The operator must be either ``=``,
+            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
+            if you are filtering Compute Engine instances, you can
+            exclude instances named ``example-instance`` by specifying
             ``name != example-instance``. The ``:`` operator can be used
             with string fields to match substrings. For non-string
             fields it is equivalent to the ``=`` operator. The ``:*``
@@ -41980,6 +43191,19 @@ class ListMachineImagesRequest(proto.Message):
             However, you can include ``AND`` and ``OR`` expressions
             explicitly. For example:
             ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -42058,13 +43282,16 @@ class ListMachineTypesRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, an
-            operator, and the value that you want to use for filtering.
-            The value must be a string, a number, or a boolean. The
-            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
-            ``>=`` or ``:``. For example, if you are filtering Compute
-            Engine instances, you can exclude instances named
-            ``example-instance`` by specifying
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. If you want to use AIP-160, your expression must
+            specify the field name, an operator, and the value that you
+            want to use for filtering. The value must be a string, a
+            number, or a boolean. The operator must be either ``=``,
+            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
+            if you are filtering Compute Engine instances, you can
+            exclude instances named ``example-instance`` by specifying
             ``name != example-instance``. The ``:`` operator can be used
             with string fields to match substrings. For non-string
             fields it is equivalent to the ``=`` operator. The ``:*``
@@ -42082,6 +43309,19 @@ class ListMachineTypesRequest(proto.Message):
             However, you can include ``AND`` and ``OR`` expressions
             explicitly. For example:
             ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -42167,13 +43407,16 @@ class ListManagedInstancesInstanceGroupManagersRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, an
-            operator, and the value that you want to use for filtering.
-            The value must be a string, a number, or a boolean. The
-            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
-            ``>=`` or ``:``. For example, if you are filtering Compute
-            Engine instances, you can exclude instances named
-            ``example-instance`` by specifying
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. If you want to use AIP-160, your expression must
+            specify the field name, an operator, and the value that you
+            want to use for filtering. The value must be a string, a
+            number, or a boolean. The operator must be either ``=``,
+            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
+            if you are filtering Compute Engine instances, you can
+            exclude instances named ``example-instance`` by specifying
             ``name != example-instance``. The ``:`` operator can be used
             with string fields to match substrings. For non-string
             fields it is equivalent to the ``=`` operator. The ``:*``
@@ -42191,6 +43434,19 @@ class ListManagedInstancesInstanceGroupManagersRequest(proto.Message):
             However, you can include ``AND`` and ``OR`` expressions
             explicitly. For example:
             ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``.
 
             This field is a member of `oneof`_ ``_filter``.
         instance_group_manager (str):
@@ -42283,13 +43539,16 @@ class ListManagedInstancesRegionInstanceGroupManagersRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, an
-            operator, and the value that you want to use for filtering.
-            The value must be a string, a number, or a boolean. The
-            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
-            ``>=`` or ``:``. For example, if you are filtering Compute
-            Engine instances, you can exclude instances named
-            ``example-instance`` by specifying
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. If you want to use AIP-160, your expression must
+            specify the field name, an operator, and the value that you
+            want to use for filtering. The value must be a string, a
+            number, or a boolean. The operator must be either ``=``,
+            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
+            if you are filtering Compute Engine instances, you can
+            exclude instances named ``example-instance`` by specifying
             ``name != example-instance``. The ``:`` operator can be used
             with string fields to match substrings. For non-string
             fields it is equivalent to the ``=`` operator. The ``:*``
@@ -42307,6 +43566,19 @@ class ListManagedInstancesRegionInstanceGroupManagersRequest(proto.Message):
             However, you can include ``AND`` and ``OR`` expressions
             explicitly. For example:
             ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``.
 
             This field is a member of `oneof`_ ``_filter``.
         instance_group_manager (str):
@@ -42397,13 +43669,16 @@ class ListNetworkEndpointGroupsRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, an
-            operator, and the value that you want to use for filtering.
-            The value must be a string, a number, or a boolean. The
-            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
-            ``>=`` or ``:``. For example, if you are filtering Compute
-            Engine instances, you can exclude instances named
-            ``example-instance`` by specifying
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. If you want to use AIP-160, your expression must
+            specify the field name, an operator, and the value that you
+            want to use for filtering. The value must be a string, a
+            number, or a boolean. The operator must be either ``=``,
+            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
+            if you are filtering Compute Engine instances, you can
+            exclude instances named ``example-instance`` by specifying
             ``name != example-instance``. The ``:`` operator can be used
             with string fields to match substrings. For non-string
             fields it is equivalent to the ``=`` operator. The ``:*``
@@ -42421,6 +43696,19 @@ class ListNetworkEndpointGroupsRequest(proto.Message):
             However, you can include ``AND`` and ``OR`` expressions
             explicitly. For example:
             ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -42508,13 +43796,16 @@ class ListNetworkEndpointsGlobalNetworkEndpointGroupsRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, an
-            operator, and the value that you want to use for filtering.
-            The value must be a string, a number, or a boolean. The
-            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
-            ``>=`` or ``:``. For example, if you are filtering Compute
-            Engine instances, you can exclude instances named
-            ``example-instance`` by specifying
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. If you want to use AIP-160, your expression must
+            specify the field name, an operator, and the value that you
+            want to use for filtering. The value must be a string, a
+            number, or a boolean. The operator must be either ``=``,
+            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
+            if you are filtering Compute Engine instances, you can
+            exclude instances named ``example-instance`` by specifying
             ``name != example-instance``. The ``:`` operator can be used
             with string fields to match substrings. For non-string
             fields it is equivalent to the ``=`` operator. The ``:*``
@@ -42532,6 +43823,19 @@ class ListNetworkEndpointsGlobalNetworkEndpointGroupsRequest(proto.Message):
             However, you can include ``AND`` and ``OR`` expressions
             explicitly. For example:
             ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -42620,13 +43924,16 @@ class ListNetworkEndpointsNetworkEndpointGroupsRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, an
-            operator, and the value that you want to use for filtering.
-            The value must be a string, a number, or a boolean. The
-            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
-            ``>=`` or ``:``. For example, if you are filtering Compute
-            Engine instances, you can exclude instances named
-            ``example-instance`` by specifying
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. If you want to use AIP-160, your expression must
+            specify the field name, an operator, and the value that you
+            want to use for filtering. The value must be a string, a
+            number, or a boolean. The operator must be either ``=``,
+            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
+            if you are filtering Compute Engine instances, you can
+            exclude instances named ``example-instance`` by specifying
             ``name != example-instance``. The ``:`` operator can be used
             with string fields to match substrings. For non-string
             fields it is equivalent to the ``=`` operator. The ``:*``
@@ -42644,6 +43951,19 @@ class ListNetworkEndpointsNetworkEndpointGroupsRequest(proto.Message):
             However, you can include ``AND`` and ``OR`` expressions
             explicitly. For example:
             ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -42746,13 +44066,16 @@ class ListNetworkFirewallPoliciesRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, an
-            operator, and the value that you want to use for filtering.
-            The value must be a string, a number, or a boolean. The
-            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
-            ``>=`` or ``:``. For example, if you are filtering Compute
-            Engine instances, you can exclude instances named
-            ``example-instance`` by specifying
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. If you want to use AIP-160, your expression must
+            specify the field name, an operator, and the value that you
+            want to use for filtering. The value must be a string, a
+            number, or a boolean. The operator must be either ``=``,
+            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
+            if you are filtering Compute Engine instances, you can
+            exclude instances named ``example-instance`` by specifying
             ``name != example-instance``. The ``:`` operator can be used
             with string fields to match substrings. For non-string
             fields it is equivalent to the ``=`` operator. The ``:*``
@@ -42770,6 +44093,19 @@ class ListNetworkFirewallPoliciesRequest(proto.Message):
             However, you can include ``AND`` and ``OR`` expressions
             explicitly. For example:
             ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -42848,13 +44184,16 @@ class ListNetworksRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, an
-            operator, and the value that you want to use for filtering.
-            The value must be a string, a number, or a boolean. The
-            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
-            ``>=`` or ``:``. For example, if you are filtering Compute
-            Engine instances, you can exclude instances named
-            ``example-instance`` by specifying
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. If you want to use AIP-160, your expression must
+            specify the field name, an operator, and the value that you
+            want to use for filtering. The value must be a string, a
+            number, or a boolean. The operator must be either ``=``,
+            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
+            if you are filtering Compute Engine instances, you can
+            exclude instances named ``example-instance`` by specifying
             ``name != example-instance``. The ``:`` operator can be used
             with string fields to match substrings. For non-string
             fields it is equivalent to the ``=`` operator. The ``:*``
@@ -42872,6 +44211,19 @@ class ListNetworksRequest(proto.Message):
             However, you can include ``AND`` and ``OR`` expressions
             explicitly. For example:
             ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -42950,13 +44302,16 @@ class ListNodeGroupsRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, an
-            operator, and the value that you want to use for filtering.
-            The value must be a string, a number, or a boolean. The
-            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
-            ``>=`` or ``:``. For example, if you are filtering Compute
-            Engine instances, you can exclude instances named
-            ``example-instance`` by specifying
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. If you want to use AIP-160, your expression must
+            specify the field name, an operator, and the value that you
+            want to use for filtering. The value must be a string, a
+            number, or a boolean. The operator must be either ``=``,
+            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
+            if you are filtering Compute Engine instances, you can
+            exclude instances named ``example-instance`` by specifying
             ``name != example-instance``. The ``:`` operator can be used
             with string fields to match substrings. For non-string
             fields it is equivalent to the ``=`` operator. The ``:*``
@@ -42974,6 +44329,19 @@ class ListNodeGroupsRequest(proto.Message):
             However, you can include ``AND`` and ``OR`` expressions
             explicitly. For example:
             ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -43058,13 +44426,16 @@ class ListNodeTemplatesRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, an
-            operator, and the value that you want to use for filtering.
-            The value must be a string, a number, or a boolean. The
-            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
-            ``>=`` or ``:``. For example, if you are filtering Compute
-            Engine instances, you can exclude instances named
-            ``example-instance`` by specifying
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. If you want to use AIP-160, your expression must
+            specify the field name, an operator, and the value that you
+            want to use for filtering. The value must be a string, a
+            number, or a boolean. The operator must be either ``=``,
+            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
+            if you are filtering Compute Engine instances, you can
+            exclude instances named ``example-instance`` by specifying
             ``name != example-instance``. The ``:`` operator can be used
             with string fields to match substrings. For non-string
             fields it is equivalent to the ``=`` operator. The ``:*``
@@ -43082,6 +44453,19 @@ class ListNodeTemplatesRequest(proto.Message):
             However, you can include ``AND`` and ``OR`` expressions
             explicitly. For example:
             ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -43166,13 +44550,16 @@ class ListNodeTypesRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, an
-            operator, and the value that you want to use for filtering.
-            The value must be a string, a number, or a boolean. The
-            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
-            ``>=`` or ``:``. For example, if you are filtering Compute
-            Engine instances, you can exclude instances named
-            ``example-instance`` by specifying
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. If you want to use AIP-160, your expression must
+            specify the field name, an operator, and the value that you
+            want to use for filtering. The value must be a string, a
+            number, or a boolean. The operator must be either ``=``,
+            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
+            if you are filtering Compute Engine instances, you can
+            exclude instances named ``example-instance`` by specifying
             ``name != example-instance``. The ``:`` operator can be used
             with string fields to match substrings. For non-string
             fields it is equivalent to the ``=`` operator. The ``:*``
@@ -43190,6 +44577,19 @@ class ListNodeTypesRequest(proto.Message):
             However, you can include ``AND`` and ``OR`` expressions
             explicitly. For example:
             ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -43274,13 +44674,16 @@ class ListNodesNodeGroupsRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, an
-            operator, and the value that you want to use for filtering.
-            The value must be a string, a number, or a boolean. The
-            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
-            ``>=`` or ``:``. For example, if you are filtering Compute
-            Engine instances, you can exclude instances named
-            ``example-instance`` by specifying
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. If you want to use AIP-160, your expression must
+            specify the field name, an operator, and the value that you
+            want to use for filtering. The value must be a string, a
+            number, or a boolean. The operator must be either ``=``,
+            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
+            if you are filtering Compute Engine instances, you can
+            exclude instances named ``example-instance`` by specifying
             ``name != example-instance``. The ``:`` operator can be used
             with string fields to match substrings. For non-string
             fields it is equivalent to the ``=`` operator. The ``:*``
@@ -43298,6 +44701,19 @@ class ListNodesNodeGroupsRequest(proto.Message):
             However, you can include ``AND`` and ``OR`` expressions
             explicitly. For example:
             ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -43389,13 +44805,16 @@ class ListPacketMirroringsRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, an
-            operator, and the value that you want to use for filtering.
-            The value must be a string, a number, or a boolean. The
-            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
-            ``>=`` or ``:``. For example, if you are filtering Compute
-            Engine instances, you can exclude instances named
-            ``example-instance`` by specifying
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. If you want to use AIP-160, your expression must
+            specify the field name, an operator, and the value that you
+            want to use for filtering. The value must be a string, a
+            number, or a boolean. The operator must be either ``=``,
+            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
+            if you are filtering Compute Engine instances, you can
+            exclude instances named ``example-instance`` by specifying
             ``name != example-instance``. The ``:`` operator can be used
             with string fields to match substrings. For non-string
             fields it is equivalent to the ``=`` operator. The ``:*``
@@ -43413,6 +44832,19 @@ class ListPacketMirroringsRequest(proto.Message):
             However, you can include ``AND`` and ``OR`` expressions
             explicitly. For example:
             ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -43503,13 +44935,16 @@ class ListPeeringRoutesNetworksRequest(proto.Message):
             This field is a member of `oneof`_ ``_direction``.
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, an
-            operator, and the value that you want to use for filtering.
-            The value must be a string, a number, or a boolean. The
-            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
-            ``>=`` or ``:``. For example, if you are filtering Compute
-            Engine instances, you can exclude instances named
-            ``example-instance`` by specifying
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. If you want to use AIP-160, your expression must
+            specify the field name, an operator, and the value that you
+            want to use for filtering. The value must be a string, a
+            number, or a boolean. The operator must be either ``=``,
+            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
+            if you are filtering Compute Engine instances, you can
+            exclude instances named ``example-instance`` by specifying
             ``name != example-instance``. The ``:`` operator can be used
             with string fields to match substrings. For non-string
             fields it is equivalent to the ``=`` operator. The ``:*``
@@ -43527,6 +44962,19 @@ class ListPeeringRoutesNetworksRequest(proto.Message):
             However, you can include ``AND`` and ``OR`` expressions
             explicitly. For example:
             ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -43644,13 +45092,16 @@ class ListPerInstanceConfigsInstanceGroupManagersRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, an
-            operator, and the value that you want to use for filtering.
-            The value must be a string, a number, or a boolean. The
-            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
-            ``>=`` or ``:``. For example, if you are filtering Compute
-            Engine instances, you can exclude instances named
-            ``example-instance`` by specifying
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. If you want to use AIP-160, your expression must
+            specify the field name, an operator, and the value that you
+            want to use for filtering. The value must be a string, a
+            number, or a boolean. The operator must be either ``=``,
+            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
+            if you are filtering Compute Engine instances, you can
+            exclude instances named ``example-instance`` by specifying
             ``name != example-instance``. The ``:`` operator can be used
             with string fields to match substrings. For non-string
             fields it is equivalent to the ``=`` operator. The ``:*``
@@ -43668,6 +45119,19 @@ class ListPerInstanceConfigsInstanceGroupManagersRequest(proto.Message):
             However, you can include ``AND`` and ``OR`` expressions
             explicitly. For example:
             ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``.
 
             This field is a member of `oneof`_ ``_filter``.
         instance_group_manager (str):
@@ -43762,13 +45226,16 @@ class ListPerInstanceConfigsRegionInstanceGroupManagersRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, an
-            operator, and the value that you want to use for filtering.
-            The value must be a string, a number, or a boolean. The
-            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
-            ``>=`` or ``:``. For example, if you are filtering Compute
-            Engine instances, you can exclude instances named
-            ``example-instance`` by specifying
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. If you want to use AIP-160, your expression must
+            specify the field name, an operator, and the value that you
+            want to use for filtering. The value must be a string, a
+            number, or a boolean. The operator must be either ``=``,
+            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
+            if you are filtering Compute Engine instances, you can
+            exclude instances named ``example-instance`` by specifying
             ``name != example-instance``. The ``:`` operator can be used
             with string fields to match substrings. For non-string
             fields it is equivalent to the ``=`` operator. The ``:*``
@@ -43786,6 +45253,19 @@ class ListPerInstanceConfigsRegionInstanceGroupManagersRequest(proto.Message):
             However, you can include ``AND`` and ``OR`` expressions
             explicitly. For example:
             ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``.
 
             This field is a member of `oneof`_ ``_filter``.
         instance_group_manager (str):
@@ -43879,13 +45359,16 @@ class ListPreconfiguredExpressionSetsSecurityPoliciesRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, an
-            operator, and the value that you want to use for filtering.
-            The value must be a string, a number, or a boolean. The
-            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
-            ``>=`` or ``:``. For example, if you are filtering Compute
-            Engine instances, you can exclude instances named
-            ``example-instance`` by specifying
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. If you want to use AIP-160, your expression must
+            specify the field name, an operator, and the value that you
+            want to use for filtering. The value must be a string, a
+            number, or a boolean. The operator must be either ``=``,
+            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
+            if you are filtering Compute Engine instances, you can
+            exclude instances named ``example-instance`` by specifying
             ``name != example-instance``. The ``:`` operator can be used
             with string fields to match substrings. For non-string
             fields it is equivalent to the ``=`` operator. The ``:*``
@@ -43903,6 +45386,19 @@ class ListPreconfiguredExpressionSetsSecurityPoliciesRequest(proto.Message):
             However, you can include ``AND`` and ``OR`` expressions
             explicitly. For example:
             ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -43981,13 +45477,16 @@ class ListPublicAdvertisedPrefixesRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, an
-            operator, and the value that you want to use for filtering.
-            The value must be a string, a number, or a boolean. The
-            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
-            ``>=`` or ``:``. For example, if you are filtering Compute
-            Engine instances, you can exclude instances named
-            ``example-instance`` by specifying
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. If you want to use AIP-160, your expression must
+            specify the field name, an operator, and the value that you
+            want to use for filtering. The value must be a string, a
+            number, or a boolean. The operator must be either ``=``,
+            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
+            if you are filtering Compute Engine instances, you can
+            exclude instances named ``example-instance`` by specifying
             ``name != example-instance``. The ``:`` operator can be used
             with string fields to match substrings. For non-string
             fields it is equivalent to the ``=`` operator. The ``:*``
@@ -44005,6 +45504,19 @@ class ListPublicAdvertisedPrefixesRequest(proto.Message):
             However, you can include ``AND`` and ``OR`` expressions
             explicitly. For example:
             ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -44083,13 +45595,16 @@ class ListPublicDelegatedPrefixesRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, an
-            operator, and the value that you want to use for filtering.
-            The value must be a string, a number, or a boolean. The
-            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
-            ``>=`` or ``:``. For example, if you are filtering Compute
-            Engine instances, you can exclude instances named
-            ``example-instance`` by specifying
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. If you want to use AIP-160, your expression must
+            specify the field name, an operator, and the value that you
+            want to use for filtering. The value must be a string, a
+            number, or a boolean. The operator must be either ``=``,
+            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
+            if you are filtering Compute Engine instances, you can
+            exclude instances named ``example-instance`` by specifying
             ``name != example-instance``. The ``:`` operator can be used
             with string fields to match substrings. For non-string
             fields it is equivalent to the ``=`` operator. The ``:*``
@@ -44107,6 +45622,19 @@ class ListPublicDelegatedPrefixesRequest(proto.Message):
             However, you can include ``AND`` and ``OR`` expressions
             explicitly. For example:
             ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -44191,13 +45719,16 @@ class ListReferrersInstancesRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, an
-            operator, and the value that you want to use for filtering.
-            The value must be a string, a number, or a boolean. The
-            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
-            ``>=`` or ``:``. For example, if you are filtering Compute
-            Engine instances, you can exclude instances named
-            ``example-instance`` by specifying
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. If you want to use AIP-160, your expression must
+            specify the field name, an operator, and the value that you
+            want to use for filtering. The value must be a string, a
+            number, or a boolean. The operator must be either ``=``,
+            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
+            if you are filtering Compute Engine instances, you can
+            exclude instances named ``example-instance`` by specifying
             ``name != example-instance``. The ``:`` operator can be used
             with string fields to match substrings. For non-string
             fields it is equivalent to the ``=`` operator. The ``:*``
@@ -44215,6 +45746,19 @@ class ListReferrersInstancesRequest(proto.Message):
             However, you can include ``AND`` and ``OR`` expressions
             explicitly. For example:
             ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``.
 
             This field is a member of `oneof`_ ``_filter``.
         instance (str):
@@ -44307,13 +45851,16 @@ class ListRegionAutoscalersRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, an
-            operator, and the value that you want to use for filtering.
-            The value must be a string, a number, or a boolean. The
-            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
-            ``>=`` or ``:``. For example, if you are filtering Compute
-            Engine instances, you can exclude instances named
-            ``example-instance`` by specifying
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. If you want to use AIP-160, your expression must
+            specify the field name, an operator, and the value that you
+            want to use for filtering. The value must be a string, a
+            number, or a boolean. The operator must be either ``=``,
+            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
+            if you are filtering Compute Engine instances, you can
+            exclude instances named ``example-instance`` by specifying
             ``name != example-instance``. The ``:`` operator can be used
             with string fields to match substrings. For non-string
             fields it is equivalent to the ``=`` operator. The ``:*``
@@ -44331,6 +45878,19 @@ class ListRegionAutoscalersRequest(proto.Message):
             However, you can include ``AND`` and ``OR`` expressions
             explicitly. For example:
             ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -44415,13 +45975,16 @@ class ListRegionBackendServicesRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, an
-            operator, and the value that you want to use for filtering.
-            The value must be a string, a number, or a boolean. The
-            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
-            ``>=`` or ``:``. For example, if you are filtering Compute
-            Engine instances, you can exclude instances named
-            ``example-instance`` by specifying
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. If you want to use AIP-160, your expression must
+            specify the field name, an operator, and the value that you
+            want to use for filtering. The value must be a string, a
+            number, or a boolean. The operator must be either ``=``,
+            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
+            if you are filtering Compute Engine instances, you can
+            exclude instances named ``example-instance`` by specifying
             ``name != example-instance``. The ``:`` operator can be used
             with string fields to match substrings. For non-string
             fields it is equivalent to the ``=`` operator. The ``:*``
@@ -44439,6 +46002,19 @@ class ListRegionBackendServicesRequest(proto.Message):
             However, you can include ``AND`` and ``OR`` expressions
             explicitly. For example:
             ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -44523,13 +46099,16 @@ class ListRegionCommitmentsRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, an
-            operator, and the value that you want to use for filtering.
-            The value must be a string, a number, or a boolean. The
-            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
-            ``>=`` or ``:``. For example, if you are filtering Compute
-            Engine instances, you can exclude instances named
-            ``example-instance`` by specifying
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. If you want to use AIP-160, your expression must
+            specify the field name, an operator, and the value that you
+            want to use for filtering. The value must be a string, a
+            number, or a boolean. The operator must be either ``=``,
+            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
+            if you are filtering Compute Engine instances, you can
+            exclude instances named ``example-instance`` by specifying
             ``name != example-instance``. The ``:`` operator can be used
             with string fields to match substrings. For non-string
             fields it is equivalent to the ``=`` operator. The ``:*``
@@ -44547,6 +46126,19 @@ class ListRegionCommitmentsRequest(proto.Message):
             However, you can include ``AND`` and ``OR`` expressions
             explicitly. For example:
             ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -44631,13 +46223,16 @@ class ListRegionDiskTypesRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, an
-            operator, and the value that you want to use for filtering.
-            The value must be a string, a number, or a boolean. The
-            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
-            ``>=`` or ``:``. For example, if you are filtering Compute
-            Engine instances, you can exclude instances named
-            ``example-instance`` by specifying
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. If you want to use AIP-160, your expression must
+            specify the field name, an operator, and the value that you
+            want to use for filtering. The value must be a string, a
+            number, or a boolean. The operator must be either ``=``,
+            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
+            if you are filtering Compute Engine instances, you can
+            exclude instances named ``example-instance`` by specifying
             ``name != example-instance``. The ``:`` operator can be used
             with string fields to match substrings. For non-string
             fields it is equivalent to the ``=`` operator. The ``:*``
@@ -44655,6 +46250,19 @@ class ListRegionDiskTypesRequest(proto.Message):
             However, you can include ``AND`` and ``OR`` expressions
             explicitly. For example:
             ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -44739,13 +46347,16 @@ class ListRegionDisksRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, an
-            operator, and the value that you want to use for filtering.
-            The value must be a string, a number, or a boolean. The
-            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
-            ``>=`` or ``:``. For example, if you are filtering Compute
-            Engine instances, you can exclude instances named
-            ``example-instance`` by specifying
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. If you want to use AIP-160, your expression must
+            specify the field name, an operator, and the value that you
+            want to use for filtering. The value must be a string, a
+            number, or a boolean. The operator must be either ``=``,
+            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
+            if you are filtering Compute Engine instances, you can
+            exclude instances named ``example-instance`` by specifying
             ``name != example-instance``. The ``:`` operator can be used
             with string fields to match substrings. For non-string
             fields it is equivalent to the ``=`` operator. The ``:*``
@@ -44763,6 +46374,19 @@ class ListRegionDisksRequest(proto.Message):
             However, you can include ``AND`` and ``OR`` expressions
             explicitly. For example:
             ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -44847,13 +46471,16 @@ class ListRegionHealthCheckServicesRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, an
-            operator, and the value that you want to use for filtering.
-            The value must be a string, a number, or a boolean. The
-            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
-            ``>=`` or ``:``. For example, if you are filtering Compute
-            Engine instances, you can exclude instances named
-            ``example-instance`` by specifying
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. If you want to use AIP-160, your expression must
+            specify the field name, an operator, and the value that you
+            want to use for filtering. The value must be a string, a
+            number, or a boolean. The operator must be either ``=``,
+            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
+            if you are filtering Compute Engine instances, you can
+            exclude instances named ``example-instance`` by specifying
             ``name != example-instance``. The ``:`` operator can be used
             with string fields to match substrings. For non-string
             fields it is equivalent to the ``=`` operator. The ``:*``
@@ -44871,6 +46498,19 @@ class ListRegionHealthCheckServicesRequest(proto.Message):
             However, you can include ``AND`` and ``OR`` expressions
             explicitly. For example:
             ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -44955,13 +46595,16 @@ class ListRegionHealthChecksRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, an
-            operator, and the value that you want to use for filtering.
-            The value must be a string, a number, or a boolean. The
-            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
-            ``>=`` or ``:``. For example, if you are filtering Compute
-            Engine instances, you can exclude instances named
-            ``example-instance`` by specifying
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. If you want to use AIP-160, your expression must
+            specify the field name, an operator, and the value that you
+            want to use for filtering. The value must be a string, a
+            number, or a boolean. The operator must be either ``=``,
+            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
+            if you are filtering Compute Engine instances, you can
+            exclude instances named ``example-instance`` by specifying
             ``name != example-instance``. The ``:`` operator can be used
             with string fields to match substrings. For non-string
             fields it is equivalent to the ``=`` operator. The ``:*``
@@ -44979,6 +46622,19 @@ class ListRegionHealthChecksRequest(proto.Message):
             However, you can include ``AND`` and ``OR`` expressions
             explicitly. For example:
             ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -45063,13 +46719,16 @@ class ListRegionInstanceGroupManagersRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, an
-            operator, and the value that you want to use for filtering.
-            The value must be a string, a number, or a boolean. The
-            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
-            ``>=`` or ``:``. For example, if you are filtering Compute
-            Engine instances, you can exclude instances named
-            ``example-instance`` by specifying
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. If you want to use AIP-160, your expression must
+            specify the field name, an operator, and the value that you
+            want to use for filtering. The value must be a string, a
+            number, or a boolean. The operator must be either ``=``,
+            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
+            if you are filtering Compute Engine instances, you can
+            exclude instances named ``example-instance`` by specifying
             ``name != example-instance``. The ``:`` operator can be used
             with string fields to match substrings. For non-string
             fields it is equivalent to the ``=`` operator. The ``:*``
@@ -45087,6 +46746,19 @@ class ListRegionInstanceGroupManagersRequest(proto.Message):
             However, you can include ``AND`` and ``OR`` expressions
             explicitly. For example:
             ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -45171,13 +46843,16 @@ class ListRegionInstanceGroupsRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, an
-            operator, and the value that you want to use for filtering.
-            The value must be a string, a number, or a boolean. The
-            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
-            ``>=`` or ``:``. For example, if you are filtering Compute
-            Engine instances, you can exclude instances named
-            ``example-instance`` by specifying
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. If you want to use AIP-160, your expression must
+            specify the field name, an operator, and the value that you
+            want to use for filtering. The value must be a string, a
+            number, or a boolean. The operator must be either ``=``,
+            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
+            if you are filtering Compute Engine instances, you can
+            exclude instances named ``example-instance`` by specifying
             ``name != example-instance``. The ``:`` operator can be used
             with string fields to match substrings. For non-string
             fields it is equivalent to the ``=`` operator. The ``:*``
@@ -45195,6 +46870,19 @@ class ListRegionInstanceGroupsRequest(proto.Message):
             However, you can include ``AND`` and ``OR`` expressions
             explicitly. For example:
             ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -45279,13 +46967,16 @@ class ListRegionNetworkEndpointGroupsRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, an
-            operator, and the value that you want to use for filtering.
-            The value must be a string, a number, or a boolean. The
-            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
-            ``>=`` or ``:``. For example, if you are filtering Compute
-            Engine instances, you can exclude instances named
-            ``example-instance`` by specifying
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. If you want to use AIP-160, your expression must
+            specify the field name, an operator, and the value that you
+            want to use for filtering. The value must be a string, a
+            number, or a boolean. The operator must be either ``=``,
+            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
+            if you are filtering Compute Engine instances, you can
+            exclude instances named ``example-instance`` by specifying
             ``name != example-instance``. The ``:`` operator can be used
             with string fields to match substrings. For non-string
             fields it is equivalent to the ``=`` operator. The ``:*``
@@ -45303,6 +46994,19 @@ class ListRegionNetworkEndpointGroupsRequest(proto.Message):
             However, you can include ``AND`` and ``OR`` expressions
             explicitly. For example:
             ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -45389,13 +47093,16 @@ class ListRegionNetworkFirewallPoliciesRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, an
-            operator, and the value that you want to use for filtering.
-            The value must be a string, a number, or a boolean. The
-            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
-            ``>=`` or ``:``. For example, if you are filtering Compute
-            Engine instances, you can exclude instances named
-            ``example-instance`` by specifying
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. If you want to use AIP-160, your expression must
+            specify the field name, an operator, and the value that you
+            want to use for filtering. The value must be a string, a
+            number, or a boolean. The operator must be either ``=``,
+            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
+            if you are filtering Compute Engine instances, you can
+            exclude instances named ``example-instance`` by specifying
             ``name != example-instance``. The ``:`` operator can be used
             with string fields to match substrings. For non-string
             fields it is equivalent to the ``=`` operator. The ``:*``
@@ -45413,6 +47120,19 @@ class ListRegionNetworkFirewallPoliciesRequest(proto.Message):
             However, you can include ``AND`` and ``OR`` expressions
             explicitly. For example:
             ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -45497,13 +47217,16 @@ class ListRegionNotificationEndpointsRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, an
-            operator, and the value that you want to use for filtering.
-            The value must be a string, a number, or a boolean. The
-            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
-            ``>=`` or ``:``. For example, if you are filtering Compute
-            Engine instances, you can exclude instances named
-            ``example-instance`` by specifying
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. If you want to use AIP-160, your expression must
+            specify the field name, an operator, and the value that you
+            want to use for filtering. The value must be a string, a
+            number, or a boolean. The operator must be either ``=``,
+            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
+            if you are filtering Compute Engine instances, you can
+            exclude instances named ``example-instance`` by specifying
             ``name != example-instance``. The ``:`` operator can be used
             with string fields to match substrings. For non-string
             fields it is equivalent to the ``=`` operator. The ``:*``
@@ -45521,6 +47244,19 @@ class ListRegionNotificationEndpointsRequest(proto.Message):
             However, you can include ``AND`` and ``OR`` expressions
             explicitly. For example:
             ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -45605,13 +47341,16 @@ class ListRegionOperationsRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, an
-            operator, and the value that you want to use for filtering.
-            The value must be a string, a number, or a boolean. The
-            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
-            ``>=`` or ``:``. For example, if you are filtering Compute
-            Engine instances, you can exclude instances named
-            ``example-instance`` by specifying
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. If you want to use AIP-160, your expression must
+            specify the field name, an operator, and the value that you
+            want to use for filtering. The value must be a string, a
+            number, or a boolean. The operator must be either ``=``,
+            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
+            if you are filtering Compute Engine instances, you can
+            exclude instances named ``example-instance`` by specifying
             ``name != example-instance``. The ``:`` operator can be used
             with string fields to match substrings. For non-string
             fields it is equivalent to the ``=`` operator. The ``:*``
@@ -45629,6 +47368,19 @@ class ListRegionOperationsRequest(proto.Message):
             However, you can include ``AND`` and ``OR`` expressions
             explicitly. For example:
             ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -45713,13 +47465,16 @@ class ListRegionSecurityPoliciesRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, an
-            operator, and the value that you want to use for filtering.
-            The value must be a string, a number, or a boolean. The
-            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
-            ``>=`` or ``:``. For example, if you are filtering Compute
-            Engine instances, you can exclude instances named
-            ``example-instance`` by specifying
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. If you want to use AIP-160, your expression must
+            specify the field name, an operator, and the value that you
+            want to use for filtering. The value must be a string, a
+            number, or a boolean. The operator must be either ``=``,
+            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
+            if you are filtering Compute Engine instances, you can
+            exclude instances named ``example-instance`` by specifying
             ``name != example-instance``. The ``:`` operator can be used
             with string fields to match substrings. For non-string
             fields it is equivalent to the ``=`` operator. The ``:*``
@@ -45737,6 +47492,19 @@ class ListRegionSecurityPoliciesRequest(proto.Message):
             However, you can include ``AND`` and ``OR`` expressions
             explicitly. For example:
             ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -45821,13 +47589,16 @@ class ListRegionSslCertificatesRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, an
-            operator, and the value that you want to use for filtering.
-            The value must be a string, a number, or a boolean. The
-            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
-            ``>=`` or ``:``. For example, if you are filtering Compute
-            Engine instances, you can exclude instances named
-            ``example-instance`` by specifying
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. If you want to use AIP-160, your expression must
+            specify the field name, an operator, and the value that you
+            want to use for filtering. The value must be a string, a
+            number, or a boolean. The operator must be either ``=``,
+            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
+            if you are filtering Compute Engine instances, you can
+            exclude instances named ``example-instance`` by specifying
             ``name != example-instance``. The ``:`` operator can be used
             with string fields to match substrings. For non-string
             fields it is equivalent to the ``=`` operator. The ``:*``
@@ -45845,6 +47616,19 @@ class ListRegionSslCertificatesRequest(proto.Message):
             However, you can include ``AND`` and ``OR`` expressions
             explicitly. For example:
             ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -45929,13 +47713,16 @@ class ListRegionTargetHttpProxiesRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, an
-            operator, and the value that you want to use for filtering.
-            The value must be a string, a number, or a boolean. The
-            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
-            ``>=`` or ``:``. For example, if you are filtering Compute
-            Engine instances, you can exclude instances named
-            ``example-instance`` by specifying
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. If you want to use AIP-160, your expression must
+            specify the field name, an operator, and the value that you
+            want to use for filtering. The value must be a string, a
+            number, or a boolean. The operator must be either ``=``,
+            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
+            if you are filtering Compute Engine instances, you can
+            exclude instances named ``example-instance`` by specifying
             ``name != example-instance``. The ``:`` operator can be used
             with string fields to match substrings. For non-string
             fields it is equivalent to the ``=`` operator. The ``:*``
@@ -45953,6 +47740,19 @@ class ListRegionTargetHttpProxiesRequest(proto.Message):
             However, you can include ``AND`` and ``OR`` expressions
             explicitly. For example:
             ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -46037,13 +47837,16 @@ class ListRegionTargetHttpsProxiesRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, an
-            operator, and the value that you want to use for filtering.
-            The value must be a string, a number, or a boolean. The
-            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
-            ``>=`` or ``:``. For example, if you are filtering Compute
-            Engine instances, you can exclude instances named
-            ``example-instance`` by specifying
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. If you want to use AIP-160, your expression must
+            specify the field name, an operator, and the value that you
+            want to use for filtering. The value must be a string, a
+            number, or a boolean. The operator must be either ``=``,
+            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
+            if you are filtering Compute Engine instances, you can
+            exclude instances named ``example-instance`` by specifying
             ``name != example-instance``. The ``:`` operator can be used
             with string fields to match substrings. For non-string
             fields it is equivalent to the ``=`` operator. The ``:*``
@@ -46061,6 +47864,19 @@ class ListRegionTargetHttpsProxiesRequest(proto.Message):
             However, you can include ``AND`` and ``OR`` expressions
             explicitly. For example:
             ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -46145,13 +47961,16 @@ class ListRegionUrlMapsRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, an
-            operator, and the value that you want to use for filtering.
-            The value must be a string, a number, or a boolean. The
-            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
-            ``>=`` or ``:``. For example, if you are filtering Compute
-            Engine instances, you can exclude instances named
-            ``example-instance`` by specifying
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. If you want to use AIP-160, your expression must
+            specify the field name, an operator, and the value that you
+            want to use for filtering. The value must be a string, a
+            number, or a boolean. The operator must be either ``=``,
+            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
+            if you are filtering Compute Engine instances, you can
+            exclude instances named ``example-instance`` by specifying
             ``name != example-instance``. The ``:`` operator can be used
             with string fields to match substrings. For non-string
             fields it is equivalent to the ``=`` operator. The ``:*``
@@ -46169,6 +47988,19 @@ class ListRegionUrlMapsRequest(proto.Message):
             However, you can include ``AND`` and ``OR`` expressions
             explicitly. For example:
             ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -46253,13 +48085,16 @@ class ListRegionsRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, an
-            operator, and the value that you want to use for filtering.
-            The value must be a string, a number, or a boolean. The
-            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
-            ``>=`` or ``:``. For example, if you are filtering Compute
-            Engine instances, you can exclude instances named
-            ``example-instance`` by specifying
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. If you want to use AIP-160, your expression must
+            specify the field name, an operator, and the value that you
+            want to use for filtering. The value must be a string, a
+            number, or a boolean. The operator must be either ``=``,
+            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
+            if you are filtering Compute Engine instances, you can
+            exclude instances named ``example-instance`` by specifying
             ``name != example-instance``. The ``:`` operator can be used
             with string fields to match substrings. For non-string
             fields it is equivalent to the ``=`` operator. The ``:*``
@@ -46277,6 +48112,19 @@ class ListRegionsRequest(proto.Message):
             However, you can include ``AND`` and ``OR`` expressions
             explicitly. For example:
             ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -46355,13 +48203,16 @@ class ListReservationsRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, an
-            operator, and the value that you want to use for filtering.
-            The value must be a string, a number, or a boolean. The
-            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
-            ``>=`` or ``:``. For example, if you are filtering Compute
-            Engine instances, you can exclude instances named
-            ``example-instance`` by specifying
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. If you want to use AIP-160, your expression must
+            specify the field name, an operator, and the value that you
+            want to use for filtering. The value must be a string, a
+            number, or a boolean. The operator must be either ``=``,
+            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
+            if you are filtering Compute Engine instances, you can
+            exclude instances named ``example-instance`` by specifying
             ``name != example-instance``. The ``:`` operator can be used
             with string fields to match substrings. For non-string
             fields it is equivalent to the ``=`` operator. The ``:*``
@@ -46379,6 +48230,19 @@ class ListReservationsRequest(proto.Message):
             However, you can include ``AND`` and ``OR`` expressions
             explicitly. For example:
             ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -46463,13 +48327,16 @@ class ListResourcePoliciesRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, an
-            operator, and the value that you want to use for filtering.
-            The value must be a string, a number, or a boolean. The
-            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
-            ``>=`` or ``:``. For example, if you are filtering Compute
-            Engine instances, you can exclude instances named
-            ``example-instance`` by specifying
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. If you want to use AIP-160, your expression must
+            specify the field name, an operator, and the value that you
+            want to use for filtering. The value must be a string, a
+            number, or a boolean. The operator must be either ``=``,
+            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
+            if you are filtering Compute Engine instances, you can
+            exclude instances named ``example-instance`` by specifying
             ``name != example-instance``. The ``:`` operator can be used
             with string fields to match substrings. For non-string
             fields it is equivalent to the ``=`` operator. The ``:*``
@@ -46487,6 +48354,19 @@ class ListResourcePoliciesRequest(proto.Message):
             However, you can include ``AND`` and ``OR`` expressions
             explicitly. For example:
             ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -46571,13 +48451,16 @@ class ListRoutersRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, an
-            operator, and the value that you want to use for filtering.
-            The value must be a string, a number, or a boolean. The
-            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
-            ``>=`` or ``:``. For example, if you are filtering Compute
-            Engine instances, you can exclude instances named
-            ``example-instance`` by specifying
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. If you want to use AIP-160, your expression must
+            specify the field name, an operator, and the value that you
+            want to use for filtering. The value must be a string, a
+            number, or a boolean. The operator must be either ``=``,
+            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
+            if you are filtering Compute Engine instances, you can
+            exclude instances named ``example-instance`` by specifying
             ``name != example-instance``. The ``:`` operator can be used
             with string fields to match substrings. For non-string
             fields it is equivalent to the ``=`` operator. The ``:*``
@@ -46595,6 +48478,19 @@ class ListRoutersRequest(proto.Message):
             However, you can include ``AND`` and ``OR`` expressions
             explicitly. For example:
             ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -46679,13 +48575,16 @@ class ListRoutesRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, an
-            operator, and the value that you want to use for filtering.
-            The value must be a string, a number, or a boolean. The
-            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
-            ``>=`` or ``:``. For example, if you are filtering Compute
-            Engine instances, you can exclude instances named
-            ``example-instance`` by specifying
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. If you want to use AIP-160, your expression must
+            specify the field name, an operator, and the value that you
+            want to use for filtering. The value must be a string, a
+            number, or a boolean. The operator must be either ``=``,
+            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
+            if you are filtering Compute Engine instances, you can
+            exclude instances named ``example-instance`` by specifying
             ``name != example-instance``. The ``:`` operator can be used
             with string fields to match substrings. For non-string
             fields it is equivalent to the ``=`` operator. The ``:*``
@@ -46703,6 +48602,19 @@ class ListRoutesRequest(proto.Message):
             However, you can include ``AND`` and ``OR`` expressions
             explicitly. For example:
             ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -46781,13 +48693,16 @@ class ListSecurityPoliciesRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, an
-            operator, and the value that you want to use for filtering.
-            The value must be a string, a number, or a boolean. The
-            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
-            ``>=`` or ``:``. For example, if you are filtering Compute
-            Engine instances, you can exclude instances named
-            ``example-instance`` by specifying
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. If you want to use AIP-160, your expression must
+            specify the field name, an operator, and the value that you
+            want to use for filtering. The value must be a string, a
+            number, or a boolean. The operator must be either ``=``,
+            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
+            if you are filtering Compute Engine instances, you can
+            exclude instances named ``example-instance`` by specifying
             ``name != example-instance``. The ``:`` operator can be used
             with string fields to match substrings. For non-string
             fields it is equivalent to the ``=`` operator. The ``:*``
@@ -46805,6 +48720,19 @@ class ListSecurityPoliciesRequest(proto.Message):
             However, you can include ``AND`` and ``OR`` expressions
             explicitly. For example:
             ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -46883,13 +48811,16 @@ class ListServiceAttachmentsRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, an
-            operator, and the value that you want to use for filtering.
-            The value must be a string, a number, or a boolean. The
-            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
-            ``>=`` or ``:``. For example, if you are filtering Compute
-            Engine instances, you can exclude instances named
-            ``example-instance`` by specifying
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. If you want to use AIP-160, your expression must
+            specify the field name, an operator, and the value that you
+            want to use for filtering. The value must be a string, a
+            number, or a boolean. The operator must be either ``=``,
+            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
+            if you are filtering Compute Engine instances, you can
+            exclude instances named ``example-instance`` by specifying
             ``name != example-instance``. The ``:`` operator can be used
             with string fields to match substrings. For non-string
             fields it is equivalent to the ``=`` operator. The ``:*``
@@ -46907,6 +48838,19 @@ class ListServiceAttachmentsRequest(proto.Message):
             However, you can include ``AND`` and ``OR`` expressions
             explicitly. For example:
             ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -46991,13 +48935,16 @@ class ListSnapshotsRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, an
-            operator, and the value that you want to use for filtering.
-            The value must be a string, a number, or a boolean. The
-            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
-            ``>=`` or ``:``. For example, if you are filtering Compute
-            Engine instances, you can exclude instances named
-            ``example-instance`` by specifying
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. If you want to use AIP-160, your expression must
+            specify the field name, an operator, and the value that you
+            want to use for filtering. The value must be a string, a
+            number, or a boolean. The operator must be either ``=``,
+            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
+            if you are filtering Compute Engine instances, you can
+            exclude instances named ``example-instance`` by specifying
             ``name != example-instance``. The ``:`` operator can be used
             with string fields to match substrings. For non-string
             fields it is equivalent to the ``=`` operator. The ``:*``
@@ -47015,6 +48962,19 @@ class ListSnapshotsRequest(proto.Message):
             However, you can include ``AND`` and ``OR`` expressions
             explicitly. For example:
             ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -47093,13 +49053,16 @@ class ListSslCertificatesRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, an
-            operator, and the value that you want to use for filtering.
-            The value must be a string, a number, or a boolean. The
-            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
-            ``>=`` or ``:``. For example, if you are filtering Compute
-            Engine instances, you can exclude instances named
-            ``example-instance`` by specifying
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. If you want to use AIP-160, your expression must
+            specify the field name, an operator, and the value that you
+            want to use for filtering. The value must be a string, a
+            number, or a boolean. The operator must be either ``=``,
+            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
+            if you are filtering Compute Engine instances, you can
+            exclude instances named ``example-instance`` by specifying
             ``name != example-instance``. The ``:`` operator can be used
             with string fields to match substrings. For non-string
             fields it is equivalent to the ``=`` operator. The ``:*``
@@ -47117,6 +49080,19 @@ class ListSslCertificatesRequest(proto.Message):
             However, you can include ``AND`` and ``OR`` expressions
             explicitly. For example:
             ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -47195,13 +49171,16 @@ class ListSslPoliciesRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, an
-            operator, and the value that you want to use for filtering.
-            The value must be a string, a number, or a boolean. The
-            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
-            ``>=`` or ``:``. For example, if you are filtering Compute
-            Engine instances, you can exclude instances named
-            ``example-instance`` by specifying
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. If you want to use AIP-160, your expression must
+            specify the field name, an operator, and the value that you
+            want to use for filtering. The value must be a string, a
+            number, or a boolean. The operator must be either ``=``,
+            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
+            if you are filtering Compute Engine instances, you can
+            exclude instances named ``example-instance`` by specifying
             ``name != example-instance``. The ``:`` operator can be used
             with string fields to match substrings. For non-string
             fields it is equivalent to the ``=`` operator. The ``:*``
@@ -47219,6 +49198,19 @@ class ListSslPoliciesRequest(proto.Message):
             However, you can include ``AND`` and ``OR`` expressions
             explicitly. For example:
             ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -47297,13 +49289,16 @@ class ListSubnetworksRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, an
-            operator, and the value that you want to use for filtering.
-            The value must be a string, a number, or a boolean. The
-            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
-            ``>=`` or ``:``. For example, if you are filtering Compute
-            Engine instances, you can exclude instances named
-            ``example-instance`` by specifying
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. If you want to use AIP-160, your expression must
+            specify the field name, an operator, and the value that you
+            want to use for filtering. The value must be a string, a
+            number, or a boolean. The operator must be either ``=``,
+            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
+            if you are filtering Compute Engine instances, you can
+            exclude instances named ``example-instance`` by specifying
             ``name != example-instance``. The ``:`` operator can be used
             with string fields to match substrings. For non-string
             fields it is equivalent to the ``=`` operator. The ``:*``
@@ -47321,6 +49316,19 @@ class ListSubnetworksRequest(proto.Message):
             However, you can include ``AND`` and ``OR`` expressions
             explicitly. For example:
             ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -47405,13 +49413,16 @@ class ListTargetGrpcProxiesRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, an
-            operator, and the value that you want to use for filtering.
-            The value must be a string, a number, or a boolean. The
-            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
-            ``>=`` or ``:``. For example, if you are filtering Compute
-            Engine instances, you can exclude instances named
-            ``example-instance`` by specifying
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. If you want to use AIP-160, your expression must
+            specify the field name, an operator, and the value that you
+            want to use for filtering. The value must be a string, a
+            number, or a boolean. The operator must be either ``=``,
+            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
+            if you are filtering Compute Engine instances, you can
+            exclude instances named ``example-instance`` by specifying
             ``name != example-instance``. The ``:`` operator can be used
             with string fields to match substrings. For non-string
             fields it is equivalent to the ``=`` operator. The ``:*``
@@ -47429,6 +49440,19 @@ class ListTargetGrpcProxiesRequest(proto.Message):
             However, you can include ``AND`` and ``OR`` expressions
             explicitly. For example:
             ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -47507,13 +49531,16 @@ class ListTargetHttpProxiesRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, an
-            operator, and the value that you want to use for filtering.
-            The value must be a string, a number, or a boolean. The
-            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
-            ``>=`` or ``:``. For example, if you are filtering Compute
-            Engine instances, you can exclude instances named
-            ``example-instance`` by specifying
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. If you want to use AIP-160, your expression must
+            specify the field name, an operator, and the value that you
+            want to use for filtering. The value must be a string, a
+            number, or a boolean. The operator must be either ``=``,
+            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
+            if you are filtering Compute Engine instances, you can
+            exclude instances named ``example-instance`` by specifying
             ``name != example-instance``. The ``:`` operator can be used
             with string fields to match substrings. For non-string
             fields it is equivalent to the ``=`` operator. The ``:*``
@@ -47531,6 +49558,19 @@ class ListTargetHttpProxiesRequest(proto.Message):
             However, you can include ``AND`` and ``OR`` expressions
             explicitly. For example:
             ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -47609,13 +49649,16 @@ class ListTargetHttpsProxiesRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, an
-            operator, and the value that you want to use for filtering.
-            The value must be a string, a number, or a boolean. The
-            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
-            ``>=`` or ``:``. For example, if you are filtering Compute
-            Engine instances, you can exclude instances named
-            ``example-instance`` by specifying
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. If you want to use AIP-160, your expression must
+            specify the field name, an operator, and the value that you
+            want to use for filtering. The value must be a string, a
+            number, or a boolean. The operator must be either ``=``,
+            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
+            if you are filtering Compute Engine instances, you can
+            exclude instances named ``example-instance`` by specifying
             ``name != example-instance``. The ``:`` operator can be used
             with string fields to match substrings. For non-string
             fields it is equivalent to the ``=`` operator. The ``:*``
@@ -47633,6 +49676,19 @@ class ListTargetHttpsProxiesRequest(proto.Message):
             However, you can include ``AND`` and ``OR`` expressions
             explicitly. For example:
             ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -47711,13 +49767,16 @@ class ListTargetInstancesRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, an
-            operator, and the value that you want to use for filtering.
-            The value must be a string, a number, or a boolean. The
-            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
-            ``>=`` or ``:``. For example, if you are filtering Compute
-            Engine instances, you can exclude instances named
-            ``example-instance`` by specifying
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. If you want to use AIP-160, your expression must
+            specify the field name, an operator, and the value that you
+            want to use for filtering. The value must be a string, a
+            number, or a boolean. The operator must be either ``=``,
+            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
+            if you are filtering Compute Engine instances, you can
+            exclude instances named ``example-instance`` by specifying
             ``name != example-instance``. The ``:`` operator can be used
             with string fields to match substrings. For non-string
             fields it is equivalent to the ``=`` operator. The ``:*``
@@ -47735,6 +49794,19 @@ class ListTargetInstancesRequest(proto.Message):
             However, you can include ``AND`` and ``OR`` expressions
             explicitly. For example:
             ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -47819,13 +49891,16 @@ class ListTargetPoolsRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, an
-            operator, and the value that you want to use for filtering.
-            The value must be a string, a number, or a boolean. The
-            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
-            ``>=`` or ``:``. For example, if you are filtering Compute
-            Engine instances, you can exclude instances named
-            ``example-instance`` by specifying
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. If you want to use AIP-160, your expression must
+            specify the field name, an operator, and the value that you
+            want to use for filtering. The value must be a string, a
+            number, or a boolean. The operator must be either ``=``,
+            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
+            if you are filtering Compute Engine instances, you can
+            exclude instances named ``example-instance`` by specifying
             ``name != example-instance``. The ``:`` operator can be used
             with string fields to match substrings. For non-string
             fields it is equivalent to the ``=`` operator. The ``:*``
@@ -47843,6 +49918,19 @@ class ListTargetPoolsRequest(proto.Message):
             However, you can include ``AND`` and ``OR`` expressions
             explicitly. For example:
             ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -47927,13 +50015,16 @@ class ListTargetSslProxiesRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, an
-            operator, and the value that you want to use for filtering.
-            The value must be a string, a number, or a boolean. The
-            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
-            ``>=`` or ``:``. For example, if you are filtering Compute
-            Engine instances, you can exclude instances named
-            ``example-instance`` by specifying
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. If you want to use AIP-160, your expression must
+            specify the field name, an operator, and the value that you
+            want to use for filtering. The value must be a string, a
+            number, or a boolean. The operator must be either ``=``,
+            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
+            if you are filtering Compute Engine instances, you can
+            exclude instances named ``example-instance`` by specifying
             ``name != example-instance``. The ``:`` operator can be used
             with string fields to match substrings. For non-string
             fields it is equivalent to the ``=`` operator. The ``:*``
@@ -47951,6 +50042,19 @@ class ListTargetSslProxiesRequest(proto.Message):
             However, you can include ``AND`` and ``OR`` expressions
             explicitly. For example:
             ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -48029,13 +50133,16 @@ class ListTargetTcpProxiesRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, an
-            operator, and the value that you want to use for filtering.
-            The value must be a string, a number, or a boolean. The
-            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
-            ``>=`` or ``:``. For example, if you are filtering Compute
-            Engine instances, you can exclude instances named
-            ``example-instance`` by specifying
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. If you want to use AIP-160, your expression must
+            specify the field name, an operator, and the value that you
+            want to use for filtering. The value must be a string, a
+            number, or a boolean. The operator must be either ``=``,
+            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
+            if you are filtering Compute Engine instances, you can
+            exclude instances named ``example-instance`` by specifying
             ``name != example-instance``. The ``:`` operator can be used
             with string fields to match substrings. For non-string
             fields it is equivalent to the ``=`` operator. The ``:*``
@@ -48053,6 +50160,19 @@ class ListTargetTcpProxiesRequest(proto.Message):
             However, you can include ``AND`` and ``OR`` expressions
             explicitly. For example:
             ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -48131,13 +50251,16 @@ class ListTargetVpnGatewaysRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, an
-            operator, and the value that you want to use for filtering.
-            The value must be a string, a number, or a boolean. The
-            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
-            ``>=`` or ``:``. For example, if you are filtering Compute
-            Engine instances, you can exclude instances named
-            ``example-instance`` by specifying
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. If you want to use AIP-160, your expression must
+            specify the field name, an operator, and the value that you
+            want to use for filtering. The value must be a string, a
+            number, or a boolean. The operator must be either ``=``,
+            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
+            if you are filtering Compute Engine instances, you can
+            exclude instances named ``example-instance`` by specifying
             ``name != example-instance``. The ``:`` operator can be used
             with string fields to match substrings. For non-string
             fields it is equivalent to the ``=`` operator. The ``:*``
@@ -48155,6 +50278,19 @@ class ListTargetVpnGatewaysRequest(proto.Message):
             However, you can include ``AND`` and ``OR`` expressions
             explicitly. For example:
             ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -48239,13 +50375,16 @@ class ListUrlMapsRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, an
-            operator, and the value that you want to use for filtering.
-            The value must be a string, a number, or a boolean. The
-            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
-            ``>=`` or ``:``. For example, if you are filtering Compute
-            Engine instances, you can exclude instances named
-            ``example-instance`` by specifying
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. If you want to use AIP-160, your expression must
+            specify the field name, an operator, and the value that you
+            want to use for filtering. The value must be a string, a
+            number, or a boolean. The operator must be either ``=``,
+            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
+            if you are filtering Compute Engine instances, you can
+            exclude instances named ``example-instance`` by specifying
             ``name != example-instance``. The ``:`` operator can be used
             with string fields to match substrings. For non-string
             fields it is equivalent to the ``=`` operator. The ``:*``
@@ -48263,6 +50402,19 @@ class ListUrlMapsRequest(proto.Message):
             However, you can include ``AND`` and ``OR`` expressions
             explicitly. For example:
             ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -48341,13 +50493,16 @@ class ListUsableSubnetworksRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, an
-            operator, and the value that you want to use for filtering.
-            The value must be a string, a number, or a boolean. The
-            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
-            ``>=`` or ``:``. For example, if you are filtering Compute
-            Engine instances, you can exclude instances named
-            ``example-instance`` by specifying
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. If you want to use AIP-160, your expression must
+            specify the field name, an operator, and the value that you
+            want to use for filtering. The value must be a string, a
+            number, or a boolean. The operator must be either ``=``,
+            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
+            if you are filtering Compute Engine instances, you can
+            exclude instances named ``example-instance`` by specifying
             ``name != example-instance``. The ``:`` operator can be used
             with string fields to match substrings. For non-string
             fields it is equivalent to the ``=`` operator. The ``:*``
@@ -48365,6 +50520,19 @@ class ListUsableSubnetworksRequest(proto.Message):
             However, you can include ``AND`` and ``OR`` expressions
             explicitly. For example:
             ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -48443,13 +50611,16 @@ class ListVpnGatewaysRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, an
-            operator, and the value that you want to use for filtering.
-            The value must be a string, a number, or a boolean. The
-            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
-            ``>=`` or ``:``. For example, if you are filtering Compute
-            Engine instances, you can exclude instances named
-            ``example-instance`` by specifying
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. If you want to use AIP-160, your expression must
+            specify the field name, an operator, and the value that you
+            want to use for filtering. The value must be a string, a
+            number, or a boolean. The operator must be either ``=``,
+            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
+            if you are filtering Compute Engine instances, you can
+            exclude instances named ``example-instance`` by specifying
             ``name != example-instance``. The ``:`` operator can be used
             with string fields to match substrings. For non-string
             fields it is equivalent to the ``=`` operator. The ``:*``
@@ -48467,6 +50638,19 @@ class ListVpnGatewaysRequest(proto.Message):
             However, you can include ``AND`` and ``OR`` expressions
             explicitly. For example:
             ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -48551,13 +50735,16 @@ class ListVpnTunnelsRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, an
-            operator, and the value that you want to use for filtering.
-            The value must be a string, a number, or a boolean. The
-            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
-            ``>=`` or ``:``. For example, if you are filtering Compute
-            Engine instances, you can exclude instances named
-            ``example-instance`` by specifying
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. If you want to use AIP-160, your expression must
+            specify the field name, an operator, and the value that you
+            want to use for filtering. The value must be a string, a
+            number, or a boolean. The operator must be either ``=``,
+            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
+            if you are filtering Compute Engine instances, you can
+            exclude instances named ``example-instance`` by specifying
             ``name != example-instance``. The ``:`` operator can be used
             with string fields to match substrings. For non-string
             fields it is equivalent to the ``=`` operator. The ``:*``
@@ -48575,6 +50762,19 @@ class ListVpnTunnelsRequest(proto.Message):
             However, you can include ``AND`` and ``OR`` expressions
             explicitly. For example:
             ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -48659,13 +50859,16 @@ class ListXpnHostsProjectsRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, an
-            operator, and the value that you want to use for filtering.
-            The value must be a string, a number, or a boolean. The
-            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
-            ``>=`` or ``:``. For example, if you are filtering Compute
-            Engine instances, you can exclude instances named
-            ``example-instance`` by specifying
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. If you want to use AIP-160, your expression must
+            specify the field name, an operator, and the value that you
+            want to use for filtering. The value must be a string, a
+            number, or a boolean. The operator must be either ``=``,
+            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
+            if you are filtering Compute Engine instances, you can
+            exclude instances named ``example-instance`` by specifying
             ``name != example-instance``. The ``:`` operator can be used
             with string fields to match substrings. For non-string
             fields it is equivalent to the ``=`` operator. The ``:*``
@@ -48683,6 +50886,19 @@ class ListXpnHostsProjectsRequest(proto.Message):
             However, you can include ``AND`` and ``OR`` expressions
             explicitly. For example:
             ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -48768,13 +50984,16 @@ class ListZoneOperationsRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, an
-            operator, and the value that you want to use for filtering.
-            The value must be a string, a number, or a boolean. The
-            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
-            ``>=`` or ``:``. For example, if you are filtering Compute
-            Engine instances, you can exclude instances named
-            ``example-instance`` by specifying
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. If you want to use AIP-160, your expression must
+            specify the field name, an operator, and the value that you
+            want to use for filtering. The value must be a string, a
+            number, or a boolean. The operator must be either ``=``,
+            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
+            if you are filtering Compute Engine instances, you can
+            exclude instances named ``example-instance`` by specifying
             ``name != example-instance``. The ``:`` operator can be used
             with string fields to match substrings. For non-string
             fields it is equivalent to the ``=`` operator. The ``:*``
@@ -48792,6 +51011,19 @@ class ListZoneOperationsRequest(proto.Message):
             However, you can include ``AND`` and ``OR`` expressions
             explicitly. For example:
             ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -48876,13 +51108,16 @@ class ListZonesRequest(proto.Message):
     Attributes:
         filter (str):
             A filter expression that filters resources listed in the
-            response. The expression must specify the field name, an
-            operator, and the value that you want to use for filtering.
-            The value must be a string, a number, or a boolean. The
-            operator must be either ``=``, ``!=``, ``>``, ``<``, ``<=``,
-            ``>=`` or ``:``. For example, if you are filtering Compute
-            Engine instances, you can exclude instances named
-            ``example-instance`` by specifying
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. If you want to use AIP-160, your expression must
+            specify the field name, an operator, and the value that you
+            want to use for filtering. The value must be a string, a
+            number, or a boolean. The operator must be either ``=``,
+            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
+            if you are filtering Compute Engine instances, you can
+            exclude instances named ``example-instance`` by specifying
             ``name != example-instance``. The ``:`` operator can be used
             with string fields to match substrings. For non-string
             fields it is equivalent to the ``=`` operator. The ``:*``
@@ -48900,6 +51135,19 @@ class ListZonesRequest(proto.Message):
             However, you can include ``AND`` and ``OR`` expressions
             explicitly. For example:
             ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -49021,13 +51269,31 @@ class LocationPolicy(proto.Message):
             name. Currently only zone names are supported
             and must be represented as valid internal URLs,
             such as zones/us-central1-a.
+        target_shape (str):
+            Strategy for distributing VMs across zones in
+            a region. Check the TargetShape enum for the
+            list of possible values.
+
+            This field is a member of `oneof`_ ``_target_shape``.
     """
+
+    class TargetShape(proto.Enum):
+        r"""Strategy for distributing VMs across zones in a region."""
+        UNDEFINED_TARGET_SHAPE = 0
+        ANY = 64972
+        ANY_SINGLE_ZONE = 61100880
+        BALANCED = 468409608
 
     locations = proto.MapField(
         proto.STRING,
         proto.MESSAGE,
         number=413423454,
         message="LocationPolicyLocation",
+    )
+    target_shape = proto.Field(
+        proto.STRING,
+        number=338621299,
+        optional=True,
     )
 
 
@@ -51028,9 +53294,9 @@ class NetworkEndpointGroup(proto.Message):
             This field is a member of `oneof`_ ``_network_endpoint_type``.
         psc_target_service (str):
             The target service url used to set up private
-            service connection to a Google API. An example
-            value is:
-            "asia-northeast3-cloudkms.googleapis.com".
+            service connection to a Google API or a PSC
+            Producer Service Attachment. An example value
+            is: "asia-northeast3-cloudkms.googleapis.com".
 
             This field is a member of `oneof`_ ``_psc_target_service``.
         region (str):
@@ -52035,6 +54301,13 @@ class NetworkPeering(proto.Message):
             Maximum Transmission Unit in bytes.
 
             This field is a member of `oneof`_ ``_peer_mtu``.
+        stack_type (str):
+            Which IP version(s) of traffic and routes are allowed to be
+            imported or exported between peer networks. The default
+            value is IPV4_ONLY. Check the StackType enum for the list of
+            possible values.
+
+            This field is a member of `oneof`_ ``_stack_type``.
         state (str):
             [Output Only] State for the peering, either ``ACTIVE`` or
             ``INACTIVE``. The peering is ``ACTIVE`` when there's a
@@ -52048,6 +54321,14 @@ class NetworkPeering(proto.Message):
 
             This field is a member of `oneof`_ ``_state_details``.
     """
+
+    class StackType(proto.Enum):
+        r"""Which IP version(s) of traffic and routes are allowed to be imported
+        or exported between peer networks. The default value is IPV4_ONLY.
+        """
+        UNDEFINED_STACK_TYPE = 0
+        IPV4_IPV6 = 22197249
+        IPV4_ONLY = 22373798
 
     class State(proto.Enum):
         r"""[Output Only] State for the peering, either ``ACTIVE`` or
@@ -52101,6 +54382,11 @@ class NetworkPeering(proto.Message):
     peer_mtu = proto.Field(
         proto.INT32,
         number=69584721,
+        optional=True,
+    )
+    stack_type = proto.Field(
+        proto.STRING,
+        number=425908881,
         optional=True,
     )
     state = proto.Field(
@@ -57230,6 +59516,10 @@ class PatchRuleSecurityPolicyRequest(proto.Message):
             Name of the security policy to update.
         security_policy_rule_resource (google.cloud.compute_v1.types.SecurityPolicyRule):
             The body resource for this request
+        validate_only (bool):
+            If true, the request will not be committed.
+
+            This field is a member of `oneof`_ ``_validate_only``.
     """
 
     priority = proto.Field(
@@ -57249,6 +59539,11 @@ class PatchRuleSecurityPolicyRequest(proto.Message):
         proto.MESSAGE,
         number=402693443,
         message="SecurityPolicyRule",
+    )
+    validate_only = proto.Field(
+        proto.BOOL,
+        number=242744629,
+        optional=True,
     )
 
 
@@ -57929,21 +60224,21 @@ class PerInstanceConfig(proto.Message):
             field can be used in optimistic locking. It is
             ignored when inserting a per-instance config. An
             up-to-date fingerprint must be provided in order
-            to update an existing per-instance config or the
-            field needs to be unset.
+            to update an existing per-instance configuration
+            or the field needs to be unset.
 
             This field is a member of `oneof`_ ``_fingerprint``.
         name (str):
-            The name of a per-instance config and its
-            corresponding instance. Serves as a merge key
-            during UpdatePerInstanceConfigs operations, that
-            is, if a per-instance config with the same name
-            exists then it will be updated, otherwise a new
-            one will be created for the VM instance with the
-            same name. An attempt to create a per-instance
-            config for a VM instance that either doesn't
-            exist or is not part of the group will result in
-            an error.
+            The name of a per-instance configuration and
+            its corresponding instance. Serves as a merge
+            key during UpdatePerInstanceConfigs operations,
+            that is, if a per-instance configuration with
+            the same name exists then it will be updated,
+            otherwise a new one will be created for the VM
+            instance with the same name. An attempt to
+            create a per-instance configconfiguration for a
+            VM instance that either doesn't exist or is not
+            part of the group will result in an error.
 
             This field is a member of `oneof`_ ``_name``.
         preserved_state (google.cloud.compute_v1.types.PreservedState):
@@ -57954,15 +60249,15 @@ class PerInstanceConfig(proto.Message):
             This field is a member of `oneof`_ ``_preserved_state``.
         status (str):
             The status of applying this per-instance
-            config on the corresponding managed instance.
-            Check the Status enum for the list of possible
-            values.
+            configuration on the corresponding managed
+            instance. Check the Status enum for the list of
+            possible values.
 
             This field is a member of `oneof`_ ``_status``.
     """
 
     class Status(proto.Enum):
-        r"""The status of applying this per-instance config on the
+        r"""The status of applying this per-instance configuration on the
         corresponding managed instance.
         """
         UNDEFINED_STATUS = 0
@@ -59362,6 +61657,7 @@ class Quota(proto.Message):
         COMMITTED_N2A_CPUS = 40064304
         COMMITTED_N2D_CPUS = 125951757
         COMMITTED_N2_CPUS = 322589603
+        COMMITTED_NVIDIA_A100_80GB_GPUS = 464326565
         COMMITTED_NVIDIA_A100_GPUS = 375799445
         COMMITTED_NVIDIA_K80_GPUS = 3857188
         COMMITTED_NVIDIA_P100_GPUS = 107528100
@@ -59412,6 +61708,7 @@ class Quota(proto.Message):
         NETWORK_FIREWALL_POLICIES = 101117374
         NODE_GROUPS = 24624817
         NODE_TEMPLATES = 474896668
+        NVIDIA_A100_80GB_GPUS = 286389320
         NVIDIA_A100_GPUS = 504872978
         NVIDIA_K80_GPUS = 163886599
         NVIDIA_P100_GPUS = 236601633
@@ -59425,6 +61722,7 @@ class Quota(proto.Message):
         PD_EXTREME_TOTAL_PROVISIONED_IOPS = 69593965
         PREEMPTIBLE_CPUS = 251184841
         PREEMPTIBLE_LOCAL_SSD_GB = 260819336
+        PREEMPTIBLE_NVIDIA_A100_80GB_GPUS = 151942410
         PREEMPTIBLE_NVIDIA_A100_GPUS = 68832784
         PREEMPTIBLE_NVIDIA_K80_GPUS = 374960201
         PREEMPTIBLE_NVIDIA_P100_GPUS = 337432351
@@ -60187,8 +62485,8 @@ class RegionInstanceGroupManagerPatchInstanceConfigReq(proto.Message):
 
     Attributes:
         per_instance_configs (Sequence[google.cloud.compute_v1.types.PerInstanceConfig]):
-            The list of per-instance configs to insert or
-            patch on this managed instance group.
+            The list of per-instance configurations to
+            insert or patch on this managed instance group.
     """
 
     per_instance_configs = proto.RepeatedField(
@@ -60203,8 +62501,8 @@ class RegionInstanceGroupManagerUpdateInstanceConfigReq(proto.Message):
 
     Attributes:
         per_instance_configs (Sequence[google.cloud.compute_v1.types.PerInstanceConfig]):
-            The list of per-instance configs to insert or
-            patch on this managed instance group.
+            The list of per-instance configurations to
+            insert or patch on this managed instance group.
     """
 
     per_instance_configs = proto.RepeatedField(
@@ -62862,10 +65160,10 @@ class ResourcePolicyGroupPlacementPolicy(proto.Message):
 
     Attributes:
         availability_domain_count (int):
-            The number of availability domains instances
-            will be spread across. If two instances are in
-            different availability domain, they will not be
-            put in the same low latency network
+            The number of availability domains to spread
+            instances across. If two instances are in
+            different availability domain, they are not in
+            the same low latency network.
 
             This field is a member of `oneof`_ ``_availability_domain_count``.
         collocation (str):
@@ -62875,7 +65173,11 @@ class ResourcePolicyGroupPlacementPolicy(proto.Message):
 
             This field is a member of `oneof`_ ``_collocation``.
         vm_count (int):
-            Number of vms in this placement group
+            Number of VMs in this placement group. Google
+            does not recommend that you use this field
+            unless you use a compact policy and you want
+            your policy to work only if it contains this
+            exact number of VMs.
 
             This field is a member of `oneof`_ ``_vm_count``.
     """
@@ -64733,6 +67035,11 @@ class RouterNat(proto.Message):
         enable_endpoint_independent_mapping (bool):
 
             This field is a member of `oneof`_ ``_enable_endpoint_independent_mapping``.
+        endpoint_types (Sequence[str]):
+            List of NAT-ted endpoint types supported by the Nat Gateway.
+            If the list is empty, then it will be equivalent to include
+            ENDPOINT_TYPE_VM Check the EndpointTypes enum for the list
+            of possible values.
         icmp_idle_timeout_sec (int):
             Timeout (in seconds) for ICMP connections.
             Defaults to 30s if not set.
@@ -64833,6 +67140,12 @@ class RouterNat(proto.Message):
             This field is a member of `oneof`_ ``_udp_idle_timeout_sec``.
     """
 
+    class EndpointTypes(proto.Enum):
+        r""""""
+        UNDEFINED_ENDPOINT_TYPES = 0
+        ENDPOINT_TYPE_SWG = 159344456
+        ENDPOINT_TYPE_VM = 57095474
+
     class NatIpAllocateOption(proto.Enum):
         r"""Specify the NatIpAllocateOption, which can take one of the following
         values: - MANUAL_ONLY: Uses only Nat IP addresses provided by
@@ -64877,6 +67190,10 @@ class RouterNat(proto.Message):
         proto.BOOL,
         number=259441819,
         optional=True,
+    )
+    endpoint_types = proto.RepeatedField(
+        proto.STRING,
+        number=502633807,
     )
     icmp_idle_timeout_sec = proto.Field(
         proto.INT32,
@@ -66067,10 +68384,9 @@ class Scheduling(proto.Message):
             instance. For standard instances, the default
             behavior is MIGRATE. For preemptible instances,
             the default and only possible behavior is
-            TERMINATE. For more information, see Set VM
-            availability policies. Check the
-            OnHostMaintenance enum for the list of possible
-            values.
+            TERMINATE. For more information, see Set VM host
+            maintenance policy. Check the OnHostMaintenance
+            enum for the list of possible values.
 
             This field is a member of `oneof`_ ``_on_host_maintenance``.
         preemptible (bool):
@@ -66100,8 +68416,8 @@ class Scheduling(proto.Message):
         r"""Defines the maintenance behavior for this instance. For
         standard instances, the default behavior is MIGRATE. For
         preemptible instances, the default and only possible behavior is
-        TERMINATE. For more information, see Set VM availability
-        policies.
+        TERMINATE. For more information, see Set VM host maintenance
+        policy.
         """
         UNDEFINED_ON_HOST_MAINTENANCE = 0
         MIGRATE = 165699979
@@ -68096,6 +70412,112 @@ class SetBackupTargetPoolRequest(proto.Message):
         proto.MESSAGE,
         number=523721712,
         message="TargetReference",
+    )
+
+
+class SetCertificateMapTargetHttpsProxyRequest(proto.Message):
+    r"""A request message for TargetHttpsProxies.SetCertificateMap.
+    See the method description for details.
+
+    Attributes:
+        project (str):
+            Project ID for this request.
+        request_id (str):
+            An optional request ID to identify requests.
+            Specify a unique request ID so that if you must
+            retry your request, the server will know to
+            ignore the request if it has already been
+            completed. For example, consider a situation
+            where you make an initial request and the
+            request times out. If you make the request again
+            with the same request ID, the server can check
+            if original operation with the same request ID
+            was received, and if so, will ignore the second
+            request. This prevents clients from accidentally
+            creating duplicate commitments. The request ID
+            must be a valid UUID with the exception that
+            zero UUID is not supported (
+            00000000-0000-0000-0000-000000000000).
+
+            This field is a member of `oneof`_ ``_request_id``.
+        target_https_proxies_set_certificate_map_request_resource (google.cloud.compute_v1.types.TargetHttpsProxiesSetCertificateMapRequest):
+            The body resource for this request
+        target_https_proxy (str):
+            Name of the TargetHttpsProxy resource whose
+            CertificateMap is to be set. The name must be
+            1-63 characters long, and comply with RFC1035.
+    """
+
+    project = proto.Field(
+        proto.STRING,
+        number=227560217,
+    )
+    request_id = proto.Field(
+        proto.STRING,
+        number=37109963,
+        optional=True,
+    )
+    target_https_proxies_set_certificate_map_request_resource = proto.Field(
+        proto.MESSAGE,
+        number=467639099,
+        message="TargetHttpsProxiesSetCertificateMapRequest",
+    )
+    target_https_proxy = proto.Field(
+        proto.STRING,
+        number=52336748,
+    )
+
+
+class SetCertificateMapTargetSslProxyRequest(proto.Message):
+    r"""A request message for TargetSslProxies.SetCertificateMap. See
+    the method description for details.
+
+    Attributes:
+        project (str):
+            Project ID for this request.
+        request_id (str):
+            An optional request ID to identify requests.
+            Specify a unique request ID so that if you must
+            retry your request, the server will know to
+            ignore the request if it has already been
+            completed. For example, consider a situation
+            where you make an initial request and the
+            request times out. If you make the request again
+            with the same request ID, the server can check
+            if original operation with the same request ID
+            was received, and if so, will ignore the second
+            request. This prevents clients from accidentally
+            creating duplicate commitments. The request ID
+            must be a valid UUID with the exception that
+            zero UUID is not supported (
+            00000000-0000-0000-0000-000000000000).
+
+            This field is a member of `oneof`_ ``_request_id``.
+        target_ssl_proxies_set_certificate_map_request_resource (google.cloud.compute_v1.types.TargetSslProxiesSetCertificateMapRequest):
+            The body resource for this request
+        target_ssl_proxy (str):
+            Name of the TargetSslProxy resource whose
+            CertificateMap is to be set. The name must be
+            1-63 characters long, and comply with RFC1035.
+    """
+
+    project = proto.Field(
+        proto.STRING,
+        number=227560217,
+    )
+    request_id = proto.Field(
+        proto.STRING,
+        number=37109963,
+        optional=True,
+    )
+    target_ssl_proxies_set_certificate_map_request_resource = proto.Field(
+        proto.MESSAGE,
+        number=343984954,
+        message="TargetSslProxiesSetCertificateMapRequest",
+    )
+    target_ssl_proxy = proto.Field(
+        proto.STRING,
+        number=338795853,
     )
 
 
@@ -74461,6 +76883,24 @@ class TargetHttpsProxiesScopedList(proto.Message):
     )
 
 
+class TargetHttpsProxiesSetCertificateMapRequest(proto.Message):
+    r"""
+
+    Attributes:
+        certificate_map (str):
+            URL of the Certificate Map to associate with
+            this TargetHttpsProxy.
+
+            This field is a member of `oneof`_ ``_certificate_map``.
+    """
+
+    certificate_map = proto.Field(
+        proto.STRING,
+        number=156463796,
+        optional=True,
+    )
+
+
 class TargetHttpsProxiesSetQuicOverrideRequest(proto.Message):
     r"""
 
@@ -74530,6 +76970,14 @@ class TargetHttpsProxy(proto.Message):
             Note: This field currently has no impact.
 
             This field is a member of `oneof`_ ``_authorization_policy``.
+        certificate_map (str):
+            URL of a certificate map that identifies a
+            certificate map associated with the given target
+            proxy. This field can only be set for global
+            target proxies. If set, sslCertificates will be
+            ignored.
+
+            This field is a member of `oneof`_ ``_certificate_map``.
         creation_timestamp (str):
             [Output Only] Creation timestamp in RFC3339 text format.
 
@@ -74671,6 +77119,11 @@ class TargetHttpsProxy(proto.Message):
     authorization_policy = proto.Field(
         proto.STRING,
         number=33945528,
+        optional=True,
+    )
+    certificate_map = proto.Field(
+        proto.STRING,
+        number=156463796,
         optional=True,
     )
     creation_timestamp = proto.Field(
@@ -75711,6 +78164,24 @@ class TargetSslProxiesSetBackendServiceRequest(proto.Message):
     )
 
 
+class TargetSslProxiesSetCertificateMapRequest(proto.Message):
+    r"""
+
+    Attributes:
+        certificate_map (str):
+            URL of the Certificate Map to associate with
+            this TargetSslProxy.
+
+            This field is a member of `oneof`_ ``_certificate_map``.
+    """
+
+    certificate_map = proto.Field(
+        proto.STRING,
+        number=156463796,
+        optional=True,
+    )
+
+
 class TargetSslProxiesSetProxyHeaderRequest(proto.Message):
     r"""
 
@@ -75764,6 +78235,14 @@ class TargetSslProxy(proto.Message):
     read Using Target Proxies.
 
     Attributes:
+        certificate_map (str):
+            URL of a certificate map that identifies a
+            certificate map associated with the given target
+            proxy. This field can only be set for global
+            target proxies. If set, sslCertificates will be
+            ignored.
+
+            This field is a member of `oneof`_ ``_certificate_map``.
         creation_timestamp (str):
             [Output Only] Creation timestamp in RFC3339 text format.
 
@@ -75833,6 +78312,11 @@ class TargetSslProxy(proto.Message):
         NONE = 2402104
         PROXY_V1 = 334352940
 
+    certificate_map = proto.Field(
+        proto.STRING,
+        number=156463796,
+        optional=True,
+    )
     creation_timestamp = proto.Field(
         proto.STRING,
         number=30525366,
@@ -79302,26 +81786,140 @@ class UsableSubnetwork(proto.Message):
     permission on.
 
     Attributes:
+        external_ipv6_prefix (str):
+            [Output Only] The external IPv6 address range that is
+            assigned to this subnetwork.
+
+            This field is a member of `oneof`_ ``_external_ipv6_prefix``.
+        internal_ipv6_prefix (str):
+            [Output Only] The internal IPv6 address range that is
+            assigned to this subnetwork.
+
+            This field is a member of `oneof`_ ``_internal_ipv6_prefix``.
         ip_cidr_range (str):
             The range of internal addresses that are
             owned by this subnetwork.
 
             This field is a member of `oneof`_ ``_ip_cidr_range``.
+        ipv6_access_type (str):
+            The access type of IPv6 address this subnet holds. It's
+            immutable and can only be specified during creation or the
+            first time the subnet is updated into IPV4_IPV6 dual stack.
+            Check the Ipv6AccessType enum for the list of possible
+            values.
+
+            This field is a member of `oneof`_ ``_ipv6_access_type``.
         network (str):
             Network URL.
 
             This field is a member of `oneof`_ ``_network``.
+        purpose (str):
+            The purpose of the resource. This field can be either
+            PRIVATE_RFC_1918 or INTERNAL_HTTPS_LOAD_BALANCER. A
+            subnetwork with purpose set to INTERNAL_HTTPS_LOAD_BALANCER
+            is a user-created subnetwork that is reserved for Internal
+            HTTP(S) Load Balancing. If unspecified, the purpose defaults
+            to PRIVATE_RFC_1918. The enableFlowLogs field isn't
+            supported with the purpose field set to
+            INTERNAL_HTTPS_LOAD_BALANCER. Check the Purpose enum for the
+            list of possible values.
+
+            This field is a member of `oneof`_ ``_purpose``.
+        role (str):
+            The role of subnetwork. Currently, this field is only used
+            when purpose = INTERNAL_HTTPS_LOAD_BALANCER. The value can
+            be set to ACTIVE or BACKUP. An ACTIVE subnetwork is one that
+            is currently being used for Internal HTTP(S) Load Balancing.
+            A BACKUP subnetwork is one that is ready to be promoted to
+            ACTIVE or is currently draining. This field can be updated
+            with a patch request. Check the Role enum for the list of
+            possible values.
+
+            This field is a member of `oneof`_ ``_role``.
         secondary_ip_ranges (Sequence[google.cloud.compute_v1.types.UsableSubnetworkSecondaryRange]):
             Secondary IP ranges.
+        stack_type (str):
+            The stack type for the subnet. If set to IPV4_ONLY, new VMs
+            in the subnet are assigned IPv4 addresses only. If set to
+            IPV4_IPV6, new VMs in the subnet can be assigned both IPv4
+            and IPv6 addresses. If not specified, IPV4_ONLY is used.
+            This field can be both set at resource creation time and
+            updated using patch. Check the StackType enum for the list
+            of possible values.
+
+            This field is a member of `oneof`_ ``_stack_type``.
         subnetwork (str):
             Subnetwork URL.
 
             This field is a member of `oneof`_ ``_subnetwork``.
     """
 
+    class Ipv6AccessType(proto.Enum):
+        r"""The access type of IPv6 address this subnet holds. It's immutable
+        and can only be specified during creation or the first time the
+        subnet is updated into IPV4_IPV6 dual stack.
+        """
+        UNDEFINED_IPV6_ACCESS_TYPE = 0
+        EXTERNAL = 35607499
+        INTERNAL = 279295677
+
+    class Purpose(proto.Enum):
+        r"""The purpose of the resource. This field can be either
+        PRIVATE_RFC_1918 or INTERNAL_HTTPS_LOAD_BALANCER. A subnetwork with
+        purpose set to INTERNAL_HTTPS_LOAD_BALANCER is a user-created
+        subnetwork that is reserved for Internal HTTP(S) Load Balancing. If
+        unspecified, the purpose defaults to PRIVATE_RFC_1918. The
+        enableFlowLogs field isn't supported with the purpose field set to
+        INTERNAL_HTTPS_LOAD_BALANCER.
+        """
+        UNDEFINED_PURPOSE = 0
+        INTERNAL_HTTPS_LOAD_BALANCER = 248748889
+        PRIVATE = 403485027
+        PRIVATE_RFC_1918 = 254902107
+        PRIVATE_SERVICE_CONNECT = 48134724
+        REGIONAL_MANAGED_PROXY = 153049966
+
+    class Role(proto.Enum):
+        r"""The role of subnetwork. Currently, this field is only used when
+        purpose = INTERNAL_HTTPS_LOAD_BALANCER. The value can be set to
+        ACTIVE or BACKUP. An ACTIVE subnetwork is one that is currently
+        being used for Internal HTTP(S) Load Balancing. A BACKUP subnetwork
+        is one that is ready to be promoted to ACTIVE or is currently
+        draining. This field can be updated with a patch request.
+        """
+        UNDEFINED_ROLE = 0
+        ACTIVE = 314733318
+        BACKUP = 341010882
+
+    class StackType(proto.Enum):
+        r"""The stack type for the subnet. If set to IPV4_ONLY, new VMs in the
+        subnet are assigned IPv4 addresses only. If set to IPV4_IPV6, new
+        VMs in the subnet can be assigned both IPv4 and IPv6 addresses. If
+        not specified, IPV4_ONLY is used. This field can be both set at
+        resource creation time and updated using patch.
+        """
+        UNDEFINED_STACK_TYPE = 0
+        IPV4_IPV6 = 22197249
+        IPV4_ONLY = 22373798
+
+    external_ipv6_prefix = proto.Field(
+        proto.STRING,
+        number=139299190,
+        optional=True,
+    )
+    internal_ipv6_prefix = proto.Field(
+        proto.STRING,
+        number=506270056,
+        optional=True,
+    )
     ip_cidr_range = proto.Field(
         proto.STRING,
         number=98117322,
+        optional=True,
+    )
+    ipv6_access_type = proto.Field(
+        proto.STRING,
+        number=504658653,
         optional=True,
     )
     network = proto.Field(
@@ -79329,10 +81927,25 @@ class UsableSubnetwork(proto.Message):
         number=232872494,
         optional=True,
     )
+    purpose = proto.Field(
+        proto.STRING,
+        number=316407070,
+        optional=True,
+    )
+    role = proto.Field(
+        proto.STRING,
+        number=3506294,
+        optional=True,
+    )
     secondary_ip_ranges = proto.RepeatedField(
         proto.MESSAGE,
         number=136658915,
         message="UsableSubnetworkSecondaryRange",
+    )
+    stack_type = proto.Field(
+        proto.STRING,
+        number=425908881,
+        optional=True,
     )
     subnetwork = proto.Field(
         proto.STRING,
@@ -80945,6 +83558,7 @@ class Warning(proto.Message):
         MISSING_TYPE_DEPENDENCY = 344505463
         NEXT_HOP_ADDRESS_NOT_ASSIGNED = 324964999
         NEXT_HOP_CANNOT_IP_FORWARD = 383382887
+        NEXT_HOP_INSTANCE_HAS_NO_IPV6_INTERFACE = 146748434
         NEXT_HOP_INSTANCE_NOT_FOUND = 464250446
         NEXT_HOP_INSTANCE_NOT_ON_NETWORK = 243758146
         NEXT_HOP_NOT_RUNNING = 417081265
@@ -81016,6 +83630,7 @@ class Warnings(proto.Message):
         MISSING_TYPE_DEPENDENCY = 344505463
         NEXT_HOP_ADDRESS_NOT_ASSIGNED = 324964999
         NEXT_HOP_CANNOT_IP_FORWARD = 383382887
+        NEXT_HOP_INSTANCE_HAS_NO_IPV6_INTERFACE = 146748434
         NEXT_HOP_INSTANCE_NOT_FOUND = 464250446
         NEXT_HOP_INSTANCE_NOT_ON_NETWORK = 243758146
         NEXT_HOP_NOT_RUNNING = 417081265

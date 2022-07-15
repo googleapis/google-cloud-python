@@ -230,6 +230,7 @@ def test_security_policies_client_client_options(
             quota_project_id=None,
             client_info=transports.base.DEFAULT_CLIENT_INFO,
             always_use_jwt_access=True,
+            api_audience=None,
         )
 
     # Check the case api_endpoint is not provided and GOOGLE_API_USE_MTLS_ENDPOINT is
@@ -247,6 +248,7 @@ def test_security_policies_client_client_options(
                 quota_project_id=None,
                 client_info=transports.base.DEFAULT_CLIENT_INFO,
                 always_use_jwt_access=True,
+                api_audience=None,
             )
 
     # Check the case api_endpoint is not provided and GOOGLE_API_USE_MTLS_ENDPOINT is
@@ -264,6 +266,7 @@ def test_security_policies_client_client_options(
                 quota_project_id=None,
                 client_info=transports.base.DEFAULT_CLIENT_INFO,
                 always_use_jwt_access=True,
+                api_audience=None,
             )
 
     # Check the case api_endpoint is not provided and GOOGLE_API_USE_MTLS_ENDPOINT has
@@ -293,6 +296,25 @@ def test_security_policies_client_client_options(
             quota_project_id="octopus",
             client_info=transports.base.DEFAULT_CLIENT_INFO,
             always_use_jwt_access=True,
+            api_audience=None,
+        )
+    # Check the case api_endpoint is provided
+    options = client_options.ClientOptions(
+        api_audience="https://language.googleapis.com"
+    )
+    with mock.patch.object(transport_class, "__init__") as patched:
+        patched.return_value = None
+        client = client_class(client_options=options, transport=transport_name)
+        patched.assert_called_once_with(
+            credentials=None,
+            credentials_file=None,
+            host=client.DEFAULT_ENDPOINT,
+            scopes=None,
+            client_cert_source_for_mtls=None,
+            quota_project_id=None,
+            client_info=transports.base.DEFAULT_CLIENT_INFO,
+            always_use_jwt_access=True,
+            api_audience="https://language.googleapis.com",
         )
 
 
@@ -353,6 +375,7 @@ def test_security_policies_client_mtls_env_auto(
                 quota_project_id=None,
                 client_info=transports.base.DEFAULT_CLIENT_INFO,
                 always_use_jwt_access=True,
+                api_audience=None,
             )
 
     # Check the case ADC client cert is provided. Whether client cert is used depends on
@@ -387,6 +410,7 @@ def test_security_policies_client_mtls_env_auto(
                         quota_project_id=None,
                         client_info=transports.base.DEFAULT_CLIENT_INFO,
                         always_use_jwt_access=True,
+                        api_audience=None,
                     )
 
     # Check the case client_cert_source and ADC client cert are not provided.
@@ -409,6 +433,7 @@ def test_security_policies_client_mtls_env_auto(
                     quota_project_id=None,
                     client_info=transports.base.DEFAULT_CLIENT_INFO,
                     always_use_jwt_access=True,
+                    api_audience=None,
                 )
 
 
@@ -511,6 +536,7 @@ def test_security_policies_client_client_options_scopes(
             quota_project_id=None,
             client_info=transports.base.DEFAULT_CLIENT_INFO,
             always_use_jwt_access=True,
+            api_audience=None,
         )
 
 
@@ -543,6 +569,7 @@ def test_security_policies_client_client_options_credentials_file(
             quota_project_id=None,
             client_info=transports.base.DEFAULT_CLIENT_INFO,
             always_use_jwt_access=True,
+            api_audience=None,
         )
 
 
@@ -696,6 +723,8 @@ def test_add_rule_rest_required_fields(
     unset_fields = transport_class(
         credentials=ga_credentials.AnonymousCredentials()
     ).add_rule._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("validate_only",))
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -748,7 +777,7 @@ def test_add_rule_rest_unset_required_fields():
 
     unset_fields = transport.add_rule._get_unset_required_fields({})
     assert set(unset_fields) == (
-        set(())
+        set(("validateOnly",))
         & set(
             (
                 "project",
@@ -1075,6 +1104,8 @@ def test_add_rule_unary_rest_required_fields(
     unset_fields = transport_class(
         credentials=ga_credentials.AnonymousCredentials()
     ).add_rule._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("validate_only",))
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -1127,7 +1158,7 @@ def test_add_rule_unary_rest_unset_required_fields():
 
     unset_fields = transport.add_rule._get_unset_required_fields({})
     assert set(unset_fields) == (
-        set(())
+        set(("validateOnly",))
         & set(
             (
                 "project",
@@ -3030,7 +3061,12 @@ def test_insert_rest_required_fields(request_type=compute.InsertSecurityPolicyRe
         credentials=ga_credentials.AnonymousCredentials()
     ).insert._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("request_id",))
+    assert not set(unset_fields) - set(
+        (
+            "request_id",
+            "validate_only",
+        )
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -3081,7 +3117,12 @@ def test_insert_rest_unset_required_fields():
 
     unset_fields = transport.insert._get_unset_required_fields({})
     assert set(unset_fields) == (
-        set(("requestId",))
+        set(
+            (
+                "requestId",
+                "validateOnly",
+            )
+        )
         & set(
             (
                 "project",
@@ -3468,7 +3509,12 @@ def test_insert_unary_rest_required_fields(
         credentials=ga_credentials.AnonymousCredentials()
     ).insert._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("request_id",))
+    assert not set(unset_fields) - set(
+        (
+            "request_id",
+            "validate_only",
+        )
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -3519,7 +3565,12 @@ def test_insert_unary_rest_unset_required_fields():
 
     unset_fields = transport.insert._get_unset_required_fields({})
     assert set(unset_fields) == (
-        set(("requestId",))
+        set(
+            (
+                "requestId",
+                "validateOnly",
+            )
+        )
         & set(
             (
                 "project",
@@ -5447,7 +5498,12 @@ def test_patch_rule_rest_required_fields(
         credentials=ga_credentials.AnonymousCredentials()
     ).patch_rule._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("priority",))
+    assert not set(unset_fields) - set(
+        (
+            "priority",
+            "validate_only",
+        )
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -5500,7 +5556,12 @@ def test_patch_rule_rest_unset_required_fields():
 
     unset_fields = transport.patch_rule._get_unset_required_fields({})
     assert set(unset_fields) == (
-        set(("priority",))
+        set(
+            (
+                "priority",
+                "validateOnly",
+            )
+        )
         & set(
             (
                 "project",
@@ -5828,7 +5889,12 @@ def test_patch_rule_unary_rest_required_fields(
         credentials=ga_credentials.AnonymousCredentials()
     ).patch_rule._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("priority",))
+    assert not set(unset_fields) - set(
+        (
+            "priority",
+            "validate_only",
+        )
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -5881,7 +5947,12 @@ def test_patch_rule_unary_rest_unset_required_fields():
 
     unset_fields = transport.patch_rule._get_unset_required_fields({})
     assert set(unset_fields) == (
-        set(("priority",))
+        set(
+            (
+                "priority",
+                "validateOnly",
+            )
+        )
         & set(
             (
                 "project",
@@ -7162,4 +7233,5 @@ def test_api_key_credentials(client_class, transport_class):
                 quota_project_id=None,
                 client_info=transports.base.DEFAULT_CLIENT_INFO,
                 always_use_jwt_access=True,
+                api_audience=None,
             )

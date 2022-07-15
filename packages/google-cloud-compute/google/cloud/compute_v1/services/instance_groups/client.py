@@ -403,6 +403,7 @@ class InstanceGroupsClient(metaclass=InstanceGroupsClientMeta):
                 quota_project_id=client_options.quota_project_id,
                 client_info=client_info,
                 always_use_jwt_access=True,
+                api_audience=client_options.api_audience,
             )
 
     def add_instances_unary(
@@ -1445,8 +1446,10 @@ class InstanceGroupsClient(metaclass=InstanceGroupsClientMeta):
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListInstancesPager:
-        r"""Lists the instances in the specified instance group.
-        The orderBy query parameter is not supported.
+        r"""Lists the instances in the specified instance group. The orderBy
+        query parameter is not supported. The filter query parameter is
+        supported, but only for expressions that use ``eq`` (equal) or
+        ``ne`` (not equal) operators.
 
         Args:
             request (Union[google.cloud.compute_v1.types.ListInstancesInstanceGroupsRequest, dict]):

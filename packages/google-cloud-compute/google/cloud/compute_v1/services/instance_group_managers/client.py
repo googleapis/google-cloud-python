@@ -403,6 +403,7 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
                 quota_project_id=client_options.quota_project_id,
                 client_info=client_info,
                 always_use_jwt_access=True,
+                api_audience=client_options.api_audience,
             )
 
     def abandon_instances_unary(
@@ -1083,9 +1084,9 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
-        r"""Creates instances with per-instance configs in this
-        managed instance group. Instances are created using the
-        current instance template. The create instances
+        r"""Creates instances with per-instance configurations in
+        this managed instance group. Instances are created using
+        the current instance template. The create instances
         operation is marked DONE if the createInstances request
         is successful. The underlying actions take additional
         time. You must separately verify the status of the
@@ -1209,9 +1210,9 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
-        r"""Creates instances with per-instance configs in this
-        managed instance group. Instances are created using the
-        current instance template. The create instances
+        r"""Creates instances with per-instance configurations in
+        this managed instance group. Instances are created using
+        the current instance template. The create instances
         operation is marked DONE if the createInstances request
         is successful. The underlying actions take additional
         time. You must separately verify the status of the
@@ -1884,8 +1885,8 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
-        r"""Deletes selected per-instance configs for the managed
-        instance group.
+        r"""Deletes selected per-instance configurations for the
+        managed instance group.
 
         Args:
             request (Union[google.cloud.compute_v1.types.DeletePerInstanceConfigsInstanceGroupManagerRequest, dict]):
@@ -2015,8 +2016,8 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
-        r"""Deletes selected per-instance configs for the managed
-        instance group.
+        r"""Deletes selected per-instance configurations for the
+        managed instance group.
 
         Args:
             request (Union[google.cloud.compute_v1.types.DeletePerInstanceConfigsInstanceGroupManagerRequest, dict]):
@@ -2865,9 +2866,9 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListPerInstanceConfigsPager:
-        r"""Lists all of the per-instance configs defined for the
-        managed instance group. The orderBy query parameter is
-        not supported.
+        r"""Lists all of the per-instance configurations defined
+        for the managed instance group. The orderBy query
+        parameter is not supported.
 
         Args:
             request (Union[google.cloud.compute_v1.types.ListPerInstanceConfigsInstanceGroupManagersRequest, dict]):
@@ -3265,10 +3266,10 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
-        r"""Inserts or patches per-instance configs for the
-        managed instance group. perInstanceConfig.name serves as
-        a key used to distinguish whether to perform insert or
-        patch.
+        r"""Inserts or patches per-instance configurations for
+        the managed instance group. perInstanceConfig.name
+        serves as a key used to distinguish whether to perform
+        insert or patch.
 
         Args:
             request (Union[google.cloud.compute_v1.types.PatchPerInstanceConfigsInstanceGroupManagerRequest, dict]):
@@ -3398,10 +3399,10 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
-        r"""Inserts or patches per-instance configs for the
-        managed instance group. perInstanceConfig.name serves as
-        a key used to distinguish whether to perform insert or
-        patch.
+        r"""Inserts or patches per-instance configurations for
+        the managed instance group. perInstanceConfig.name
+        serves as a key used to distinguish whether to perform
+        insert or patch.
 
         Args:
             request (Union[google.cloud.compute_v1.types.PatchPerInstanceConfigsInstanceGroupManagerRequest, dict]):
@@ -4702,10 +4703,10 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
-        r"""Inserts or updates per-instance configs for the
-        managed instance group. perInstanceConfig.name serves as
-        a key used to distinguish whether to perform insert or
-        patch.
+        r"""Inserts or updates per-instance configurations for
+        the managed instance group. perInstanceConfig.name
+        serves as a key used to distinguish whether to perform
+        insert or patch.
 
         Args:
             request (Union[google.cloud.compute_v1.types.UpdatePerInstanceConfigsInstanceGroupManagerRequest, dict]):
@@ -4835,10 +4836,10 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
-        r"""Inserts or updates per-instance configs for the
-        managed instance group. perInstanceConfig.name serves as
-        a key used to distinguish whether to perform insert or
-        patch.
+        r"""Inserts or updates per-instance configurations for
+        the managed instance group. perInstanceConfig.name
+        serves as a key used to distinguish whether to perform
+        insert or patch.
 
         Args:
             request (Union[google.cloud.compute_v1.types.UpdatePerInstanceConfigsInstanceGroupManagerRequest, dict]):

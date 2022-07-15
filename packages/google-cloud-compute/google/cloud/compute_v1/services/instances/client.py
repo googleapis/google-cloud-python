@@ -401,6 +401,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
                 quota_project_id=client_options.quota_project_id,
                 client_info=client_info,
                 always_use_jwt_access=True,
+                api_audience=client_options.api_audience,
             )
 
     def add_access_config_unary(
@@ -6169,7 +6170,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
         a ``TERMINATED`` state. See Instance Life Cycle for more
         information on the possible instance states. For more
         information about setting scheduling options for a VM, see Set
-        VM availability policies.
+        VM host maintenance policy.
 
         Args:
             request (Union[google.cloud.compute_v1.types.SetSchedulingInstanceRequest, dict]):
@@ -6281,7 +6282,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
         a ``TERMINATED`` state. See Instance Life Cycle for more
         information on the possible instance states. For more
         information about setting scheduling options for a VM, see Set
-        VM availability policies.
+        VM host maintenance policy.
 
         Args:
             request (Union[google.cloud.compute_v1.types.SetSchedulingInstanceRequest, dict]):
