@@ -927,20 +927,11 @@ class StreamingPullManager(object):
             A request suitable for being the first request on the stream (and not
             suitable for any other purpose).
         """
-        # Any ack IDs that are under lease management need to have their
-        # deadline extended immediately.
-        if self._leaser is not None:
-            # Explicitly copy the list, as it could be modified by another
-            # thread.
-            lease_ids = list(self._leaser.ack_ids)
-        else:
-            lease_ids = []
-
         # Put the request together.
         request = gapic_types.StreamingPullRequest(
-            modify_deadline_ack_ids=list(lease_ids),
-            modify_deadline_seconds=[self.ack_deadline] * len(lease_ids),
             stream_ack_deadline_seconds=stream_ack_deadline_seconds,
+            modify_deadline_ack_ids=[],
+            modify_deadline_seconds=[],
             subscription=self._subscription,
             client_id=self._client_id,
             max_outstanding_messages=(
