@@ -1123,13 +1123,15 @@ class CertificateMap(proto.Message):
 
         Attributes:
             target_https_proxy (str):
-                A name must be in the format
-                ``projects/*/locations/*/targetHttpsProxies/*``.
+                This field returns the resource name in the following
+                format:
+                ``//compute.googleapis.com/projects/*/global/targetHttpsProxies/*``.
 
                 This field is a member of `oneof`_ ``target_proxy``.
             target_ssl_proxy (str):
-                A name must be in the format
-                ``projects/*/locations/*/targetSslProxies/*``.
+                This field returns the resource name in the following
+                format:
+                ``//compute.googleapis.com/projects/*/global/targetSslProxies/*``.
 
                 This field is a member of `oneof`_ ``target_proxy``.
             ip_configs (Sequence[google.cloud.certificate_manager_v1.types.CertificateMap.GclbTarget.IpConfig]):
