@@ -214,6 +214,8 @@ class ListRepositoriesResponse(proto.Message):
             A token which can be sent as ``page_token`` to retrieve the
             next page. If this field is omitted, there are no subsequent
             pages.
+        unreachable (Sequence[str]):
+            Locations which could not be reached.
     """
 
     @property
@@ -228,6 +230,10 @@ class ListRepositoriesResponse(proto.Message):
     next_page_token = proto.Field(
         proto.STRING,
         number=2,
+    )
+    unreachable = proto.RepeatedField(
+        proto.STRING,
+        number=3,
     )
 
 
@@ -425,6 +431,8 @@ class ListWorkspacesResponse(proto.Message):
             A token, which can be sent as ``page_token`` to retrieve the
             next page. If this field is omitted, there are no subsequent
             pages.
+        unreachable (Sequence[str]):
+            Locations which could not be reached.
     """
 
     @property
@@ -439,6 +447,10 @@ class ListWorkspacesResponse(proto.Message):
     next_page_token = proto.Field(
         proto.STRING,
         number=2,
+    )
+    unreachable = proto.RepeatedField(
+        proto.STRING,
+        number=3,
     )
 
 
@@ -1319,6 +1331,8 @@ class ListCompilationResultsResponse(proto.Message):
             A token, which can be sent as ``page_token`` to retrieve the
             next page. If this field is omitted, there are no subsequent
             pages.
+        unreachable (Sequence[str]):
+            Locations which could not be reached.
     """
 
     @property
@@ -1333,6 +1347,10 @@ class ListCompilationResultsResponse(proto.Message):
     next_page_token = proto.Field(
         proto.STRING,
         number=2,
+    )
+    unreachable = proto.RepeatedField(
+        proto.STRING,
+        number=3,
     )
 
 
@@ -2050,6 +2068,8 @@ class ListWorkflowInvocationsResponse(proto.Message):
             A token, which can be sent as ``page_token`` to retrieve the
             next page. If this field is omitted, there are no subsequent
             pages.
+        unreachable (Sequence[str]):
+            Locations which could not be reached.
     """
 
     @property
@@ -2064,6 +2084,10 @@ class ListWorkflowInvocationsResponse(proto.Message):
     next_page_token = proto.Field(
         proto.STRING,
         number=2,
+    )
+    unreachable = proto.RepeatedField(
+        proto.STRING,
+        number=3,
     )
 
 
@@ -2149,6 +2173,9 @@ class WorkflowInvocationAction(proto.Message):
             result.
         state (google.cloud.dataform_v1alpha2.types.WorkflowInvocationAction.State):
             Output only. This action's current state.
+        failure_reason (str):
+            Output only. If and only if action's state is
+            FAILED a failure reason is set.
         invocation_timing (google.type.interval_pb2.Interval):
             Output only. This action's timing details. ``start_time``
             will be set if the action is in [RUNNING, SUCCEEDED,
@@ -2199,6 +2226,10 @@ class WorkflowInvocationAction(proto.Message):
         proto.ENUM,
         number=4,
         enum=State,
+    )
+    failure_reason = proto.Field(
+        proto.STRING,
+        number=7,
     )
     invocation_timing = proto.Field(
         proto.MESSAGE,

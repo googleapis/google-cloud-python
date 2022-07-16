@@ -676,6 +676,7 @@ def test_list_repositories(request_type, transport: str = "grpc"):
         # Designate an appropriate return value for the call.
         call.return_value = dataform.ListRepositoriesResponse(
             next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
         )
         response = client.list_repositories(request)
 
@@ -687,6 +688,7 @@ def test_list_repositories(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListRepositoriesPager)
     assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
 
 
 def test_list_repositories_empty_call():
@@ -728,6 +730,7 @@ async def test_list_repositories_async(
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             dataform.ListRepositoriesResponse(
                 next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
             )
         )
         response = await client.list_repositories(request)
@@ -740,6 +743,7 @@ async def test_list_repositories_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListRepositoriesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
 
 
 @pytest.mark.asyncio
@@ -2252,6 +2256,7 @@ def test_list_workspaces(request_type, transport: str = "grpc"):
         # Designate an appropriate return value for the call.
         call.return_value = dataform.ListWorkspacesResponse(
             next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
         )
         response = client.list_workspaces(request)
 
@@ -2263,6 +2268,7 @@ def test_list_workspaces(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListWorkspacesPager)
     assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
 
 
 def test_list_workspaces_empty_call():
@@ -2300,6 +2306,7 @@ async def test_list_workspaces_async(
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             dataform.ListWorkspacesResponse(
                 next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
             )
         )
         response = await client.list_workspaces(request)
@@ -2312,6 +2319,7 @@ async def test_list_workspaces_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListWorkspacesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
 
 
 @pytest.mark.asyncio
@@ -5940,6 +5948,7 @@ def test_list_compilation_results(request_type, transport: str = "grpc"):
         # Designate an appropriate return value for the call.
         call.return_value = dataform.ListCompilationResultsResponse(
             next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
         )
         response = client.list_compilation_results(request)
 
@@ -5951,6 +5960,7 @@ def test_list_compilation_results(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListCompilationResultsPager)
     assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
 
 
 def test_list_compilation_results_empty_call():
@@ -5992,6 +6002,7 @@ async def test_list_compilation_results_async(
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             dataform.ListCompilationResultsResponse(
                 next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
             )
         )
         response = await client.list_compilation_results(request)
@@ -6004,6 +6015,7 @@ async def test_list_compilation_results_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListCompilationResultsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
 
 
 @pytest.mark.asyncio
@@ -7252,6 +7264,7 @@ def test_list_workflow_invocations(request_type, transport: str = "grpc"):
         # Designate an appropriate return value for the call.
         call.return_value = dataform.ListWorkflowInvocationsResponse(
             next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
         )
         response = client.list_workflow_invocations(request)
 
@@ -7263,6 +7276,7 @@ def test_list_workflow_invocations(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListWorkflowInvocationsPager)
     assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
 
 
 def test_list_workflow_invocations_empty_call():
@@ -7305,6 +7319,7 @@ async def test_list_workflow_invocations_async(
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             dataform.ListWorkflowInvocationsResponse(
                 next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
             )
         )
         response = await client.list_workflow_invocations(request)
@@ -7317,6 +7332,7 @@ async def test_list_workflow_invocations_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListWorkflowInvocationsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
 
 
 @pytest.mark.asyncio
