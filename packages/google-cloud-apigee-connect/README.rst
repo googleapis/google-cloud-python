@@ -1,23 +1,20 @@
-Python Client for Apigee Connect
-================================
+Python Client for Apigee Connect API
+====================================
 
-|ga| |pypi| |versions|
+|stable| |pypi| |versions|
 
-`Apigee Connect`_: allows the Apigee hybrid management plane to connect securely to the MART 
-service in the runtime plane without requiring you to expose the MART endpoint on the internet. 
-If you use Apigee Connect, you do not need to configure the MART ingress gateway with a host alias 
-and an authorized DNS certificate.
+`Apigee Connect API`_: allows the Apigee hybrid management plane to connect securely to the MART service in the runtime plane without requiring you to expose the MART endpoint on the internet.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
 
-.. |ga| image:: https://img.shields.io/badge/support-ga-gold.svg
-   :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#ga-support
+.. |stable| image:: https://img.shields.io/badge/support-stable-gold.svg
+   :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#stability-levels
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-apigee-connect.svg
    :target: https://pypi.org/project/google-cloud-apigee-connect/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-apigee-connect.svg
    :target: https://pypi.org/project/google-cloud-apigee-connect/
-.. _Apigee Connect: https://cloud.google.com/apigee/docs/hybrid/v1.4/apigee-connect
+.. _Apigee Connect API: https://cloud.google.com/apigee/docs/hybrid/v1.4/apigee-connect
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/apigeeconnect/latest
 .. _Product Documentation:  https://cloud.google.com/apigee/docs/hybrid/v1.4/apigee-connect
 
@@ -33,7 +30,7 @@ In order to use this library, you first need to go through the following steps:
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Apigee Connect API.:  https://cloud.google.com/apigee/docs/hybrid/v1.4/apigee-connect#add-apigee-connect-to-the-hybrid-runtime
+.. _Enable the Apigee Connect API.:  https://cloud.google.com/apigee/docs/hybrid/v1.4/apigee-connect
 .. _Setup Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -48,6 +45,27 @@ install permissions, and without clashing with the installed system
 dependencies.
 
 .. _`virtualenv`: https://virtualenv.pypa.io/en/latest/
+
+
+Code samples and snippets
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Code samples and snippets live in the `samples/` folder.
+
+
+Supported Python Versions
+^^^^^^^^^^^^^^^^^^^^^^^^^
+Our client libraries are compatible with all current [active](https://devguide.python.org/devcycle/#in-development-main-branch) and [maintenance](https://devguide.python.org/devcycle/#maintenance-branches) versions of
+Python.
+
+Python >= 3.7
+
+Unsupported Python Versions
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Python <= 3.6
+
+If you are using an [end-of-life](https://devguide.python.org/devcycle/#end-of-life-branches)
+version of Python, we recommend that you update as soon as possible to an actively supported version.
 
 
 Mac/Linux
@@ -74,12 +92,12 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for Apigee Connect
+-  Read the `Client Library Documentation`_ for Apigee Connect API
    to see other available methods on the client.
--  Read the `Apigee Connect Product documentation`_ to learn
+-  Read the `Apigee Connect API Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Apigee Connect Product documentation:  https://cloud.google.com/apigee/docs/hybrid/v1.4/apigee-connect
+.. _Apigee Connect API Product documentation:  https://cloud.google.com/apigee/docs/hybrid/v1.4/apigee-connect
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
