@@ -31,6 +31,8 @@ __protobuf__ = proto.module(
         "AzureSynapseDialect",
         "VerticaDialect",
         "SQLServerDialect",
+        "PostgresqlDialect",
+        "PrestoDialect",
         "ObjectNameMappingList",
         "ObjectNameMapping",
         "NameMappingKey",
@@ -161,6 +163,14 @@ class Dialect(proto.Message):
             The SQL Server dialect
 
             This field is a member of `oneof`_ ``dialect_value``.
+        postgresql_dialect (google.cloud.bigquery_migration_v2.types.PostgresqlDialect):
+            The Postgresql dialect
+
+            This field is a member of `oneof`_ ``dialect_value``.
+        presto_dialect (google.cloud.bigquery_migration_v2.types.PrestoDialect):
+            The Presto dialect
+
+            This field is a member of `oneof`_ ``dialect_value``.
     """
 
     bigquery_dialect = proto.Field(
@@ -229,6 +239,18 @@ class Dialect(proto.Message):
         oneof="dialect_value",
         message="SQLServerDialect",
     )
+    postgresql_dialect = proto.Field(
+        proto.MESSAGE,
+        number=12,
+        oneof="dialect_value",
+        message="PostgresqlDialect",
+    )
+    presto_dialect = proto.Field(
+        proto.MESSAGE,
+        number=13,
+        oneof="dialect_value",
+        message="PrestoDialect",
+    )
 
 
 class BigQueryDialect(proto.Message):
@@ -291,6 +313,14 @@ class VerticaDialect(proto.Message):
 
 class SQLServerDialect(proto.Message):
     r"""The dialect definition for SQL Server."""
+
+
+class PostgresqlDialect(proto.Message):
+    r"""The dialect definition for Postgresql."""
+
+
+class PrestoDialect(proto.Message):
+    r"""The dialect definition for Presto."""
 
 
 class ObjectNameMappingList(proto.Message):
