@@ -5,6 +5,13 @@
 [1]: https://pypi.org/project/google-cloud-pubsub/#history
 
 
+## [2.13.4](https://github.com/googleapis/python-pubsub/compare/v2.13.3...v2.13.4) (2022-07-15)
+
+
+### Bug Fixes
+
+* Remove bidi modacks on StreamingPull initial request ([#738](https://github.com/googleapis/python-pubsub/issues/738)) ([1e7d469](https://github.com/googleapis/python-pubsub/commit/1e7d46901c4472a3534980621e88d81aa2e50760))
+
 ## [2.13.3](https://github.com/googleapis/python-pubsub/compare/v2.13.2...v2.13.3) (2022-07-13)
 
 
