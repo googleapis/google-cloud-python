@@ -20,6 +20,11 @@
                 "complete_ip_rotation"
               ]
             },
+            "CompleteNodePoolUpgrade": {
+              "methods": [
+                "complete_node_pool_upgrade"
+              ]
+            },
             "CreateCluster": {
               "methods": [
                 "create_cluster"
@@ -188,6 +193,11 @@
             "CompleteIPRotation": {
               "methods": [
                 "complete_ip_rotation"
+              ]
+            },
+            "CompleteNodePoolUpgrade": {
+              "methods": [
+                "complete_node_pool_upgrade"
               ]
             },
             "CreateCluster": {

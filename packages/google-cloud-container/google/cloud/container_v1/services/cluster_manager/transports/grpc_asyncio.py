@@ -103,6 +103,7 @@ class ClusterManagerGrpcAsyncIOTransport(ClusterManagerTransport):
         quota_project_id=None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
         always_use_jwt_access: Optional[bool] = False,
+        api_audience: Optional[str] = None,
     ) -> None:
         """Instantiate the transport.
 
@@ -198,6 +199,7 @@ class ClusterManagerGrpcAsyncIOTransport(ClusterManagerTransport):
             quota_project_id=quota_project_id,
             client_info=client_info,
             always_use_jwt_access=always_use_jwt_access,
+            api_audience=api_audience,
         )
 
         if not self._grpc_channel:
@@ -884,6 +886,35 @@ class ClusterManagerGrpcAsyncIOTransport(ClusterManagerTransport):
                 response_deserializer=cluster_service.Operation.deserialize,
             )
         return self._stubs["delete_node_pool"]
+
+    @property
+    def complete_node_pool_upgrade(
+        self,
+    ) -> Callable[
+        [cluster_service.CompleteNodePoolUpgradeRequest], Awaitable[empty_pb2.Empty]
+    ]:
+        r"""Return a callable for the complete node pool upgrade method over gRPC.
+
+        CompleteNodePoolUpgrade will signal an on-going node
+        pool upgrade to complete.
+
+        Returns:
+            Callable[[~.CompleteNodePoolUpgradeRequest],
+                    Awaitable[~.Empty]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "complete_node_pool_upgrade" not in self._stubs:
+            self._stubs["complete_node_pool_upgrade"] = self.grpc_channel.unary_unary(
+                "/google.container.v1.ClusterManager/CompleteNodePoolUpgrade",
+                request_serializer=cluster_service.CompleteNodePoolUpgradeRequest.serialize,
+                response_deserializer=empty_pb2.Empty.FromString,
+            )
+        return self._stubs["complete_node_pool_upgrade"]
 
     @property
     def rollback_node_pool_upgrade(

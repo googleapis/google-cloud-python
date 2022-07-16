@@ -244,7 +244,7 @@ class ClusterManagerAsyncClient:
             project_id (:class:`str`):
                 Deprecated. The Google Developers Console `project ID or
                 project
-                number <https://support.google.com/cloud/answer/6158840>`__.
+                number <https://cloud.google.com/resource-manager/docs/creating-managing-projects>`__.
                 This field has been deprecated and replaced by the
                 parent field.
 
@@ -377,7 +377,7 @@ class ClusterManagerAsyncClient:
             project_id (:class:`str`):
                 Deprecated. The Google Developers Console `project ID or
                 project
-                number <https://support.google.com/cloud/answer/6158840>`__.
+                number <https://cloud.google.com/resource-manager/docs/creating-managing-projects>`__.
                 This field has been deprecated and replaced by the name
                 field.
 
@@ -529,7 +529,7 @@ class ClusterManagerAsyncClient:
             project_id (:class:`str`):
                 Deprecated. The Google Developers Console `project ID or
                 project
-                number <https://support.google.com/cloud/answer/6158840>`__.
+                number <https://cloud.google.com/resource-manager/docs/creating-managing-projects>`__.
                 This field has been deprecated and replaced by the
                 parent field.
 
@@ -662,7 +662,7 @@ class ClusterManagerAsyncClient:
             project_id (:class:`str`):
                 Deprecated. The Google Developers Console `project ID or
                 project
-                number <https://support.google.com/cloud/answer/6158840>`__.
+                number <https://cloud.google.com/resource-manager/docs/creating-managing-projects>`__.
                 This field has been deprecated and replaced by the name
                 field.
 
@@ -959,7 +959,7 @@ class ClusterManagerAsyncClient:
             project_id (:class:`str`):
                 Deprecated. The Google Developers Console `project ID or
                 project
-                number <https://support.google.com/cloud/answer/6158840>`__.
+                number <https://cloud.google.com/resource-manager/docs/creating-managing-projects>`__.
                 This field has been deprecated and replaced by the name
                 field.
 
@@ -1118,7 +1118,7 @@ class ClusterManagerAsyncClient:
             project_id (:class:`str`):
                 Deprecated. The Google Developers Console `project ID or
                 project
-                number <https://support.google.com/cloud/answer/6158840>`__.
+                number <https://cloud.google.com/resource-manager/docs/creating-managing-projects>`__.
                 This field has been deprecated and replaced by the name
                 field.
 
@@ -1278,7 +1278,7 @@ class ClusterManagerAsyncClient:
             project_id (:class:`str`):
                 Deprecated. The Google Developers Console `project ID or
                 project
-                number <https://support.google.com/cloud/answer/6158840>`__.
+                number <https://cloud.google.com/resource-manager/docs/creating-managing-projects>`__.
                 This field has been deprecated and replaced by the name
                 field.
 
@@ -1426,7 +1426,7 @@ class ClusterManagerAsyncClient:
             project_id (:class:`str`):
                 Deprecated. The Google Developers Console `project ID or
                 project
-                number <https://support.google.com/cloud/answer/6158840>`__.
+                number <https://cloud.google.com/resource-manager/docs/creating-managing-projects>`__.
                 This field has been deprecated and replaced by the name
                 field.
 
@@ -1582,7 +1582,7 @@ class ClusterManagerAsyncClient:
             project_id (:class:`str`):
                 Deprecated. The Google Developers Console `project ID or
                 project
-                number <https://support.google.com/cloud/answer/6158840>`__.
+                number <https://cloud.google.com/resource-manager/docs/creating-managing-projects>`__.
                 This field has been deprecated and replaced by the name
                 field.
 
@@ -1824,7 +1824,7 @@ class ClusterManagerAsyncClient:
             project_id (:class:`str`):
                 Deprecated. The Google Developers Console `project ID or
                 project
-                number <https://support.google.com/cloud/answer/6158840>`__.
+                number <https://cloud.google.com/resource-manager/docs/creating-managing-projects>`__.
                 This field has been deprecated and replaced by the name
                 field.
 
@@ -1967,7 +1967,7 @@ class ClusterManagerAsyncClient:
             project_id (:class:`str`):
                 Deprecated. The Google Developers Console `project ID or
                 project
-                number <https://support.google.com/cloud/answer/6158840>`__.
+                number <https://cloud.google.com/resource-manager/docs/creating-managing-projects>`__.
                 This field has been deprecated and replaced by the
                 parent field.
 
@@ -2089,7 +2089,7 @@ class ClusterManagerAsyncClient:
             project_id (:class:`str`):
                 Deprecated. The Google Developers Console `project ID or
                 project
-                number <https://support.google.com/cloud/answer/6158840>`__.
+                number <https://cloud.google.com/resource-manager/docs/creating-managing-projects>`__.
                 This field has been deprecated and replaced by the name
                 field.
 
@@ -2229,7 +2229,7 @@ class ClusterManagerAsyncClient:
             project_id (:class:`str`):
                 Deprecated. The Google Developers Console `project ID or
                 project
-                number <https://support.google.com/cloud/answer/6158840>`__.
+                number <https://cloud.google.com/resource-manager/docs/creating-managing-projects>`__.
                 This field has been deprecated and replaced by the name
                 field.
 
@@ -2351,7 +2351,7 @@ class ClusterManagerAsyncClient:
             project_id (:class:`str`):
                 Deprecated. The Google Developers Console `project ID or
                 project
-                number <https://support.google.com/cloud/answer/6158840>`__.
+                number <https://cloud.google.com/resource-manager/docs/creating-managing-projects>`__.
                 This field has been deprecated and replaced by the name
                 field.
 
@@ -2560,7 +2560,7 @@ class ClusterManagerAsyncClient:
             project_id (:class:`str`):
                 Deprecated. The Google Developers Console `project ID or
                 project
-                number <https://developers.google.com/console/help/new/#projectnumber>`__.
+                number <https://cloud.google.com/resource-manager/docs/creating-managing-projects>`__.
                 This field has been deprecated and replaced by the
                 parent field.
 
@@ -2585,7 +2585,7 @@ class ClusterManagerAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             parent (:class:`str`):
-                The parent (project, location, cluster id) where the
+                The parent (project, location, cluster name) where the
                 node pools will be listed. Specified in the format
                 ``projects/*/locations/*/clusters/*``.
 
@@ -2702,7 +2702,7 @@ class ClusterManagerAsyncClient:
             project_id (:class:`str`):
                 Deprecated. The Google Developers Console `project ID or
                 project
-                number <https://developers.google.com/console/help/new/#projectnumber>`__.
+                number <https://cloud.google.com/resource-manager/docs/creating-managing-projects>`__.
                 This field has been deprecated and replaced by the name
                 field.
 
@@ -2862,7 +2862,7 @@ class ClusterManagerAsyncClient:
             project_id (:class:`str`):
                 Deprecated. The Google Developers Console `project ID or
                 project
-                number <https://developers.google.com/console/help/new/#projectnumber>`__.
+                number <https://cloud.google.com/resource-manager/docs/creating-managing-projects>`__.
                 This field has been deprecated and replaced by the
                 parent field.
 
@@ -2892,7 +2892,7 @@ class ClusterManagerAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             parent (:class:`str`):
-                The parent (project, location, cluster id) where the
+                The parent (project, location, cluster name) where the
                 node pool will be created. Specified in the format
                 ``projects/*/locations/*/clusters/*``.
 
@@ -3003,7 +3003,7 @@ class ClusterManagerAsyncClient:
             project_id (:class:`str`):
                 Deprecated. The Google Developers Console `project ID or
                 project
-                number <https://developers.google.com/console/help/new/#projectnumber>`__.
+                number <https://cloud.google.com/resource-manager/docs/creating-managing-projects>`__.
                 This field has been deprecated and replaced by the name
                 field.
 
@@ -3118,6 +3118,67 @@ class ClusterManagerAsyncClient:
         # Done; return the response.
         return response
 
+    async def complete_node_pool_upgrade(
+        self,
+        request: Union[cluster_service.CompleteNodePoolUpgradeRequest, dict] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> None:
+        r"""CompleteNodePoolUpgrade will signal an on-going node
+        pool upgrade to complete.
+
+        .. code-block:: python
+
+            from google.cloud import container_v1
+
+            async def sample_complete_node_pool_upgrade():
+                # Create a client
+                client = container_v1.ClusterManagerAsyncClient()
+
+                # Initialize request argument(s)
+                request = container_v1.CompleteNodePoolUpgradeRequest(
+                )
+
+                # Make the request
+                await client.complete_node_pool_upgrade(request=request)
+
+        Args:
+            request (Union[google.cloud.container_v1.types.CompleteNodePoolUpgradeRequest, dict]):
+                The request object. CompleteNodePoolUpgradeRequest sets
+                the name of target node pool to complete upgrade.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        # Create or coerce a protobuf request object.
+        request = cluster_service.CompleteNodePoolUpgradeRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.complete_node_pool_upgrade,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
     async def rollback_node_pool_upgrade(
         self,
         request: Union[cluster_service.RollbackNodePoolUpgradeRequest, dict] = None,
@@ -3162,7 +3223,7 @@ class ClusterManagerAsyncClient:
             project_id (:class:`str`):
                 Deprecated. The Google Developers Console `project ID or
                 project
-                number <https://support.google.com/cloud/answer/6158840>`__.
+                number <https://cloud.google.com/resource-manager/docs/creating-managing-projects>`__.
                 This field has been deprecated and replaced by the name
                 field.
 
@@ -3462,7 +3523,7 @@ class ClusterManagerAsyncClient:
             project_id (:class:`str`):
                 Deprecated. The Google Developers Console `project ID or
                 project
-                number <https://support.google.com/cloud/answer/6158840>`__.
+                number <https://cloud.google.com/resource-manager/docs/creating-managing-projects>`__.
                 This field has been deprecated and replaced by the name
                 field.
 
@@ -3495,8 +3556,8 @@ class ClusterManagerAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             name (:class:`str`):
-                The name (project, location, cluster id) of the cluster
-                to set legacy abac. Specified in the format
+                The name (project, location, cluster name) of the
+                cluster to set legacy abac. Specified in the format
                 ``projects/*/locations/*/clusters/*``.
 
                 This corresponds to the ``name`` field
@@ -3606,7 +3667,7 @@ class ClusterManagerAsyncClient:
             project_id (:class:`str`):
                 Deprecated. The Google Developers Console `project ID or
                 project
-                number <https://developers.google.com/console/help/new/#projectnumber>`__.
+                number <https://cloud.google.com/resource-manager/docs/creating-managing-projects>`__.
                 This field has been deprecated and replaced by the name
                 field.
 
@@ -3631,8 +3692,8 @@ class ClusterManagerAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             name (:class:`str`):
-                The name (project, location, cluster id) of the cluster
-                to start IP rotation. Specified in the format
+                The name (project, location, cluster name) of the
+                cluster to start IP rotation. Specified in the format
                 ``projects/*/locations/*/clusters/*``.
 
                 This corresponds to the ``name`` field
@@ -3739,7 +3800,7 @@ class ClusterManagerAsyncClient:
             project_id (:class:`str`):
                 Deprecated. The Google Developers Console `project ID or
                 project
-                number <https://developers.google.com/console/help/new/#projectnumber>`__.
+                number <https://cloud.google.com/resource-manager/docs/creating-managing-projects>`__.
                 This field has been deprecated and replaced by the name
                 field.
 
@@ -3764,8 +3825,8 @@ class ClusterManagerAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             name (:class:`str`):
-                The name (project, location, cluster id) of the cluster
-                to complete IP rotation. Specified in the format
+                The name (project, location, cluster name) of the
+                cluster to complete IP rotation. Specified in the format
                 ``projects/*/locations/*/clusters/*``.
 
                 This corresponds to the ``name`` field
@@ -3951,7 +4012,7 @@ class ClusterManagerAsyncClient:
             project_id (:class:`str`):
                 Deprecated. The Google Developers Console `project ID or
                 project
-                number <https://developers.google.com/console/help/new/#projectnumber>`__.
+                number <https://cloud.google.com/resource-manager/docs/creating-managing-projects>`__.
                 This field has been deprecated and replaced by the name
                 field.
 
@@ -3983,9 +4044,9 @@ class ClusterManagerAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             name (:class:`str`):
-                The name (project, location, cluster id) of the cluster
-                to set networking policy. Specified in the format
-                ``projects/*/locations/*/clusters/*``.
+                The name (project, location, cluster name) of the
+                cluster to set networking policy. Specified in the
+                format ``projects/*/locations/*/clusters/*``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -4097,7 +4158,7 @@ class ClusterManagerAsyncClient:
             project_id (:class:`str`):
                 Required. The Google Developers Console `project ID or
                 project
-                number <https://support.google.com/cloud/answer/6158840>`__.
+                number <https://cloud.google.com/resource-manager/docs/creating-managing-projects>`__.
 
                 This corresponds to the ``project_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -4126,9 +4187,9 @@ class ClusterManagerAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             name (:class:`str`):
-                The name (project, location, cluster id) of the cluster
-                to set maintenance policy. Specified in the format
-                ``projects/*/locations/*/clusters/*``.
+                The name (project, location, cluster name) of the
+                cluster to set maintenance policy. Specified in the
+                format ``projects/*/locations/*/clusters/*``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this

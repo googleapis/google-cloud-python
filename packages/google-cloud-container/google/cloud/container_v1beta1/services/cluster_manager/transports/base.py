@@ -55,6 +55,7 @@ class ClusterManagerTransport(abc.ABC):
         quota_project_id: Optional[str] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
         always_use_jwt_access: Optional[bool] = False,
+        api_audience: Optional[str] = None,
         **kwargs,
     ) -> None:
         """Instantiate the transport.
@@ -82,11 +83,6 @@ class ClusterManagerTransport(abc.ABC):
                 be used for service account credentials.
         """
 
-        # Save the hostname. Default to port 443 (HTTPS) if none is specified.
-        if ":" not in host:
-            host += ":443"
-        self._host = host
-
         scopes_kwargs = {"scopes": scopes, "default_scopes": self.AUTH_SCOPES}
 
         # Save the scopes.
@@ -107,6 +103,11 @@ class ClusterManagerTransport(abc.ABC):
             credentials, _ = google.auth.default(
                 **scopes_kwargs, quota_project_id=quota_project_id
             )
+            # Don't apply audience if the credentials file passed from user.
+            if hasattr(credentials, "with_gdch_audience"):
+                credentials = credentials.with_gdch_audience(
+                    api_audience if api_audience else host
+                )
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -118,6 +119,11 @@ class ClusterManagerTransport(abc.ABC):
 
         # Save the credentials.
         self._credentials = credentials
+
+        # Save the hostname. Default to port 443 (HTTPS) if none is specified.
+        if ":" not in host:
+            host += ":443"
+        self._host = host
 
     def _prep_wrapped_messages(self, client_info):
         # Precompute the wrapped methods.
@@ -320,6 +326,11 @@ class ClusterManagerTransport(abc.ABC):
                     deadline=20.0,
                 ),
                 default_timeout=20.0,
+                client_info=client_info,
+            ),
+            self.complete_node_pool_upgrade: gapic_v1.method.wrap_method(
+                self.complete_node_pool_upgrade,
+                default_timeout=None,
                 client_info=client_info,
             ),
             self.rollback_node_pool_upgrade: gapic_v1.method.wrap_method(
@@ -615,6 +626,15 @@ class ClusterManagerTransport(abc.ABC):
     ) -> Callable[
         [cluster_service.DeleteNodePoolRequest],
         Union[cluster_service.Operation, Awaitable[cluster_service.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def complete_node_pool_upgrade(
+        self,
+    ) -> Callable[
+        [cluster_service.CompleteNodePoolUpgradeRequest],
+        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
     ]:
         raise NotImplementedError()
 

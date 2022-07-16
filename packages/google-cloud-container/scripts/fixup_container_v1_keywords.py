@@ -41,6 +41,7 @@ class containerCallTransformer(cst.CSTTransformer):
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
         'cancel_operation': ('project_id', 'zone', 'operation_id', 'name', ),
         'complete_ip_rotation': ('project_id', 'zone', 'cluster_id', 'name', ),
+        'complete_node_pool_upgrade': ('name', ),
         'create_cluster': ('cluster', 'project_id', 'zone', 'parent', ),
         'create_node_pool': ('node_pool', 'project_id', 'zone', 'cluster_id', 'parent', ),
         'delete_cluster': ('project_id', 'zone', 'cluster_id', 'name', ),
@@ -54,7 +55,7 @@ class containerCallTransformer(cst.CSTTransformer):
         'list_node_pools': ('project_id', 'zone', 'cluster_id', 'parent', ),
         'list_operations': ('project_id', 'zone', 'parent', ),
         'list_usable_subnetworks': ('parent', 'filter', 'page_size', 'page_token', ),
-        'rollback_node_pool_upgrade': ('project_id', 'zone', 'cluster_id', 'node_pool_id', 'name', ),
+        'rollback_node_pool_upgrade': ('project_id', 'zone', 'cluster_id', 'node_pool_id', 'name', 'respect_pdb', ),
         'set_addons_config': ('addons_config', 'project_id', 'zone', 'cluster_id', 'name', ),
         'set_labels': ('resource_labels', 'label_fingerprint', 'project_id', 'zone', 'cluster_id', 'name', ),
         'set_legacy_abac': ('enabled', 'project_id', 'zone', 'cluster_id', 'name', ),
@@ -70,7 +71,7 @@ class containerCallTransformer(cst.CSTTransformer):
         'start_ip_rotation': ('project_id', 'zone', 'cluster_id', 'name', 'rotate_credentials', ),
         'update_cluster': ('update', 'project_id', 'zone', 'cluster_id', 'name', ),
         'update_master': ('master_version', 'project_id', 'zone', 'cluster_id', 'name', ),
-        'update_node_pool': ('node_version', 'image_type', 'project_id', 'zone', 'cluster_id', 'node_pool_id', 'name', 'locations', 'workload_metadata_config', 'upgrade_settings', 'linux_node_config', 'kubelet_config', 'gcfs_config', 'gvnic', ),
+        'update_node_pool': ('node_version', 'image_type', 'project_id', 'zone', 'cluster_id', 'node_pool_id', 'name', 'locations', 'workload_metadata_config', 'upgrade_settings', 'tags', 'taints', 'labels', 'linux_node_config', 'kubelet_config', 'node_network_config', 'gcfs_config', 'confidential_nodes', 'gvnic', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:
