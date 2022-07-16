@@ -16,8 +16,12 @@
 from .access import Access, Geolocation
 from .asset import Asset
 from .bigquery_export import BigQueryExport
+from .compliance import Compliance
 from .connection import Connection
+from .contact_details import Contact, ContactDetails
+from .exfiltration import ExfilResource, Exfiltration
 from .external_system import ExternalSystem
+from .file import File
 from .finding import Finding
 from .folder import Folder
 from .iam_binding import IamBinding
@@ -27,6 +31,7 @@ from .mute_config import MuteConfig
 from .notification_config import NotificationConfig
 from .notification_message import NotificationMessage
 from .organization_settings import OrganizationSettings
+from .process import EnvironmentVariable, Process
 from .resource import Resource
 from .run_asset_discovery_response import RunAssetDiscoveryResponse
 from .security_marks import SecurityMarks
@@ -83,8 +88,14 @@ __all__ = (
     "Geolocation",
     "Asset",
     "BigQueryExport",
+    "Compliance",
     "Connection",
+    "Contact",
+    "ContactDetails",
+    "ExfilResource",
+    "Exfiltration",
     "ExternalSystem",
+    "File",
     "Finding",
     "Folder",
     "IamBinding",
@@ -94,6 +105,8 @@ __all__ = (
     "NotificationConfig",
     "NotificationMessage",
     "OrganizationSettings",
+    "EnvironmentVariable",
+    "Process",
     "Resource",
     "RunAssetDiscoveryResponse",
     "SecurityMarks",

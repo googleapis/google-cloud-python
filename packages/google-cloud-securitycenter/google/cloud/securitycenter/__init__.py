@@ -23,8 +23,15 @@ from google.cloud.securitycenter_v1.services.security_center.client import (
 from google.cloud.securitycenter_v1.types.access import Access, Geolocation
 from google.cloud.securitycenter_v1.types.asset import Asset
 from google.cloud.securitycenter_v1.types.bigquery_export import BigQueryExport
+from google.cloud.securitycenter_v1.types.compliance import Compliance
 from google.cloud.securitycenter_v1.types.connection import Connection
+from google.cloud.securitycenter_v1.types.contact_details import Contact, ContactDetails
+from google.cloud.securitycenter_v1.types.exfiltration import (
+    ExfilResource,
+    Exfiltration,
+)
 from google.cloud.securitycenter_v1.types.external_system import ExternalSystem
+from google.cloud.securitycenter_v1.types.file import File
 from google.cloud.securitycenter_v1.types.finding import Finding
 from google.cloud.securitycenter_v1.types.folder import Folder
 from google.cloud.securitycenter_v1.types.iam_binding import IamBinding
@@ -38,6 +45,7 @@ from google.cloud.securitycenter_v1.types.notification_message import (
 from google.cloud.securitycenter_v1.types.organization_settings import (
     OrganizationSettings,
 )
+from google.cloud.securitycenter_v1.types.process import EnvironmentVariable, Process
 from google.cloud.securitycenter_v1.types.resource import Resource
 from google.cloud.securitycenter_v1.types.run_asset_discovery_response import (
     RunAssetDiscoveryResponse,
@@ -103,8 +111,14 @@ __all__ = (
     "Geolocation",
     "Asset",
     "BigQueryExport",
+    "Compliance",
     "Connection",
+    "Contact",
+    "ContactDetails",
+    "ExfilResource",
+    "Exfiltration",
     "ExternalSystem",
+    "File",
     "Finding",
     "Folder",
     "IamBinding",
@@ -114,6 +128,8 @@ __all__ = (
     "NotificationConfig",
     "NotificationMessage",
     "OrganizationSettings",
+    "EnvironmentVariable",
+    "Process",
     "Resource",
     "RunAssetDiscoveryResponse",
     "SecurityMarks",

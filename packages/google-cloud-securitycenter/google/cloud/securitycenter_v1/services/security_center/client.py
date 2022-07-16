@@ -43,8 +43,15 @@ from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 
 from google.cloud.securitycenter_v1.services.security_center import pagers
-from google.cloud.securitycenter_v1.types import access, bigquery_export, connection
+from google.cloud.securitycenter_v1.types import (
+    access,
+    bigquery_export,
+    compliance,
+    connection,
+    exfiltration,
+)
 from google.cloud.securitycenter_v1.types import iam_binding, indicator, mitre_attack
+from google.cloud.securitycenter_v1.types import process, run_asset_discovery_response
 from google.cloud.securitycenter_v1.types import external_system as gcs_external_system
 from google.cloud.securitycenter_v1.types import (
     notification_config as gcs_notification_config,
@@ -59,7 +66,6 @@ from google.cloud.securitycenter_v1.types import mute_config
 from google.cloud.securitycenter_v1.types import mute_config as gcs_mute_config
 from google.cloud.securitycenter_v1.types import notification_config
 from google.cloud.securitycenter_v1.types import organization_settings
-from google.cloud.securitycenter_v1.types import run_asset_discovery_response
 from google.cloud.securitycenter_v1.types import security_marks
 from google.cloud.securitycenter_v1.types import securitycenter_service
 from google.cloud.securitycenter_v1.types import source
@@ -632,6 +638,7 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
                 quota_project_id=client_options.quota_project_id,
                 client_info=client_info,
                 always_use_jwt_access=True,
+                api_audience=client_options.api_audience,
             )
 
     def bulk_mute_findings(
