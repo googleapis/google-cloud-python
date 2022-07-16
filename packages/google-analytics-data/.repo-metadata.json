@@ -1,6 +1,6 @@
 {
     "name": "analyticsdata",
-    "name_pretty": "Analytics Data API",
+    "name_pretty": "Analytics Data",
     "product_documentation": "https://developers.google.com/analytics/",
     "client_documentation": "https://googleapis.dev/python/analyticsdata/latest",
     "issue_tracker": "https://issuetracker.google.com/issues?q=componentid:187400%2B%20",
@@ -13,5 +13,6 @@
     "requires_billing": true,
     "default_version": "v1beta",
     "codeowner_team": "",
-    "api_shortname": "analyticsdata"
+    "api_shortname": "analyticsdata",
+    "api_description": "provides programmatic methods to access report data in Google Analytics App+Web properties."
 }
