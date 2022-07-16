@@ -13,14 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
-from google.cloud.network_security_v1.services.network_security.async_client import (
-    NetworkSecurityAsyncClient,
-)
-from google.cloud.network_security_v1.services.network_security.client import (
-    NetworkSecurityClient,
-)
-from google.cloud.network_security_v1.types.authorization_policy import (
+from .authorization_policy import (
     AuthorizationPolicy,
     CreateAuthorizationPolicyRequest,
     DeleteAuthorizationPolicyRequest,
@@ -29,7 +22,7 @@ from google.cloud.network_security_v1.types.authorization_policy import (
     ListAuthorizationPoliciesResponse,
     UpdateAuthorizationPolicyRequest,
 )
-from google.cloud.network_security_v1.types.client_tls_policy import (
+from .client_tls_policy import (
     ClientTlsPolicy,
     CreateClientTlsPolicyRequest,
     DeleteClientTlsPolicyRequest,
@@ -38,8 +31,8 @@ from google.cloud.network_security_v1.types.client_tls_policy import (
     ListClientTlsPoliciesResponse,
     UpdateClientTlsPolicyRequest,
 )
-from google.cloud.network_security_v1.types.common import OperationMetadata
-from google.cloud.network_security_v1.types.server_tls_policy import (
+from .common import OperationMetadata
+from .server_tls_policy import (
     CreateServerTlsPolicyRequest,
     DeleteServerTlsPolicyRequest,
     GetServerTlsPolicyRequest,
@@ -48,7 +41,7 @@ from google.cloud.network_security_v1.types.server_tls_policy import (
     ServerTlsPolicy,
     UpdateServerTlsPolicyRequest,
 )
-from google.cloud.network_security_v1.types.tls import (
+from .tls import (
     CertificateProvider,
     CertificateProviderInstance,
     GrpcEndpoint,
@@ -56,8 +49,6 @@ from google.cloud.network_security_v1.types.tls import (
 )
 
 __all__ = (
-    "NetworkSecurityClient",
-    "NetworkSecurityAsyncClient",
     "AuthorizationPolicy",
     "CreateAuthorizationPolicyRequest",
     "DeleteAuthorizationPolicyRequest",

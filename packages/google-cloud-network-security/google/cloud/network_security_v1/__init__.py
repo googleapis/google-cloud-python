@@ -14,13 +14,8 @@
 # limitations under the License.
 #
 
-from google.cloud.network_security_v1.services.network_security.async_client import (
-    NetworkSecurityAsyncClient,
-)
-from google.cloud.network_security_v1.services.network_security.client import (
-    NetworkSecurityClient,
-)
-from google.cloud.network_security_v1.types.authorization_policy import (
+from .services.network_security import NetworkSecurityAsyncClient, NetworkSecurityClient
+from .types.authorization_policy import (
     AuthorizationPolicy,
     CreateAuthorizationPolicyRequest,
     DeleteAuthorizationPolicyRequest,
@@ -29,7 +24,7 @@ from google.cloud.network_security_v1.types.authorization_policy import (
     ListAuthorizationPoliciesResponse,
     UpdateAuthorizationPolicyRequest,
 )
-from google.cloud.network_security_v1.types.client_tls_policy import (
+from .types.client_tls_policy import (
     ClientTlsPolicy,
     CreateClientTlsPolicyRequest,
     DeleteClientTlsPolicyRequest,
@@ -38,8 +33,8 @@ from google.cloud.network_security_v1.types.client_tls_policy import (
     ListClientTlsPoliciesResponse,
     UpdateClientTlsPolicyRequest,
 )
-from google.cloud.network_security_v1.types.common import OperationMetadata
-from google.cloud.network_security_v1.types.server_tls_policy import (
+from .types.common import OperationMetadata
+from .types.server_tls_policy import (
     CreateServerTlsPolicyRequest,
     DeleteServerTlsPolicyRequest,
     GetServerTlsPolicyRequest,
@@ -48,7 +43,7 @@ from google.cloud.network_security_v1.types.server_tls_policy import (
     ServerTlsPolicy,
     UpdateServerTlsPolicyRequest,
 )
-from google.cloud.network_security_v1.types.tls import (
+from .types.tls import (
     CertificateProvider,
     CertificateProviderInstance,
     GrpcEndpoint,
@@ -56,32 +51,32 @@ from google.cloud.network_security_v1.types.tls import (
 )
 
 __all__ = (
-    "NetworkSecurityClient",
     "NetworkSecurityAsyncClient",
     "AuthorizationPolicy",
-    "CreateAuthorizationPolicyRequest",
-    "DeleteAuthorizationPolicyRequest",
-    "GetAuthorizationPolicyRequest",
-    "ListAuthorizationPoliciesRequest",
-    "ListAuthorizationPoliciesResponse",
-    "UpdateAuthorizationPolicyRequest",
-    "ClientTlsPolicy",
-    "CreateClientTlsPolicyRequest",
-    "DeleteClientTlsPolicyRequest",
-    "GetClientTlsPolicyRequest",
-    "ListClientTlsPoliciesRequest",
-    "ListClientTlsPoliciesResponse",
-    "UpdateClientTlsPolicyRequest",
-    "OperationMetadata",
-    "CreateServerTlsPolicyRequest",
-    "DeleteServerTlsPolicyRequest",
-    "GetServerTlsPolicyRequest",
-    "ListServerTlsPoliciesRequest",
-    "ListServerTlsPoliciesResponse",
-    "ServerTlsPolicy",
-    "UpdateServerTlsPolicyRequest",
     "CertificateProvider",
     "CertificateProviderInstance",
+    "ClientTlsPolicy",
+    "CreateAuthorizationPolicyRequest",
+    "CreateClientTlsPolicyRequest",
+    "CreateServerTlsPolicyRequest",
+    "DeleteAuthorizationPolicyRequest",
+    "DeleteClientTlsPolicyRequest",
+    "DeleteServerTlsPolicyRequest",
+    "GetAuthorizationPolicyRequest",
+    "GetClientTlsPolicyRequest",
+    "GetServerTlsPolicyRequest",
     "GrpcEndpoint",
+    "ListAuthorizationPoliciesRequest",
+    "ListAuthorizationPoliciesResponse",
+    "ListClientTlsPoliciesRequest",
+    "ListClientTlsPoliciesResponse",
+    "ListServerTlsPoliciesRequest",
+    "ListServerTlsPoliciesResponse",
+    "NetworkSecurityClient",
+    "OperationMetadata",
+    "ServerTlsPolicy",
+    "UpdateAuthorizationPolicyRequest",
+    "UpdateClientTlsPolicyRequest",
+    "UpdateServerTlsPolicyRequest",
     "ValidationCA",
 )
