@@ -1,6 +1,6 @@
 {
     "name": "appengine",
-    "name_pretty": "App Engine Admin API",
+    "name_pretty": "App Engine Admin",
     "product_documentation": "https://cloud.google.com/appengine/docs/admin-api/",
     "client_documentation": "https://cloud.google.com/python/docs/reference/appengine/latest",
     "issue_tracker": "",
@@ -12,5 +12,6 @@
     "api_id": "appengine.googleapis.com",
     "default_version": "v1",
     "codeowner_team": "@googleapis/aap-dpes",
-    "api_shortname": "appengine"
+    "api_shortname": "appengine",
+    "api_description": "allows you to manage your App Engine applications."
 }
