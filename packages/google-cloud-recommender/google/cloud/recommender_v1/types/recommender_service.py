@@ -13,9 +13,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from google.protobuf import field_mask_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.recommender_v1.types import insight, recommendation
+from google.cloud.recommender_v1.types import (
+    insight_type_config as gcr_insight_type_config,
+)
+from google.cloud.recommender_v1.types import (
+    recommender_config as gcr_recommender_config,
+)
+from google.cloud.recommender_v1.types import insight
+from google.cloud.recommender_v1.types import recommendation
 
 __protobuf__ = proto.module(
     package="google.cloud.recommender.v1",
@@ -30,6 +38,10 @@ __protobuf__ = proto.module(
         "MarkRecommendationClaimedRequest",
         "MarkRecommendationSucceededRequest",
         "MarkRecommendationFailedRequest",
+        "GetRecommenderConfigRequest",
+        "UpdateRecommenderConfigRequest",
+        "GetInsightTypeConfigRequest",
+        "UpdateInsightTypeConfigRequest",
     },
 )
 
@@ -58,7 +70,7 @@ class ListInsightsRequest(proto.Message):
             https://cloud.google.com/recommender/docs/insights/insight-types.
         page_size (int):
             Optional. The maximum number of results to
-            return from this request.  Non-positive values
+            return from this request. Non-positive values
             are ignored. If not specified, the server will
             determine the number of results to return.
         page_token (str):
@@ -203,7 +215,7 @@ class ListRecommendationsRequest(proto.Message):
             https://cloud.google.com/recommender/docs/recommenders.
         page_size (int):
             Optional. The maximum number of results to
-            return from this request.  Non-positive values
+            return from this request. Non-positive values
             are ignored. If not specified, the server will
             determine the number of results to return.
         page_token (str):
@@ -384,6 +396,108 @@ class MarkRecommendationFailedRequest(proto.Message):
     )
     etag = proto.Field(
         proto.STRING,
+        number=3,
+    )
+
+
+class GetRecommenderConfigRequest(proto.Message):
+    r"""Request for the GetRecommenderConfig\` method.
+
+    Attributes:
+        name (str):
+            Required. Name of the Recommendation Config to get.
+
+            Acceptable formats:
+
+            -  ``projects/[PROJECT_NUMBER]/locations/[LOCATION]/recommenders/[RECOMMENDER_ID]/config``
+
+            -  ``projects/[PROJECT_ID]/locations/[LOCATION]/recommenders/[RECOMMENDER_ID]/config``
+
+            -  ``organizations/[ORGANIZATION_ID]/locations/[LOCATION]/recommenders/[RECOMMENDER_ID]/config``
+    """
+
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class UpdateRecommenderConfigRequest(proto.Message):
+    r"""Request for the ``UpdateRecommenderConfig`` method.
+
+    Attributes:
+        recommender_config (google.cloud.recommender_v1.types.RecommenderConfig):
+            Required. The RecommenderConfig to update.
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            The list of fields to be updated.
+        validate_only (bool):
+            If true, validate the request and preview the
+            change, but do not actually update it.
+    """
+
+    recommender_config = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=gcr_recommender_config.RecommenderConfig,
+    )
+    update_mask = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
+    )
+    validate_only = proto.Field(
+        proto.BOOL,
+        number=3,
+    )
+
+
+class GetInsightTypeConfigRequest(proto.Message):
+    r"""Request for the GetInsightTypeConfig\` method.
+
+    Attributes:
+        name (str):
+            Required. Name of the InsightTypeConfig to get.
+
+            Acceptable formats:
+
+            -  ``projects/[PROJECT_NUMBER]/locations/global/recommenders/[INSIGHT_TYPE_ID]/config``
+
+            -  ``projects/[PROJECT_ID]/locations/global/recommenders/[INSIGHT_TYPE_ID]/config``
+
+            -  ``organizations/[ORGANIZATION_ID]/locations/global/recommenders/[INSIGHT_TYPE_ID]/config``
+    """
+
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class UpdateInsightTypeConfigRequest(proto.Message):
+    r"""Request for the ``UpdateInsightTypeConfig`` method.
+
+    Attributes:
+        insight_type_config (google.cloud.recommender_v1.types.InsightTypeConfig):
+            Required. The InsightTypeConfig to update.
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            The list of fields to be updated.
+        validate_only (bool):
+            If true, validate the request and preview the
+            change, but do not actually update it.
+    """
+
+    insight_type_config = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=gcr_insight_type_config.InsightTypeConfig,
+    )
+    update_mask = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
+    )
+    validate_only = proto.Field(
+        proto.BOOL,
         number=3,
     )
 

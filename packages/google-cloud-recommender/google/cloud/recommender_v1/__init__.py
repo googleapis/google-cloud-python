@@ -16,6 +16,7 @@
 
 from .services.recommender import RecommenderAsyncClient, RecommenderClient
 from .types.insight import Insight, InsightStateInfo
+from .types.insight_type_config import InsightTypeConfig, InsightTypeGenerationConfig
 from .types.recommendation import (
     CostProjection,
     Impact,
@@ -27,9 +28,12 @@ from .types.recommendation import (
     SecurityProjection,
     ValueMatcher,
 )
+from .types.recommender_config import RecommenderConfig, RecommenderGenerationConfig
 from .types.recommender_service import (
     GetInsightRequest,
+    GetInsightTypeConfigRequest,
     GetRecommendationRequest,
+    GetRecommenderConfigRequest,
     ListInsightsRequest,
     ListInsightsResponse,
     ListRecommendationsRequest,
@@ -38,16 +42,22 @@ from .types.recommender_service import (
     MarkRecommendationClaimedRequest,
     MarkRecommendationFailedRequest,
     MarkRecommendationSucceededRequest,
+    UpdateInsightTypeConfigRequest,
+    UpdateRecommenderConfigRequest,
 )
 
 __all__ = (
     "RecommenderAsyncClient",
     "CostProjection",
     "GetInsightRequest",
+    "GetInsightTypeConfigRequest",
     "GetRecommendationRequest",
+    "GetRecommenderConfigRequest",
     "Impact",
     "Insight",
     "InsightStateInfo",
+    "InsightTypeConfig",
+    "InsightTypeGenerationConfig",
     "ListInsightsRequest",
     "ListInsightsResponse",
     "ListRecommendationsRequest",
@@ -62,6 +72,10 @@ __all__ = (
     "RecommendationContent",
     "RecommendationStateInfo",
     "RecommenderClient",
+    "RecommenderConfig",
+    "RecommenderGenerationConfig",
     "SecurityProjection",
+    "UpdateInsightTypeConfigRequest",
+    "UpdateRecommenderConfigRequest",
     "ValueMatcher",
 )

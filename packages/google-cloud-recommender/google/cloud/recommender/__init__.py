@@ -19,6 +19,10 @@ from google.cloud.recommender_v1.services.recommender.async_client import (
 )
 from google.cloud.recommender_v1.services.recommender.client import RecommenderClient
 from google.cloud.recommender_v1.types.insight import Insight, InsightStateInfo
+from google.cloud.recommender_v1.types.insight_type_config import (
+    InsightTypeConfig,
+    InsightTypeGenerationConfig,
+)
 from google.cloud.recommender_v1.types.recommendation import (
     CostProjection,
     Impact,
@@ -30,9 +34,15 @@ from google.cloud.recommender_v1.types.recommendation import (
     SecurityProjection,
     ValueMatcher,
 )
+from google.cloud.recommender_v1.types.recommender_config import (
+    RecommenderConfig,
+    RecommenderGenerationConfig,
+)
 from google.cloud.recommender_v1.types.recommender_service import (
     GetInsightRequest,
+    GetInsightTypeConfigRequest,
     GetRecommendationRequest,
+    GetRecommenderConfigRequest,
     ListInsightsRequest,
     ListInsightsResponse,
     ListRecommendationsRequest,
@@ -41,6 +51,8 @@ from google.cloud.recommender_v1.types.recommender_service import (
     MarkRecommendationClaimedRequest,
     MarkRecommendationFailedRequest,
     MarkRecommendationSucceededRequest,
+    UpdateInsightTypeConfigRequest,
+    UpdateRecommenderConfigRequest,
 )
 
 __all__ = (
@@ -48,6 +60,8 @@ __all__ = (
     "RecommenderAsyncClient",
     "Insight",
     "InsightStateInfo",
+    "InsightTypeConfig",
+    "InsightTypeGenerationConfig",
     "CostProjection",
     "Impact",
     "Operation",
@@ -57,8 +71,12 @@ __all__ = (
     "RecommendationStateInfo",
     "SecurityProjection",
     "ValueMatcher",
+    "RecommenderConfig",
+    "RecommenderGenerationConfig",
     "GetInsightRequest",
+    "GetInsightTypeConfigRequest",
     "GetRecommendationRequest",
+    "GetRecommenderConfigRequest",
     "ListInsightsRequest",
     "ListInsightsResponse",
     "ListRecommendationsRequest",
@@ -67,4 +85,6 @@ __all__ = (
     "MarkRecommendationClaimedRequest",
     "MarkRecommendationFailedRequest",
     "MarkRecommendationSucceededRequest",
+    "UpdateInsightTypeConfigRequest",
+    "UpdateRecommenderConfigRequest",
 )

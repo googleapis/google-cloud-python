@@ -23,10 +23,16 @@ import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
 
 from google.cloud.recommender_v1.types import (
-    insight,
-    recommendation,
-    recommender_service,
+    insight_type_config as gcr_insight_type_config,
 )
+from google.cloud.recommender_v1.types import (
+    recommender_config as gcr_recommender_config,
+)
+from google.cloud.recommender_v1.types import insight
+from google.cloud.recommender_v1.types import insight_type_config
+from google.cloud.recommender_v1.types import recommendation
+from google.cloud.recommender_v1.types import recommender_config
+from google.cloud.recommender_v1.types import recommender_service
 
 from .base import DEFAULT_CLIENT_INFO, RecommenderTransport
 from .grpc import RecommenderGrpcTransport
@@ -110,6 +116,7 @@ class RecommenderGrpcAsyncIOTransport(RecommenderTransport):
         quota_project_id=None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
         always_use_jwt_access: Optional[bool] = False,
+        api_audience: Optional[str] = None,
     ) -> None:
         """Instantiate the transport.
 
@@ -205,6 +212,7 @@ class RecommenderGrpcAsyncIOTransport(RecommenderTransport):
             quota_project_id=quota_project_id,
             client_info=client_info,
             always_use_jwt_access=always_use_jwt_access,
+            api_audience=api_audience,
         )
 
         if not self._grpc_channel:
@@ -509,6 +517,126 @@ class RecommenderGrpcAsyncIOTransport(RecommenderTransport):
                 response_deserializer=recommendation.Recommendation.deserialize,
             )
         return self._stubs["mark_recommendation_failed"]
+
+    @property
+    def get_recommender_config(
+        self,
+    ) -> Callable[
+        [recommender_service.GetRecommenderConfigRequest],
+        Awaitable[recommender_config.RecommenderConfig],
+    ]:
+        r"""Return a callable for the get recommender config method over gRPC.
+
+        Gets the requested Recommender Config. There is only
+        one instance of the config for each Recommender.
+
+        Returns:
+            Callable[[~.GetRecommenderConfigRequest],
+                    Awaitable[~.RecommenderConfig]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_recommender_config" not in self._stubs:
+            self._stubs["get_recommender_config"] = self.grpc_channel.unary_unary(
+                "/google.cloud.recommender.v1.Recommender/GetRecommenderConfig",
+                request_serializer=recommender_service.GetRecommenderConfigRequest.serialize,
+                response_deserializer=recommender_config.RecommenderConfig.deserialize,
+            )
+        return self._stubs["get_recommender_config"]
+
+    @property
+    def update_recommender_config(
+        self,
+    ) -> Callable[
+        [recommender_service.UpdateRecommenderConfigRequest],
+        Awaitable[gcr_recommender_config.RecommenderConfig],
+    ]:
+        r"""Return a callable for the update recommender config method over gRPC.
+
+        Updates a Recommender Config. This will create a new
+        revision of the config.
+
+        Returns:
+            Callable[[~.UpdateRecommenderConfigRequest],
+                    Awaitable[~.RecommenderConfig]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_recommender_config" not in self._stubs:
+            self._stubs["update_recommender_config"] = self.grpc_channel.unary_unary(
+                "/google.cloud.recommender.v1.Recommender/UpdateRecommenderConfig",
+                request_serializer=recommender_service.UpdateRecommenderConfigRequest.serialize,
+                response_deserializer=gcr_recommender_config.RecommenderConfig.deserialize,
+            )
+        return self._stubs["update_recommender_config"]
+
+    @property
+    def get_insight_type_config(
+        self,
+    ) -> Callable[
+        [recommender_service.GetInsightTypeConfigRequest],
+        Awaitable[insight_type_config.InsightTypeConfig],
+    ]:
+        r"""Return a callable for the get insight type config method over gRPC.
+
+        Gets the requested InsightTypeConfig. There is only
+        one instance of the config for each InsightType.
+
+        Returns:
+            Callable[[~.GetInsightTypeConfigRequest],
+                    Awaitable[~.InsightTypeConfig]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_insight_type_config" not in self._stubs:
+            self._stubs["get_insight_type_config"] = self.grpc_channel.unary_unary(
+                "/google.cloud.recommender.v1.Recommender/GetInsightTypeConfig",
+                request_serializer=recommender_service.GetInsightTypeConfigRequest.serialize,
+                response_deserializer=insight_type_config.InsightTypeConfig.deserialize,
+            )
+        return self._stubs["get_insight_type_config"]
+
+    @property
+    def update_insight_type_config(
+        self,
+    ) -> Callable[
+        [recommender_service.UpdateInsightTypeConfigRequest],
+        Awaitable[gcr_insight_type_config.InsightTypeConfig],
+    ]:
+        r"""Return a callable for the update insight type config method over gRPC.
+
+        Updates an InsightTypeConfig change. This will create
+        a new revision of the config.
+
+        Returns:
+            Callable[[~.UpdateInsightTypeConfigRequest],
+                    Awaitable[~.InsightTypeConfig]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_insight_type_config" not in self._stubs:
+            self._stubs["update_insight_type_config"] = self.grpc_channel.unary_unary(
+                "/google.cloud.recommender.v1.Recommender/UpdateInsightTypeConfig",
+                request_serializer=recommender_service.UpdateInsightTypeConfigRequest.serialize,
+                response_deserializer=gcr_insight_type_config.InsightTypeConfig.deserialize,
+            )
+        return self._stubs["update_insight_type_config"]
 
     def close(self):
         return self.grpc_channel.close()

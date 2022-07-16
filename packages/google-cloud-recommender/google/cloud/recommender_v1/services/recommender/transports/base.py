@@ -26,10 +26,16 @@ from google.oauth2 import service_account  # type: ignore
 import pkg_resources
 
 from google.cloud.recommender_v1.types import (
-    insight,
-    recommendation,
-    recommender_service,
+    insight_type_config as gcr_insight_type_config,
 )
+from google.cloud.recommender_v1.types import (
+    recommender_config as gcr_recommender_config,
+)
+from google.cloud.recommender_v1.types import insight
+from google.cloud.recommender_v1.types import insight_type_config
+from google.cloud.recommender_v1.types import recommendation
+from google.cloud.recommender_v1.types import recommender_config
+from google.cloud.recommender_v1.types import recommender_service
 
 try:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
@@ -58,6 +64,7 @@ class RecommenderTransport(abc.ABC):
         quota_project_id: Optional[str] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
         always_use_jwt_access: Optional[bool] = False,
+        api_audience: Optional[str] = None,
         **kwargs,
     ) -> None:
         """Instantiate the transport.
@@ -85,11 +92,6 @@ class RecommenderTransport(abc.ABC):
                 be used for service account credentials.
         """
 
-        # Save the hostname. Default to port 443 (HTTPS) if none is specified.
-        if ":" not in host:
-            host += ":443"
-        self._host = host
-
         scopes_kwargs = {"scopes": scopes, "default_scopes": self.AUTH_SCOPES}
 
         # Save the scopes.
@@ -110,6 +112,11 @@ class RecommenderTransport(abc.ABC):
             credentials, _ = google.auth.default(
                 **scopes_kwargs, quota_project_id=quota_project_id
             )
+            # Don't apply audience if the credentials file passed from user.
+            if hasattr(credentials, "with_gdch_audience"):
+                credentials = credentials.with_gdch_audience(
+                    api_audience if api_audience else host
+                )
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -121,6 +128,11 @@ class RecommenderTransport(abc.ABC):
 
         # Save the credentials.
         self._credentials = credentials
+
+        # Save the hostname. Default to port 443 (HTTPS) if none is specified.
+        if ":" not in host:
+            host += ":443"
+        self._host = host
 
     def _prep_wrapped_messages(self, client_info):
         # Precompute the wrapped methods.
@@ -203,6 +215,26 @@ class RecommenderTransport(abc.ABC):
             self.mark_recommendation_failed: gapic_v1.method.wrap_method(
                 self.mark_recommendation_failed,
                 default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.get_recommender_config: gapic_v1.method.wrap_method(
+                self.get_recommender_config,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_recommender_config: gapic_v1.method.wrap_method(
+                self.update_recommender_config,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_insight_type_config: gapic_v1.method.wrap_method(
+                self.get_insight_type_config,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_insight_type_config: gapic_v1.method.wrap_method(
+                self.update_insight_type_config,
+                default_timeout=None,
                 client_info=client_info,
             ),
         }
@@ -291,6 +323,54 @@ class RecommenderTransport(abc.ABC):
     ) -> Callable[
         [recommender_service.MarkRecommendationFailedRequest],
         Union[recommendation.Recommendation, Awaitable[recommendation.Recommendation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_recommender_config(
+        self,
+    ) -> Callable[
+        [recommender_service.GetRecommenderConfigRequest],
+        Union[
+            recommender_config.RecommenderConfig,
+            Awaitable[recommender_config.RecommenderConfig],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_recommender_config(
+        self,
+    ) -> Callable[
+        [recommender_service.UpdateRecommenderConfigRequest],
+        Union[
+            gcr_recommender_config.RecommenderConfig,
+            Awaitable[gcr_recommender_config.RecommenderConfig],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_insight_type_config(
+        self,
+    ) -> Callable[
+        [recommender_service.GetInsightTypeConfigRequest],
+        Union[
+            insight_type_config.InsightTypeConfig,
+            Awaitable[insight_type_config.InsightTypeConfig],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_insight_type_config(
+        self,
+    ) -> Callable[
+        [recommender_service.UpdateInsightTypeConfigRequest],
+        Union[
+            gcr_insight_type_config.InsightTypeConfig,
+            Awaitable[gcr_insight_type_config.InsightTypeConfig],
+        ],
     ]:
         raise NotImplementedError()
 

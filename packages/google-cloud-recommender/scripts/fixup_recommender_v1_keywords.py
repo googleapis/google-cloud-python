@@ -40,13 +40,17 @@ class recommenderCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
         'get_insight': ('name', ),
+        'get_insight_type_config': ('name', ),
         'get_recommendation': ('name', ),
+        'get_recommender_config': ('name', ),
         'list_insights': ('parent', 'page_size', 'page_token', 'filter', ),
         'list_recommendations': ('parent', 'page_size', 'page_token', 'filter', ),
         'mark_insight_accepted': ('name', 'etag', 'state_metadata', ),
         'mark_recommendation_claimed': ('name', 'etag', 'state_metadata', ),
         'mark_recommendation_failed': ('name', 'etag', 'state_metadata', ),
         'mark_recommendation_succeeded': ('name', 'etag', 'state_metadata', ),
+        'update_insight_type_config': ('insight_type_config', 'update_mask', 'validate_only', ),
+        'update_recommender_config': ('recommender_config', 'update_mask', 'validate_only', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:
