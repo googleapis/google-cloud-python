@@ -143,6 +143,11 @@ class UpdateProductRequest(proto.Message):
 
             If an unsupported or unknown field is provided, an
             INVALID_ARGUMENT error is returned.
+
+            The attribute key can be updated by setting the mask path as
+            "attributes.${key_name}". If a key name is present in the
+            mask but not in the patching product from the request, this
+            key will be deleted after the update.
         allow_missing (bool):
             If set to true, and the
             [Product][google.cloud.retail.v2.Product] is not found, a
@@ -471,7 +476,9 @@ class SetInventoryResponse(proto.Message):
 
 
 class AddFulfillmentPlacesRequest(proto.Message):
-    r"""Request message for [AddFulfillmentPlaces][] method.
+    r"""Request message for
+    [ProductService.AddFulfillmentPlaces][google.cloud.retail.v2.ProductService.AddFulfillmentPlaces]
+    method.
 
     Attributes:
         product (str):
@@ -563,7 +570,9 @@ class AddFulfillmentPlacesRequest(proto.Message):
 class AddFulfillmentPlacesMetadata(proto.Message):
     r"""Metadata related to the progress of the AddFulfillmentPlaces
     operation. Currently empty because there is no meaningful metadata
-    populated from the [AddFulfillmentPlaces][] method.
+    populated from the
+    [ProductService.AddFulfillmentPlaces][google.cloud.retail.v2.ProductService.AddFulfillmentPlaces]
+    method.
 
     """
 
@@ -571,13 +580,16 @@ class AddFulfillmentPlacesMetadata(proto.Message):
 class AddFulfillmentPlacesResponse(proto.Message):
     r"""Response of the AddFulfillmentPlacesRequest. Currently empty because
     there is no meaningful response populated from the
-    [AddFulfillmentPlaces][] method.
+    [ProductService.AddFulfillmentPlaces][google.cloud.retail.v2.ProductService.AddFulfillmentPlaces]
+    method.
 
     """
 
 
 class AddLocalInventoriesRequest(proto.Message):
-    r"""Request message for [AddLocalInventories][] method.
+    r"""Request message for
+    [ProductService.AddLocalInventories][google.cloud.retail.v2.ProductService.AddLocalInventories]
+    method.
 
     Attributes:
         product (str):
@@ -656,15 +668,20 @@ class AddLocalInventoriesRequest(proto.Message):
 class AddLocalInventoriesMetadata(proto.Message):
     r"""Metadata related to the progress of the AddLocalInventories
     operation. Currently empty because there is no meaningful metadata
-    populated from the [AddLocalInventories][] method.
+    populated from the
+    [ProductService.AddLocalInventories][google.cloud.retail.v2.ProductService.AddLocalInventories]
+    method.
 
     """
 
 
 class AddLocalInventoriesResponse(proto.Message):
-    r"""Response of the [AddLocalInventories][] API. Currently empty because
-    there is no meaningful response populated from the
-    [AddLocalInventories][] method.
+    r"""Response of the
+    [ProductService.AddLocalInventories][google.cloud.retail.v2.ProductService.AddLocalInventories]
+    API. Currently empty because there is no meaningful response
+    populated from the
+    [ProductService.AddLocalInventories][google.cloud.retail.v2.ProductService.AddLocalInventories]
+    method.
 
     """
 
@@ -770,7 +787,7 @@ class RemoveFulfillmentPlacesRequest(proto.Message):
             an INVALID_ARGUMENT error is returned.
 
             This field directly corresponds to
-            [Product.fulfillment_info.type][].
+            [Product.fulfillment_info.type][google.cloud.retail.v2.FulfillmentInfo.type].
         place_ids (Sequence[str]):
             Required. The IDs for this
             [type][google.cloud.retail.v2.RemoveFulfillmentPlacesRequest.type],

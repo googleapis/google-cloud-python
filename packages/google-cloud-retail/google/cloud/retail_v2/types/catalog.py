@@ -42,7 +42,8 @@ class ProductLevelConfig(proto.Message):
                default to
                [Product.Type.PRIMARY][google.cloud.retail.v2.Product.Type.PRIMARY]
                if unset.
-            -  ``variant``: You can only ingest
+            -  ``variant`` (incompatible with Retail Search): You can
+               only ingest
                [Product.Type.VARIANT][google.cloud.retail.v2.Product.Type.VARIANT]
                [Product][google.cloud.retail.v2.Product]s. This means
                [Product.primary_product_id][google.cloud.retail.v2.Product.primary_product_id]
@@ -55,8 +56,8 @@ class ProductLevelConfig(proto.Message):
             [merchant_center_product_id_field][google.cloud.retail.v2.ProductLevelConfig.merchant_center_product_id_field]
             is ``itemGroupId``, an INVALID_ARGUMENT error is returned.
 
-            See `Using product
-            levels <https://cloud.google.com/retail/recommendations-ai/docs/catalog#product-levels>`__
+            See `Product
+            levels <https://cloud.google.com/retail/docs/catalog#product-levels>`__
             for more details.
         merchant_center_product_id_field (str):
             Which field of `Merchant Center
@@ -79,8 +80,8 @@ class ProductLevelConfig(proto.Message):
             [ingestion_product_type][google.cloud.retail.v2.ProductLevelConfig.ingestion_product_type]
             is ``variant``, an INVALID_ARGUMENT error is returned.
 
-            See `Using product
-            levels <https://cloud.google.com/retail/recommendations-ai/docs/catalog#product-levels>`__
+            See `Product
+            levels <https://cloud.google.com/retail/docs/catalog#product-levels>`__
             for more details.
     """
 

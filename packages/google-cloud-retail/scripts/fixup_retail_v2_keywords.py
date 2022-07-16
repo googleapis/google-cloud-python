@@ -57,7 +57,7 @@ class retailCallTransformer(cst.CSTTransformer):
         'rejoin_user_events': ('parent', 'user_event_rejoin_scope', ),
         'remove_fulfillment_places': ('product', 'type_', 'place_ids', 'remove_time', 'allow_missing', ),
         'remove_local_inventories': ('product', 'place_ids', 'remove_time', 'allow_missing', ),
-        'search': ('placement', 'visitor_id', 'branch', 'query', 'user_info', 'page_size', 'page_token', 'offset', 'filter', 'canonical_filter', 'order_by', 'facet_specs', 'dynamic_facet_spec', 'boost_spec', 'query_expansion_spec', 'variant_rollup_keys', 'page_categories', 'search_mode', 'personalization_spec', ),
+        'search': ('placement', 'visitor_id', 'branch', 'query', 'user_info', 'page_size', 'page_token', 'offset', 'filter', 'canonical_filter', 'order_by', 'facet_specs', 'dynamic_facet_spec', 'boost_spec', 'query_expansion_spec', 'variant_rollup_keys', 'page_categories', 'search_mode', 'personalization_spec', 'labels', 'spell_correction_spec', ),
         'set_default_branch': ('catalog', 'branch_id', 'note', 'force', ),
         'set_inventory': ('inventory', 'set_mask', 'set_time', 'allow_missing', ),
         'update_catalog': ('catalog', 'update_mask', ),

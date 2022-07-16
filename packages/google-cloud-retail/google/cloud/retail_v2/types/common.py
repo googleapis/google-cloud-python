@@ -153,11 +153,15 @@ class CustomAttribute(proto.Message):
             should be set. Otherwise, an INVALID_ARGUMENT error is
             returned.
         searchable (bool):
-            This field will only be used when
+            This field is normally ignored unless
             [AttributesConfig.attribute_config_level][] of the
-            [Catalog][google.cloud.retail.v2.Catalog] is
-            'PRODUCT_LEVEL_ATTRIBUTE_CONFIG', if true, custom attribute
-            values are searchable by text queries in
+            [Catalog][google.cloud.retail.v2.Catalog] is set to the
+            deprecated 'PRODUCT_LEVEL_ATTRIBUTE_CONFIG' mode. For
+            information about product-level attribute configuration, see
+            `Configuration
+            modes <https://cloud.google.com/retail/docs/attribute-config#config-modes>`__.
+            If true, custom attribute values are searchable by text
+            queries in
             [SearchService.Search][google.cloud.retail.v2.SearchService.Search].
 
             This field is ignored in a
@@ -169,12 +173,15 @@ class CustomAttribute(proto.Message):
 
             This field is a member of `oneof`_ ``_searchable``.
         indexable (bool):
-            This field will only be used when
+            This field is normally ignored unless
             [AttributesConfig.attribute_config_level][] of the
-            [Catalog][google.cloud.retail.v2.Catalog] is
-            'PRODUCT_LEVEL_ATTRIBUTE_CONFIG', if true, custom attribute
-            values are indexed, so that it can be filtered, faceted or
-            boosted in
+            [Catalog][google.cloud.retail.v2.Catalog] is set to the
+            deprecated 'PRODUCT_LEVEL_ATTRIBUTE_CONFIG' mode. For
+            information about product-level attribute configuration, see
+            `Configuration
+            modes <https://cloud.google.com/retail/docs/attribute-config#config-modes>`__.
+            If true, custom attribute values are indexed, so that they
+            can be filtered, faceted or boosted in
             [SearchService.Search][google.cloud.retail.v2.SearchService.Search].
 
             This field is ignored in a
@@ -384,7 +391,11 @@ class PriceInfo(proto.Message):
         original_price (float):
             Price of the product without any discount. If zero, by
             default set to be the
-            [price][google.cloud.retail.v2.PriceInfo.price].
+            [price][google.cloud.retail.v2.PriceInfo.price]. If set,
+            [original_price][google.cloud.retail.v2.PriceInfo.original_price]
+            should be greater than or equal to
+            [price][google.cloud.retail.v2.PriceInfo.price], otherwise
+            an INVALID_ARGUMENT error is thrown.
         cost (float):
             The costs associated with the sale of a particular product.
             Used for gross profit reporting.
@@ -561,9 +572,14 @@ class UserInfo(proto.Message):
     Attributes:
         user_id (str):
             Highly recommended for logged-in users. Unique identifier
-            for logged-in user, such as a user name.
+            for logged-in user, such as a user name. Don't set for
+            anonymous users.
 
             Always use a hashed value for this ID.
+
+            Don't set the field to the same fixed ID for different
+            users. This mixes the event history of those users together,
+            which results in degraded model quality.
 
             The field must be a UTF-8 encoded string with a length limit
             of 128 characters. Otherwise, an INVALID_ARGUMENT error is

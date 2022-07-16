@@ -38,7 +38,7 @@ class SearchRequest(proto.Message):
         placement (str):
             Required. The resource name of the search engine placement,
             such as
-            ``projects/*/locations/global/catalogs/default_catalog/placements/default_search``
+            ``projects/*/locations/global/catalogs/default_catalog/placements/default_search``.
             This field is used to identify the serving configuration
             name and the set of models that will be used to make the
             search.
@@ -50,6 +50,11 @@ class SearchRequest(proto.Message):
             empty, to search products under the default branch.
         query (str):
             Raw search query.
+
+            If this field is empty, the request is considered a category
+            browsing request and returned results are based on
+            [filter][google.cloud.retail.v2.SearchRequest.filter] and
+            [page_categories][google.cloud.retail.v2.SearchRequest.page_categories].
         visitor_id (str):
             Required. A unique identifier for tracking visitors. For
             example, this could be implemented with an HTTP cookie,
@@ -147,11 +152,11 @@ class SearchRequest(proto.Message):
             guide <https://cloud.google.com/retail/docs/boosting>`__.
 
             Notice that if both [ServingConfig.boost_control_ids][] and
-            [SearchRequest.boost_spec] are set, the boost conditions
-            from both places are evaluated. If a search request matches
-            multiple boost conditions, the final boost score is equal to
-            the sum of the boost scores from all matched boost
-            conditions.
+            [SearchRequest.boost_spec][google.cloud.retail.v2.SearchRequest.boost_spec]
+            are set, the boost conditions from both places are
+            evaluated. If a search request matches multiple boost
+            conditions, the final boost score is equal to the sum of the
+            boost scores from all matched boost conditions.
         query_expansion_spec (google.cloud.retail_v2.types.SearchRequest.QueryExpansionSpec):
             The query expansion specification that specifies the
             conditions under which query expansion will occur. See more
@@ -187,7 +192,9 @@ class SearchRequest(proto.Message):
             -  inventory(place_id,price)
             -  inventory(place_id,original_price)
             -  inventory(place_id,attributes.key), where key is any key
-               in the [Product.inventories.attributes][] map.
+               in the
+               [Product.local_inventories.attributes][google.cloud.retail.v2.LocalInventory.attributes]
+               map.
             -  attributes.key, where key is any key in the
                [Product.attributes][google.cloud.retail.v2.Product.attributes]
                map.
@@ -259,6 +266,34 @@ class SearchRequest(proto.Message):
             product search and faceted search.
         personalization_spec (google.cloud.retail_v2.types.SearchRequest.PersonalizationSpec):
             The specification for personalization.
+        labels (Mapping[str, str]):
+            The labels applied to a resource must meet the following
+            requirements:
+
+            -  Each resource can have multiple labels, up to a maximum
+               of 64.
+            -  Each label must be a key-value pair.
+            -  Keys have a minimum length of 1 character and a maximum
+               length of 63 characters and cannot be empty. Values can
+               be empty and have a maximum length of 63 characters.
+            -  Keys and values can contain only lowercase letters,
+               numeric characters, underscores, and dashes. All
+               characters must use UTF-8 encoding, and international
+               characters are allowed.
+            -  The key portion of a label must be unique. However, you
+               can use the same key with multiple resources.
+            -  Keys must start with a lowercase letter or international
+               character.
+
+            See `Google Cloud
+            Document <https://cloud.google.com/resource-manager/docs/creating-managing-labels#requirements>`__
+            for more details.
+        spell_correction_spec (google.cloud.retail_v2.types.SearchRequest.SpellCorrectionSpec):
+            The spell correction specification that
+            specifies the mode under which spell correction
+            will take effect.
+
+            This field is a member of `oneof`_ ``_spell_correction_spec``.
     """
 
     class SearchMode(proto.Enum):
@@ -287,17 +322,28 @@ class SearchRequest(proto.Message):
                 is not excluded from the filter unless it is listed in this
                 field.
 
-                For example, suppose there are 100 products with color facet
-                "Red" and 200 products with color facet "Blue". A query
-                containing the filter "colorFamilies:ANY("Red")" and have
-                "colorFamilies" as
-                [FacetKey.key][google.cloud.retail.v2.SearchRequest.FacetSpec.FacetKey.key]
-                will by default return the "Red" with count 100.
+                Listing a facet key in this field allows its values to
+                appear as facet results, even when they are filtered out of
+                search results. Using this field does not affect what search
+                results are returned.
 
-                If this field contains "colorFamilies", then the query
-                returns both the "Red" with count 100 and "Blue" with count
-                200, because the "colorFamilies" key is now excluded from
-                the filter.
+                For example, suppose there are 100 products with the color
+                facet "Red" and 200 products with the color facet "Blue". A
+                query containing the filter "colorFamilies:ANY("Red")" and
+                having "colorFamilies" as
+                [FacetKey.key][google.cloud.retail.v2.SearchRequest.FacetSpec.FacetKey.key]
+                would by default return only "Red" products in the search
+                results, and also return "Red" with count 100 as the only
+                color facet. Although there are also blue products
+                available, "Blue" would not be shown as an available facet
+                value.
+
+                If "colorFamilies" is listed in "excludedFilterKeys", then
+                the query returns the facet values "Red" with count 100 and
+                "Blue" with count 200, because the "colorFamilies" key is
+                now excluded from the filter. Because this field doesn't
+                affect search results, the search results are still
+                correctly filtered to return only "Red" products.
 
                 A maximum of 100 values are allowed. Otherwise, an
                 INVALID_ARGUMENT error is returned.
@@ -394,8 +440,9 @@ class SearchRequest(proto.Message):
                     Only get facet for the given restricted values. For example,
                     when using "pickupInStore" as key and set restricted values
                     to ["store123", "store456"], only facets for "store123" and
-                    "store456" are returned. Only supported on textual fields
-                    and fulfillments. Maximum is 20.
+                    "store456" are returned. Only supported on predefined
+                    textual fields, custom textual attributes and fulfillments.
+                    Maximum is 20.
 
                     Must be set for the fulfillment facet keys:
 
@@ -557,7 +604,7 @@ class SearchRequest(proto.Message):
                 specifictions, boost scores from these
                 specifications are all applied and combined in a
                 non-linear way. Maximum number of specifications
-                is 10.
+                is 20.
             skip_boost_spec_validation (bool):
                 Whether to skip boostspec validation. If this field is set
                 to true, invalid
@@ -683,6 +730,30 @@ class SearchRequest(proto.Message):
             enum="SearchRequest.PersonalizationSpec.Mode",
         )
 
+    class SpellCorrectionSpec(proto.Message):
+        r"""The specification for query spell correction.
+
+        Attributes:
+            mode (google.cloud.retail_v2.types.SearchRequest.SpellCorrectionSpec.Mode):
+                The mode under which spell correction should take effect to
+                replace the original search query. Default to
+                [Mode.AUTO][google.cloud.retail.v2.SearchRequest.SpellCorrectionSpec.Mode.AUTO].
+        """
+
+        class Mode(proto.Enum):
+            r"""Enum describing under which mode spell correction should
+            occur.
+            """
+            MODE_UNSPECIFIED = 0
+            SUGGESTION_ONLY = 1
+            AUTO = 2
+
+        mode = proto.Field(
+            proto.ENUM,
+            number=1,
+            enum="SearchRequest.SpellCorrectionSpec.Mode",
+        )
+
     placement = proto.Field(
         proto.STRING,
         number=1,
@@ -766,6 +837,17 @@ class SearchRequest(proto.Message):
         number=32,
         message=PersonalizationSpec,
     )
+    labels = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=34,
+    )
+    spell_correction_spec = proto.Field(
+        proto.MESSAGE,
+        number=35,
+        optional=True,
+        message=SpellCorrectionSpec,
+    )
 
 
 class SearchResponse(proto.Message):
@@ -787,8 +869,10 @@ class SearchResponse(proto.Message):
             [total_size][google.cloud.retail.v2.SearchResponse.total_size]
             that matches.
         corrected_query (str):
-            If spell correction applies, the corrected
-            query. Otherwise, empty.
+            Contains the spell corrected query, if found. If the spell
+            correction type is AUTOMATIC, then the search results are
+            based on corrected_query. Otherwise the original query will
+            be used for search.
         attribution_token (str):
             A unique search token. This should be included in the
             [UserEvent][google.cloud.retail.v2.UserEvent] logs resulting
@@ -804,11 +888,11 @@ class SearchResponse(proto.Message):
             results.
         redirect_uri (str):
             The URI of a customer-defined redirect page. If redirect
-            action is triggered, no search will be performed, and only
+            action is triggered, no search is performed, and only
             [redirect_uri][google.cloud.retail.v2.SearchResponse.redirect_uri]
             and
             [attribution_token][google.cloud.retail.v2.SearchResponse.attribution_token]
-            will be set in the response.
+            are set in the response.
         applied_controls (Sequence[str]):
             The fully qualified resource name of applied
             `controls <https://cloud.google.com/retail/docs/serving-control-rules>`__.

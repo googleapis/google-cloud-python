@@ -641,6 +641,11 @@ class ProductServiceAsyncClient:
                 If an unsupported or unknown field is provided, an
                 INVALID_ARGUMENT error is returned.
 
+                The attribute key can be updated by setting the mask
+                path as "attributes.${key_name}". If a key name is
+                present in the mask but not in the patching product from
+                the request, this key will be deleted after the update.
+
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -820,8 +825,8 @@ class ProductServiceAsyncClient:
         r"""Bulk import of multiple
         [Product][google.cloud.retail.v2.Product]s.
 
-        Request processing may be synchronous. No partial updating is
-        supported. Non-existing items are created.
+        Request processing may be synchronous. Non-existing items are
+        created.
 
         Note that it is possible for a subset of the
         [Product][google.cloud.retail.v2.Product]s to be successfully
@@ -970,7 +975,7 @@ class ProductServiceAsyncClient:
 
         Pre-existing inventory information can only be updated with
         [SetInventory][google.cloud.retail.v2.ProductService.SetInventory],
-        [AddFulfillmentPlaces][google.cloud.retail.v2.ProductService.AddFulfillmentPlaces],
+        [ProductService.AddFulfillmentPlaces][google.cloud.retail.v2.ProductService.AddFulfillmentPlaces],
         and
         [RemoveFulfillmentPlaces][google.cloud.retail.v2.ProductService.RemoveFulfillmentPlaces].
 
@@ -1211,7 +1216,8 @@ class ProductServiceAsyncClient:
         Args:
             request (Union[google.cloud.retail_v2.types.AddFulfillmentPlacesRequest, dict]):
                 The request object. Request message for
-                [AddFulfillmentPlaces][] method.
+                [ProductService.AddFulfillmentPlaces][google.cloud.retail.v2.ProductService.AddFulfillmentPlaces]
+                method.
             product (:class:`str`):
                 Required. Full resource name of
                 [Product][google.cloud.retail.v2.Product], such as
@@ -1237,7 +1243,8 @@ class ProductServiceAsyncClient:
 
                 The result type for the operation will be :class:`google.cloud.retail_v2.types.AddFulfillmentPlacesResponse` Response of the AddFulfillmentPlacesRequest. Currently empty because
                    there is no meaningful response populated from the
-                   [AddFulfillmentPlaces][] method.
+                   [ProductService.AddFulfillmentPlaces][google.cloud.retail.v2.ProductService.AddFulfillmentPlaces]
+                   method.
 
         """
         # Create or coerce a protobuf request object.
@@ -1486,7 +1493,8 @@ class ProductServiceAsyncClient:
         Args:
             request (Union[google.cloud.retail_v2.types.AddLocalInventoriesRequest, dict]):
                 The request object. Request message for
-                [AddLocalInventories][] method.
+                [ProductService.AddLocalInventories][google.cloud.retail.v2.ProductService.AddLocalInventories]
+                method.
             product (:class:`str`):
                 Required. Full resource name of
                 [Product][google.cloud.retail.v2.Product], such as
@@ -1510,9 +1518,12 @@ class ProductServiceAsyncClient:
             google.api_core.operation_async.AsyncOperation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be :class:`google.cloud.retail_v2.types.AddLocalInventoriesResponse` Response of the [AddLocalInventories][] API. Currently empty because
-                   there is no meaningful response populated from the
-                   [AddLocalInventories][] method.
+                The result type for the operation will be :class:`google.cloud.retail_v2.types.AddLocalInventoriesResponse` Response of the
+                   [ProductService.AddLocalInventories][google.cloud.retail.v2.ProductService.AddLocalInventories]
+                   API. Currently empty because there is no meaningful
+                   response populated from the
+                   [ProductService.AddLocalInventories][google.cloud.retail.v2.ProductService.AddLocalInventories]
+                   method.
 
         """
         # Create or coerce a protobuf request object.
