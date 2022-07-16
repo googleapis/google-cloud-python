@@ -72,6 +72,7 @@ __protobuf__ = proto.module(
         "InspectDataSourceDetails",
         "HybridInspectStatistics",
         "InfoTypeDescription",
+        "InfoTypeCategory",
         "ListInfoTypesRequest",
         "ListInfoTypesResponse",
         "RiskAnalysisJobConfig",
@@ -423,10 +424,10 @@ class InspectConfig(proto.Message):
             findings returned. This is not used for data
             profiling.
         include_quote (bool):
-            When true, a contextual quote from the data
-            that triggered a finding is included in the
-            response; see Finding.quote. This is not used
-            for data profiling.
+            When true, a contextual quote from the data that triggered a
+            finding is included in the response; see
+            [Finding.quote][google.privacy.dlp.v2.Finding.quote]. This
+            is not used for data profiling.
         exclude_info_types (bool):
             When true, excludes type information of the
             findings. This is not used for data profiling.
@@ -1907,6 +1908,8 @@ class InfoTypeDescription(proto.Message):
         description (str):
             Description of the infotype. Translated when
             language is provided in the request.
+        categories (Sequence[google.cloud.dlp_v2.types.InfoTypeCategory]):
+            The category of the infoType.
     """
 
     name = proto.Field(
@@ -1925,6 +1928,128 @@ class InfoTypeDescription(proto.Message):
     description = proto.Field(
         proto.STRING,
         number=4,
+    )
+    categories = proto.RepeatedField(
+        proto.MESSAGE,
+        number=10,
+        message="InfoTypeCategory",
+    )
+
+
+class InfoTypeCategory(proto.Message):
+    r"""Classification of infoTypes to organize them according to
+    geographic location, industry, and data type.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        location_category (google.cloud.dlp_v2.types.InfoTypeCategory.LocationCategory):
+            The region or country that issued the ID or
+            document represented by the infoType.
+
+            This field is a member of `oneof`_ ``category``.
+        industry_category (google.cloud.dlp_v2.types.InfoTypeCategory.IndustryCategory):
+            The group of relevant businesses where this
+            infoType is commonly used
+
+            This field is a member of `oneof`_ ``category``.
+        type_category (google.cloud.dlp_v2.types.InfoTypeCategory.TypeCategory):
+            The class of identifiers where this infoType
+            belongs
+
+            This field is a member of `oneof`_ ``category``.
+    """
+
+    class LocationCategory(proto.Enum):
+        r"""Enum of the current locations.
+        We might add more locations in the future.
+        """
+        LOCATION_UNSPECIFIED = 0
+        GLOBAL = 1
+        ARGENTINA = 2
+        AUSTRALIA = 3
+        BELGIUM = 4
+        BRAZIL = 5
+        CANADA = 6
+        CHILE = 7
+        CHINA = 8
+        COLOMBIA = 9
+        DENMARK = 10
+        FRANCE = 11
+        FINLAND = 12
+        GERMANY = 13
+        HONG_KONG = 14
+        INDIA = 15
+        INDONESIA = 16
+        IRELAND = 17
+        ISRAEL = 18
+        ITALY = 19
+        JAPAN = 20
+        KOREA = 21
+        MEXICO = 22
+        THE_NETHERLANDS = 23
+        NORWAY = 24
+        PARAGUAY = 25
+        PERU = 26
+        POLAND = 27
+        PORTUGAL = 28
+        SINGAPORE = 29
+        SOUTH_AFRICA = 30
+        SPAIN = 31
+        SWEDEN = 32
+        TAIWAN = 33
+        THAILAND = 34
+        TURKEY = 35
+        UNITED_KINGDOM = 36
+        UNITED_STATES = 37
+        URUGUAY = 38
+        VENEZUELA = 39
+        INTERNAL = 40
+
+    class IndustryCategory(proto.Enum):
+        r"""Enum of the current industries in the category.
+        We might add more industries in the future.
+        """
+        INDUSTRY_UNSPECIFIED = 0
+        FINANCE = 1
+        HEALTH = 2
+        TELECOMMUNICATIONS = 3
+
+    class TypeCategory(proto.Enum):
+        r"""Enum of the current types in the category.
+        We might add more types in the future.
+        """
+        TYPE_UNSPECIFIED = 0
+        PII = 1
+        SPII = 2
+        DEMOGRAPHIC = 3
+        CREDENTIAL = 4
+        GOVERNMENT_ID = 5
+        DOCUMENT = 6
+        CONTEXTUAL_INFORMATION = 7
+
+    location_category = proto.Field(
+        proto.ENUM,
+        number=1,
+        oneof="category",
+        enum=LocationCategory,
+    )
+    industry_category = proto.Field(
+        proto.ENUM,
+        number=2,
+        oneof="category",
+        enum=IndustryCategory,
+    )
+    type_category = proto.Field(
+        proto.ENUM,
+        number=3,
+        oneof="category",
+        enum=TypeCategory,
     )
 
 

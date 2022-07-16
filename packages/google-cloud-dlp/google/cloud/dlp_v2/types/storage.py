@@ -324,8 +324,12 @@ class CustomInfoType(proto.Message):
 
             Attributes:
                 window_before (int):
-                    Number of characters before the finding to
-                    consider.
+                    Number of characters before the finding to consider. For
+                    tabular data, if you want to modify the likelihood of an
+                    entire column of findngs, set this to 1. For more
+                    information, see [Hotword example: Set the match likelihood
+                    of a table column]
+                    (https://cloud.google.com/dlp/docs/creating-custom-infotypes-likelihood#match-column-values).
                 window_after (int):
                     Number of characters after the finding to
                     consider.
@@ -392,18 +396,20 @@ class CustomInfoType(proto.Message):
                     Regular expression pattern defining what
                     qualifies as a hotword.
                 proximity (google.cloud.dlp_v2.types.CustomInfoType.DetectionRule.Proximity):
-                    Proximity of the finding within which the
-                    entire hotword must reside. The total length of
-                    the window cannot exceed 1000 characters. Note
-                    that the finding itself will be included in the
-                    window, so that hotwords may be used to match
-                    substrings of the finding itself. For example,
-                    the certainty of a phone number regex "\(\d{3}\)
-                    \d{3}-\d{4}" could be adjusted upwards if the
-                    area code is known to be the local area code of
-                    a company office using the hotword regex
-                    "\(xxx\)", where "xxx" is the area code in
-                    question.
+                    Range of characters within which the entire hotword must
+                    reside. The total length of the window cannot exceed 1000
+                    characters. The finding itself will be included in the
+                    window, so that hotwords can be used to match substrings of
+                    the finding itself. Suppose you want Cloud DLP to promote
+                    the likelihood of the phone number regex "(\d{3})
+                    \\d{3}-\d{4}" if the area code is known to be the area code
+                    of a company's office. In this case, use the hotword regex
+                    "(xxx)", where "xxx" is the area code in question.
+
+                    For tabular data, if you want to modify the likelihood of an
+                    entire column of findngs, see [Hotword example: Set the
+                    match likelihood of a table column]
+                    (https://cloud.google.com/dlp/docs/creating-custom-infotypes-likelihood#match-column-values).
                 likelihood_adjustment (google.cloud.dlp_v2.types.CustomInfoType.DetectionRule.LikelihoodAdjustment):
                     Likelihood adjustment to apply to all
                     matching findings.
