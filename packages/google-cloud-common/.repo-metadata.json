@@ -1,6 +1,7 @@
 {
     "name": "common",
     "name_pretty": "Google Cloud Common",
+    "product_documentation" : "https://cloud.google.com",
     "client_documentation": "https://cloud.google.com/python/docs/reference/common/latest",
     "issue_tracker": "",
     "release_level": "stable",
@@ -9,5 +10,6 @@
     "repo": "googleapis/python-cloud-common",
     "distribution_name": "google-cloud-common",
     "default_version": "",
-    "codeowner_team": ""
+    "codeowner_team": "",
+    "api_description": "This package contains generated Python types for google.cloud.common"
 }

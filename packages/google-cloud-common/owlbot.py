@@ -35,7 +35,7 @@ s.remove_staging_dirs()
 # ----------------------------------------------------------------------------
 
 templated_files = gcp.CommonTemplates().py_library(microgenerator=True)
-s.move(templated_files, excludes=[".coveragerc"]) # the microgenerator has a good coveragerc file
+s.move(templated_files, excludes=["README.rst", ".coveragerc"]) # the microgenerator has a good coveragerc file
 
 python.py_samples(skip_readmes=True)
 
