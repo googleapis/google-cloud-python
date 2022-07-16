@@ -34,7 +34,7 @@ def sample_update_workload():
     # Initialize request argument(s)
     workload = assuredworkloads_v1beta1.Workload()
     workload.display_name = "display_name_value"
-    workload.compliance_regime = "CA_REGIONS_AND_SUPPORT"
+    workload.compliance_regime = "ITAR"
 
     request = assuredworkloads_v1beta1.UpdateWorkloadRequest(
         workload=workload,

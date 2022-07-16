@@ -236,7 +236,7 @@ class AssuredWorkloadsServiceAsyncClient:
                 # Initialize request argument(s)
                 workload = assuredworkloads_v1.Workload()
                 workload.display_name = "display_name_value"
-                workload.compliance_regime = "CA_REGIONS_AND_SUPPORT"
+                workload.compliance_regime = "ITAR"
                 workload.billing_account = "billing_account_value"
 
                 request = assuredworkloads_v1.CreateWorkloadRequest(
@@ -362,7 +362,7 @@ class AssuredWorkloadsServiceAsyncClient:
                 # Initialize request argument(s)
                 workload = assuredworkloads_v1.Workload()
                 workload.display_name = "display_name_value"
-                workload.compliance_regime = "CA_REGIONS_AND_SUPPORT"
+                workload.compliance_regime = "ITAR"
                 workload.billing_account = "billing_account_value"
 
                 request = assuredworkloads_v1.UpdateWorkloadRequest(

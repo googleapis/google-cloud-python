@@ -430,6 +430,7 @@ class AssuredWorkloadsServiceClient(metaclass=AssuredWorkloadsServiceClientMeta)
                 quota_project_id=client_options.quota_project_id,
                 client_info=client_info,
                 always_use_jwt_access=True,
+                api_audience=client_options.api_audience,
             )
 
     def create_workload(
@@ -455,7 +456,7 @@ class AssuredWorkloadsServiceClient(metaclass=AssuredWorkloadsServiceClientMeta)
                 # Initialize request argument(s)
                 workload = assuredworkloads_v1beta1.Workload()
                 workload.display_name = "display_name_value"
-                workload.compliance_regime = "CA_REGIONS_AND_SUPPORT"
+                workload.compliance_regime = "ITAR"
 
                 request = assuredworkloads_v1beta1.CreateWorkloadRequest(
                     parent="parent_value",
@@ -580,7 +581,7 @@ class AssuredWorkloadsServiceClient(metaclass=AssuredWorkloadsServiceClientMeta)
                 # Initialize request argument(s)
                 workload = assuredworkloads_v1beta1.Workload()
                 workload.display_name = "display_name_value"
-                workload.compliance_regime = "CA_REGIONS_AND_SUPPORT"
+                workload.compliance_regime = "ITAR"
 
                 request = assuredworkloads_v1beta1.UpdateWorkloadRequest(
                     workload=workload,

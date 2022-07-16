@@ -290,6 +290,7 @@ class Workload(proto.Message):
         HITRUST = 7
         EU_REGIONS_AND_SUPPORT = 8
         CA_REGIONS_AND_SUPPORT = 9
+        ITAR = 10
 
     class KajEnrollmentState(proto.Enum):
         r"""Key Access Justifications(KAJ) Enrollment State."""
