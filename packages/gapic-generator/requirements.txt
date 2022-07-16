@@ -7,5 +7,5 @@ protobuf==3.20.1
 pypandoc==1.8.1
 PyYAML==6.0
 dataclasses==0.6  # TODO(busunkim) remove when 3.6 support is dropped
-setuptools==62.3.2
+setuptools==63.2.0
 grpc-google-iam-v1==0.12.4
