@@ -2,7 +2,7 @@
     "name": "analyticsadmin",
     "name_pretty": "Analytics Admin",
     "product_documentation": "https://developers.google.com/analytics/",
-    "client_documentation": "https://cloud.google.com/python/docs/reference/analyticsadmin/latest",
+    "client_documentation": "https://googleapis.dev/python/analyticsadmin/latest",
     "issue_tracker": "https://issuetracker.google.com/issues?q=componentid:187400",
     "release_level": "preview",
     "language": "python",
@@ -12,5 +12,6 @@
     "api_id": "analyticsadmin.googleapis.com",
     "default_version": "v1alpha",
     "codeowner_team": "",
-    "api_shortname": "analyticsadmin"
+    "api_shortname": "analyticsadmin",
+    "api_description": "allows you to manage Google Analytics accounts and properties."
 }
