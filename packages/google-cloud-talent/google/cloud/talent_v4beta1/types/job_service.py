@@ -213,10 +213,13 @@ class ListJobsRequest(proto.Message):
 
             The fields eligible for filtering are:
 
-            -  ``companyName`` (Required)
+            -  ``companyName``
             -  ``requisitionId``
             -  ``status`` Available values: OPEN, EXPIRED, ALL. Defaults
                to OPEN if no value is specified.
+
+            At least one of ``companyName`` and ``requisitionId`` must
+            present or an INVALID_ARGUMENT error is thrown.
 
             Sample Query:
 
@@ -224,7 +227,9 @@ class ListJobsRequest(proto.Message):
             -  companyName = "projects/foo/tenants/bar/companies/baz"
                AND requisitionId = "req-1"
             -  companyName = "projects/foo/tenants/bar/companies/baz"
-               AND status = "EXPIRED".
+               AND status = "EXPIRED"
+            -  requisitionId = "req-1"
+            -  requisitionId = "req-1" AND status = "EXPIRED".
         page_token (str):
             The starting point of a query result.
         page_size (int):
@@ -336,16 +341,7 @@ class SearchJobsRequest(proto.Message):
 
             Defaults to false.
         require_precise_result_size (bool):
-            Controls if the search job request requires the return of a
-            precise count of the first 300 results. Setting this to
-            ``true`` ensures consistency in the number of results per
-            page. Best practice is to set this value to true if a client
-            allows users to jump directly to a non-sequential search
-            results page.
-
-            Enabling this flag may adversely impact performance.
-
-            Defaults to false.
+            This field is deprecated.
         histogram_queries (Sequence[google.cloud.talent_v4beta1.types.HistogramQuery]):
             An expression specifies a histogram request against matching
             jobs.
@@ -359,6 +355,8 @@ class SearchJobsRequest(proto.Message):
                matching entities, for each distinct attribute value.
             -  ``count(numeric_histogram_facet, list of buckets)``:
                Count the number of matching entities within each bucket.
+
+            A maximum of 200 histogram buckets are supported.
 
             Data types:
 
@@ -394,6 +392,9 @@ class SearchJobsRequest(proto.Message):
             -  company_size: histogram by
                [CompanySize][google.cloud.talent.v4beta1.CompanySize],
                for example, "SMALL", "MEDIUM", "BIG".
+            -  publish_time_in_day: histogram by the
+               [Job.posting_publish_time][google.cloud.talent.v4beta1.Job.posting_publish_time]
+               in days. Must specify list of numeric buckets in spec.
             -  publish_time_in_month: histogram by the
                [Job.posting_publish_time][google.cloud.talent.v4beta1.Job.posting_publish_time]
                in months. Must specify list of numeric buckets in spec.
@@ -458,7 +459,7 @@ class SearchJobsRequest(proto.Message):
             -  ``count(admin1)``
             -  ``count(base_compensation, [bucket(1000, 10000), bucket(10000, 100000), bucket(100000, MAX)])``
             -  ``count(string_custom_attribute["some-string-custom-attribute"])``
-            -  ``count(numeric_custom_attribute["some-numeric-custom-attribute"], [bucket(MIN, 0, "negative"), bucket(0, MAX, "non-negative"])``
+            -  ``count(numeric_custom_attribute["some-numeric-custom-attribute"], [bucket(MIN, 0, "negative"), bucket(0, MAX, "non-negative")])``
         job_view (google.cloud.talent_v4beta1.types.JobView):
             The desired job attributes returned for jobs in the search
             response. Defaults to
@@ -568,6 +569,18 @@ class SearchJobsRequest(proto.Message):
             top of existing relevance score (determined by
             API algorithm).
         disable_keyword_match (bool):
+            This field is deprecated. Please use
+            [SearchJobsRequest.keyword_match_mode][google.cloud.talent.v4beta1.SearchJobsRequest.keyword_match_mode]
+            going forward.
+
+            To migrate, disable_keyword_match set to false maps to
+            [KeywordMatchMode.KEYWORD_MATCH_ALL][google.cloud.talent.v4beta1.SearchJobsRequest.KeywordMatchMode.KEYWORD_MATCH_ALL],
+            and disable_keyword_match set to true maps to
+            [KeywordMatchMode.KEYWORD_MATCH_DISABLED][google.cloud.talent.v4beta1.SearchJobsRequest.KeywordMatchMode.KEYWORD_MATCH_DISABLED].
+            If
+            [SearchJobsRequest.keyword_match_mode][google.cloud.talent.v4beta1.SearchJobsRequest.keyword_match_mode]
+            is set, this field is ignored.
+
             Controls whether to disable exact keyword match on
             [Job.title][google.cloud.talent.v4beta1.Job.title],
             [Job.description][google.cloud.talent.v4beta1.Job.description],
@@ -593,6 +606,12 @@ class SearchJobsRequest(proto.Message):
             recall of subsequent search requests.
 
             Defaults to false.
+        keyword_match_mode (google.cloud.talent_v4beta1.types.SearchJobsRequest.KeywordMatchMode):
+            Controls what keyword match options to use.
+
+            Defaults to
+            [KeywordMatchMode.KEYWORD_MATCH_ALL][google.cloud.talent.v4beta1.SearchJobsRequest.KeywordMatchMode.KEYWORD_MATCH_ALL]
+            if no value is specified.
     """
 
     class SearchMode(proto.Enum):
@@ -615,6 +634,30 @@ class SearchJobsRequest(proto.Message):
         DIVERSIFICATION_LEVEL_UNSPECIFIED = 0
         DISABLED = 1
         SIMPLE = 2
+
+    class KeywordMatchMode(proto.Enum):
+        r"""Controls what keyword matching behavior the search has. When keyword
+        matching is enabled, a keyword match returns jobs that may not match
+        given category filters when there are matching keywords. For
+        example, for the query "program manager" with KeywordMatchMode set
+        to KEYWORD_MATCH_ALL, a job posting with the title "software
+        developer," which doesn't fall into "program manager" ontology, and
+        "program manager" appearing in its description will be surfaced.
+
+        For queries like "cloud" that don't contain title or location
+        specific ontology, jobs with "cloud" keyword matches are returned
+        regardless of this enum's value.
+
+        Use
+        [Company.keyword_searchable_job_custom_attributes][google.cloud.talent.v4beta1.Company.keyword_searchable_job_custom_attributes]
+        if company-specific globally matched custom field/attribute string
+        values are needed. Enabling keyword match improves recall of
+        subsequent search requests.
+        """
+        KEYWORD_MATCH_MODE_UNSPECIFIED = 0
+        KEYWORD_MATCH_DISABLED = 1
+        KEYWORD_MATCH_ALL = 2
+        KEYWORD_MATCH_TITLE_ONLY = 3
 
     class CustomRankingInfo(proto.Message):
         r"""Custom ranking information for
@@ -643,7 +686,7 @@ class SearchJobsRequest(proto.Message):
                 evaluated to a number.
 
                 Parenthesis are supported to adjust calculation precedence.
-                The expression must be < 100 characters in length.
+                The expression must be < 200 characters in length.
 
                 The expression is considered invalid for a job if the
                 expression references custom attributes that are not
@@ -744,6 +787,11 @@ class SearchJobsRequest(proto.Message):
         proto.BOOL,
         number=16,
     )
+    keyword_match_mode = proto.Field(
+        proto.ENUM,
+        number=18,
+        enum=KeywordMatchMode,
+    )
 
 
 class SearchJobsResponse(proto.Message):
@@ -772,13 +820,9 @@ class SearchJobsResponse(proto.Message):
 
             This number isn't guaranteed to be accurate. For accurate
             results, see
-            [SearchJobsRequest.require_precise_result_size][google.cloud.talent.v4beta1.SearchJobsRequest.require_precise_result_size].
+            [SearchJobsResponse.total_size][google.cloud.talent.v4beta1.SearchJobsResponse.total_size].
         total_size (int):
-            The precise result count, which is available only if the
-            client set
-            [SearchJobsRequest.require_precise_result_size][google.cloud.talent.v4beta1.SearchJobsRequest.require_precise_result_size]
-            to ``true``, or if the response is the last page of results.
-            Otherwise, the value is ``-1``.
+            The precise result count with limit 100,000.
         metadata (google.cloud.talent_v4beta1.types.ResponseMetadata):
             Additional information for the API
             invocation, such as the request tracking id.

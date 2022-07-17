@@ -21,7 +21,6 @@ __protobuf__ = proto.module(
     manifest={
         "ClientEvent",
         "JobEvent",
-        "ProfileEvent",
     },
 )
 
@@ -34,10 +33,6 @@ class ClientEvent(proto.Message):
     of events sent must be consistent with other calls, such as job
     searches, issued to the service by the client.
 
-    This message has `oneof`_ fields (mutually exclusive fields).
-    For each oneof, at most one member field can be set at the same time.
-    Setting any member of the oneof automatically clears all other
-    members.
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
@@ -57,12 +52,6 @@ class ClientEvent(proto.Message):
             An event issued when a job seeker interacts
             with the application that implements Cloud
             Talent Solution.
-
-            This field is a member of `oneof`_ ``event``.
-        profile_event (google.cloud.talent_v4beta1.types.ProfileEvent):
-            An event issued when a profile searcher
-            interacts with the application that implements
-            Cloud Talent Solution.
 
             This field is a member of `oneof`_ ``event``.
         event_notes (str):
@@ -89,12 +78,6 @@ class ClientEvent(proto.Message):
         number=5,
         oneof="event",
         message="JobEvent",
-    )
-    profile_event = proto.Field(
-        proto.MESSAGE,
-        number=6,
-        oneof="event",
-        message="ProfileEvent",
     )
     event_notes = proto.Field(
         proto.STRING,
@@ -165,55 +148,6 @@ class JobEvent(proto.Message):
     profile = proto.Field(
         proto.STRING,
         number=3,
-    )
-
-
-class ProfileEvent(proto.Message):
-    r"""An event issued when a profile searcher interacts with the
-    application that implements Cloud Talent Solution.
-
-    Attributes:
-        type_ (google.cloud.talent_v4beta1.types.ProfileEvent.ProfileEventType):
-            Required. Type of event.
-        profiles (Sequence[str]):
-            Required. The [profile
-            name(s)][google.cloud.talent.v4beta1.Profile.name]
-            associated with this client event.
-
-            The format is
-            "projects/{project_id}/tenants/{tenant_id}/profiles/{profile_id}",
-            for example, "projects/foo/tenants/bar/profiles/baz".
-        jobs (Sequence[str]):
-            The [job name(s)][google.cloud.talent.v4beta1.Job.name]
-            associated with this client event. Leave it empty if the
-            event isn't associated with a job.
-
-            The format is
-            "projects/{project_id}/tenants/{tenant_id}/jobs/{job_id}",
-            for example, "projects/foo/tenants/bar/jobs/baz".
-    """
-
-    class ProfileEventType(proto.Enum):
-        r"""The enum represents types of client events for a candidate
-        profile.
-        """
-        PROFILE_EVENT_TYPE_UNSPECIFIED = 0
-        IMPRESSION = 1
-        VIEW = 2
-        BOOKMARK = 3
-
-    type_ = proto.Field(
-        proto.ENUM,
-        number=1,
-        enum=ProfileEventType,
-    )
-    profiles = proto.RepeatedField(
-        proto.STRING,
-        number=2,
-    )
-    jobs = proto.RepeatedField(
-        proto.STRING,
-        number=6,
     )
 
 

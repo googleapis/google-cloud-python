@@ -15,7 +15,6 @@
 #
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.protobuf import wrappers_pb2  # type: ignore
-from google.type import date_pb2  # type: ignore
 from google.type import latlng_pb2  # type: ignore
 from google.type import money_pb2  # type: ignore
 from google.type import postal_address_pb2  # type: ignore
@@ -32,12 +31,8 @@ __protobuf__ = proto.module(
         "JobCategory",
         "PostingRegion",
         "Visibility",
-        "ContactInfoUsage",
         "HtmlSanitization",
         "CommuteMethod",
-        "SkillProficiencyLevel",
-        "Outcome",
-        "AvailabilitySignalType",
         "TimestampRange",
         "Location",
         "RequestMetadata",
@@ -46,10 +41,6 @@ __protobuf__ = proto.module(
         "CustomAttribute",
         "SpellingCorrection",
         "CompensationInfo",
-        "Certification",
-        "Skill",
-        "Interview",
-        "Rating",
         "BatchOperationMetadata",
     },
 )
@@ -189,14 +180,6 @@ class Visibility(proto.Enum):
     SHARED_WITH_PUBLIC = 3
 
 
-class ContactInfoUsage(proto.Enum):
-    r"""Enum that represents the usage of the contact information."""
-    CONTACT_INFO_USAGE_UNSPECIFIED = 0
-    PERSONAL = 1
-    WORK = 2
-    SCHOOL = 3
-
-
 class HtmlSanitization(proto.Enum):
     r"""Option for HTML content sanitization on user input fields,
     for example, job description. By setting this option, user can
@@ -215,35 +198,6 @@ class CommuteMethod(proto.Enum):
     TRANSIT = 2
     WALKING = 3
     CYCLING = 4
-
-
-class SkillProficiencyLevel(proto.Enum):
-    r"""Enum that represents the skill proficiency level."""
-    SKILL_PROFICIENCY_LEVEL_UNSPECIFIED = 0
-    UNSKILLED = 6
-    FUNDAMENTAL_AWARENESS = 1
-    NOVICE = 2
-    INTERMEDIATE = 3
-    ADVANCED = 4
-    EXPERT = 5
-
-
-class Outcome(proto.Enum):
-    r"""The overall outcome /decision / result indicator."""
-    OUTCOME_UNSPECIFIED = 0
-    POSITIVE = 1
-    NEUTRAL = 2
-    NEGATIVE = 3
-    OUTCOME_NOT_AVAILABLE = 4
-
-
-class AvailabilitySignalType(proto.Enum):
-    r"""The type of candidate availability signal."""
-    AVAILABILITY_SIGNAL_TYPE_UNSPECIFIED = 0
-    JOB_APPLICATION = 1
-    RESUME_UPDATE = 2
-    CANDIDATE_UPDATE = 3
-    CLIENT_SUBMISSION = 4
 
 
 class TimestampRange(proto.Message):
@@ -521,8 +475,17 @@ class CustomAttribute(proto.Message):
             [long_values][google.cloud.talent.v4beta1.CustomAttribute.long_values]
             is supported.
         filterable (bool):
-            If the ``filterable`` flag is true, custom field values are
-            searchable. If false, values are not searchable.
+            If the ``filterable`` flag is true, the custom field values
+            may be used for custom attribute filters
+            [JobQuery.custom_attribute_filter][google.cloud.talent.v4beta1.JobQuery.custom_attribute_filter].
+            If false, these values may not be used for custom attribute
+            filters.
+
+            Default is false.
+        keyword_searchable (bool):
+            If the ``keyword_searchable`` flag is true, the keywords in
+            custom fields are searchable by keyword match. If false, the
+            values are not searchable by keyword match.
 
             Default is false.
     """
@@ -538,6 +501,10 @@ class CustomAttribute(proto.Message):
     filterable = proto.Field(
         proto.BOOL,
         number=3,
+    )
+    keyword_searchable = proto.Field(
+        proto.BOOL,
+        number=4,
     )
 
 
@@ -796,157 +763,6 @@ class CompensationInfo(proto.Message):
         proto.MESSAGE,
         number=3,
         message=CompensationRange,
-    )
-
-
-class Certification(proto.Message):
-    r"""Resource that represents a license or certification.
-
-    Attributes:
-        display_name (str):
-            Name of license or certification.
-            Number of characters allowed is 100.
-        acquire_date (google.type.date_pb2.Date):
-            Acquisition date or effective date of license
-            or certification.
-        expire_date (google.type.date_pb2.Date):
-            Expiration date of license of certification.
-        authority (str):
-            Authority of license, such as government.
-            Number of characters allowed is 100.
-        description (str):
-            Description of license or certification.
-            Number of characters allowed is 100,000.
-    """
-
-    display_name = proto.Field(
-        proto.STRING,
-        number=1,
-    )
-    acquire_date = proto.Field(
-        proto.MESSAGE,
-        number=2,
-        message=date_pb2.Date,
-    )
-    expire_date = proto.Field(
-        proto.MESSAGE,
-        number=3,
-        message=date_pb2.Date,
-    )
-    authority = proto.Field(
-        proto.STRING,
-        number=4,
-    )
-    description = proto.Field(
-        proto.STRING,
-        number=5,
-    )
-
-
-class Skill(proto.Message):
-    r"""Resource that represents a skill of a candidate.
-
-    Attributes:
-        display_name (str):
-            Skill display name.
-            For example, "Java", "Python".
-
-            Number of characters allowed is 100.
-        last_used_date (google.type.date_pb2.Date):
-            The last time this skill was used.
-        level (google.cloud.talent_v4beta1.types.SkillProficiencyLevel):
-            Skill proficiency level which indicates how
-            proficient the candidate is at this skill.
-        context (str):
-            A paragraph describes context of this skill.
-            Number of characters allowed is 100,000.
-        skill_name_snippet (str):
-            Output only. Skill name snippet shows how the
-            [display_name][google.cloud.talent.v4beta1.Skill.display_name]
-            is related to a search query. It's empty if the
-            [display_name][google.cloud.talent.v4beta1.Skill.display_name]
-            isn't related to the search query.
-    """
-
-    display_name = proto.Field(
-        proto.STRING,
-        number=1,
-    )
-    last_used_date = proto.Field(
-        proto.MESSAGE,
-        number=2,
-        message=date_pb2.Date,
-    )
-    level = proto.Field(
-        proto.ENUM,
-        number=3,
-        enum="SkillProficiencyLevel",
-    )
-    context = proto.Field(
-        proto.STRING,
-        number=4,
-    )
-    skill_name_snippet = proto.Field(
-        proto.STRING,
-        number=5,
-    )
-
-
-class Interview(proto.Message):
-    r"""Details of an interview.
-
-    Attributes:
-        rating (google.cloud.talent_v4beta1.types.Rating):
-            The rating on this interview.
-        outcome (google.cloud.talent_v4beta1.types.Outcome):
-            Required. The overall decision resulting from
-            this interview (positive, negative, nuetral).
-    """
-
-    rating = proto.Field(
-        proto.MESSAGE,
-        number=6,
-        message="Rating",
-    )
-    outcome = proto.Field(
-        proto.ENUM,
-        number=7,
-        enum="Outcome",
-    )
-
-
-class Rating(proto.Message):
-    r"""The details of the score received for an assessment or
-    interview.
-
-    Attributes:
-        overall (float):
-            Overall score.
-        min_ (float):
-            The minimum value for the score.
-        max_ (float):
-            The maximum value for the score.
-        interval (float):
-            The steps within the score (for example,
-            interval = 1 max = 5 min = 1 indicates that the
-            score can be 1, 2, 3, 4, or 5)
-    """
-
-    overall = proto.Field(
-        proto.DOUBLE,
-        number=1,
-    )
-    min_ = proto.Field(
-        proto.DOUBLE,
-        number=2,
-    )
-    max_ = proto.Field(
-        proto.DOUBLE,
-        number=3,
-    )
-    interval = proto.Field(
-        proto.DOUBLE,
-        number=4,
     )
 
 
