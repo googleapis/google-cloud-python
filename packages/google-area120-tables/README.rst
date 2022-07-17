@@ -1,15 +1,15 @@
-Python Client for Area 120 Tables
-=================================================
+Python Client for Area 120 Tables API
+=====================================
 
-|alpha| |pypi| |versions|
+|preview| |pypi| |versions|
 
-`Area 120 Tables API`_:
+`Area 120 Tables API`_: provides programmatic methods to the Area 120 Tables API.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
 
-.. |alpha| image:: https://img.shields.io/badge/support-alpha-orange.svg
-   :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#alpha-support
+.. |preview| image:: https://img.shields.io/badge/support-preview-orange.svg
+   :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#stability-levels
 .. |pypi| image:: https://img.shields.io/pypi/v/google-area120-tables.svg
    :target: https://pypi.org/project/google-area120-tables/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-area120-tables.svg
@@ -47,6 +47,31 @@ dependencies.
 .. _`virtualenv`: https://virtualenv.pypa.io/en/latest/
 
 
+Code samples and snippets
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Code samples and snippets live in the `samples/` folder.
+
+
+Supported Python Versions
+^^^^^^^^^^^^^^^^^^^^^^^^^
+Our client libraries are compatible with all current `active`_ and `maintenance`_ versions of
+Python.
+
+Python >= 3.7
+
+.. _active: https://devguide.python.org/devcycle/#in-development-main-branch
+.. _maintenance: https://devguide.python.org/devcycle/#maintenance-branches
+
+Unsupported Python Versions
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Python <= 3.6
+
+If you are using an `end-of-life`_
+version of Python, we recommend that you update as soon as possible to an actively supported version.
+
+.. _end-of-life: https://devguide.python.org/devcycle/#end-of-life-branches
+
 Mac/Linux
 ^^^^^^^^^
 
@@ -72,11 +97,11 @@ Next Steps
 ~~~~~~~~~~
 
 -  Read the `Client Library Documentation`_ for Area 120 Tables API
-   API to see other available methods on the client.
+   to see other available methods on the client.
 -  Read the `Area 120 Tables API Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Area 120 Tables API Product documentation:   https://area120.google.com
+.. _Area 120 Tables API Product documentation:  https://area120.google.com
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst

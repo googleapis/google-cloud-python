@@ -1,7 +1,7 @@
 {
     "name": "area120tables",
-    "name_pretty": "Area 120 Tables API",
-    "product_documentation": "",
+    "name_pretty": "Area 120 Tables",
+    "product_documentation": "https://area120.google.com",
     "client_documentation": "https://googleapis.dev/python/area120tables/latest",
     "issue_tracker": "",
     "release_level": "preview",
@@ -12,5 +12,6 @@
     "api_id": "area120tables.googleapis.com",
     "default_version": "v1alpha1",
     "codeowner_team": "",
-    "api_shortname": "area120tables"
+    "api_shortname": "area120tables",
+    "api_description": "provides programmatic methods to the Area 120 Tables API."
 }
