@@ -68,7 +68,7 @@ templated_files = common.py_library(
     system_test_extras=["pandas", "storage"]
 )
 
-s.move(templated_files)
+s.move(templated_files, excludes=["README.rst"])
 python.configure_previous_major_version_branches()
 
 # Work around bug in templates https://github.com/googleapis/synthtool/pull/1335
