@@ -1,5 +1,23 @@
 # Changelog
 
+## [0.2.0](https://github.com/googleapis/python-video-live-stream/compare/v0.1.5...v0.2.0) (2022-07-16)
+
+
+### Features
+
+* add audience parameter ([f8824ce](https://github.com/googleapis/python-video-live-stream/commit/f8824ce3ca3055939a6d2ce407c414e21e140e4b))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.32.0,>=2.8.0 ([#78](https://github.com/googleapis/python-video-live-stream/issues/78)) ([e2f1b17](https://github.com/googleapis/python-video-live-stream/commit/e2f1b17565d44f34b33d8881243fb683fba3f37f))
+* require python 3.7+ ([#77](https://github.com/googleapis/python-video-live-stream/issues/77)) ([a4e7d42](https://github.com/googleapis/python-video-live-stream/commit/a4e7d427c504ac1f39e64f7417731832926a2500))
+
+
+### Documentation
+
+* align channel config with best practices ([#71](https://github.com/googleapis/python-video-live-stream/issues/71)) ([2a1a5b2](https://github.com/googleapis/python-video-live-stream/commit/2a1a5b20f6ecb9530fa48ba22f384d266301a825))
+
 ## [0.1.5](https://github.com/googleapis/python-video-live-stream/compare/v0.1.4...v0.1.5) (2022-06-03)
 
 
