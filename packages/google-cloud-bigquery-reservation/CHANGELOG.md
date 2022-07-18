@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.7.0](https://github.com/googleapis/python-bigquery-reservation/compare/v1.6.3...v1.7.0) (2022-07-16)
+
+
+### Features
+
+* add audience parameter ([8b25cff](https://github.com/googleapis/python-bigquery-reservation/commit/8b25cff82fab1ae6c038238df5d65318396c0782))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.32.0,>=2.8.0 ([#282](https://github.com/googleapis/python-bigquery-reservation/issues/282)) ([8b25cff](https://github.com/googleapis/python-bigquery-reservation/commit/8b25cff82fab1ae6c038238df5d65318396c0782))
+* require python 3.7+ ([#284](https://github.com/googleapis/python-bigquery-reservation/issues/284)) ([13c0983](https://github.com/googleapis/python-bigquery-reservation/commit/13c0983e5d8671549e1b27d1b7533bfcbc374fe8))
+
 ## [1.6.3](https://github.com/googleapis/python-bigquery-reservation/compare/v1.6.2...v1.6.3) (2022-06-06)
 
 
