@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.1](https://github.com/googleapis/python-private-catalog/compare/v0.6.0...v0.6.1) (2022-07-14)
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.32.0,>=2.8.0 ([#133](https://github.com/googleapis/python-private-catalog/issues/133)) ([1d32dd5](https://github.com/googleapis/python-private-catalog/commit/1d32dd525b845ce116670153c23459fa2a60bade))
+
 ## [0.6.0](https://github.com/googleapis/python-private-catalog/compare/v0.5.2...v0.6.0) (2022-07-07)
 
 
