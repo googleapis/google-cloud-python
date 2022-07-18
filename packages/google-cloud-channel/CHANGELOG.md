@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.9.0](https://github.com/googleapis/python-channel/compare/v1.8.1...v1.9.0) (2022-07-16)
+
+
+### Features
+
+* add audience parameter ([a0e908f](https://github.com/googleapis/python-channel/commit/a0e908fe57b97ca4123ba6dfc134f39dd2dd7b42))
+* google.longrunning.Operations for Cloud Channel apis ([a0e908f](https://github.com/googleapis/python-channel/commit/a0e908fe57b97ca4123ba6dfc134f39dd2dd7b42))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.32.0,>=2.8.0 ([#183](https://github.com/googleapis/python-channel/issues/183)) ([a0e908f](https://github.com/googleapis/python-channel/commit/a0e908fe57b97ca4123ba6dfc134f39dd2dd7b42))
+* require python 3.7+ ([#185](https://github.com/googleapis/python-channel/issues/185)) ([2b2459a](https://github.com/googleapis/python-channel/commit/2b2459a739a6dcf44c87ee4428f138d7f3d01474))
+
 ## [1.8.1](https://github.com/googleapis/python-channel/compare/v1.8.0...v1.8.1) (2022-06-03)
 
 
