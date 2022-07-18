@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.4.0](https://github.com/googleapis/python-tpu/compare/v1.3.4...v1.4.0) (2022-07-16)
+
+
+### Features
+
+* add audience parameter ([3ba29bf](https://github.com/googleapis/python-tpu/commit/3ba29bfe7d9726a9ab83b70fadda23cafd2fd1b4))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.32.0,>=2.8.0 ([#170](https://github.com/googleapis/python-tpu/issues/170)) ([8bdcce8](https://github.com/googleapis/python-tpu/commit/8bdcce87f5b9c2765619b5f724b462a59d190e8e))
+* require python 3.7+ ([#168](https://github.com/googleapis/python-tpu/issues/168)) ([e08415b](https://github.com/googleapis/python-tpu/commit/e08415b197e68768b6d1b9185ad11966a3fbb04e))
+
 ## [1.3.4](https://github.com/googleapis/python-tpu/compare/v1.3.3...v1.3.4) (2022-06-03)
 
 
