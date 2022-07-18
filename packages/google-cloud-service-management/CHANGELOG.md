@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.3.0](https://github.com/googleapis/python-service-management/compare/v1.2.3...v1.3.0) (2022-07-16)
+
+
+### Features
+
+* add audience parameter ([7be1829](https://github.com/googleapis/python-service-management/commit/7be1829be33a4c26a6fe3f9072352129da64ca5a))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.32.0,>=2.8.0 ([#149](https://github.com/googleapis/python-service-management/issues/149)) ([7be1829](https://github.com/googleapis/python-service-management/commit/7be1829be33a4c26a6fe3f9072352129da64ca5a))
+* require python 3.7+ ([#151](https://github.com/googleapis/python-service-management/issues/151)) ([7dfff48](https://github.com/googleapis/python-service-management/commit/7dfff48e46fa806556eaf77a378e7b0f16aab7fb))
+
 ## [1.2.3](https://github.com/googleapis/python-service-management/compare/v1.2.2...v1.2.3) (2022-06-03)
 
 

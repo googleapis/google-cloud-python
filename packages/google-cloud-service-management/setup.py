@@ -21,7 +21,7 @@ import os
 import setuptools  # type: ignore
 
 name = "google-cloud-service-management"
-version = "1.2.3"
+version = "1.3.0"
 description = "Service Management API"
 release_status = "Development Status :: 5 - Production/Stable"
 url = "https://github.com/googleapis/python-service-management"
