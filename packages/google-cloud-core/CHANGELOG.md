@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-core/#history
 
+## [2.3.2](https://github.com/googleapis/python-cloud-core/compare/v2.3.1...v2.3.2) (2022-07-15)
+
+
+### Bug Fixes
+
+* require python 3.7+ ([#201](https://github.com/googleapis/python-cloud-core/issues/201)) ([3277c60](https://github.com/googleapis/python-cloud-core/commit/3277c60102803deaae17f665b3f2f80087dd1e0f))
+
 ## [2.3.1](https://github.com/googleapis/python-cloud-core/compare/v2.3.0...v2.3.1) (2022-06-03)
 
 
