@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.4.0](https://github.com/googleapis/python-apigee-connect/compare/v1.3.2...v1.4.0) (2022-07-17)
+
+
+### Features
+
+* add audience parameter ([59bcc9c](https://github.com/googleapis/python-apigee-connect/commit/59bcc9ca7ceb1aeffb74c5989e2e47ad73a4b434))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.32.0,>=2.8.0 ([#124](https://github.com/googleapis/python-apigee-connect/issues/124)) ([59bcc9c](https://github.com/googleapis/python-apigee-connect/commit/59bcc9ca7ceb1aeffb74c5989e2e47ad73a4b434))
+* require python 3.7+ ([#126](https://github.com/googleapis/python-apigee-connect/issues/126)) ([2df9df8](https://github.com/googleapis/python-apigee-connect/commit/2df9df8eef41cd34e3634e93b1f9aabc28b9973b))
+
 ## [1.3.2](https://github.com/googleapis/python-apigee-connect/compare/v1.3.1...v1.3.2) (2022-06-03)
 
 
