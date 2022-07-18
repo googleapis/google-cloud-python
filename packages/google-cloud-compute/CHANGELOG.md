@@ -1,5 +1,27 @@
 # Changelog
 
+## [1.4.0](https://github.com/googleapis/python-compute/compare/v1.3.2...v1.4.0) (2022-07-18)
+
+
+### Features
+
+* add audience parameter ([#291](https://github.com/googleapis/python-compute/issues/291)) ([058eb3a](https://github.com/googleapis/python-compute/commit/058eb3a7f841ed6c44d47b5fab7d3bf99dd7051e))
+* Update Compute Engine API to revision 20220526 ([#722](https://github.com/googleapis/python-compute/issues/722)) ([058eb3a](https://github.com/googleapis/python-compute/commit/058eb3a7f841ed6c44d47b5fab7d3bf99dd7051e))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core 2.8.0 ([058eb3a](https://github.com/googleapis/python-compute/commit/058eb3a7f841ed6c44d47b5fab7d3bf99dd7051e))
+* require python 3.7+ ([#304](https://github.com/googleapis/python-compute/issues/304)) ([e5afa2c](https://github.com/googleapis/python-compute/commit/e5afa2c9a9aa8da59784a700cc7273b6c063ceb1))
+
+
+### Documentation
+
+* **samples:** adding sample for local SSD disk ([#294](https://github.com/googleapis/python-compute/issues/294)) ([6295ade](https://github.com/googleapis/python-compute/commit/6295ade9931b36de7c850fcda5baa2bc57a59202))
+* **samples:** Adding samples for Spot VMs ([#285](https://github.com/googleapis/python-compute/issues/285)) ([5b82f47](https://github.com/googleapis/python-compute/commit/5b82f473201614f9f3d6569387fb7c6a847fd0f4))
+* **samples:** Adding the missing compute_create_windows_instance_external_ip region ([#300](https://github.com/googleapis/python-compute/issues/300)) ([e402750](https://github.com/googleapis/python-compute/commit/e40275063f8603faf10036ed7b1ef3435a1ab6ce))
+* **samples:** Bulk insert sample ([#299](https://github.com/googleapis/python-compute/issues/299)) ([79b26c5](https://github.com/googleapis/python-compute/commit/79b26c5dea49717a2774e0b2f89a2669af9ae8c2))
+
 ## [1.3.2](https://github.com/googleapis/python-compute/compare/v1.3.1...v1.3.2) (2022-06-03)
 
 
