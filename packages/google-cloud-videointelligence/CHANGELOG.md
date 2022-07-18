@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-cloud-videointelligence/#history
 
+## [2.8.0](https://github.com/googleapis/python-videointelligence/compare/v2.7.1...v2.8.0) (2022-07-16)
+
+
+### Features
+
+* add audience parameter ([954b308](https://github.com/googleapis/python-videointelligence/commit/954b308a895ba9782025dd9ee07fd991e7e70e63))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.32.0,>=2.8.0 ([#341](https://github.com/googleapis/python-videointelligence/issues/341)) ([00b91f5](https://github.com/googleapis/python-videointelligence/commit/00b91f5eb652f4cdf183f9f69011a529a790f294))
+* require python 3.7+ ([#339](https://github.com/googleapis/python-videointelligence/issues/339)) ([78918dc](https://github.com/googleapis/python-videointelligence/commit/78918dcfa59ee1439ca30fffc0d186d923f39271))
+
 ## [2.7.1](https://github.com/googleapis/python-videointelligence/compare/v2.7.0...v2.7.1) (2022-06-06)
 
 
