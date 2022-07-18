@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.5.0](https://github.com/googleapis/python-service-directory/compare/v1.4.1...v1.5.0) (2022-07-16)
+
+
+### Features
+
+* add audience parameter ([edb9d42](https://github.com/googleapis/python-service-directory/commit/edb9d424ed3054d54a1aaf72cb072a5acb0d1892))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.32.0,>=2.8.0 ([#217](https://github.com/googleapis/python-service-directory/issues/217)) ([b8c81db](https://github.com/googleapis/python-service-directory/commit/b8c81dbe400fefc3ba64da02c170a760df2d08ab))
+* require python 3.7+ ([#215](https://github.com/googleapis/python-service-directory/issues/215)) ([d7a5808](https://github.com/googleapis/python-service-directory/commit/d7a580829538f2a820d6c0069fc838975569423d))
+
 ## [1.4.1](https://github.com/googleapis/python-service-directory/compare/v1.4.0...v1.4.1) (2022-06-06)
 
 
