@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.3.0](https://github.com/googleapis/python-artifact-registry/compare/v1.2.1...v1.3.0) (2022-07-16)
+
+
+### Features
+
+* add audience parameter ([340303e](https://github.com/googleapis/python-artifact-registry/commit/340303e72af3bca4f2ab75e280f614ff3992b65e))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.32.0,>=2.8.0 ([#172](https://github.com/googleapis/python-artifact-registry/issues/172)) ([340303e](https://github.com/googleapis/python-artifact-registry/commit/340303e72af3bca4f2ab75e280f614ff3992b65e))
+* require python 3.7+ ([#174](https://github.com/googleapis/python-artifact-registry/issues/174)) ([0c8a55c](https://github.com/googleapis/python-artifact-registry/commit/0c8a55c1b7097553bb3f8476e1a22cdbb81bf83f))
+
 ## [1.2.1](https://github.com/googleapis/python-artifact-registry/compare/v1.2.0...v1.2.1) (2022-06-03)
 
 
