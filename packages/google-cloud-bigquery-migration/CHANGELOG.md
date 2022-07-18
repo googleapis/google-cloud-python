@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.6.0](https://github.com/googleapis/python-bigquery-migration/compare/v0.5.0...v0.6.0) (2022-07-16)
+
+
+### Features
+
+* add audience parameter ([77e4c52](https://github.com/googleapis/python-bigquery-migration/commit/77e4c52d597e62956e2349dfff2f1b88df013450))
+* Add Presto and Postgresql dialects ([#103](https://github.com/googleapis/python-bigquery-migration/issues/103)) ([77e4c52](https://github.com/googleapis/python-bigquery-migration/commit/77e4c52d597e62956e2349dfff2f1b88df013450))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.32.0,>=2.8.0 ([77e4c52](https://github.com/googleapis/python-bigquery-migration/commit/77e4c52d597e62956e2349dfff2f1b88df013450))
+* require python 3.7+ ([#105](https://github.com/googleapis/python-bigquery-migration/issues/105)) ([13f50a7](https://github.com/googleapis/python-bigquery-migration/commit/13f50a7b845f5d4ce0aa03821578b730ea37dbb2))
+
 ## [0.5.0](https://github.com/googleapis/python-bigquery-migration/compare/v0.4.3...v0.5.0) (2022-06-15)
 
 
