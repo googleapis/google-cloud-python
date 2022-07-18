@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.6.0](https://github.com/googleapis/python-network-security/compare/v0.5.0...v0.6.0) (2022-07-16)
+
+
+### Features
+
+* add network_security_v1 ([c2694d8](https://github.com/googleapis/python-network-security/commit/c2694d8c07a92fed69a6b4363fc2c70ff4d14022))
+
+
+### Bug Fixes
+
+* update default import for network_security to network_security_v1 ([c2694d8](https://github.com/googleapis/python-network-security/commit/c2694d8c07a92fed69a6b4363fc2c70ff4d14022))
+
 ## [0.5.0](https://github.com/googleapis/python-network-security/compare/v0.4.2...v0.5.0) (2022-07-13)
 
 
