@@ -5,6 +5,19 @@
 [1]: https://pypi.org/project/google-cloud-firestore/#history
 
 
+## [2.6.0](https://github.com/googleapis/python-firestore/compare/v2.5.3...v2.6.0) (2022-07-15)
+
+
+### Features
+
+* add audience parameter ([40dce54](https://github.com/googleapis/python-firestore/commit/40dce5475416ca9b899f3b0cd83199ff22655b35))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.32.0,>=2.8.0 ([#607](https://github.com/googleapis/python-firestore/issues/607)) ([40dce54](https://github.com/googleapis/python-firestore/commit/40dce5475416ca9b899f3b0cd83199ff22655b35))
+* require python 3.7+ ([#613](https://github.com/googleapis/python-firestore/issues/613)) ([19accae](https://github.com/googleapis/python-firestore/commit/19accae13979af862544b30dd39de491d6c1cea9))
+
 ## [2.5.3](https://github.com/googleapis/python-firestore/compare/v2.5.2...v2.5.3) (2022-06-02)
 
 
