@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.6.0](https://github.com/googleapis/python-dataproc-metastore/compare/v1.5.1...v1.6.0) (2022-07-15)
+
+
+### Features
+
+* add audience parameter ([ee4c91e](https://github.com/googleapis/python-dataproc-metastore/commit/ee4c91ec1c0343bacee49cc9314ae551e540e344))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.32.0,>=2.8.0 ([#157](https://github.com/googleapis/python-dataproc-metastore/issues/157)) ([ee4c91e](https://github.com/googleapis/python-dataproc-metastore/commit/ee4c91ec1c0343bacee49cc9314ae551e540e344))
+* require python 3.7+ ([#159](https://github.com/googleapis/python-dataproc-metastore/issues/159)) ([09468bb](https://github.com/googleapis/python-dataproc-metastore/commit/09468bbdc0b3dbed016dac361122deb8f68d8961))
+
 ## [1.5.1](https://github.com/googleapis/python-dataproc-metastore/compare/v1.5.0...v1.5.1) (2022-06-03)
 
 
