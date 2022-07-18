@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.4.0](https://github.com/googleapis/python-storage-transfer/compare/v1.3.1...v1.4.0) (2022-07-16)
+
+
+### Features
+
+* add audience parameter ([43557a9](https://github.com/googleapis/python-storage-transfer/commit/43557a91c4859419faf8b58dc99b4029c9e4af82))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.32.0,>=2.8.0 ([#105](https://github.com/googleapis/python-storage-transfer/issues/105)) ([4143850](https://github.com/googleapis/python-storage-transfer/commit/4143850ba16819079263be6067f164be81b56aa9))
+* require python 3.7+ ([#103](https://github.com/googleapis/python-storage-transfer/issues/103)) ([3d6833b](https://github.com/googleapis/python-storage-transfer/commit/3d6833b82979ff3f19b6a69807a596f82864dbe8))
+
 ## [1.3.1](https://github.com/googleapis/python-storage-transfer/compare/v1.3.0...v1.3.1) (2022-06-03)
 
 
