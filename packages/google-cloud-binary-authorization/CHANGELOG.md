@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.3.0](https://github.com/googleapis/python-binary-authorization/compare/v1.2.3...v1.3.0) (2022-07-16)
+
+
+### Features
+
+* add audience parameter ([eef72ac](https://github.com/googleapis/python-binary-authorization/commit/eef72ac9ff2fb4bb52a4f9f61b0ec288b87b3678))
+* Adds a pod_namespace field to pod events created by Continuous Validation, to distinguish pods with the same name that run in different namespaces ([#156](https://github.com/googleapis/python-binary-authorization/issues/156)) ([218bad8](https://github.com/googleapis/python-binary-authorization/commit/218bad8591d2c706bf936e4134576e96b8ea2124))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.32.0,>=2.8.0 ([#158](https://github.com/googleapis/python-binary-authorization/issues/158)) ([eef72ac](https://github.com/googleapis/python-binary-authorization/commit/eef72ac9ff2fb4bb52a4f9f61b0ec288b87b3678))
+* require python 3.7+ ([#160](https://github.com/googleapis/python-binary-authorization/issues/160)) ([fe8d429](https://github.com/googleapis/python-binary-authorization/commit/fe8d42993da0a3440fcc4869b149ce181ea898a4))
+
 ## [1.2.3](https://github.com/googleapis/python-binary-authorization/compare/v1.2.2...v1.2.3) (2022-06-03)
 
 
