@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-cloud-datacatalog/#history
 
+## [3.9.0](https://github.com/googleapis/python-datacatalog/compare/v3.8.1...v3.9.0) (2022-07-16)
+
+
+### Features
+
+* add audience parameter ([624f2eb](https://github.com/googleapis/python-datacatalog/commit/624f2ebc431db8872c30f85b0afc0bfb01f9e02c))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.32.0,>=2.8.0 ([#401](https://github.com/googleapis/python-datacatalog/issues/401)) ([624f2eb](https://github.com/googleapis/python-datacatalog/commit/624f2ebc431db8872c30f85b0afc0bfb01f9e02c))
+* require python 3.7+ ([#403](https://github.com/googleapis/python-datacatalog/issues/403)) ([5a1b948](https://github.com/googleapis/python-datacatalog/commit/5a1b948b0ab10757a8c778bc9e44094347069d8b))
+
 ## [3.8.1](https://github.com/googleapis/python-datacatalog/compare/v3.8.0...v3.8.1) (2022-06-03)
 
 
