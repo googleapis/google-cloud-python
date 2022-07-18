@@ -20,7 +20,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Set up Python
-        uses: actions/setup-python@v3
+        uses: actions/setup-python@v4
         with:
           python-version: "3.8"
           cache: 'pip'
@@ -33,7 +33,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Set up Python "3.10"
-        uses: actions/setup-python@v3
+        uses: actions/setup-python@v4
         with:
           python-version: "3.10"
           cache: 'pip'
@@ -49,7 +49,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Set up Python "3.10"
-        uses: actions/setup-python@v3
+        uses: actions/setup-python@v4
         with:
           python-version: "3.10"
           cache: 'pip'
@@ -94,7 +94,7 @@ jobs:
           sudo mkdir -p /tmp/workspace/tests/cert/
           sudo chown -R ${USER} /tmp/workspace/
       - name: Set up Python "3.10"
-        uses: actions/setup-python@v3
+        uses: actions/setup-python@v4
         with:
           python-version: "3.10"
           cache: 'pip'
@@ -142,7 +142,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Set up Python "${{ matrix.python }}"
-        uses: actions/setup-python@v3
+        uses: actions/setup-python@v4
         with:
           python-version: "${{ matrix.python }}"
           cache: 'pip'
@@ -169,7 +169,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Set up Python "3.10"
-        uses: actions/setup-python@v3
+        uses: actions/setup-python@v4
         with:
           python-version: "3.10"
           cache: 'pip'
@@ -199,7 +199,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Set up Python "3.10"
-        uses: actions/setup-python@v3
+        uses: actions/setup-python@v4
         with:
           python-version: "3.10"
           cache: 'pip'
@@ -226,7 +226,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Set up Python "3.10"
-        uses: actions/setup-python@v3
+        uses: actions/setup-python@v4
         with:
           python-version: "3.10"
           cache: 'pip'
@@ -246,7 +246,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Set up Python ${{ matrix.python }}
-        uses: actions/setup-python@v3
+        uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python }}
           cache: 'pip'
@@ -271,7 +271,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Set up Python ${{ matrix.python }}
-        uses: actions/setup-python@v3
+        uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python }}
           cache: 'pip'
@@ -317,7 +317,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Set up Python 3.10
-        uses: actions/setup-python@v3
+        uses: actions/setup-python@v4
         with:
           python-version: "3.10"
           cache: 'pip'
@@ -336,7 +336,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Set up Python "3.10"
-        uses: actions/setup-python@v3
+        uses: actions/setup-python@v4
         with:
           python-version: "3.10"
           cache: 'pip'
