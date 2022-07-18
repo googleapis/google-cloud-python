@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.4.0](https://github.com/googleapis/python-service-usage/compare/v1.3.2...v1.4.0) (2022-07-16)
+
+
+### Features
+
+* add audience parameter ([c0745b9](https://github.com/googleapis/python-service-usage/commit/c0745b92bae9a8f5dd8e2c2bf992984de422eb46))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.32.0,>=2.8.0 ([#127](https://github.com/googleapis/python-service-usage/issues/127)) ([90975b7](https://github.com/googleapis/python-service-usage/commit/90975b7f86a1dcbbd7029e7860aee750a2cc243c))
+* require python 3.7+ ([#125](https://github.com/googleapis/python-service-usage/issues/125)) ([c9de01e](https://github.com/googleapis/python-service-usage/commit/c9de01e72298c164fefb9243ab96bb3020484ab3))
+
 ## [1.3.2](https://github.com/googleapis/python-service-usage/compare/v1.3.1...v1.3.2) (2022-06-03)
 
 
