@@ -1,5 +1,33 @@
 # Changelog
 
+## [1.13.0](https://github.com/googleapis/python-dialogflow-cx/compare/v1.12.1...v1.13.0) (2022-07-15)
+
+
+### Features
+
+* add audience parameter ([3a356c9](https://github.com/googleapis/python-dialogflow-cx/commit/3a356c951d64f99ca9fb0eb426921f42f5f41abf))
+* **v3:** added webhook_config ([3a356c9](https://github.com/googleapis/python-dialogflow-cx/commit/3a356c951d64f99ca9fb0eb426921f42f5f41abf))
+* **v3beta1:** added webhook_config ([3a356c9](https://github.com/googleapis/python-dialogflow-cx/commit/3a356c951d64f99ca9fb0eb426921f42f5f41abf))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.32.0,>=2.8.0  ([3a356c9](https://github.com/googleapis/python-dialogflow-cx/commit/3a356c951d64f99ca9fb0eb426921f42f5f41abf))
+* require python 3.7+ ([4746c9f](https://github.com/googleapis/python-dialogflow-cx/commit/4746c9f1c34e54892c64857751b84b204b6a8871))
+
+
+### Documentation
+
+* add detect intent with intent input snippet ([#417](https://github.com/googleapis/python-dialogflow-cx/issues/417)) ([04ded3c](https://github.com/googleapis/python-dialogflow-cx/commit/04ded3ce2cdee30bdf0dd91f7164d32fcda204bd))
+* add detect intent with sentiment analysis snippet ([#416](https://github.com/googleapis/python-dialogflow-cx/issues/416)) ([dcd8319](https://github.com/googleapis/python-dialogflow-cx/commit/dcd8319e2edef2e99dffea50b202f9b7f5a52c06))
+* add detect intent with text-to-speech synthesized output snippet ([#419](https://github.com/googleapis/python-dialogflow-cx/issues/419)) ([ac6aae4](https://github.com/googleapis/python-dialogflow-cx/commit/ac6aae4fa4607bf17aa9934ccba440d976b25f17))
+* Add dialogflow cx detect intent with disabled webhook snippet ([#422](https://github.com/googleapis/python-dialogflow-cx/issues/422)) ([406e84d](https://github.com/googleapis/python-dialogflow-cx/commit/406e84dabb889c8f43d4084c6e4ed39fbc6d4ee0))
+* add streaming detect intent with partial response sample ([#414](https://github.com/googleapis/python-dialogflow-cx/issues/414)) ([57a0e16](https://github.com/googleapis/python-dialogflow-cx/commit/57a0e16995bf2520306c8d29ee84088345a9b3be))
+* clarify descriptions of the AdvancedSettings and WebhookRequest data types ([3a356c9](https://github.com/googleapis/python-dialogflow-cx/commit/3a356c951d64f99ca9fb0eb426921f42f5f41abf))
+* Dialogflow cx v3 detect intent event input snippet ([#421](https://github.com/googleapis/python-dialogflow-cx/issues/421)) ([0524558](https://github.com/googleapis/python-dialogflow-cx/commit/052455829c99ff0838a5a140a0496bcff4a45178))
+* improve comments for protos ([3a356c9](https://github.com/googleapis/python-dialogflow-cx/commit/3a356c951d64f99ca9fb0eb426921f42f5f41abf))
+* Update region_tag: dialogflow_detect_intent_text --> dialogflow_cx_detect_intent_text ([#424](https://github.com/googleapis/python-dialogflow-cx/issues/424)) ([dd2257c](https://github.com/googleapis/python-dialogflow-cx/commit/dd2257c850059e1cb63c11326dd760665079c32b))
+
 ## [1.12.1](https://github.com/googleapis/python-dialogflow-cx/compare/v1.12.0...v1.12.1) (2022-06-03)
 
 
