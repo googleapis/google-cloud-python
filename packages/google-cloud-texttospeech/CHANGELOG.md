@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-cloud-texttospeech/#history
 
+## [2.12.0](https://github.com/googleapis/python-texttospeech/compare/v2.11.1...v2.12.0) (2022-07-16)
+
+
+### Features
+
+* add audience parameter ([f450551](https://github.com/googleapis/python-texttospeech/commit/f450551482e52c7f5564bf735b705e22255dc5d8))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.32.0,>=2.8.0 ([#304](https://github.com/googleapis/python-texttospeech/issues/304)) ([f450551](https://github.com/googleapis/python-texttospeech/commit/f450551482e52c7f5564bf735b705e22255dc5d8))
+* require python 3.7+ ([#306](https://github.com/googleapis/python-texttospeech/issues/306)) ([192277b](https://github.com/googleapis/python-texttospeech/commit/192277b9b62338840b55fe8e24be582a19f390cd))
+
 ## [2.11.1](https://github.com/googleapis/python-texttospeech/compare/v2.11.0...v2.11.1) (2022-06-06)
 
 

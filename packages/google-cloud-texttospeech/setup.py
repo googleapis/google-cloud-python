@@ -34,7 +34,7 @@ import setuptools
 
 name = "google-cloud-texttospeech"
 description = "Google Cloud Text-to-Speech API client library"
-version = "2.11.1"
+version = "2.12.0"
 # Should be one of:
 # 'Development Status :: 3 - Alpha'
 # 'Development Status :: 4 - Beta'
