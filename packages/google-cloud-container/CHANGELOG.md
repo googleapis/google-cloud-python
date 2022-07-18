@@ -4,6 +4,31 @@
 
 [1]: https://pypi.org/project/google-cloud-container/#history
 
+## [2.11.0](https://github.com/googleapis/python-container/compare/v2.10.8...v2.11.0) (2022-07-16)
+
+
+### Features
+
+* add audience parameter ([e9dbd98](https://github.com/googleapis/python-container/commit/e9dbd9833c97733c402339a64e3440fa0dfb375e))
+* add Binauthz Evaluation mode support to GKE Classic ([e9dbd98](https://github.com/googleapis/python-container/commit/e9dbd9833c97733c402339a64e3440fa0dfb375e))
+* add GKE Identity Service ([e9dbd98](https://github.com/googleapis/python-container/commit/e9dbd9833c97733c402339a64e3440fa0dfb375e))
+* add Location Policy API ([e9dbd98](https://github.com/googleapis/python-container/commit/e9dbd9833c97733c402339a64e3440fa0dfb375e))
+* add managed prometheus feature ([e9dbd98](https://github.com/googleapis/python-container/commit/e9dbd9833c97733c402339a64e3440fa0dfb375e))
+* add network tags to autopilot cluster ([e9dbd98](https://github.com/googleapis/python-container/commit/e9dbd9833c97733c402339a64e3440fa0dfb375e))
+* add support to modify kubelet pod pid limit in node system configuration ([e9dbd98](https://github.com/googleapis/python-container/commit/e9dbd9833c97733c402339a64e3440fa0dfb375e))
+* support enabling Confidential Nodes in the node pool ([e9dbd98](https://github.com/googleapis/python-container/commit/e9dbd9833c97733c402339a64e3440fa0dfb375e))
+* support GPU timesharing ([e9dbd98](https://github.com/googleapis/python-container/commit/e9dbd9833c97733c402339a64e3440fa0dfb375e))
+* support node pool blue-green upgrade ([e9dbd98](https://github.com/googleapis/python-container/commit/e9dbd9833c97733c402339a64e3440fa0dfb375e))
+* support spot VM ([e9dbd98](https://github.com/googleapis/python-container/commit/e9dbd9833c97733c402339a64e3440fa0dfb375e))
+* support Tier 1 bandwidth ([e9dbd98](https://github.com/googleapis/python-container/commit/e9dbd9833c97733c402339a64e3440fa0dfb375e))
+* update support for node pool labels, taints and network tags ([e9dbd98](https://github.com/googleapis/python-container/commit/e9dbd9833c97733c402339a64e3440fa0dfb375e))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.32.0,>=2.8.0 ([e9dbd98](https://github.com/googleapis/python-container/commit/e9dbd9833c97733c402339a64e3440fa0dfb375e))
+* require python 3.7+ ([#266](https://github.com/googleapis/python-container/issues/266)) ([01b78af](https://github.com/googleapis/python-container/commit/01b78af7d314551d69075005abd5f4e4ac826f5f))
+
 ## [2.10.8](https://github.com/googleapis/python-container/compare/v2.10.7...v2.10.8) (2022-06-03)
 
 
