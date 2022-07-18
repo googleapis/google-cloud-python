@@ -1,5 +1,26 @@
 # Changelog
 
+## [1.7.0](https://github.com/googleapis/python-retail/compare/v1.6.1...v1.7.0) (2022-07-17)
+
+
+### Features
+
+* add audience parameter ([34642ee](https://github.com/googleapis/python-retail/commit/34642ee4b9709b56773502d1f6d1c473619c0da1))
+* allow users to add labels in search requests ([34642ee](https://github.com/googleapis/python-retail/commit/34642ee4b9709b56773502d1f6d1c473619c0da1))
+* allow users to disable spell check in search requests ([34642ee](https://github.com/googleapis/python-retail/commit/34642ee4b9709b56773502d1f6d1c473619c0da1))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.32.0,>=2.8.0 ([#275](https://github.com/googleapis/python-retail/issues/275)) ([34642ee](https://github.com/googleapis/python-retail/commit/34642ee4b9709b56773502d1f6d1c473619c0da1))
+* require python 3.7+ ([#284](https://github.com/googleapis/python-retail/issues/284)) ([7a97063](https://github.com/googleapis/python-retail/commit/7a97063ab2f1093c1a918adb1a78428d687cb9d9))
+
+
+### Documentation
+
+* deprecate indexable/searchable on the product level custom attributes ([34642ee](https://github.com/googleapis/python-retail/commit/34642ee4b9709b56773502d1f6d1c473619c0da1))
+* keep the API doc up-to-date with recent changes ([34642ee](https://github.com/googleapis/python-retail/commit/34642ee4b9709b56773502d1f6d1c473619c0da1))
+
 ## [1.6.1](https://github.com/googleapis/python-retail/compare/v1.6.0...v1.6.1) (2022-06-02)
 
 
