@@ -4,6 +4,30 @@
 
 [1]: https://pypi.org/project/dialogflow/#history
 
+## [2.15.0](https://github.com/googleapis/python-dialogflow/compare/v2.14.1...v2.15.0) (2022-07-16)
+
+
+### Features
+
+* add audience parameter ([4377f2a](https://github.com/googleapis/python-dialogflow/commit/4377f2a61a829cb4fc402f7090d0082b838c8bfe))
+* Add AudioInput to analysis requests ([4377f2a](https://github.com/googleapis/python-dialogflow/commit/4377f2a61a829cb4fc402f7090d0082b838c8bfe))
+* Add filter field to ListAnswerRecordsRequest ([4377f2a](https://github.com/googleapis/python-dialogflow/commit/4377f2a61a829cb4fc402f7090d0082b838c8bfe))
+* deprecated the filter field and add resource_definition ([4377f2a](https://github.com/googleapis/python-dialogflow/commit/4377f2a61a829cb4fc402f7090d0082b838c8bfe))
+* provide new parameter cx_current_page, the unique identifier of the CX page to override the `current_page` in the session ([#533](https://github.com/googleapis/python-dialogflow/issues/533)) ([4377f2a](https://github.com/googleapis/python-dialogflow/commit/4377f2a61a829cb4fc402f7090d0082b838c8bfe))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.32.0,>=2.8.0 ([4377f2a](https://github.com/googleapis/python-dialogflow/commit/4377f2a61a829cb4fc402f7090d0082b838c8bfe))
+* require python 3.7+ ([#535](https://github.com/googleapis/python-dialogflow/issues/535)) ([912518b](https://github.com/googleapis/python-dialogflow/commit/912518b3d119f38115a255d26bd11397d483dddb))
+
+
+### Documentation
+
+* add more meaningful comments ([4377f2a](https://github.com/googleapis/python-dialogflow/commit/4377f2a61a829cb4fc402f7090d0082b838c8bfe))
+* add more meaningful comments ([4377f2a](https://github.com/googleapis/python-dialogflow/commit/4377f2a61a829cb4fc402f7090d0082b838c8bfe))
+* Update region_tag: dialogflow_detect_intent_text --> dialogflow_es_detect_intent_text ([#536](https://github.com/googleapis/python-dialogflow/issues/536)) ([c20dcf7](https://github.com/googleapis/python-dialogflow/commit/c20dcf788211796d23ed630a0f7259ac02ef6781))
+
 ## [2.14.1](https://github.com/googleapis/python-dialogflow/compare/v2.14.0...v2.14.1) (2022-06-03)
 
 
