@@ -1,5 +1,18 @@
 # Changelog
 
+## [2.9.0](https://github.com/googleapis/python-containeranalysis/compare/v2.8.1...v2.9.0) (2022-07-16)
+
+
+### Features
+
+* add audience parameter ([06928c8](https://github.com/googleapis/python-containeranalysis/commit/06928c8ac4ee5a3be86949ddcd55259610a74d4b))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.32.0,>=2.8.0 ([#301](https://github.com/googleapis/python-containeranalysis/issues/301)) ([06928c8](https://github.com/googleapis/python-containeranalysis/commit/06928c8ac4ee5a3be86949ddcd55259610a74d4b))
+* require python 3.7+ ([#303](https://github.com/googleapis/python-containeranalysis/issues/303)) ([faac20d](https://github.com/googleapis/python-containeranalysis/commit/faac20d5608e2250f3c0e67805f1c373254f4d6f))
+
 ## [2.8.1](https://github.com/googleapis/python-containeranalysis/compare/v2.8.0...v2.8.1) (2022-06-03)
 
 
