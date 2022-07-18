@@ -4,6 +4,20 @@
 
 [1]: https://pypi.org/project/google-cloud-recommender/#history
 
+## [2.8.0](https://github.com/googleapis/python-recommender/compare/v2.7.4...v2.8.0) (2022-07-16)
+
+
+### Features
+
+* add audience parameter ([5d2e042](https://github.com/googleapis/python-recommender/commit/5d2e0427aedf5824633e029c5b2e29e01f29bfdf))
+* Implement configurable recommenders and  update .bazel files ([5d2e042](https://github.com/googleapis/python-recommender/commit/5d2e0427aedf5824633e029c5b2e29e01f29bfdf))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.32.0,>=2.8.0 ([#217](https://github.com/googleapis/python-recommender/issues/217)) ([5d2e042](https://github.com/googleapis/python-recommender/commit/5d2e0427aedf5824633e029c5b2e29e01f29bfdf))
+* require python 3.7+ ([#219](https://github.com/googleapis/python-recommender/issues/219)) ([e3eef01](https://github.com/googleapis/python-recommender/commit/e3eef01327e5c774ad6b1da808f0777ded8a954a))
+
 ## [2.7.4](https://github.com/googleapis/python-recommender/compare/v2.7.3...v2.7.4) (2022-06-06)
 
 
