@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.2.0](https://github.com/googleapis/python-vm-migration/compare/v1.1.2...v1.2.0) (2022-07-16)
+
+
+### Features
+
+* add audience parameter ([61827e2](https://github.com/googleapis/python-vm-migration/commit/61827e246c7aae16537d00095737a47ccf537f90))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.32.0,>=2.8.0 ([#61](https://github.com/googleapis/python-vm-migration/issues/61)) ([2e7fb1e](https://github.com/googleapis/python-vm-migration/commit/2e7fb1ef0d7069cd22f64de464148940c8330ac2))
+* require python 3.7+ ([#59](https://github.com/googleapis/python-vm-migration/issues/59)) ([af250ac](https://github.com/googleapis/python-vm-migration/commit/af250ac6e3307ce002b5c2cedd3878342e580c7e))
+
 ## [1.1.2](https://github.com/googleapis/python-vm-migration/compare/v1.1.1...v1.1.2) (2022-06-03)
 
 
