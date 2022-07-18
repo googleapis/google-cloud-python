@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.1.0](https://github.com/googleapis/python-datastream/compare/v1.0.2...v1.1.0) (2022-07-15)
+
+
+### Features
+
+* add audience parameter ([32ab62f](https://github.com/googleapis/python-datastream/commit/32ab62f92781afdbf102153532155364bb33bc94))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.32.0,>=2.8.0 ([#111](https://github.com/googleapis/python-datastream/issues/111)) ([32ab62f](https://github.com/googleapis/python-datastream/commit/32ab62f92781afdbf102153532155364bb33bc94))
+* require python 3.7+ ([#113](https://github.com/googleapis/python-datastream/issues/113)) ([2200832](https://github.com/googleapis/python-datastream/commit/2200832c41f77b2f0956e03c34bb2d61788709a8))
+
 ## [1.0.2](https://github.com/googleapis/python-datastream/compare/v1.0.1...v1.0.2) (2022-06-03)
 
 
