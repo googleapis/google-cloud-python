@@ -15,7 +15,6 @@
 #
 from .geometry import (
     BoundingPoly,
-    NormalizedBoundingPoly,
     NormalizedVertex,
     Position,
     Vertex,
@@ -60,8 +59,6 @@ from .image_annotator import (
 from .product_search import (
     ProductSearchParams,
     ProductSearchResults,
-    ProductSearchCategory,
-    ProductSearchResultsView,
 )
 from .product_search_service import (
     AddProductToProductSetRequest,
@@ -108,7 +105,6 @@ from .web_detection import (
 
 __all__ = (
     "BoundingPoly",
-    "NormalizedBoundingPoly",
     "NormalizedVertex",
     "Position",
     "Vertex",
@@ -149,8 +145,6 @@ __all__ = (
     "Likelihood",
     "ProductSearchParams",
     "ProductSearchResults",
-    "ProductSearchCategory",
-    "ProductSearchResultsView",
     "AddProductToProductSetRequest",
     "BatchOperationMetadata",
     "CreateProductRequest",

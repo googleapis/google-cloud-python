@@ -598,24 +598,6 @@ class SafeSearchAnnotation(proto.Message):
             strategically covered nudity, lewd or
             provocative poses, or close-ups of sensitive
             body areas.
-        adult_confidence (float):
-            Confidence of adult_score. Range [0, 1]. 0 means not
-            confident, 1 means very confident.
-        spoof_confidence (float):
-            Confidence of spoof_score. Range [0, 1]. 0 means not
-            confident, 1 means very confident.
-        medical_confidence (float):
-            Confidence of medical_score. Range [0, 1]. 0 means not
-            confident, 1 means very confident.
-        violence_confidence (float):
-            Confidence of violence_score. Range [0, 1]. 0 means not
-            confident, 1 means very confident.
-        racy_confidence (float):
-            Confidence of racy_score. Range [0, 1]. 0 means not
-            confident, 1 means very confident.
-        nsfw_confidence (float):
-            Confidence of nsfw_score. Range [0, 1]. 0 means not
-            confident, 1 means very confident.
     """
 
     adult = proto.Field(
@@ -642,30 +624,6 @@ class SafeSearchAnnotation(proto.Message):
         proto.ENUM,
         number=9,
         enum="Likelihood",
-    )
-    adult_confidence = proto.Field(
-        proto.FLOAT,
-        number=16,
-    )
-    spoof_confidence = proto.Field(
-        proto.FLOAT,
-        number=18,
-    )
-    medical_confidence = proto.Field(
-        proto.FLOAT,
-        number=20,
-    )
-    violence_confidence = proto.Field(
-        proto.FLOAT,
-        number=22,
-    )
-    racy_confidence = proto.Field(
-        proto.FLOAT,
-        number=24,
-    )
-    nsfw_confidence = proto.Field(
-        proto.FLOAT,
-        number=26,
     )
 
 

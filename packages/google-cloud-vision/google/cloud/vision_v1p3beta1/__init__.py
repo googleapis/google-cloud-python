@@ -23,7 +23,6 @@ from .services.product_search import ProductSearchClient
 from .services.product_search import ProductSearchAsyncClient
 
 from .types.geometry import BoundingPoly
-from .types.geometry import NormalizedBoundingPoly
 from .types.geometry import NormalizedVertex
 from .types.geometry import Position
 from .types.geometry import Vertex
@@ -64,8 +63,6 @@ from .types.image_annotator import WebDetectionParams
 from .types.image_annotator import Likelihood
 from .types.product_search import ProductSearchParams
 from .types.product_search import ProductSearchResults
-from .types.product_search import ProductSearchCategory
-from .types.product_search import ProductSearchResultsView
 from .types.product_search_service import AddProductToProductSetRequest
 from .types.product_search_service import BatchOperationMetadata
 from .types.product_search_service import CreateProductRequest
@@ -168,7 +165,6 @@ __all__ = (
     "ListReferenceImagesResponse",
     "LocalizedObjectAnnotation",
     "LocationInfo",
-    "NormalizedBoundingPoly",
     "NormalizedVertex",
     "OperationMetadata",
     "OutputConfig",
@@ -176,11 +172,9 @@ __all__ = (
     "Paragraph",
     "Position",
     "Product",
-    "ProductSearchCategory",
     "ProductSearchClient",
     "ProductSearchParams",
     "ProductSearchResults",
-    "ProductSearchResultsView",
     "ProductSet",
     "Property",
     "ReferenceImage",

@@ -22,7 +22,6 @@ __protobuf__ = proto.module(
         "Vertex",
         "NormalizedVertex",
         "BoundingPoly",
-        "NormalizedBoundingPoly",
         "Position",
     },
 )
@@ -90,21 +89,6 @@ class BoundingPoly(proto.Message):
     normalized_vertices = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
-        message="NormalizedVertex",
-    )
-
-
-class NormalizedBoundingPoly(proto.Message):
-    r"""A normalized bounding polygon around a portion of an image.
-
-    Attributes:
-        vertices (Sequence[google.cloud.vision_v1p3beta1.types.NormalizedVertex]):
-            Normalized vertices of the bounding polygon.
-    """
-
-    vertices = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
         message="NormalizedVertex",
     )
 
