@@ -4,6 +4,20 @@
 
 [1]: https://pypi.org/project/google-cloud-dlp/#history
 
+## [3.8.0](https://github.com/googleapis/python-dlp/compare/v3.7.1...v3.8.0) (2022-07-16)
+
+
+### Features
+
+* add audience parameter ([6a3d7ec](https://github.com/googleapis/python-dlp/commit/6a3d7ec17783fd6b3486b2bd5a04cb33d65acb3e))
+* InfoType categories were added to built-in infoTypes ([#409](https://github.com/googleapis/python-dlp/issues/409)) ([6a3d7ec](https://github.com/googleapis/python-dlp/commit/6a3d7ec17783fd6b3486b2bd5a04cb33d65acb3e))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.32.0,>=2.8.0 ([6a3d7ec](https://github.com/googleapis/python-dlp/commit/6a3d7ec17783fd6b3486b2bd5a04cb33d65acb3e))
+* require python 3.7+ ([#411](https://github.com/googleapis/python-dlp/issues/411)) ([232001d](https://github.com/googleapis/python-dlp/commit/232001d2c15731c20d2b98f837906799b35309b6))
+
 ## [3.7.1](https://github.com/googleapis/python-dlp/compare/v3.7.0...v3.7.1) (2022-06-03)
 
 
