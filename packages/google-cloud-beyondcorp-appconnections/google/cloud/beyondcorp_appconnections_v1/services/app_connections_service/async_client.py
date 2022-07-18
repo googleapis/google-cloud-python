@@ -50,16 +50,10 @@ from .client import AppConnectionsServiceClient
 
 
 class AppConnectionsServiceAsyncClient:
-    """API Overview
-    ------------
-
-    The ``beyondcorp.googleapis.com`` service implements the Google
+    """API Overview: The ``beyondcorp.googleapis.com`` service implements the Google
     Cloud BeyondCorp API.
 
-    Data Model
-    ----------
-
-    The AppConnectionsService exposes the following resources:
+    Data Model: The AppConnectionsService exposes the following resources:
 
     -  AppConnections, named as follows:
        ``projects/{project_id}/locations/{location_id}/appConnections/{app_connection_id}``.
@@ -1223,9 +1217,10 @@ class AppConnectionsServiceAsyncClient:
                 optionally specify a ``condition``, which is a logic
                 expression that further constrains the role binding
                 based on attributes about the request and/or target
-                resource.
-                **JSON Example**
-                ::
+                resource. JSON Example.
+
+                .. code-block:: python
+
                     {
                       "bindings": [
                         {
@@ -1249,8 +1244,11 @@ class AppConnectionsServiceAsyncClient:
                         }
                       ]
                     }
+
                 **YAML Example**
+
                 ::
+
                     bindings:
                     - members:
                       - user:mike@example.com
@@ -1265,6 +1263,7 @@ class AppConnectionsServiceAsyncClient:
                         title: expirable access
                         description: Does not grant access after Sep 2020
                         expression: request.time < timestamp('2020-10-01T00:00:00.000Z')
+
                 For a description of IAM and its features, see the `IAM
                 developer's
                 guide <https://cloud.google.com/iam/docs>`__.
@@ -1337,9 +1336,10 @@ class AppConnectionsServiceAsyncClient:
                 optionally specify a ``condition``, which is a logic
                 expression that further constrains the role binding
                 based on attributes about the request and/or target
-                resource.
-                **JSON Example**
-                ::
+                resource. JSON Example.
+
+                .. code-block:: python
+
                     {
                       "bindings": [
                         {
@@ -1363,8 +1363,11 @@ class AppConnectionsServiceAsyncClient:
                         }
                       ]
                     }
+
                 **YAML Example**
+
                 ::
+
                     bindings:
                     - members:
                       - user:mike@example.com
@@ -1379,6 +1382,7 @@ class AppConnectionsServiceAsyncClient:
                         title: expirable access
                         description: Does not grant access after Sep 2020
                         expression: request.time < timestamp('2020-10-01T00:00:00.000Z')
+
                 For a description of IAM and its features, see the `IAM
                 developer's
                 guide <https://cloud.google.com/iam/docs>`__.
