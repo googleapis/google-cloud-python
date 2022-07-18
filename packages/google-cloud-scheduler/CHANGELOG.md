@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-cloud-scheduler/#history
 
+## [2.7.0](https://github.com/googleapis/python-scheduler/compare/v2.6.4...v2.7.0) (2022-07-16)
+
+
+### Features
+
+* add audience parameter ([c8adf9c](https://github.com/googleapis/python-scheduler/commit/c8adf9c9877d4bbea2f5b282f95cb9f56011a94f))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.32.0,>=2.8.0 ([#258](https://github.com/googleapis/python-scheduler/issues/258)) ([a57f965](https://github.com/googleapis/python-scheduler/commit/a57f96505640623170ae6b86c604127d14481561))
+* require python 3.7+ ([#256](https://github.com/googleapis/python-scheduler/issues/256)) ([6b0faa0](https://github.com/googleapis/python-scheduler/commit/6b0faa00c155798fac1218a1f05cda54b3651f65))
+
 ## [2.6.4](https://github.com/googleapis/python-scheduler/compare/v2.6.3...v2.6.4) (2022-06-06)
 
 
