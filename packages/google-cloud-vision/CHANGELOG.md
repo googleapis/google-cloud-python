@@ -4,6 +4,21 @@
 
 [1]: https://pypi.org/project/google-cloud-vision/#history
 
+## [3.0.0](https://github.com/googleapis/python-vision/compare/v2.8.0...v3.0.0) (2022-07-18)
+
+
+### ⚠ BREAKING CHANGES
+
+* **v1p3beta1:** Product search related messages and enums changed in an incompatible way
+* **v1p3beta1:** NormalizedBoundingPoly message removed
+* **v1:** removed fields from SafeSearchAnnotation message
+
+### Bug Fixes
+
+* **v1p3beta1:** NormalizedBoundingPoly message removed ([807684d](https://github.com/googleapis/python-vision/commit/807684dab49ea521fd46d7469e263a2e005f54c9))
+* **v1p3beta1:** Product search related messages and enums changed in an incompatible way ([807684d](https://github.com/googleapis/python-vision/commit/807684dab49ea521fd46d7469e263a2e005f54c9))
+* **v1:** removed fields from SafeSearchAnnotation message ([807684d](https://github.com/googleapis/python-vision/commit/807684dab49ea521fd46d7469e263a2e005f54c9))
+
 ## [2.8.0](https://github.com/googleapis/python-vision/compare/v2.7.3...v2.8.0) (2022-07-14)
 
 
