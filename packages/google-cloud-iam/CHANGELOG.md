@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-iam/#history
 
+## [2.8.1](https://github.com/googleapis/python-iam/compare/v2.8.0...v2.8.1) (2022-07-16)
+
+
+### Documentation
+
+* **samples:** add deny samples and tests ([#209](https://github.com/googleapis/python-iam/issues/209)) ([35cc484](https://github.com/googleapis/python-iam/commit/35cc484123f05b9000106cbaa4116c439d334fb8))
+
 ## [2.8.0](https://github.com/googleapis/python-iam/compare/v2.7.0...v2.8.0) (2022-07-14)
 
 
