@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.5.0](https://github.com/googleapis/python-data-fusion/compare/v1.4.2...v1.5.0) (2022-07-16)
+
+
+### Features
+
+* add audience parameter ([e6903eb](https://github.com/googleapis/python-data-fusion/commit/e6903eb06286f968a0585047d07fd69952e938cb))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.32.0,>=2.8.0 ([#120](https://github.com/googleapis/python-data-fusion/issues/120)) ([e6903eb](https://github.com/googleapis/python-data-fusion/commit/e6903eb06286f968a0585047d07fd69952e938cb))
+* require python 3.7+ ([#122](https://github.com/googleapis/python-data-fusion/issues/122)) ([3d38102](https://github.com/googleapis/python-data-fusion/commit/3d38102a1ee888b5633f74ddbae693945dd2a4ab))
+
 ## [1.4.2](https://github.com/googleapis/python-data-fusion/compare/v1.4.1...v1.4.2) (2022-06-03)
 
 
