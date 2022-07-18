@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.4.0](https://github.com/googleapis/python-resource-settings/compare/v1.3.2...v1.4.0) (2022-07-16)
+
+
+### Features
+
+* add audience parameter ([0853e60](https://github.com/googleapis/python-resource-settings/commit/0853e60f4d60db073bfcd8911a840fc44211a86a))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.32.0,>=2.8.0 ([#122](https://github.com/googleapis/python-resource-settings/issues/122)) ([e42d52a](https://github.com/googleapis/python-resource-settings/commit/e42d52ad28b7faa944496b408411777352fd111d))
+* require python 3.7+ ([#120](https://github.com/googleapis/python-resource-settings/issues/120)) ([b0e5b16](https://github.com/googleapis/python-resource-settings/commit/b0e5b16d8c890c58c803de54079c53c4cdf8a47b))
+
 ## [1.3.2](https://github.com/googleapis/python-resource-settings/compare/v1.3.1...v1.3.2) (2022-06-03)
 
 
