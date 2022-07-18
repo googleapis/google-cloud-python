@@ -22,7 +22,7 @@ import setuptools
 name = "google-cloud-dataplex"
 description = "Dataplex API client library"
 url = "https://github.com/googleapis/python-dataplex"
-version = "1.0.1"
+version = "1.1.0"
 release_status = "Development Status :: 5 - Production/Stable"
 dependencies = [
     "google-api-core[grpc] >= 1.32.0, <3.0.0dev,!=2.0.*,!=2.1.*,!=2.2.*,!=2.3.*,!=2.4.*,!=2.5.*,!=2.6.*,!=2.7.*",

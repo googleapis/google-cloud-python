@@ -1,5 +1,26 @@
 # Changelog
 
+## [1.1.0](https://github.com/googleapis/python-dataplex/compare/v1.0.1...v1.1.0) (2022-07-15)
+
+
+### Features
+
+* add audience parameter ([741f707](https://github.com/googleapis/python-dataplex/commit/741f7075723266c9c76e0cb6fc2dc720c350c819))
+* Add IAM support for Explore content APIs ([#74](https://github.com/googleapis/python-dataplex/issues/74)) ([741f707](https://github.com/googleapis/python-dataplex/commit/741f7075723266c9c76e0cb6fc2dc720c350c819))
+* Add support for cross project for Task ([741f707](https://github.com/googleapis/python-dataplex/commit/741f7075723266c9c76e0cb6fc2dc720c350c819))
+* Add support for custom container for Task ([741f707](https://github.com/googleapis/python-dataplex/commit/741f7075723266c9c76e0cb6fc2dc720c350c819))
+* Add support for custom encryption key to be used for encrypt data on the PDs associated with the VMs in your Dataproc cluster for Task ([741f707](https://github.com/googleapis/python-dataplex/commit/741f7075723266c9c76e0cb6fc2dc720c350c819))
+* Add support for Latest job in Task resource ([741f707](https://github.com/googleapis/python-dataplex/commit/741f7075723266c9c76e0cb6fc2dc720c350c819))
+* Support logging sampled file paths per partition to Cloud logging for Discovery event ([741f707](https://github.com/googleapis/python-dataplex/commit/741f7075723266c9c76e0cb6fc2dc720c350c819))
+* User mode filter in Explore list sessions API ([741f707](https://github.com/googleapis/python-dataplex/commit/741f7075723266c9c76e0cb6fc2dc720c350c819))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.32.0,>=2.8.0 ([741f707](https://github.com/googleapis/python-dataplex/commit/741f7075723266c9c76e0cb6fc2dc720c350c819))
+* **deps:** require grpc-google-iam-v1 >=0.12.4 ([741f707](https://github.com/googleapis/python-dataplex/commit/741f7075723266c9c76e0cb6fc2dc720c350c819))
+* require python 3.7+ ([#76](https://github.com/googleapis/python-dataplex/issues/76)) ([3cd158c](https://github.com/googleapis/python-dataplex/commit/3cd158c8a3b782683b5485d28bc14dadea852deb))
+
 ## [1.0.1](https://github.com/googleapis/python-dataplex/compare/v1.0.0...v1.0.1) (2022-06-03)
 
 
