@@ -18,7 +18,7 @@ mkdir -p $DJANGO_TESTS_DIR
 if [ $SPANNER_EMULATOR_HOST != 0 ]
 then
     pip3 install .
-    git clone --depth 1 --single-branch --branch "stable/spanner/3.2.x" https://github.com/vi3k6i5/django.git $DJANGO_TESTS_DIR/django3.2
+    git clone --depth 1 --single-branch --branch "django/stable/3.2.x" https://github.com/googleapis/python-spanner-django.git $DJANGO_TESTS_DIR/django3.2
 fi
 
 # Install dependencies for Django tests.

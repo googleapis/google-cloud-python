@@ -181,7 +181,9 @@ def docs(session):
     """Build the docs for this library."""
 
     session.install("-e", ".[tracing]")
-    session.install("sphinx", "alabaster", "recommonmark", "django==2.2")
+    session.install(
+        "sphinx==4.0.1", "alabaster", "recommonmark", "django==2.2"
+    )
 
     shutil.rmtree(os.path.join("docs", "_build"), ignore_errors=True)
     # Warnings as errors is disabled for `sphinx-build` because django module
@@ -205,7 +207,7 @@ def docfx(session):
 
     session.install("-e", ".[tracing]")
     session.install(
-        "sphinx",
+        "sphinx==4.0.1",
         "alabaster",
         "recommonmark",
         "gcp-sphinx-docfx-yaml",

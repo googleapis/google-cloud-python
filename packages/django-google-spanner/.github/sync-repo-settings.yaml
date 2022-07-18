@@ -9,10 +9,6 @@ branchProtectionRules:
   requiredStatusCheckContexts:
     - 'cla/google'
     - 'OwlBot Post Processor'
-    - 'system-tests (3.6)'
-    - 'system-tests (3.7)'
-    - 'system-tests (3.8)'
-    - 'system-tests (3.9)'
     - 'system-tests'
     - 'Kokoro'
 permissionRules:
