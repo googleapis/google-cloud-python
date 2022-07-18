@@ -1,5 +1,18 @@
 # Changelog
 
+## [2.12.0](https://github.com/googleapis/python-secret-manager/compare/v2.11.1...v2.12.0) (2022-07-16)
+
+
+### Features
+
+* add audience parameter ([bf4130e](https://github.com/googleapis/python-secret-manager/commit/bf4130efb313041e3451ba0e10181aa2f0c05987))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.32.0,>=2.8.0 ([#320](https://github.com/googleapis/python-secret-manager/issues/320)) ([311a877](https://github.com/googleapis/python-secret-manager/commit/311a8779c3311aef4d10b85a1e1b2462c5aefff4))
+* require python 3.7+ ([#317](https://github.com/googleapis/python-secret-manager/issues/317)) ([971a802](https://github.com/googleapis/python-secret-manager/commit/971a802403e44ef98a4250789f825024c67b9d3f))
+
 ## [2.11.1](https://github.com/googleapis/python-secret-manager/compare/v2.11.0...v2.11.1) (2022-06-06)
 
 
