@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.13.0](https://github.com/googleapis/python-analytics-data/compare/v0.12.1...v0.13.0) (2022-07-17)
+
+
+### Features
+
+* add audience parameter ([c2a27d7](https://github.com/googleapis/python-analytics-data/commit/c2a27d70ae9e3d3aa5213c61546dc1b23b03768a))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.32.0,>=2.8.0 ([#253](https://github.com/googleapis/python-analytics-data/issues/253)) ([c2a27d7](https://github.com/googleapis/python-analytics-data/commit/c2a27d70ae9e3d3aa5213c61546dc1b23b03768a))
+* rename the `funnel_filter` field of the `FunnelFilterExpression` type to `funnel_field_filter` ([3ff59b2](https://github.com/googleapis/python-analytics-data/commit/3ff59b2235fc965ce58eb8104b55ea7940264c8f))
+* rename the type `FunnelFilter` to `FunnelFieldFilter` ([#251](https://github.com/googleapis/python-analytics-data/issues/251)) ([3ff59b2](https://github.com/googleapis/python-analytics-data/commit/3ff59b2235fc965ce58eb8104b55ea7940264c8f))
+* require python 3.7+ ([#255](https://github.com/googleapis/python-analytics-data/issues/255)) ([0b81da4](https://github.com/googleapis/python-analytics-data/commit/0b81da498c6c5acba2d39d794c0a9795f7265342))
+
 ## [0.12.1](https://github.com/googleapis/python-analytics-data/compare/v0.12.0...v0.12.1) (2022-06-03)
 
 
