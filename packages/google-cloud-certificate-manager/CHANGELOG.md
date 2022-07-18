@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.2.0](https://github.com/googleapis/python-certificate-manager/compare/v0.1.3...v0.2.0) (2022-07-16)
+
+
+### Features
+
+* add audience parameter ([72eba35](https://github.com/googleapis/python-certificate-manager/commit/72eba358c16ac170e40da995cab963cb8c4a0d94))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.32.0,>=2.8.0 ([72eba35](https://github.com/googleapis/python-certificate-manager/commit/72eba358c16ac170e40da995cab963cb8c4a0d94))
+* Removed resource definition of Compute API resources and incorrect resource references that used them ([#62](https://github.com/googleapis/python-certificate-manager/issues/62)) ([72eba35](https://github.com/googleapis/python-certificate-manager/commit/72eba358c16ac170e40da995cab963cb8c4a0d94))
+* require python 3.7+ ([#64](https://github.com/googleapis/python-certificate-manager/issues/64)) ([62b2303](https://github.com/googleapis/python-certificate-manager/commit/62b23030f8f6fe35b822f55044393d9d40adef7c))
+
 ## [0.1.3](https://github.com/googleapis/python-certificate-manager/compare/v0.1.2...v0.1.3) (2022-06-03)
 
 
