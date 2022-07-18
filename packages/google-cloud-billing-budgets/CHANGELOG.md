@@ -1,4 +1,17 @@
 # Changelog
+## [1.7.0](https://github.com/googleapis/python-billingbudgets/compare/v1.6.2...v1.7.0) (2022-07-16)
+
+
+### Features
+
+* add audience parameter ([9d7070a](https://github.com/googleapis/python-billingbudgets/commit/9d7070a22a09e91144e41c6582ebcc0fabd78517))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.32.0,>=2.8.0 ([#219](https://github.com/googleapis/python-billingbudgets/issues/219)) ([9d7070a](https://github.com/googleapis/python-billingbudgets/commit/9d7070a22a09e91144e41c6582ebcc0fabd78517))
+* require python 3.7+ ([#221](https://github.com/googleapis/python-billingbudgets/issues/221)) ([c9aa3b2](https://github.com/googleapis/python-billingbudgets/commit/c9aa3b2fcce0f5216cebc5883d6e2be46f743d9d))
+
 ## [1.6.2](https://github.com/googleapis/python-billingbudgets/compare/v1.6.1...v1.6.2) (2022-06-03)
 
 
