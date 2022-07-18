@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-cloud-build/#history
 
+## [3.9.0](https://github.com/googleapis/python-cloudbuild/compare/v3.8.3...v3.9.0) (2022-07-16)
+
+
+### Features
+
+* add audience parameter ([f019b54](https://github.com/googleapis/python-cloudbuild/commit/f019b54a3615786fade913048d6e3d6c7f3e50f7))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.32.0,>=2.8.0 ([#306](https://github.com/googleapis/python-cloudbuild/issues/306)) ([f019b54](https://github.com/googleapis/python-cloudbuild/commit/f019b54a3615786fade913048d6e3d6c7f3e50f7))
+* require python 3.7+ ([#308](https://github.com/googleapis/python-cloudbuild/issues/308)) ([5e52f5c](https://github.com/googleapis/python-cloudbuild/commit/5e52f5c5eed937013c292f4fa5d535be00a349d2))
+
 ## [3.8.3](https://github.com/googleapis/python-cloudbuild/compare/v3.8.2...v3.8.3) (2022-06-03)
 
 
