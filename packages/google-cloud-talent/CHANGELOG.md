@@ -4,6 +4,20 @@
 
 [1]: https://pypi.org/project/google-cloud-talent/#history
 
+## [2.7.0](https://github.com/googleapis/python-talent/compare/v2.6.0...v2.7.0) (2022-07-17)
+
+
+### Features
+
+* add audience parameter ([37e649c](https://github.com/googleapis/python-talent/commit/37e649cbec6bcc87f71cf4dbb347fa3f3f9e1f87))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.32.0,>=2.8.0 ([#254](https://github.com/googleapis/python-talent/issues/254)) ([37e649c](https://github.com/googleapis/python-talent/commit/37e649cbec6bcc87f71cf4dbb347fa3f3f9e1f87))
+* require python 3.7+ ([#264](https://github.com/googleapis/python-talent/issues/264)) ([40cb6db](https://github.com/googleapis/python-talent/commit/40cb6dbb4e7e733d813c0cd77d28e6c9ea5ffc90))
+* **v4beta1:** remove Application and Profile services and and related protos, enums, and messages ([37e649c](https://github.com/googleapis/python-talent/commit/37e649cbec6bcc87f71cf4dbb347fa3f3f9e1f87))
+
 ## [2.6.0](https://github.com/googleapis/python-talent/compare/v2.5.2...v2.6.0) (2022-06-06)
 
 
