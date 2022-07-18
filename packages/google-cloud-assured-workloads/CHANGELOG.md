@@ -1,5 +1,20 @@
 # Changelog
 
+## [1.3.0](https://github.com/googleapis/python-assured-workloads/compare/v1.2.3...v1.3.0) (2022-07-16)
+
+
+### Features
+
+* add audience parameter ([ea32aaa](https://github.com/googleapis/python-assured-workloads/commit/ea32aaa717ef0e2fce009b207fb55c0dd2aa358e))
+* ITAR June Preview Launch ([ea32aaa](https://github.com/googleapis/python-assured-workloads/commit/ea32aaa717ef0e2fce009b207fb55c0dd2aa358e))
+* **v1beta1:** Removed _v1beta1 suffix from proto file names ([#174](https://github.com/googleapis/python-assured-workloads/issues/174)) ([03d456b](https://github.com/googleapis/python-assured-workloads/commit/03d456b6dbe5968abc07161f5146fbe77f79a527))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.32.0,>=2.8.0 ([#177](https://github.com/googleapis/python-assured-workloads/issues/177)) ([ea32aaa](https://github.com/googleapis/python-assured-workloads/commit/ea32aaa717ef0e2fce009b207fb55c0dd2aa358e))
+* require python 3.7+ ([#179](https://github.com/googleapis/python-assured-workloads/issues/179)) ([5a92db8](https://github.com/googleapis/python-assured-workloads/commit/5a92db8797ee2e489c4fa38c36eab315aadc84b2))
+
 ## [1.2.3](https://github.com/googleapis/python-assured-workloads/compare/v1.2.2...v1.2.3) (2022-06-03)
 
 
