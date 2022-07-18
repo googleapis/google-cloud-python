@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.8.0](https://github.com/googleapis/python-recaptcha-enterprise/compare/v1.7.1...v1.8.0) (2022-07-14)
+
+
+### Features
+
+* add audience parameter ([b833a31](https://github.com/googleapis/python-recaptcha-enterprise/commit/b833a318dfa71cd6a941b35ad8e95d903fa3de45))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.32.0,>=2.8.0 ([#271](https://github.com/googleapis/python-recaptcha-enterprise/issues/271)) ([90479fc](https://github.com/googleapis/python-recaptcha-enterprise/commit/90479fca8fd002c3c6deae2aedbfff7943d14af3))
+* require python 3.7+ ([#270](https://github.com/googleapis/python-recaptcha-enterprise/issues/270)) ([a370851](https://github.com/googleapis/python-recaptcha-enterprise/commit/a370851f88e72026ace4f13f87e19a642367a737))
+* set the right field number for reCAPTCHA private password leak ([#266](https://github.com/googleapis/python-recaptcha-enterprise/issues/266)) ([6632149](https://github.com/googleapis/python-recaptcha-enterprise/commit/663214989b8d4cbf3f84e1b4e9b2c1856eefb59b))
+
 ## [1.7.1](https://github.com/googleapis/python-recaptcha-enterprise/compare/v1.7.0...v1.7.1) (2022-06-06)
 
 
