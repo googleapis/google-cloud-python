@@ -4,14 +4,14 @@
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-# http://www.apache.org/licenses/LICENSE-2.0
+#      http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
 docker:
   image: gcr.io/cloud-devrel-public-resources/owlbot-python:latest
-  digest: sha256:e7bb19d47c13839fe8c147e50e02e8b6cf5da8edd1af8b82208cd6f66cc2829c
+  digest: sha256:c8878270182edaab99f2927969d4f700c3af265accd472c3425deedff2b7fd93
+# created: 2022-07-14T01:58:16.015625351Z
