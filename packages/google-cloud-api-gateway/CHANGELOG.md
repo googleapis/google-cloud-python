@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.3.0](https://github.com/googleapis/python-api-gateway/compare/v1.2.2...v1.3.0) (2022-07-16)
+
+
+### Features
+
+* add audience parameter ([af598f0](https://github.com/googleapis/python-api-gateway/commit/af598f0b2cf6aaccc63d051861ac18199a38abb0))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.32.0,>=2.8.0 ([#158](https://github.com/googleapis/python-api-gateway/issues/158)) ([d36cf27](https://github.com/googleapis/python-api-gateway/commit/d36cf27b13fe4260ef42dca5e80b8c81f136c158))
+* require python 3.7+ ([#156](https://github.com/googleapis/python-api-gateway/issues/156)) ([57b848a](https://github.com/googleapis/python-api-gateway/commit/57b848a94ee8b2b0f746111522a33a21cb4ad635))
+
 ## [1.2.2](https://github.com/googleapis/python-api-gateway/compare/v1.2.1...v1.2.2) (2022-06-03)
 
 
