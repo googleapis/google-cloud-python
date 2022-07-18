@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.4.0](https://github.com/googleapis/python-contact-center-insights/compare/v1.3.2...v1.4.0) (2022-07-16)
+
+
+### Features
+
+* add audience parameter ([1a9e2b0](https://github.com/googleapis/python-contact-center-insights/commit/1a9e2b07b7278de2efb72d774157fb40729d4ced))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.32.0,>=2.8.0 ([#207](https://github.com/googleapis/python-contact-center-insights/issues/207)) ([1a9e2b0](https://github.com/googleapis/python-contact-center-insights/commit/1a9e2b07b7278de2efb72d774157fb40729d4ced))
+* require python 3.7+ ([#209](https://github.com/googleapis/python-contact-center-insights/issues/209)) ([864afd4](https://github.com/googleapis/python-contact-center-insights/commit/864afd4131e03ff032fdac58077180956824d0bb))
+
 ## [1.3.2](https://github.com/googleapis/python-contact-center-insights/compare/v1.3.1...v1.3.2) (2022-06-07)
 
 
