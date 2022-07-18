@@ -21,7 +21,7 @@ import setuptools
 
 name = "google-cloud-vpc-access"
 description = "Virtual Private Cloud API client library"
-version = "1.3.2"
+version = "1.4.0"
 release_status = "Development Status :: 5 - Production/Stable"
 url = "https://github.com/googleapis/python-vpc-access"
 dependencies = [

@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.4.0](https://github.com/googleapis/python-vpc-access/compare/v1.3.2...v1.4.0) (2022-07-16)
+
+
+### Features
+
+* add audience parameter ([a7340c7](https://github.com/googleapis/python-vpc-access/commit/a7340c7e0362e261b33c89ac40f208b20a412ec8))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.32.0,>=2.8.0 ([#120](https://github.com/googleapis/python-vpc-access/issues/120)) ([a7340c7](https://github.com/googleapis/python-vpc-access/commit/a7340c7e0362e261b33c89ac40f208b20a412ec8))
+* require python 3.7+ ([#122](https://github.com/googleapis/python-vpc-access/issues/122)) ([5cc895a](https://github.com/googleapis/python-vpc-access/commit/5cc895a123659b548b7f4a4f80e7993c022a13bb))
+
 ## [1.3.2](https://github.com/googleapis/python-vpc-access/compare/v1.3.1...v1.3.2) (2022-06-03)
 
 
