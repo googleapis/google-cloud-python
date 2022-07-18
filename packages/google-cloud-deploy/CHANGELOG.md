@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.3.0](https://github.com/googleapis/python-deploy/compare/v1.2.1...v1.3.0) (2022-07-14)
+
+
+### Features
+
+* add audience parameter ([580906e](https://github.com/googleapis/python-deploy/commit/580906ef7eb335df2de5802c29fac08c3a231b80))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.32.0,>=2.8.0 ([#109](https://github.com/googleapis/python-deploy/issues/109)) ([580906e](https://github.com/googleapis/python-deploy/commit/580906ef7eb335df2de5802c29fac08c3a231b80))
+* require python 3.7+ ([#111](https://github.com/googleapis/python-deploy/issues/111)) ([5d60fe9](https://github.com/googleapis/python-deploy/commit/5d60fe95eda61d86cd08b1173ee2551594d6f94d))
+
 ## [1.2.1](https://github.com/googleapis/python-deploy/compare/v1.2.0...v1.2.1) (2022-06-03)
 
 
