@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-cloud-datalabeling/#history
 
+## [1.6.0](https://github.com/googleapis/python-datalabeling/compare/v1.5.2...v1.6.0) (2022-07-15)
+
+
+### Features
+
+* add audience parameter ([4d6cfed](https://github.com/googleapis/python-datalabeling/commit/4d6cfedb0d6a057a740ca4ac32fbfa712ca9f155))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.32.0,>=2.8.0 ([#253](https://github.com/googleapis/python-datalabeling/issues/253)) ([e5df8bf](https://github.com/googleapis/python-datalabeling/commit/e5df8bf892b3e11588d2e10c1604a40a43a960e2))
+* require python 3.7+ ([#251](https://github.com/googleapis/python-datalabeling/issues/251)) ([8b1fdd2](https://github.com/googleapis/python-datalabeling/commit/8b1fdd26f38ca611341c1dfc8583ab62f6a5c2d8))
+
 ## [1.5.2](https://github.com/googleapis/python-datalabeling/compare/v1.5.1...v1.5.2) (2022-06-03)
 
 
