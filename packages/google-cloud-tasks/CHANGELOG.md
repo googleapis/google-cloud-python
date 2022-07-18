@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-cloud-tasks/#history
 
+## [2.10.0](https://github.com/googleapis/python-tasks/compare/v2.9.1...v2.10.0) (2022-07-16)
+
+
+### Features
+
+* add audience parameter ([ad01839](https://github.com/googleapis/python-tasks/commit/ad0183951c7f1a23738004a11144b3870a91842e))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.32.0,>=2.8.0 ([#277](https://github.com/googleapis/python-tasks/issues/277)) ([239789d](https://github.com/googleapis/python-tasks/commit/239789da46254961a27a51837441ff2035423c14))
+* require python 3.7+ ([#275](https://github.com/googleapis/python-tasks/issues/275)) ([85fd179](https://github.com/googleapis/python-tasks/commit/85fd179fda7556e9a1568ff93a4b5dd22ec01036))
+
 ## [2.9.1](https://github.com/googleapis/python-tasks/compare/v2.9.0...v2.9.1) (2022-06-06)
 
 
