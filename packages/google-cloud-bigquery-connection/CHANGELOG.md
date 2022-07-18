@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.6.0](https://github.com/googleapis/python-bigquery-connection/compare/v1.5.1...v1.6.0) (2022-07-16)
+
+
+### Features
+
+* add audience parameter ([0dd5a10](https://github.com/googleapis/python-bigquery-connection/commit/0dd5a10e39a8e52ac4f82d0f602b6a8fac76d607))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.32.0,>=2.8.0 ([#229](https://github.com/googleapis/python-bigquery-connection/issues/229)) ([0dd5a10](https://github.com/googleapis/python-bigquery-connection/commit/0dd5a10e39a8e52ac4f82d0f602b6a8fac76d607))
+* require python 3.7+ ([#231](https://github.com/googleapis/python-bigquery-connection/issues/231)) ([740194d](https://github.com/googleapis/python-bigquery-connection/commit/740194d60af8f598e7cdc942e0ff0c0ed7ca9b1b))
+
 ## [1.5.1](https://github.com/googleapis/python-bigquery-connection/compare/v1.5.0...v1.5.1) (2022-06-07)
 
 
