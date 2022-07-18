@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery-datatransfer/#history
 
+## [3.7.0](https://github.com/googleapis/python-bigquery-datatransfer/compare/v3.6.2...v3.7.0) (2022-07-16)
+
+
+### Features
+
+* add audience parameter ([f756c16](https://github.com/googleapis/python-bigquery-datatransfer/commit/f756c16d8bff3246e77d74f03ffc7e95ce9d1e77))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.32.0,>=2.8.0 ([#362](https://github.com/googleapis/python-bigquery-datatransfer/issues/362)) ([f756c16](https://github.com/googleapis/python-bigquery-datatransfer/commit/f756c16d8bff3246e77d74f03ffc7e95ce9d1e77))
+* require python 3.7+ ([#364](https://github.com/googleapis/python-bigquery-datatransfer/issues/364)) ([106aa92](https://github.com/googleapis/python-bigquery-datatransfer/commit/106aa926b22f4a5dd64c9e0ecf17317727ab8735))
+
 ## [3.6.2](https://github.com/googleapis/python-bigquery-datatransfer/compare/v3.6.1...v3.6.2) (2022-06-03)
 
 
