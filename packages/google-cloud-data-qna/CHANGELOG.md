@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.7.0](https://github.com/googleapis/python-data-qna/compare/v0.6.3...v0.7.0) (2022-07-15)
+
+
+### Features
+
+* add audience parameter ([5c27cb7](https://github.com/googleapis/python-data-qna/commit/5c27cb773d346a5d999b8b098e361c9c01df0d91))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.32.0,>=2.8.0 ([#159](https://github.com/googleapis/python-data-qna/issues/159)) ([5c27cb7](https://github.com/googleapis/python-data-qna/commit/5c27cb773d346a5d999b8b098e361c9c01df0d91))
+* require python 3.7+ ([#161](https://github.com/googleapis/python-data-qna/issues/161)) ([99cb9cc](https://github.com/googleapis/python-data-qna/commit/99cb9cc5a4388c5c2279fd8766f28a24c6cc38f1))
+
 ## [0.6.3](https://github.com/googleapis/python-data-qna/compare/v0.6.2...v0.6.3) (2022-06-03)
 
 
