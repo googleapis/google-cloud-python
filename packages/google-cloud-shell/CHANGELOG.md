@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.4.0](https://github.com/googleapis/python-shell/compare/v1.3.3...v1.4.0) (2022-07-16)
+
+
+### Features
+
+* add audience parameter ([900311d](https://github.com/googleapis/python-shell/commit/900311d83e9d8c0bdd130a4b9b9e4cdfa36df28c))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.32.0,>=2.8.0 ([#118](https://github.com/googleapis/python-shell/issues/118)) ([6fbe772](https://github.com/googleapis/python-shell/commit/6fbe772cad0080308f6e99152284e6d54a716eb5))
+* require python 3.7+ ([#116](https://github.com/googleapis/python-shell/issues/116)) ([8cb5409](https://github.com/googleapis/python-shell/commit/8cb540908551132d6a689bc8019014abe174a298))
+
 ## [1.3.3](https://github.com/googleapis/python-shell/compare/v1.3.2...v1.3.3) (2022-06-03)
 
 
