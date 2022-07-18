@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.1](https://github.com/googleapis/python-policy-troubleshooter/compare/v1.5.0...v1.5.1) (2022-07-14)
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.32.0,>=2.8.0 ([#137](https://github.com/googleapis/python-policy-troubleshooter/issues/137)) ([a8aeb91](https://github.com/googleapis/python-policy-troubleshooter/commit/a8aeb91f3836bdad7cb6c05e8515037d611d6ae5))
+
 ## [1.5.0](https://github.com/googleapis/python-policy-troubleshooter/compare/v1.4.2...v1.5.0) (2022-07-07)
 
 
