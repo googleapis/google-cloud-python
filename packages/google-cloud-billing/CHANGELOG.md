@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.7.0](https://github.com/googleapis/python-billing/compare/v1.6.1...v1.7.0) (2022-07-16)
+
+
+### Features
+
+* add audience parameter ([d159208](https://github.com/googleapis/python-billing/commit/d159208b453fe5748f28ab383d78c310cd69cfed))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.32.0,>=2.8.0 ([#193](https://github.com/googleapis/python-billing/issues/193)) ([d159208](https://github.com/googleapis/python-billing/commit/d159208b453fe5748f28ab383d78c310cd69cfed))
+* require python 3.7+ ([#195](https://github.com/googleapis/python-billing/issues/195)) ([025f324](https://github.com/googleapis/python-billing/commit/025f3245ac308953710a31e02b21b3faa0340eaf))
+
 ## [1.6.1](https://github.com/googleapis/python-billing/compare/v1.6.0...v1.6.1) (2022-06-06)
 
 
