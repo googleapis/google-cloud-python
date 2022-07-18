@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.3](https://github.com/googleapis/python-audit-log/compare/v0.2.2...v0.2.3) (2022-07-16)
+
+
+### Bug Fixes
+
+* require python 3.7+ ([#63](https://github.com/googleapis/python-audit-log/issues/63)) ([c7d33f4](https://github.com/googleapis/python-audit-log/commit/c7d33f463e6dda2d24cc884f4049cfd437876812))
+
 ### [0.2.2](https://github.com/googleapis/python-audit-log/compare/v0.2.1...v0.2.2) (2022-05-26)
 
 
