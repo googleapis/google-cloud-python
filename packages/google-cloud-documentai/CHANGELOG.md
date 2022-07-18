@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.5.0](https://github.com/googleapis/python-documentai/compare/v1.4.2...v1.5.0) (2022-07-15)
+
+
+### Features
+
+* add audience parameter ([a904139](https://github.com/googleapis/python-documentai/commit/a9041394c30c0312a5b920adf0639fb08a3cbdca))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.32.0,>=2.8.0 ([#344](https://github.com/googleapis/python-documentai/issues/344)) ([a904139](https://github.com/googleapis/python-documentai/commit/a9041394c30c0312a5b920adf0639fb08a3cbdca))
+* require python 3.7+ ([#348](https://github.com/googleapis/python-documentai/issues/348)) ([0613329](https://github.com/googleapis/python-documentai/commit/0613329a15c89dd371258f617c8cdc1c497d2396))
+
 ## [1.4.2](https://github.com/googleapis/python-documentai/compare/v1.4.1...v1.4.2) (2022-06-03)
 
 
