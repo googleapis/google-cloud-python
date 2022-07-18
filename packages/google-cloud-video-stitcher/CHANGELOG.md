@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.2.0](https://github.com/googleapis/python-video-stitcher/compare/v0.1.2...v0.2.0) (2022-07-16)
+
+
+### Features
+
+* add asset_id and stream_id fields to VodSession and LiveSession responses ([fefdc9c](https://github.com/googleapis/python-video-stitcher/commit/fefdc9c581eb59e227598780ab7dd5752cf9c1f0))
+* add audience parameter ([fefdc9c](https://github.com/googleapis/python-video-stitcher/commit/fefdc9c581eb59e227598780ab7dd5752cf9c1f0))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.32.0,>=2.8.0 ([#45](https://github.com/googleapis/python-video-stitcher/issues/45)) ([a5ec756](https://github.com/googleapis/python-video-stitcher/commit/a5ec756544d37bb461fb947d6dc8b6aad966a481))
+* remove COMPLETE_POD stitching option ([fefdc9c](https://github.com/googleapis/python-video-stitcher/commit/fefdc9c581eb59e227598780ab7dd5752cf9c1f0))
+* require python 3.7+ ([#43](https://github.com/googleapis/python-video-stitcher/issues/43)) ([5c952d8](https://github.com/googleapis/python-video-stitcher/commit/5c952d8eb36f5d8a20526e44f8a38e46debe8962))
+
 ## [0.1.2](https://github.com/googleapis/python-video-stitcher/compare/v0.1.1...v0.1.2) (2022-06-03)
 
 
