@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.4.0](https://github.com/googleapis/python-video-transcoder/compare/v1.3.2...v1.4.0) (2022-07-16)
+
+
+### Features
+
+* add audience parameter ([63e75a3](https://github.com/googleapis/python-video-transcoder/commit/63e75a37e22c8eeaa98a7d97601a5bc49e4e2dc2))
+* add support for user labels for job and job template ([#203](https://github.com/googleapis/python-video-transcoder/issues/203)) ([a0d7927](https://github.com/googleapis/python-video-transcoder/commit/a0d7927a08855596410c351f1c8fabf348a560a8))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.32.0,>=2.8.0 ([#205](https://github.com/googleapis/python-video-transcoder/issues/205)) ([63e75a3](https://github.com/googleapis/python-video-transcoder/commit/63e75a37e22c8eeaa98a7d97601a5bc49e4e2dc2))
+* require python 3.7+ ([#208](https://github.com/googleapis/python-video-transcoder/issues/208)) ([8b4aa48](https://github.com/googleapis/python-video-transcoder/commit/8b4aa4888247767ce7da821b91bd878bdb4c1085))
+
 ## [1.3.2](https://github.com/googleapis/python-video-transcoder/compare/v1.3.1...v1.3.2) (2022-06-03)
 
 
