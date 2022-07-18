@@ -4,7 +4,7 @@
     "product_documentation": "https://cloud.google.com/livestream/docs",
     "client_documentation": "https://cloud.google.com/python/docs/reference/livestream/latest",
     "issue_tracker": "",
-    "release_level": "preview",
+    "release_level": "stable",
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "repo": "googleapis/python-video-live-stream",

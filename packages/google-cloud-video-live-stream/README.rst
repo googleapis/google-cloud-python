@@ -1,14 +1,14 @@
 Python Client for Live Stream API
 =================================
 
-|preview| |pypi| |versions|
+|stable| |pypi| |versions|
 
 `Live Stream API`_: transcodes mezzanine live signals into direct-to-consumer streaming formats, including Dynamic Adaptive Streaming over HTTP (DASH/MPEG-DASH), and HTTP Live Streaming (HLS), for multiple device platforms.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
 
-.. |preview| image:: https://img.shields.io/badge/support-preview-orange.svg
+.. |stable| image:: https://img.shields.io/badge/support-stable-gold.svg
    :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#stability-levels
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-video-live-stream.svg
    :target: https://pypi.org/project/google-cloud-video-live-stream/
