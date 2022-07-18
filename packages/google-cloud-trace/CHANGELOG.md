@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-cloud-trace/#history
 
+## [1.7.0](https://github.com/googleapis/python-trace/compare/v1.6.2...v1.7.0) (2022-07-16)
+
+
+### Features
+
+* add audience parameter ([9fbef80](https://github.com/googleapis/python-trace/commit/9fbef80b978ae5a2dba2fa08e0a92dd18c3267ca))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.32.0,>=2.8.0 ([#244](https://github.com/googleapis/python-trace/issues/244)) ([aa3229c](https://github.com/googleapis/python-trace/commit/aa3229c8866bf68a7069ec19f01e049836ff0b05))
+* require python 3.7+ ([#242](https://github.com/googleapis/python-trace/issues/242)) ([c24ff5e](https://github.com/googleapis/python-trace/commit/c24ff5ee0511172b48f3df0755a8bde4a981f92f))
+
 ## [1.6.2](https://github.com/googleapis/python-trace/compare/v1.6.1...v1.6.2) (2022-06-06)
 
 
