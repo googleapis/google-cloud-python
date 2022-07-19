@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.4.0](https://github.com/googleapis/python-security-private-ca/compare/v1.3.2...v1.4.0) (2022-07-18)
+
+
+### Features
+
+* add audience parameter ([0acce95](https://github.com/googleapis/python-security-private-ca/commit/0acce95d4e06f3b5048445b95942c4331c509996))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.32.0,>=2.8.0 ([#265](https://github.com/googleapis/python-security-private-ca/issues/265)) ([0acce95](https://github.com/googleapis/python-security-private-ca/commit/0acce95d4e06f3b5048445b95942c4331c509996))
+* require python 3.7+ ([#267](https://github.com/googleapis/python-security-private-ca/issues/267)) ([66d820c](https://github.com/googleapis/python-security-private-ca/commit/66d820c9345aa6407a758dac22c8154840518557))
+
 ## [1.3.2](https://github.com/googleapis/python-security-private-ca/compare/v1.3.1...v1.3.2) (2022-06-03)
 
 
