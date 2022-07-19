@@ -4,6 +4,26 @@
 
 [1]: https://pypi.org/project/google-cloud-dataproc/#history
 
+## [5.0.0](https://github.com/googleapis/python-dataproc/compare/v4.0.3...v5.0.0) (2022-07-19)
+
+
+### ⚠ BREAKING CHANGES
+
+* Move `yarn_config` into a `oneof`
+* Remove `temp_bucket` from VirtualClusterConfig, as its value was not used
+
+### Features
+
+* add audience parameter ([61a23fa](https://github.com/googleapis/python-dataproc/commit/61a23faab861c17043af4efeeb1659334234349a))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.32.0,>=2.8.0 ([#400](https://github.com/googleapis/python-dataproc/issues/400)) ([61a23fa](https://github.com/googleapis/python-dataproc/commit/61a23faab861c17043af4efeeb1659334234349a))
+* Move `yarn_config` into a `oneof` ([61a23fa](https://github.com/googleapis/python-dataproc/commit/61a23faab861c17043af4efeeb1659334234349a))
+* Remove `temp_bucket` from VirtualClusterConfig, as its value was not used ([61a23fa](https://github.com/googleapis/python-dataproc/commit/61a23faab861c17043af4efeeb1659334234349a))
+* require python 3.7+ ([#442](https://github.com/googleapis/python-dataproc/issues/442)) ([9862ff7](https://github.com/googleapis/python-dataproc/commit/9862ff7c9086921f0a4ecf81ae175c07ac701ef3))
+
 ## [4.0.3](https://github.com/googleapis/python-dataproc/compare/v4.0.2...v4.0.3) (2022-06-03)
 
 
