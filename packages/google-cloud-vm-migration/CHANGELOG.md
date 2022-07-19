@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.0](https://github.com/googleapis/python-vm-migration/compare/v1.2.0...v1.3.0) (2022-07-19)
+
+
+### Features
+
+* add ApplianceVersion, AvailableUpdates, MigratingVmView, UpgradeApplianceRequest, UpgradeApplianceResponse, UpgradeStatus ([#64](https://github.com/googleapis/python-vm-migration/issues/64)) ([839fac4](https://github.com/googleapis/python-vm-migration/commit/839fac47189552905a80d8443df90cd8f97829fe))
+
 ## [1.2.0](https://github.com/googleapis/python-vm-migration/compare/v1.1.2...v1.2.0) (2022-07-16)
 
 
