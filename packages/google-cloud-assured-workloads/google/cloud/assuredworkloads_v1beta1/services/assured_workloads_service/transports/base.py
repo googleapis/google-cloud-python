@@ -27,6 +27,7 @@ from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
 from google.cloud.assuredworkloads_v1beta1.types import assuredworkloads
+from google.longrunning import operations_pb2
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
 
@@ -140,6 +141,16 @@ class AssuredWorkloadsServiceTransport(abc.ABC):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
+            self.restrict_allowed_services: gapic_v1.method.wrap_method(
+                self.restrict_allowed_services,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.restrict_allowed_resources: gapic_v1.method.wrap_method(
+                self.restrict_allowed_resources,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.delete_workload: gapic_v1.method.wrap_method(
                 self.delete_workload,
                 default_retry=retries.Retry(
@@ -156,6 +167,20 @@ class AssuredWorkloadsServiceTransport(abc.ABC):
             ),
             self.get_workload: gapic_v1.method.wrap_method(
                 self.get_workload,
+                default_retry=retries.Retry(
+                    initial=0.2,
+                    maximum=30.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.analyze_workload_move: gapic_v1.method.wrap_method(
+                self.analyze_workload_move,
                 default_retry=retries.Retry(
                     initial=0.2,
                     maximum=30.0,
@@ -217,6 +242,30 @@ class AssuredWorkloadsServiceTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
+    def restrict_allowed_services(
+        self,
+    ) -> Callable[
+        [assuredworkloads.RestrictAllowedServicesRequest],
+        Union[
+            assuredworkloads.RestrictAllowedServicesResponse,
+            Awaitable[assuredworkloads.RestrictAllowedServicesResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def restrict_allowed_resources(
+        self,
+    ) -> Callable[
+        [assuredworkloads.RestrictAllowedResourcesRequest],
+        Union[
+            assuredworkloads.RestrictAllowedResourcesResponse,
+            Awaitable[assuredworkloads.RestrictAllowedResourcesResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
     def delete_workload(
         self,
     ) -> Callable[
@@ -235,6 +284,18 @@ class AssuredWorkloadsServiceTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
+    def analyze_workload_move(
+        self,
+    ) -> Callable[
+        [assuredworkloads.AnalyzeWorkloadMoveRequest],
+        Union[
+            assuredworkloads.AnalyzeWorkloadMoveResponse,
+            Awaitable[assuredworkloads.AnalyzeWorkloadMoveResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
     def list_workloads(
         self,
     ) -> Callable[
@@ -243,6 +304,27 @@ class AssuredWorkloadsServiceTransport(abc.ABC):
             assuredworkloads.ListWorkloadsResponse,
             Awaitable[assuredworkloads.ListWorkloadsResponse],
         ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_operations(
+        self,
+    ) -> Callable[
+        [operations_pb2.ListOperationsRequest],
+        Union[
+            operations_pb2.ListOperationsResponse,
+            Awaitable[operations_pb2.ListOperationsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_operation(
+        self,
+    ) -> Callable[
+        [operations_pb2.GetOperationRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()
 

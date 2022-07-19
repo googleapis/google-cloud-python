@@ -14,23 +14,35 @@
 # limitations under the License.
 #
 from .assuredworkloads import (
+    AnalyzeWorkloadMoveRequest,
+    AnalyzeWorkloadMoveResponse,
     CreateWorkloadOperationMetadata,
     CreateWorkloadRequest,
     DeleteWorkloadRequest,
     GetWorkloadRequest,
     ListWorkloadsRequest,
     ListWorkloadsResponse,
+    RestrictAllowedResourcesRequest,
+    RestrictAllowedResourcesResponse,
+    RestrictAllowedServicesRequest,
+    RestrictAllowedServicesResponse,
     UpdateWorkloadRequest,
     Workload,
 )
 
 __all__ = (
+    "AnalyzeWorkloadMoveRequest",
+    "AnalyzeWorkloadMoveResponse",
     "CreateWorkloadOperationMetadata",
     "CreateWorkloadRequest",
     "DeleteWorkloadRequest",
     "GetWorkloadRequest",
     "ListWorkloadsRequest",
     "ListWorkloadsResponse",
+    "RestrictAllowedResourcesRequest",
+    "RestrictAllowedResourcesResponse",
+    "RestrictAllowedServicesRequest",
+    "RestrictAllowedServicesResponse",
     "UpdateWorkloadRequest",
     "Workload",
 )

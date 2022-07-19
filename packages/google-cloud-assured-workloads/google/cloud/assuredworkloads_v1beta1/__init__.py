@@ -17,17 +17,25 @@
 from .services.assured_workloads_service import AssuredWorkloadsServiceClient
 from .services.assured_workloads_service import AssuredWorkloadsServiceAsyncClient
 
+from .types.assuredworkloads import AnalyzeWorkloadMoveRequest
+from .types.assuredworkloads import AnalyzeWorkloadMoveResponse
 from .types.assuredworkloads import CreateWorkloadOperationMetadata
 from .types.assuredworkloads import CreateWorkloadRequest
 from .types.assuredworkloads import DeleteWorkloadRequest
 from .types.assuredworkloads import GetWorkloadRequest
 from .types.assuredworkloads import ListWorkloadsRequest
 from .types.assuredworkloads import ListWorkloadsResponse
+from .types.assuredworkloads import RestrictAllowedResourcesRequest
+from .types.assuredworkloads import RestrictAllowedResourcesResponse
+from .types.assuredworkloads import RestrictAllowedServicesRequest
+from .types.assuredworkloads import RestrictAllowedServicesResponse
 from .types.assuredworkloads import UpdateWorkloadRequest
 from .types.assuredworkloads import Workload
 
 __all__ = (
     "AssuredWorkloadsServiceAsyncClient",
+    "AnalyzeWorkloadMoveRequest",
+    "AnalyzeWorkloadMoveResponse",
     "AssuredWorkloadsServiceClient",
     "CreateWorkloadOperationMetadata",
     "CreateWorkloadRequest",
@@ -35,6 +43,10 @@ __all__ = (
     "GetWorkloadRequest",
     "ListWorkloadsRequest",
     "ListWorkloadsResponse",
+    "RestrictAllowedResourcesRequest",
+    "RestrictAllowedResourcesResponse",
+    "RestrictAllowedServicesRequest",
+    "RestrictAllowedServicesResponse",
     "UpdateWorkloadRequest",
     "Workload",
 )

@@ -25,8 +25,14 @@ __protobuf__ = proto.module(
     manifest={
         "CreateWorkloadRequest",
         "UpdateWorkloadRequest",
+        "RestrictAllowedServicesRequest",
+        "RestrictAllowedServicesResponse",
+        "RestrictAllowedResourcesRequest",
+        "RestrictAllowedResourcesResponse",
         "DeleteWorkloadRequest",
         "GetWorkloadRequest",
+        "AnalyzeWorkloadMoveRequest",
+        "AnalyzeWorkloadMoveResponse",
         "ListWorkloadsRequest",
         "ListWorkloadsResponse",
         "Workload",
@@ -74,7 +80,7 @@ class UpdateWorkloadRequest(proto.Message):
 
     Attributes:
         workload (google.cloud.assuredworkloads_v1beta1.types.Workload):
-            Required. The workload to update. The workload’s ``name``
+            Required. The workload to update. The workload's ``name``
             field is used to identify the workload to be updated.
             Format:
             organizations/{org_id}/locations/{location_id}/workloads/{workload_id}
@@ -92,6 +98,80 @@ class UpdateWorkloadRequest(proto.Message):
         number=2,
         message=field_mask_pb2.FieldMask,
     )
+
+
+class RestrictAllowedServicesRequest(proto.Message):
+    r"""Request for restricting list of available services in
+    Workload environment.
+
+    Attributes:
+        name (str):
+            Required. The resource name of the Workload. This is the
+            workloads's relative path in the API, formatted as
+            "organizations/{organization_id}/locations/{location_id}/workloads/{workload_id}".
+            For example,
+            "organizations/123/locations/us-east1/workloads/assured-workload-1".
+        restriction_type (google.cloud.assuredworkloads_v1beta1.types.RestrictAllowedServicesRequest.RestrictionType):
+            Required. The type of restriction for using
+            gcp services in the Workload environment.
+    """
+
+    class RestrictionType(proto.Enum):
+        r"""The type of restriction."""
+        RESTRICTION_TYPE_UNSPECIFIED = 0
+        ALLOW_ALL_GCP_SERVICES = 1
+        ALLOW_COMPLIANT_SERVICES = 2
+
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    restriction_type = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=RestrictionType,
+    )
+
+
+class RestrictAllowedServicesResponse(proto.Message):
+    r"""Response for restricting the list of allowed services."""
+
+
+class RestrictAllowedResourcesRequest(proto.Message):
+    r"""Request for restricting list of available resources in
+    Workload environment.
+
+    Attributes:
+        name (str):
+            Required. The resource name of the Workload. This is the
+            workloads's relative path in the API, formatted as
+            "organizations/{organization_id}/locations/{location_id}/workloads/{workload_id}".
+            For example,
+            "organizations/123/locations/us-east1/workloads/assured-workload-1".
+        restriction_type (google.cloud.assuredworkloads_v1beta1.types.RestrictAllowedResourcesRequest.RestrictionType):
+            Required. The type of restriction for using
+            gcp products in the Workload environment.
+    """
+
+    class RestrictionType(proto.Enum):
+        r"""The type of restriction."""
+        RESTRICTION_TYPE_UNSPECIFIED = 0
+        ALLOW_ALL_GCP_RESOURCES = 1
+        ALLOW_COMPLIANT_RESOURCES = 2
+
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    restriction_type = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=RestrictionType,
+    )
+
+
+class RestrictAllowedResourcesResponse(proto.Message):
+    r"""Response for restricting the list of allowed resources."""
 
 
 class DeleteWorkloadRequest(proto.Message):
@@ -131,6 +211,76 @@ class GetWorkloadRequest(proto.Message):
     """
 
     name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class AnalyzeWorkloadMoveRequest(proto.Message):
+    r"""Request to check if source workload can be moved to target
+    workload.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        source (str):
+            The Source is project based Workload to be moved. This is
+            the workloads's relative path in the API, formatted as
+            "organizations/{organization_id}/locations/{location_id}/workloads/{workload_id}".
+            For example,
+            "organizations/123/locations/us-east1/workloads/assured-workload-1".
+
+            This field is a member of `oneof`_ ``projectOrWorkloadResource``.
+        project (str):
+            The Source is a project based to be moved. This is the
+            project's relative path in the API, formatted as
+            "cloudresourcemanager.googleapis.com/projects/{project_number}"
+            "projects/{project_number}"
+            "cloudresourcemanager.googleapis.com/projects/{project_id}"
+            "projects/{project_id}" For example,
+            "organizations/123/locations/us-east1/workloads/assured-workload-1".
+
+            This field is a member of `oneof`_ ``projectOrWorkloadResource``.
+        target (str):
+            Required. The resource name of the Workload to fetch. This
+            is the workloads's relative path in the API, formatted as
+            "organizations/{organization_id}/locations/{location_id}/workloads/{workload_id}".
+            For example,
+            "organizations/123/locations/us-east1/workloads/assured-workload-2".
+    """
+
+    source = proto.Field(
+        proto.STRING,
+        number=1,
+        oneof="projectOrWorkloadResource",
+    )
+    project = proto.Field(
+        proto.STRING,
+        number=3,
+        oneof="projectOrWorkloadResource",
+    )
+    target = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class AnalyzeWorkloadMoveResponse(proto.Message):
+    r"""Response with the analysis if the source workload can be
+    moved to the target workload
+
+    Attributes:
+        blockers (Sequence[str]):
+            List of blockers that prevent moving the
+            source workload to the target workload
+    """
+
+    blockers = proto.RepeatedField(
         proto.STRING,
         number=1,
     )
@@ -247,24 +397,23 @@ class Workload(proto.Message):
             ``billingAccounts/{billing_account_id}``. For example,
             ``billingAccounts/012345-567890-ABCDEF``.
         il4_settings (google.cloud.assuredworkloads_v1beta1.types.Workload.IL4Settings):
-            Required. Input only. Immutable. Settings
-            specific to resources needed for IL4.
+            Input only. Immutable. Settings specific to
+            resources needed for IL4.
 
             This field is a member of `oneof`_ ``compliance_regime_settings``.
         cjis_settings (google.cloud.assuredworkloads_v1beta1.types.Workload.CJISSettings):
-            Required. Input only. Immutable. Settings
-            specific to resources needed for CJIS.
+            Input only. Immutable. Settings specific to
+            resources needed for CJIS.
 
             This field is a member of `oneof`_ ``compliance_regime_settings``.
         fedramp_high_settings (google.cloud.assuredworkloads_v1beta1.types.Workload.FedrampHighSettings):
-            Required. Input only. Immutable. Settings
-            specific to resources needed for FedRAMP High.
+            Input only. Immutable. Settings specific to
+            resources needed for FedRAMP High.
 
             This field is a member of `oneof`_ ``compliance_regime_settings``.
         fedramp_moderate_settings (google.cloud.assuredworkloads_v1beta1.types.Workload.FedrampModerateSettings):
-            Required. Input only. Immutable. Settings
-            specific to resources needed for FedRAMP
-            Moderate.
+            Input only. Immutable. Settings specific to
+            resources needed for FedRAMP Moderate.
 
             This field is a member of `oneof`_ ``compliance_regime_settings``.
         etag (str):
@@ -281,10 +430,11 @@ class Workload(proto.Message):
             specified all resources are created under the parent
             organization. Format: folders/{folder_id}
         kms_settings (google.cloud.assuredworkloads_v1beta1.types.Workload.KMSSettings):
-            Input only. Settings used to create a CMEK
-            crypto key. When set a project with a KMS CMEK
-            key is provisioned. This field is mandatory for
-            a subset of Compliance Regimes.
+            Input only. Settings used to create a CMEK crypto key. When
+            set, a project with a KMS CMEK key is provisioned. This
+            field is deprecated as of Feb 28, 2022. In order to create a
+            Keyring, callers should specify, ENCRYPTION_KEYS_PROJECT or
+            KEYRING in ResourceSettings.resource_type field.
         resource_settings (Sequence[google.cloud.assuredworkloads_v1beta1.types.Workload.ResourceSettings]):
             Input only. Resource properties that are used
             to customize workload resources. These
@@ -387,8 +537,8 @@ class Workload(proto.Message):
 
         Attributes:
             kms_settings (google.cloud.assuredworkloads_v1beta1.types.Workload.KMSSettings):
-                Required. Input only. Immutable. Settings
-                used to create a CMEK crypto key.
+                Input only. Immutable. Settings used to
+                create a CMEK crypto key.
         """
 
         kms_settings = proto.Field(
@@ -402,8 +552,8 @@ class Workload(proto.Message):
 
         Attributes:
             kms_settings (google.cloud.assuredworkloads_v1beta1.types.Workload.KMSSettings):
-                Required. Input only. Immutable. Settings
-                used to create a CMEK crypto key.
+                Input only. Immutable. Settings used to
+                create a CMEK crypto key.
         """
 
         kms_settings = proto.Field(
@@ -417,8 +567,8 @@ class Workload(proto.Message):
 
         Attributes:
             kms_settings (google.cloud.assuredworkloads_v1beta1.types.Workload.KMSSettings):
-                Required. Input only. Immutable. Settings
-                used to create a CMEK crypto key.
+                Input only. Immutable. Settings used to
+                create a CMEK crypto key.
         """
 
         kms_settings = proto.Field(
@@ -432,8 +582,8 @@ class Workload(proto.Message):
 
         Attributes:
             kms_settings (google.cloud.assuredworkloads_v1beta1.types.Workload.KMSSettings):
-                Required. Input only. Immutable. Settings
-                used to create a CMEK crypto key.
+                Input only. Immutable. Settings used to
+                create a CMEK crypto key.
         """
 
         kms_settings = proto.Field(
@@ -450,7 +600,9 @@ class Workload(proto.Message):
             resource_id (str):
                 Resource identifier. For a project this represents
                 project_id. If the project is already taken, the workload
-                creation will fail.
+                creation will fail. For KeyRing, this represents the
+                keyring_id. For a folder, don't set this value as folder_id
+                is assigned by Google.
             resource_type (google.cloud.assuredworkloads_v1beta1.types.Workload.ResourceInfo.ResourceType):
                 Indicates the type of resource. This field should be
                 specified to correspond the id to the right project type
