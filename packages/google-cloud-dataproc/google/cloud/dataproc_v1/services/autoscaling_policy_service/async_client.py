@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core.client_options import ClientOptions
@@ -231,9 +231,9 @@ class AutoscalingPolicyServiceAsyncClient:
 
             from google.cloud import dataproc_v1
 
-            def sample_create_autoscaling_policy():
+            async def sample_create_autoscaling_policy():
                 # Create a client
-                client = dataproc_v1.AutoscalingPolicyServiceClient()
+                client = dataproc_v1.AutoscalingPolicyServiceAsyncClient()
 
                 # Initialize request argument(s)
                 policy = dataproc_v1.AutoscalingPolicy()
@@ -247,7 +247,7 @@ class AutoscalingPolicyServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.create_autoscaling_policy(request=request)
+                response = await client.create_autoscaling_policy(request=request)
 
                 # Handle the response
                 print(response)
@@ -353,14 +353,13 @@ class AutoscalingPolicyServiceAsyncClient:
         Disabled check for update_mask, because all updates will be full
         replacements.
 
-
         .. code-block:: python
 
             from google.cloud import dataproc_v1
 
-            def sample_update_autoscaling_policy():
+            async def sample_update_autoscaling_policy():
                 # Create a client
-                client = dataproc_v1.AutoscalingPolicyServiceClient()
+                client = dataproc_v1.AutoscalingPolicyServiceAsyncClient()
 
                 # Initialize request argument(s)
                 policy = dataproc_v1.AutoscalingPolicy()
@@ -373,7 +372,7 @@ class AutoscalingPolicyServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.update_autoscaling_policy(request=request)
+                response = await client.update_autoscaling_policy(request=request)
 
                 # Handle the response
                 print(response)
@@ -470,9 +469,9 @@ class AutoscalingPolicyServiceAsyncClient:
 
             from google.cloud import dataproc_v1
 
-            def sample_get_autoscaling_policy():
+            async def sample_get_autoscaling_policy():
                 # Create a client
-                client = dataproc_v1.AutoscalingPolicyServiceClient()
+                client = dataproc_v1.AutoscalingPolicyServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = dataproc_v1.GetAutoscalingPolicyRequest(
@@ -480,7 +479,7 @@ class AutoscalingPolicyServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_autoscaling_policy(request=request)
+                response = await client.get_autoscaling_policy(request=request)
 
                 # Handle the response
                 print(response)
@@ -587,9 +586,9 @@ class AutoscalingPolicyServiceAsyncClient:
 
             from google.cloud import dataproc_v1
 
-            def sample_list_autoscaling_policies():
+            async def sample_list_autoscaling_policies():
                 # Create a client
-                client = dataproc_v1.AutoscalingPolicyServiceClient()
+                client = dataproc_v1.AutoscalingPolicyServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = dataproc_v1.ListAutoscalingPoliciesRequest(
@@ -600,7 +599,7 @@ class AutoscalingPolicyServiceAsyncClient:
                 page_result = client.list_autoscaling_policies(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -715,14 +714,13 @@ class AutoscalingPolicyServiceAsyncClient:
         delete an autoscaling policy that is in use by one or
         more clusters.
 
-
         .. code-block:: python
 
             from google.cloud import dataproc_v1
 
-            def sample_delete_autoscaling_policy():
+            async def sample_delete_autoscaling_policy():
                 # Create a client
-                client = dataproc_v1.AutoscalingPolicyServiceClient()
+                client = dataproc_v1.AutoscalingPolicyServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = dataproc_v1.DeleteAutoscalingPolicyRequest(
@@ -730,7 +728,7 @@ class AutoscalingPolicyServiceAsyncClient:
                 )
 
                 # Make the request
-                client.delete_autoscaling_policy(request=request)
+                await client.delete_autoscaling_policy(request=request)
 
         Args:
             request (Union[google.cloud.dataproc_v1.types.DeleteAutoscalingPolicyRequest, dict]):

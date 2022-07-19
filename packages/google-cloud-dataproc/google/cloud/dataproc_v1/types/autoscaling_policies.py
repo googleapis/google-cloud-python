@@ -71,7 +71,7 @@ class AutoscalingPolicy(proto.Message):
         secondary_worker_config (google.cloud.dataproc_v1.types.InstanceGroupAutoscalingPolicyConfig):
             Optional. Describes how the autoscaler will
             operate for secondary workers.
-        labels (Sequence[google.cloud.dataproc_v1.types.AutoscalingPolicy.LabelsEntry]):
+        labels (Mapping[str, str]):
             Optional. The labels to associate with this autoscaling
             policy. Label **keys** must contain 1 to 63 characters, and
             must conform to `RFC
@@ -116,9 +116,13 @@ class AutoscalingPolicy(proto.Message):
 class BasicAutoscalingAlgorithm(proto.Message):
     r"""Basic algorithm for autoscaling.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         yarn_config (google.cloud.dataproc_v1.types.BasicYarnAutoscalingConfig):
             Required. YARN autoscaling configuration.
+
+            This field is a member of `oneof`_ ``config``.
         cooldown_period (google.protobuf.duration_pb2.Duration):
             Optional. Duration between scaling events. A scaling period
             starts after the update operation from the previous event
@@ -130,6 +134,7 @@ class BasicAutoscalingAlgorithm(proto.Message):
     yarn_config = proto.Field(
         proto.MESSAGE,
         number=1,
+        oneof="config",
         message="BasicYarnAutoscalingConfig",
     )
     cooldown_period = proto.Field(

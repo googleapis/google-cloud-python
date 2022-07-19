@@ -225,7 +225,7 @@ class Batch(proto.Message):
         creator (str):
             Output only. The email address of the user
             who created the batch.
-        labels (Sequence[google.cloud.dataproc_v1.types.Batch.LabelsEntry]):
+        labels (Mapping[str, str]):
             Optional. The labels to associate with this batch. Label
             **keys** must contain 1 to 63 characters, and must conform
             to `RFC 1035 <https://www.ietf.org/rfc/rfc1035.txt>`__.
@@ -547,7 +547,7 @@ class SparkSqlBatch(proto.Message):
         query_file_uri (str):
             Required. The HCFS URI of the script that
             contains Spark SQL queries to execute.
-        query_variables (Sequence[google.cloud.dataproc_v1.types.SparkSqlBatch.QueryVariablesEntry]):
+        query_variables (Mapping[str, str]):
             Optional. Mapping of query variable names to values
             (equivalent to the Spark SQL command:
             ``SET name="value";``).

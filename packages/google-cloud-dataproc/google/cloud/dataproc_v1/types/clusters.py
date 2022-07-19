@@ -89,7 +89,7 @@ class Cluster(proto.Message):
             Note that Dataproc may set default values, and values may
             change when clusters are updated. Exactly one of config or
             virtualClusterConfig must be specified.
-        labels (Sequence[google.cloud.dataproc_v1.types.Cluster.LabelsEntry]):
+        labels (Mapping[str, str]):
             Optional. The labels to associate with this cluster. Label
             **keys** must contain 1 to 63 characters, and must conform
             to `RFC 1035 <https://www.ietf.org/rfc/rfc1035.txt>`__.
@@ -327,20 +327,6 @@ class VirtualClusterConfig(proto.Message):
             buckets <https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/staging-bucket>`__).
             **This field requires a Cloud Storage bucket name, not a
             ``gs://...`` URI to a Cloud Storage bucket.**
-        temp_bucket (str):
-            Optional. A Cloud Storage bucket used to store ephemeral
-            cluster and jobs data, such as Spark and MapReduce history
-            files. If you do not specify a temp bucket, Dataproc will
-            determine a Cloud Storage location (US, ASIA, or EU) for
-            your cluster's temp bucket according to the Compute Engine
-            zone where your cluster is deployed, and then create and
-            manage this project-level, per-location bucket. The default
-            bucket has a TTL of 90 days, but you can use any TTL (or
-            none) if you specify a bucket (see `Dataproc staging and
-            temp
-            buckets <https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/staging-bucket>`__).
-            **This field requires a Cloud Storage bucket name, not a
-            ``gs://...`` URI to a Cloud Storage bucket.**
         kubernetes_cluster_config (google.cloud.dataproc_v1.types.KubernetesClusterConfig):
             Required. The configuration for running the
             Dataproc cluster on Kubernetes.
@@ -354,10 +340,6 @@ class VirtualClusterConfig(proto.Message):
     staging_bucket = proto.Field(
         proto.STRING,
         number=1,
-    )
-    temp_bucket = proto.Field(
-        proto.STRING,
-        number=2,
     )
     kubernetes_cluster_config = proto.Field(
         proto.MESSAGE,
@@ -400,7 +382,7 @@ class EndpointConfig(proto.Message):
     r"""Endpoint config for this cluster
 
     Attributes:
-        http_ports (Sequence[google.cloud.dataproc_v1.types.EndpointConfig.HttpPortsEntry]):
+        http_ports (Mapping[str, str]):
             Output only. The map of port descriptions to URLs. Will only
             be populated if enable_http_port_access is true.
         enable_http_port_access (bool):
@@ -543,7 +525,7 @@ class GceClusterConfig(proto.Message):
             The Compute Engine tags to add to all instances (see
             `Tagging
             instances <https://cloud.google.com/compute/docs/label-or-tag-resources#tags>`__).
-        metadata (Sequence[google.cloud.dataproc_v1.types.GceClusterConfig.MetadataEntry]):
+        metadata (Mapping[str, str]):
             The Compute Engine metadata entries to add to all instances
             (see `Project and instance
             metadata <https://cloud.google.com/compute/docs/storing-retrieving-metadata#project_and_instance_metadata>`__).
@@ -1203,7 +1185,7 @@ class IdentityConfig(proto.Message):
     based secure multi-tenancy user mappings.
 
     Attributes:
-        user_service_account_mapping (Sequence[google.cloud.dataproc_v1.types.IdentityConfig.UserServiceAccountMappingEntry]):
+        user_service_account_mapping (Mapping[str, str]):
             Required. Map of user to service account.
     """
 
@@ -1227,7 +1209,7 @@ class SoftwareConfig(proto.Message):
             "1.2.29"), or the `"preview"
             version <https://cloud.google.com/dataproc/docs/concepts/versioning/dataproc-versions#other_versions>`__.
             If unspecified, it defaults to the latest Debian version.
-        properties (Sequence[google.cloud.dataproc_v1.types.SoftwareConfig.PropertiesEntry]):
+        properties (Mapping[str, str]):
             Optional. The properties to set on daemon config files.
 
             Property keys are specified in ``prefix:property`` format,
@@ -1356,9 +1338,9 @@ class ClusterMetrics(proto.Message):
     only. It may be changed before final release.
 
     Attributes:
-        hdfs_metrics (Sequence[google.cloud.dataproc_v1.types.ClusterMetrics.HdfsMetricsEntry]):
+        hdfs_metrics (Mapping[str, int]):
             The HDFS metrics.
-        yarn_metrics (Sequence[google.cloud.dataproc_v1.types.ClusterMetrics.YarnMetricsEntry]):
+        yarn_metrics (Mapping[str, int]):
             The YARN metrics.
     """
 

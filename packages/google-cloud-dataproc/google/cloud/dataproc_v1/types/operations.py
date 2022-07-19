@@ -44,7 +44,7 @@ class BatchOperationMetadata(proto.Message):
             The operation type.
         description (str):
             Short description of the operation.
-        labels (Sequence[google.cloud.dataproc_v1.types.BatchOperationMetadata.LabelsEntry]):
+        labels (Mapping[str, str]):
             Labels associated with the operation.
         warnings (Sequence[str]):
             Warnings encountered during operation
@@ -155,7 +155,7 @@ class ClusterOperationMetadata(proto.Message):
             Output only. The operation type.
         description (str):
             Output only. Short description of operation.
-        labels (Sequence[google.cloud.dataproc_v1.types.ClusterOperationMetadata.LabelsEntry]):
+        labels (Mapping[str, str]):
             Output only. Labels associated with the
             operation
         warnings (Sequence[str]):

@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core.client_options import ClientOptions
@@ -223,14 +223,13 @@ class BatchControllerAsyncClient:
         r"""Creates a batch workload that executes
         asynchronously.
 
-
         .. code-block:: python
 
             from google.cloud import dataproc_v1
 
-            def sample_create_batch():
+            async def sample_create_batch():
                 # Create a client
-                client = dataproc_v1.BatchControllerClient()
+                client = dataproc_v1.BatchControllerAsyncClient()
 
                 # Initialize request argument(s)
                 batch = dataproc_v1.Batch()
@@ -246,7 +245,7 @@ class BatchControllerAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -361,9 +360,9 @@ class BatchControllerAsyncClient:
 
             from google.cloud import dataproc_v1
 
-            def sample_get_batch():
+            async def sample_get_batch():
                 # Create a client
-                client = dataproc_v1.BatchControllerClient()
+                client = dataproc_v1.BatchControllerAsyncClient()
 
                 # Initialize request argument(s)
                 request = dataproc_v1.GetBatchRequest(
@@ -371,7 +370,7 @@ class BatchControllerAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_batch(request=request)
+                response = await client.get_batch(request=request)
 
                 # Handle the response
                 print(response)
@@ -456,9 +455,9 @@ class BatchControllerAsyncClient:
 
             from google.cloud import dataproc_v1
 
-            def sample_list_batches():
+            async def sample_list_batches():
                 # Create a client
-                client = dataproc_v1.BatchControllerClient()
+                client = dataproc_v1.BatchControllerAsyncClient()
 
                 # Initialize request argument(s)
                 request = dataproc_v1.ListBatchesRequest(
@@ -469,7 +468,7 @@ class BatchControllerAsyncClient:
                 page_result = client.list_batches(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -561,14 +560,13 @@ class BatchControllerAsyncClient:
         terminal state, the delete fails and the response returns
         ``FAILED_PRECONDITION``.
 
-
         .. code-block:: python
 
             from google.cloud import dataproc_v1
 
-            def sample_delete_batch():
+            async def sample_delete_batch():
                 # Create a client
-                client = dataproc_v1.BatchControllerClient()
+                client = dataproc_v1.BatchControllerAsyncClient()
 
                 # Initialize request argument(s)
                 request = dataproc_v1.DeleteBatchRequest(
@@ -576,7 +574,7 @@ class BatchControllerAsyncClient:
                 )
 
                 # Make the request
-                client.delete_batch(request=request)
+                await client.delete_batch(request=request)
 
         Args:
             request (Union[google.cloud.dataproc_v1.types.DeleteBatchRequest, dict]):

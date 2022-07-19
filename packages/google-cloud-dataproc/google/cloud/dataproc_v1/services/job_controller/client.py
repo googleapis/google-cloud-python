@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib
@@ -402,6 +402,7 @@ class JobControllerClient(metaclass=JobControllerClientMeta):
                 quota_project_id=client_options.quota_project_id,
                 client_info=client_info,
                 always_use_jwt_access=True,
+                api_audience=client_options.api_audience,
             )
 
     def submit_job(
@@ -503,6 +504,17 @@ class JobControllerClient(metaclass=JobControllerClientMeta):
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.submit_job]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project_id", request.project_id),
+                    ("region", request.region),
+                )
+            ),
+        )
 
         # Send the request.
         response = rpc(
@@ -624,6 +636,17 @@ class JobControllerClient(metaclass=JobControllerClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.submit_job_as_operation]
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project_id", request.project_id),
+                    ("region", request.region),
+                )
+            ),
+        )
+
         # Send the request.
         response = rpc(
             request,
@@ -656,7 +679,6 @@ class JobControllerClient(metaclass=JobControllerClientMeta):
     ) -> jobs.Job:
         r"""Gets the resource representation for a job in a
         project.
-
 
         .. code-block:: python
 
@@ -741,6 +763,18 @@ class JobControllerClient(metaclass=JobControllerClientMeta):
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.get_job]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project_id", request.project_id),
+                    ("region", request.region),
+                    ("job_id", request.job_id),
+                )
+            ),
+        )
 
         # Send the request.
         response = rpc(
@@ -870,6 +904,17 @@ class JobControllerClient(metaclass=JobControllerClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.list_jobs]
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project_id", request.project_id),
+                    ("region", request.region),
+                )
+            ),
+        )
+
         # Send the request.
         response = rpc(
             request,
@@ -951,6 +996,18 @@ class JobControllerClient(metaclass=JobControllerClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.update_job]
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project_id", request.project_id),
+                    ("region", request.region),
+                    ("job_id", request.job_id),
+                )
+            ),
+        )
+
         # Send the request.
         response = rpc(
             request,
@@ -978,7 +1035,6 @@ class JobControllerClient(metaclass=JobControllerClientMeta):
         `regions/{region}/jobs.list <https://cloud.google.com/dataproc/docs/reference/rest/v1/projects.regions.jobs/list>`__
         or
         `regions/{region}/jobs.get <https://cloud.google.com/dataproc/docs/reference/rest/v1/projects.regions.jobs/get>`__.
-
 
         .. code-block:: python
 
@@ -1063,6 +1119,18 @@ class JobControllerClient(metaclass=JobControllerClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.cancel_job]
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project_id", request.project_id),
+                    ("region", request.region),
+                    ("job_id", request.job_id),
+                )
+            ),
+        )
+
         # Send the request.
         response = rpc(
             request,
@@ -1087,7 +1155,6 @@ class JobControllerClient(metaclass=JobControllerClientMeta):
     ) -> None:
         r"""Deletes the job from the project. If the job is active, the
         delete fails, and the response returns ``FAILED_PRECONDITION``.
-
 
         .. code-block:: python
 
@@ -1164,6 +1231,18 @@ class JobControllerClient(metaclass=JobControllerClientMeta):
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.delete_job]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project_id", request.project_id),
+                    ("region", request.region),
+                    ("job_id", request.job_id),
+                )
+            ),
+        )
 
         # Send the request.
         rpc(

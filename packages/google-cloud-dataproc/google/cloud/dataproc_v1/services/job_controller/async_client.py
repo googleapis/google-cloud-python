@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core.client_options import ClientOptions
@@ -219,9 +219,9 @@ class JobControllerAsyncClient:
 
             from google.cloud import dataproc_v1
 
-            def sample_submit_job():
+            async def sample_submit_job():
                 # Create a client
-                client = dataproc_v1.JobControllerClient()
+                client = dataproc_v1.JobControllerAsyncClient()
 
                 # Initialize request argument(s)
                 job = dataproc_v1.Job()
@@ -235,7 +235,7 @@ class JobControllerAsyncClient:
                 )
 
                 # Make the request
-                response = client.submit_job(request=request)
+                response = await client.submit_job(request=request)
 
                 # Handle the response
                 print(response)
@@ -311,6 +311,17 @@ class JobControllerAsyncClient:
             client_info=DEFAULT_CLIENT_INFO,
         )
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project_id", request.project_id),
+                    ("region", request.region),
+                )
+            ),
+        )
+
         # Send the request.
         response = await rpc(
             request,
@@ -339,9 +350,9 @@ class JobControllerAsyncClient:
 
             from google.cloud import dataproc_v1
 
-            def sample_submit_job_as_operation():
+            async def sample_submit_job_as_operation():
                 # Create a client
-                client = dataproc_v1.JobControllerClient()
+                client = dataproc_v1.JobControllerAsyncClient()
 
                 # Initialize request argument(s)
                 job = dataproc_v1.Job()
@@ -359,7 +370,7 @@ class JobControllerAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -440,6 +451,17 @@ class JobControllerAsyncClient:
             client_info=DEFAULT_CLIENT_INFO,
         )
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project_id", request.project_id),
+                    ("region", request.region),
+                )
+            ),
+        )
+
         # Send the request.
         response = await rpc(
             request,
@@ -473,14 +495,13 @@ class JobControllerAsyncClient:
         r"""Gets the resource representation for a job in a
         project.
 
-
         .. code-block:: python
 
             from google.cloud import dataproc_v1
 
-            def sample_get_job():
+            async def sample_get_job():
                 # Create a client
-                client = dataproc_v1.JobControllerClient()
+                client = dataproc_v1.JobControllerAsyncClient()
 
                 # Initialize request argument(s)
                 request = dataproc_v1.GetJobRequest(
@@ -490,7 +511,7 @@ class JobControllerAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_job(request=request)
+                response = await client.get_job(request=request)
 
                 # Handle the response
                 print(response)
@@ -569,6 +590,18 @@ class JobControllerAsyncClient:
             client_info=DEFAULT_CLIENT_INFO,
         )
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project_id", request.project_id),
+                    ("region", request.region),
+                    ("job_id", request.job_id),
+                )
+            ),
+        )
+
         # Send the request.
         response = await rpc(
             request,
@@ -597,9 +630,9 @@ class JobControllerAsyncClient:
 
             from google.cloud import dataproc_v1
 
-            def sample_list_jobs():
+            async def sample_list_jobs():
                 # Create a client
-                client = dataproc_v1.JobControllerClient()
+                client = dataproc_v1.JobControllerAsyncClient()
 
                 # Initialize request argument(s)
                 request = dataproc_v1.ListJobsRequest(
@@ -611,7 +644,7 @@ class JobControllerAsyncClient:
                 page_result = client.list_jobs(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -708,6 +741,17 @@ class JobControllerAsyncClient:
             client_info=DEFAULT_CLIENT_INFO,
         )
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project_id", request.project_id),
+                    ("region", request.region),
+                )
+            ),
+        )
+
         # Send the request.
         response = await rpc(
             request,
@@ -742,9 +786,9 @@ class JobControllerAsyncClient:
 
             from google.cloud import dataproc_v1
 
-            def sample_update_job():
+            async def sample_update_job():
                 # Create a client
-                client = dataproc_v1.JobControllerClient()
+                client = dataproc_v1.JobControllerAsyncClient()
 
                 # Initialize request argument(s)
                 job = dataproc_v1.Job()
@@ -759,7 +803,7 @@ class JobControllerAsyncClient:
                 )
 
                 # Make the request
-                response = client.update_job(request=request)
+                response = await client.update_job(request=request)
 
                 # Handle the response
                 print(response)
@@ -797,6 +841,18 @@ class JobControllerAsyncClient:
             client_info=DEFAULT_CLIENT_INFO,
         )
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project_id", request.project_id),
+                    ("region", request.region),
+                    ("job_id", request.job_id),
+                )
+            ),
+        )
+
         # Send the request.
         response = await rpc(
             request,
@@ -825,14 +881,13 @@ class JobControllerAsyncClient:
         or
         `regions/{region}/jobs.get <https://cloud.google.com/dataproc/docs/reference/rest/v1/projects.regions.jobs/get>`__.
 
-
         .. code-block:: python
 
             from google.cloud import dataproc_v1
 
-            def sample_cancel_job():
+            async def sample_cancel_job():
                 # Create a client
-                client = dataproc_v1.JobControllerClient()
+                client = dataproc_v1.JobControllerAsyncClient()
 
                 # Initialize request argument(s)
                 request = dataproc_v1.CancelJobRequest(
@@ -842,7 +897,7 @@ class JobControllerAsyncClient:
                 )
 
                 # Make the request
-                response = client.cancel_job(request=request)
+                response = await client.cancel_job(request=request)
 
                 # Handle the response
                 print(response)
@@ -920,6 +975,18 @@ class JobControllerAsyncClient:
             client_info=DEFAULT_CLIENT_INFO,
         )
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project_id", request.project_id),
+                    ("region", request.region),
+                    ("job_id", request.job_id),
+                )
+            ),
+        )
+
         # Send the request.
         response = await rpc(
             request,
@@ -945,14 +1012,13 @@ class JobControllerAsyncClient:
         r"""Deletes the job from the project. If the job is active, the
         delete fails, and the response returns ``FAILED_PRECONDITION``.
 
-
         .. code-block:: python
 
             from google.cloud import dataproc_v1
 
-            def sample_delete_job():
+            async def sample_delete_job():
                 # Create a client
-                client = dataproc_v1.JobControllerClient()
+                client = dataproc_v1.JobControllerAsyncClient()
 
                 # Initialize request argument(s)
                 request = dataproc_v1.DeleteJobRequest(
@@ -962,7 +1028,7 @@ class JobControllerAsyncClient:
                 )
 
                 # Make the request
-                client.delete_job(request=request)
+                await client.delete_job(request=request)
 
         Args:
             request (Union[google.cloud.dataproc_v1.types.DeleteJobRequest, dict]):
@@ -1029,6 +1095,18 @@ class JobControllerAsyncClient:
             ),
             default_timeout=900.0,
             client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project_id", request.project_id),
+                    ("region", request.region),
+                    ("job_id", request.job_id),
+                )
+            ),
         )
 
         # Send the request.

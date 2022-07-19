@@ -54,7 +54,7 @@ class LoggingConfig(proto.Message):
     r"""The runtime logging config of the job.
 
     Attributes:
-        driver_log_levels (Sequence[google.cloud.dataproc_v1.types.LoggingConfig.DriverLogLevelsEntry]):
+        driver_log_levels (Mapping[str, google.cloud.dataproc_v1.types.LoggingConfig.Level]):
             The per-package log levels for the driver.
             This may include "root" package name to
             configure rootLogger. Examples:
@@ -131,7 +131,7 @@ class HadoopJob(proto.Message):
             extracted in the working directory of Hadoop
             drivers and tasks. Supported file types: .jar,
             .tar, .tar.gz, .tgz, or .zip.
-        properties (Sequence[google.cloud.dataproc_v1.types.HadoopJob.PropertiesEntry]):
+        properties (Mapping[str, str]):
             Optional. A mapping of property names to values, used to
             configure Hadoop. Properties that conflict with values set
             by the Dataproc API may be overwritten. Can include
@@ -220,7 +220,7 @@ class SparkJob(proto.Message):
             extracted into the working directory of each
             executor. Supported file types: .jar, .tar,
             .tar.gz, .tgz, and .zip.
-        properties (Sequence[google.cloud.dataproc_v1.types.SparkJob.PropertiesEntry]):
+        properties (Mapping[str, str]):
             Optional. A mapping of property names to
             values, used to configure Spark. Properties that
             conflict with values set by the Dataproc API may
@@ -300,7 +300,7 @@ class PySparkJob(proto.Message):
             extracted into the working directory of each
             executor. Supported file types: .jar, .tar,
             .tar.gz, .tgz, and .zip.
-        properties (Sequence[google.cloud.dataproc_v1.types.PySparkJob.PropertiesEntry]):
+        properties (Mapping[str, str]):
             Optional. A mapping of property names to
             values, used to configure PySpark. Properties
             that conflict with values set by the Dataproc
@@ -404,10 +404,10 @@ class HiveJob(proto.Message):
             Optional. Whether to continue executing queries if a query
             fails. The default value is ``false``. Setting to ``true``
             can be useful when executing independent parallel queries.
-        script_variables (Sequence[google.cloud.dataproc_v1.types.HiveJob.ScriptVariablesEntry]):
+        script_variables (Mapping[str, str]):
             Optional. Mapping of query variable names to values
             (equivalent to the Hive command: ``SET name="value";``).
-        properties (Sequence[google.cloud.dataproc_v1.types.HiveJob.PropertiesEntry]):
+        properties (Mapping[str, str]):
             Optional. A mapping of property names and values, used to
             configure Hive. Properties that conflict with values set by
             the Dataproc API may be overwritten. Can include properties
@@ -472,11 +472,11 @@ class SparkSqlJob(proto.Message):
             A list of queries.
 
             This field is a member of `oneof`_ ``queries``.
-        script_variables (Sequence[google.cloud.dataproc_v1.types.SparkSqlJob.ScriptVariablesEntry]):
+        script_variables (Mapping[str, str]):
             Optional. Mapping of query variable names to values
             (equivalent to the Spark SQL command: SET
             ``name="value";``).
-        properties (Sequence[google.cloud.dataproc_v1.types.SparkSqlJob.PropertiesEntry]):
+        properties (Mapping[str, str]):
             Optional. A mapping of property names to
             values, used to configure Spark SQL's SparkConf.
             Properties that conflict with values set by the
@@ -546,10 +546,10 @@ class PigJob(proto.Message):
             Optional. Whether to continue executing queries if a query
             fails. The default value is ``false``. Setting to ``true``
             can be useful when executing independent parallel queries.
-        script_variables (Sequence[google.cloud.dataproc_v1.types.PigJob.ScriptVariablesEntry]):
+        script_variables (Mapping[str, str]):
             Optional. Mapping of query variable names to values
             (equivalent to the Pig command: ``name=[value]``).
-        properties (Sequence[google.cloud.dataproc_v1.types.PigJob.PropertiesEntry]):
+        properties (Mapping[str, str]):
             Optional. A mapping of property names to values, used to
             configure Pig. Properties that conflict with values set by
             the Dataproc API may be overwritten. Can include properties
@@ -623,7 +623,7 @@ class SparkRJob(proto.Message):
             extracted into the working directory of each
             executor. Supported file types: .jar, .tar,
             .tar.gz, .tgz, and .zip.
-        properties (Sequence[google.cloud.dataproc_v1.types.SparkRJob.PropertiesEntry]):
+        properties (Mapping[str, str]):
             Optional. A mapping of property names to
             values, used to configure SparkR. Properties
             that conflict with values set by the Dataproc
@@ -699,7 +699,7 @@ class PrestoJob(proto.Message):
         client_tags (Sequence[str]):
             Optional. Presto client tags to attach to
             this query
-        properties (Sequence[google.cloud.dataproc_v1.types.PrestoJob.PropertiesEntry]):
+        properties (Mapping[str, str]):
             Optional. A mapping of property names to values. Used to set
             Presto `session
             properties <https://prestodb.io/docs/current/sql/set-session.html>`__
@@ -754,7 +754,7 @@ class JobPlacement(proto.Message):
         cluster_uuid (str):
             Output only. A cluster UUID generated by the
             Dataproc service when the job is submitted.
-        cluster_labels (Sequence[google.cloud.dataproc_v1.types.JobPlacement.ClusterLabelsEntry]):
+        cluster_labels (Mapping[str, str]):
             Optional. Cluster labels to identify a
             cluster where the job will be submitted.
     """
@@ -993,7 +993,7 @@ class Job(proto.Message):
             control files which may be used as part of job setup and
             handling. If not present, control files may be placed in the
             same location as ``driver_output_uri``.
-        labels (Sequence[google.cloud.dataproc_v1.types.Job.LabelsEntry]):
+        labels (Mapping[str, str]):
             Optional. The labels to associate with this job. Label
             **keys** must contain 1 to 63 characters, and must conform
             to `RFC 1035 <https://www.ietf.org/rfc/rfc1035.txt>`__.

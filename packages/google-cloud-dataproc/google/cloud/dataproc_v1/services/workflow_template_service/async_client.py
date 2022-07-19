@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core.client_options import ClientOptions
@@ -236,9 +236,9 @@ class WorkflowTemplateServiceAsyncClient:
 
             from google.cloud import dataproc_v1
 
-            def sample_create_workflow_template():
+            async def sample_create_workflow_template():
                 # Create a client
-                client = dataproc_v1.WorkflowTemplateServiceClient()
+                client = dataproc_v1.WorkflowTemplateServiceAsyncClient()
 
                 # Initialize request argument(s)
                 template = dataproc_v1.WorkflowTemplate()
@@ -253,7 +253,7 @@ class WorkflowTemplateServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.create_workflow_template(request=request)
+                response = await client.create_workflow_template(request=request)
 
                 # Handle the response
                 print(response)
@@ -364,14 +364,13 @@ class WorkflowTemplateServiceAsyncClient:
         Can retrieve previously instantiated template by
         specifying optional version parameter.
 
-
         .. code-block:: python
 
             from google.cloud import dataproc_v1
 
-            def sample_get_workflow_template():
+            async def sample_get_workflow_template():
                 # Create a client
-                client = dataproc_v1.WorkflowTemplateServiceClient()
+                client = dataproc_v1.WorkflowTemplateServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = dataproc_v1.GetWorkflowTemplateRequest(
@@ -379,7 +378,7 @@ class WorkflowTemplateServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_workflow_template(request=request)
+                response = await client.get_workflow_template(request=request)
 
                 # Handle the response
                 print(response)
@@ -478,9 +477,7 @@ class WorkflowTemplateServiceAsyncClient:
         ] = None,
         *,
         name: str = None,
-        parameters: Sequence[
-            workflow_templates.InstantiateWorkflowTemplateRequest.ParametersEntry
-        ] = None,
+        parameters: Mapping[str, str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
@@ -507,14 +504,13 @@ class WorkflowTemplateServiceAsyncClient:
         [Operation.response][google.longrunning.Operation.response] will
         be [Empty][google.protobuf.Empty].
 
-
         .. code-block:: python
 
             from google.cloud import dataproc_v1
 
-            def sample_instantiate_workflow_template():
+            async def sample_instantiate_workflow_template():
                 # Create a client
-                client = dataproc_v1.WorkflowTemplateServiceClient()
+                client = dataproc_v1.WorkflowTemplateServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = dataproc_v1.InstantiateWorkflowTemplateRequest(
@@ -526,7 +522,7 @@ class WorkflowTemplateServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -555,7 +551,7 @@ class WorkflowTemplateServiceAsyncClient:
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            parameters (:class:`Sequence[google.cloud.dataproc_v1.types.InstantiateWorkflowTemplateRequest.ParametersEntry]`):
+            parameters (:class:`Mapping[str, str]`):
                 Optional. Map from parameter names to
                 values that should be used for those
                 parameters. Values may not exceed 1000
@@ -690,14 +686,13 @@ class WorkflowTemplateServiceAsyncClient:
         [Operation.response][google.longrunning.Operation.response] will
         be [Empty][google.protobuf.Empty].
 
-
         .. code-block:: python
 
             from google.cloud import dataproc_v1
 
-            def sample_instantiate_inline_workflow_template():
+            async def sample_instantiate_inline_workflow_template():
                 # Create a client
-                client = dataproc_v1.WorkflowTemplateServiceClient()
+                client = dataproc_v1.WorkflowTemplateServiceAsyncClient()
 
                 # Initialize request argument(s)
                 template = dataproc_v1.WorkflowTemplate()
@@ -716,7 +711,7 @@ class WorkflowTemplateServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -850,14 +845,13 @@ class WorkflowTemplateServiceAsyncClient:
         template must contain version that matches the current
         server version.
 
-
         .. code-block:: python
 
             from google.cloud import dataproc_v1
 
-            def sample_update_workflow_template():
+            async def sample_update_workflow_template():
                 # Create a client
-                client = dataproc_v1.WorkflowTemplateServiceClient()
+                client = dataproc_v1.WorkflowTemplateServiceAsyncClient()
 
                 # Initialize request argument(s)
                 template = dataproc_v1.WorkflowTemplate()
@@ -871,7 +865,7 @@ class WorkflowTemplateServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.update_workflow_template(request=request)
+                response = await client.update_workflow_template(request=request)
 
                 # Handle the response
                 print(response)
@@ -966,14 +960,13 @@ class WorkflowTemplateServiceAsyncClient:
         r"""Lists workflows that match the specified filter in
         the request.
 
-
         .. code-block:: python
 
             from google.cloud import dataproc_v1
 
-            def sample_list_workflow_templates():
+            async def sample_list_workflow_templates():
                 # Create a client
-                client = dataproc_v1.WorkflowTemplateServiceClient()
+                client = dataproc_v1.WorkflowTemplateServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = dataproc_v1.ListWorkflowTemplatesRequest(
@@ -984,7 +977,7 @@ class WorkflowTemplateServiceAsyncClient:
                 page_result = client.list_workflow_templates(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -1097,14 +1090,13 @@ class WorkflowTemplateServiceAsyncClient:
         r"""Deletes a workflow template. It does not cancel
         in-progress workflows.
 
-
         .. code-block:: python
 
             from google.cloud import dataproc_v1
 
-            def sample_delete_workflow_template():
+            async def sample_delete_workflow_template():
                 # Create a client
-                client = dataproc_v1.WorkflowTemplateServiceClient()
+                client = dataproc_v1.WorkflowTemplateServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = dataproc_v1.DeleteWorkflowTemplateRequest(
@@ -1112,7 +1104,7 @@ class WorkflowTemplateServiceAsyncClient:
                 )
 
                 # Make the request
-                client.delete_workflow_template(request=request)
+                await client.delete_workflow_template(request=request)
 
         Args:
             request (Union[google.cloud.dataproc_v1.types.DeleteWorkflowTemplateRequest, dict]):

@@ -1,16 +1,65 @@
 {
+  "clientLibrary": {
+    "apis": [
+      {
+        "id": "google.cloud.dataproc.v1",
+        "version": "v1"
+      }
+    ],
+    "language": "PYTHON",
+    "name": "google-cloud-dataproc"
+  },
   "snippets": [
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.dataproc_v1.AutoscalingPolicyServiceAsyncClient",
+          "shortName": "AutoscalingPolicyServiceAsyncClient"
+        },
+        "fullName": "google.cloud.dataproc_v1.AutoscalingPolicyServiceAsyncClient.create_autoscaling_policy",
         "method": {
+          "fullName": "google.cloud.dataproc.v1.AutoscalingPolicyService.CreateAutoscalingPolicy",
           "service": {
+            "fullName": "google.cloud.dataproc.v1.AutoscalingPolicyService",
             "shortName": "AutoscalingPolicyService"
           },
           "shortName": "CreateAutoscalingPolicy"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataproc_v1.types.CreateAutoscalingPolicyRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "policy",
+            "type": "google.cloud.dataproc_v1.types.AutoscalingPolicy"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataproc_v1.types.AutoscalingPolicy",
+        "shortName": "create_autoscaling_policy"
       },
+      "description": "Sample for CreateAutoscalingPolicy",
       "file": "dataproc_v1_generated_autoscaling_policy_service_create_autoscaling_policy_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataproc_v1_generated_AutoscalingPolicyService_CreateAutoscalingPolicy_async",
       "segments": [
         {
@@ -43,18 +92,58 @@
           "start": 48,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataproc_v1_generated_autoscaling_policy_service_create_autoscaling_policy_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dataproc_v1.AutoscalingPolicyServiceClient",
+          "shortName": "AutoscalingPolicyServiceClient"
+        },
+        "fullName": "google.cloud.dataproc_v1.AutoscalingPolicyServiceClient.create_autoscaling_policy",
         "method": {
+          "fullName": "google.cloud.dataproc.v1.AutoscalingPolicyService.CreateAutoscalingPolicy",
           "service": {
+            "fullName": "google.cloud.dataproc.v1.AutoscalingPolicyService",
             "shortName": "AutoscalingPolicyService"
           },
           "shortName": "CreateAutoscalingPolicy"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataproc_v1.types.CreateAutoscalingPolicyRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "policy",
+            "type": "google.cloud.dataproc_v1.types.AutoscalingPolicy"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataproc_v1.types.AutoscalingPolicy",
+        "shortName": "create_autoscaling_policy"
       },
+      "description": "Sample for CreateAutoscalingPolicy",
       "file": "dataproc_v1_generated_autoscaling_policy_service_create_autoscaling_policy_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataproc_v1_generated_AutoscalingPolicyService_CreateAutoscalingPolicy_sync",
       "segments": [
         {
@@ -87,19 +176,54 @@
           "start": 48,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataproc_v1_generated_autoscaling_policy_service_create_autoscaling_policy_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.dataproc_v1.AutoscalingPolicyServiceAsyncClient",
+          "shortName": "AutoscalingPolicyServiceAsyncClient"
+        },
+        "fullName": "google.cloud.dataproc_v1.AutoscalingPolicyServiceAsyncClient.delete_autoscaling_policy",
         "method": {
+          "fullName": "google.cloud.dataproc.v1.AutoscalingPolicyService.DeleteAutoscalingPolicy",
           "service": {
+            "fullName": "google.cloud.dataproc.v1.AutoscalingPolicyService",
             "shortName": "AutoscalingPolicyService"
           },
           "shortName": "DeleteAutoscalingPolicy"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataproc_v1.types.DeleteAutoscalingPolicyRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "shortName": "delete_autoscaling_policy"
       },
+      "description": "Sample for DeleteAutoscalingPolicy",
       "file": "dataproc_v1_generated_autoscaling_policy_service_delete_autoscaling_policy_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataproc_v1_generated_AutoscalingPolicyService_DeleteAutoscalingPolicy_async",
       "segments": [
         {
@@ -130,18 +254,53 @@
           "end": 43,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataproc_v1_generated_autoscaling_policy_service_delete_autoscaling_policy_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dataproc_v1.AutoscalingPolicyServiceClient",
+          "shortName": "AutoscalingPolicyServiceClient"
+        },
+        "fullName": "google.cloud.dataproc_v1.AutoscalingPolicyServiceClient.delete_autoscaling_policy",
         "method": {
+          "fullName": "google.cloud.dataproc.v1.AutoscalingPolicyService.DeleteAutoscalingPolicy",
           "service": {
+            "fullName": "google.cloud.dataproc.v1.AutoscalingPolicyService",
             "shortName": "AutoscalingPolicyService"
           },
           "shortName": "DeleteAutoscalingPolicy"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataproc_v1.types.DeleteAutoscalingPolicyRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "shortName": "delete_autoscaling_policy"
       },
+      "description": "Sample for DeleteAutoscalingPolicy",
       "file": "dataproc_v1_generated_autoscaling_policy_service_delete_autoscaling_policy_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataproc_v1_generated_AutoscalingPolicyService_DeleteAutoscalingPolicy_sync",
       "segments": [
         {
@@ -172,19 +331,55 @@
           "end": 43,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataproc_v1_generated_autoscaling_policy_service_delete_autoscaling_policy_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.dataproc_v1.AutoscalingPolicyServiceAsyncClient",
+          "shortName": "AutoscalingPolicyServiceAsyncClient"
+        },
+        "fullName": "google.cloud.dataproc_v1.AutoscalingPolicyServiceAsyncClient.get_autoscaling_policy",
         "method": {
+          "fullName": "google.cloud.dataproc.v1.AutoscalingPolicyService.GetAutoscalingPolicy",
           "service": {
+            "fullName": "google.cloud.dataproc.v1.AutoscalingPolicyService",
             "shortName": "AutoscalingPolicyService"
           },
           "shortName": "GetAutoscalingPolicy"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataproc_v1.types.GetAutoscalingPolicyRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataproc_v1.types.AutoscalingPolicy",
+        "shortName": "get_autoscaling_policy"
       },
+      "description": "Sample for GetAutoscalingPolicy",
       "file": "dataproc_v1_generated_autoscaling_policy_service_get_autoscaling_policy_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataproc_v1_generated_AutoscalingPolicyService_GetAutoscalingPolicy_async",
       "segments": [
         {
@@ -217,18 +412,54 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataproc_v1_generated_autoscaling_policy_service_get_autoscaling_policy_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dataproc_v1.AutoscalingPolicyServiceClient",
+          "shortName": "AutoscalingPolicyServiceClient"
+        },
+        "fullName": "google.cloud.dataproc_v1.AutoscalingPolicyServiceClient.get_autoscaling_policy",
         "method": {
+          "fullName": "google.cloud.dataproc.v1.AutoscalingPolicyService.GetAutoscalingPolicy",
           "service": {
+            "fullName": "google.cloud.dataproc.v1.AutoscalingPolicyService",
             "shortName": "AutoscalingPolicyService"
           },
           "shortName": "GetAutoscalingPolicy"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataproc_v1.types.GetAutoscalingPolicyRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataproc_v1.types.AutoscalingPolicy",
+        "shortName": "get_autoscaling_policy"
       },
+      "description": "Sample for GetAutoscalingPolicy",
       "file": "dataproc_v1_generated_autoscaling_policy_service_get_autoscaling_policy_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataproc_v1_generated_AutoscalingPolicyService_GetAutoscalingPolicy_sync",
       "segments": [
         {
@@ -261,19 +492,55 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataproc_v1_generated_autoscaling_policy_service_get_autoscaling_policy_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.dataproc_v1.AutoscalingPolicyServiceAsyncClient",
+          "shortName": "AutoscalingPolicyServiceAsyncClient"
+        },
+        "fullName": "google.cloud.dataproc_v1.AutoscalingPolicyServiceAsyncClient.list_autoscaling_policies",
         "method": {
+          "fullName": "google.cloud.dataproc.v1.AutoscalingPolicyService.ListAutoscalingPolicies",
           "service": {
+            "fullName": "google.cloud.dataproc.v1.AutoscalingPolicyService",
             "shortName": "AutoscalingPolicyService"
           },
           "shortName": "ListAutoscalingPolicies"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataproc_v1.types.ListAutoscalingPoliciesRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataproc_v1.services.autoscaling_policy_service.pagers.ListAutoscalingPoliciesAsyncPager",
+        "shortName": "list_autoscaling_policies"
       },
+      "description": "Sample for ListAutoscalingPolicies",
       "file": "dataproc_v1_generated_autoscaling_policy_service_list_autoscaling_policies_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataproc_v1_generated_AutoscalingPolicyService_ListAutoscalingPolicies_async",
       "segments": [
         {
@@ -306,18 +573,54 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataproc_v1_generated_autoscaling_policy_service_list_autoscaling_policies_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dataproc_v1.AutoscalingPolicyServiceClient",
+          "shortName": "AutoscalingPolicyServiceClient"
+        },
+        "fullName": "google.cloud.dataproc_v1.AutoscalingPolicyServiceClient.list_autoscaling_policies",
         "method": {
+          "fullName": "google.cloud.dataproc.v1.AutoscalingPolicyService.ListAutoscalingPolicies",
           "service": {
+            "fullName": "google.cloud.dataproc.v1.AutoscalingPolicyService",
             "shortName": "AutoscalingPolicyService"
           },
           "shortName": "ListAutoscalingPolicies"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataproc_v1.types.ListAutoscalingPoliciesRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataproc_v1.services.autoscaling_policy_service.pagers.ListAutoscalingPoliciesPager",
+        "shortName": "list_autoscaling_policies"
       },
+      "description": "Sample for ListAutoscalingPolicies",
       "file": "dataproc_v1_generated_autoscaling_policy_service_list_autoscaling_policies_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataproc_v1_generated_AutoscalingPolicyService_ListAutoscalingPolicies_sync",
       "segments": [
         {
@@ -350,19 +653,55 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataproc_v1_generated_autoscaling_policy_service_list_autoscaling_policies_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.dataproc_v1.AutoscalingPolicyServiceAsyncClient",
+          "shortName": "AutoscalingPolicyServiceAsyncClient"
+        },
+        "fullName": "google.cloud.dataproc_v1.AutoscalingPolicyServiceAsyncClient.update_autoscaling_policy",
         "method": {
+          "fullName": "google.cloud.dataproc.v1.AutoscalingPolicyService.UpdateAutoscalingPolicy",
           "service": {
+            "fullName": "google.cloud.dataproc.v1.AutoscalingPolicyService",
             "shortName": "AutoscalingPolicyService"
           },
           "shortName": "UpdateAutoscalingPolicy"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataproc_v1.types.UpdateAutoscalingPolicyRequest"
+          },
+          {
+            "name": "policy",
+            "type": "google.cloud.dataproc_v1.types.AutoscalingPolicy"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataproc_v1.types.AutoscalingPolicy",
+        "shortName": "update_autoscaling_policy"
       },
+      "description": "Sample for UpdateAutoscalingPolicy",
       "file": "dataproc_v1_generated_autoscaling_policy_service_update_autoscaling_policy_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataproc_v1_generated_AutoscalingPolicyService_UpdateAutoscalingPolicy_async",
       "segments": [
         {
@@ -395,18 +734,54 @@
           "start": 47,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataproc_v1_generated_autoscaling_policy_service_update_autoscaling_policy_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dataproc_v1.AutoscalingPolicyServiceClient",
+          "shortName": "AutoscalingPolicyServiceClient"
+        },
+        "fullName": "google.cloud.dataproc_v1.AutoscalingPolicyServiceClient.update_autoscaling_policy",
         "method": {
+          "fullName": "google.cloud.dataproc.v1.AutoscalingPolicyService.UpdateAutoscalingPolicy",
           "service": {
+            "fullName": "google.cloud.dataproc.v1.AutoscalingPolicyService",
             "shortName": "AutoscalingPolicyService"
           },
           "shortName": "UpdateAutoscalingPolicy"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataproc_v1.types.UpdateAutoscalingPolicyRequest"
+          },
+          {
+            "name": "policy",
+            "type": "google.cloud.dataproc_v1.types.AutoscalingPolicy"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataproc_v1.types.AutoscalingPolicy",
+        "shortName": "update_autoscaling_policy"
       },
+      "description": "Sample for UpdateAutoscalingPolicy",
       "file": "dataproc_v1_generated_autoscaling_policy_service_update_autoscaling_policy_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataproc_v1_generated_AutoscalingPolicyService_UpdateAutoscalingPolicy_sync",
       "segments": [
         {
@@ -439,19 +814,63 @@
           "start": 47,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataproc_v1_generated_autoscaling_policy_service_update_autoscaling_policy_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.dataproc_v1.BatchControllerAsyncClient",
+          "shortName": "BatchControllerAsyncClient"
+        },
+        "fullName": "google.cloud.dataproc_v1.BatchControllerAsyncClient.create_batch",
         "method": {
+          "fullName": "google.cloud.dataproc.v1.BatchController.CreateBatch",
           "service": {
+            "fullName": "google.cloud.dataproc.v1.BatchController",
             "shortName": "BatchController"
           },
           "shortName": "CreateBatch"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataproc_v1.types.CreateBatchRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "batch",
+            "type": "google.cloud.dataproc_v1.types.Batch"
+          },
+          {
+            "name": "batch_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "create_batch"
       },
+      "description": "Sample for CreateBatch",
       "file": "dataproc_v1_generated_batch_controller_create_batch_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataproc_v1_generated_BatchController_CreateBatch_async",
       "segments": [
         {
@@ -484,18 +903,62 @@
           "start": 50,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataproc_v1_generated_batch_controller_create_batch_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dataproc_v1.BatchControllerClient",
+          "shortName": "BatchControllerClient"
+        },
+        "fullName": "google.cloud.dataproc_v1.BatchControllerClient.create_batch",
         "method": {
+          "fullName": "google.cloud.dataproc.v1.BatchController.CreateBatch",
           "service": {
+            "fullName": "google.cloud.dataproc.v1.BatchController",
             "shortName": "BatchController"
           },
           "shortName": "CreateBatch"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataproc_v1.types.CreateBatchRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "batch",
+            "type": "google.cloud.dataproc_v1.types.Batch"
+          },
+          {
+            "name": "batch_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "create_batch"
       },
+      "description": "Sample for CreateBatch",
       "file": "dataproc_v1_generated_batch_controller_create_batch_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataproc_v1_generated_BatchController_CreateBatch_sync",
       "segments": [
         {
@@ -528,19 +991,54 @@
           "start": 50,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataproc_v1_generated_batch_controller_create_batch_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.dataproc_v1.BatchControllerAsyncClient",
+          "shortName": "BatchControllerAsyncClient"
+        },
+        "fullName": "google.cloud.dataproc_v1.BatchControllerAsyncClient.delete_batch",
         "method": {
+          "fullName": "google.cloud.dataproc.v1.BatchController.DeleteBatch",
           "service": {
+            "fullName": "google.cloud.dataproc.v1.BatchController",
             "shortName": "BatchController"
           },
           "shortName": "DeleteBatch"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataproc_v1.types.DeleteBatchRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "shortName": "delete_batch"
       },
+      "description": "Sample for DeleteBatch",
       "file": "dataproc_v1_generated_batch_controller_delete_batch_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataproc_v1_generated_BatchController_DeleteBatch_async",
       "segments": [
         {
@@ -571,18 +1069,53 @@
           "end": 43,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataproc_v1_generated_batch_controller_delete_batch_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dataproc_v1.BatchControllerClient",
+          "shortName": "BatchControllerClient"
+        },
+        "fullName": "google.cloud.dataproc_v1.BatchControllerClient.delete_batch",
         "method": {
+          "fullName": "google.cloud.dataproc.v1.BatchController.DeleteBatch",
           "service": {
+            "fullName": "google.cloud.dataproc.v1.BatchController",
             "shortName": "BatchController"
           },
           "shortName": "DeleteBatch"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataproc_v1.types.DeleteBatchRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "shortName": "delete_batch"
       },
+      "description": "Sample for DeleteBatch",
       "file": "dataproc_v1_generated_batch_controller_delete_batch_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataproc_v1_generated_BatchController_DeleteBatch_sync",
       "segments": [
         {
@@ -613,19 +1146,55 @@
           "end": 43,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataproc_v1_generated_batch_controller_delete_batch_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.dataproc_v1.BatchControllerAsyncClient",
+          "shortName": "BatchControllerAsyncClient"
+        },
+        "fullName": "google.cloud.dataproc_v1.BatchControllerAsyncClient.get_batch",
         "method": {
+          "fullName": "google.cloud.dataproc.v1.BatchController.GetBatch",
           "service": {
+            "fullName": "google.cloud.dataproc.v1.BatchController",
             "shortName": "BatchController"
           },
           "shortName": "GetBatch"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataproc_v1.types.GetBatchRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataproc_v1.types.Batch",
+        "shortName": "get_batch"
       },
+      "description": "Sample for GetBatch",
       "file": "dataproc_v1_generated_batch_controller_get_batch_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataproc_v1_generated_BatchController_GetBatch_async",
       "segments": [
         {
@@ -658,18 +1227,54 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataproc_v1_generated_batch_controller_get_batch_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dataproc_v1.BatchControllerClient",
+          "shortName": "BatchControllerClient"
+        },
+        "fullName": "google.cloud.dataproc_v1.BatchControllerClient.get_batch",
         "method": {
+          "fullName": "google.cloud.dataproc.v1.BatchController.GetBatch",
           "service": {
+            "fullName": "google.cloud.dataproc.v1.BatchController",
             "shortName": "BatchController"
           },
           "shortName": "GetBatch"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataproc_v1.types.GetBatchRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataproc_v1.types.Batch",
+        "shortName": "get_batch"
       },
+      "description": "Sample for GetBatch",
       "file": "dataproc_v1_generated_batch_controller_get_batch_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataproc_v1_generated_BatchController_GetBatch_sync",
       "segments": [
         {
@@ -702,19 +1307,55 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataproc_v1_generated_batch_controller_get_batch_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.dataproc_v1.BatchControllerAsyncClient",
+          "shortName": "BatchControllerAsyncClient"
+        },
+        "fullName": "google.cloud.dataproc_v1.BatchControllerAsyncClient.list_batches",
         "method": {
+          "fullName": "google.cloud.dataproc.v1.BatchController.ListBatches",
           "service": {
+            "fullName": "google.cloud.dataproc.v1.BatchController",
             "shortName": "BatchController"
           },
           "shortName": "ListBatches"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataproc_v1.types.ListBatchesRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataproc_v1.services.batch_controller.pagers.ListBatchesAsyncPager",
+        "shortName": "list_batches"
       },
+      "description": "Sample for ListBatches",
       "file": "dataproc_v1_generated_batch_controller_list_batches_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataproc_v1_generated_BatchController_ListBatches_async",
       "segments": [
         {
@@ -747,18 +1388,54 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataproc_v1_generated_batch_controller_list_batches_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dataproc_v1.BatchControllerClient",
+          "shortName": "BatchControllerClient"
+        },
+        "fullName": "google.cloud.dataproc_v1.BatchControllerClient.list_batches",
         "method": {
+          "fullName": "google.cloud.dataproc.v1.BatchController.ListBatches",
           "service": {
+            "fullName": "google.cloud.dataproc.v1.BatchController",
             "shortName": "BatchController"
           },
           "shortName": "ListBatches"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataproc_v1.types.ListBatchesRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataproc_v1.services.batch_controller.pagers.ListBatchesPager",
+        "shortName": "list_batches"
       },
+      "description": "Sample for ListBatches",
       "file": "dataproc_v1_generated_batch_controller_list_batches_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataproc_v1_generated_BatchController_ListBatches_sync",
       "segments": [
         {
@@ -791,19 +1468,63 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataproc_v1_generated_batch_controller_list_batches_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.dataproc_v1.ClusterControllerAsyncClient",
+          "shortName": "ClusterControllerAsyncClient"
+        },
+        "fullName": "google.cloud.dataproc_v1.ClusterControllerAsyncClient.create_cluster",
         "method": {
+          "fullName": "google.cloud.dataproc.v1.ClusterController.CreateCluster",
           "service": {
+            "fullName": "google.cloud.dataproc.v1.ClusterController",
             "shortName": "ClusterController"
           },
           "shortName": "CreateCluster"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataproc_v1.types.CreateClusterRequest"
+          },
+          {
+            "name": "project_id",
+            "type": "str"
+          },
+          {
+            "name": "region",
+            "type": "str"
+          },
+          {
+            "name": "cluster",
+            "type": "google.cloud.dataproc_v1.types.Cluster"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "create_cluster"
       },
+      "description": "Sample for CreateCluster",
       "file": "dataproc_v1_generated_cluster_controller_create_cluster_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataproc_v1_generated_ClusterController_CreateCluster_async",
       "segments": [
         {
@@ -836,18 +1557,62 @@
           "start": 52,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataproc_v1_generated_cluster_controller_create_cluster_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dataproc_v1.ClusterControllerClient",
+          "shortName": "ClusterControllerClient"
+        },
+        "fullName": "google.cloud.dataproc_v1.ClusterControllerClient.create_cluster",
         "method": {
+          "fullName": "google.cloud.dataproc.v1.ClusterController.CreateCluster",
           "service": {
+            "fullName": "google.cloud.dataproc.v1.ClusterController",
             "shortName": "ClusterController"
           },
           "shortName": "CreateCluster"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataproc_v1.types.CreateClusterRequest"
+          },
+          {
+            "name": "project_id",
+            "type": "str"
+          },
+          {
+            "name": "region",
+            "type": "str"
+          },
+          {
+            "name": "cluster",
+            "type": "google.cloud.dataproc_v1.types.Cluster"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "create_cluster"
       },
+      "description": "Sample for CreateCluster",
       "file": "dataproc_v1_generated_cluster_controller_create_cluster_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataproc_v1_generated_ClusterController_CreateCluster_sync",
       "segments": [
         {
@@ -880,19 +1645,63 @@
           "start": 52,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataproc_v1_generated_cluster_controller_create_cluster_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.dataproc_v1.ClusterControllerAsyncClient",
+          "shortName": "ClusterControllerAsyncClient"
+        },
+        "fullName": "google.cloud.dataproc_v1.ClusterControllerAsyncClient.delete_cluster",
         "method": {
+          "fullName": "google.cloud.dataproc.v1.ClusterController.DeleteCluster",
           "service": {
+            "fullName": "google.cloud.dataproc.v1.ClusterController",
             "shortName": "ClusterController"
           },
           "shortName": "DeleteCluster"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataproc_v1.types.DeleteClusterRequest"
+          },
+          {
+            "name": "project_id",
+            "type": "str"
+          },
+          {
+            "name": "region",
+            "type": "str"
+          },
+          {
+            "name": "cluster_name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "delete_cluster"
       },
+      "description": "Sample for DeleteCluster",
       "file": "dataproc_v1_generated_cluster_controller_delete_cluster_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataproc_v1_generated_ClusterController_DeleteCluster_async",
       "segments": [
         {
@@ -925,18 +1734,62 @@
           "start": 48,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataproc_v1_generated_cluster_controller_delete_cluster_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dataproc_v1.ClusterControllerClient",
+          "shortName": "ClusterControllerClient"
+        },
+        "fullName": "google.cloud.dataproc_v1.ClusterControllerClient.delete_cluster",
         "method": {
+          "fullName": "google.cloud.dataproc.v1.ClusterController.DeleteCluster",
           "service": {
+            "fullName": "google.cloud.dataproc.v1.ClusterController",
             "shortName": "ClusterController"
           },
           "shortName": "DeleteCluster"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataproc_v1.types.DeleteClusterRequest"
+          },
+          {
+            "name": "project_id",
+            "type": "str"
+          },
+          {
+            "name": "region",
+            "type": "str"
+          },
+          {
+            "name": "cluster_name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "delete_cluster"
       },
+      "description": "Sample for DeleteCluster",
       "file": "dataproc_v1_generated_cluster_controller_delete_cluster_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataproc_v1_generated_ClusterController_DeleteCluster_sync",
       "segments": [
         {
@@ -969,19 +1822,63 @@
           "start": 48,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataproc_v1_generated_cluster_controller_delete_cluster_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.dataproc_v1.ClusterControllerAsyncClient",
+          "shortName": "ClusterControllerAsyncClient"
+        },
+        "fullName": "google.cloud.dataproc_v1.ClusterControllerAsyncClient.diagnose_cluster",
         "method": {
+          "fullName": "google.cloud.dataproc.v1.ClusterController.DiagnoseCluster",
           "service": {
+            "fullName": "google.cloud.dataproc.v1.ClusterController",
             "shortName": "ClusterController"
           },
           "shortName": "DiagnoseCluster"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataproc_v1.types.DiagnoseClusterRequest"
+          },
+          {
+            "name": "project_id",
+            "type": "str"
+          },
+          {
+            "name": "region",
+            "type": "str"
+          },
+          {
+            "name": "cluster_name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "diagnose_cluster"
       },
+      "description": "Sample for DiagnoseCluster",
       "file": "dataproc_v1_generated_cluster_controller_diagnose_cluster_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataproc_v1_generated_ClusterController_DiagnoseCluster_async",
       "segments": [
         {
@@ -1014,18 +1911,62 @@
           "start": 48,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataproc_v1_generated_cluster_controller_diagnose_cluster_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dataproc_v1.ClusterControllerClient",
+          "shortName": "ClusterControllerClient"
+        },
+        "fullName": "google.cloud.dataproc_v1.ClusterControllerClient.diagnose_cluster",
         "method": {
+          "fullName": "google.cloud.dataproc.v1.ClusterController.DiagnoseCluster",
           "service": {
+            "fullName": "google.cloud.dataproc.v1.ClusterController",
             "shortName": "ClusterController"
           },
           "shortName": "DiagnoseCluster"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataproc_v1.types.DiagnoseClusterRequest"
+          },
+          {
+            "name": "project_id",
+            "type": "str"
+          },
+          {
+            "name": "region",
+            "type": "str"
+          },
+          {
+            "name": "cluster_name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "diagnose_cluster"
       },
+      "description": "Sample for DiagnoseCluster",
       "file": "dataproc_v1_generated_cluster_controller_diagnose_cluster_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataproc_v1_generated_ClusterController_DiagnoseCluster_sync",
       "segments": [
         {
@@ -1058,19 +1999,63 @@
           "start": 48,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataproc_v1_generated_cluster_controller_diagnose_cluster_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.dataproc_v1.ClusterControllerAsyncClient",
+          "shortName": "ClusterControllerAsyncClient"
+        },
+        "fullName": "google.cloud.dataproc_v1.ClusterControllerAsyncClient.get_cluster",
         "method": {
+          "fullName": "google.cloud.dataproc.v1.ClusterController.GetCluster",
           "service": {
+            "fullName": "google.cloud.dataproc.v1.ClusterController",
             "shortName": "ClusterController"
           },
           "shortName": "GetCluster"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataproc_v1.types.GetClusterRequest"
+          },
+          {
+            "name": "project_id",
+            "type": "str"
+          },
+          {
+            "name": "region",
+            "type": "str"
+          },
+          {
+            "name": "cluster_name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataproc_v1.types.Cluster",
+        "shortName": "get_cluster"
       },
+      "description": "Sample for GetCluster",
       "file": "dataproc_v1_generated_cluster_controller_get_cluster_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataproc_v1_generated_ClusterController_GetCluster_async",
       "segments": [
         {
@@ -1103,18 +2088,62 @@
           "start": 44,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataproc_v1_generated_cluster_controller_get_cluster_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dataproc_v1.ClusterControllerClient",
+          "shortName": "ClusterControllerClient"
+        },
+        "fullName": "google.cloud.dataproc_v1.ClusterControllerClient.get_cluster",
         "method": {
+          "fullName": "google.cloud.dataproc.v1.ClusterController.GetCluster",
           "service": {
+            "fullName": "google.cloud.dataproc.v1.ClusterController",
             "shortName": "ClusterController"
           },
           "shortName": "GetCluster"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataproc_v1.types.GetClusterRequest"
+          },
+          {
+            "name": "project_id",
+            "type": "str"
+          },
+          {
+            "name": "region",
+            "type": "str"
+          },
+          {
+            "name": "cluster_name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataproc_v1.types.Cluster",
+        "shortName": "get_cluster"
       },
+      "description": "Sample for GetCluster",
       "file": "dataproc_v1_generated_cluster_controller_get_cluster_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataproc_v1_generated_ClusterController_GetCluster_sync",
       "segments": [
         {
@@ -1147,19 +2176,63 @@
           "start": 44,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataproc_v1_generated_cluster_controller_get_cluster_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.dataproc_v1.ClusterControllerAsyncClient",
+          "shortName": "ClusterControllerAsyncClient"
+        },
+        "fullName": "google.cloud.dataproc_v1.ClusterControllerAsyncClient.list_clusters",
         "method": {
+          "fullName": "google.cloud.dataproc.v1.ClusterController.ListClusters",
           "service": {
+            "fullName": "google.cloud.dataproc.v1.ClusterController",
             "shortName": "ClusterController"
           },
           "shortName": "ListClusters"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataproc_v1.types.ListClustersRequest"
+          },
+          {
+            "name": "project_id",
+            "type": "str"
+          },
+          {
+            "name": "region",
+            "type": "str"
+          },
+          {
+            "name": "filter",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataproc_v1.services.cluster_controller.pagers.ListClustersAsyncPager",
+        "shortName": "list_clusters"
       },
+      "description": "Sample for ListClusters",
       "file": "dataproc_v1_generated_cluster_controller_list_clusters_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataproc_v1_generated_ClusterController_ListClusters_async",
       "segments": [
         {
@@ -1192,18 +2265,62 @@
           "start": 43,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataproc_v1_generated_cluster_controller_list_clusters_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dataproc_v1.ClusterControllerClient",
+          "shortName": "ClusterControllerClient"
+        },
+        "fullName": "google.cloud.dataproc_v1.ClusterControllerClient.list_clusters",
         "method": {
+          "fullName": "google.cloud.dataproc.v1.ClusterController.ListClusters",
           "service": {
+            "fullName": "google.cloud.dataproc.v1.ClusterController",
             "shortName": "ClusterController"
           },
           "shortName": "ListClusters"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataproc_v1.types.ListClustersRequest"
+          },
+          {
+            "name": "project_id",
+            "type": "str"
+          },
+          {
+            "name": "region",
+            "type": "str"
+          },
+          {
+            "name": "filter",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataproc_v1.services.cluster_controller.pagers.ListClustersPager",
+        "shortName": "list_clusters"
       },
+      "description": "Sample for ListClusters",
       "file": "dataproc_v1_generated_cluster_controller_list_clusters_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataproc_v1_generated_ClusterController_ListClusters_sync",
       "segments": [
         {
@@ -1236,19 +2353,51 @@
           "start": 43,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataproc_v1_generated_cluster_controller_list_clusters_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.dataproc_v1.ClusterControllerAsyncClient",
+          "shortName": "ClusterControllerAsyncClient"
+        },
+        "fullName": "google.cloud.dataproc_v1.ClusterControllerAsyncClient.start_cluster",
         "method": {
+          "fullName": "google.cloud.dataproc.v1.ClusterController.StartCluster",
           "service": {
+            "fullName": "google.cloud.dataproc.v1.ClusterController",
             "shortName": "ClusterController"
           },
           "shortName": "StartCluster"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataproc_v1.types.StartClusterRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "start_cluster"
       },
+      "description": "Sample for StartCluster",
       "file": "dataproc_v1_generated_cluster_controller_start_cluster_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataproc_v1_generated_ClusterController_StartCluster_async",
       "segments": [
         {
@@ -1281,18 +2430,50 @@
           "start": 48,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataproc_v1_generated_cluster_controller_start_cluster_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dataproc_v1.ClusterControllerClient",
+          "shortName": "ClusterControllerClient"
+        },
+        "fullName": "google.cloud.dataproc_v1.ClusterControllerClient.start_cluster",
         "method": {
+          "fullName": "google.cloud.dataproc.v1.ClusterController.StartCluster",
           "service": {
+            "fullName": "google.cloud.dataproc.v1.ClusterController",
             "shortName": "ClusterController"
           },
           "shortName": "StartCluster"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataproc_v1.types.StartClusterRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "start_cluster"
       },
+      "description": "Sample for StartCluster",
       "file": "dataproc_v1_generated_cluster_controller_start_cluster_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataproc_v1_generated_ClusterController_StartCluster_sync",
       "segments": [
         {
@@ -1325,19 +2506,51 @@
           "start": 48,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataproc_v1_generated_cluster_controller_start_cluster_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.dataproc_v1.ClusterControllerAsyncClient",
+          "shortName": "ClusterControllerAsyncClient"
+        },
+        "fullName": "google.cloud.dataproc_v1.ClusterControllerAsyncClient.stop_cluster",
         "method": {
+          "fullName": "google.cloud.dataproc.v1.ClusterController.StopCluster",
           "service": {
+            "fullName": "google.cloud.dataproc.v1.ClusterController",
             "shortName": "ClusterController"
           },
           "shortName": "StopCluster"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataproc_v1.types.StopClusterRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "stop_cluster"
       },
+      "description": "Sample for StopCluster",
       "file": "dataproc_v1_generated_cluster_controller_stop_cluster_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataproc_v1_generated_ClusterController_StopCluster_async",
       "segments": [
         {
@@ -1370,18 +2583,50 @@
           "start": 48,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataproc_v1_generated_cluster_controller_stop_cluster_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dataproc_v1.ClusterControllerClient",
+          "shortName": "ClusterControllerClient"
+        },
+        "fullName": "google.cloud.dataproc_v1.ClusterControllerClient.stop_cluster",
         "method": {
+          "fullName": "google.cloud.dataproc.v1.ClusterController.StopCluster",
           "service": {
+            "fullName": "google.cloud.dataproc.v1.ClusterController",
             "shortName": "ClusterController"
           },
           "shortName": "StopCluster"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataproc_v1.types.StopClusterRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "stop_cluster"
       },
+      "description": "Sample for StopCluster",
       "file": "dataproc_v1_generated_cluster_controller_stop_cluster_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataproc_v1_generated_ClusterController_StopCluster_sync",
       "segments": [
         {
@@ -1414,19 +2659,71 @@
           "start": 48,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataproc_v1_generated_cluster_controller_stop_cluster_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.dataproc_v1.ClusterControllerAsyncClient",
+          "shortName": "ClusterControllerAsyncClient"
+        },
+        "fullName": "google.cloud.dataproc_v1.ClusterControllerAsyncClient.update_cluster",
         "method": {
+          "fullName": "google.cloud.dataproc.v1.ClusterController.UpdateCluster",
           "service": {
+            "fullName": "google.cloud.dataproc.v1.ClusterController",
             "shortName": "ClusterController"
           },
           "shortName": "UpdateCluster"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataproc_v1.types.UpdateClusterRequest"
+          },
+          {
+            "name": "project_id",
+            "type": "str"
+          },
+          {
+            "name": "region",
+            "type": "str"
+          },
+          {
+            "name": "cluster_name",
+            "type": "str"
+          },
+          {
+            "name": "cluster",
+            "type": "google.cloud.dataproc_v1.types.Cluster"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "update_cluster"
       },
+      "description": "Sample for UpdateCluster",
       "file": "dataproc_v1_generated_cluster_controller_update_cluster_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataproc_v1_generated_ClusterController_UpdateCluster_async",
       "segments": [
         {
@@ -1459,18 +2756,70 @@
           "start": 53,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataproc_v1_generated_cluster_controller_update_cluster_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dataproc_v1.ClusterControllerClient",
+          "shortName": "ClusterControllerClient"
+        },
+        "fullName": "google.cloud.dataproc_v1.ClusterControllerClient.update_cluster",
         "method": {
+          "fullName": "google.cloud.dataproc.v1.ClusterController.UpdateCluster",
           "service": {
+            "fullName": "google.cloud.dataproc.v1.ClusterController",
             "shortName": "ClusterController"
           },
           "shortName": "UpdateCluster"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataproc_v1.types.UpdateClusterRequest"
+          },
+          {
+            "name": "project_id",
+            "type": "str"
+          },
+          {
+            "name": "region",
+            "type": "str"
+          },
+          {
+            "name": "cluster_name",
+            "type": "str"
+          },
+          {
+            "name": "cluster",
+            "type": "google.cloud.dataproc_v1.types.Cluster"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "update_cluster"
       },
+      "description": "Sample for UpdateCluster",
       "file": "dataproc_v1_generated_cluster_controller_update_cluster_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataproc_v1_generated_ClusterController_UpdateCluster_sync",
       "segments": [
         {
@@ -1503,19 +2852,63 @@
           "start": 53,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataproc_v1_generated_cluster_controller_update_cluster_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.dataproc_v1.JobControllerAsyncClient",
+          "shortName": "JobControllerAsyncClient"
+        },
+        "fullName": "google.cloud.dataproc_v1.JobControllerAsyncClient.cancel_job",
         "method": {
+          "fullName": "google.cloud.dataproc.v1.JobController.CancelJob",
           "service": {
+            "fullName": "google.cloud.dataproc.v1.JobController",
             "shortName": "JobController"
           },
           "shortName": "CancelJob"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataproc_v1.types.CancelJobRequest"
+          },
+          {
+            "name": "project_id",
+            "type": "str"
+          },
+          {
+            "name": "region",
+            "type": "str"
+          },
+          {
+            "name": "job_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataproc_v1.types.Job",
+        "shortName": "cancel_job"
       },
+      "description": "Sample for CancelJob",
       "file": "dataproc_v1_generated_job_controller_cancel_job_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataproc_v1_generated_JobController_CancelJob_async",
       "segments": [
         {
@@ -1548,18 +2941,62 @@
           "start": 44,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataproc_v1_generated_job_controller_cancel_job_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dataproc_v1.JobControllerClient",
+          "shortName": "JobControllerClient"
+        },
+        "fullName": "google.cloud.dataproc_v1.JobControllerClient.cancel_job",
         "method": {
+          "fullName": "google.cloud.dataproc.v1.JobController.CancelJob",
           "service": {
+            "fullName": "google.cloud.dataproc.v1.JobController",
             "shortName": "JobController"
           },
           "shortName": "CancelJob"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataproc_v1.types.CancelJobRequest"
+          },
+          {
+            "name": "project_id",
+            "type": "str"
+          },
+          {
+            "name": "region",
+            "type": "str"
+          },
+          {
+            "name": "job_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataproc_v1.types.Job",
+        "shortName": "cancel_job"
       },
+      "description": "Sample for CancelJob",
       "file": "dataproc_v1_generated_job_controller_cancel_job_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataproc_v1_generated_JobController_CancelJob_sync",
       "segments": [
         {
@@ -1592,19 +3029,62 @@
           "start": 44,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataproc_v1_generated_job_controller_cancel_job_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.dataproc_v1.JobControllerAsyncClient",
+          "shortName": "JobControllerAsyncClient"
+        },
+        "fullName": "google.cloud.dataproc_v1.JobControllerAsyncClient.delete_job",
         "method": {
+          "fullName": "google.cloud.dataproc.v1.JobController.DeleteJob",
           "service": {
+            "fullName": "google.cloud.dataproc.v1.JobController",
             "shortName": "JobController"
           },
           "shortName": "DeleteJob"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataproc_v1.types.DeleteJobRequest"
+          },
+          {
+            "name": "project_id",
+            "type": "str"
+          },
+          {
+            "name": "region",
+            "type": "str"
+          },
+          {
+            "name": "job_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "shortName": "delete_job"
       },
+      "description": "Sample for DeleteJob",
       "file": "dataproc_v1_generated_job_controller_delete_job_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataproc_v1_generated_JobController_DeleteJob_async",
       "segments": [
         {
@@ -1635,18 +3115,61 @@
           "end": 45,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataproc_v1_generated_job_controller_delete_job_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dataproc_v1.JobControllerClient",
+          "shortName": "JobControllerClient"
+        },
+        "fullName": "google.cloud.dataproc_v1.JobControllerClient.delete_job",
         "method": {
+          "fullName": "google.cloud.dataproc.v1.JobController.DeleteJob",
           "service": {
+            "fullName": "google.cloud.dataproc.v1.JobController",
             "shortName": "JobController"
           },
           "shortName": "DeleteJob"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataproc_v1.types.DeleteJobRequest"
+          },
+          {
+            "name": "project_id",
+            "type": "str"
+          },
+          {
+            "name": "region",
+            "type": "str"
+          },
+          {
+            "name": "job_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "shortName": "delete_job"
       },
+      "description": "Sample for DeleteJob",
       "file": "dataproc_v1_generated_job_controller_delete_job_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataproc_v1_generated_JobController_DeleteJob_sync",
       "segments": [
         {
@@ -1677,19 +3200,63 @@
           "end": 45,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataproc_v1_generated_job_controller_delete_job_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.dataproc_v1.JobControllerAsyncClient",
+          "shortName": "JobControllerAsyncClient"
+        },
+        "fullName": "google.cloud.dataproc_v1.JobControllerAsyncClient.get_job",
         "method": {
+          "fullName": "google.cloud.dataproc.v1.JobController.GetJob",
           "service": {
+            "fullName": "google.cloud.dataproc.v1.JobController",
             "shortName": "JobController"
           },
           "shortName": "GetJob"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataproc_v1.types.GetJobRequest"
+          },
+          {
+            "name": "project_id",
+            "type": "str"
+          },
+          {
+            "name": "region",
+            "type": "str"
+          },
+          {
+            "name": "job_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataproc_v1.types.Job",
+        "shortName": "get_job"
       },
+      "description": "Sample for GetJob",
       "file": "dataproc_v1_generated_job_controller_get_job_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataproc_v1_generated_JobController_GetJob_async",
       "segments": [
         {
@@ -1722,18 +3289,62 @@
           "start": 44,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataproc_v1_generated_job_controller_get_job_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dataproc_v1.JobControllerClient",
+          "shortName": "JobControllerClient"
+        },
+        "fullName": "google.cloud.dataproc_v1.JobControllerClient.get_job",
         "method": {
+          "fullName": "google.cloud.dataproc.v1.JobController.GetJob",
           "service": {
+            "fullName": "google.cloud.dataproc.v1.JobController",
             "shortName": "JobController"
           },
           "shortName": "GetJob"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataproc_v1.types.GetJobRequest"
+          },
+          {
+            "name": "project_id",
+            "type": "str"
+          },
+          {
+            "name": "region",
+            "type": "str"
+          },
+          {
+            "name": "job_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataproc_v1.types.Job",
+        "shortName": "get_job"
       },
+      "description": "Sample for GetJob",
       "file": "dataproc_v1_generated_job_controller_get_job_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataproc_v1_generated_JobController_GetJob_sync",
       "segments": [
         {
@@ -1766,19 +3377,63 @@
           "start": 44,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataproc_v1_generated_job_controller_get_job_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.dataproc_v1.JobControllerAsyncClient",
+          "shortName": "JobControllerAsyncClient"
+        },
+        "fullName": "google.cloud.dataproc_v1.JobControllerAsyncClient.list_jobs",
         "method": {
+          "fullName": "google.cloud.dataproc.v1.JobController.ListJobs",
           "service": {
+            "fullName": "google.cloud.dataproc.v1.JobController",
             "shortName": "JobController"
           },
           "shortName": "ListJobs"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataproc_v1.types.ListJobsRequest"
+          },
+          {
+            "name": "project_id",
+            "type": "str"
+          },
+          {
+            "name": "region",
+            "type": "str"
+          },
+          {
+            "name": "filter",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataproc_v1.services.job_controller.pagers.ListJobsAsyncPager",
+        "shortName": "list_jobs"
       },
+      "description": "Sample for ListJobs",
       "file": "dataproc_v1_generated_job_controller_list_jobs_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataproc_v1_generated_JobController_ListJobs_async",
       "segments": [
         {
@@ -1811,18 +3466,62 @@
           "start": 43,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataproc_v1_generated_job_controller_list_jobs_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dataproc_v1.JobControllerClient",
+          "shortName": "JobControllerClient"
+        },
+        "fullName": "google.cloud.dataproc_v1.JobControllerClient.list_jobs",
         "method": {
+          "fullName": "google.cloud.dataproc.v1.JobController.ListJobs",
           "service": {
+            "fullName": "google.cloud.dataproc.v1.JobController",
             "shortName": "JobController"
           },
           "shortName": "ListJobs"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataproc_v1.types.ListJobsRequest"
+          },
+          {
+            "name": "project_id",
+            "type": "str"
+          },
+          {
+            "name": "region",
+            "type": "str"
+          },
+          {
+            "name": "filter",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataproc_v1.services.job_controller.pagers.ListJobsPager",
+        "shortName": "list_jobs"
       },
+      "description": "Sample for ListJobs",
       "file": "dataproc_v1_generated_job_controller_list_jobs_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataproc_v1_generated_JobController_ListJobs_sync",
       "segments": [
         {
@@ -1855,19 +3554,63 @@
           "start": 43,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataproc_v1_generated_job_controller_list_jobs_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.dataproc_v1.JobControllerAsyncClient",
+          "shortName": "JobControllerAsyncClient"
+        },
+        "fullName": "google.cloud.dataproc_v1.JobControllerAsyncClient.submit_job_as_operation",
         "method": {
+          "fullName": "google.cloud.dataproc.v1.JobController.SubmitJobAsOperation",
           "service": {
+            "fullName": "google.cloud.dataproc.v1.JobController",
             "shortName": "JobController"
           },
           "shortName": "SubmitJobAsOperation"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataproc_v1.types.SubmitJobRequest"
+          },
+          {
+            "name": "project_id",
+            "type": "str"
+          },
+          {
+            "name": "region",
+            "type": "str"
+          },
+          {
+            "name": "job",
+            "type": "google.cloud.dataproc_v1.types.Job"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "submit_job_as_operation"
       },
+      "description": "Sample for SubmitJobAsOperation",
       "file": "dataproc_v1_generated_job_controller_submit_job_as_operation_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataproc_v1_generated_JobController_SubmitJobAsOperation_async",
       "segments": [
         {
@@ -1900,18 +3643,62 @@
           "start": 52,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataproc_v1_generated_job_controller_submit_job_as_operation_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dataproc_v1.JobControllerClient",
+          "shortName": "JobControllerClient"
+        },
+        "fullName": "google.cloud.dataproc_v1.JobControllerClient.submit_job_as_operation",
         "method": {
+          "fullName": "google.cloud.dataproc.v1.JobController.SubmitJobAsOperation",
           "service": {
+            "fullName": "google.cloud.dataproc.v1.JobController",
             "shortName": "JobController"
           },
           "shortName": "SubmitJobAsOperation"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataproc_v1.types.SubmitJobRequest"
+          },
+          {
+            "name": "project_id",
+            "type": "str"
+          },
+          {
+            "name": "region",
+            "type": "str"
+          },
+          {
+            "name": "job",
+            "type": "google.cloud.dataproc_v1.types.Job"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "submit_job_as_operation"
       },
+      "description": "Sample for SubmitJobAsOperation",
       "file": "dataproc_v1_generated_job_controller_submit_job_as_operation_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataproc_v1_generated_JobController_SubmitJobAsOperation_sync",
       "segments": [
         {
@@ -1944,19 +3731,63 @@
           "start": 52,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataproc_v1_generated_job_controller_submit_job_as_operation_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.dataproc_v1.JobControllerAsyncClient",
+          "shortName": "JobControllerAsyncClient"
+        },
+        "fullName": "google.cloud.dataproc_v1.JobControllerAsyncClient.submit_job",
         "method": {
+          "fullName": "google.cloud.dataproc.v1.JobController.SubmitJob",
           "service": {
+            "fullName": "google.cloud.dataproc.v1.JobController",
             "shortName": "JobController"
           },
           "shortName": "SubmitJob"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataproc_v1.types.SubmitJobRequest"
+          },
+          {
+            "name": "project_id",
+            "type": "str"
+          },
+          {
+            "name": "region",
+            "type": "str"
+          },
+          {
+            "name": "job",
+            "type": "google.cloud.dataproc_v1.types.Job"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataproc_v1.types.Job",
+        "shortName": "submit_job"
       },
+      "description": "Sample for SubmitJob",
       "file": "dataproc_v1_generated_job_controller_submit_job_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataproc_v1_generated_JobController_SubmitJob_async",
       "segments": [
         {
@@ -1989,18 +3820,62 @@
           "start": 48,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataproc_v1_generated_job_controller_submit_job_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dataproc_v1.JobControllerClient",
+          "shortName": "JobControllerClient"
+        },
+        "fullName": "google.cloud.dataproc_v1.JobControllerClient.submit_job",
         "method": {
+          "fullName": "google.cloud.dataproc.v1.JobController.SubmitJob",
           "service": {
+            "fullName": "google.cloud.dataproc.v1.JobController",
             "shortName": "JobController"
           },
           "shortName": "SubmitJob"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataproc_v1.types.SubmitJobRequest"
+          },
+          {
+            "name": "project_id",
+            "type": "str"
+          },
+          {
+            "name": "region",
+            "type": "str"
+          },
+          {
+            "name": "job",
+            "type": "google.cloud.dataproc_v1.types.Job"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataproc_v1.types.Job",
+        "shortName": "submit_job"
       },
+      "description": "Sample for SubmitJob",
       "file": "dataproc_v1_generated_job_controller_submit_job_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataproc_v1_generated_JobController_SubmitJob_sync",
       "segments": [
         {
@@ -2033,19 +3908,51 @@
           "start": 48,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataproc_v1_generated_job_controller_submit_job_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.dataproc_v1.JobControllerAsyncClient",
+          "shortName": "JobControllerAsyncClient"
+        },
+        "fullName": "google.cloud.dataproc_v1.JobControllerAsyncClient.update_job",
         "method": {
+          "fullName": "google.cloud.dataproc.v1.JobController.UpdateJob",
           "service": {
+            "fullName": "google.cloud.dataproc.v1.JobController",
             "shortName": "JobController"
           },
           "shortName": "UpdateJob"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataproc_v1.types.UpdateJobRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataproc_v1.types.Job",
+        "shortName": "update_job"
       },
+      "description": "Sample for UpdateJob",
       "file": "dataproc_v1_generated_job_controller_update_job_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataproc_v1_generated_JobController_UpdateJob_async",
       "segments": [
         {
@@ -2078,18 +3985,50 @@
           "start": 49,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataproc_v1_generated_job_controller_update_job_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dataproc_v1.JobControllerClient",
+          "shortName": "JobControllerClient"
+        },
+        "fullName": "google.cloud.dataproc_v1.JobControllerClient.update_job",
         "method": {
+          "fullName": "google.cloud.dataproc.v1.JobController.UpdateJob",
           "service": {
+            "fullName": "google.cloud.dataproc.v1.JobController",
             "shortName": "JobController"
           },
           "shortName": "UpdateJob"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataproc_v1.types.UpdateJobRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataproc_v1.types.Job",
+        "shortName": "update_job"
       },
+      "description": "Sample for UpdateJob",
       "file": "dataproc_v1_generated_job_controller_update_job_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataproc_v1_generated_JobController_UpdateJob_sync",
       "segments": [
         {
@@ -2122,19 +4061,59 @@
           "start": 49,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataproc_v1_generated_job_controller_update_job_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.dataproc_v1.WorkflowTemplateServiceAsyncClient",
+          "shortName": "WorkflowTemplateServiceAsyncClient"
+        },
+        "fullName": "google.cloud.dataproc_v1.WorkflowTemplateServiceAsyncClient.create_workflow_template",
         "method": {
+          "fullName": "google.cloud.dataproc.v1.WorkflowTemplateService.CreateWorkflowTemplate",
           "service": {
+            "fullName": "google.cloud.dataproc.v1.WorkflowTemplateService",
             "shortName": "WorkflowTemplateService"
           },
           "shortName": "CreateWorkflowTemplate"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataproc_v1.types.CreateWorkflowTemplateRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "template",
+            "type": "google.cloud.dataproc_v1.types.WorkflowTemplate"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataproc_v1.types.WorkflowTemplate",
+        "shortName": "create_workflow_template"
       },
+      "description": "Sample for CreateWorkflowTemplate",
       "file": "dataproc_v1_generated_workflow_template_service_create_workflow_template_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataproc_v1_generated_WorkflowTemplateService_CreateWorkflowTemplate_async",
       "segments": [
         {
@@ -2167,18 +4146,58 @@
           "start": 49,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataproc_v1_generated_workflow_template_service_create_workflow_template_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dataproc_v1.WorkflowTemplateServiceClient",
+          "shortName": "WorkflowTemplateServiceClient"
+        },
+        "fullName": "google.cloud.dataproc_v1.WorkflowTemplateServiceClient.create_workflow_template",
         "method": {
+          "fullName": "google.cloud.dataproc.v1.WorkflowTemplateService.CreateWorkflowTemplate",
           "service": {
+            "fullName": "google.cloud.dataproc.v1.WorkflowTemplateService",
             "shortName": "WorkflowTemplateService"
           },
           "shortName": "CreateWorkflowTemplate"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataproc_v1.types.CreateWorkflowTemplateRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "template",
+            "type": "google.cloud.dataproc_v1.types.WorkflowTemplate"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataproc_v1.types.WorkflowTemplate",
+        "shortName": "create_workflow_template"
       },
+      "description": "Sample for CreateWorkflowTemplate",
       "file": "dataproc_v1_generated_workflow_template_service_create_workflow_template_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataproc_v1_generated_WorkflowTemplateService_CreateWorkflowTemplate_sync",
       "segments": [
         {
@@ -2211,19 +4230,54 @@
           "start": 49,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataproc_v1_generated_workflow_template_service_create_workflow_template_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.dataproc_v1.WorkflowTemplateServiceAsyncClient",
+          "shortName": "WorkflowTemplateServiceAsyncClient"
+        },
+        "fullName": "google.cloud.dataproc_v1.WorkflowTemplateServiceAsyncClient.delete_workflow_template",
         "method": {
+          "fullName": "google.cloud.dataproc.v1.WorkflowTemplateService.DeleteWorkflowTemplate",
           "service": {
+            "fullName": "google.cloud.dataproc.v1.WorkflowTemplateService",
             "shortName": "WorkflowTemplateService"
           },
           "shortName": "DeleteWorkflowTemplate"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataproc_v1.types.DeleteWorkflowTemplateRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "shortName": "delete_workflow_template"
       },
+      "description": "Sample for DeleteWorkflowTemplate",
       "file": "dataproc_v1_generated_workflow_template_service_delete_workflow_template_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataproc_v1_generated_WorkflowTemplateService_DeleteWorkflowTemplate_async",
       "segments": [
         {
@@ -2254,18 +4308,53 @@
           "end": 43,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataproc_v1_generated_workflow_template_service_delete_workflow_template_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dataproc_v1.WorkflowTemplateServiceClient",
+          "shortName": "WorkflowTemplateServiceClient"
+        },
+        "fullName": "google.cloud.dataproc_v1.WorkflowTemplateServiceClient.delete_workflow_template",
         "method": {
+          "fullName": "google.cloud.dataproc.v1.WorkflowTemplateService.DeleteWorkflowTemplate",
           "service": {
+            "fullName": "google.cloud.dataproc.v1.WorkflowTemplateService",
             "shortName": "WorkflowTemplateService"
           },
           "shortName": "DeleteWorkflowTemplate"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataproc_v1.types.DeleteWorkflowTemplateRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "shortName": "delete_workflow_template"
       },
+      "description": "Sample for DeleteWorkflowTemplate",
       "file": "dataproc_v1_generated_workflow_template_service_delete_workflow_template_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataproc_v1_generated_WorkflowTemplateService_DeleteWorkflowTemplate_sync",
       "segments": [
         {
@@ -2296,19 +4385,55 @@
           "end": 43,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataproc_v1_generated_workflow_template_service_delete_workflow_template_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.dataproc_v1.WorkflowTemplateServiceAsyncClient",
+          "shortName": "WorkflowTemplateServiceAsyncClient"
+        },
+        "fullName": "google.cloud.dataproc_v1.WorkflowTemplateServiceAsyncClient.get_workflow_template",
         "method": {
+          "fullName": "google.cloud.dataproc.v1.WorkflowTemplateService.GetWorkflowTemplate",
           "service": {
+            "fullName": "google.cloud.dataproc.v1.WorkflowTemplateService",
             "shortName": "WorkflowTemplateService"
           },
           "shortName": "GetWorkflowTemplate"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataproc_v1.types.GetWorkflowTemplateRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataproc_v1.types.WorkflowTemplate",
+        "shortName": "get_workflow_template"
       },
+      "description": "Sample for GetWorkflowTemplate",
       "file": "dataproc_v1_generated_workflow_template_service_get_workflow_template_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataproc_v1_generated_WorkflowTemplateService_GetWorkflowTemplate_async",
       "segments": [
         {
@@ -2341,18 +4466,54 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataproc_v1_generated_workflow_template_service_get_workflow_template_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dataproc_v1.WorkflowTemplateServiceClient",
+          "shortName": "WorkflowTemplateServiceClient"
+        },
+        "fullName": "google.cloud.dataproc_v1.WorkflowTemplateServiceClient.get_workflow_template",
         "method": {
+          "fullName": "google.cloud.dataproc.v1.WorkflowTemplateService.GetWorkflowTemplate",
           "service": {
+            "fullName": "google.cloud.dataproc.v1.WorkflowTemplateService",
             "shortName": "WorkflowTemplateService"
           },
           "shortName": "GetWorkflowTemplate"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataproc_v1.types.GetWorkflowTemplateRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataproc_v1.types.WorkflowTemplate",
+        "shortName": "get_workflow_template"
       },
+      "description": "Sample for GetWorkflowTemplate",
       "file": "dataproc_v1_generated_workflow_template_service_get_workflow_template_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataproc_v1_generated_WorkflowTemplateService_GetWorkflowTemplate_sync",
       "segments": [
         {
@@ -2385,19 +4546,59 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataproc_v1_generated_workflow_template_service_get_workflow_template_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.dataproc_v1.WorkflowTemplateServiceAsyncClient",
+          "shortName": "WorkflowTemplateServiceAsyncClient"
+        },
+        "fullName": "google.cloud.dataproc_v1.WorkflowTemplateServiceAsyncClient.instantiate_inline_workflow_template",
         "method": {
+          "fullName": "google.cloud.dataproc.v1.WorkflowTemplateService.InstantiateInlineWorkflowTemplate",
           "service": {
+            "fullName": "google.cloud.dataproc.v1.WorkflowTemplateService",
             "shortName": "WorkflowTemplateService"
           },
           "shortName": "InstantiateInlineWorkflowTemplate"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataproc_v1.types.InstantiateInlineWorkflowTemplateRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "template",
+            "type": "google.cloud.dataproc_v1.types.WorkflowTemplate"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "instantiate_inline_workflow_template"
       },
+      "description": "Sample for InstantiateInlineWorkflowTemplate",
       "file": "dataproc_v1_generated_workflow_template_service_instantiate_inline_workflow_template_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataproc_v1_generated_WorkflowTemplateService_InstantiateInlineWorkflowTemplate_async",
       "segments": [
         {
@@ -2430,18 +4631,58 @@
           "start": 53,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataproc_v1_generated_workflow_template_service_instantiate_inline_workflow_template_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dataproc_v1.WorkflowTemplateServiceClient",
+          "shortName": "WorkflowTemplateServiceClient"
+        },
+        "fullName": "google.cloud.dataproc_v1.WorkflowTemplateServiceClient.instantiate_inline_workflow_template",
         "method": {
+          "fullName": "google.cloud.dataproc.v1.WorkflowTemplateService.InstantiateInlineWorkflowTemplate",
           "service": {
+            "fullName": "google.cloud.dataproc.v1.WorkflowTemplateService",
             "shortName": "WorkflowTemplateService"
           },
           "shortName": "InstantiateInlineWorkflowTemplate"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataproc_v1.types.InstantiateInlineWorkflowTemplateRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "template",
+            "type": "google.cloud.dataproc_v1.types.WorkflowTemplate"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "instantiate_inline_workflow_template"
       },
+      "description": "Sample for InstantiateInlineWorkflowTemplate",
       "file": "dataproc_v1_generated_workflow_template_service_instantiate_inline_workflow_template_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataproc_v1_generated_WorkflowTemplateService_InstantiateInlineWorkflowTemplate_sync",
       "segments": [
         {
@@ -2474,19 +4715,59 @@
           "start": 53,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataproc_v1_generated_workflow_template_service_instantiate_inline_workflow_template_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.dataproc_v1.WorkflowTemplateServiceAsyncClient",
+          "shortName": "WorkflowTemplateServiceAsyncClient"
+        },
+        "fullName": "google.cloud.dataproc_v1.WorkflowTemplateServiceAsyncClient.instantiate_workflow_template",
         "method": {
+          "fullName": "google.cloud.dataproc.v1.WorkflowTemplateService.InstantiateWorkflowTemplate",
           "service": {
+            "fullName": "google.cloud.dataproc.v1.WorkflowTemplateService",
             "shortName": "WorkflowTemplateService"
           },
           "shortName": "InstantiateWorkflowTemplate"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataproc_v1.types.InstantiateWorkflowTemplateRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "parameters",
+            "type": "Mapping[str, str]"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "instantiate_workflow_template"
       },
+      "description": "Sample for InstantiateWorkflowTemplate",
       "file": "dataproc_v1_generated_workflow_template_service_instantiate_workflow_template_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataproc_v1_generated_WorkflowTemplateService_InstantiateWorkflowTemplate_async",
       "segments": [
         {
@@ -2519,18 +4800,58 @@
           "start": 46,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataproc_v1_generated_workflow_template_service_instantiate_workflow_template_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dataproc_v1.WorkflowTemplateServiceClient",
+          "shortName": "WorkflowTemplateServiceClient"
+        },
+        "fullName": "google.cloud.dataproc_v1.WorkflowTemplateServiceClient.instantiate_workflow_template",
         "method": {
+          "fullName": "google.cloud.dataproc.v1.WorkflowTemplateService.InstantiateWorkflowTemplate",
           "service": {
+            "fullName": "google.cloud.dataproc.v1.WorkflowTemplateService",
             "shortName": "WorkflowTemplateService"
           },
           "shortName": "InstantiateWorkflowTemplate"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataproc_v1.types.InstantiateWorkflowTemplateRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "parameters",
+            "type": "Mapping[str, str]"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "instantiate_workflow_template"
       },
+      "description": "Sample for InstantiateWorkflowTemplate",
       "file": "dataproc_v1_generated_workflow_template_service_instantiate_workflow_template_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataproc_v1_generated_WorkflowTemplateService_InstantiateWorkflowTemplate_sync",
       "segments": [
         {
@@ -2563,19 +4884,55 @@
           "start": 46,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataproc_v1_generated_workflow_template_service_instantiate_workflow_template_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.dataproc_v1.WorkflowTemplateServiceAsyncClient",
+          "shortName": "WorkflowTemplateServiceAsyncClient"
+        },
+        "fullName": "google.cloud.dataproc_v1.WorkflowTemplateServiceAsyncClient.list_workflow_templates",
         "method": {
+          "fullName": "google.cloud.dataproc.v1.WorkflowTemplateService.ListWorkflowTemplates",
           "service": {
+            "fullName": "google.cloud.dataproc.v1.WorkflowTemplateService",
             "shortName": "WorkflowTemplateService"
           },
           "shortName": "ListWorkflowTemplates"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataproc_v1.types.ListWorkflowTemplatesRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataproc_v1.services.workflow_template_service.pagers.ListWorkflowTemplatesAsyncPager",
+        "shortName": "list_workflow_templates"
       },
+      "description": "Sample for ListWorkflowTemplates",
       "file": "dataproc_v1_generated_workflow_template_service_list_workflow_templates_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataproc_v1_generated_WorkflowTemplateService_ListWorkflowTemplates_async",
       "segments": [
         {
@@ -2608,18 +4965,54 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataproc_v1_generated_workflow_template_service_list_workflow_templates_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dataproc_v1.WorkflowTemplateServiceClient",
+          "shortName": "WorkflowTemplateServiceClient"
+        },
+        "fullName": "google.cloud.dataproc_v1.WorkflowTemplateServiceClient.list_workflow_templates",
         "method": {
+          "fullName": "google.cloud.dataproc.v1.WorkflowTemplateService.ListWorkflowTemplates",
           "service": {
+            "fullName": "google.cloud.dataproc.v1.WorkflowTemplateService",
             "shortName": "WorkflowTemplateService"
           },
           "shortName": "ListWorkflowTemplates"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataproc_v1.types.ListWorkflowTemplatesRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataproc_v1.services.workflow_template_service.pagers.ListWorkflowTemplatesPager",
+        "shortName": "list_workflow_templates"
       },
+      "description": "Sample for ListWorkflowTemplates",
       "file": "dataproc_v1_generated_workflow_template_service_list_workflow_templates_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataproc_v1_generated_WorkflowTemplateService_ListWorkflowTemplates_sync",
       "segments": [
         {
@@ -2652,19 +5045,55 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataproc_v1_generated_workflow_template_service_list_workflow_templates_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.dataproc_v1.WorkflowTemplateServiceAsyncClient",
+          "shortName": "WorkflowTemplateServiceAsyncClient"
+        },
+        "fullName": "google.cloud.dataproc_v1.WorkflowTemplateServiceAsyncClient.update_workflow_template",
         "method": {
+          "fullName": "google.cloud.dataproc.v1.WorkflowTemplateService.UpdateWorkflowTemplate",
           "service": {
+            "fullName": "google.cloud.dataproc.v1.WorkflowTemplateService",
             "shortName": "WorkflowTemplateService"
           },
           "shortName": "UpdateWorkflowTemplate"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataproc_v1.types.UpdateWorkflowTemplateRequest"
+          },
+          {
+            "name": "template",
+            "type": "google.cloud.dataproc_v1.types.WorkflowTemplate"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataproc_v1.types.WorkflowTemplate",
+        "shortName": "update_workflow_template"
       },
+      "description": "Sample for UpdateWorkflowTemplate",
       "file": "dataproc_v1_generated_workflow_template_service_update_workflow_template_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataproc_v1_generated_WorkflowTemplateService_UpdateWorkflowTemplate_async",
       "segments": [
         {
@@ -2697,18 +5126,54 @@
           "start": 48,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataproc_v1_generated_workflow_template_service_update_workflow_template_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dataproc_v1.WorkflowTemplateServiceClient",
+          "shortName": "WorkflowTemplateServiceClient"
+        },
+        "fullName": "google.cloud.dataproc_v1.WorkflowTemplateServiceClient.update_workflow_template",
         "method": {
+          "fullName": "google.cloud.dataproc.v1.WorkflowTemplateService.UpdateWorkflowTemplate",
           "service": {
+            "fullName": "google.cloud.dataproc.v1.WorkflowTemplateService",
             "shortName": "WorkflowTemplateService"
           },
           "shortName": "UpdateWorkflowTemplate"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataproc_v1.types.UpdateWorkflowTemplateRequest"
+          },
+          {
+            "name": "template",
+            "type": "google.cloud.dataproc_v1.types.WorkflowTemplate"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataproc_v1.types.WorkflowTemplate",
+        "shortName": "update_workflow_template"
       },
+      "description": "Sample for UpdateWorkflowTemplate",
       "file": "dataproc_v1_generated_workflow_template_service_update_workflow_template_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataproc_v1_generated_WorkflowTemplateService_UpdateWorkflowTemplate_sync",
       "segments": [
         {
@@ -2741,7 +5206,8 @@
           "start": 48,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataproc_v1_generated_workflow_template_service_update_workflow_template_sync.py"
     }
   ]
 }

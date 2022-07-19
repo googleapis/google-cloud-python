@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib
@@ -431,6 +431,7 @@ class ClusterControllerClient(metaclass=ClusterControllerClientMeta):
                 quota_project_id=client_options.quota_project_id,
                 client_info=client_info,
                 always_use_jwt_access=True,
+                api_audience=client_options.api_audience,
             )
 
     def create_cluster(
@@ -448,7 +449,6 @@ class ClusterControllerClient(metaclass=ClusterControllerClientMeta):
         [Operation.metadata][google.longrunning.Operation.metadata] will
         be
         `ClusterOperationMetadata <https://cloud.google.com/dataproc/docs/reference/rpc/google.cloud.dataproc.v1#clusteroperationmetadata>`__.
-
 
         .. code-block:: python
 
@@ -545,6 +545,17 @@ class ClusterControllerClient(metaclass=ClusterControllerClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.create_cluster]
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project_id", request.project_id),
+                    ("region", request.region),
+                )
+            ),
+        )
+
         # Send the request.
         response = rpc(
             request,
@@ -584,7 +595,6 @@ class ClusterControllerClient(metaclass=ClusterControllerClientMeta):
         The cluster must be in a
         [``RUNNING``][google.cloud.dataproc.v1.ClusterStatus.State]
         state or an error is returned.
-
 
         .. code-block:: python
 
@@ -759,6 +769,18 @@ class ClusterControllerClient(metaclass=ClusterControllerClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.update_cluster]
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project_id", request.project_id),
+                    ("region", request.region),
+                    ("cluster_name", request.cluster_name),
+                )
+            ),
+        )
+
         # Send the request.
         response = rpc(
             request,
@@ -841,6 +863,18 @@ class ClusterControllerClient(metaclass=ClusterControllerClientMeta):
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.stop_cluster]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project_id", request.project_id),
+                    ("region", request.region),
+                    ("cluster_name", request.cluster_name),
+                )
+            ),
+        )
 
         # Send the request.
         response = rpc(
@@ -925,6 +959,18 @@ class ClusterControllerClient(metaclass=ClusterControllerClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.start_cluster]
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project_id", request.project_id),
+                    ("region", request.region),
+                    ("cluster_name", request.cluster_name),
+                )
+            ),
+        )
+
         # Send the request.
         response = rpc(
             request,
@@ -959,7 +1005,6 @@ class ClusterControllerClient(metaclass=ClusterControllerClientMeta):
         [Operation.metadata][google.longrunning.Operation.metadata] will
         be
         `ClusterOperationMetadata <https://cloud.google.com/dataproc/docs/reference/rpc/google.cloud.dataproc.v1#clusteroperationmetadata>`__.
-
 
         .. code-block:: python
 
@@ -1063,6 +1108,18 @@ class ClusterControllerClient(metaclass=ClusterControllerClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.delete_cluster]
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project_id", request.project_id),
+                    ("region", request.region),
+                    ("cluster_name", request.cluster_name),
+                )
+            ),
+        )
+
         # Send the request.
         response = rpc(
             request,
@@ -1095,7 +1152,6 @@ class ClusterControllerClient(metaclass=ClusterControllerClientMeta):
     ) -> clusters.Cluster:
         r"""Gets the resource representation for a cluster in a
         project.
-
 
         .. code-block:: python
 
@@ -1184,6 +1240,18 @@ class ClusterControllerClient(metaclass=ClusterControllerClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.get_cluster]
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project_id", request.project_id),
+                    ("region", request.region),
+                    ("cluster_name", request.cluster_name),
+                )
+            ),
+        )
+
         # Send the request.
         response = rpc(
             request,
@@ -1208,7 +1276,6 @@ class ClusterControllerClient(metaclass=ClusterControllerClientMeta):
     ) -> pagers.ListClustersPager:
         r"""Lists all regions/{region}/clusters in a project
         alphabetically.
-
 
         .. code-block:: python
 
@@ -1322,6 +1389,17 @@ class ClusterControllerClient(metaclass=ClusterControllerClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.list_clusters]
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project_id", request.project_id),
+                    ("region", request.region),
+                )
+            ),
+        )
+
         # Send the request.
         response = rpc(
             request,
@@ -1361,7 +1439,6 @@ class ClusterControllerClient(metaclass=ClusterControllerClientMeta):
         [Operation.response][google.longrunning.Operation.response]
         contains
         `DiagnoseClusterResults <https://cloud.google.com/dataproc/docs/reference/rpc/google.cloud.dataproc.v1#diagnoseclusterresults>`__.
-
 
         .. code-block:: python
 
@@ -1455,6 +1532,18 @@ class ClusterControllerClient(metaclass=ClusterControllerClientMeta):
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.diagnose_cluster]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project_id", request.project_id),
+                    ("region", request.region),
+                    ("cluster_name", request.cluster_name),
+                )
+            ),
+        )
 
         # Send the request.
         response = rpc(

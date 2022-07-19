@@ -84,7 +84,7 @@ class WorkflowTemplate(proto.Message):
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time template was last
             updated.
-        labels (Sequence[google.cloud.dataproc_v1.types.WorkflowTemplate.LabelsEntry]):
+        labels (Mapping[str, str]):
             Optional. The labels to associate with this template. These
             labels will be propagated to all jobs and clusters created
             by the workflow instance.
@@ -228,7 +228,7 @@ class ManagedCluster(proto.Message):
             characters.
         config (google.cloud.dataproc_v1.types.ClusterConfig):
             Required. The cluster configuration.
-        labels (Sequence[google.cloud.dataproc_v1.types.ManagedCluster.LabelsEntry]):
+        labels (Mapping[str, str]):
             Optional. The labels to associate with this cluster.
 
             Label keys must be between 1 and 63 characters long, and
@@ -270,7 +270,7 @@ class ClusterSelector(proto.Message):
             selection of the cluster.
             If unspecified, the zone of the first cluster
             matching the selector is used.
-        cluster_labels (Sequence[google.cloud.dataproc_v1.types.ClusterSelector.ClusterLabelsEntry]):
+        cluster_labels (Mapping[str, str]):
             Required. The cluster labels. Cluster must
             have all labels to match.
     """
@@ -342,7 +342,7 @@ class OrderedJob(proto.Message):
             Optional. Job is a Presto job.
 
             This field is a member of `oneof`_ ``job_type``.
-        labels (Sequence[google.cloud.dataproc_v1.types.OrderedJob.LabelsEntry]):
+        labels (Mapping[str, str]):
             Optional. The labels to associate with this job.
 
             Label keys must be between 1 and 63 characters long, and
@@ -626,7 +626,7 @@ class WorkflowMetadata(proto.Message):
             Output only. The workflow state.
         cluster_name (str):
             Output only. The name of the target cluster.
-        parameters (Sequence[google.cloud.dataproc_v1.types.WorkflowMetadata.ParametersEntry]):
+        parameters (Mapping[str, str]):
             Map from parameter names to values that were
             used for those parameters.
         start_time (google.protobuf.timestamp_pb2.Timestamp):
@@ -915,7 +915,7 @@ class InstantiateWorkflowTemplateRequest(proto.Message):
             The tag must contain only letters (a-z, A-Z), numbers (0-9),
             underscores (_), and hyphens (-). The maximum length is 40
             characters.
-        parameters (Sequence[google.cloud.dataproc_v1.types.InstantiateWorkflowTemplateRequest.ParametersEntry]):
+        parameters (Mapping[str, str]):
             Optional. Map from parameter names to values
             that should be used for those parameters. Values
             may not exceed 1000 characters.

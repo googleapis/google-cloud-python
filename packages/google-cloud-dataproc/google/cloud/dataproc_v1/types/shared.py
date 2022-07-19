@@ -72,7 +72,7 @@ class RuntimeConfig(proto.Message):
             Optional. Optional custom container image for
             the job runtime environment. If not specified, a
             default container image will be used.
-        properties (Sequence[google.cloud.dataproc_v1.types.RuntimeConfig.PropertiesEntry]):
+        properties (Mapping[str, str]):
             Optional. A mapping of property names to
             values, which are used to configure workload
             execution.
@@ -222,7 +222,7 @@ class RuntimeInfo(proto.Message):
     r"""Runtime information about workload execution.
 
     Attributes:
-        endpoints (Sequence[google.cloud.dataproc_v1.types.RuntimeInfo.EndpointsEntry]):
+        endpoints (Mapping[str, str]):
             Output only. Map of remote access endpoints
             (such as web interfaces and APIs) to their URIs.
         output_uri (str):
@@ -325,14 +325,14 @@ class KubernetesSoftwareConfig(proto.Message):
     on Kubernetes.
 
     Attributes:
-        component_version (Sequence[google.cloud.dataproc_v1.types.KubernetesSoftwareConfig.ComponentVersionEntry]):
+        component_version (Mapping[str, str]):
             The components that should be installed in
             this Dataproc cluster. The key must be a string
             from the KubernetesComponent enumeration. The
             value is the version of the software to be
             installed.
             At least one entry must be specified.
-        properties (Sequence[google.cloud.dataproc_v1.types.KubernetesSoftwareConfig.PropertiesEntry]):
+        properties (Mapping[str, str]):
             The properties to set on daemon config files.
 
             Property keys are specified in ``prefix:property`` format,

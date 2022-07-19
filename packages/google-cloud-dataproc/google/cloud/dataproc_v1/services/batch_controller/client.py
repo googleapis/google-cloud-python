@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib
@@ -431,6 +431,7 @@ class BatchControllerClient(metaclass=BatchControllerClientMeta):
                 quota_project_id=client_options.quota_project_id,
                 client_info=client_info,
                 always_use_jwt_access=True,
+                api_audience=client_options.api_audience,
             )
 
     def create_batch(
@@ -446,7 +447,6 @@ class BatchControllerClient(metaclass=BatchControllerClientMeta):
     ) -> operation.Operation:
         r"""Creates a batch workload that executes
         asynchronously.
-
 
         .. code-block:: python
 
@@ -784,7 +784,6 @@ class BatchControllerClient(metaclass=BatchControllerClientMeta):
         r"""Deletes the batch workload resource. If the batch is not in
         terminal state, the delete fails and the response returns
         ``FAILED_PRECONDITION``.
-
 
         .. code-block:: python
 

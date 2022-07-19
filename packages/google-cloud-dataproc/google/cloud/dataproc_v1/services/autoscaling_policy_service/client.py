@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib
@@ -426,6 +426,7 @@ class AutoscalingPolicyServiceClient(metaclass=AutoscalingPolicyServiceClientMet
                 quota_project_id=client_options.quota_project_id,
                 client_info=client_info,
                 always_use_jwt_access=True,
+                api_audience=client_options.api_audience,
             )
 
     def create_autoscaling_policy(
@@ -569,7 +570,6 @@ class AutoscalingPolicyServiceClient(metaclass=AutoscalingPolicyServiceClientMet
 
         Disabled check for update_mask, because all updates will be full
         replacements.
-
 
         .. code-block:: python
 
@@ -905,7 +905,6 @@ class AutoscalingPolicyServiceClient(metaclass=AutoscalingPolicyServiceClientMet
         r"""Deletes an autoscaling policy. It is an error to
         delete an autoscaling policy that is in use by one or
         more clusters.
-
 
         .. code-block:: python
 
