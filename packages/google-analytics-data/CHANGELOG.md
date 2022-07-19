@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.13.1](https://github.com/googleapis/python-analytics-data/compare/v0.13.0...v0.13.1) (2022-07-19)
+
+
+### Documentation
+
+* **samples:** add runFunnelReport sample ([#258](https://github.com/googleapis/python-analytics-data/issues/258)) ([af9d130](https://github.com/googleapis/python-analytics-data/commit/af9d1300e296a60b86f12021c133d2eb7a4f71c1))
+
 ## [0.13.0](https://github.com/googleapis/python-analytics-data/compare/v0.12.1...v0.13.0) (2022-07-17)
 
 
