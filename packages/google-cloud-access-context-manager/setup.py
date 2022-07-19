@@ -21,14 +21,14 @@ import setuptools
 
 name = "google-cloud-access-context-manager"
 description = "Google Cloud Access Context Manager Protobufs"
-version = "0.1.12"
+version = "0.1.13"
 # Should be one of:
 # 'Development Status :: 3 - Alpha'
 # 'Development Status :: 4 - Beta'
 # 'Development Status :: 5 - Production/Stable'
 release_status = "Development Status :: 4 - Beta"
 dependencies = [
-    "google-api-core[grpc] >= 1.31.5, <3.0.0dev,!=2.0.*,!=2.1.*,!=2.2.*,!=2.3.0",
+    "google-api-core[grpc] >= 1.32.0, <3.0.0dev,!=2.0.*,!=2.1.*,!=2.2.*,!=2.3.*,!=2.4.*,!=2.5.*,!=2.6.*,!=2.7.*",
     "protobuf >= 3.19.0, <4.0.0dev",
 ]
 

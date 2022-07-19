@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.1.13](https://github.com/googleapis/python-access-context-manager/compare/v0.1.12...v0.1.13) (2022-07-18)
+
+
+### Bug Fixes
+
+* require python 3.7+ ([#134](https://github.com/googleapis/python-access-context-manager/issues/134)) ([27a1467](https://github.com/googleapis/python-access-context-manager/commit/27a1467e68d440b7c2a73a6b5dbcfe6bd199dd05))
+* require google-api-core >=1.32.0, >=2.8.0
+
+
 ## [0.1.12](https://github.com/googleapis/python-access-context-manager/compare/v0.1.11...v0.1.12) (2022-06-06)
 
 
