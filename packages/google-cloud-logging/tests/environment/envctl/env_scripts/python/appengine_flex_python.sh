@@ -63,7 +63,7 @@ deploy() {
     env: flex
     entrypoint: python router.py
     runtime_config:
-      python_version: 3
+      python_version: 3.7
     manual_scaling:
       instances: 1
     env_variables:
