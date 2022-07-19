@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.7.0](https://github.com/googleapis/python-area120-tables/compare/v0.6.2...v0.7.0) (2022-07-18)
+
+
+### Features
+
+* add audience parameter ([64ffe58](https://github.com/googleapis/python-area120-tables/commit/64ffe58e32298fd0a9305bfe0f142374062e39e2))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.32.0,>=2.8.0 ([#173](https://github.com/googleapis/python-area120-tables/issues/173)) ([64ffe58](https://github.com/googleapis/python-area120-tables/commit/64ffe58e32298fd0a9305bfe0f142374062e39e2))
+* require python 3.7+ ([#175](https://github.com/googleapis/python-area120-tables/issues/175)) ([0cab642](https://github.com/googleapis/python-area120-tables/commit/0cab642e514072540128d3df941281ccef2e776c))
+
 ## [0.6.2](https://github.com/googleapis/python-area120-tables/compare/v0.6.1...v0.6.2) (2022-06-03)
 
 
