@@ -224,6 +224,11 @@
               "methods": [
                 "update_target_project"
               ]
+            },
+            "UpgradeAppliance": {
+              "methods": [
+                "upgrade_appliance"
+              ]
             }
           }
         },
@@ -443,6 +448,11 @@
             "UpdateTargetProject": {
               "methods": [
                 "update_target_project"
+              ]
+            },
+            "UpgradeAppliance": {
+              "methods": [
+                "upgrade_appliance"
               ]
             }
           }

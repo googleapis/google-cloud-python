@@ -1815,6 +1815,97 @@ class VmMigrationAsyncClient:
         # Done; return the response.
         return response
 
+    async def upgrade_appliance(
+        self,
+        request: Union[vmmigration.UpgradeApplianceRequest, dict] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation_async.AsyncOperation:
+        r"""Upgrades the appliance relate to this
+        DatacenterConnector to the in-place updateable version.
+
+        .. code-block:: python
+
+            from google.cloud import vmmigration_v1
+
+            async def sample_upgrade_appliance():
+                # Create a client
+                client = vmmigration_v1.VmMigrationAsyncClient()
+
+                # Initialize request argument(s)
+                request = vmmigration_v1.UpgradeApplianceRequest(
+                    datacenter_connector="datacenter_connector_value",
+                )
+
+                # Make the request
+                operation = client.upgrade_appliance(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = await operation.result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.vmmigration_v1.types.UpgradeApplianceRequest, dict]):
+                The request object. Request message for
+                'UpgradeAppliance' request.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation_async.AsyncOperation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be
+                :class:`google.cloud.vmmigration_v1.types.UpgradeApplianceResponse`
+                Response message for 'UpgradeAppliance' request.
+
+        """
+        # Create or coerce a protobuf request object.
+        request = vmmigration.UpgradeApplianceRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.upgrade_appliance,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("datacenter_connector", request.datacenter_connector),)
+            ),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation_async.from_gapic(
+            response,
+            self._client._transport.operations_client,
+            vmmigration.UpgradeApplianceResponse,
+            metadata_type=vmmigration.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
     async def create_migrating_vm(
         self,
         request: Union[vmmigration.CreateMigratingVmRequest, dict] = None,

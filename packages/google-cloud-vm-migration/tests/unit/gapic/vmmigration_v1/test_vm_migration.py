@@ -3978,6 +3978,8 @@ def test_get_datacenter_connector(request_type, transport: str = "grpc"):
             version="version_value",
             bucket="bucket_value",
             state=vmmigration.DatacenterConnector.State.PENDING,
+            appliance_infrastructure_version="appliance_infrastructure_version_value",
+            appliance_software_version="appliance_software_version_value",
         )
         response = client.get_datacenter_connector(request)
 
@@ -3994,6 +3996,11 @@ def test_get_datacenter_connector(request_type, transport: str = "grpc"):
     assert response.version == "version_value"
     assert response.bucket == "bucket_value"
     assert response.state == vmmigration.DatacenterConnector.State.PENDING
+    assert (
+        response.appliance_infrastructure_version
+        == "appliance_infrastructure_version_value"
+    )
+    assert response.appliance_software_version == "appliance_software_version_value"
 
 
 def test_get_datacenter_connector_empty_call():
@@ -4041,6 +4048,8 @@ async def test_get_datacenter_connector_async(
                 version="version_value",
                 bucket="bucket_value",
                 state=vmmigration.DatacenterConnector.State.PENDING,
+                appliance_infrastructure_version="appliance_infrastructure_version_value",
+                appliance_software_version="appliance_software_version_value",
             )
         )
         response = await client.get_datacenter_connector(request)
@@ -4058,6 +4067,11 @@ async def test_get_datacenter_connector_async(
     assert response.version == "version_value"
     assert response.bucket == "bucket_value"
     assert response.state == vmmigration.DatacenterConnector.State.PENDING
+    assert (
+        response.appliance_infrastructure_version
+        == "appliance_infrastructure_version_value"
+    )
+    assert response.appliance_software_version == "appliance_software_version_value"
 
 
 @pytest.mark.asyncio
@@ -4728,6 +4742,160 @@ async def test_delete_datacenter_connector_flattened_error_async():
             vmmigration.DeleteDatacenterConnectorRequest(),
             name="name_value",
         )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmmigration.UpgradeApplianceRequest,
+        dict,
+    ],
+)
+def test_upgrade_appliance(request_type, transport: str = "grpc"):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.upgrade_appliance), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/spam")
+        response = client.upgrade_appliance(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmmigration.UpgradeApplianceRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_upgrade_appliance_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.upgrade_appliance), "__call__"
+    ) as call:
+        client.upgrade_appliance()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmmigration.UpgradeApplianceRequest()
+
+
+@pytest.mark.asyncio
+async def test_upgrade_appliance_async(
+    transport: str = "grpc_asyncio", request_type=vmmigration.UpgradeApplianceRequest
+):
+    client = VmMigrationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.upgrade_appliance), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.upgrade_appliance(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmmigration.UpgradeApplianceRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_upgrade_appliance_async_from_dict():
+    await test_upgrade_appliance_async(request_type=dict)
+
+
+def test_upgrade_appliance_field_headers():
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = vmmigration.UpgradeApplianceRequest()
+
+    request.datacenter_connector = "datacenter_connector_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.upgrade_appliance), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.upgrade_appliance(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "datacenter_connector=datacenter_connector_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_upgrade_appliance_field_headers_async():
+    client = VmMigrationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = vmmigration.UpgradeApplianceRequest()
+
+    request.datacenter_connector = "datacenter_connector_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.upgrade_appliance), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/op")
+        )
+        await client.upgrade_appliance(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "datacenter_connector=datacenter_connector_value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.parametrize(
@@ -12809,6 +12977,7 @@ def test_vm_migration_base_transport():
         "get_datacenter_connector",
         "create_datacenter_connector",
         "delete_datacenter_connector",
+        "upgrade_appliance",
         "create_migrating_vm",
         "list_migrating_vms",
         "get_migrating_vm",

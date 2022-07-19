@@ -655,6 +655,35 @@ class VmMigrationGrpcAsyncIOTransport(VmMigrationTransport):
         return self._stubs["delete_datacenter_connector"]
 
     @property
+    def upgrade_appliance(
+        self,
+    ) -> Callable[
+        [vmmigration.UpgradeApplianceRequest], Awaitable[operations_pb2.Operation]
+    ]:
+        r"""Return a callable for the upgrade appliance method over gRPC.
+
+        Upgrades the appliance relate to this
+        DatacenterConnector to the in-place updateable version.
+
+        Returns:
+            Callable[[~.UpgradeApplianceRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "upgrade_appliance" not in self._stubs:
+            self._stubs["upgrade_appliance"] = self.grpc_channel.unary_unary(
+                "/google.cloud.vmmigration.v1.VmMigration/UpgradeAppliance",
+                request_serializer=vmmigration.UpgradeApplianceRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["upgrade_appliance"]
+
+    @property
     def create_migrating_vm(
         self,
     ) -> Callable[

@@ -198,6 +198,11 @@ class VmMigrationTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.upgrade_appliance: gapic_v1.method.wrap_method(
+                self.upgrade_appliance,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.create_migrating_vm: gapic_v1.method.wrap_method(
                 self.create_migrating_vm,
                 default_timeout=None,
@@ -494,6 +499,15 @@ class VmMigrationTransport(abc.ABC):
         self,
     ) -> Callable[
         [vmmigration.DeleteDatacenterConnectorRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def upgrade_appliance(
+        self,
+    ) -> Callable[
+        [vmmigration.UpgradeApplianceRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()

@@ -62,7 +62,7 @@ class vmmigrationCallTransformer(cst.CSTTransformer):
         'get_cutover_job': ('name', ),
         'get_datacenter_connector': ('name', ),
         'get_group': ('name', ),
-        'get_migrating_vm': ('name', ),
+        'get_migrating_vm': ('name', 'view', ),
         'get_source': ('name', ),
         'get_target_project': ('name', ),
         'get_utilization_report': ('name', 'view', ),
@@ -70,7 +70,7 @@ class vmmigrationCallTransformer(cst.CSTTransformer):
         'list_cutover_jobs': ('parent', 'page_token', 'page_size', 'filter', 'order_by', ),
         'list_datacenter_connectors': ('parent', 'page_token', 'page_size', 'filter', 'order_by', ),
         'list_groups': ('parent', 'page_token', 'page_size', 'filter', 'order_by', ),
-        'list_migrating_vms': ('parent', 'page_token', 'page_size', 'filter', 'order_by', ),
+        'list_migrating_vms': ('parent', 'page_token', 'page_size', 'filter', 'order_by', 'view', ),
         'list_sources': ('parent', 'page_token', 'page_size', 'filter', 'order_by', ),
         'list_target_projects': ('parent', 'page_token', 'page_size', 'filter', 'order_by', ),
         'list_utilization_reports': ('parent', 'page_token', 'view', 'page_size', 'filter', 'order_by', ),
@@ -82,6 +82,7 @@ class vmmigrationCallTransformer(cst.CSTTransformer):
         'update_migrating_vm': ('migrating_vm', 'update_mask', 'request_id', ),
         'update_source': ('source', 'update_mask', 'request_id', ),
         'update_target_project': ('target_project', 'update_mask', 'request_id', ),
+        'upgrade_appliance': ('datacenter_connector', 'request_id', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:

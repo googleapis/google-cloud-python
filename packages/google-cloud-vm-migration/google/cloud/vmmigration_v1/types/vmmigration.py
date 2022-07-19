@@ -24,6 +24,7 @@ __protobuf__ = proto.module(
     package="google.cloud.vmmigration.v1",
     manifest={
         "UtilizationReportView",
+        "MigratingVmView",
         "ComputeEngineDiskType",
         "ComputeEngineLicenseType",
         "ComputeEngineBootOption",
@@ -41,6 +42,9 @@ __protobuf__ = proto.module(
         "Source",
         "VmwareSourceDetails",
         "DatacenterConnector",
+        "UpgradeStatus",
+        "AvailableUpdates",
+        "ApplianceVersion",
         "ListSourcesRequest",
         "ListSourcesResponse",
         "GetSourceRequest",
@@ -63,6 +67,8 @@ __protobuf__ = proto.module(
         "GetDatacenterConnectorRequest",
         "CreateDatacenterConnectorRequest",
         "DeleteDatacenterConnectorRequest",
+        "UpgradeApplianceRequest",
+        "UpgradeApplianceResponse",
         "ListDatacenterConnectorsRequest",
         "ComputeEngineTargetDefaults",
         "ComputeEngineTargetDetails",
@@ -120,6 +126,13 @@ class UtilizationReportView(proto.Enum):
     UTILIZATION_REPORT_VIEW_UNSPECIFIED = 0
     BASIC = 1
     FULL = 2
+
+
+class MigratingVmView(proto.Enum):
+    r"""Controls the level of details of a Migrating VM."""
+    MIGRATING_VM_VIEW_UNSPECIFIED = 0
+    MIGRATING_VM_VIEW_BASIC = 1
+    MIGRATING_VM_VIEW_FULL = 2
 
 
 class ComputeEngineDiskType(proto.Enum):
@@ -238,10 +251,25 @@ class MigratingVm(proto.Message):
             resource.
         labels (Mapping[str, str]):
             The labels of the migrating VM.
+        recent_clone_jobs (Sequence[google.cloud.vmmigration_v1.types.CloneJob]):
+            Output only. The recent [clone
+            jobs][google.cloud.vmmigration.v1.CloneJob] performed on the
+            migrating VM. This field holds the vm's last completed clone
+            job and the vm's running clone job, if one exists. Note: To
+            have this field populated you need to explicitly request it
+            via the "view" parameter of the Get/List request.
         error (google.rpc.status_pb2.Status):
             Output only. Provides details on the state of
             the Migrating VM in case of an error in
             replication.
+        recent_cutover_jobs (Sequence[google.cloud.vmmigration_v1.types.CutoverJob]):
+            Output only. The recent cutover jobs
+            performed on the migrating VM. This field holds
+            the vm's last completed cutover job and the vm's
+            running cutover job, if one exists.
+            Note: To have this field populated you need to
+            explicitly request it via the "view" parameter
+            of the Get/List request.
     """
 
     class State(proto.Enum):
@@ -325,10 +353,20 @@ class MigratingVm(proto.Message):
         proto.STRING,
         number=16,
     )
+    recent_clone_jobs = proto.RepeatedField(
+        proto.MESSAGE,
+        number=17,
+        message="CloneJob",
+    )
     error = proto.Field(
         proto.MESSAGE,
         number=19,
         message=status_pb2.Status,
+    )
+    recent_cutover_jobs = proto.RepeatedField(
+        proto.MESSAGE,
+        number=20,
+        message="CutoverJob",
     )
 
 
@@ -358,8 +396,11 @@ class CloneJob(proto.Message):
             Output only. The time the clone job was
             created (as an API call, not when it was
             actually created in the target).
+        end_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The time the clone job was
+            ended.
         name (str):
-            The name of the clone.
+            Output only. The name of the clone.
         state (google.cloud.vmmigration_v1.types.CloneJob.State):
             Output only. State of the clone job.
         state_time (google.protobuf.timestamp_pb2.Timestamp):
@@ -390,6 +431,11 @@ class CloneJob(proto.Message):
     create_time = proto.Field(
         proto.MESSAGE,
         number=1,
+        message=timestamp_pb2.Timestamp,
+    )
+    end_time = proto.Field(
+        proto.MESSAGE,
+        number=22,
         message=timestamp_pb2.Timestamp,
     )
     name = proto.Field(
@@ -431,6 +477,9 @@ class CutoverJob(proto.Message):
             Output only. The time the cutover job was
             created (as an API call, not when it was
             actually created in the target).
+        end_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The time the cutover job had
+            finished.
         name (str):
             Output only. The name of the cutover job.
         state (google.cloud.vmmigration_v1.types.CutoverJob.State):
@@ -469,6 +518,11 @@ class CutoverJob(proto.Message):
     create_time = proto.Field(
         proto.MESSAGE,
         number=1,
+        message=timestamp_pb2.Timestamp,
+    )
+    end_time = proto.Field(
+        proto.MESSAGE,
+        number=16,
         message=timestamp_pb2.Timestamp,
     )
     name = proto.Field(
@@ -797,6 +851,23 @@ class DatacenterConnector(proto.Message):
         error (google.rpc.status_pb2.Status):
             Output only. Provides details on the state of
             the Datacenter Connector in case of an error.
+        appliance_infrastructure_version (str):
+            Output only. Appliance OVA version.
+            This is the OVA which is manually installed by
+            the user and contains the infrastructure for the
+            automatically updatable components on the
+            appliance.
+        appliance_software_version (str):
+            Output only. Appliance last installed update
+            bundle version. This is the version of the
+            automatically updatable components on the
+            appliance.
+        available_versions (google.cloud.vmmigration_v1.types.AvailableUpdates):
+            Output only. The available versions for
+            updating this appliance.
+        upgrade_status (google.cloud.vmmigration_v1.types.UpgradeStatus):
+            Output only. The status of the current / last
+            upgradeAppliance operation.
     """
 
     class State(proto.Enum):
@@ -851,6 +922,135 @@ class DatacenterConnector(proto.Message):
         proto.MESSAGE,
         number=11,
         message=status_pb2.Status,
+    )
+    appliance_infrastructure_version = proto.Field(
+        proto.STRING,
+        number=13,
+    )
+    appliance_software_version = proto.Field(
+        proto.STRING,
+        number=14,
+    )
+    available_versions = proto.Field(
+        proto.MESSAGE,
+        number=15,
+        message="AvailableUpdates",
+    )
+    upgrade_status = proto.Field(
+        proto.MESSAGE,
+        number=16,
+        message="UpgradeStatus",
+    )
+
+
+class UpgradeStatus(proto.Message):
+    r"""UpgradeStatus contains information about upgradeAppliance
+    operation.
+
+    Attributes:
+        version (str):
+            The version to upgrade to.
+        state (google.cloud.vmmigration_v1.types.UpgradeStatus.State):
+            The state of the upgradeAppliance operation.
+        error (google.rpc.status_pb2.Status):
+            Provides details on the state of the upgrade
+            operation in case of an error.
+        start_time (google.protobuf.timestamp_pb2.Timestamp):
+            The time the operation was started.
+        previous_version (str):
+            The version from which we upgraded.
+    """
+
+    class State(proto.Enum):
+        r"""The possible values of the state."""
+        STATE_UNSPECIFIED = 0
+        RUNNING = 1
+        FAILED = 2
+        SUCCEEDED = 3
+
+    version = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    state = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=State,
+    )
+    error = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=status_pb2.Status,
+    )
+    start_time = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=timestamp_pb2.Timestamp,
+    )
+    previous_version = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+
+
+class AvailableUpdates(proto.Message):
+    r"""Holds informatiom about the available versions for upgrade.
+
+    Attributes:
+        new_deployable_appliance (google.cloud.vmmigration_v1.types.ApplianceVersion):
+            The newest deployable version of the
+            appliance. The current appliance can't be
+            updated into this version, and the owner must
+            manually deploy this OVA to a new appliance.
+        in_place_update (google.cloud.vmmigration_v1.types.ApplianceVersion):
+            The latest version for in place update.
+            The current appliance can be updated to this
+            version using the API or m4c CLI.
+    """
+
+    new_deployable_appliance = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="ApplianceVersion",
+    )
+    in_place_update = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="ApplianceVersion",
+    )
+
+
+class ApplianceVersion(proto.Message):
+    r"""Describes an appliance version.
+
+    Attributes:
+        version (str):
+            The appliance version.
+        uri (str):
+            A link for downloading the version.
+        critical (bool):
+            Determine whether it's critical to upgrade
+            the appliance to this version.
+        release_notes_uri (str):
+            Link to a page that contains the version
+            release notes.
+    """
+
+    version = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    uri = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    critical = proto.Field(
+        proto.BOOL,
+        number=3,
+    )
+    release_notes_uri = proto.Field(
+        proto.STRING,
+        number=4,
     )
 
 
@@ -1141,7 +1341,7 @@ class VmwareVmDetails(proto.Message):
             the VM in MB.
         guest_description (str):
             The VM's OS. See for example
-            https://pubs.vmware.com/vi-sdk/visdk250/ReferenceGuide/vim.vm.GuestOsDescriptor.GuestOsIdentifier.html
+            https://vdc-repo.vmware.com/vmwb-repository/dcr-public/da47f910-60ac-438b-8b9b-6122f4d14524/16b7274a-bf8b-4b4c-a05e-746f2aa93c8c/doc/vim.vm.GuestOsDescriptor.GuestOsIdentifier.html
             for types of strings this might hold.
         boot_option (google.cloud.vmmigration_v1.types.VmwareVmDetails.BootOption):
             Output only. The VM Boot Option.
@@ -1236,8 +1436,8 @@ class FetchInventoryResponse(proto.Message):
 
     Attributes:
         vmware_vms (google.cloud.vmmigration_v1.types.VmwareVmsDetails):
-            Output only. The description of the VMs in a
-            Source of type Vmware.
+            The description of the VMs in a Source of
+            type Vmware.
 
             This field is a member of `oneof`_ ``SourceVms``.
         update_time (google.protobuf.timestamp_pb2.Timestamp):
@@ -1795,6 +1995,46 @@ class DeleteDatacenterConnectorRequest(proto.Message):
     )
 
 
+class UpgradeApplianceRequest(proto.Message):
+    r"""Request message for 'UpgradeAppliance' request.
+
+    Attributes:
+        datacenter_connector (str):
+            Required. The DatacenterConnector name.
+        request_id (str):
+            A request ID to identify requests. Specify a
+            unique request ID so that if you must retry your
+            request, the server will know to ignore the
+            request if it has already been completed. The
+            server will guarantee that for at least 60
+            minutes after the first request.
+            For example, consider a situation where you make
+            an initial request and t he request times out.
+            If you make the request again with the same
+            request ID, the server can check if original
+            operation with the same request ID was received,
+            and if so, will ignore the second request. This
+            prevents clients from accidentally creating
+            duplicate commitments.
+            The request ID must be a valid UUID with the
+            exception that zero UUID is not supported
+            (00000000-0000-0000-0000-000000000000).
+    """
+
+    datacenter_connector = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    request_id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class UpgradeApplianceResponse(proto.Message):
+    r"""Response message for 'UpgradeAppliance' request."""
+
+
 class ListDatacenterConnectorsRequest(proto.Message):
     r"""Request message for 'ListDatacenterConnectors' request.
 
@@ -1891,6 +2131,10 @@ class ComputeEngineTargetDefaults(proto.Message):
         metadata (Mapping[str, str]):
             The metadata key/value pairs to assign to the
             VM.
+        additional_licenses (Sequence[str]):
+            Additional licenses to assign to the VM.
+        hostname (str):
+            The hostname to assign to the VM.
     """
 
     vm_name = proto.Field(
@@ -1965,6 +2209,14 @@ class ComputeEngineTargetDefaults(proto.Message):
         proto.STRING,
         number=16,
     )
+    additional_licenses = proto.RepeatedField(
+        proto.STRING,
+        number=17,
+    )
+    hostname = proto.Field(
+        proto.STRING,
+        number=18,
+    )
 
 
 class ComputeEngineTargetDetails(proto.Message):
@@ -2011,6 +2263,10 @@ class ComputeEngineTargetDetails(proto.Message):
         metadata (Mapping[str, str]):
             The metadata key/value pairs to assign to the
             VM.
+        additional_licenses (Sequence[str]):
+            Additional licenses to assign to the VM.
+        hostname (str):
+            The hostname to assign to the VM.
     """
 
     vm_name = proto.Field(
@@ -2084,6 +2340,14 @@ class ComputeEngineTargetDetails(proto.Message):
         proto.STRING,
         proto.STRING,
         number=16,
+    )
+    additional_licenses = proto.RepeatedField(
+        proto.STRING,
+        number=17,
+    )
+    hostname = proto.Field(
+        proto.STRING,
+        number=18,
     )
 
 
@@ -2353,6 +2617,9 @@ class ListMigratingVmsRequest(proto.Message):
             Optional. The filter request.
         order_by (str):
             Optional. the order by fields for the result.
+        view (google.cloud.vmmigration_v1.types.MigratingVmView):
+            Optional. The level of details of each
+            migrating VM.
     """
 
     parent = proto.Field(
@@ -2374,6 +2641,11 @@ class ListMigratingVmsRequest(proto.Message):
     order_by = proto.Field(
         proto.STRING,
         number=5,
+    )
+    view = proto.Field(
+        proto.ENUM,
+        number=6,
+        enum="MigratingVmView",
     )
 
 
@@ -2418,11 +2690,19 @@ class GetMigratingVmRequest(proto.Message):
     Attributes:
         name (str):
             Required. The name of the MigratingVm.
+        view (google.cloud.vmmigration_v1.types.MigratingVmView):
+            Optional. The level of details of the
+            migrating VM.
     """
 
     name = proto.Field(
         proto.STRING,
         number=1,
+    )
+    view = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum="MigratingVmView",
     )
 
 
@@ -2567,7 +2847,7 @@ class TargetProject(proto.Message):
 
     Attributes:
         name (str):
-            The name of the target project.
+            Output only. The name of the target project.
         project (str):
             The target project ID (number) or project
             name.
@@ -2844,7 +3124,7 @@ class Group(proto.Message):
 
     Attributes:
         name (str):
-            The Group name.
+            Output only. The Group name.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The create time timestamp.
         update_time (google.protobuf.timestamp_pb2.Timestamp):
@@ -3418,6 +3698,7 @@ class MigrationError(proto.Message):
         CLONE_ERROR = 6
         CUTOVER_ERROR = 7
         UTILIZATION_REPORT_ERROR = 8
+        APPLIANCE_UPGRADE_ERROR = 9
 
     code = proto.Field(
         proto.ENUM,
