@@ -951,8 +951,13 @@ class TestResumableUpload(object):
         upload = _upload.ResumableUpload(RESUMABLE_URL, ONE_MB)
         assert not upload.invalid
 
-        with pytest.raises(ValueError):
-            upload._prepare_recover_request()
+        method, url, payload, headers = upload._prepare_recover_request()
+        assert method == "PUT"
+        assert url == upload.resumable_url
+        assert payload is None
+        assert headers == {"content-range": "bytes */*"}
+        # Make sure headers are untouched.
+        assert upload._headers == {}
 
     def test__prepare_recover_request(self):
         upload = _upload.ResumableUpload(RESUMABLE_URL, ONE_MB)

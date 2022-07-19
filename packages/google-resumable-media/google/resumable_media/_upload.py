@@ -794,14 +794,8 @@ class ResumableUpload(UploadBase):
             The headers **do not** incorporate the ``_headers`` on the
             current instance.
 
-        Raises:
-            ValueError: If the current upload is not in an invalid state.
-
         .. _sans-I/O: https://sans-io.readthedocs.io/
         """
-        if not self.invalid:
-            raise ValueError("Upload is not in invalid state, no need to recover.")
-
         headers = {_helpers.CONTENT_RANGE_HEADER: "bytes */*"}
         return _PUT, self.resumable_url, None, headers
 
