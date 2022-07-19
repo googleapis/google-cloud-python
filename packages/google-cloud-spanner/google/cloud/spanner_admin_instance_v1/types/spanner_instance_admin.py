@@ -91,7 +91,7 @@ class InstanceConfig(proto.Message):
         name (str):
             A unique identifier for the instance configuration. Values
             are of the form
-            ``projects/<project>/instanceConfigs/[a-z][-a-z0-9]*``
+            ``projects/<project>/instanceConfigs/[a-z][-a-z0-9]*``.
         display_name (str):
             The name of this instance configuration as it
             appears in UIs.
@@ -100,7 +100,7 @@ class InstanceConfig(proto.Message):
             instance configuration and their replication
             properties.
         leader_options (Sequence[str]):
-            Allowed values of the “default_leader” schema option for
+            Allowed values of the "default_leader" schema option for
             databases in instances that use this instance configuration.
     """
 
@@ -149,18 +149,23 @@ class Instance(proto.Message):
             per project and between 4 and 30 characters in
             length.
         node_count (int):
-            Required. The number of nodes allocated to this instance.
-            This may be zero in API responses for instances that are not
-            yet in state ``READY``.
+            The number of nodes allocated to this instance. At most one
+            of either node_count or processing_units should be present
+            in the message. This may be zero in API responses for
+            instances that are not yet in state ``READY``.
 
             See `the
-            documentation <https://cloud.google.com/spanner/docs/instances#node_count>`__
-            for more information about nodes.
+            documentation <https://cloud.google.com/spanner/docs/compute-capacity>`__
+            for more information about nodes and processing units.
         processing_units (int):
             The number of processing units allocated to this instance.
             At most one of processing_units or node_count should be
             present in the message. This may be zero in API responses
             for instances that are not yet in state ``READY``.
+
+            See `the
+            documentation <https://cloud.google.com/spanner/docs/compute-capacity>`__
+            for more information about nodes and processing units.
         state (google.cloud.spanner_admin_instance_v1.types.Instance.State):
             Output only. The current instance state. For
             [CreateInstance][google.spanner.admin.instance.v1.InstanceAdmin.CreateInstance],
@@ -179,10 +184,10 @@ class Instance(proto.Message):
 
             -  Label keys must be between 1 and 63 characters long and
                must conform to the following regular expression:
-               ``[a-z]([-a-z0-9]*[a-z0-9])?``.
+               ``[a-z][a-z0-9_-]{0,62}``.
             -  Label values must be between 0 and 63 characters long and
                must conform to the regular expression
-               ``([a-z]([-a-z0-9]*[a-z0-9])?)?``.
+               ``[a-z0-9_-]{0,63}``.
             -  No more than 64 labels can be associated with a given
                resource.
 
@@ -198,6 +203,12 @@ class Instance(proto.Message):
             were to allow "*" in a future release.
         endpoint_uris (Sequence[str]):
             Deprecated. This field is not populated.
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The time at which the instance
+            was created.
+        update_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The time at which the instance
+            was most recently updated.
     """
 
     class State(proto.Enum):
@@ -239,6 +250,16 @@ class Instance(proto.Message):
     endpoint_uris = proto.RepeatedField(
         proto.STRING,
         number=8,
+    )
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=11,
+        message=timestamp_pb2.Timestamp,
+    )
+    update_time = proto.Field(
+        proto.MESSAGE,
+        number=12,
+        message=timestamp_pb2.Timestamp,
     )
 
 

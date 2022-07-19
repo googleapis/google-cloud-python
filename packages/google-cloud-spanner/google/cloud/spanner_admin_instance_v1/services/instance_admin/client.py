@@ -41,6 +41,7 @@ from google.cloud.spanner_admin_instance_v1.types import spanner_instance_admin
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
 from .transports.base import InstanceAdminTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc import InstanceAdminGrpcTransport
 from .transports.grpc_asyncio import InstanceAdminGrpcAsyncIOTransport
@@ -463,6 +464,7 @@ class InstanceAdminClient(metaclass=InstanceAdminClientMeta):
                 quota_project_id=client_options.quota_project_id,
                 client_info=client_info,
                 always_use_jwt_access=True,
+                api_audience=client_options.api_audience,
             )
 
     def list_instance_configs(
@@ -1109,7 +1111,7 @@ class InstanceAdminClient(metaclass=InstanceAdminClientMeta):
         successful.
 
         Authorization requires ``spanner.instances.update`` permission
-        on resource
+        on the resource
         [name][google.spanner.admin.instance.v1.Instance.name].
 
         .. code-block:: python
