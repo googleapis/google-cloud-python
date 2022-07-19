@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.5.0](https://github.com/googleapis/python-appengine-admin/compare/v1.4.1...v1.5.0) (2022-07-18)
+
+
+### Features
+
+* add audience parameter ([307bdf5](https://github.com/googleapis/python-appengine-admin/commit/307bdf56fccbb04229dd4fae1ae6d425e2c51bcc))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.32.0,>=2.8.0 ([#175](https://github.com/googleapis/python-appengine-admin/issues/175)) ([307bdf5](https://github.com/googleapis/python-appengine-admin/commit/307bdf56fccbb04229dd4fae1ae6d425e2c51bcc))
+* require python 3.7+ ([#177](https://github.com/googleapis/python-appengine-admin/issues/177)) ([a3d18cc](https://github.com/googleapis/python-appengine-admin/commit/a3d18cca4a42a6290d582c2ea2b7bb50189a65ac))
+
 ## [1.4.1](https://github.com/googleapis/python-appengine-admin/compare/v1.4.0...v1.4.1) (2022-06-03)
 
 
