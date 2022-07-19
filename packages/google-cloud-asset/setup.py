@@ -21,7 +21,7 @@ import setuptools
 
 name = "google-cloud-asset"
 description = "Cloud Asset API API client library"
-version = "3.9.1"
+version = "3.10.0"
 # Should be one of:
 # 'Development Status :: 3 - Alpha'
 # 'Development Status :: 4 - Beta'

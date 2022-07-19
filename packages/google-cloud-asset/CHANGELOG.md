@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-cloud-asset/#history
 
+## [3.10.0](https://github.com/googleapis/python-asset/compare/v3.9.1...v3.10.0) (2022-07-18)
+
+
+### Features
+
+* add audience parameter ([996c4e8](https://github.com/googleapis/python-asset/commit/996c4e877d59bdadb6b604a7fbd92b6fac5a597c))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.32.0,>=2.8.0 ([#447](https://github.com/googleapis/python-asset/issues/447)) ([996c4e8](https://github.com/googleapis/python-asset/commit/996c4e877d59bdadb6b604a7fbd92b6fac5a597c))
+* require python 3.7+ ([#450](https://github.com/googleapis/python-asset/issues/450)) ([2086ef9](https://github.com/googleapis/python-asset/commit/2086ef91a8c5573b7d67ec938bc18050cd5ba637))
+
 ## [3.9.1](https://github.com/googleapis/python-asset/compare/v3.9.0...v3.9.1) (2022-06-03)
 
 
