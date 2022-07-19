@@ -82,10 +82,10 @@ Libraries
    * - `Access Approval <https://github.com/googleapis/python-access-approval>`_
      - |stable|
      - |PyPI-google-cloud-access-approval|
-   * - `Apigee Connect API <https://github.com/googleapis/python-apigee-connect>`_
+   * - `Apigee Connect <https://github.com/googleapis/python-apigee-connect>`_
      - |stable|
      - |PyPI-google-cloud-apigee-connect|
-   * - `App Engine Admin API <https://github.com/googleapis/python-appengine-admin>`_
+   * - `App Engine Admin <https://github.com/googleapis/python-appengine-admin>`_
      - |stable|
      - |PyPI-google-cloud-appengine-admin|
    * - `App Engine Logging Protos <https://github.com/googleapis/python-appengine-logging>`_
@@ -253,6 +253,9 @@ Libraries
    * - `Kubernetes Engine <https://github.com/googleapis/python-container>`_
      - |stable|
      - |PyPI-google-cloud-container|
+   * - `Live Stream <https://github.com/googleapis/python-video-live-stream>`_
+     - |stable|
+     - |PyPI-google-cloud-video-live-stream|
    * - `Logging <https://github.com/googleapis/python-logging>`_
      - |stable|
      - |PyPI-google-cloud-logging|
@@ -406,7 +409,7 @@ Libraries
    * - `Analytics Admin <https://github.com/googleapis/python-analytics-admin>`_
      - |preview|
      - |PyPI-google-analytics-admin|
-   * - `Analytics Data API <https://github.com/googleapis/python-analytics-data>`_
+   * - `Analytics Data <https://github.com/googleapis/python-analytics-data>`_
      - |preview|
      - |PyPI-google-analytics-data|
    * - `Anthos Multicloud <https://github.com/googleapis/python-gke-multicloud>`_
@@ -415,7 +418,7 @@ Libraries
    * - `Apigee Registry API <https://github.com/googleapis/python-apigee-registry>`_
      - |preview|
      - |PyPI-google-cloud-apigee-registry|
-   * - `Area 120 Tables API <https://github.com/googleapis/python-area120-tables>`_
+   * - `Area 120 Tables <https://github.com/googleapis/python-area120-tables>`_
      - |preview|
      - |PyPI-google-area120-tables|
    * - `Audit Log <https://github.com/googleapis/python-audit-log>`_
@@ -427,6 +430,21 @@ Libraries
    * - `Batch <https://github.com/googleapis/python-batch>`_
      - |preview|
      - |PyPI-google-cloud-batch|
+   * - `BeyondCorp AppConnections <https://github.com/googleapis/python-beyondcorp-appconnections>`_
+     - |preview|
+     - |PyPI-google-cloud-beyondcorp-appconnections|
+   * - `BeyondCorp AppConnectors <https://github.com/googleapis/python-beyondcorp-appconnectors>`_
+     - |preview|
+     - |PyPI-google-cloud-beyondcorp-appconnectors|
+   * - `BeyondCorp AppGateways <https://github.com/googleapis/python-beyondcorp-appgateways>`_
+     - |preview|
+     - |PyPI-google-cloud-beyondcorp-appgateways|
+   * - `BeyondCorp ClientConnectorServices <https://github.com/googleapis/python-beyondcorp-clientconnectorservices>`_
+     - |preview|
+     - |PyPI-google-cloud-beyondcorp-clientconnectorservices|
+   * - `BeyondCorp ClientGateways <https://github.com/googleapis/python-beyondcorp-clientgateways>`_
+     - |preview|
+     - |PyPI-google-cloud-beyondcorp-clientgateways|
    * - `BigQuery Analytics Hub <https://github.com/googleapis/python-bigquery-data-exchange>`_
      - |preview|
      - |PyPI-google-cloud-bigquery-data-exchange|
@@ -466,9 +484,6 @@ Libraries
    * - `Life Sciences <https://github.com/googleapis/python-life-sciences>`_
      - |preview|
      - |PyPI-google-cloud-life-sciences|
-   * - `Live Stream <https://github.com/googleapis/python-video-live-stream>`_
-     - |preview|
-     - |PyPI-google-cloud-video-live-stream|
    * - `Media Translation <https://github.com/googleapis/python-media-translation>`_
      - |preview|
      - |PyPI-google-cloud-media-translation|
@@ -622,6 +637,8 @@ Libraries
      :target: https://pypi.org/project/google-cloud-kms
 .. |PyPI-google-cloud-container| image:: https://img.shields.io/pypi/v/google-cloud-container.svg
      :target: https://pypi.org/project/google-cloud-container
+.. |PyPI-google-cloud-video-live-stream| image:: https://img.shields.io/pypi/v/google-cloud-video-live-stream.svg
+     :target: https://pypi.org/project/google-cloud-video-live-stream
 .. |PyPI-google-cloud-logging| image:: https://img.shields.io/pypi/v/google-cloud-logging.svg
      :target: https://pypi.org/project/google-cloud-logging
 .. |PyPI-google-cloud-managed-identities| image:: https://img.shields.io/pypi/v/google-cloud-managed-identities.svg
@@ -738,6 +755,16 @@ Libraries
      :target: https://pypi.org/project/google-cloud-gke-backup
 .. |PyPI-google-cloud-batch| image:: https://img.shields.io/pypi/v/google-cloud-batch.svg
      :target: https://pypi.org/project/google-cloud-batch
+.. |PyPI-google-cloud-beyondcorp-appconnections| image:: https://img.shields.io/pypi/v/google-cloud-beyondcorp-appconnections.svg
+     :target: https://pypi.org/project/google-cloud-beyondcorp-appconnections
+.. |PyPI-google-cloud-beyondcorp-appconnectors| image:: https://img.shields.io/pypi/v/google-cloud-beyondcorp-appconnectors.svg
+     :target: https://pypi.org/project/google-cloud-beyondcorp-appconnectors
+.. |PyPI-google-cloud-beyondcorp-appgateways| image:: https://img.shields.io/pypi/v/google-cloud-beyondcorp-appgateways.svg
+     :target: https://pypi.org/project/google-cloud-beyondcorp-appgateways
+.. |PyPI-google-cloud-beyondcorp-clientconnectorservices| image:: https://img.shields.io/pypi/v/google-cloud-beyondcorp-clientconnectorservices.svg
+     :target: https://pypi.org/project/google-cloud-beyondcorp-clientconnectorservices
+.. |PyPI-google-cloud-beyondcorp-clientgateways| image:: https://img.shields.io/pypi/v/google-cloud-beyondcorp-clientgateways.svg
+     :target: https://pypi.org/project/google-cloud-beyondcorp-clientgateways
 .. |PyPI-google-cloud-bigquery-data-exchange| image:: https://img.shields.io/pypi/v/google-cloud-bigquery-data-exchange.svg
      :target: https://pypi.org/project/google-cloud-bigquery-data-exchange
 .. |PyPI-google-cloud-bigquery-migration| image:: https://img.shields.io/pypi/v/google-cloud-bigquery-migration.svg
@@ -764,8 +791,6 @@ Libraries
      :target: https://pypi.org/project/google-cloud-gke-connect-gateway
 .. |PyPI-google-cloud-life-sciences| image:: https://img.shields.io/pypi/v/google-cloud-life-sciences.svg
      :target: https://pypi.org/project/google-cloud-life-sciences
-.. |PyPI-google-cloud-video-live-stream| image:: https://img.shields.io/pypi/v/google-cloud-video-live-stream.svg
-     :target: https://pypi.org/project/google-cloud-video-live-stream
 .. |PyPI-google-cloud-media-translation| image:: https://img.shields.io/pypi/v/google-cloud-media-translation.svg
      :target: https://pypi.org/project/google-cloud-media-translation
 .. |PyPI-google-cloud-network-security| image:: https://img.shields.io/pypi/v/google-cloud-network-security.svg
