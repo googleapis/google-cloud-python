@@ -4,6 +4,22 @@
 
 [1]: https://pypi.org/project/google-cloud-securitycenter/#history
 
+## [1.12.0](https://github.com/googleapis/python-securitycenter/compare/v1.11.1...v1.12.0) (2022-07-17)
+
+
+### Features
+
+* add audience parameter ([da12a93](https://github.com/googleapis/python-securitycenter/commit/da12a93c5f8f16b50763e47c4af19b43c40a4877))
+* Add compliances, processes and exfiltration fields to findings attributes ([da12a93](https://github.com/googleapis/python-securitycenter/commit/da12a93c5f8f16b50763e47c4af19b43c40a4877))
+* Added contacts field to findings attributes, specifying Essential Contacts defined at org, folder or project level within a GCP org ([da12a93](https://github.com/googleapis/python-securitycenter/commit/da12a93c5f8f16b50763e47c4af19b43c40a4877))
+* Added process signature fields to the indicator attribute that helps surface multiple types of signature defined IOCs ([da12a93](https://github.com/googleapis/python-securitycenter/commit/da12a93c5f8f16b50763e47c4af19b43c40a4877))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.32.0,>=2.8.0 ([da12a93](https://github.com/googleapis/python-securitycenter/commit/da12a93c5f8f16b50763e47c4af19b43c40a4877))
+* require python 3.7+ ([#349](https://github.com/googleapis/python-securitycenter/issues/349)) ([1368f74](https://github.com/googleapis/python-securitycenter/commit/1368f7433c3f89f64adca7f59dc00e7afe625e74))
+
 ## [1.11.1](https://github.com/googleapis/python-securitycenter/compare/v1.11.0...v1.11.1) (2022-06-06)
 
 
