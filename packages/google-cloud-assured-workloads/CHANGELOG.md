@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.4.0](https://github.com/googleapis/python-assured-workloads/compare/v1.3.0...v1.4.0) (2022-07-19)
+
+
+### Features
+
+* **v1beta1:** AnalyzeWorkloadMove returns information about org policy differences between the project and target folder ([7afe126](https://github.com/googleapis/python-assured-workloads/commit/7afe126739e9be49f1af5b499f35873f9722e721))
+* **v1beta1:** Update method signature of analyzeWorkloadMove to accept project as source ([#182](https://github.com/googleapis/python-assured-workloads/issues/182)) ([7afe126](https://github.com/googleapis/python-assured-workloads/commit/7afe126739e9be49f1af5b499f35873f9722e721))
+
 ## [1.3.0](https://github.com/googleapis/python-assured-workloads/compare/v1.2.3...v1.3.0) (2022-07-16)
 
 
