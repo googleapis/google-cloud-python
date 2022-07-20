@@ -12,5 +12,6 @@
     "api_id": "baremetalsolution.googleapis.com",
     "default_version": "v2",
     "codeowner_team": "",
-    "api_shortname": "baremetalsolution"
+    "api_shortname": "baremetalsolution",
+    "api_description": "Bring your Oracle workloads to Google Cloud with Bare Metal Solution and jumpstart your cloud journey with minimal risk."
 }
