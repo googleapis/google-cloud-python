@@ -6,9 +6,10 @@
 
 
 from .models import Author
-from django.db import NotSupportedError
+from django.db import NotSupportedError, connection
 from django.db.models import Index
-from django.db.models.fields import IntegerField
+from django.db.models.fields import AutoField, IntegerField
+from django_spanner import gen_rand_int64
 from django_spanner.schema import DatabaseSchemaEditor
 from tests._helpers import HAS_OPENTELEMETRY_INSTALLED
 from tests.unit.django_spanner.simple_test import SpannerSimpleTestClass
@@ -404,3 +405,31 @@ class TestUtils(SpannerSimpleTestClass):
             new_field.set_attributes_from_name("author_num")
             with self.assertRaises(NotSupportedError):
                 schema_editor.alter_field(Author, old_field, new_field)
+
+    def test_autofield_no_default(self):
+        """Spanner, default is not provided."""
+        field = AutoField(name="field_name")
+        assert gen_rand_int64 == field.default
+
+    def test_autofield_default(self):
+        """Spanner, default provided."""
+        mock_func = mock.Mock()
+        field = AutoField(name="field_name", default=mock_func)
+        assert gen_rand_int64 != field.default
+        assert mock_func == field.default
+
+    def test_autofield_not_spanner(self):
+        """Not Spanner, default not provided."""
+        connection.settings_dict["ENGINE"] = "another_db"
+        field = AutoField(name="field_name")
+        assert gen_rand_int64 != field.default
+        connection.settings_dict["ENGINE"] = "django_spanner"
+
+    def test_autofield_not_spanner_w_default(self):
+        """Not Spanner, default provided."""
+        connection.settings_dict["ENGINE"] = "another_db"
+        mock_func = mock.Mock()
+        field = AutoField(name="field_name", default=mock_func)
+        assert gen_rand_int64 != field.default
+        assert mock_func == field.default
+        connection.settings_dict["ENGINE"] = "django_spanner"
