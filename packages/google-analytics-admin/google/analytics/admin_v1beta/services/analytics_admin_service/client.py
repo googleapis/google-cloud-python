@@ -38,8 +38,8 @@ from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.protobuf import wrappers_pb2  # type: ignore
 
-from google.analytics.admin_v1alpha.services.analytics_admin_service import pagers
-from google.analytics.admin_v1alpha.types import analytics_admin, resources
+from google.analytics.admin_v1beta.services.analytics_admin_service import pagers
+from google.analytics.admin_v1beta.types import analytics_admin, resources
 
 from .transports.base import DEFAULT_CLIENT_INFO, AnalyticsAdminServiceTransport
 from .transports.grpc import AnalyticsAdminServiceGrpcTransport
@@ -306,48 +306,6 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def display_video360_advertiser_link_path(
-        property: str,
-        display_video_360_advertiser_link: str,
-    ) -> str:
-        """Returns a fully-qualified display_video360_advertiser_link string."""
-        return "properties/{property}/displayVideo360AdvertiserLinks/{display_video_360_advertiser_link}".format(
-            property=property,
-            display_video_360_advertiser_link=display_video_360_advertiser_link,
-        )
-
-    @staticmethod
-    def parse_display_video360_advertiser_link_path(path: str) -> Dict[str, str]:
-        """Parses a display_video360_advertiser_link path into its component segments."""
-        m = re.match(
-            r"^properties/(?P<property>.+?)/displayVideo360AdvertiserLinks/(?P<display_video_360_advertiser_link>.+?)$",
-            path,
-        )
-        return m.groupdict() if m else {}
-
-    @staticmethod
-    def display_video360_advertiser_link_proposal_path(
-        property: str,
-        display_video_360_advertiser_link_proposal: str,
-    ) -> str:
-        """Returns a fully-qualified display_video360_advertiser_link_proposal string."""
-        return "properties/{property}/displayVideo360AdvertiserLinkProposals/{display_video_360_advertiser_link_proposal}".format(
-            property=property,
-            display_video_360_advertiser_link_proposal=display_video_360_advertiser_link_proposal,
-        )
-
-    @staticmethod
-    def parse_display_video360_advertiser_link_proposal_path(
-        path: str,
-    ) -> Dict[str, str]:
-        """Parses a display_video360_advertiser_link_proposal path into its component segments."""
-        m = re.match(
-            r"^properties/(?P<property>.+?)/displayVideo360AdvertiserLinkProposals/(?P<display_video_360_advertiser_link_proposal>.+?)$",
-            path,
-        )
-        return m.groupdict() if m else {}
-
-    @staticmethod
     def firebase_link_path(
         property: str,
         firebase_link: str,
@@ -363,26 +321,6 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         """Parses a firebase_link path into its component segments."""
         m = re.match(
             r"^properties/(?P<property>.+?)/firebaseLinks/(?P<firebase_link>.+?)$", path
-        )
-        return m.groupdict() if m else {}
-
-    @staticmethod
-    def global_site_tag_path(
-        property: str,
-        data_stream: str,
-    ) -> str:
-        """Returns a fully-qualified global_site_tag string."""
-        return "properties/{property}/dataStreams/{data_stream}/globalSiteTag".format(
-            property=property,
-            data_stream=data_stream,
-        )
-
-    @staticmethod
-    def parse_global_site_tag_path(path: str) -> Dict[str, str]:
-        """Parses a global_site_tag path into its component segments."""
-        m = re.match(
-            r"^properties/(?P<property>.+?)/dataStreams/(?P<data_stream>.+?)/globalSiteTag$",
-            path,
         )
         return m.groupdict() if m else {}
 
@@ -404,21 +342,6 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
             r"^properties/(?P<property>.+?)/googleAdsLinks/(?P<google_ads_link>.+?)$",
             path,
         )
-        return m.groupdict() if m else {}
-
-    @staticmethod
-    def google_signals_settings_path(
-        property: str,
-    ) -> str:
-        """Returns a fully-qualified google_signals_settings string."""
-        return "properties/{property}/googleSignalsSettings".format(
-            property=property,
-        )
-
-    @staticmethod
-    def parse_google_signals_settings_path(path: str) -> Dict[str, str]:
-        """Parses a google_signals_settings path into its component segments."""
-        m = re.match(r"^properties/(?P<property>.+?)/googleSignalsSettings$", path)
         return m.groupdict() if m else {}
 
     @staticmethod
@@ -456,23 +379,6 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
     def parse_property_path(path: str) -> Dict[str, str]:
         """Parses a property path into its component segments."""
         m = re.match(r"^properties/(?P<property>.+?)$", path)
-        return m.groupdict() if m else {}
-
-    @staticmethod
-    def user_link_path(
-        account: str,
-        user_link: str,
-    ) -> str:
-        """Returns a fully-qualified user_link string."""
-        return "accounts/{account}/userLinks/{user_link}".format(
-            account=account,
-            user_link=user_link,
-        )
-
-    @staticmethod
-    def parse_user_link_path(path: str) -> Dict[str, str]:
-        """Parses a user_link path into its component segments."""
-        m = re.match(r"^accounts/(?P<account>.+?)/userLinks/(?P<user_link>.+?)$", path)
         return m.groupdict() if m else {}
 
     @staticmethod
@@ -731,14 +637,14 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         .. code-block:: python
 
-            from google.analytics import admin_v1alpha
+            from google.analytics import admin_v1beta
 
             def sample_get_account():
                 # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
+                client = admin_v1beta.AnalyticsAdminServiceClient()
 
                 # Initialize request argument(s)
-                request = admin_v1alpha.GetAccountRequest(
+                request = admin_v1beta.GetAccountRequest(
                     name="name_value",
                 )
 
@@ -749,7 +655,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 print(response)
 
         Args:
-            request (Union[google.analytics.admin_v1alpha.types.GetAccountRequest, dict]):
+            request (Union[google.analytics.admin_v1beta.types.GetAccountRequest, dict]):
                 The request object. Request message for GetAccount RPC.
             name (str):
                 Required. The name of the account to
@@ -766,7 +672,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.analytics.admin_v1alpha.types.Account:
+            google.analytics.admin_v1beta.types.Account:
                 A resource message representing a
                 Google Analytics account.
 
@@ -829,14 +735,14 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         .. code-block:: python
 
-            from google.analytics import admin_v1alpha
+            from google.analytics import admin_v1beta
 
             def sample_list_accounts():
                 # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
+                client = admin_v1beta.AnalyticsAdminServiceClient()
 
                 # Initialize request argument(s)
-                request = admin_v1alpha.ListAccountsRequest(
+                request = admin_v1beta.ListAccountsRequest(
                 )
 
                 # Make the request
@@ -847,7 +753,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                     print(response)
 
         Args:
-            request (Union[google.analytics.admin_v1alpha.types.ListAccountsRequest, dict]):
+            request (Union[google.analytics.admin_v1beta.types.ListAccountsRequest, dict]):
                 The request object. Request message for ListAccounts
                 RPC.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -857,7 +763,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.analytics.admin_v1alpha.services.analytics_admin_service.pagers.ListAccountsPager:
+            google.analytics.admin_v1beta.services.analytics_admin_service.pagers.ListAccountsPager:
                 Request message for ListAccounts RPC.
                 Iterating over this object will yield
                 results and resolve additional pages
@@ -919,14 +825,14 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         .. code-block:: python
 
-            from google.analytics import admin_v1alpha
+            from google.analytics import admin_v1beta
 
             def sample_delete_account():
                 # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
+                client = admin_v1beta.AnalyticsAdminServiceClient()
 
                 # Initialize request argument(s)
-                request = admin_v1alpha.DeleteAccountRequest(
+                request = admin_v1beta.DeleteAccountRequest(
                     name="name_value",
                 )
 
@@ -934,7 +840,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 client.delete_account(request=request)
 
         Args:
-            request (Union[google.analytics.admin_v1alpha.types.DeleteAccountRequest, dict]):
+            request (Union[google.analytics.admin_v1beta.types.DeleteAccountRequest, dict]):
                 The request object. Request message for DeleteAccount
                 RPC.
             name (str):
@@ -1004,17 +910,17 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         .. code-block:: python
 
-            from google.analytics import admin_v1alpha
+            from google.analytics import admin_v1beta
 
             def sample_update_account():
                 # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
+                client = admin_v1beta.AnalyticsAdminServiceClient()
 
                 # Initialize request argument(s)
-                account = admin_v1alpha.Account()
+                account = admin_v1beta.Account()
                 account.display_name = "display_name_value"
 
-                request = admin_v1alpha.UpdateAccountRequest(
+                request = admin_v1beta.UpdateAccountRequest(
                     account=account,
                 )
 
@@ -1025,10 +931,10 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 print(response)
 
         Args:
-            request (Union[google.analytics.admin_v1alpha.types.UpdateAccountRequest, dict]):
+            request (Union[google.analytics.admin_v1beta.types.UpdateAccountRequest, dict]):
                 The request object. Request message for UpdateAccount
                 RPC.
-            account (google.analytics.admin_v1alpha.types.Account):
+            account (google.analytics.admin_v1beta.types.Account):
                 Required. The account to update. The account's ``name``
                 field is used to identify the account.
 
@@ -1052,7 +958,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.analytics.admin_v1alpha.types.Account:
+            google.analytics.admin_v1beta.types.Account:
                 A resource message representing a
                 Google Analytics account.
 
@@ -1115,14 +1021,14 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         .. code-block:: python
 
-            from google.analytics import admin_v1alpha
+            from google.analytics import admin_v1beta
 
             def sample_provision_account_ticket():
                 # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
+                client = admin_v1beta.AnalyticsAdminServiceClient()
 
                 # Initialize request argument(s)
-                request = admin_v1alpha.ProvisionAccountTicketRequest(
+                request = admin_v1beta.ProvisionAccountTicketRequest(
                 )
 
                 # Make the request
@@ -1132,7 +1038,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 print(response)
 
         Args:
-            request (Union[google.analytics.admin_v1alpha.types.ProvisionAccountTicketRequest, dict]):
+            request (Union[google.analytics.admin_v1beta.types.ProvisionAccountTicketRequest, dict]):
                 The request object. Request message for
                 ProvisionAccountTicket RPC.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -1142,7 +1048,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.analytics.admin_v1alpha.types.ProvisionAccountTicketResponse:
+            google.analytics.admin_v1beta.types.ProvisionAccountTicketResponse:
                 Response message for
                 ProvisionAccountTicket RPC.
 
@@ -1183,14 +1089,14 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         .. code-block:: python
 
-            from google.analytics import admin_v1alpha
+            from google.analytics import admin_v1beta
 
             def sample_list_account_summaries():
                 # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
+                client = admin_v1beta.AnalyticsAdminServiceClient()
 
                 # Initialize request argument(s)
-                request = admin_v1alpha.ListAccountSummariesRequest(
+                request = admin_v1beta.ListAccountSummariesRequest(
                 )
 
                 # Make the request
@@ -1201,7 +1107,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                     print(response)
 
         Args:
-            request (Union[google.analytics.admin_v1alpha.types.ListAccountSummariesRequest, dict]):
+            request (Union[google.analytics.admin_v1beta.types.ListAccountSummariesRequest, dict]):
                 The request object. Request message for
                 ListAccountSummaries RPC.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -1211,7 +1117,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.analytics.admin_v1alpha.services.analytics_admin_service.pagers.ListAccountSummariesPager:
+            google.analytics.admin_v1beta.services.analytics_admin_service.pagers.ListAccountSummariesPager:
                 Response message for
                 ListAccountSummaries RPC.
                 Iterating over this object will yield
@@ -1264,14 +1170,14 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         .. code-block:: python
 
-            from google.analytics import admin_v1alpha
+            from google.analytics import admin_v1beta
 
             def sample_get_property():
                 # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
+                client = admin_v1beta.AnalyticsAdminServiceClient()
 
                 # Initialize request argument(s)
-                request = admin_v1alpha.GetPropertyRequest(
+                request = admin_v1beta.GetPropertyRequest(
                     name="name_value",
                 )
 
@@ -1282,7 +1188,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 print(response)
 
         Args:
-            request (Union[google.analytics.admin_v1alpha.types.GetPropertyRequest, dict]):
+            request (Union[google.analytics.admin_v1beta.types.GetPropertyRequest, dict]):
                 The request object. Request message for GetProperty RPC.
             name (str):
                 Required. The name of the property to lookup. Format:
@@ -1298,7 +1204,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.analytics.admin_v1alpha.types.Property:
+            google.analytics.admin_v1beta.types.Property:
                 A resource message representing a
                 Google Analytics GA4 property.
 
@@ -1363,14 +1269,14 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         .. code-block:: python
 
-            from google.analytics import admin_v1alpha
+            from google.analytics import admin_v1beta
 
             def sample_list_properties():
                 # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
+                client = admin_v1beta.AnalyticsAdminServiceClient()
 
                 # Initialize request argument(s)
-                request = admin_v1alpha.ListPropertiesRequest(
+                request = admin_v1beta.ListPropertiesRequest(
                     filter="filter_value",
                 )
 
@@ -1382,7 +1288,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                     print(response)
 
         Args:
-            request (Union[google.analytics.admin_v1alpha.types.ListPropertiesRequest, dict]):
+            request (Union[google.analytics.admin_v1beta.types.ListPropertiesRequest, dict]):
                 The request object. Request message for ListProperties
                 RPC.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -1392,7 +1298,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.analytics.admin_v1alpha.services.analytics_admin_service.pagers.ListPropertiesPager:
+            google.analytics.admin_v1beta.services.analytics_admin_service.pagers.ListPropertiesPager:
                 Response message for ListProperties
                 RPC.
                 Iterating over this object will yield
@@ -1446,18 +1352,18 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         .. code-block:: python
 
-            from google.analytics import admin_v1alpha
+            from google.analytics import admin_v1beta
 
             def sample_create_property():
                 # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
+                client = admin_v1beta.AnalyticsAdminServiceClient()
 
                 # Initialize request argument(s)
-                property = admin_v1alpha.Property()
+                property = admin_v1beta.Property()
                 property.display_name = "display_name_value"
                 property.time_zone = "time_zone_value"
 
-                request = admin_v1alpha.CreatePropertyRequest(
+                request = admin_v1beta.CreatePropertyRequest(
                     property=property,
                 )
 
@@ -1468,10 +1374,10 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 print(response)
 
         Args:
-            request (Union[google.analytics.admin_v1alpha.types.CreatePropertyRequest, dict]):
+            request (Union[google.analytics.admin_v1beta.types.CreatePropertyRequest, dict]):
                 The request object. Request message for CreateProperty
                 RPC.
-            property (google.analytics.admin_v1alpha.types.Property):
+            property (google.analytics.admin_v1beta.types.Property):
                 Required. The property to create.
                 Note: the supplied property must specify
                 its parent.
@@ -1486,7 +1392,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.analytics.admin_v1alpha.types.Property:
+            google.analytics.admin_v1beta.types.Property:
                 A resource message representing a
                 Google Analytics GA4 property.
 
@@ -1551,14 +1457,14 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         .. code-block:: python
 
-            from google.analytics import admin_v1alpha
+            from google.analytics import admin_v1beta
 
             def sample_delete_property():
                 # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
+                client = admin_v1beta.AnalyticsAdminServiceClient()
 
                 # Initialize request argument(s)
-                request = admin_v1alpha.DeletePropertyRequest(
+                request = admin_v1beta.DeletePropertyRequest(
                     name="name_value",
                 )
 
@@ -1569,7 +1475,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 print(response)
 
         Args:
-            request (Union[google.analytics.admin_v1alpha.types.DeletePropertyRequest, dict]):
+            request (Union[google.analytics.admin_v1beta.types.DeletePropertyRequest, dict]):
                 The request object. Request message for DeleteProperty
                 RPC.
             name (str):
@@ -1587,7 +1493,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.analytics.admin_v1alpha.types.Property:
+            google.analytics.admin_v1beta.types.Property:
                 A resource message representing a
                 Google Analytics GA4 property.
 
@@ -1648,18 +1554,18 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         .. code-block:: python
 
-            from google.analytics import admin_v1alpha
+            from google.analytics import admin_v1beta
 
             def sample_update_property():
                 # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
+                client = admin_v1beta.AnalyticsAdminServiceClient()
 
                 # Initialize request argument(s)
-                property = admin_v1alpha.Property()
+                property = admin_v1beta.Property()
                 property.display_name = "display_name_value"
                 property.time_zone = "time_zone_value"
 
-                request = admin_v1alpha.UpdatePropertyRequest(
+                request = admin_v1beta.UpdatePropertyRequest(
                     property=property,
                 )
 
@@ -1670,10 +1576,10 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 print(response)
 
         Args:
-            request (Union[google.analytics.admin_v1alpha.types.UpdatePropertyRequest, dict]):
+            request (Union[google.analytics.admin_v1beta.types.UpdatePropertyRequest, dict]):
                 The request object. Request message for UpdateProperty
                 RPC.
-            property (google.analytics.admin_v1alpha.types.Property):
+            property (google.analytics.admin_v1beta.types.Property):
                 Required. The property to update. The property's
                 ``name`` field is used to identify the property to be
                 updated.
@@ -1698,7 +1604,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.analytics.admin_v1alpha.types.Property:
+            google.analytics.admin_v1beta.types.Property:
                 A resource message representing a
                 Google Analytics GA4 property.
 
@@ -1749,900 +1655,6 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         # Done; return the response.
         return response
 
-    def get_user_link(
-        self,
-        request: Union[analytics_admin.GetUserLinkRequest, dict] = None,
-        *,
-        name: str = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> resources.UserLink:
-        r"""Gets information about a user's link to an account or
-        property.
-
-        .. code-block:: python
-
-            from google.analytics import admin_v1alpha
-
-            def sample_get_user_link():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                request = admin_v1alpha.GetUserLinkRequest(
-                    name="name_value",
-                )
-
-                # Make the request
-                response = client.get_user_link(request=request)
-
-                # Handle the response
-                print(response)
-
-        Args:
-            request (Union[google.analytics.admin_v1alpha.types.GetUserLinkRequest, dict]):
-                The request object. Request message for GetUserLink RPC.
-            name (str):
-                Required. Example format:
-                accounts/1234/userLinks/5678
-
-                This corresponds to the ``name`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-
-        Returns:
-            google.analytics.admin_v1alpha.types.UserLink:
-                A resource message representing a
-                user's permissions on an Account or
-                Property resource.
-
-        """
-        # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
-        has_flattened_params = any([name])
-        if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
-
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.GetUserLinkRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
-        if not isinstance(request, analytics_admin.GetUserLinkRequest):
-            request = analytics_admin.GetUserLinkRequest(request)
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-            if name is not None:
-                request.name = name
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.get_user_link]
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
-
-        # Send the request.
-        response = rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # Done; return the response.
-        return response
-
-    def batch_get_user_links(
-        self,
-        request: Union[analytics_admin.BatchGetUserLinksRequest, dict] = None,
-        *,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> analytics_admin.BatchGetUserLinksResponse:
-        r"""Gets information about multiple users' links to an
-        account or property.
-
-        .. code-block:: python
-
-            from google.analytics import admin_v1alpha
-
-            def sample_batch_get_user_links():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                request = admin_v1alpha.BatchGetUserLinksRequest(
-                    parent="parent_value",
-                    names=['names_value_1', 'names_value_2'],
-                )
-
-                # Make the request
-                response = client.batch_get_user_links(request=request)
-
-                # Handle the response
-                print(response)
-
-        Args:
-            request (Union[google.analytics.admin_v1alpha.types.BatchGetUserLinksRequest, dict]):
-                The request object. Request message for
-                BatchGetUserLinks RPC.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-
-        Returns:
-            google.analytics.admin_v1alpha.types.BatchGetUserLinksResponse:
-                Response message for
-                BatchGetUserLinks RPC.
-
-        """
-        # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.BatchGetUserLinksRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
-        if not isinstance(request, analytics_admin.BatchGetUserLinksRequest):
-            request = analytics_admin.BatchGetUserLinksRequest(request)
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.batch_get_user_links]
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
-
-        # Send the request.
-        response = rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # Done; return the response.
-        return response
-
-    def list_user_links(
-        self,
-        request: Union[analytics_admin.ListUserLinksRequest, dict] = None,
-        *,
-        parent: str = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> pagers.ListUserLinksPager:
-        r"""Lists all user links on an account or property.
-
-        .. code-block:: python
-
-            from google.analytics import admin_v1alpha
-
-            def sample_list_user_links():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                request = admin_v1alpha.ListUserLinksRequest(
-                    parent="parent_value",
-                )
-
-                # Make the request
-                page_result = client.list_user_links(request=request)
-
-                # Handle the response
-                for response in page_result:
-                    print(response)
-
-        Args:
-            request (Union[google.analytics.admin_v1alpha.types.ListUserLinksRequest, dict]):
-                The request object. Request message for ListUserLinks
-                RPC.
-            parent (str):
-                Required. Example format:
-                accounts/1234
-
-                This corresponds to the ``parent`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-
-        Returns:
-            google.analytics.admin_v1alpha.services.analytics_admin_service.pagers.ListUserLinksPager:
-                Response message for ListUserLinks
-                RPC.
-                Iterating over this object will yield
-                results and resolve additional pages
-                automatically.
-
-        """
-        # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
-        has_flattened_params = any([parent])
-        if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
-
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.ListUserLinksRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
-        if not isinstance(request, analytics_admin.ListUserLinksRequest):
-            request = analytics_admin.ListUserLinksRequest(request)
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-            if parent is not None:
-                request.parent = parent
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.list_user_links]
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
-
-        # Send the request.
-        response = rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # This method is paged; wrap the response in a pager, which provides
-        # an `__iter__` convenience method.
-        response = pagers.ListUserLinksPager(
-            method=rpc,
-            request=request,
-            response=response,
-            metadata=metadata,
-        )
-
-        # Done; return the response.
-        return response
-
-    def audit_user_links(
-        self,
-        request: Union[analytics_admin.AuditUserLinksRequest, dict] = None,
-        *,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> pagers.AuditUserLinksPager:
-        r"""Lists all user links on an account or property,
-        including implicit ones that come from effective
-        permissions granted by groups or organization admin
-        roles.
-
-        If a returned user link does not have direct
-        permissions, they cannot be removed from the account or
-        property directly with the DeleteUserLink command. They
-        have to be removed from the group/etc that gives them
-        permissions, which is currently only usable/discoverable
-        in the GA or GMP UIs.
-
-        .. code-block:: python
-
-            from google.analytics import admin_v1alpha
-
-            def sample_audit_user_links():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                request = admin_v1alpha.AuditUserLinksRequest(
-                    parent="parent_value",
-                )
-
-                # Make the request
-                page_result = client.audit_user_links(request=request)
-
-                # Handle the response
-                for response in page_result:
-                    print(response)
-
-        Args:
-            request (Union[google.analytics.admin_v1alpha.types.AuditUserLinksRequest, dict]):
-                The request object. Request message for AuditUserLinks
-                RPC.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-
-        Returns:
-            google.analytics.admin_v1alpha.services.analytics_admin_service.pagers.AuditUserLinksPager:
-                Response message for AuditUserLinks
-                RPC.
-                Iterating over this object will yield
-                results and resolve additional pages
-                automatically.
-
-        """
-        # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.AuditUserLinksRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
-        if not isinstance(request, analytics_admin.AuditUserLinksRequest):
-            request = analytics_admin.AuditUserLinksRequest(request)
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.audit_user_links]
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
-
-        # Send the request.
-        response = rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # This method is paged; wrap the response in a pager, which provides
-        # an `__iter__` convenience method.
-        response = pagers.AuditUserLinksPager(
-            method=rpc,
-            request=request,
-            response=response,
-            metadata=metadata,
-        )
-
-        # Done; return the response.
-        return response
-
-    def create_user_link(
-        self,
-        request: Union[analytics_admin.CreateUserLinkRequest, dict] = None,
-        *,
-        parent: str = None,
-        user_link: resources.UserLink = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> resources.UserLink:
-        r"""Creates a user link on an account or property.
-        If the user with the specified email already has
-        permissions on the account or property, then the user's
-        existing permissions will be unioned with the
-        permissions specified in the new UserLink.
-
-        .. code-block:: python
-
-            from google.analytics import admin_v1alpha
-
-            def sample_create_user_link():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                request = admin_v1alpha.CreateUserLinkRequest(
-                    parent="parent_value",
-                )
-
-                # Make the request
-                response = client.create_user_link(request=request)
-
-                # Handle the response
-                print(response)
-
-        Args:
-            request (Union[google.analytics.admin_v1alpha.types.CreateUserLinkRequest, dict]):
-                The request object. Request message for CreateUserLink
-                RPC.
-                Users can have multiple email addresses associated with
-                their Google account, and one of these email addresses
-                is the "primary" email address. Any of the email
-                addresses associated with a Google account may be used
-                for a new UserLink, but the returned UserLink will
-                always contain the "primary" email address. As a result,
-                the input and output email address for this request may
-                differ.
-            parent (str):
-                Required. Example format:
-                accounts/1234
-
-                This corresponds to the ``parent`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            user_link (google.analytics.admin_v1alpha.types.UserLink):
-                Required. The user link to create.
-                This corresponds to the ``user_link`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-
-        Returns:
-            google.analytics.admin_v1alpha.types.UserLink:
-                A resource message representing a
-                user's permissions on an Account or
-                Property resource.
-
-        """
-        # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
-        has_flattened_params = any([parent, user_link])
-        if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
-
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.CreateUserLinkRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
-        if not isinstance(request, analytics_admin.CreateUserLinkRequest):
-            request = analytics_admin.CreateUserLinkRequest(request)
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-            if parent is not None:
-                request.parent = parent
-            if user_link is not None:
-                request.user_link = user_link
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.create_user_link]
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
-
-        # Send the request.
-        response = rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # Done; return the response.
-        return response
-
-    def batch_create_user_links(
-        self,
-        request: Union[analytics_admin.BatchCreateUserLinksRequest, dict] = None,
-        *,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> analytics_admin.BatchCreateUserLinksResponse:
-        r"""Creates information about multiple users' links to an
-        account or property.
-        This method is transactional. If any UserLink cannot be
-        created, none of the UserLinks will be created.
-
-        .. code-block:: python
-
-            from google.analytics import admin_v1alpha
-
-            def sample_batch_create_user_links():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                requests = admin_v1alpha.CreateUserLinkRequest()
-                requests.parent = "parent_value"
-
-                request = admin_v1alpha.BatchCreateUserLinksRequest(
-                    parent="parent_value",
-                    requests=requests,
-                )
-
-                # Make the request
-                response = client.batch_create_user_links(request=request)
-
-                # Handle the response
-                print(response)
-
-        Args:
-            request (Union[google.analytics.admin_v1alpha.types.BatchCreateUserLinksRequest, dict]):
-                The request object. Request message for
-                BatchCreateUserLinks RPC.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-
-        Returns:
-            google.analytics.admin_v1alpha.types.BatchCreateUserLinksResponse:
-                Response message for
-                BatchCreateUserLinks RPC.
-
-        """
-        # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.BatchCreateUserLinksRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
-        if not isinstance(request, analytics_admin.BatchCreateUserLinksRequest):
-            request = analytics_admin.BatchCreateUserLinksRequest(request)
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.batch_create_user_links]
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
-
-        # Send the request.
-        response = rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # Done; return the response.
-        return response
-
-    def update_user_link(
-        self,
-        request: Union[analytics_admin.UpdateUserLinkRequest, dict] = None,
-        *,
-        user_link: resources.UserLink = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> resources.UserLink:
-        r"""Updates a user link on an account or property.
-
-        .. code-block:: python
-
-            from google.analytics import admin_v1alpha
-
-            def sample_update_user_link():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                request = admin_v1alpha.UpdateUserLinkRequest(
-                )
-
-                # Make the request
-                response = client.update_user_link(request=request)
-
-                # Handle the response
-                print(response)
-
-        Args:
-            request (Union[google.analytics.admin_v1alpha.types.UpdateUserLinkRequest, dict]):
-                The request object. Request message for UpdateUserLink
-                RPC.
-            user_link (google.analytics.admin_v1alpha.types.UserLink):
-                Required. The user link to update.
-                This corresponds to the ``user_link`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-
-        Returns:
-            google.analytics.admin_v1alpha.types.UserLink:
-                A resource message representing a
-                user's permissions on an Account or
-                Property resource.
-
-        """
-        # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
-        has_flattened_params = any([user_link])
-        if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
-
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.UpdateUserLinkRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
-        if not isinstance(request, analytics_admin.UpdateUserLinkRequest):
-            request = analytics_admin.UpdateUserLinkRequest(request)
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-            if user_link is not None:
-                request.user_link = user_link
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.update_user_link]
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("user_link.name", request.user_link.name),)
-            ),
-        )
-
-        # Send the request.
-        response = rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # Done; return the response.
-        return response
-
-    def batch_update_user_links(
-        self,
-        request: Union[analytics_admin.BatchUpdateUserLinksRequest, dict] = None,
-        *,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> analytics_admin.BatchUpdateUserLinksResponse:
-        r"""Updates information about multiple users' links to an
-        account or property.
-
-        .. code-block:: python
-
-            from google.analytics import admin_v1alpha
-
-            def sample_batch_update_user_links():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                request = admin_v1alpha.BatchUpdateUserLinksRequest(
-                    parent="parent_value",
-                )
-
-                # Make the request
-                response = client.batch_update_user_links(request=request)
-
-                # Handle the response
-                print(response)
-
-        Args:
-            request (Union[google.analytics.admin_v1alpha.types.BatchUpdateUserLinksRequest, dict]):
-                The request object. Request message for
-                BatchUpdateUserLinks RPC.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-
-        Returns:
-            google.analytics.admin_v1alpha.types.BatchUpdateUserLinksResponse:
-                Response message for
-                BatchUpdateUserLinks RPC.
-
-        """
-        # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.BatchUpdateUserLinksRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
-        if not isinstance(request, analytics_admin.BatchUpdateUserLinksRequest):
-            request = analytics_admin.BatchUpdateUserLinksRequest(request)
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.batch_update_user_links]
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
-
-        # Send the request.
-        response = rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # Done; return the response.
-        return response
-
-    def delete_user_link(
-        self,
-        request: Union[analytics_admin.DeleteUserLinkRequest, dict] = None,
-        *,
-        name: str = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> None:
-        r"""Deletes a user link on an account or property.
-
-        .. code-block:: python
-
-            from google.analytics import admin_v1alpha
-
-            def sample_delete_user_link():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                request = admin_v1alpha.DeleteUserLinkRequest(
-                    name="name_value",
-                )
-
-                # Make the request
-                client.delete_user_link(request=request)
-
-        Args:
-            request (Union[google.analytics.admin_v1alpha.types.DeleteUserLinkRequest, dict]):
-                The request object. Request message for DeleteUserLink
-                RPC.
-            name (str):
-                Required. Example format:
-                accounts/1234/userLinks/5678
-
-                This corresponds to the ``name`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-        """
-        # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
-        has_flattened_params = any([name])
-        if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
-
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.DeleteUserLinkRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
-        if not isinstance(request, analytics_admin.DeleteUserLinkRequest):
-            request = analytics_admin.DeleteUserLinkRequest(request)
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-            if name is not None:
-                request.name = name
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.delete_user_link]
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
-
-        # Send the request.
-        rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-    def batch_delete_user_links(
-        self,
-        request: Union[analytics_admin.BatchDeleteUserLinksRequest, dict] = None,
-        *,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> None:
-        r"""Deletes information about multiple users' links to an
-        account or property.
-
-        .. code-block:: python
-
-            from google.analytics import admin_v1alpha
-
-            def sample_batch_delete_user_links():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                requests = admin_v1alpha.DeleteUserLinkRequest()
-                requests.name = "name_value"
-
-                request = admin_v1alpha.BatchDeleteUserLinksRequest(
-                    parent="parent_value",
-                    requests=requests,
-                )
-
-                # Make the request
-                client.batch_delete_user_links(request=request)
-
-        Args:
-            request (Union[google.analytics.admin_v1alpha.types.BatchDeleteUserLinksRequest, dict]):
-                The request object. Request message for
-                BatchDeleteUserLinks RPC.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-        """
-        # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.BatchDeleteUserLinksRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
-        if not isinstance(request, analytics_admin.BatchDeleteUserLinksRequest):
-            request = analytics_admin.BatchDeleteUserLinksRequest(request)
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.batch_delete_user_links]
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
-
-        # Send the request.
-        rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
     def create_firebase_link(
         self,
         request: Union[analytics_admin.CreateFirebaseLinkRequest, dict] = None,
@@ -2658,14 +1670,14 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         .. code-block:: python
 
-            from google.analytics import admin_v1alpha
+            from google.analytics import admin_v1beta
 
             def sample_create_firebase_link():
                 # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
+                client = admin_v1beta.AnalyticsAdminServiceClient()
 
                 # Initialize request argument(s)
-                request = admin_v1alpha.CreateFirebaseLinkRequest(
+                request = admin_v1beta.CreateFirebaseLinkRequest(
                     parent="parent_value",
                 )
 
@@ -2676,7 +1688,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 print(response)
 
         Args:
-            request (Union[google.analytics.admin_v1alpha.types.CreateFirebaseLinkRequest, dict]):
+            request (Union[google.analytics.admin_v1beta.types.CreateFirebaseLinkRequest, dict]):
                 The request object. Request message for
                 CreateFirebaseLink RPC
             parent (str):
@@ -2686,7 +1698,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            firebase_link (google.analytics.admin_v1alpha.types.FirebaseLink):
+            firebase_link (google.analytics.admin_v1beta.types.FirebaseLink):
                 Required. The Firebase link to
                 create.
 
@@ -2700,7 +1712,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.analytics.admin_v1alpha.types.FirebaseLink:
+            google.analytics.admin_v1beta.types.FirebaseLink:
                 A link between a GA4 property and a
                 Firebase project.
 
@@ -2762,14 +1774,14 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         .. code-block:: python
 
-            from google.analytics import admin_v1alpha
+            from google.analytics import admin_v1beta
 
             def sample_delete_firebase_link():
                 # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
+                client = admin_v1beta.AnalyticsAdminServiceClient()
 
                 # Initialize request argument(s)
-                request = admin_v1alpha.DeleteFirebaseLinkRequest(
+                request = admin_v1beta.DeleteFirebaseLinkRequest(
                     name="name_value",
                 )
 
@@ -2777,7 +1789,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 client.delete_firebase_link(request=request)
 
         Args:
-            request (Union[google.analytics.admin_v1alpha.types.DeleteFirebaseLinkRequest, dict]):
+            request (Union[google.analytics.admin_v1beta.types.DeleteFirebaseLinkRequest, dict]):
                 The request object. Request message for
                 DeleteFirebaseLink RPC
             name (str):
@@ -2847,14 +1859,14 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         .. code-block:: python
 
-            from google.analytics import admin_v1alpha
+            from google.analytics import admin_v1beta
 
             def sample_list_firebase_links():
                 # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
+                client = admin_v1beta.AnalyticsAdminServiceClient()
 
                 # Initialize request argument(s)
-                request = admin_v1alpha.ListFirebaseLinksRequest(
+                request = admin_v1beta.ListFirebaseLinksRequest(
                     parent="parent_value",
                 )
 
@@ -2866,7 +1878,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                     print(response)
 
         Args:
-            request (Union[google.analytics.admin_v1alpha.types.ListFirebaseLinksRequest, dict]):
+            request (Union[google.analytics.admin_v1beta.types.ListFirebaseLinksRequest, dict]):
                 The request object. Request message for
                 ListFirebaseLinks RPC
             parent (str):
@@ -2883,7 +1895,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.analytics.admin_v1alpha.services.analytics_admin_service.pagers.ListFirebaseLinksPager:
+            google.analytics.admin_v1beta.services.analytics_admin_service.pagers.ListFirebaseLinksPager:
                 Response message for
                 ListFirebaseLinks RPC
                 Iterating over this object will yield
@@ -2942,107 +1954,6 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         # Done; return the response.
         return response
 
-    def get_global_site_tag(
-        self,
-        request: Union[analytics_admin.GetGlobalSiteTagRequest, dict] = None,
-        *,
-        name: str = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> resources.GlobalSiteTag:
-        r"""Returns the Site Tag for the specified web stream.
-        Site Tags are immutable singletons.
-
-        .. code-block:: python
-
-            from google.analytics import admin_v1alpha
-
-            def sample_get_global_site_tag():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                request = admin_v1alpha.GetGlobalSiteTagRequest(
-                    name="name_value",
-                )
-
-                # Make the request
-                response = client.get_global_site_tag(request=request)
-
-                # Handle the response
-                print(response)
-
-        Args:
-            request (Union[google.analytics.admin_v1alpha.types.GetGlobalSiteTagRequest, dict]):
-                The request object. Request message for GetGlobalSiteTag
-                RPC.
-            name (str):
-                Required. The name of the site tag to lookup. Note that
-                site tags are singletons and do not have unique IDs.
-                Format:
-                properties/{property_id}/dataStreams/{stream_id}/globalSiteTag
-                Example: "properties/123/dataStreams/456/globalSiteTag"
-
-                This corresponds to the ``name`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-
-        Returns:
-            google.analytics.admin_v1alpha.types.GlobalSiteTag:
-                Read-only resource with the tag for
-                sending data from a website to a
-                DataStream. Only present for web
-                DataStream resources.
-
-        """
-        # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
-        has_flattened_params = any([name])
-        if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
-
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.GetGlobalSiteTagRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
-        if not isinstance(request, analytics_admin.GetGlobalSiteTagRequest):
-            request = analytics_admin.GetGlobalSiteTagRequest(request)
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-            if name is not None:
-                request.name = name
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.get_global_site_tag]
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
-
-        # Send the request.
-        response = rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # Done; return the response.
-        return response
-
     def create_google_ads_link(
         self,
         request: Union[analytics_admin.CreateGoogleAdsLinkRequest, dict] = None,
@@ -3057,14 +1968,14 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         .. code-block:: python
 
-            from google.analytics import admin_v1alpha
+            from google.analytics import admin_v1beta
 
             def sample_create_google_ads_link():
                 # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
+                client = admin_v1beta.AnalyticsAdminServiceClient()
 
                 # Initialize request argument(s)
-                request = admin_v1alpha.CreateGoogleAdsLinkRequest(
+                request = admin_v1beta.CreateGoogleAdsLinkRequest(
                     parent="parent_value",
                 )
 
@@ -3075,7 +1986,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 print(response)
 
         Args:
-            request (Union[google.analytics.admin_v1alpha.types.CreateGoogleAdsLinkRequest, dict]):
+            request (Union[google.analytics.admin_v1beta.types.CreateGoogleAdsLinkRequest, dict]):
                 The request object. Request message for
                 CreateGoogleAdsLink RPC
             parent (str):
@@ -3085,7 +1996,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            google_ads_link (google.analytics.admin_v1alpha.types.GoogleAdsLink):
+            google_ads_link (google.analytics.admin_v1beta.types.GoogleAdsLink):
                 Required. The GoogleAdsLink to
                 create.
 
@@ -3099,7 +2010,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.analytics.admin_v1alpha.types.GoogleAdsLink:
+            google.analytics.admin_v1beta.types.GoogleAdsLink:
                 A link between a GA4 property and a
                 Google Ads account.
 
@@ -3162,14 +2073,14 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         .. code-block:: python
 
-            from google.analytics import admin_v1alpha
+            from google.analytics import admin_v1beta
 
             def sample_update_google_ads_link():
                 # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
+                client = admin_v1beta.AnalyticsAdminServiceClient()
 
                 # Initialize request argument(s)
-                request = admin_v1alpha.UpdateGoogleAdsLinkRequest(
+                request = admin_v1beta.UpdateGoogleAdsLinkRequest(
                 )
 
                 # Make the request
@@ -3179,10 +2090,10 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 print(response)
 
         Args:
-            request (Union[google.analytics.admin_v1alpha.types.UpdateGoogleAdsLinkRequest, dict]):
+            request (Union[google.analytics.admin_v1beta.types.UpdateGoogleAdsLinkRequest, dict]):
                 The request object. Request message for
                 UpdateGoogleAdsLink RPC
-            google_ads_link (google.analytics.admin_v1alpha.types.GoogleAdsLink):
+            google_ads_link (google.analytics.admin_v1beta.types.GoogleAdsLink):
                 The GoogleAdsLink to update
                 This corresponds to the ``google_ads_link`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -3204,7 +2115,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.analytics.admin_v1alpha.types.GoogleAdsLink:
+            google.analytics.admin_v1beta.types.GoogleAdsLink:
                 A link between a GA4 property and a
                 Google Ads account.
 
@@ -3268,14 +2179,14 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         .. code-block:: python
 
-            from google.analytics import admin_v1alpha
+            from google.analytics import admin_v1beta
 
             def sample_delete_google_ads_link():
                 # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
+                client = admin_v1beta.AnalyticsAdminServiceClient()
 
                 # Initialize request argument(s)
-                request = admin_v1alpha.DeleteGoogleAdsLinkRequest(
+                request = admin_v1beta.DeleteGoogleAdsLinkRequest(
                     name="name_value",
                 )
 
@@ -3283,7 +2194,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 client.delete_google_ads_link(request=request)
 
         Args:
-            request (Union[google.analytics.admin_v1alpha.types.DeleteGoogleAdsLinkRequest, dict]):
+            request (Union[google.analytics.admin_v1beta.types.DeleteGoogleAdsLinkRequest, dict]):
                 The request object. Request message for
                 DeleteGoogleAdsLink RPC.
             name (str):
@@ -3351,14 +2262,14 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         .. code-block:: python
 
-            from google.analytics import admin_v1alpha
+            from google.analytics import admin_v1beta
 
             def sample_list_google_ads_links():
                 # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
+                client = admin_v1beta.AnalyticsAdminServiceClient()
 
                 # Initialize request argument(s)
-                request = admin_v1alpha.ListGoogleAdsLinksRequest(
+                request = admin_v1beta.ListGoogleAdsLinksRequest(
                     parent="parent_value",
                 )
 
@@ -3370,7 +2281,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                     print(response)
 
         Args:
-            request (Union[google.analytics.admin_v1alpha.types.ListGoogleAdsLinksRequest, dict]):
+            request (Union[google.analytics.admin_v1beta.types.ListGoogleAdsLinksRequest, dict]):
                 The request object. Request message for
                 ListGoogleAdsLinks RPC.
             parent (str):
@@ -3387,7 +2298,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.analytics.admin_v1alpha.services.analytics_admin_service.pagers.ListGoogleAdsLinksPager:
+            google.analytics.admin_v1beta.services.analytics_admin_service.pagers.ListGoogleAdsLinksPager:
                 Response message for
                 ListGoogleAdsLinks RPC.
                 Iterating over this object will yield
@@ -3460,14 +2371,14 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         .. code-block:: python
 
-            from google.analytics import admin_v1alpha
+            from google.analytics import admin_v1beta
 
             def sample_get_data_sharing_settings():
                 # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
+                client = admin_v1beta.AnalyticsAdminServiceClient()
 
                 # Initialize request argument(s)
-                request = admin_v1alpha.GetDataSharingSettingsRequest(
+                request = admin_v1beta.GetDataSharingSettingsRequest(
                     name="name_value",
                 )
 
@@ -3478,7 +2389,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 print(response)
 
         Args:
-            request (Union[google.analytics.admin_v1alpha.types.GetDataSharingSettingsRequest, dict]):
+            request (Union[google.analytics.admin_v1beta.types.GetDataSharingSettingsRequest, dict]):
                 The request object. Request message for
                 GetDataSharingSettings RPC.
             name (str):
@@ -3498,7 +2409,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.analytics.admin_v1alpha.types.DataSharingSettings:
+            google.analytics.admin_v1beta.types.DataSharingSettings:
                 A resource message representing data
                 sharing settings of a Google Analytics
                 account.
@@ -3563,14 +2474,14 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         .. code-block:: python
 
-            from google.analytics import admin_v1alpha
+            from google.analytics import admin_v1beta
 
             def sample_get_measurement_protocol_secret():
                 # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
+                client = admin_v1beta.AnalyticsAdminServiceClient()
 
                 # Initialize request argument(s)
-                request = admin_v1alpha.GetMeasurementProtocolSecretRequest(
+                request = admin_v1beta.GetMeasurementProtocolSecretRequest(
                     name="name_value",
                 )
 
@@ -3581,7 +2492,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 print(response)
 
         Args:
-            request (Union[google.analytics.admin_v1alpha.types.GetMeasurementProtocolSecretRequest, dict]):
+            request (Union[google.analytics.admin_v1beta.types.GetMeasurementProtocolSecretRequest, dict]):
                 The request object. Request message for
                 GetMeasurementProtocolSecret RPC.
             name (str):
@@ -3599,7 +2510,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.analytics.admin_v1alpha.types.MeasurementProtocolSecret:
+            google.analytics.admin_v1beta.types.MeasurementProtocolSecret:
                 A secret value used for sending hits
                 to Measurement Protocol.
 
@@ -3664,14 +2575,14 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         .. code-block:: python
 
-            from google.analytics import admin_v1alpha
+            from google.analytics import admin_v1beta
 
             def sample_list_measurement_protocol_secrets():
                 # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
+                client = admin_v1beta.AnalyticsAdminServiceClient()
 
                 # Initialize request argument(s)
-                request = admin_v1alpha.ListMeasurementProtocolSecretsRequest(
+                request = admin_v1beta.ListMeasurementProtocolSecretsRequest(
                     parent="parent_value",
                 )
 
@@ -3683,7 +2594,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                     print(response)
 
         Args:
-            request (Union[google.analytics.admin_v1alpha.types.ListMeasurementProtocolSecretsRequest, dict]):
+            request (Union[google.analytics.admin_v1beta.types.ListMeasurementProtocolSecretsRequest, dict]):
                 The request object. Request message for
                 ListMeasurementProtocolSecret RPC
             parent (str):
@@ -3701,7 +2612,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.analytics.admin_v1alpha.services.analytics_admin_service.pagers.ListMeasurementProtocolSecretsPager:
+            google.analytics.admin_v1beta.services.analytics_admin_service.pagers.ListMeasurementProtocolSecretsPager:
                 Response message for
                 ListMeasurementProtocolSecret RPC
                 Iterating over this object will yield
@@ -3780,17 +2691,17 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         .. code-block:: python
 
-            from google.analytics import admin_v1alpha
+            from google.analytics import admin_v1beta
 
             def sample_create_measurement_protocol_secret():
                 # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
+                client = admin_v1beta.AnalyticsAdminServiceClient()
 
                 # Initialize request argument(s)
-                measurement_protocol_secret = admin_v1alpha.MeasurementProtocolSecret()
+                measurement_protocol_secret = admin_v1beta.MeasurementProtocolSecret()
                 measurement_protocol_secret.display_name = "display_name_value"
 
-                request = admin_v1alpha.CreateMeasurementProtocolSecretRequest(
+                request = admin_v1beta.CreateMeasurementProtocolSecretRequest(
                     parent="parent_value",
                     measurement_protocol_secret=measurement_protocol_secret,
                 )
@@ -3802,7 +2713,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 print(response)
 
         Args:
-            request (Union[google.analytics.admin_v1alpha.types.CreateMeasurementProtocolSecretRequest, dict]):
+            request (Union[google.analytics.admin_v1beta.types.CreateMeasurementProtocolSecretRequest, dict]):
                 The request object. Request message for
                 CreateMeasurementProtocolSecret RPC
             parent (str):
@@ -3813,7 +2724,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            measurement_protocol_secret (google.analytics.admin_v1alpha.types.MeasurementProtocolSecret):
+            measurement_protocol_secret (google.analytics.admin_v1beta.types.MeasurementProtocolSecret):
                 Required. The measurement protocol
                 secret to create.
 
@@ -3827,7 +2738,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.analytics.admin_v1alpha.types.MeasurementProtocolSecret:
+            google.analytics.admin_v1beta.types.MeasurementProtocolSecret:
                 A secret value used for sending hits
                 to Measurement Protocol.
 
@@ -3895,14 +2806,14 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         .. code-block:: python
 
-            from google.analytics import admin_v1alpha
+            from google.analytics import admin_v1beta
 
             def sample_delete_measurement_protocol_secret():
                 # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
+                client = admin_v1beta.AnalyticsAdminServiceClient()
 
                 # Initialize request argument(s)
-                request = admin_v1alpha.DeleteMeasurementProtocolSecretRequest(
+                request = admin_v1beta.DeleteMeasurementProtocolSecretRequest(
                     name="name_value",
                 )
 
@@ -3910,7 +2821,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 client.delete_measurement_protocol_secret(request=request)
 
         Args:
-            request (Union[google.analytics.admin_v1alpha.types.DeleteMeasurementProtocolSecretRequest, dict]):
+            request (Union[google.analytics.admin_v1beta.types.DeleteMeasurementProtocolSecretRequest, dict]):
                 The request object. Request message for
                 DeleteMeasurementProtocolSecret RPC
             name (str):
@@ -3987,17 +2898,17 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         .. code-block:: python
 
-            from google.analytics import admin_v1alpha
+            from google.analytics import admin_v1beta
 
             def sample_update_measurement_protocol_secret():
                 # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
+                client = admin_v1beta.AnalyticsAdminServiceClient()
 
                 # Initialize request argument(s)
-                measurement_protocol_secret = admin_v1alpha.MeasurementProtocolSecret()
+                measurement_protocol_secret = admin_v1beta.MeasurementProtocolSecret()
                 measurement_protocol_secret.display_name = "display_name_value"
 
-                request = admin_v1alpha.UpdateMeasurementProtocolSecretRequest(
+                request = admin_v1beta.UpdateMeasurementProtocolSecretRequest(
                     measurement_protocol_secret=measurement_protocol_secret,
                 )
 
@@ -4008,10 +2919,10 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 print(response)
 
         Args:
-            request (Union[google.analytics.admin_v1alpha.types.UpdateMeasurementProtocolSecretRequest, dict]):
+            request (Union[google.analytics.admin_v1beta.types.UpdateMeasurementProtocolSecretRequest, dict]):
                 The request object. Request message for
                 UpdateMeasurementProtocolSecret RPC
-            measurement_protocol_secret (google.analytics.admin_v1alpha.types.MeasurementProtocolSecret):
+            measurement_protocol_secret (google.analytics.admin_v1beta.types.MeasurementProtocolSecret):
                 Required. The measurement protocol
                 secret to update.
 
@@ -4032,7 +2943,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.analytics.admin_v1alpha.types.MeasurementProtocolSecret:
+            google.analytics.admin_v1beta.types.MeasurementProtocolSecret:
                 A secret value used for sending hits
                 to Measurement Protocol.
 
@@ -4110,14 +3021,14 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         .. code-block:: python
 
-            from google.analytics import admin_v1alpha
+            from google.analytics import admin_v1beta
 
             def sample_acknowledge_user_data_collection():
                 # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
+                client = admin_v1beta.AnalyticsAdminServiceClient()
 
                 # Initialize request argument(s)
-                request = admin_v1alpha.AcknowledgeUserDataCollectionRequest(
+                request = admin_v1beta.AcknowledgeUserDataCollectionRequest(
                     property="property_value",
                     acknowledgement="acknowledgement_value",
                 )
@@ -4129,7 +3040,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 print(response)
 
         Args:
-            request (Union[google.analytics.admin_v1alpha.types.AcknowledgeUserDataCollectionRequest, dict]):
+            request (Union[google.analytics.admin_v1beta.types.AcknowledgeUserDataCollectionRequest, dict]):
                 The request object. Request message for
                 AcknowledgeUserDataCollection RPC.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -4139,7 +3050,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.analytics.admin_v1alpha.types.AcknowledgeUserDataCollectionResponse:
+            google.analytics.admin_v1beta.types.AcknowledgeUserDataCollectionResponse:
                 Response message for
                 AcknowledgeUserDataCollection RPC.
 
@@ -4190,14 +3101,14 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         .. code-block:: python
 
-            from google.analytics import admin_v1alpha
+            from google.analytics import admin_v1beta
 
             def sample_search_change_history_events():
                 # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
+                client = admin_v1beta.AnalyticsAdminServiceClient()
 
                 # Initialize request argument(s)
-                request = admin_v1alpha.SearchChangeHistoryEventsRequest(
+                request = admin_v1beta.SearchChangeHistoryEventsRequest(
                     account="account_value",
                 )
 
@@ -4209,7 +3120,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                     print(response)
 
         Args:
-            request (Union[google.analytics.admin_v1alpha.types.SearchChangeHistoryEventsRequest, dict]):
+            request (Union[google.analytics.admin_v1beta.types.SearchChangeHistoryEventsRequest, dict]):
                 The request object. Request message for
                 SearchChangeHistoryEvents RPC.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -4219,7 +3130,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.analytics.admin_v1alpha.services.analytics_admin_service.pagers.SearchChangeHistoryEventsPager:
+            google.analytics.admin_v1beta.services.analytics_admin_service.pagers.SearchChangeHistoryEventsPager:
                 Response message for SearchAccounts
                 RPC.
                 Iterating over this object will yield
@@ -4267,220 +3178,6 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         # Done; return the response.
         return response
 
-    def get_google_signals_settings(
-        self,
-        request: Union[analytics_admin.GetGoogleSignalsSettingsRequest, dict] = None,
-        *,
-        name: str = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> resources.GoogleSignalsSettings:
-        r"""Lookup for Google Signals settings for a property.
-
-        .. code-block:: python
-
-            from google.analytics import admin_v1alpha
-
-            def sample_get_google_signals_settings():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                request = admin_v1alpha.GetGoogleSignalsSettingsRequest(
-                    name="name_value",
-                )
-
-                # Make the request
-                response = client.get_google_signals_settings(request=request)
-
-                # Handle the response
-                print(response)
-
-        Args:
-            request (Union[google.analytics.admin_v1alpha.types.GetGoogleSignalsSettingsRequest, dict]):
-                The request object. Request message for
-                GetGoogleSignalsSettings RPC
-            name (str):
-                Required. The name of the google
-                signals settings to retrieve. Format:
-                properties/{property}/googleSignalsSettings
-
-                This corresponds to the ``name`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-
-        Returns:
-            google.analytics.admin_v1alpha.types.GoogleSignalsSettings:
-                Settings values for Google Signals.
-                This is a singleton resource.
-
-        """
-        # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
-        has_flattened_params = any([name])
-        if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
-
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.GetGoogleSignalsSettingsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
-        if not isinstance(request, analytics_admin.GetGoogleSignalsSettingsRequest):
-            request = analytics_admin.GetGoogleSignalsSettingsRequest(request)
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-            if name is not None:
-                request.name = name
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._transport._wrapped_methods[
-            self._transport.get_google_signals_settings
-        ]
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
-
-        # Send the request.
-        response = rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # Done; return the response.
-        return response
-
-    def update_google_signals_settings(
-        self,
-        request: Union[analytics_admin.UpdateGoogleSignalsSettingsRequest, dict] = None,
-        *,
-        google_signals_settings: resources.GoogleSignalsSettings = None,
-        update_mask: field_mask_pb2.FieldMask = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> resources.GoogleSignalsSettings:
-        r"""Updates Google Signals settings for a property.
-
-        .. code-block:: python
-
-            from google.analytics import admin_v1alpha
-
-            def sample_update_google_signals_settings():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                request = admin_v1alpha.UpdateGoogleSignalsSettingsRequest(
-                )
-
-                # Make the request
-                response = client.update_google_signals_settings(request=request)
-
-                # Handle the response
-                print(response)
-
-        Args:
-            request (Union[google.analytics.admin_v1alpha.types.UpdateGoogleSignalsSettingsRequest, dict]):
-                The request object. Request message for
-                UpdateGoogleSignalsSettings RPC
-            google_signals_settings (google.analytics.admin_v1alpha.types.GoogleSignalsSettings):
-                Required. The settings to update. The ``name`` field is
-                used to identify the settings to be updated.
-
-                This corresponds to the ``google_signals_settings`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            update_mask (google.protobuf.field_mask_pb2.FieldMask):
-                Required. The list of fields to be updated. Field names
-                must be in snake case (e.g., "field_to_update"). Omitted
-                fields will not be updated. To replace the entire
-                entity, use one path with the string "*" to match all
-                fields.
-
-                This corresponds to the ``update_mask`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-
-        Returns:
-            google.analytics.admin_v1alpha.types.GoogleSignalsSettings:
-                Settings values for Google Signals.
-                This is a singleton resource.
-
-        """
-        # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
-        has_flattened_params = any([google_signals_settings, update_mask])
-        if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
-
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.UpdateGoogleSignalsSettingsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
-        if not isinstance(request, analytics_admin.UpdateGoogleSignalsSettingsRequest):
-            request = analytics_admin.UpdateGoogleSignalsSettingsRequest(request)
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-            if google_signals_settings is not None:
-                request.google_signals_settings = google_signals_settings
-            if update_mask is not None:
-                request.update_mask = update_mask
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._transport._wrapped_methods[
-            self._transport.update_google_signals_settings
-        ]
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (
-                    (
-                        "google_signals_settings.name",
-                        request.google_signals_settings.name,
-                    ),
-                )
-            ),
-        )
-
-        # Send the request.
-        response = rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # Done; return the response.
-        return response
-
     def create_conversion_event(
         self,
         request: Union[analytics_admin.CreateConversionEventRequest, dict] = None,
@@ -4496,14 +3193,14 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         .. code-block:: python
 
-            from google.analytics import admin_v1alpha
+            from google.analytics import admin_v1beta
 
             def sample_create_conversion_event():
                 # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
+                client = admin_v1beta.AnalyticsAdminServiceClient()
 
                 # Initialize request argument(s)
-                request = admin_v1alpha.CreateConversionEventRequest(
+                request = admin_v1beta.CreateConversionEventRequest(
                     parent="parent_value",
                 )
 
@@ -4514,7 +3211,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 print(response)
 
         Args:
-            request (Union[google.analytics.admin_v1alpha.types.CreateConversionEventRequest, dict]):
+            request (Union[google.analytics.admin_v1beta.types.CreateConversionEventRequest, dict]):
                 The request object. Request message for
                 CreateConversionEvent RPC
             parent (str):
@@ -4526,7 +3223,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            conversion_event (google.analytics.admin_v1alpha.types.ConversionEvent):
+            conversion_event (google.analytics.admin_v1beta.types.ConversionEvent):
                 Required. The conversion event to
                 create.
 
@@ -4540,7 +3237,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.analytics.admin_v1alpha.types.ConversionEvent:
+            google.analytics.admin_v1beta.types.ConversionEvent:
                 A conversion event in a Google
                 Analytics property.
 
@@ -4602,14 +3299,14 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         .. code-block:: python
 
-            from google.analytics import admin_v1alpha
+            from google.analytics import admin_v1beta
 
             def sample_get_conversion_event():
                 # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
+                client = admin_v1beta.AnalyticsAdminServiceClient()
 
                 # Initialize request argument(s)
-                request = admin_v1alpha.GetConversionEventRequest(
+                request = admin_v1beta.GetConversionEventRequest(
                     name="name_value",
                 )
 
@@ -4620,7 +3317,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 print(response)
 
         Args:
-            request (Union[google.analytics.admin_v1alpha.types.GetConversionEventRequest, dict]):
+            request (Union[google.analytics.admin_v1beta.types.GetConversionEventRequest, dict]):
                 The request object. Request message for
                 GetConversionEvent RPC
             name (str):
@@ -4639,7 +3336,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.analytics.admin_v1alpha.types.ConversionEvent:
+            google.analytics.admin_v1beta.types.ConversionEvent:
                 A conversion event in a Google
                 Analytics property.
 
@@ -4699,14 +3396,14 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         .. code-block:: python
 
-            from google.analytics import admin_v1alpha
+            from google.analytics import admin_v1beta
 
             def sample_delete_conversion_event():
                 # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
+                client = admin_v1beta.AnalyticsAdminServiceClient()
 
                 # Initialize request argument(s)
-                request = admin_v1alpha.DeleteConversionEventRequest(
+                request = admin_v1beta.DeleteConversionEventRequest(
                     name="name_value",
                 )
 
@@ -4714,7 +3411,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 client.delete_conversion_event(request=request)
 
         Args:
-            request (Union[google.analytics.admin_v1alpha.types.DeleteConversionEventRequest, dict]):
+            request (Union[google.analytics.admin_v1beta.types.DeleteConversionEventRequest, dict]):
                 The request object. Request message for
                 DeleteConversionEvent RPC
             name (str):
@@ -4786,14 +3483,14 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         .. code-block:: python
 
-            from google.analytics import admin_v1alpha
+            from google.analytics import admin_v1beta
 
             def sample_list_conversion_events():
                 # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
+                client = admin_v1beta.AnalyticsAdminServiceClient()
 
                 # Initialize request argument(s)
-                request = admin_v1alpha.ListConversionEventsRequest(
+                request = admin_v1beta.ListConversionEventsRequest(
                     parent="parent_value",
                 )
 
@@ -4805,7 +3502,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                     print(response)
 
         Args:
-            request (Union[google.analytics.admin_v1alpha.types.ListConversionEventsRequest, dict]):
+            request (Union[google.analytics.admin_v1beta.types.ListConversionEventsRequest, dict]):
                 The request object. Request message for
                 ListConversionEvents RPC
             parent (str):
@@ -4823,7 +3520,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.analytics.admin_v1alpha.services.analytics_admin_service.pagers.ListConversionEventsPager:
+            google.analytics.admin_v1beta.services.analytics_admin_service.pagers.ListConversionEventsPager:
                 Response message for
                 ListConversionEvents RPC.
                 Iterating over this object will yield
@@ -4882,1197 +3579,6 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         # Done; return the response.
         return response
 
-    def get_display_video360_advertiser_link(
-        self,
-        request: Union[
-            analytics_admin.GetDisplayVideo360AdvertiserLinkRequest, dict
-        ] = None,
-        *,
-        name: str = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> resources.DisplayVideo360AdvertiserLink:
-        r"""Look up a single DisplayVideo360AdvertiserLink
-
-        .. code-block:: python
-
-            from google.analytics import admin_v1alpha
-
-            def sample_get_display_video360_advertiser_link():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                request = admin_v1alpha.GetDisplayVideo360AdvertiserLinkRequest(
-                    name="name_value",
-                )
-
-                # Make the request
-                response = client.get_display_video360_advertiser_link(request=request)
-
-                # Handle the response
-                print(response)
-
-        Args:
-            request (Union[google.analytics.admin_v1alpha.types.GetDisplayVideo360AdvertiserLinkRequest, dict]):
-                The request object. Request message for
-                GetDisplayVideo360AdvertiserLink RPC.
-            name (str):
-                Required. The name of the
-                DisplayVideo360AdvertiserLink to get.
-                Example format:
-                properties/1234/displayVideo360AdvertiserLink/5678
-
-                This corresponds to the ``name`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-
-        Returns:
-            google.analytics.admin_v1alpha.types.DisplayVideo360AdvertiserLink:
-                A link between a GA4 property and a
-                Display & Video 360 advertiser.
-
-        """
-        # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
-        has_flattened_params = any([name])
-        if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
-
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.GetDisplayVideo360AdvertiserLinkRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
-        if not isinstance(
-            request, analytics_admin.GetDisplayVideo360AdvertiserLinkRequest
-        ):
-            request = analytics_admin.GetDisplayVideo360AdvertiserLinkRequest(request)
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-            if name is not None:
-                request.name = name
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._transport._wrapped_methods[
-            self._transport.get_display_video360_advertiser_link
-        ]
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
-
-        # Send the request.
-        response = rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # Done; return the response.
-        return response
-
-    def list_display_video360_advertiser_links(
-        self,
-        request: Union[
-            analytics_admin.ListDisplayVideo360AdvertiserLinksRequest, dict
-        ] = None,
-        *,
-        parent: str = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> pagers.ListDisplayVideo360AdvertiserLinksPager:
-        r"""Lists all DisplayVideo360AdvertiserLinks on a
-        property.
-
-        .. code-block:: python
-
-            from google.analytics import admin_v1alpha
-
-            def sample_list_display_video360_advertiser_links():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                request = admin_v1alpha.ListDisplayVideo360AdvertiserLinksRequest(
-                    parent="parent_value",
-                )
-
-                # Make the request
-                page_result = client.list_display_video360_advertiser_links(request=request)
-
-                # Handle the response
-                for response in page_result:
-                    print(response)
-
-        Args:
-            request (Union[google.analytics.admin_v1alpha.types.ListDisplayVideo360AdvertiserLinksRequest, dict]):
-                The request object. Request message for
-                ListDisplayVideo360AdvertiserLinks RPC.
-            parent (str):
-                Required. Example format:
-                properties/1234
-
-                This corresponds to the ``parent`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-
-        Returns:
-            google.analytics.admin_v1alpha.services.analytics_admin_service.pagers.ListDisplayVideo360AdvertiserLinksPager:
-                Response message for
-                ListDisplayVideo360AdvertiserLinks RPC.
-                Iterating over this object will yield
-                results and resolve additional pages
-                automatically.
-
-        """
-        # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
-        has_flattened_params = any([parent])
-        if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
-
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.ListDisplayVideo360AdvertiserLinksRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
-        if not isinstance(
-            request, analytics_admin.ListDisplayVideo360AdvertiserLinksRequest
-        ):
-            request = analytics_admin.ListDisplayVideo360AdvertiserLinksRequest(request)
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-            if parent is not None:
-                request.parent = parent
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._transport._wrapped_methods[
-            self._transport.list_display_video360_advertiser_links
-        ]
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
-
-        # Send the request.
-        response = rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # This method is paged; wrap the response in a pager, which provides
-        # an `__iter__` convenience method.
-        response = pagers.ListDisplayVideo360AdvertiserLinksPager(
-            method=rpc,
-            request=request,
-            response=response,
-            metadata=metadata,
-        )
-
-        # Done; return the response.
-        return response
-
-    def create_display_video360_advertiser_link(
-        self,
-        request: Union[
-            analytics_admin.CreateDisplayVideo360AdvertiserLinkRequest, dict
-        ] = None,
-        *,
-        parent: str = None,
-        display_video_360_advertiser_link: resources.DisplayVideo360AdvertiserLink = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> resources.DisplayVideo360AdvertiserLink:
-        r"""Creates a DisplayVideo360AdvertiserLink.
-        This can only be utilized by users who have proper
-        authorization both on the Google Analytics property and
-        on the Display & Video 360 advertiser. Users who do not
-        have access to the Display & Video 360 advertiser should
-        instead seek to create a DisplayVideo360LinkProposal.
-
-        .. code-block:: python
-
-            from google.analytics import admin_v1alpha
-
-            def sample_create_display_video360_advertiser_link():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                request = admin_v1alpha.CreateDisplayVideo360AdvertiserLinkRequest(
-                    parent="parent_value",
-                )
-
-                # Make the request
-                response = client.create_display_video360_advertiser_link(request=request)
-
-                # Handle the response
-                print(response)
-
-        Args:
-            request (Union[google.analytics.admin_v1alpha.types.CreateDisplayVideo360AdvertiserLinkRequest, dict]):
-                The request object. Request message for
-                CreateDisplayVideo360AdvertiserLink RPC.
-            parent (str):
-                Required. Example format:
-                properties/1234
-
-                This corresponds to the ``parent`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            display_video_360_advertiser_link (google.analytics.admin_v1alpha.types.DisplayVideo360AdvertiserLink):
-                Required. The
-                DisplayVideo360AdvertiserLink to create.
-
-                This corresponds to the ``display_video_360_advertiser_link`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-
-        Returns:
-            google.analytics.admin_v1alpha.types.DisplayVideo360AdvertiserLink:
-                A link between a GA4 property and a
-                Display & Video 360 advertiser.
-
-        """
-        # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
-        has_flattened_params = any([parent, display_video_360_advertiser_link])
-        if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
-
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.CreateDisplayVideo360AdvertiserLinkRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
-        if not isinstance(
-            request, analytics_admin.CreateDisplayVideo360AdvertiserLinkRequest
-        ):
-            request = analytics_admin.CreateDisplayVideo360AdvertiserLinkRequest(
-                request
-            )
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-            if parent is not None:
-                request.parent = parent
-            if display_video_360_advertiser_link is not None:
-                request.display_video_360_advertiser_link = (
-                    display_video_360_advertiser_link
-                )
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._transport._wrapped_methods[
-            self._transport.create_display_video360_advertiser_link
-        ]
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
-
-        # Send the request.
-        response = rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # Done; return the response.
-        return response
-
-    def delete_display_video360_advertiser_link(
-        self,
-        request: Union[
-            analytics_admin.DeleteDisplayVideo360AdvertiserLinkRequest, dict
-        ] = None,
-        *,
-        name: str = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> None:
-        r"""Deletes a DisplayVideo360AdvertiserLink on a
-        property.
-
-        .. code-block:: python
-
-            from google.analytics import admin_v1alpha
-
-            def sample_delete_display_video360_advertiser_link():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                request = admin_v1alpha.DeleteDisplayVideo360AdvertiserLinkRequest(
-                    name="name_value",
-                )
-
-                # Make the request
-                client.delete_display_video360_advertiser_link(request=request)
-
-        Args:
-            request (Union[google.analytics.admin_v1alpha.types.DeleteDisplayVideo360AdvertiserLinkRequest, dict]):
-                The request object. Request message for
-                DeleteDisplayVideo360AdvertiserLink RPC.
-            name (str):
-                Required. The name of the
-                DisplayVideo360AdvertiserLink to delete.
-                Example format:
-                properties/1234/displayVideo360AdvertiserLinks/5678
-
-                This corresponds to the ``name`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-        """
-        # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
-        has_flattened_params = any([name])
-        if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
-
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.DeleteDisplayVideo360AdvertiserLinkRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
-        if not isinstance(
-            request, analytics_admin.DeleteDisplayVideo360AdvertiserLinkRequest
-        ):
-            request = analytics_admin.DeleteDisplayVideo360AdvertiserLinkRequest(
-                request
-            )
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-            if name is not None:
-                request.name = name
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._transport._wrapped_methods[
-            self._transport.delete_display_video360_advertiser_link
-        ]
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
-
-        # Send the request.
-        rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-    def update_display_video360_advertiser_link(
-        self,
-        request: Union[
-            analytics_admin.UpdateDisplayVideo360AdvertiserLinkRequest, dict
-        ] = None,
-        *,
-        display_video_360_advertiser_link: resources.DisplayVideo360AdvertiserLink = None,
-        update_mask: field_mask_pb2.FieldMask = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> resources.DisplayVideo360AdvertiserLink:
-        r"""Updates a DisplayVideo360AdvertiserLink on a
-        property.
-
-        .. code-block:: python
-
-            from google.analytics import admin_v1alpha
-
-            def sample_update_display_video360_advertiser_link():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                request = admin_v1alpha.UpdateDisplayVideo360AdvertiserLinkRequest(
-                )
-
-                # Make the request
-                response = client.update_display_video360_advertiser_link(request=request)
-
-                # Handle the response
-                print(response)
-
-        Args:
-            request (Union[google.analytics.admin_v1alpha.types.UpdateDisplayVideo360AdvertiserLinkRequest, dict]):
-                The request object. Request message for
-                UpdateDisplayVideo360AdvertiserLink RPC.
-            display_video_360_advertiser_link (google.analytics.admin_v1alpha.types.DisplayVideo360AdvertiserLink):
-                The DisplayVideo360AdvertiserLink to
-                update
-
-                This corresponds to the ``display_video_360_advertiser_link`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            update_mask (google.protobuf.field_mask_pb2.FieldMask):
-                Required. The list of fields to be updated. Omitted
-                fields will not be updated. To replace the entire
-                entity, use one path with the string "*" to match all
-                fields.
-
-                This corresponds to the ``update_mask`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-
-        Returns:
-            google.analytics.admin_v1alpha.types.DisplayVideo360AdvertiserLink:
-                A link between a GA4 property and a
-                Display & Video 360 advertiser.
-
-        """
-        # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
-        has_flattened_params = any([display_video_360_advertiser_link, update_mask])
-        if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
-
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.UpdateDisplayVideo360AdvertiserLinkRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
-        if not isinstance(
-            request, analytics_admin.UpdateDisplayVideo360AdvertiserLinkRequest
-        ):
-            request = analytics_admin.UpdateDisplayVideo360AdvertiserLinkRequest(
-                request
-            )
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-            if display_video_360_advertiser_link is not None:
-                request.display_video_360_advertiser_link = (
-                    display_video_360_advertiser_link
-                )
-            if update_mask is not None:
-                request.update_mask = update_mask
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._transport._wrapped_methods[
-            self._transport.update_display_video360_advertiser_link
-        ]
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (
-                    (
-                        "display_video_360_advertiser_link.name",
-                        request.display_video_360_advertiser_link.name,
-                    ),
-                )
-            ),
-        )
-
-        # Send the request.
-        response = rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # Done; return the response.
-        return response
-
-    def get_display_video360_advertiser_link_proposal(
-        self,
-        request: Union[
-            analytics_admin.GetDisplayVideo360AdvertiserLinkProposalRequest, dict
-        ] = None,
-        *,
-        name: str = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> resources.DisplayVideo360AdvertiserLinkProposal:
-        r"""Lookup for a single
-        DisplayVideo360AdvertiserLinkProposal.
-
-        .. code-block:: python
-
-            from google.analytics import admin_v1alpha
-
-            def sample_get_display_video360_advertiser_link_proposal():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                request = admin_v1alpha.GetDisplayVideo360AdvertiserLinkProposalRequest(
-                    name="name_value",
-                )
-
-                # Make the request
-                response = client.get_display_video360_advertiser_link_proposal(request=request)
-
-                # Handle the response
-                print(response)
-
-        Args:
-            request (Union[google.analytics.admin_v1alpha.types.GetDisplayVideo360AdvertiserLinkProposalRequest, dict]):
-                The request object. Request message for
-                GetDisplayVideo360AdvertiserLinkProposal RPC.
-            name (str):
-                Required. The name of the
-                DisplayVideo360AdvertiserLinkProposal to
-                get. Example format:
-                properties/1234/displayVideo360AdvertiserLinkProposals/5678
-
-                This corresponds to the ``name`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-
-        Returns:
-            google.analytics.admin_v1alpha.types.DisplayVideo360AdvertiserLinkProposal:
-                A proposal for a link between a GA4
-                property and a Display & Video 360
-                advertiser.
-                A proposal is converted to a
-                DisplayVideo360AdvertiserLink once
-                approved. Google Analytics admins
-                approve inbound proposals while Display
-                & Video 360 admins approve outbound
-                proposals.
-
-        """
-        # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
-        has_flattened_params = any([name])
-        if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
-
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.GetDisplayVideo360AdvertiserLinkProposalRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
-        if not isinstance(
-            request, analytics_admin.GetDisplayVideo360AdvertiserLinkProposalRequest
-        ):
-            request = analytics_admin.GetDisplayVideo360AdvertiserLinkProposalRequest(
-                request
-            )
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-            if name is not None:
-                request.name = name
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._transport._wrapped_methods[
-            self._transport.get_display_video360_advertiser_link_proposal
-        ]
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
-
-        # Send the request.
-        response = rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # Done; return the response.
-        return response
-
-    def list_display_video360_advertiser_link_proposals(
-        self,
-        request: Union[
-            analytics_admin.ListDisplayVideo360AdvertiserLinkProposalsRequest, dict
-        ] = None,
-        *,
-        parent: str = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> pagers.ListDisplayVideo360AdvertiserLinkProposalsPager:
-        r"""Lists DisplayVideo360AdvertiserLinkProposals on a
-        property.
-
-        .. code-block:: python
-
-            from google.analytics import admin_v1alpha
-
-            def sample_list_display_video360_advertiser_link_proposals():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                request = admin_v1alpha.ListDisplayVideo360AdvertiserLinkProposalsRequest(
-                    parent="parent_value",
-                )
-
-                # Make the request
-                page_result = client.list_display_video360_advertiser_link_proposals(request=request)
-
-                # Handle the response
-                for response in page_result:
-                    print(response)
-
-        Args:
-            request (Union[google.analytics.admin_v1alpha.types.ListDisplayVideo360AdvertiserLinkProposalsRequest, dict]):
-                The request object. Request message for
-                ListDisplayVideo360AdvertiserLinkProposals RPC.
-            parent (str):
-                Required. Example format:
-                properties/1234
-
-                This corresponds to the ``parent`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-
-        Returns:
-            google.analytics.admin_v1alpha.services.analytics_admin_service.pagers.ListDisplayVideo360AdvertiserLinkProposalsPager:
-                Response message for
-                ListDisplayVideo360AdvertiserLinkProposals
-                RPC.  Iterating over this object will
-                yield results and resolve additional
-                pages automatically.
-
-        """
-        # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
-        has_flattened_params = any([parent])
-        if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
-
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.ListDisplayVideo360AdvertiserLinkProposalsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
-        if not isinstance(
-            request, analytics_admin.ListDisplayVideo360AdvertiserLinkProposalsRequest
-        ):
-            request = analytics_admin.ListDisplayVideo360AdvertiserLinkProposalsRequest(
-                request
-            )
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-            if parent is not None:
-                request.parent = parent
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._transport._wrapped_methods[
-            self._transport.list_display_video360_advertiser_link_proposals
-        ]
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
-
-        # Send the request.
-        response = rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # This method is paged; wrap the response in a pager, which provides
-        # an `__iter__` convenience method.
-        response = pagers.ListDisplayVideo360AdvertiserLinkProposalsPager(
-            method=rpc,
-            request=request,
-            response=response,
-            metadata=metadata,
-        )
-
-        # Done; return the response.
-        return response
-
-    def create_display_video360_advertiser_link_proposal(
-        self,
-        request: Union[
-            analytics_admin.CreateDisplayVideo360AdvertiserLinkProposalRequest, dict
-        ] = None,
-        *,
-        parent: str = None,
-        display_video_360_advertiser_link_proposal: resources.DisplayVideo360AdvertiserLinkProposal = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> resources.DisplayVideo360AdvertiserLinkProposal:
-        r"""Creates a DisplayVideo360AdvertiserLinkProposal.
-
-        .. code-block:: python
-
-            from google.analytics import admin_v1alpha
-
-            def sample_create_display_video360_advertiser_link_proposal():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                request = admin_v1alpha.CreateDisplayVideo360AdvertiserLinkProposalRequest(
-                    parent="parent_value",
-                )
-
-                # Make the request
-                response = client.create_display_video360_advertiser_link_proposal(request=request)
-
-                # Handle the response
-                print(response)
-
-        Args:
-            request (Union[google.analytics.admin_v1alpha.types.CreateDisplayVideo360AdvertiserLinkProposalRequest, dict]):
-                The request object. Request message for
-                CreateDisplayVideo360AdvertiserLinkProposal RPC.
-            parent (str):
-                Required. Example format:
-                properties/1234
-
-                This corresponds to the ``parent`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            display_video_360_advertiser_link_proposal (google.analytics.admin_v1alpha.types.DisplayVideo360AdvertiserLinkProposal):
-                Required. The
-                DisplayVideo360AdvertiserLinkProposal to
-                create.
-
-                This corresponds to the ``display_video_360_advertiser_link_proposal`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-
-        Returns:
-            google.analytics.admin_v1alpha.types.DisplayVideo360AdvertiserLinkProposal:
-                A proposal for a link between a GA4
-                property and a Display & Video 360
-                advertiser.
-                A proposal is converted to a
-                DisplayVideo360AdvertiserLink once
-                approved. Google Analytics admins
-                approve inbound proposals while Display
-                & Video 360 admins approve outbound
-                proposals.
-
-        """
-        # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
-        has_flattened_params = any([parent, display_video_360_advertiser_link_proposal])
-        if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
-
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.CreateDisplayVideo360AdvertiserLinkProposalRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
-        if not isinstance(
-            request, analytics_admin.CreateDisplayVideo360AdvertiserLinkProposalRequest
-        ):
-            request = (
-                analytics_admin.CreateDisplayVideo360AdvertiserLinkProposalRequest(
-                    request
-                )
-            )
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-            if parent is not None:
-                request.parent = parent
-            if display_video_360_advertiser_link_proposal is not None:
-                request.display_video_360_advertiser_link_proposal = (
-                    display_video_360_advertiser_link_proposal
-                )
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._transport._wrapped_methods[
-            self._transport.create_display_video360_advertiser_link_proposal
-        ]
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
-
-        # Send the request.
-        response = rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # Done; return the response.
-        return response
-
-    def delete_display_video360_advertiser_link_proposal(
-        self,
-        request: Union[
-            analytics_admin.DeleteDisplayVideo360AdvertiserLinkProposalRequest, dict
-        ] = None,
-        *,
-        name: str = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> None:
-        r"""Deletes a DisplayVideo360AdvertiserLinkProposal on a
-        property. This can only be used on cancelled proposals.
-
-        .. code-block:: python
-
-            from google.analytics import admin_v1alpha
-
-            def sample_delete_display_video360_advertiser_link_proposal():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                request = admin_v1alpha.DeleteDisplayVideo360AdvertiserLinkProposalRequest(
-                    name="name_value",
-                )
-
-                # Make the request
-                client.delete_display_video360_advertiser_link_proposal(request=request)
-
-        Args:
-            request (Union[google.analytics.admin_v1alpha.types.DeleteDisplayVideo360AdvertiserLinkProposalRequest, dict]):
-                The request object. Request message for
-                DeleteDisplayVideo360AdvertiserLinkProposal RPC.
-            name (str):
-                Required. The name of the
-                DisplayVideo360AdvertiserLinkProposal to
-                delete. Example format:
-                properties/1234/displayVideo360AdvertiserLinkProposals/5678
-
-                This corresponds to the ``name`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-        """
-        # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
-        has_flattened_params = any([name])
-        if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
-
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.DeleteDisplayVideo360AdvertiserLinkProposalRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
-        if not isinstance(
-            request, analytics_admin.DeleteDisplayVideo360AdvertiserLinkProposalRequest
-        ):
-            request = (
-                analytics_admin.DeleteDisplayVideo360AdvertiserLinkProposalRequest(
-                    request
-                )
-            )
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-            if name is not None:
-                request.name = name
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._transport._wrapped_methods[
-            self._transport.delete_display_video360_advertiser_link_proposal
-        ]
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
-
-        # Send the request.
-        rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-    def approve_display_video360_advertiser_link_proposal(
-        self,
-        request: Union[
-            analytics_admin.ApproveDisplayVideo360AdvertiserLinkProposalRequest, dict
-        ] = None,
-        *,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> analytics_admin.ApproveDisplayVideo360AdvertiserLinkProposalResponse:
-        r"""Approves a DisplayVideo360AdvertiserLinkProposal.
-        The DisplayVideo360AdvertiserLinkProposal will be
-        deleted and a new DisplayVideo360AdvertiserLink will be
-        created.
-
-        .. code-block:: python
-
-            from google.analytics import admin_v1alpha
-
-            def sample_approve_display_video360_advertiser_link_proposal():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                request = admin_v1alpha.ApproveDisplayVideo360AdvertiserLinkProposalRequest(
-                    name="name_value",
-                )
-
-                # Make the request
-                response = client.approve_display_video360_advertiser_link_proposal(request=request)
-
-                # Handle the response
-                print(response)
-
-        Args:
-            request (Union[google.analytics.admin_v1alpha.types.ApproveDisplayVideo360AdvertiserLinkProposalRequest, dict]):
-                The request object. Request message for
-                ApproveDisplayVideo360AdvertiserLinkProposal RPC.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-
-        Returns:
-            google.analytics.admin_v1alpha.types.ApproveDisplayVideo360AdvertiserLinkProposalResponse:
-                Response message for
-                ApproveDisplayVideo360AdvertiserLinkProposal
-                RPC.
-
-        """
-        # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.ApproveDisplayVideo360AdvertiserLinkProposalRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
-        if not isinstance(
-            request, analytics_admin.ApproveDisplayVideo360AdvertiserLinkProposalRequest
-        ):
-            request = (
-                analytics_admin.ApproveDisplayVideo360AdvertiserLinkProposalRequest(
-                    request
-                )
-            )
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._transport._wrapped_methods[
-            self._transport.approve_display_video360_advertiser_link_proposal
-        ]
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
-
-        # Send the request.
-        response = rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # Done; return the response.
-        return response
-
-    def cancel_display_video360_advertiser_link_proposal(
-        self,
-        request: Union[
-            analytics_admin.CancelDisplayVideo360AdvertiserLinkProposalRequest, dict
-        ] = None,
-        *,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> resources.DisplayVideo360AdvertiserLinkProposal:
-        r"""Cancels a DisplayVideo360AdvertiserLinkProposal.
-        Cancelling can mean either:
-        - Declining a proposal initiated from Display & Video
-        360 - Withdrawing a proposal initiated from Google
-        Analytics After being cancelled, a proposal will
-        eventually be deleted automatically.
-
-        .. code-block:: python
-
-            from google.analytics import admin_v1alpha
-
-            def sample_cancel_display_video360_advertiser_link_proposal():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                request = admin_v1alpha.CancelDisplayVideo360AdvertiserLinkProposalRequest(
-                    name="name_value",
-                )
-
-                # Make the request
-                response = client.cancel_display_video360_advertiser_link_proposal(request=request)
-
-                # Handle the response
-                print(response)
-
-        Args:
-            request (Union[google.analytics.admin_v1alpha.types.CancelDisplayVideo360AdvertiserLinkProposalRequest, dict]):
-                The request object. Request message for
-                CancelDisplayVideo360AdvertiserLinkProposal RPC.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-
-        Returns:
-            google.analytics.admin_v1alpha.types.DisplayVideo360AdvertiserLinkProposal:
-                A proposal for a link between a GA4
-                property and a Display & Video 360
-                advertiser.
-                A proposal is converted to a
-                DisplayVideo360AdvertiserLink once
-                approved. Google Analytics admins
-                approve inbound proposals while Display
-                & Video 360 admins approve outbound
-                proposals.
-
-        """
-        # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.CancelDisplayVideo360AdvertiserLinkProposalRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
-        if not isinstance(
-            request, analytics_admin.CancelDisplayVideo360AdvertiserLinkProposalRequest
-        ):
-            request = (
-                analytics_admin.CancelDisplayVideo360AdvertiserLinkProposalRequest(
-                    request
-                )
-            )
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._transport._wrapped_methods[
-            self._transport.cancel_display_video360_advertiser_link_proposal
-        ]
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
-
-        # Send the request.
-        response = rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # Done; return the response.
-        return response
-
     def create_custom_dimension(
         self,
         request: Union[analytics_admin.CreateCustomDimensionRequest, dict] = None,
@@ -6087,19 +3593,19 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         .. code-block:: python
 
-            from google.analytics import admin_v1alpha
+            from google.analytics import admin_v1beta
 
             def sample_create_custom_dimension():
                 # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
+                client = admin_v1beta.AnalyticsAdminServiceClient()
 
                 # Initialize request argument(s)
-                custom_dimension = admin_v1alpha.CustomDimension()
+                custom_dimension = admin_v1beta.CustomDimension()
                 custom_dimension.parameter_name = "parameter_name_value"
                 custom_dimension.display_name = "display_name_value"
                 custom_dimension.scope = "USER"
 
-                request = admin_v1alpha.CreateCustomDimensionRequest(
+                request = admin_v1beta.CreateCustomDimensionRequest(
                     parent="parent_value",
                     custom_dimension=custom_dimension,
                 )
@@ -6111,7 +3617,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 print(response)
 
         Args:
-            request (Union[google.analytics.admin_v1alpha.types.CreateCustomDimensionRequest, dict]):
+            request (Union[google.analytics.admin_v1beta.types.CreateCustomDimensionRequest, dict]):
                 The request object. Request message for
                 CreateCustomDimension RPC.
             parent (str):
@@ -6121,7 +3627,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            custom_dimension (google.analytics.admin_v1alpha.types.CustomDimension):
+            custom_dimension (google.analytics.admin_v1beta.types.CustomDimension):
                 Required. The CustomDimension to
                 create.
 
@@ -6135,7 +3641,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.analytics.admin_v1alpha.types.CustomDimension:
+            google.analytics.admin_v1beta.types.CustomDimension:
                 A definition for a CustomDimension.
         """
         # Create or coerce a protobuf request object.
@@ -6196,14 +3702,14 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         .. code-block:: python
 
-            from google.analytics import admin_v1alpha
+            from google.analytics import admin_v1beta
 
             def sample_update_custom_dimension():
                 # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
+                client = admin_v1beta.AnalyticsAdminServiceClient()
 
                 # Initialize request argument(s)
-                request = admin_v1alpha.UpdateCustomDimensionRequest(
+                request = admin_v1beta.UpdateCustomDimensionRequest(
                 )
 
                 # Make the request
@@ -6213,10 +3719,10 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 print(response)
 
         Args:
-            request (Union[google.analytics.admin_v1alpha.types.UpdateCustomDimensionRequest, dict]):
+            request (Union[google.analytics.admin_v1beta.types.UpdateCustomDimensionRequest, dict]):
                 The request object. Request message for
                 UpdateCustomDimension RPC.
-            custom_dimension (google.analytics.admin_v1alpha.types.CustomDimension):
+            custom_dimension (google.analytics.admin_v1beta.types.CustomDimension):
                 The CustomDimension to update
                 This corresponds to the ``custom_dimension`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -6237,7 +3743,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.analytics.admin_v1alpha.types.CustomDimension:
+            google.analytics.admin_v1beta.types.CustomDimension:
                 A definition for a CustomDimension.
         """
         # Create or coerce a protobuf request object.
@@ -6299,14 +3805,14 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         .. code-block:: python
 
-            from google.analytics import admin_v1alpha
+            from google.analytics import admin_v1beta
 
             def sample_list_custom_dimensions():
                 # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
+                client = admin_v1beta.AnalyticsAdminServiceClient()
 
                 # Initialize request argument(s)
-                request = admin_v1alpha.ListCustomDimensionsRequest(
+                request = admin_v1beta.ListCustomDimensionsRequest(
                     parent="parent_value",
                 )
 
@@ -6318,7 +3824,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                     print(response)
 
         Args:
-            request (Union[google.analytics.admin_v1alpha.types.ListCustomDimensionsRequest, dict]):
+            request (Union[google.analytics.admin_v1beta.types.ListCustomDimensionsRequest, dict]):
                 The request object. Request message for
                 ListCustomDimensions RPC.
             parent (str):
@@ -6335,7 +3841,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.analytics.admin_v1alpha.services.analytics_admin_service.pagers.ListCustomDimensionsPager:
+            google.analytics.admin_v1beta.services.analytics_admin_service.pagers.ListCustomDimensionsPager:
                 Response message for
                 ListCustomDimensions RPC.
                 Iterating over this object will yield
@@ -6407,14 +3913,14 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         .. code-block:: python
 
-            from google.analytics import admin_v1alpha
+            from google.analytics import admin_v1beta
 
             def sample_archive_custom_dimension():
                 # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
+                client = admin_v1beta.AnalyticsAdminServiceClient()
 
                 # Initialize request argument(s)
-                request = admin_v1alpha.ArchiveCustomDimensionRequest(
+                request = admin_v1beta.ArchiveCustomDimensionRequest(
                     name="name_value",
                 )
 
@@ -6422,7 +3928,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 client.archive_custom_dimension(request=request)
 
         Args:
-            request (Union[google.analytics.admin_v1alpha.types.ArchiveCustomDimensionRequest, dict]):
+            request (Union[google.analytics.admin_v1beta.types.ArchiveCustomDimensionRequest, dict]):
                 The request object. Request message for
                 ArchiveCustomDimension RPC.
             name (str):
@@ -6492,14 +3998,14 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         .. code-block:: python
 
-            from google.analytics import admin_v1alpha
+            from google.analytics import admin_v1beta
 
             def sample_get_custom_dimension():
                 # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
+                client = admin_v1beta.AnalyticsAdminServiceClient()
 
                 # Initialize request argument(s)
-                request = admin_v1alpha.GetCustomDimensionRequest(
+                request = admin_v1beta.GetCustomDimensionRequest(
                     name="name_value",
                 )
 
@@ -6510,7 +4016,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 print(response)
 
         Args:
-            request (Union[google.analytics.admin_v1alpha.types.GetCustomDimensionRequest, dict]):
+            request (Union[google.analytics.admin_v1beta.types.GetCustomDimensionRequest, dict]):
                 The request object. Request message for
                 GetCustomDimension RPC.
             name (str):
@@ -6528,7 +4034,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.analytics.admin_v1alpha.types.CustomDimension:
+            google.analytics.admin_v1beta.types.CustomDimension:
                 A definition for a CustomDimension.
         """
         # Create or coerce a protobuf request object.
@@ -6587,20 +4093,20 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         .. code-block:: python
 
-            from google.analytics import admin_v1alpha
+            from google.analytics import admin_v1beta
 
             def sample_create_custom_metric():
                 # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
+                client = admin_v1beta.AnalyticsAdminServiceClient()
 
                 # Initialize request argument(s)
-                custom_metric = admin_v1alpha.CustomMetric()
+                custom_metric = admin_v1beta.CustomMetric()
                 custom_metric.parameter_name = "parameter_name_value"
                 custom_metric.display_name = "display_name_value"
                 custom_metric.measurement_unit = "HOURS"
                 custom_metric.scope = "EVENT"
 
-                request = admin_v1alpha.CreateCustomMetricRequest(
+                request = admin_v1beta.CreateCustomMetricRequest(
                     parent="parent_value",
                     custom_metric=custom_metric,
                 )
@@ -6612,7 +4118,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 print(response)
 
         Args:
-            request (Union[google.analytics.admin_v1alpha.types.CreateCustomMetricRequest, dict]):
+            request (Union[google.analytics.admin_v1beta.types.CreateCustomMetricRequest, dict]):
                 The request object. Request message for
                 CreateCustomMetric RPC.
             parent (str):
@@ -6622,7 +4128,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            custom_metric (google.analytics.admin_v1alpha.types.CustomMetric):
+            custom_metric (google.analytics.admin_v1beta.types.CustomMetric):
                 Required. The CustomMetric to create.
                 This corresponds to the ``custom_metric`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -6634,7 +4140,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.analytics.admin_v1alpha.types.CustomMetric:
+            google.analytics.admin_v1beta.types.CustomMetric:
                 A definition for a custom metric.
         """
         # Create or coerce a protobuf request object.
@@ -6695,14 +4201,14 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         .. code-block:: python
 
-            from google.analytics import admin_v1alpha
+            from google.analytics import admin_v1beta
 
             def sample_update_custom_metric():
                 # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
+                client = admin_v1beta.AnalyticsAdminServiceClient()
 
                 # Initialize request argument(s)
-                request = admin_v1alpha.UpdateCustomMetricRequest(
+                request = admin_v1beta.UpdateCustomMetricRequest(
                 )
 
                 # Make the request
@@ -6712,10 +4218,10 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 print(response)
 
         Args:
-            request (Union[google.analytics.admin_v1alpha.types.UpdateCustomMetricRequest, dict]):
+            request (Union[google.analytics.admin_v1beta.types.UpdateCustomMetricRequest, dict]):
                 The request object. Request message for
                 UpdateCustomMetric RPC.
-            custom_metric (google.analytics.admin_v1alpha.types.CustomMetric):
+            custom_metric (google.analytics.admin_v1beta.types.CustomMetric):
                 The CustomMetric to update
                 This corresponds to the ``custom_metric`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -6736,7 +4242,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.analytics.admin_v1alpha.types.CustomMetric:
+            google.analytics.admin_v1beta.types.CustomMetric:
                 A definition for a custom metric.
         """
         # Create or coerce a protobuf request object.
@@ -6798,14 +4304,14 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         .. code-block:: python
 
-            from google.analytics import admin_v1alpha
+            from google.analytics import admin_v1beta
 
             def sample_list_custom_metrics():
                 # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
+                client = admin_v1beta.AnalyticsAdminServiceClient()
 
                 # Initialize request argument(s)
-                request = admin_v1alpha.ListCustomMetricsRequest(
+                request = admin_v1beta.ListCustomMetricsRequest(
                     parent="parent_value",
                 )
 
@@ -6817,7 +4323,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                     print(response)
 
         Args:
-            request (Union[google.analytics.admin_v1alpha.types.ListCustomMetricsRequest, dict]):
+            request (Union[google.analytics.admin_v1beta.types.ListCustomMetricsRequest, dict]):
                 The request object. Request message for
                 ListCustomMetrics RPC.
             parent (str):
@@ -6834,7 +4340,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.analytics.admin_v1alpha.services.analytics_admin_service.pagers.ListCustomMetricsPager:
+            google.analytics.admin_v1beta.services.analytics_admin_service.pagers.ListCustomMetricsPager:
                 Response message for
                 ListCustomMetrics RPC.
                 Iterating over this object will yield
@@ -6906,14 +4412,14 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         .. code-block:: python
 
-            from google.analytics import admin_v1alpha
+            from google.analytics import admin_v1beta
 
             def sample_archive_custom_metric():
                 # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
+                client = admin_v1beta.AnalyticsAdminServiceClient()
 
                 # Initialize request argument(s)
-                request = admin_v1alpha.ArchiveCustomMetricRequest(
+                request = admin_v1beta.ArchiveCustomMetricRequest(
                     name="name_value",
                 )
 
@@ -6921,7 +4427,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 client.archive_custom_metric(request=request)
 
         Args:
-            request (Union[google.analytics.admin_v1alpha.types.ArchiveCustomMetricRequest, dict]):
+            request (Union[google.analytics.admin_v1beta.types.ArchiveCustomMetricRequest, dict]):
                 The request object. Request message for
                 ArchiveCustomMetric RPC.
             name (str):
@@ -6990,14 +4496,14 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         .. code-block:: python
 
-            from google.analytics import admin_v1alpha
+            from google.analytics import admin_v1beta
 
             def sample_get_custom_metric():
                 # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
+                client = admin_v1beta.AnalyticsAdminServiceClient()
 
                 # Initialize request argument(s)
-                request = admin_v1alpha.GetCustomMetricRequest(
+                request = admin_v1beta.GetCustomMetricRequest(
                     name="name_value",
                 )
 
@@ -7008,7 +4514,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 print(response)
 
         Args:
-            request (Union[google.analytics.admin_v1alpha.types.GetCustomMetricRequest, dict]):
+            request (Union[google.analytics.admin_v1beta.types.GetCustomMetricRequest, dict]):
                 The request object. Request message for GetCustomMetric
                 RPC.
             name (str):
@@ -7026,7 +4532,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.analytics.admin_v1alpha.types.CustomMetric:
+            google.analytics.admin_v1beta.types.CustomMetric:
                 A definition for a custom metric.
         """
         # Create or coerce a protobuf request object.
@@ -7085,14 +4591,14 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         .. code-block:: python
 
-            from google.analytics import admin_v1alpha
+            from google.analytics import admin_v1beta
 
             def sample_get_data_retention_settings():
                 # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
+                client = admin_v1beta.AnalyticsAdminServiceClient()
 
                 # Initialize request argument(s)
-                request = admin_v1alpha.GetDataRetentionSettingsRequest(
+                request = admin_v1beta.GetDataRetentionSettingsRequest(
                     name="name_value",
                 )
 
@@ -7103,7 +4609,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 print(response)
 
         Args:
-            request (Union[google.analytics.admin_v1alpha.types.GetDataRetentionSettingsRequest, dict]):
+            request (Union[google.analytics.admin_v1beta.types.GetDataRetentionSettingsRequest, dict]):
                 The request object. Request message for
                 GetDataRetentionSettings RPC.
             name (str):
@@ -7123,7 +4629,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.analytics.admin_v1alpha.types.DataRetentionSettings:
+            google.analytics.admin_v1beta.types.DataRetentionSettings:
                 Settings values for data retention.
                 This is a singleton resource.
 
@@ -7187,14 +4693,14 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         .. code-block:: python
 
-            from google.analytics import admin_v1alpha
+            from google.analytics import admin_v1beta
 
             def sample_update_data_retention_settings():
                 # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
+                client = admin_v1beta.AnalyticsAdminServiceClient()
 
                 # Initialize request argument(s)
-                request = admin_v1alpha.UpdateDataRetentionSettingsRequest(
+                request = admin_v1beta.UpdateDataRetentionSettingsRequest(
                 )
 
                 # Make the request
@@ -7204,10 +4710,10 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 print(response)
 
         Args:
-            request (Union[google.analytics.admin_v1alpha.types.UpdateDataRetentionSettingsRequest, dict]):
+            request (Union[google.analytics.admin_v1beta.types.UpdateDataRetentionSettingsRequest, dict]):
                 The request object. Request message for
                 UpdateDataRetentionSettings RPC.
-            data_retention_settings (google.analytics.admin_v1alpha.types.DataRetentionSettings):
+            data_retention_settings (google.analytics.admin_v1beta.types.DataRetentionSettings):
                 Required. The settings to update. The ``name`` field is
                 used to identify the settings to be updated.
 
@@ -7231,7 +4737,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.analytics.admin_v1alpha.types.DataRetentionSettings:
+            google.analytics.admin_v1beta.types.DataRetentionSettings:
                 Settings values for data retention.
                 This is a singleton resource.
 
@@ -7303,17 +4809,17 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         .. code-block:: python
 
-            from google.analytics import admin_v1alpha
+            from google.analytics import admin_v1beta
 
             def sample_create_data_stream():
                 # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
+                client = admin_v1beta.AnalyticsAdminServiceClient()
 
                 # Initialize request argument(s)
-                data_stream = admin_v1alpha.DataStream()
+                data_stream = admin_v1beta.DataStream()
                 data_stream.type_ = "IOS_APP_DATA_STREAM"
 
-                request = admin_v1alpha.CreateDataStreamRequest(
+                request = admin_v1beta.CreateDataStreamRequest(
                     parent="parent_value",
                     data_stream=data_stream,
                 )
@@ -7325,7 +4831,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 print(response)
 
         Args:
-            request (Union[google.analytics.admin_v1alpha.types.CreateDataStreamRequest, dict]):
+            request (Union[google.analytics.admin_v1beta.types.CreateDataStreamRequest, dict]):
                 The request object. Request message for CreateDataStream
                 RPC.
             parent (str):
@@ -7335,7 +4841,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            data_stream (google.analytics.admin_v1alpha.types.DataStream):
+            data_stream (google.analytics.admin_v1beta.types.DataStream):
                 Required. The DataStream to create.
                 This corresponds to the ``data_stream`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -7347,7 +4853,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.analytics.admin_v1alpha.types.DataStream:
+            google.analytics.admin_v1beta.types.DataStream:
                 A resource message representing a
                 data stream.
 
@@ -7409,14 +4915,14 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         .. code-block:: python
 
-            from google.analytics import admin_v1alpha
+            from google.analytics import admin_v1beta
 
             def sample_delete_data_stream():
                 # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
+                client = admin_v1beta.AnalyticsAdminServiceClient()
 
                 # Initialize request argument(s)
-                request = admin_v1alpha.DeleteDataStreamRequest(
+                request = admin_v1beta.DeleteDataStreamRequest(
                     name="name_value",
                 )
 
@@ -7424,7 +4930,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 client.delete_data_stream(request=request)
 
         Args:
-            request (Union[google.analytics.admin_v1alpha.types.DeleteDataStreamRequest, dict]):
+            request (Union[google.analytics.admin_v1beta.types.DeleteDataStreamRequest, dict]):
                 The request object. Request message for DeleteDataStream
                 RPC.
             name (str):
@@ -7494,14 +5000,14 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         .. code-block:: python
 
-            from google.analytics import admin_v1alpha
+            from google.analytics import admin_v1beta
 
             def sample_update_data_stream():
                 # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
+                client = admin_v1beta.AnalyticsAdminServiceClient()
 
                 # Initialize request argument(s)
-                request = admin_v1alpha.UpdateDataStreamRequest(
+                request = admin_v1beta.UpdateDataStreamRequest(
                 )
 
                 # Make the request
@@ -7511,10 +5017,10 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 print(response)
 
         Args:
-            request (Union[google.analytics.admin_v1alpha.types.UpdateDataStreamRequest, dict]):
+            request (Union[google.analytics.admin_v1beta.types.UpdateDataStreamRequest, dict]):
                 The request object. Request message for UpdateDataStream
                 RPC.
-            data_stream (google.analytics.admin_v1alpha.types.DataStream):
+            data_stream (google.analytics.admin_v1beta.types.DataStream):
                 The DataStream to update
                 This corresponds to the ``data_stream`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -7535,7 +5041,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.analytics.admin_v1alpha.types.DataStream:
+            google.analytics.admin_v1beta.types.DataStream:
                 A resource message representing a
                 data stream.
 
@@ -7599,14 +5105,14 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         .. code-block:: python
 
-            from google.analytics import admin_v1alpha
+            from google.analytics import admin_v1beta
 
             def sample_list_data_streams():
                 # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
+                client = admin_v1beta.AnalyticsAdminServiceClient()
 
                 # Initialize request argument(s)
-                request = admin_v1alpha.ListDataStreamsRequest(
+                request = admin_v1beta.ListDataStreamsRequest(
                     parent="parent_value",
                 )
 
@@ -7618,7 +5124,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                     print(response)
 
         Args:
-            request (Union[google.analytics.admin_v1alpha.types.ListDataStreamsRequest, dict]):
+            request (Union[google.analytics.admin_v1beta.types.ListDataStreamsRequest, dict]):
                 The request object. Request message for ListDataStreams
                 RPC.
             parent (str):
@@ -7635,7 +5141,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.analytics.admin_v1alpha.services.analytics_admin_service.pagers.ListDataStreamsPager:
+            google.analytics.admin_v1beta.services.analytics_admin_service.pagers.ListDataStreamsPager:
                 Response message for ListDataStreams
                 RPC.
                 Iterating over this object will yield
@@ -7707,14 +5213,14 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         .. code-block:: python
 
-            from google.analytics import admin_v1alpha
+            from google.analytics import admin_v1beta
 
             def sample_get_data_stream():
                 # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
+                client = admin_v1beta.AnalyticsAdminServiceClient()
 
                 # Initialize request argument(s)
-                request = admin_v1alpha.GetDataStreamRequest(
+                request = admin_v1beta.GetDataStreamRequest(
                     name="name_value",
                 )
 
@@ -7725,7 +5231,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 print(response)
 
         Args:
-            request (Union[google.analytics.admin_v1alpha.types.GetDataStreamRequest, dict]):
+            request (Union[google.analytics.admin_v1beta.types.GetDataStreamRequest, dict]):
                 The request object. Request message for GetDataStream
                 RPC.
             name (str):
@@ -7743,7 +5249,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.analytics.admin_v1alpha.types.DataStream:
+            google.analytics.admin_v1beta.types.DataStream:
                 A resource message representing a
                 data stream.
 
