@@ -1,5 +1,20 @@
 # Changelog
 
+## [1.1.0](https://github.com/googleapis/python-bare-metal-solution/compare/v1.0.1...v1.1.0) (2022-07-20)
+
+
+### Features
+
+* add audience parameter ([cf60a2a](https://github.com/googleapis/python-bare-metal-solution/commit/cf60a2a1d9a70a03c62b2a57050b3574212ce688))
+* add support for new API methods ([#35](https://github.com/googleapis/python-bare-metal-solution/issues/35)) ([2cfdd4d](https://github.com/googleapis/python-bare-metal-solution/commit/2cfdd4d02f3ace3ea2701584e636845f40695a7b))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.32.0,>=2.8.0 ([#37](https://github.com/googleapis/python-bare-metal-solution/issues/37)) ([cf60a2a](https://github.com/googleapis/python-bare-metal-solution/commit/cf60a2a1d9a70a03c62b2a57050b3574212ce688))
+* removed Snapshots methods that were never officially released on the backend ([2cfdd4d](https://github.com/googleapis/python-bare-metal-solution/commit/2cfdd4d02f3ace3ea2701584e636845f40695a7b))
+* require python 3.7+ ([#39](https://github.com/googleapis/python-bare-metal-solution/issues/39)) ([f52ab3f](https://github.com/googleapis/python-bare-metal-solution/commit/f52ab3f1a7ed08c1dbf2cb43816ff48ac31a3997))
+
 ## [1.0.1](https://github.com/googleapis/python-bare-metal-solution/compare/v1.0.0...v1.0.1) (2022-06-07)
 
 
