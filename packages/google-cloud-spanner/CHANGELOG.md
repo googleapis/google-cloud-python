@@ -4,6 +4,25 @@
 
 [1]: https://pypi.org/project/google-cloud-spanner/#history
 
+## [3.17.0](https://github.com/googleapis/python-spanner/compare/v3.16.0...v3.17.0) (2022-07-19)
+
+
+### Features
+
+* add audience parameter ([60db146](https://github.com/googleapis/python-spanner/commit/60db146f71e4f7e28f23e63ae085a56d3b9b20ad))
+* add Session creator role ([60db146](https://github.com/googleapis/python-spanner/commit/60db146f71e4f7e28f23e63ae085a56d3b9b20ad))
+* Adding two new fields for Instance create_time and update_time ([60db146](https://github.com/googleapis/python-spanner/commit/60db146f71e4f7e28f23e63ae085a56d3b9b20ad))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.32.0,>=2.8.0 ([#739](https://github.com/googleapis/python-spanner/issues/739)) ([60db146](https://github.com/googleapis/python-spanner/commit/60db146f71e4f7e28f23e63ae085a56d3b9b20ad))
+
+
+### Documentation
+
+* clarify transaction semantics ([60db146](https://github.com/googleapis/python-spanner/commit/60db146f71e4f7e28f23e63ae085a56d3b9b20ad))
+
 ## [3.16.0](https://github.com/googleapis/python-spanner/compare/v3.15.1...v3.16.0) (2022-07-11)
 
 
