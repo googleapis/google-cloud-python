@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.9.0](https://github.com/googleapis/python-analytics-admin/compare/v0.8.2...v0.9.0) (2022-07-20)
+
+
+### Features
+
+* add audience parameter ([dc6107c](https://github.com/googleapis/python-analytics-admin/commit/dc6107cbe784ac6e4dcd2b2a0fd118ed1a2b929e))
+* release the Google Analytics Admin API V1 Beta ([dc6107c](https://github.com/googleapis/python-analytics-admin/commit/dc6107cbe784ac6e4dcd2b2a0fd118ed1a2b929e))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.32.0,>=2.8.0 ([#236](https://github.com/googleapis/python-analytics-admin/issues/236)) ([dc6107c](https://github.com/googleapis/python-analytics-admin/commit/dc6107cbe784ac6e4dcd2b2a0fd118ed1a2b929e))
+* require python 3.7+ ([#239](https://github.com/googleapis/python-analytics-admin/issues/239)) ([ec0580e](https://github.com/googleapis/python-analytics-admin/commit/ec0580e77d8b7ec395f0a2d0979b336ba44a19fd))
+
 ## [0.8.2](https://github.com/googleapis/python-analytics-admin/compare/v0.8.1...v0.8.2) (2022-06-03)
 
 
