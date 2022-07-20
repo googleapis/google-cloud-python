@@ -16,9 +16,12 @@ load("@rules_gapic//:gapic_pkg.bzl", "construct_package_dir_paths")
 
 def _py_gapic_src_pkg_impl(ctx):
     srcjar_srcs = []
+    dir_srcs = []
     for dep in ctx.attr.deps:
         for f in dep.files.to_list():
-            if f.extension in ("srcjar", "jar", "zip"):
+            if f.is_directory:
+                dir_srcs.append(f)
+            elif f.extension in ("srcjar", "jar", "zip"):
                 srcjar_srcs.append(f)
 
     paths = construct_package_dir_paths(ctx.attr.package_dir, ctx.outputs.pkg, ctx.label.name)
@@ -28,6 +31,11 @@ def _py_gapic_src_pkg_impl(ctx):
     for srcjar_src in {srcjar_srcs}; do
         unzip -q -o $srcjar_src -d {package_dir_path}
     done
+    for dir_src in {dir_srcs}; do
+        cp -rT -L $dir_src {package_dir_path}
+    done
+    # Replace 555 (forced by Bazel) permissions with 644
+    find {package_dir_path} -type f -exec chmod 644 {{}} \\;
     cd {package_dir_path}/..
     tar -zchpf {package_dir}/{package_dir}.tar.gz {package_dir}
     cd -
@@ -35,6 +43,7 @@ def _py_gapic_src_pkg_impl(ctx):
     rm -rf {package_dir_path}
     """.format(
         srcjar_srcs = " ".join(["'%s'" % f.path for f in srcjar_srcs]),
+        dir_srcs = " ".join(["'%s'" % f.path for f in dir_srcs]),
         package_dir_path = paths.package_dir_path,
         package_dir = paths.package_dir,
         pkg = ctx.outputs.pkg.path,
@@ -42,7 +51,7 @@ def _py_gapic_src_pkg_impl(ctx):
     )
 
     ctx.actions.run_shell(
-        inputs = srcjar_srcs,
+        inputs = srcjar_srcs + dir_srcs,
         command = script,
         outputs = [ctx.outputs.pkg],
     )

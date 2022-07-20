@@ -12,7 +12,7 @@ def _diff_integration_goldens_impl(ctx):
 
     script = """
     mkdir codegen_tmp
-    unzip {input_srcs} -d codegen_tmp
+    cp -rT -L {input_srcs} codegen_tmp
     diff -r codegen_tmp $PWD/tests/integration/goldens/{api_name} > {diff_output}
     exit 0  # Avoid a build failure.
     """.format(
@@ -94,7 +94,7 @@ def _overwrite_golden_impl(ctx):
 
     script = """
     mkdir codegen_tmp
-    unzip {input_srcs} -d codegen_tmp
+    cp -rT -L {input_srcs} codegen_tmp
     cd codegen_tmp
     zip -r ../{goldens_output_zip} .
     """.format(

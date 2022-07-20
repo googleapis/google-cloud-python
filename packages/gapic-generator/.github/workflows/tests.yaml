@@ -311,7 +311,8 @@ jobs:
           echo "and it will start over with a clean cache."
           echo "The old one will disappear after 7 days."
       - name: Integration Tests
-        run: bazel test tests/integration:asset tests/integration:credentials tests/integration:eventarc tests/integration:logging tests/integration:redis
+        run: bazel test //tests/integration/...
+
   goldens-lint:
     runs-on: ubuntu-latest
     steps:
