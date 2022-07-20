@@ -878,6 +878,35 @@ class DatabaseAdminGrpcAsyncIOTransport(DatabaseAdminTransport):
             )
         return self._stubs["list_backup_operations"]
 
+    @property
+    def list_database_roles(
+        self,
+    ) -> Callable[
+        [spanner_database_admin.ListDatabaseRolesRequest],
+        Awaitable[spanner_database_admin.ListDatabaseRolesResponse],
+    ]:
+        r"""Return a callable for the list database roles method over gRPC.
+
+        Lists Cloud Spanner database roles.
+
+        Returns:
+            Callable[[~.ListDatabaseRolesRequest],
+                    Awaitable[~.ListDatabaseRolesResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_database_roles" not in self._stubs:
+            self._stubs["list_database_roles"] = self.grpc_channel.unary_unary(
+                "/google.spanner.admin.database.v1.DatabaseAdmin/ListDatabaseRoles",
+                request_serializer=spanner_database_admin.ListDatabaseRolesRequest.serialize,
+                response_deserializer=spanner_database_admin.ListDatabaseRolesResponse.deserialize,
+            )
+        return self._stubs["list_database_roles"]
+
     def close(self):
         return self.grpc_channel.close()
 

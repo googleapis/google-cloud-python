@@ -51,6 +51,7 @@ class spanner_admin_databaseCallTransformer(cst.CSTTransformer):
         'list_backup_operations': ('parent', 'filter', 'page_size', 'page_token', ),
         'list_backups': ('parent', 'filter', 'page_size', 'page_token', ),
         'list_database_operations': ('parent', 'filter', 'page_size', 'page_token', ),
+        'list_database_roles': ('parent', 'page_size', 'page_token', ),
         'list_databases': ('parent', 'page_size', 'page_token', ),
         'restore_database': ('parent', 'database_id', 'backup', 'encryption_config', ),
         'set_iam_policy': ('resource', 'policy', 'update_mask', ),

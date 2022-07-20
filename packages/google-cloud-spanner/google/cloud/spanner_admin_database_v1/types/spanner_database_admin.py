@@ -43,6 +43,9 @@ __protobuf__ = proto.module(
         "RestoreDatabaseEncryptionConfig",
         "RestoreDatabaseMetadata",
         "OptimizeRestoredDatabaseMetadata",
+        "DatabaseRole",
+        "ListDatabaseRolesRequest",
+        "ListDatabaseRolesResponse",
     },
 )
 
@@ -843,6 +846,87 @@ class OptimizeRestoredDatabaseMetadata(proto.Message):
         proto.MESSAGE,
         number=2,
         message=common.OperationProgress,
+    )
+
+
+class DatabaseRole(proto.Message):
+    r"""A Cloud Spanner database role.
+
+    Attributes:
+        name (str):
+            Required. The name of the database role. Values are of the
+            form
+            ``projects/<project>/instances/<instance>/databases/<database>/databaseRoles/ {role}``,
+            where ``<role>`` is as specified in the ``CREATE ROLE`` DDL
+            statement. This name can be passed to Get/Set IAMPolicy
+            methods to identify the database role.
+    """
+
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class ListDatabaseRolesRequest(proto.Message):
+    r"""The request for
+    [ListDatabaseRoles][google.spanner.admin.database.v1.DatabaseAdmin.ListDatabaseRoles].
+
+    Attributes:
+        parent (str):
+            Required. The database whose roles should be listed. Values
+            are of the form
+            ``projects/<project>/instances/<instance>/databases/<database>/databaseRoles``.
+        page_size (int):
+            Number of database roles to be returned in
+            the response. If 0 or less, defaults to the
+            server's maximum allowed page size.
+        page_token (str):
+            If non-empty, ``page_token`` should contain a
+            [next_page_token][google.spanner.admin.database.v1.ListDatabaseRolesResponse.next_page_token]
+            from a previous
+            [ListDatabaseRolesResponse][google.spanner.admin.database.v1.ListDatabaseRolesResponse].
+    """
+
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class ListDatabaseRolesResponse(proto.Message):
+    r"""The response for
+    [ListDatabaseRoles][google.spanner.admin.database.v1.DatabaseAdmin.ListDatabaseRoles].
+
+    Attributes:
+        database_roles (Sequence[google.cloud.spanner_admin_database_v1.types.DatabaseRole]):
+            Database roles that matched the request.
+        next_page_token (str):
+            ``next_page_token`` can be sent in a subsequent
+            [ListDatabaseRoles][google.spanner.admin.database.v1.DatabaseAdmin.ListDatabaseRoles]
+            call to fetch more of the matching roles.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    database_roles = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="DatabaseRole",
+    )
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
     )
 
 
