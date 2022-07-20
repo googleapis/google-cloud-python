@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.2.0](https://github.com/googleapis/python-bigquery-data-exchange/compare/v0.1.1...v0.2.0) (2022-07-20)
+
+
+### Features
+
+* add audience parameter ([b2417eb](https://github.com/googleapis/python-bigquery-data-exchange/commit/b2417ebd2bf972c8984520b60ba68937254b3846))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.32.0,>=2.8.0 ([#17](https://github.com/googleapis/python-bigquery-data-exchange/issues/17)) ([b2417eb](https://github.com/googleapis/python-bigquery-data-exchange/commit/b2417ebd2bf972c8984520b60ba68937254b3846))
+* require python 3.7+ ([#19](https://github.com/googleapis/python-bigquery-data-exchange/issues/19)) ([938be32](https://github.com/googleapis/python-bigquery-data-exchange/commit/938be32fb56bc661d7f8e2a64a5dd4d3dc03c69b))
+
 ## [0.1.1](https://github.com/googleapis/python-bigquery-data-exchange/compare/v0.1.0...v0.1.1) (2022-06-07)
 
 
