@@ -223,6 +223,29 @@ def test_resource_path_with_wildcard():
                     "kingdoms/my-kingdom/phyla/my-phylum/classes/") is None
 
 
+def test_resource_path_pure_wildcard():
+    options = descriptor_pb2.MessageOptions()
+    resource = options.Extensions[resource_pb2.resource]
+    resource.pattern.append("*")
+    resource.type = "taxonomy.biology.com/Class"
+    message = make_message('Squid', options=options)
+
+    # Pure wildcard resource names do not really help construct resources
+    # but they are a part of the spec so we need to support them, which means at
+    # least not failing.
+    assert message.resource_path == "*"
+    assert message.resource_path_args == []
+    assert message.resource_type == "Class"
+
+    # Pure wildcard resource names match everything...
+    assert re.match(message.path_regex_str,
+                    "kingdoms/my-kingdom/phyla/my-phylum/classes/my-klass")
+    assert re.match(message.path_regex_str,
+                    "kingdoms/my-kingdom/phyla/my-phylum/classes/my-klass/additional-segment")
+    assert re.match(message.path_regex_str,
+                    "kingdoms/my-kingdom/phyla/my-phylum/classes/")
+
+
 def test_parse_resource_path():
     options = descriptor_pb2.MessageOptions()
     resource = options.Extensions[resource_pb2.resource]

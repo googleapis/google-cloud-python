@@ -596,6 +596,10 @@ class MessageType:
             ) +
             "$"
         )
+        # Special case for wildcard resource names
+        if parsing_regex_str == "^*$":
+            parsing_regex_str = "^.*$"
+
         return parsing_regex_str
 
     def get_field(self, *field_path: str,

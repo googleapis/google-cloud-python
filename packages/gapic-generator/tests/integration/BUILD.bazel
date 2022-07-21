@@ -91,18 +91,17 @@ py_gapic_library(
     ],
 )
 
-# Uncomment once https://github.com/googleapis/gapic-generator-python/issues/1358 is fixed
-#py_test(
-#    name = "eventarc_py_gapic_test",
-#    srcs = [
-#        "eventarc_py_gapic_pytest.py",
-#        "eventarc_py_gapic_test.py",
-#    ],
-#    legacy_create_init = False,
-#    deps = [
-#        ":eventarc_py_gapic",
-#    ],
-#)
+py_test(
+    name = "eventarc_py_gapic_test",
+    srcs = [
+        "eventarc_py_gapic_pytest.py",
+        "eventarc_py_gapic_test.py",
+    ],
+    legacy_create_init = False,
+    deps = [
+        ":eventarc_py_gapic",
+    ],
+)
 
 # Logging.
 py_gapic_library(
@@ -154,6 +153,7 @@ test_suite(
     name = "googleapis_test_suite",
     tests = [
         ":credentials_py_gapic_test",
+        ":eventarc_py_gapic_test",
         ":redis_py_gapic_test",
     ],
 )
