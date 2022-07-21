@@ -1,6 +1,13 @@
 # Changelog
 
 
+## [1.1.2](https://github.com/googleapis/gapic-generator-python/compare/v1.1.1...v1.1.2) (2022-07-21)
+
+
+### Bug Fixes
+
+* fix wildcard resource names helper method ([#1363](https://github.com/googleapis/gapic-generator-python/issues/1363)) ([b4ecb44](https://github.com/googleapis/gapic-generator-python/commit/b4ecb44e190005f87ccbc7d1aae6f5f2e5f20115))
+
 ## [1.1.1](https://github.com/googleapis/gapic-generator-python/compare/v1.1.0...v1.1.1) (2022-07-04)
 
 
