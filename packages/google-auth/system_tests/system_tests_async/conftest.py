@@ -19,6 +19,7 @@ from google.auth import _helpers
 import google.auth.transport.requests
 import google.auth.transport.urllib3
 import pytest
+import pytest_asyncio
 import requests
 import urllib3
 
@@ -30,37 +31,37 @@ from system_tests.system_tests_sync import conftest as sync_conftest
 TOKEN_INFO_URL = "https://www.googleapis.com/oauth2/v3/tokeninfo"
 
 
-@pytest.fixture
+@pytest_asyncio.fixture
 def service_account_file():
     """The full path to a valid service account key file."""
     yield sync_conftest.SERVICE_ACCOUNT_FILE
 
 
-@pytest.fixture
+@pytest_asyncio.fixture
 def impersonated_service_account_file():
     """The full path to a valid service account key file."""
     yield sync_conftest.IMPERSONATED_SERVICE_ACCOUNT_FILE
 
 
-@pytest.fixture
+@pytest_asyncio.fixture
 def authorized_user_file():
     """The full path to a valid authorized user file."""
     yield sync_conftest.AUTHORIZED_USER_FILE
 
 
-@pytest.fixture
+@pytest_asyncio.fixture
 async def aiohttp_session():
     async with aiohttp.ClientSession(auto_decompress=False) as session:
         yield session
 
 
-@pytest.fixture(params=["aiohttp"])
+@pytest_asyncio.fixture(params=["aiohttp"])
 async def http_request(request, aiohttp_session):
     """A transport.request object."""
     yield aiohttp_requests.Request(aiohttp_session)
 
 
-@pytest.fixture
+@pytest_asyncio.fixture
 async def token_info(http_request):
     """Returns a function that obtains OAuth2 token info."""
 
@@ -85,7 +86,7 @@ async def token_info(http_request):
     yield _token_info
 
 
-@pytest.fixture
+@pytest_asyncio.fixture
 async def verify_refresh(http_request):
     """Returns a function that verifies that credentials can be refreshed."""
 
