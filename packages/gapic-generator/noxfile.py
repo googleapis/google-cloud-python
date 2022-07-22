@@ -29,7 +29,7 @@ import shutil
 nox.options.error_on_missing_interpreters = True
 
 
-showcase_version = os.environ.get("SHOWCASE_VERSION", "0.19.0")
+showcase_version = os.environ.get("SHOWCASE_VERSION", "0.22.0")
 ADS_TEMPLATES = path.join(path.dirname(__file__), "gapic", "ads-templates")
 
 
