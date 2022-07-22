@@ -95,7 +95,7 @@ async def _fetch_certs(request, certs_url):
 
     data = await response.data.read()
 
-    return json.loads(json.dumps(data))
+    return json.loads(data.decode("utf-8"))
 
 
 async def verify_token(

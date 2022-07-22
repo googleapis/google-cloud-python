@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import json
 import os
 
 import mock
@@ -32,7 +33,9 @@ def make_request(status, data=None):
 
     if data is not None:
         response.data = mock.AsyncMock(spec=["__call__", "read"])
-        response.data.read = mock.AsyncMock(spec=["__call__"], return_value=data)
+        response.data.read = mock.AsyncMock(
+            spec=["__call__"], return_value=json.dumps(data).encode("utf-8")
+        )
 
     request = mock.AsyncMock(spec=["transport.Request"])
     request.return_value = response
