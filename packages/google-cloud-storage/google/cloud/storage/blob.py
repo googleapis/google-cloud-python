@@ -2456,7 +2456,7 @@ class Blob(_PropertyMixin):
         to that project.
 
         :type file_obj: file
-        :param file_obj: A file handle open for reading.
+        :param file_obj: A file handle opened in binary mode for reading.
 
         :type rewind: bool
         :param rewind:
