@@ -108,6 +108,7 @@ class MitreAttack(proto.Message):
         DATA_DESTRUCTION = 29
         DOMAIN_POLICY_MODIFICATION = 30
         IMPAIR_DEFENSES = 31
+        NETWORK_SERVICE_DISCOVERY = 32
 
     primary_tactic = proto.Field(
         proto.ENUM,

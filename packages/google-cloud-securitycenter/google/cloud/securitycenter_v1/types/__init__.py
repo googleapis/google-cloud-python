@@ -19,6 +19,7 @@ from .bigquery_export import BigQueryExport
 from .compliance import Compliance
 from .connection import Connection
 from .contact_details import Contact, ContactDetails
+from .container import Container
 from .exfiltration import ExfilResource, Exfiltration
 from .external_system import ExternalSystem
 from .file import File
@@ -26,6 +27,8 @@ from .finding import Finding
 from .folder import Folder
 from .iam_binding import IamBinding
 from .indicator import Indicator
+from .kubernetes import Kubernetes
+from .label import Label
 from .mitre_attack import MitreAttack
 from .mute_config import MuteConfig
 from .notification_config import NotificationConfig
@@ -92,6 +95,7 @@ __all__ = (
     "Connection",
     "Contact",
     "ContactDetails",
+    "Container",
     "ExfilResource",
     "Exfiltration",
     "ExternalSystem",
@@ -100,6 +104,8 @@ __all__ = (
     "Folder",
     "IamBinding",
     "Indicator",
+    "Kubernetes",
+    "Label",
     "MitreAttack",
     "MuteConfig",
     "NotificationConfig",

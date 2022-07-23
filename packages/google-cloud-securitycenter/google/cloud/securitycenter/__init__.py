@@ -26,6 +26,7 @@ from google.cloud.securitycenter_v1.types.bigquery_export import BigQueryExport
 from google.cloud.securitycenter_v1.types.compliance import Compliance
 from google.cloud.securitycenter_v1.types.connection import Connection
 from google.cloud.securitycenter_v1.types.contact_details import Contact, ContactDetails
+from google.cloud.securitycenter_v1.types.container import Container
 from google.cloud.securitycenter_v1.types.exfiltration import (
     ExfilResource,
     Exfiltration,
@@ -36,6 +37,8 @@ from google.cloud.securitycenter_v1.types.finding import Finding
 from google.cloud.securitycenter_v1.types.folder import Folder
 from google.cloud.securitycenter_v1.types.iam_binding import IamBinding
 from google.cloud.securitycenter_v1.types.indicator import Indicator
+from google.cloud.securitycenter_v1.types.kubernetes import Kubernetes
+from google.cloud.securitycenter_v1.types.label import Label
 from google.cloud.securitycenter_v1.types.mitre_attack import MitreAttack
 from google.cloud.securitycenter_v1.types.mute_config import MuteConfig
 from google.cloud.securitycenter_v1.types.notification_config import NotificationConfig
@@ -115,6 +118,7 @@ __all__ = (
     "Connection",
     "Contact",
     "ContactDetails",
+    "Container",
     "ExfilResource",
     "Exfiltration",
     "ExternalSystem",
@@ -123,6 +127,8 @@ __all__ = (
     "Folder",
     "IamBinding",
     "Indicator",
+    "Kubernetes",
+    "Label",
     "MitreAttack",
     "MuteConfig",
     "NotificationConfig",

@@ -17,7 +17,12 @@ from google.protobuf import struct_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.securitycenter_v1.types import compliance, connection, contact_details
+from google.cloud.securitycenter_v1.types import (
+    compliance,
+    connection,
+    contact_details,
+    container,
+)
 from google.cloud.securitycenter_v1.types import exfiltration as gcs_exfiltration
 from google.cloud.securitycenter_v1.types import mitre_attack as gcs_mitre_attack
 from google.cloud.securitycenter_v1.types import security_marks as gcs_security_marks
@@ -25,6 +30,7 @@ from google.cloud.securitycenter_v1.types import vulnerability as gcs_vulnerabil
 from google.cloud.securitycenter_v1.types import access as gcs_access
 from google.cloud.securitycenter_v1.types import external_system, iam_binding
 from google.cloud.securitycenter_v1.types import indicator as gcs_indicator
+from google.cloud.securitycenter_v1.types import kubernetes as gcs_kubernetes
 from google.cloud.securitycenter_v1.types import process
 
 __protobuf__ = proto.module(
@@ -188,6 +194,13 @@ class Finding(proto.Message):
             Finding.
         next_steps (str):
             Next steps associate to the finding.
+        containers (Sequence[google.cloud.securitycenter_v1.types.Container]):
+            Containers associated with the finding.
+            containers provides information for both
+            Kubernetes and non-Kubernetes containers.
+        kubernetes (google.cloud.securitycenter_v1.types.Kubernetes):
+            Kubernetes resources associated with the
+            finding.
     """
 
     class State(proto.Enum):
@@ -358,6 +371,16 @@ class Finding(proto.Message):
     next_steps = proto.Field(
         proto.STRING,
         number=40,
+    )
+    containers = proto.RepeatedField(
+        proto.MESSAGE,
+        number=42,
+        message=container.Container,
+    )
+    kubernetes = proto.Field(
+        proto.MESSAGE,
+        number=43,
+        message=gcs_kubernetes.Kubernetes,
     )
 
 

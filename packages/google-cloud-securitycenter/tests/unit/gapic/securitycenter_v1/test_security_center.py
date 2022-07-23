@@ -66,9 +66,16 @@ from google.cloud.securitycenter_v1.types import (
     compliance,
     connection,
     contact_details,
+    container,
     exfiltration,
 )
-from google.cloud.securitycenter_v1.types import iam_binding, indicator, mitre_attack
+from google.cloud.securitycenter_v1.types import (
+    iam_binding,
+    indicator,
+    kubernetes,
+    label,
+    mitre_attack,
+)
 from google.cloud.securitycenter_v1.types import process, run_asset_discovery_response
 from google.cloud.securitycenter_v1.types import external_system as gcs_external_system
 from google.cloud.securitycenter_v1.types import (

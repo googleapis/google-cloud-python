@@ -21,6 +21,7 @@ from .types.bigquery_export import BigQueryExport
 from .types.compliance import Compliance
 from .types.connection import Connection
 from .types.contact_details import Contact, ContactDetails
+from .types.container import Container
 from .types.exfiltration import ExfilResource, Exfiltration
 from .types.external_system import ExternalSystem
 from .types.file import File
@@ -28,6 +29,8 @@ from .types.finding import Finding
 from .types.folder import Folder
 from .types.iam_binding import IamBinding
 from .types.indicator import Indicator
+from .types.kubernetes import Kubernetes
+from .types.label import Label
 from .types.mitre_attack import MitreAttack
 from .types.mute_config import MuteConfig
 from .types.notification_config import NotificationConfig
@@ -96,6 +99,7 @@ __all__ = (
     "Connection",
     "Contact",
     "ContactDetails",
+    "Container",
     "CreateBigQueryExportRequest",
     "CreateFindingRequest",
     "CreateMuteConfigRequest",
@@ -126,6 +130,8 @@ __all__ = (
     "GroupResult",
     "IamBinding",
     "Indicator",
+    "Kubernetes",
+    "Label",
     "ListAssetsRequest",
     "ListAssetsResponse",
     "ListBigQueryExportsRequest",
