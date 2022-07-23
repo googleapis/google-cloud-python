@@ -63,6 +63,10 @@ class ServerTlsPolicy(proto.Message):
             ``mtls_policy`` are set, server allows both plain text and
             mTLS connections. See documentation of other encryption
             modes to confirm compatibility.
+
+            Consider using it if you wish to upgrade in place your
+            deployment to TLS while having mixed TLS and non-TLS traffic
+            reaching port :80.
         server_certificate (google.cloud.network_security_v1beta1.types.CertificateProvider):
             Defines a mechanism to provision server identity (public and
             private keys). Cannot be combined with ``allow_open`` as a

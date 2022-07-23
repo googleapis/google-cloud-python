@@ -33,7 +33,7 @@ class GrpcEndpoint(proto.Message):
         target_uri (str):
             Required. The target URI of the gRPC
             endpoint. Only UDS path is supported, and should
-            start with “unix:”.
+            start with "unix:".
     """
 
     target_uri = proto.Field(
