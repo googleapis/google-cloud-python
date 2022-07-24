@@ -23,6 +23,28 @@ from synthtool.languages import python
 default_version = "v1"
 
 for library in s.get_staging_dirs(default_version):
+    # work around bug in generator
+    # `set_` is a reserved term in protobuf
+    # https://github.com/googleapis/gapic-generator-python/issues/1348
+    s.replace(
+        library / "google/cloud/**/*.py",
+        "set_ ",
+        "set ",
+    )
+
+    # work around issue with generated docstring
+    s.replace(
+        library / "google/cloud/**/*.py",
+        "A hostname may be prefixed with a wildcard label \(\*.\).",
+        "A hostname may be prefixed with a wildcard label (\*.)."
+    )
+
+    s.replace(
+        library / "google/cloud/**/*.py",
+        """\"\*.""",
+        """\"\*.""",
+    )
+
     s.move(
         library, excludes=["setup.py", "README.rst", "google/cloud/network_services"]
     )
