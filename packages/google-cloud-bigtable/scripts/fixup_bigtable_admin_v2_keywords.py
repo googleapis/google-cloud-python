@@ -75,6 +75,7 @@ class bigtable_adminCallTransformer(cst.CSTTransformer):
         'set_iam_policy': ('resource', 'policy', 'update_mask', ),
         'snapshot_table': ('name', 'cluster', 'snapshot_id', 'ttl', 'description', ),
         'test_iam_permissions': ('resource', 'permissions', ),
+        'undelete_table': ('name', ),
         'update_app_profile': ('app_profile', 'update_mask', 'ignore_warnings', ),
         'update_backup': ('backup', 'update_mask', ),
         'update_cluster': ('name', 'location', 'state', 'serve_nodes', 'cluster_config', 'default_storage_type', 'encryption_config', ),

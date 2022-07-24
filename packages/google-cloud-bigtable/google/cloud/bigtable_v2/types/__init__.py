@@ -43,6 +43,9 @@ from .data import (
     TimestampRange,
     ValueRange,
 )
+from .response_params import (
+    ResponseParams,
+)
 
 __all__ = (
     "CheckAndMutateRowRequest",
@@ -71,4 +74,5 @@ __all__ = (
     "RowSet",
     "TimestampRange",
     "ValueRange",
+    "ResponseParams",
 )

@@ -339,6 +339,11 @@
                 "test_iam_permissions"
               ]
             },
+            "UndeleteTable": {
+              "methods": [
+                "undelete_table"
+              ]
+            },
             "UpdateBackup": {
               "methods": [
                 "update_backup"
@@ -452,6 +457,11 @@
             "TestIamPermissions": {
               "methods": [
                 "test_iam_permissions"
+              ]
+            },
+            "UndeleteTable": {
+              "methods": [
+                "undelete_table"
               ]
             },
             "UpdateBackup": {

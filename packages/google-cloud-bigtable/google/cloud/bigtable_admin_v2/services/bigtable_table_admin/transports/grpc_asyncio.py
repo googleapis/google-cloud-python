@@ -114,6 +114,7 @@ class BigtableTableAdminGrpcAsyncIOTransport(BigtableTableAdminTransport):
         quota_project_id=None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
         always_use_jwt_access: Optional[bool] = False,
+        api_audience: Optional[str] = None,
     ) -> None:
         """Instantiate the transport.
 
@@ -210,6 +211,7 @@ class BigtableTableAdminGrpcAsyncIOTransport(BigtableTableAdminTransport):
             quota_project_id=quota_project_id,
             client_info=client_info,
             always_use_jwt_access=always_use_jwt_access,
+            api_audience=api_audience,
         )
 
         if not self._grpc_channel:
@@ -408,6 +410,35 @@ class BigtableTableAdminGrpcAsyncIOTransport(BigtableTableAdminTransport):
                 response_deserializer=empty_pb2.Empty.FromString,
             )
         return self._stubs["delete_table"]
+
+    @property
+    def undelete_table(
+        self,
+    ) -> Callable[
+        [bigtable_table_admin.UndeleteTableRequest], Awaitable[operations_pb2.Operation]
+    ]:
+        r"""Return a callable for the undelete table method over gRPC.
+
+        Restores a specified table which was accidentally
+        deleted.
+
+        Returns:
+            Callable[[~.UndeleteTableRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "undelete_table" not in self._stubs:
+            self._stubs["undelete_table"] = self.grpc_channel.unary_unary(
+                "/google.bigtable.admin.v2.BigtableTableAdmin/UndeleteTable",
+                request_serializer=bigtable_table_admin.UndeleteTableRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["undelete_table"]
 
     @property
     def modify_column_families(

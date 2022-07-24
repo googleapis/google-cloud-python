@@ -35,6 +35,8 @@ __protobuf__ = proto.module(
         "ListTablesResponse",
         "GetTableRequest",
         "DeleteTableRequest",
+        "UndeleteTableRequest",
+        "UndeleteTableMetadata",
         "ModifyColumnFamiliesRequest",
         "GenerateConsistencyTokenRequest",
         "GenerateConsistencyTokenResponse",
@@ -456,6 +458,53 @@ class DeleteTableRequest(proto.Message):
     name = proto.Field(
         proto.STRING,
         number=1,
+    )
+
+
+class UndeleteTableRequest(proto.Message):
+    r"""Request message for
+    [google.bigtable.admin.v2.BigtableTableAdmin.UndeleteTable][google.bigtable.admin.v2.BigtableTableAdmin.UndeleteTable]
+
+    Attributes:
+        name (str):
+            Required. The unique name of the table to be restored.
+            Values are of the form
+            ``projects/{project}/instances/{instance}/tables/{table}``.
+    """
+
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class UndeleteTableMetadata(proto.Message):
+    r"""Metadata type for the operation returned by
+    [google.bigtable.admin.v2.BigtableTableAdmin.UndeleteTable][google.bigtable.admin.v2.BigtableTableAdmin.UndeleteTable].
+
+    Attributes:
+        name (str):
+            The name of the table being restored.
+        start_time (google.protobuf.timestamp_pb2.Timestamp):
+            The time at which this operation started.
+        end_time (google.protobuf.timestamp_pb2.Timestamp):
+            If set, the time at which this operation
+            finished or was cancelled.
+    """
+
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    start_time = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+    end_time = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
     )
 
 

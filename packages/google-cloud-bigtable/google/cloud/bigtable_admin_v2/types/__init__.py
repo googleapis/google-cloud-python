@@ -70,6 +70,8 @@ from .bigtable_table_admin import (
     RestoreTableRequest,
     SnapshotTableMetadata,
     SnapshotTableRequest,
+    UndeleteTableMetadata,
+    UndeleteTableRequest,
     UpdateBackupRequest,
 )
 from .common import (
@@ -151,6 +153,8 @@ __all__ = (
     "RestoreTableRequest",
     "SnapshotTableMetadata",
     "SnapshotTableRequest",
+    "UndeleteTableMetadata",
+    "UndeleteTableRequest",
     "UpdateBackupRequest",
     "OperationProgress",
     "StorageType",

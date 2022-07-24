@@ -43,6 +43,7 @@ from .types.data import RowRange
 from .types.data import RowSet
 from .types.data import TimestampRange
 from .types.data import ValueRange
+from .types.response_params import ResponseParams
 
 __all__ = (
     "BigtableAsyncClient",
@@ -65,6 +66,7 @@ __all__ = (
     "ReadModifyWriteRule",
     "ReadRowsRequest",
     "ReadRowsResponse",
+    "ResponseParams",
     "Row",
     "RowFilter",
     "RowRange",
