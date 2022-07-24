@@ -77,7 +77,9 @@ def instance():
             serve_nodes=serve_nodes,
             default_storage_type=storage_type,
         )
-        instance.create(clusters=[cluster])
+        operation = instance.create(clusters=[cluster])
+        response = operation.result(60)
+        print(f"Successfully created {response.name}")
 
         # Eventual consistency check
         retry_found = RetryResult(bool)
@@ -105,7 +107,9 @@ def dev_instance():
         cluster = instance.cluster(
             cluster_id, location_id=BIGTABLE_ZONE, default_storage_type=storage_type
         )
-        instance.create(clusters=[cluster])
+        operation = instance.create(clusters=[cluster])
+        response = operation.result(60)
+        print(f"Successfully created {response.name}")
 
         # Eventual consistency check
         retry_found = RetryResult(bool)
