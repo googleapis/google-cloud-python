@@ -3230,7 +3230,7 @@ class Client(ClientWithProject):
                 will be ignored if a ``job_id`` is also given.
             location (Optional[str]):
                 Location where to run the job. Must match the location of the
-                any table used in the query as well as the destination table.
+                table used in the query as well as the destination table.
             project (Optional[str]):
                 Project ID of the project of where to run the job. Defaults
                 to the client's project.
