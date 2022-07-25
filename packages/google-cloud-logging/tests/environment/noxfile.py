@@ -22,6 +22,7 @@ from typing import Callable, Dict, List, Optional
 
 import nox
 
+nox.options.error_on_missing_interpreters = True
 
 TEST_CONFIG = {
     # You can opt out from the test for specific Python versions.
@@ -69,7 +70,7 @@ def _determine_local_import_names(start_dir: str) -> List[str]:
 # We also need to specify the rules which are ignored by default:
 # ['E226', 'W504', 'E126', 'E123', 'W503', 'E24', 'E704', 'E121']
 
-DEFAULT_PYTHON_VERSION = "3.9"
+DEFAULT_PYTHON_VERSION = os.getenv("ENV_TEST_PY_VERSION","3.9")
 BLACK_PATHS = ["./deployable/python"]
 BLACK_VERSION = "black==19.10b0"
 
@@ -141,7 +142,7 @@ def tests(session, language, platform):
         session.skip("RUN_ENV_TESTS is set to false, skipping")
     # Sanity check: Only run tests if the environment variable is set.
     if not os.environ.get("GOOGLE_APPLICATION_CREDENTIALS", ""):
-        session.skip("Credentials must be set via environment variable")
+        session.error("Credentials must be set via environment variable")
 
     # Use pre-release gRPC for system tests.
     session.install("--pre", "grpcio")

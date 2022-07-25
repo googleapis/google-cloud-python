@@ -60,7 +60,8 @@ deploy() {
   # copy test scripts
   cp $REPO_ROOT/deployable/python/router.py $TMP_DIR/main.py
   cp $REPO_ROOT/deployable/python/*.py $TMP_DIR/
-  echo  "-e ./python-logging" | cat $REPO_ROOT/deployable/python/requirements.txt - > $TMP_DIR/requirements.txt
+  cat $REPO_ROOT/deployable/python/requirements.txt > $TMP_DIR/requirements.txt
+  echo -e '\n-e ./python-logging' >> $TMP_DIR/requirements.txt
   # deploy function
   pushd $TMP_DIR
     gcloud functions deploy $SERVICE_NAME \
