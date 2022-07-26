@@ -5,6 +5,24 @@
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
 
+## [3.3.0](https://github.com/googleapis/python-bigquery/compare/v3.2.0...v3.3.0) (2022-07-25)
+
+
+### Features
+
+* add destination_expiration_time property to copy job ([#1277](https://github.com/googleapis/python-bigquery/issues/1277)) ([728b07c](https://github.com/googleapis/python-bigquery/commit/728b07c9177532bbbbfd1890f23e98950aea3f02))
+
+
+### Bug Fixes
+
+* require python 3.7+ ([#1284](https://github.com/googleapis/python-bigquery/issues/1284)) ([52d9f14](https://github.com/googleapis/python-bigquery/commit/52d9f14fb1d183f64a62fee1fddc0bf576a0a3e9))
+
+
+### Documentation
+
+* **samples:** add table snapshot sample ([#1274](https://github.com/googleapis/python-bigquery/issues/1274)) ([e760d1b](https://github.com/googleapis/python-bigquery/commit/e760d1bcb76561b4247adde2fd06ae0b686befb9))
+* **samples:** explicitly add bq to samples reqs, upgrade grpc to fix bug on m1 ([#1290](https://github.com/googleapis/python-bigquery/issues/1290)) ([9b7e3e4](https://github.com/googleapis/python-bigquery/commit/9b7e3e424cbd08af8b08c91e6397a3f1b7811064))
+
 ## [3.2.0](https://github.com/googleapis/python-bigquery/compare/v3.1.0...v3.2.0) (2022-06-06)
 
 
