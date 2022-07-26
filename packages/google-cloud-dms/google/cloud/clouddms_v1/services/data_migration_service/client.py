@@ -1002,9 +1002,6 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
 
                       }
 
-                   The JSON representation for Empty is empty JSON
-                   object {}.
-
         """
         # Create or coerce a protobuf request object.
         # Quick check: If we got a request object, we should *not* have
@@ -2222,9 +2219,6 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
                          (google.protobuf.Empty);
 
                       }
-
-                   The JSON representation for Empty is empty JSON
-                   object {}.
 
         """
         # Create or coerce a protobuf request object.
