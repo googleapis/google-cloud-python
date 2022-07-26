@@ -2239,9 +2239,6 @@ class CloudChannelServiceAsyncClient:
 
                       }
 
-                   The JSON representation for Empty is empty JSON
-                   object {}.
-
         """
         # Create or coerce a protobuf request object.
         request = service.CancelEntitlementRequest(request)
@@ -2620,9 +2617,6 @@ class CloudChannelServiceAsyncClient:
                          (google.protobuf.Empty);
 
                       }
-
-                   The JSON representation for Empty is empty JSON
-                   object {}.
 
         """
         # Create or coerce a protobuf request object.
