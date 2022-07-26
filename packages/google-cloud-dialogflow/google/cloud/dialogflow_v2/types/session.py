@@ -305,6 +305,8 @@ class QueryInput(proto.Message):
             This field is a member of `oneof`_ ``input``.
         text (google.cloud.dialogflow_v2.types.TextInput):
             The natural language text to be processed.
+            Text length must not exceed 256 character for
+            virtual agent interactions.
 
             This field is a member of `oneof`_ ``input``.
         event (google.cloud.dialogflow_v2.types.EventInput):
@@ -866,7 +868,8 @@ class TextInput(proto.Message):
         text (str):
             Required. The UTF-8 encoded natural language
             text to be processed. Text length must not
-            exceed 256 characters.
+            exceed 256 characters for virtual agent
+            interactions.
         language_code (str):
             Required. The language of this conversational query. See
             `Language
