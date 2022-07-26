@@ -1,4 +1,4 @@
-Services for Google Cloud Network-security v1beta1 API
+Services for Google Cloud Network Security v1beta1 API
 ======================================================
 .. toctree::
     :maxdepth: 2
