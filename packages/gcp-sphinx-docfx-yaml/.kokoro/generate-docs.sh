@@ -38,6 +38,8 @@ python3 -m pip install --user django==2.2 ipython
 
 # Store the contents of bucket log in a variable to reuse.
 python_bucket_items=$(gsutil ls "gs://docs-staging-v2/docfx-python*")
+# Store empty tarballs that did not produce any content to check later.
+empty_packages=""
 # Retrieve unique repositories to regenerate the YAML with.
 for package in $(echo "${python_bucket_items}" | cut -d "-" -f 5- | rev | cut -d "-" -f 2- | rev | uniq); do
 
@@ -115,6 +117,12 @@ for package in $(echo "${python_bucket_items}" | cut -d "-" -f 5- | rev | cut -d
     # Build YAML tarballs for Cloud-RAD.
     nox -s docfx
 
+    # Check that documentation is produced. If not, log and continue.
+    if [ ! "$(ls docs/_build/html/docfx_yaml/)" ]; then
+      empty_packages="${repo}-${tag} ${empty_packages}"
+      continue
+    fi
+
     # Update specific names to be up to date.
     name=$(jq --raw-output '.name // empty' .repo-metadata.json)
     if [[ "${name}" == "translation" ]]; then
@@ -146,4 +154,13 @@ for package in $(echo "${python_bucket_items}" | cut -d "-" -f 5- | rev | cut -d
   cd ../
   rm -rf ${repo}
   rm "noxfile.py"
+done
+
+if [ ! ${empty_packages} ]; then
+  exit
+fi
+
+echo "The following packages did not produce any content:"
+for empty_package in $(echo ${empty_packages}); do
+  echo ${empty_package}
 done
