@@ -1,0 +1,5646 @@
+{
+  "clientLibrary": {
+    "apis": [
+      {
+        "id": "google.cloud.dataform.v1beta1",
+        "version": "v1beta1"
+      }
+    ],
+    "language": "PYTHON",
+    "name": "google-cloud-dataform"
+  },
+  "snippets": [
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.dataform_v1beta1.DataformAsyncClient",
+          "shortName": "DataformAsyncClient"
+        },
+        "fullName": "google.cloud.dataform_v1beta1.DataformAsyncClient.cancel_workflow_invocation",
+        "method": {
+          "fullName": "google.cloud.dataform.v1beta1.Dataform.CancelWorkflowInvocation",
+          "service": {
+            "fullName": "google.cloud.dataform.v1beta1.Dataform",
+            "shortName": "Dataform"
+          },
+          "shortName": "CancelWorkflowInvocation"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataform_v1beta1.types.CancelWorkflowInvocationRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "shortName": "cancel_workflow_invocation"
+      },
+      "description": "Sample for CancelWorkflowInvocation",
+      "file": "dataform_v1beta1_generated_dataform_cancel_workflow_invocation_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dataform_v1beta1_generated_Dataform_CancelWorkflowInvocation_async",
+      "segments": [
+        {
+          "end": 42,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 42,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dataform_v1beta1_generated_dataform_cancel_workflow_invocation_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dataform_v1beta1.DataformClient",
+          "shortName": "DataformClient"
+        },
+        "fullName": "google.cloud.dataform_v1beta1.DataformClient.cancel_workflow_invocation",
+        "method": {
+          "fullName": "google.cloud.dataform.v1beta1.Dataform.CancelWorkflowInvocation",
+          "service": {
+            "fullName": "google.cloud.dataform.v1beta1.Dataform",
+            "shortName": "Dataform"
+          },
+          "shortName": "CancelWorkflowInvocation"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataform_v1beta1.types.CancelWorkflowInvocationRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "shortName": "cancel_workflow_invocation"
+      },
+      "description": "Sample for CancelWorkflowInvocation",
+      "file": "dataform_v1beta1_generated_dataform_cancel_workflow_invocation_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dataform_v1beta1_generated_Dataform_CancelWorkflowInvocation_sync",
+      "segments": [
+        {
+          "end": 42,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 42,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dataform_v1beta1_generated_dataform_cancel_workflow_invocation_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.dataform_v1beta1.DataformAsyncClient",
+          "shortName": "DataformAsyncClient"
+        },
+        "fullName": "google.cloud.dataform_v1beta1.DataformAsyncClient.commit_workspace_changes",
+        "method": {
+          "fullName": "google.cloud.dataform.v1beta1.Dataform.CommitWorkspaceChanges",
+          "service": {
+            "fullName": "google.cloud.dataform.v1beta1.Dataform",
+            "shortName": "Dataform"
+          },
+          "shortName": "CommitWorkspaceChanges"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataform_v1beta1.types.CommitWorkspaceChangesRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "shortName": "commit_workspace_changes"
+      },
+      "description": "Sample for CommitWorkspaceChanges",
+      "file": "dataform_v1beta1_generated_dataform_commit_workspace_changes_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dataform_v1beta1_generated_Dataform_CommitWorkspaceChanges_async",
+      "segments": [
+        {
+          "end": 47,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 47,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 43,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 44,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 48,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dataform_v1beta1_generated_dataform_commit_workspace_changes_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dataform_v1beta1.DataformClient",
+          "shortName": "DataformClient"
+        },
+        "fullName": "google.cloud.dataform_v1beta1.DataformClient.commit_workspace_changes",
+        "method": {
+          "fullName": "google.cloud.dataform.v1beta1.Dataform.CommitWorkspaceChanges",
+          "service": {
+            "fullName": "google.cloud.dataform.v1beta1.Dataform",
+            "shortName": "Dataform"
+          },
+          "shortName": "CommitWorkspaceChanges"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataform_v1beta1.types.CommitWorkspaceChangesRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "shortName": "commit_workspace_changes"
+      },
+      "description": "Sample for CommitWorkspaceChanges",
+      "file": "dataform_v1beta1_generated_dataform_commit_workspace_changes_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dataform_v1beta1_generated_Dataform_CommitWorkspaceChanges_sync",
+      "segments": [
+        {
+          "end": 47,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 47,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 43,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 44,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 48,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dataform_v1beta1_generated_dataform_commit_workspace_changes_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.dataform_v1beta1.DataformAsyncClient",
+          "shortName": "DataformAsyncClient"
+        },
+        "fullName": "google.cloud.dataform_v1beta1.DataformAsyncClient.create_compilation_result",
+        "method": {
+          "fullName": "google.cloud.dataform.v1beta1.Dataform.CreateCompilationResult",
+          "service": {
+            "fullName": "google.cloud.dataform.v1beta1.Dataform",
+            "shortName": "Dataform"
+          },
+          "shortName": "CreateCompilationResult"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataform_v1beta1.types.CreateCompilationResultRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "compilation_result",
+            "type": "google.cloud.dataform_v1beta1.types.CompilationResult"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataform_v1beta1.types.CompilationResult",
+        "shortName": "create_compilation_result"
+      },
+      "description": "Sample for CreateCompilationResult",
+      "file": "dataform_v1beta1_generated_dataform_create_compilation_result_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dataform_v1beta1_generated_Dataform_CreateCompilationResult_async",
+      "segments": [
+        {
+          "end": 48,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 48,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 42,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 43,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 49,
+          "start": 46,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dataform_v1beta1_generated_dataform_create_compilation_result_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dataform_v1beta1.DataformClient",
+          "shortName": "DataformClient"
+        },
+        "fullName": "google.cloud.dataform_v1beta1.DataformClient.create_compilation_result",
+        "method": {
+          "fullName": "google.cloud.dataform.v1beta1.Dataform.CreateCompilationResult",
+          "service": {
+            "fullName": "google.cloud.dataform.v1beta1.Dataform",
+            "shortName": "Dataform"
+          },
+          "shortName": "CreateCompilationResult"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataform_v1beta1.types.CreateCompilationResultRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "compilation_result",
+            "type": "google.cloud.dataform_v1beta1.types.CompilationResult"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataform_v1beta1.types.CompilationResult",
+        "shortName": "create_compilation_result"
+      },
+      "description": "Sample for CreateCompilationResult",
+      "file": "dataform_v1beta1_generated_dataform_create_compilation_result_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dataform_v1beta1_generated_Dataform_CreateCompilationResult_sync",
+      "segments": [
+        {
+          "end": 48,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 48,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 42,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 43,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 49,
+          "start": 46,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dataform_v1beta1_generated_dataform_create_compilation_result_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.dataform_v1beta1.DataformAsyncClient",
+          "shortName": "DataformAsyncClient"
+        },
+        "fullName": "google.cloud.dataform_v1beta1.DataformAsyncClient.create_repository",
+        "method": {
+          "fullName": "google.cloud.dataform.v1beta1.Dataform.CreateRepository",
+          "service": {
+            "fullName": "google.cloud.dataform.v1beta1.Dataform",
+            "shortName": "Dataform"
+          },
+          "shortName": "CreateRepository"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataform_v1beta1.types.CreateRepositoryRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "repository",
+            "type": "google.cloud.dataform_v1beta1.types.Repository"
+          },
+          {
+            "name": "repository_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataform_v1beta1.types.Repository",
+        "shortName": "create_repository"
+      },
+      "description": "Sample for CreateRepository",
+      "file": "dataform_v1beta1_generated_dataform_create_repository_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dataform_v1beta1_generated_Dataform_CreateRepository_async",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 39,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 42,
+          "start": 40,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dataform_v1beta1_generated_dataform_create_repository_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dataform_v1beta1.DataformClient",
+          "shortName": "DataformClient"
+        },
+        "fullName": "google.cloud.dataform_v1beta1.DataformClient.create_repository",
+        "method": {
+          "fullName": "google.cloud.dataform.v1beta1.Dataform.CreateRepository",
+          "service": {
+            "fullName": "google.cloud.dataform.v1beta1.Dataform",
+            "shortName": "Dataform"
+          },
+          "shortName": "CreateRepository"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataform_v1beta1.types.CreateRepositoryRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "repository",
+            "type": "google.cloud.dataform_v1beta1.types.Repository"
+          },
+          {
+            "name": "repository_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataform_v1beta1.types.Repository",
+        "shortName": "create_repository"
+      },
+      "description": "Sample for CreateRepository",
+      "file": "dataform_v1beta1_generated_dataform_create_repository_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dataform_v1beta1_generated_Dataform_CreateRepository_sync",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 39,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 42,
+          "start": 40,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dataform_v1beta1_generated_dataform_create_repository_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.dataform_v1beta1.DataformAsyncClient",
+          "shortName": "DataformAsyncClient"
+        },
+        "fullName": "google.cloud.dataform_v1beta1.DataformAsyncClient.create_workflow_invocation",
+        "method": {
+          "fullName": "google.cloud.dataform.v1beta1.Dataform.CreateWorkflowInvocation",
+          "service": {
+            "fullName": "google.cloud.dataform.v1beta1.Dataform",
+            "shortName": "Dataform"
+          },
+          "shortName": "CreateWorkflowInvocation"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataform_v1beta1.types.CreateWorkflowInvocationRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "workflow_invocation",
+            "type": "google.cloud.dataform_v1beta1.types.WorkflowInvocation"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataform_v1beta1.types.WorkflowInvocation",
+        "shortName": "create_workflow_invocation"
+      },
+      "description": "Sample for CreateWorkflowInvocation",
+      "file": "dataform_v1beta1_generated_dataform_create_workflow_invocation_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dataform_v1beta1_generated_Dataform_CreateWorkflowInvocation_async",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dataform_v1beta1_generated_dataform_create_workflow_invocation_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dataform_v1beta1.DataformClient",
+          "shortName": "DataformClient"
+        },
+        "fullName": "google.cloud.dataform_v1beta1.DataformClient.create_workflow_invocation",
+        "method": {
+          "fullName": "google.cloud.dataform.v1beta1.Dataform.CreateWorkflowInvocation",
+          "service": {
+            "fullName": "google.cloud.dataform.v1beta1.Dataform",
+            "shortName": "Dataform"
+          },
+          "shortName": "CreateWorkflowInvocation"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataform_v1beta1.types.CreateWorkflowInvocationRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "workflow_invocation",
+            "type": "google.cloud.dataform_v1beta1.types.WorkflowInvocation"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataform_v1beta1.types.WorkflowInvocation",
+        "shortName": "create_workflow_invocation"
+      },
+      "description": "Sample for CreateWorkflowInvocation",
+      "file": "dataform_v1beta1_generated_dataform_create_workflow_invocation_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dataform_v1beta1_generated_Dataform_CreateWorkflowInvocation_sync",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dataform_v1beta1_generated_dataform_create_workflow_invocation_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.dataform_v1beta1.DataformAsyncClient",
+          "shortName": "DataformAsyncClient"
+        },
+        "fullName": "google.cloud.dataform_v1beta1.DataformAsyncClient.create_workspace",
+        "method": {
+          "fullName": "google.cloud.dataform.v1beta1.Dataform.CreateWorkspace",
+          "service": {
+            "fullName": "google.cloud.dataform.v1beta1.Dataform",
+            "shortName": "Dataform"
+          },
+          "shortName": "CreateWorkspace"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataform_v1beta1.types.CreateWorkspaceRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "workspace",
+            "type": "google.cloud.dataform_v1beta1.types.Workspace"
+          },
+          {
+            "name": "workspace_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataform_v1beta1.types.Workspace",
+        "shortName": "create_workspace"
+      },
+      "description": "Sample for CreateWorkspace",
+      "file": "dataform_v1beta1_generated_dataform_create_workspace_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dataform_v1beta1_generated_Dataform_CreateWorkspace_async",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 39,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 42,
+          "start": 40,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dataform_v1beta1_generated_dataform_create_workspace_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dataform_v1beta1.DataformClient",
+          "shortName": "DataformClient"
+        },
+        "fullName": "google.cloud.dataform_v1beta1.DataformClient.create_workspace",
+        "method": {
+          "fullName": "google.cloud.dataform.v1beta1.Dataform.CreateWorkspace",
+          "service": {
+            "fullName": "google.cloud.dataform.v1beta1.Dataform",
+            "shortName": "Dataform"
+          },
+          "shortName": "CreateWorkspace"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataform_v1beta1.types.CreateWorkspaceRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "workspace",
+            "type": "google.cloud.dataform_v1beta1.types.Workspace"
+          },
+          {
+            "name": "workspace_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataform_v1beta1.types.Workspace",
+        "shortName": "create_workspace"
+      },
+      "description": "Sample for CreateWorkspace",
+      "file": "dataform_v1beta1_generated_dataform_create_workspace_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dataform_v1beta1_generated_Dataform_CreateWorkspace_sync",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 39,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 42,
+          "start": 40,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dataform_v1beta1_generated_dataform_create_workspace_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.dataform_v1beta1.DataformAsyncClient",
+          "shortName": "DataformAsyncClient"
+        },
+        "fullName": "google.cloud.dataform_v1beta1.DataformAsyncClient.delete_repository",
+        "method": {
+          "fullName": "google.cloud.dataform.v1beta1.Dataform.DeleteRepository",
+          "service": {
+            "fullName": "google.cloud.dataform.v1beta1.Dataform",
+            "shortName": "Dataform"
+          },
+          "shortName": "DeleteRepository"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataform_v1beta1.types.DeleteRepositoryRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "shortName": "delete_repository"
+      },
+      "description": "Sample for DeleteRepository",
+      "file": "dataform_v1beta1_generated_dataform_delete_repository_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dataform_v1beta1_generated_Dataform_DeleteRepository_async",
+      "segments": [
+        {
+          "end": 42,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 42,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dataform_v1beta1_generated_dataform_delete_repository_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dataform_v1beta1.DataformClient",
+          "shortName": "DataformClient"
+        },
+        "fullName": "google.cloud.dataform_v1beta1.DataformClient.delete_repository",
+        "method": {
+          "fullName": "google.cloud.dataform.v1beta1.Dataform.DeleteRepository",
+          "service": {
+            "fullName": "google.cloud.dataform.v1beta1.Dataform",
+            "shortName": "Dataform"
+          },
+          "shortName": "DeleteRepository"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataform_v1beta1.types.DeleteRepositoryRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "shortName": "delete_repository"
+      },
+      "description": "Sample for DeleteRepository",
+      "file": "dataform_v1beta1_generated_dataform_delete_repository_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dataform_v1beta1_generated_Dataform_DeleteRepository_sync",
+      "segments": [
+        {
+          "end": 42,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 42,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dataform_v1beta1_generated_dataform_delete_repository_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.dataform_v1beta1.DataformAsyncClient",
+          "shortName": "DataformAsyncClient"
+        },
+        "fullName": "google.cloud.dataform_v1beta1.DataformAsyncClient.delete_workflow_invocation",
+        "method": {
+          "fullName": "google.cloud.dataform.v1beta1.Dataform.DeleteWorkflowInvocation",
+          "service": {
+            "fullName": "google.cloud.dataform.v1beta1.Dataform",
+            "shortName": "Dataform"
+          },
+          "shortName": "DeleteWorkflowInvocation"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataform_v1beta1.types.DeleteWorkflowInvocationRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "shortName": "delete_workflow_invocation"
+      },
+      "description": "Sample for DeleteWorkflowInvocation",
+      "file": "dataform_v1beta1_generated_dataform_delete_workflow_invocation_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dataform_v1beta1_generated_Dataform_DeleteWorkflowInvocation_async",
+      "segments": [
+        {
+          "end": 42,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 42,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dataform_v1beta1_generated_dataform_delete_workflow_invocation_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dataform_v1beta1.DataformClient",
+          "shortName": "DataformClient"
+        },
+        "fullName": "google.cloud.dataform_v1beta1.DataformClient.delete_workflow_invocation",
+        "method": {
+          "fullName": "google.cloud.dataform.v1beta1.Dataform.DeleteWorkflowInvocation",
+          "service": {
+            "fullName": "google.cloud.dataform.v1beta1.Dataform",
+            "shortName": "Dataform"
+          },
+          "shortName": "DeleteWorkflowInvocation"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataform_v1beta1.types.DeleteWorkflowInvocationRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "shortName": "delete_workflow_invocation"
+      },
+      "description": "Sample for DeleteWorkflowInvocation",
+      "file": "dataform_v1beta1_generated_dataform_delete_workflow_invocation_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dataform_v1beta1_generated_Dataform_DeleteWorkflowInvocation_sync",
+      "segments": [
+        {
+          "end": 42,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 42,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dataform_v1beta1_generated_dataform_delete_workflow_invocation_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.dataform_v1beta1.DataformAsyncClient",
+          "shortName": "DataformAsyncClient"
+        },
+        "fullName": "google.cloud.dataform_v1beta1.DataformAsyncClient.delete_workspace",
+        "method": {
+          "fullName": "google.cloud.dataform.v1beta1.Dataform.DeleteWorkspace",
+          "service": {
+            "fullName": "google.cloud.dataform.v1beta1.Dataform",
+            "shortName": "Dataform"
+          },
+          "shortName": "DeleteWorkspace"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataform_v1beta1.types.DeleteWorkspaceRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "shortName": "delete_workspace"
+      },
+      "description": "Sample for DeleteWorkspace",
+      "file": "dataform_v1beta1_generated_dataform_delete_workspace_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dataform_v1beta1_generated_Dataform_DeleteWorkspace_async",
+      "segments": [
+        {
+          "end": 42,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 42,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dataform_v1beta1_generated_dataform_delete_workspace_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dataform_v1beta1.DataformClient",
+          "shortName": "DataformClient"
+        },
+        "fullName": "google.cloud.dataform_v1beta1.DataformClient.delete_workspace",
+        "method": {
+          "fullName": "google.cloud.dataform.v1beta1.Dataform.DeleteWorkspace",
+          "service": {
+            "fullName": "google.cloud.dataform.v1beta1.Dataform",
+            "shortName": "Dataform"
+          },
+          "shortName": "DeleteWorkspace"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataform_v1beta1.types.DeleteWorkspaceRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "shortName": "delete_workspace"
+      },
+      "description": "Sample for DeleteWorkspace",
+      "file": "dataform_v1beta1_generated_dataform_delete_workspace_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dataform_v1beta1_generated_Dataform_DeleteWorkspace_sync",
+      "segments": [
+        {
+          "end": 42,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 42,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dataform_v1beta1_generated_dataform_delete_workspace_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.dataform_v1beta1.DataformAsyncClient",
+          "shortName": "DataformAsyncClient"
+        },
+        "fullName": "google.cloud.dataform_v1beta1.DataformAsyncClient.fetch_file_diff",
+        "method": {
+          "fullName": "google.cloud.dataform.v1beta1.Dataform.FetchFileDiff",
+          "service": {
+            "fullName": "google.cloud.dataform.v1beta1.Dataform",
+            "shortName": "Dataform"
+          },
+          "shortName": "FetchFileDiff"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataform_v1beta1.types.FetchFileDiffRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataform_v1beta1.types.FetchFileDiffResponse",
+        "shortName": "fetch_file_diff"
+      },
+      "description": "Sample for FetchFileDiff",
+      "file": "dataform_v1beta1_generated_dataform_fetch_file_diff_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dataform_v1beta1_generated_Dataform_FetchFileDiff_async",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 39,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 42,
+          "start": 40,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dataform_v1beta1_generated_dataform_fetch_file_diff_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dataform_v1beta1.DataformClient",
+          "shortName": "DataformClient"
+        },
+        "fullName": "google.cloud.dataform_v1beta1.DataformClient.fetch_file_diff",
+        "method": {
+          "fullName": "google.cloud.dataform.v1beta1.Dataform.FetchFileDiff",
+          "service": {
+            "fullName": "google.cloud.dataform.v1beta1.Dataform",
+            "shortName": "Dataform"
+          },
+          "shortName": "FetchFileDiff"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataform_v1beta1.types.FetchFileDiffRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataform_v1beta1.types.FetchFileDiffResponse",
+        "shortName": "fetch_file_diff"
+      },
+      "description": "Sample for FetchFileDiff",
+      "file": "dataform_v1beta1_generated_dataform_fetch_file_diff_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dataform_v1beta1_generated_Dataform_FetchFileDiff_sync",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 39,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 42,
+          "start": 40,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dataform_v1beta1_generated_dataform_fetch_file_diff_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.dataform_v1beta1.DataformAsyncClient",
+          "shortName": "DataformAsyncClient"
+        },
+        "fullName": "google.cloud.dataform_v1beta1.DataformAsyncClient.fetch_file_git_statuses",
+        "method": {
+          "fullName": "google.cloud.dataform.v1beta1.Dataform.FetchFileGitStatuses",
+          "service": {
+            "fullName": "google.cloud.dataform.v1beta1.Dataform",
+            "shortName": "Dataform"
+          },
+          "shortName": "FetchFileGitStatuses"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataform_v1beta1.types.FetchFileGitStatusesRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataform_v1beta1.types.FetchFileGitStatusesResponse",
+        "shortName": "fetch_file_git_statuses"
+      },
+      "description": "Sample for FetchFileGitStatuses",
+      "file": "dataform_v1beta1_generated_dataform_fetch_file_git_statuses_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dataform_v1beta1_generated_Dataform_FetchFileGitStatuses_async",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dataform_v1beta1_generated_dataform_fetch_file_git_statuses_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dataform_v1beta1.DataformClient",
+          "shortName": "DataformClient"
+        },
+        "fullName": "google.cloud.dataform_v1beta1.DataformClient.fetch_file_git_statuses",
+        "method": {
+          "fullName": "google.cloud.dataform.v1beta1.Dataform.FetchFileGitStatuses",
+          "service": {
+            "fullName": "google.cloud.dataform.v1beta1.Dataform",
+            "shortName": "Dataform"
+          },
+          "shortName": "FetchFileGitStatuses"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataform_v1beta1.types.FetchFileGitStatusesRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataform_v1beta1.types.FetchFileGitStatusesResponse",
+        "shortName": "fetch_file_git_statuses"
+      },
+      "description": "Sample for FetchFileGitStatuses",
+      "file": "dataform_v1beta1_generated_dataform_fetch_file_git_statuses_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dataform_v1beta1_generated_Dataform_FetchFileGitStatuses_sync",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dataform_v1beta1_generated_dataform_fetch_file_git_statuses_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.dataform_v1beta1.DataformAsyncClient",
+          "shortName": "DataformAsyncClient"
+        },
+        "fullName": "google.cloud.dataform_v1beta1.DataformAsyncClient.fetch_git_ahead_behind",
+        "method": {
+          "fullName": "google.cloud.dataform.v1beta1.Dataform.FetchGitAheadBehind",
+          "service": {
+            "fullName": "google.cloud.dataform.v1beta1.Dataform",
+            "shortName": "Dataform"
+          },
+          "shortName": "FetchGitAheadBehind"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataform_v1beta1.types.FetchGitAheadBehindRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataform_v1beta1.types.FetchGitAheadBehindResponse",
+        "shortName": "fetch_git_ahead_behind"
+      },
+      "description": "Sample for FetchGitAheadBehind",
+      "file": "dataform_v1beta1_generated_dataform_fetch_git_ahead_behind_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dataform_v1beta1_generated_Dataform_FetchGitAheadBehind_async",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dataform_v1beta1_generated_dataform_fetch_git_ahead_behind_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dataform_v1beta1.DataformClient",
+          "shortName": "DataformClient"
+        },
+        "fullName": "google.cloud.dataform_v1beta1.DataformClient.fetch_git_ahead_behind",
+        "method": {
+          "fullName": "google.cloud.dataform.v1beta1.Dataform.FetchGitAheadBehind",
+          "service": {
+            "fullName": "google.cloud.dataform.v1beta1.Dataform",
+            "shortName": "Dataform"
+          },
+          "shortName": "FetchGitAheadBehind"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataform_v1beta1.types.FetchGitAheadBehindRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataform_v1beta1.types.FetchGitAheadBehindResponse",
+        "shortName": "fetch_git_ahead_behind"
+      },
+      "description": "Sample for FetchGitAheadBehind",
+      "file": "dataform_v1beta1_generated_dataform_fetch_git_ahead_behind_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dataform_v1beta1_generated_Dataform_FetchGitAheadBehind_sync",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dataform_v1beta1_generated_dataform_fetch_git_ahead_behind_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.dataform_v1beta1.DataformAsyncClient",
+          "shortName": "DataformAsyncClient"
+        },
+        "fullName": "google.cloud.dataform_v1beta1.DataformAsyncClient.fetch_remote_branches",
+        "method": {
+          "fullName": "google.cloud.dataform.v1beta1.Dataform.FetchRemoteBranches",
+          "service": {
+            "fullName": "google.cloud.dataform.v1beta1.Dataform",
+            "shortName": "Dataform"
+          },
+          "shortName": "FetchRemoteBranches"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataform_v1beta1.types.FetchRemoteBranchesRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataform_v1beta1.types.FetchRemoteBranchesResponse",
+        "shortName": "fetch_remote_branches"
+      },
+      "description": "Sample for FetchRemoteBranches",
+      "file": "dataform_v1beta1_generated_dataform_fetch_remote_branches_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dataform_v1beta1_generated_Dataform_FetchRemoteBranches_async",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dataform_v1beta1_generated_dataform_fetch_remote_branches_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dataform_v1beta1.DataformClient",
+          "shortName": "DataformClient"
+        },
+        "fullName": "google.cloud.dataform_v1beta1.DataformClient.fetch_remote_branches",
+        "method": {
+          "fullName": "google.cloud.dataform.v1beta1.Dataform.FetchRemoteBranches",
+          "service": {
+            "fullName": "google.cloud.dataform.v1beta1.Dataform",
+            "shortName": "Dataform"
+          },
+          "shortName": "FetchRemoteBranches"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataform_v1beta1.types.FetchRemoteBranchesRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataform_v1beta1.types.FetchRemoteBranchesResponse",
+        "shortName": "fetch_remote_branches"
+      },
+      "description": "Sample for FetchRemoteBranches",
+      "file": "dataform_v1beta1_generated_dataform_fetch_remote_branches_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dataform_v1beta1_generated_Dataform_FetchRemoteBranches_sync",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dataform_v1beta1_generated_dataform_fetch_remote_branches_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.dataform_v1beta1.DataformAsyncClient",
+          "shortName": "DataformAsyncClient"
+        },
+        "fullName": "google.cloud.dataform_v1beta1.DataformAsyncClient.get_compilation_result",
+        "method": {
+          "fullName": "google.cloud.dataform.v1beta1.Dataform.GetCompilationResult",
+          "service": {
+            "fullName": "google.cloud.dataform.v1beta1.Dataform",
+            "shortName": "Dataform"
+          },
+          "shortName": "GetCompilationResult"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataform_v1beta1.types.GetCompilationResultRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataform_v1beta1.types.CompilationResult",
+        "shortName": "get_compilation_result"
+      },
+      "description": "Sample for GetCompilationResult",
+      "file": "dataform_v1beta1_generated_dataform_get_compilation_result_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dataform_v1beta1_generated_Dataform_GetCompilationResult_async",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dataform_v1beta1_generated_dataform_get_compilation_result_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dataform_v1beta1.DataformClient",
+          "shortName": "DataformClient"
+        },
+        "fullName": "google.cloud.dataform_v1beta1.DataformClient.get_compilation_result",
+        "method": {
+          "fullName": "google.cloud.dataform.v1beta1.Dataform.GetCompilationResult",
+          "service": {
+            "fullName": "google.cloud.dataform.v1beta1.Dataform",
+            "shortName": "Dataform"
+          },
+          "shortName": "GetCompilationResult"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataform_v1beta1.types.GetCompilationResultRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataform_v1beta1.types.CompilationResult",
+        "shortName": "get_compilation_result"
+      },
+      "description": "Sample for GetCompilationResult",
+      "file": "dataform_v1beta1_generated_dataform_get_compilation_result_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dataform_v1beta1_generated_Dataform_GetCompilationResult_sync",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dataform_v1beta1_generated_dataform_get_compilation_result_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.dataform_v1beta1.DataformAsyncClient",
+          "shortName": "DataformAsyncClient"
+        },
+        "fullName": "google.cloud.dataform_v1beta1.DataformAsyncClient.get_repository",
+        "method": {
+          "fullName": "google.cloud.dataform.v1beta1.Dataform.GetRepository",
+          "service": {
+            "fullName": "google.cloud.dataform.v1beta1.Dataform",
+            "shortName": "Dataform"
+          },
+          "shortName": "GetRepository"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataform_v1beta1.types.GetRepositoryRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataform_v1beta1.types.Repository",
+        "shortName": "get_repository"
+      },
+      "description": "Sample for GetRepository",
+      "file": "dataform_v1beta1_generated_dataform_get_repository_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dataform_v1beta1_generated_Dataform_GetRepository_async",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dataform_v1beta1_generated_dataform_get_repository_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dataform_v1beta1.DataformClient",
+          "shortName": "DataformClient"
+        },
+        "fullName": "google.cloud.dataform_v1beta1.DataformClient.get_repository",
+        "method": {
+          "fullName": "google.cloud.dataform.v1beta1.Dataform.GetRepository",
+          "service": {
+            "fullName": "google.cloud.dataform.v1beta1.Dataform",
+            "shortName": "Dataform"
+          },
+          "shortName": "GetRepository"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataform_v1beta1.types.GetRepositoryRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataform_v1beta1.types.Repository",
+        "shortName": "get_repository"
+      },
+      "description": "Sample for GetRepository",
+      "file": "dataform_v1beta1_generated_dataform_get_repository_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dataform_v1beta1_generated_Dataform_GetRepository_sync",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dataform_v1beta1_generated_dataform_get_repository_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.dataform_v1beta1.DataformAsyncClient",
+          "shortName": "DataformAsyncClient"
+        },
+        "fullName": "google.cloud.dataform_v1beta1.DataformAsyncClient.get_workflow_invocation",
+        "method": {
+          "fullName": "google.cloud.dataform.v1beta1.Dataform.GetWorkflowInvocation",
+          "service": {
+            "fullName": "google.cloud.dataform.v1beta1.Dataform",
+            "shortName": "Dataform"
+          },
+          "shortName": "GetWorkflowInvocation"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataform_v1beta1.types.GetWorkflowInvocationRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataform_v1beta1.types.WorkflowInvocation",
+        "shortName": "get_workflow_invocation"
+      },
+      "description": "Sample for GetWorkflowInvocation",
+      "file": "dataform_v1beta1_generated_dataform_get_workflow_invocation_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dataform_v1beta1_generated_Dataform_GetWorkflowInvocation_async",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dataform_v1beta1_generated_dataform_get_workflow_invocation_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dataform_v1beta1.DataformClient",
+          "shortName": "DataformClient"
+        },
+        "fullName": "google.cloud.dataform_v1beta1.DataformClient.get_workflow_invocation",
+        "method": {
+          "fullName": "google.cloud.dataform.v1beta1.Dataform.GetWorkflowInvocation",
+          "service": {
+            "fullName": "google.cloud.dataform.v1beta1.Dataform",
+            "shortName": "Dataform"
+          },
+          "shortName": "GetWorkflowInvocation"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataform_v1beta1.types.GetWorkflowInvocationRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataform_v1beta1.types.WorkflowInvocation",
+        "shortName": "get_workflow_invocation"
+      },
+      "description": "Sample for GetWorkflowInvocation",
+      "file": "dataform_v1beta1_generated_dataform_get_workflow_invocation_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dataform_v1beta1_generated_Dataform_GetWorkflowInvocation_sync",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dataform_v1beta1_generated_dataform_get_workflow_invocation_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.dataform_v1beta1.DataformAsyncClient",
+          "shortName": "DataformAsyncClient"
+        },
+        "fullName": "google.cloud.dataform_v1beta1.DataformAsyncClient.get_workspace",
+        "method": {
+          "fullName": "google.cloud.dataform.v1beta1.Dataform.GetWorkspace",
+          "service": {
+            "fullName": "google.cloud.dataform.v1beta1.Dataform",
+            "shortName": "Dataform"
+          },
+          "shortName": "GetWorkspace"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataform_v1beta1.types.GetWorkspaceRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataform_v1beta1.types.Workspace",
+        "shortName": "get_workspace"
+      },
+      "description": "Sample for GetWorkspace",
+      "file": "dataform_v1beta1_generated_dataform_get_workspace_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dataform_v1beta1_generated_Dataform_GetWorkspace_async",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dataform_v1beta1_generated_dataform_get_workspace_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dataform_v1beta1.DataformClient",
+          "shortName": "DataformClient"
+        },
+        "fullName": "google.cloud.dataform_v1beta1.DataformClient.get_workspace",
+        "method": {
+          "fullName": "google.cloud.dataform.v1beta1.Dataform.GetWorkspace",
+          "service": {
+            "fullName": "google.cloud.dataform.v1beta1.Dataform",
+            "shortName": "Dataform"
+          },
+          "shortName": "GetWorkspace"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataform_v1beta1.types.GetWorkspaceRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataform_v1beta1.types.Workspace",
+        "shortName": "get_workspace"
+      },
+      "description": "Sample for GetWorkspace",
+      "file": "dataform_v1beta1_generated_dataform_get_workspace_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dataform_v1beta1_generated_Dataform_GetWorkspace_sync",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dataform_v1beta1_generated_dataform_get_workspace_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.dataform_v1beta1.DataformAsyncClient",
+          "shortName": "DataformAsyncClient"
+        },
+        "fullName": "google.cloud.dataform_v1beta1.DataformAsyncClient.install_npm_packages",
+        "method": {
+          "fullName": "google.cloud.dataform.v1beta1.Dataform.InstallNpmPackages",
+          "service": {
+            "fullName": "google.cloud.dataform.v1beta1.Dataform",
+            "shortName": "Dataform"
+          },
+          "shortName": "InstallNpmPackages"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataform_v1beta1.types.InstallNpmPackagesRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataform_v1beta1.types.InstallNpmPackagesResponse",
+        "shortName": "install_npm_packages"
+      },
+      "description": "Sample for InstallNpmPackages",
+      "file": "dataform_v1beta1_generated_dataform_install_npm_packages_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dataform_v1beta1_generated_Dataform_InstallNpmPackages_async",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dataform_v1beta1_generated_dataform_install_npm_packages_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dataform_v1beta1.DataformClient",
+          "shortName": "DataformClient"
+        },
+        "fullName": "google.cloud.dataform_v1beta1.DataformClient.install_npm_packages",
+        "method": {
+          "fullName": "google.cloud.dataform.v1beta1.Dataform.InstallNpmPackages",
+          "service": {
+            "fullName": "google.cloud.dataform.v1beta1.Dataform",
+            "shortName": "Dataform"
+          },
+          "shortName": "InstallNpmPackages"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataform_v1beta1.types.InstallNpmPackagesRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataform_v1beta1.types.InstallNpmPackagesResponse",
+        "shortName": "install_npm_packages"
+      },
+      "description": "Sample for InstallNpmPackages",
+      "file": "dataform_v1beta1_generated_dataform_install_npm_packages_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dataform_v1beta1_generated_Dataform_InstallNpmPackages_sync",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dataform_v1beta1_generated_dataform_install_npm_packages_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.dataform_v1beta1.DataformAsyncClient",
+          "shortName": "DataformAsyncClient"
+        },
+        "fullName": "google.cloud.dataform_v1beta1.DataformAsyncClient.list_compilation_results",
+        "method": {
+          "fullName": "google.cloud.dataform.v1beta1.Dataform.ListCompilationResults",
+          "service": {
+            "fullName": "google.cloud.dataform.v1beta1.Dataform",
+            "shortName": "Dataform"
+          },
+          "shortName": "ListCompilationResults"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataform_v1beta1.types.ListCompilationResultsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataform_v1beta1.services.dataform.pagers.ListCompilationResultsAsyncPager",
+        "shortName": "list_compilation_results"
+      },
+      "description": "Sample for ListCompilationResults",
+      "file": "dataform_v1beta1_generated_dataform_list_compilation_results_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dataform_v1beta1_generated_Dataform_ListCompilationResults_async",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dataform_v1beta1_generated_dataform_list_compilation_results_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dataform_v1beta1.DataformClient",
+          "shortName": "DataformClient"
+        },
+        "fullName": "google.cloud.dataform_v1beta1.DataformClient.list_compilation_results",
+        "method": {
+          "fullName": "google.cloud.dataform.v1beta1.Dataform.ListCompilationResults",
+          "service": {
+            "fullName": "google.cloud.dataform.v1beta1.Dataform",
+            "shortName": "Dataform"
+          },
+          "shortName": "ListCompilationResults"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataform_v1beta1.types.ListCompilationResultsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataform_v1beta1.services.dataform.pagers.ListCompilationResultsPager",
+        "shortName": "list_compilation_results"
+      },
+      "description": "Sample for ListCompilationResults",
+      "file": "dataform_v1beta1_generated_dataform_list_compilation_results_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dataform_v1beta1_generated_Dataform_ListCompilationResults_sync",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dataform_v1beta1_generated_dataform_list_compilation_results_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.dataform_v1beta1.DataformAsyncClient",
+          "shortName": "DataformAsyncClient"
+        },
+        "fullName": "google.cloud.dataform_v1beta1.DataformAsyncClient.list_repositories",
+        "method": {
+          "fullName": "google.cloud.dataform.v1beta1.Dataform.ListRepositories",
+          "service": {
+            "fullName": "google.cloud.dataform.v1beta1.Dataform",
+            "shortName": "Dataform"
+          },
+          "shortName": "ListRepositories"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataform_v1beta1.types.ListRepositoriesRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataform_v1beta1.services.dataform.pagers.ListRepositoriesAsyncPager",
+        "shortName": "list_repositories"
+      },
+      "description": "Sample for ListRepositories",
+      "file": "dataform_v1beta1_generated_dataform_list_repositories_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dataform_v1beta1_generated_Dataform_ListRepositories_async",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dataform_v1beta1_generated_dataform_list_repositories_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dataform_v1beta1.DataformClient",
+          "shortName": "DataformClient"
+        },
+        "fullName": "google.cloud.dataform_v1beta1.DataformClient.list_repositories",
+        "method": {
+          "fullName": "google.cloud.dataform.v1beta1.Dataform.ListRepositories",
+          "service": {
+            "fullName": "google.cloud.dataform.v1beta1.Dataform",
+            "shortName": "Dataform"
+          },
+          "shortName": "ListRepositories"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataform_v1beta1.types.ListRepositoriesRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataform_v1beta1.services.dataform.pagers.ListRepositoriesPager",
+        "shortName": "list_repositories"
+      },
+      "description": "Sample for ListRepositories",
+      "file": "dataform_v1beta1_generated_dataform_list_repositories_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dataform_v1beta1_generated_Dataform_ListRepositories_sync",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dataform_v1beta1_generated_dataform_list_repositories_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.dataform_v1beta1.DataformAsyncClient",
+          "shortName": "DataformAsyncClient"
+        },
+        "fullName": "google.cloud.dataform_v1beta1.DataformAsyncClient.list_workflow_invocations",
+        "method": {
+          "fullName": "google.cloud.dataform.v1beta1.Dataform.ListWorkflowInvocations",
+          "service": {
+            "fullName": "google.cloud.dataform.v1beta1.Dataform",
+            "shortName": "Dataform"
+          },
+          "shortName": "ListWorkflowInvocations"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataform_v1beta1.types.ListWorkflowInvocationsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataform_v1beta1.services.dataform.pagers.ListWorkflowInvocationsAsyncPager",
+        "shortName": "list_workflow_invocations"
+      },
+      "description": "Sample for ListWorkflowInvocations",
+      "file": "dataform_v1beta1_generated_dataform_list_workflow_invocations_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dataform_v1beta1_generated_Dataform_ListWorkflowInvocations_async",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dataform_v1beta1_generated_dataform_list_workflow_invocations_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dataform_v1beta1.DataformClient",
+          "shortName": "DataformClient"
+        },
+        "fullName": "google.cloud.dataform_v1beta1.DataformClient.list_workflow_invocations",
+        "method": {
+          "fullName": "google.cloud.dataform.v1beta1.Dataform.ListWorkflowInvocations",
+          "service": {
+            "fullName": "google.cloud.dataform.v1beta1.Dataform",
+            "shortName": "Dataform"
+          },
+          "shortName": "ListWorkflowInvocations"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataform_v1beta1.types.ListWorkflowInvocationsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataform_v1beta1.services.dataform.pagers.ListWorkflowInvocationsPager",
+        "shortName": "list_workflow_invocations"
+      },
+      "description": "Sample for ListWorkflowInvocations",
+      "file": "dataform_v1beta1_generated_dataform_list_workflow_invocations_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dataform_v1beta1_generated_Dataform_ListWorkflowInvocations_sync",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dataform_v1beta1_generated_dataform_list_workflow_invocations_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.dataform_v1beta1.DataformAsyncClient",
+          "shortName": "DataformAsyncClient"
+        },
+        "fullName": "google.cloud.dataform_v1beta1.DataformAsyncClient.list_workspaces",
+        "method": {
+          "fullName": "google.cloud.dataform.v1beta1.Dataform.ListWorkspaces",
+          "service": {
+            "fullName": "google.cloud.dataform.v1beta1.Dataform",
+            "shortName": "Dataform"
+          },
+          "shortName": "ListWorkspaces"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataform_v1beta1.types.ListWorkspacesRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataform_v1beta1.services.dataform.pagers.ListWorkspacesAsyncPager",
+        "shortName": "list_workspaces"
+      },
+      "description": "Sample for ListWorkspaces",
+      "file": "dataform_v1beta1_generated_dataform_list_workspaces_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dataform_v1beta1_generated_Dataform_ListWorkspaces_async",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dataform_v1beta1_generated_dataform_list_workspaces_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dataform_v1beta1.DataformClient",
+          "shortName": "DataformClient"
+        },
+        "fullName": "google.cloud.dataform_v1beta1.DataformClient.list_workspaces",
+        "method": {
+          "fullName": "google.cloud.dataform.v1beta1.Dataform.ListWorkspaces",
+          "service": {
+            "fullName": "google.cloud.dataform.v1beta1.Dataform",
+            "shortName": "Dataform"
+          },
+          "shortName": "ListWorkspaces"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataform_v1beta1.types.ListWorkspacesRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataform_v1beta1.services.dataform.pagers.ListWorkspacesPager",
+        "shortName": "list_workspaces"
+      },
+      "description": "Sample for ListWorkspaces",
+      "file": "dataform_v1beta1_generated_dataform_list_workspaces_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dataform_v1beta1_generated_Dataform_ListWorkspaces_sync",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dataform_v1beta1_generated_dataform_list_workspaces_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.dataform_v1beta1.DataformAsyncClient",
+          "shortName": "DataformAsyncClient"
+        },
+        "fullName": "google.cloud.dataform_v1beta1.DataformAsyncClient.make_directory",
+        "method": {
+          "fullName": "google.cloud.dataform.v1beta1.Dataform.MakeDirectory",
+          "service": {
+            "fullName": "google.cloud.dataform.v1beta1.Dataform",
+            "shortName": "Dataform"
+          },
+          "shortName": "MakeDirectory"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataform_v1beta1.types.MakeDirectoryRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataform_v1beta1.types.MakeDirectoryResponse",
+        "shortName": "make_directory"
+      },
+      "description": "Sample for MakeDirectory",
+      "file": "dataform_v1beta1_generated_dataform_make_directory_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dataform_v1beta1_generated_Dataform_MakeDirectory_async",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 39,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 42,
+          "start": 40,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dataform_v1beta1_generated_dataform_make_directory_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dataform_v1beta1.DataformClient",
+          "shortName": "DataformClient"
+        },
+        "fullName": "google.cloud.dataform_v1beta1.DataformClient.make_directory",
+        "method": {
+          "fullName": "google.cloud.dataform.v1beta1.Dataform.MakeDirectory",
+          "service": {
+            "fullName": "google.cloud.dataform.v1beta1.Dataform",
+            "shortName": "Dataform"
+          },
+          "shortName": "MakeDirectory"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataform_v1beta1.types.MakeDirectoryRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataform_v1beta1.types.MakeDirectoryResponse",
+        "shortName": "make_directory"
+      },
+      "description": "Sample for MakeDirectory",
+      "file": "dataform_v1beta1_generated_dataform_make_directory_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dataform_v1beta1_generated_Dataform_MakeDirectory_sync",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 39,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 42,
+          "start": 40,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dataform_v1beta1_generated_dataform_make_directory_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.dataform_v1beta1.DataformAsyncClient",
+          "shortName": "DataformAsyncClient"
+        },
+        "fullName": "google.cloud.dataform_v1beta1.DataformAsyncClient.move_directory",
+        "method": {
+          "fullName": "google.cloud.dataform.v1beta1.Dataform.MoveDirectory",
+          "service": {
+            "fullName": "google.cloud.dataform.v1beta1.Dataform",
+            "shortName": "Dataform"
+          },
+          "shortName": "MoveDirectory"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataform_v1beta1.types.MoveDirectoryRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataform_v1beta1.types.MoveDirectoryResponse",
+        "shortName": "move_directory"
+      },
+      "description": "Sample for MoveDirectory",
+      "file": "dataform_v1beta1_generated_dataform_move_directory_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dataform_v1beta1_generated_Dataform_MoveDirectory_async",
+      "segments": [
+        {
+          "end": 46,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 46,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 40,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 43,
+          "start": 41,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 47,
+          "start": 44,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dataform_v1beta1_generated_dataform_move_directory_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dataform_v1beta1.DataformClient",
+          "shortName": "DataformClient"
+        },
+        "fullName": "google.cloud.dataform_v1beta1.DataformClient.move_directory",
+        "method": {
+          "fullName": "google.cloud.dataform.v1beta1.Dataform.MoveDirectory",
+          "service": {
+            "fullName": "google.cloud.dataform.v1beta1.Dataform",
+            "shortName": "Dataform"
+          },
+          "shortName": "MoveDirectory"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataform_v1beta1.types.MoveDirectoryRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataform_v1beta1.types.MoveDirectoryResponse",
+        "shortName": "move_directory"
+      },
+      "description": "Sample for MoveDirectory",
+      "file": "dataform_v1beta1_generated_dataform_move_directory_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dataform_v1beta1_generated_Dataform_MoveDirectory_sync",
+      "segments": [
+        {
+          "end": 46,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 46,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 40,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 43,
+          "start": 41,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 47,
+          "start": 44,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dataform_v1beta1_generated_dataform_move_directory_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.dataform_v1beta1.DataformAsyncClient",
+          "shortName": "DataformAsyncClient"
+        },
+        "fullName": "google.cloud.dataform_v1beta1.DataformAsyncClient.move_file",
+        "method": {
+          "fullName": "google.cloud.dataform.v1beta1.Dataform.MoveFile",
+          "service": {
+            "fullName": "google.cloud.dataform.v1beta1.Dataform",
+            "shortName": "Dataform"
+          },
+          "shortName": "MoveFile"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataform_v1beta1.types.MoveFileRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataform_v1beta1.types.MoveFileResponse",
+        "shortName": "move_file"
+      },
+      "description": "Sample for MoveFile",
+      "file": "dataform_v1beta1_generated_dataform_move_file_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dataform_v1beta1_generated_Dataform_MoveFile_async",
+      "segments": [
+        {
+          "end": 46,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 46,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 40,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 43,
+          "start": 41,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 47,
+          "start": 44,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dataform_v1beta1_generated_dataform_move_file_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dataform_v1beta1.DataformClient",
+          "shortName": "DataformClient"
+        },
+        "fullName": "google.cloud.dataform_v1beta1.DataformClient.move_file",
+        "method": {
+          "fullName": "google.cloud.dataform.v1beta1.Dataform.MoveFile",
+          "service": {
+            "fullName": "google.cloud.dataform.v1beta1.Dataform",
+            "shortName": "Dataform"
+          },
+          "shortName": "MoveFile"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataform_v1beta1.types.MoveFileRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataform_v1beta1.types.MoveFileResponse",
+        "shortName": "move_file"
+      },
+      "description": "Sample for MoveFile",
+      "file": "dataform_v1beta1_generated_dataform_move_file_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dataform_v1beta1_generated_Dataform_MoveFile_sync",
+      "segments": [
+        {
+          "end": 46,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 46,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 40,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 43,
+          "start": 41,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 47,
+          "start": 44,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dataform_v1beta1_generated_dataform_move_file_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.dataform_v1beta1.DataformAsyncClient",
+          "shortName": "DataformAsyncClient"
+        },
+        "fullName": "google.cloud.dataform_v1beta1.DataformAsyncClient.pull_git_commits",
+        "method": {
+          "fullName": "google.cloud.dataform.v1beta1.Dataform.PullGitCommits",
+          "service": {
+            "fullName": "google.cloud.dataform.v1beta1.Dataform",
+            "shortName": "Dataform"
+          },
+          "shortName": "PullGitCommits"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataform_v1beta1.types.PullGitCommitsRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "shortName": "pull_git_commits"
+      },
+      "description": "Sample for PullGitCommits",
+      "file": "dataform_v1beta1_generated_dataform_pull_git_commits_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dataform_v1beta1_generated_Dataform_PullGitCommits_async",
+      "segments": [
+        {
+          "end": 47,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 47,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 43,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 44,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 48,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dataform_v1beta1_generated_dataform_pull_git_commits_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dataform_v1beta1.DataformClient",
+          "shortName": "DataformClient"
+        },
+        "fullName": "google.cloud.dataform_v1beta1.DataformClient.pull_git_commits",
+        "method": {
+          "fullName": "google.cloud.dataform.v1beta1.Dataform.PullGitCommits",
+          "service": {
+            "fullName": "google.cloud.dataform.v1beta1.Dataform",
+            "shortName": "Dataform"
+          },
+          "shortName": "PullGitCommits"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataform_v1beta1.types.PullGitCommitsRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "shortName": "pull_git_commits"
+      },
+      "description": "Sample for PullGitCommits",
+      "file": "dataform_v1beta1_generated_dataform_pull_git_commits_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dataform_v1beta1_generated_Dataform_PullGitCommits_sync",
+      "segments": [
+        {
+          "end": 47,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 47,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 43,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 44,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 48,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dataform_v1beta1_generated_dataform_pull_git_commits_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.dataform_v1beta1.DataformAsyncClient",
+          "shortName": "DataformAsyncClient"
+        },
+        "fullName": "google.cloud.dataform_v1beta1.DataformAsyncClient.push_git_commits",
+        "method": {
+          "fullName": "google.cloud.dataform.v1beta1.Dataform.PushGitCommits",
+          "service": {
+            "fullName": "google.cloud.dataform.v1beta1.Dataform",
+            "shortName": "Dataform"
+          },
+          "shortName": "PushGitCommits"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataform_v1beta1.types.PushGitCommitsRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "shortName": "push_git_commits"
+      },
+      "description": "Sample for PushGitCommits",
+      "file": "dataform_v1beta1_generated_dataform_push_git_commits_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dataform_v1beta1_generated_Dataform_PushGitCommits_async",
+      "segments": [
+        {
+          "end": 42,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 42,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dataform_v1beta1_generated_dataform_push_git_commits_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dataform_v1beta1.DataformClient",
+          "shortName": "DataformClient"
+        },
+        "fullName": "google.cloud.dataform_v1beta1.DataformClient.push_git_commits",
+        "method": {
+          "fullName": "google.cloud.dataform.v1beta1.Dataform.PushGitCommits",
+          "service": {
+            "fullName": "google.cloud.dataform.v1beta1.Dataform",
+            "shortName": "Dataform"
+          },
+          "shortName": "PushGitCommits"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataform_v1beta1.types.PushGitCommitsRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "shortName": "push_git_commits"
+      },
+      "description": "Sample for PushGitCommits",
+      "file": "dataform_v1beta1_generated_dataform_push_git_commits_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dataform_v1beta1_generated_Dataform_PushGitCommits_sync",
+      "segments": [
+        {
+          "end": 42,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 42,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dataform_v1beta1_generated_dataform_push_git_commits_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.dataform_v1beta1.DataformAsyncClient",
+          "shortName": "DataformAsyncClient"
+        },
+        "fullName": "google.cloud.dataform_v1beta1.DataformAsyncClient.query_compilation_result_actions",
+        "method": {
+          "fullName": "google.cloud.dataform.v1beta1.Dataform.QueryCompilationResultActions",
+          "service": {
+            "fullName": "google.cloud.dataform.v1beta1.Dataform",
+            "shortName": "Dataform"
+          },
+          "shortName": "QueryCompilationResultActions"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataform_v1beta1.types.QueryCompilationResultActionsRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataform_v1beta1.services.dataform.pagers.QueryCompilationResultActionsAsyncPager",
+        "shortName": "query_compilation_result_actions"
+      },
+      "description": "Sample for QueryCompilationResultActions",
+      "file": "dataform_v1beta1_generated_dataform_query_compilation_result_actions_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dataform_v1beta1_generated_Dataform_QueryCompilationResultActions_async",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dataform_v1beta1_generated_dataform_query_compilation_result_actions_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dataform_v1beta1.DataformClient",
+          "shortName": "DataformClient"
+        },
+        "fullName": "google.cloud.dataform_v1beta1.DataformClient.query_compilation_result_actions",
+        "method": {
+          "fullName": "google.cloud.dataform.v1beta1.Dataform.QueryCompilationResultActions",
+          "service": {
+            "fullName": "google.cloud.dataform.v1beta1.Dataform",
+            "shortName": "Dataform"
+          },
+          "shortName": "QueryCompilationResultActions"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataform_v1beta1.types.QueryCompilationResultActionsRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataform_v1beta1.services.dataform.pagers.QueryCompilationResultActionsPager",
+        "shortName": "query_compilation_result_actions"
+      },
+      "description": "Sample for QueryCompilationResultActions",
+      "file": "dataform_v1beta1_generated_dataform_query_compilation_result_actions_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dataform_v1beta1_generated_Dataform_QueryCompilationResultActions_sync",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dataform_v1beta1_generated_dataform_query_compilation_result_actions_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.dataform_v1beta1.DataformAsyncClient",
+          "shortName": "DataformAsyncClient"
+        },
+        "fullName": "google.cloud.dataform_v1beta1.DataformAsyncClient.query_directory_contents",
+        "method": {
+          "fullName": "google.cloud.dataform.v1beta1.Dataform.QueryDirectoryContents",
+          "service": {
+            "fullName": "google.cloud.dataform.v1beta1.Dataform",
+            "shortName": "Dataform"
+          },
+          "shortName": "QueryDirectoryContents"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataform_v1beta1.types.QueryDirectoryContentsRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataform_v1beta1.services.dataform.pagers.QueryDirectoryContentsAsyncPager",
+        "shortName": "query_directory_contents"
+      },
+      "description": "Sample for QueryDirectoryContents",
+      "file": "dataform_v1beta1_generated_dataform_query_directory_contents_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dataform_v1beta1_generated_Dataform_QueryDirectoryContents_async",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dataform_v1beta1_generated_dataform_query_directory_contents_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dataform_v1beta1.DataformClient",
+          "shortName": "DataformClient"
+        },
+        "fullName": "google.cloud.dataform_v1beta1.DataformClient.query_directory_contents",
+        "method": {
+          "fullName": "google.cloud.dataform.v1beta1.Dataform.QueryDirectoryContents",
+          "service": {
+            "fullName": "google.cloud.dataform.v1beta1.Dataform",
+            "shortName": "Dataform"
+          },
+          "shortName": "QueryDirectoryContents"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataform_v1beta1.types.QueryDirectoryContentsRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataform_v1beta1.services.dataform.pagers.QueryDirectoryContentsPager",
+        "shortName": "query_directory_contents"
+      },
+      "description": "Sample for QueryDirectoryContents",
+      "file": "dataform_v1beta1_generated_dataform_query_directory_contents_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dataform_v1beta1_generated_Dataform_QueryDirectoryContents_sync",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dataform_v1beta1_generated_dataform_query_directory_contents_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.dataform_v1beta1.DataformAsyncClient",
+          "shortName": "DataformAsyncClient"
+        },
+        "fullName": "google.cloud.dataform_v1beta1.DataformAsyncClient.query_workflow_invocation_actions",
+        "method": {
+          "fullName": "google.cloud.dataform.v1beta1.Dataform.QueryWorkflowInvocationActions",
+          "service": {
+            "fullName": "google.cloud.dataform.v1beta1.Dataform",
+            "shortName": "Dataform"
+          },
+          "shortName": "QueryWorkflowInvocationActions"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataform_v1beta1.types.QueryWorkflowInvocationActionsRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataform_v1beta1.services.dataform.pagers.QueryWorkflowInvocationActionsAsyncPager",
+        "shortName": "query_workflow_invocation_actions"
+      },
+      "description": "Sample for QueryWorkflowInvocationActions",
+      "file": "dataform_v1beta1_generated_dataform_query_workflow_invocation_actions_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dataform_v1beta1_generated_Dataform_QueryWorkflowInvocationActions_async",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dataform_v1beta1_generated_dataform_query_workflow_invocation_actions_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dataform_v1beta1.DataformClient",
+          "shortName": "DataformClient"
+        },
+        "fullName": "google.cloud.dataform_v1beta1.DataformClient.query_workflow_invocation_actions",
+        "method": {
+          "fullName": "google.cloud.dataform.v1beta1.Dataform.QueryWorkflowInvocationActions",
+          "service": {
+            "fullName": "google.cloud.dataform.v1beta1.Dataform",
+            "shortName": "Dataform"
+          },
+          "shortName": "QueryWorkflowInvocationActions"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataform_v1beta1.types.QueryWorkflowInvocationActionsRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataform_v1beta1.services.dataform.pagers.QueryWorkflowInvocationActionsPager",
+        "shortName": "query_workflow_invocation_actions"
+      },
+      "description": "Sample for QueryWorkflowInvocationActions",
+      "file": "dataform_v1beta1_generated_dataform_query_workflow_invocation_actions_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dataform_v1beta1_generated_Dataform_QueryWorkflowInvocationActions_sync",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dataform_v1beta1_generated_dataform_query_workflow_invocation_actions_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.dataform_v1beta1.DataformAsyncClient",
+          "shortName": "DataformAsyncClient"
+        },
+        "fullName": "google.cloud.dataform_v1beta1.DataformAsyncClient.read_file",
+        "method": {
+          "fullName": "google.cloud.dataform.v1beta1.Dataform.ReadFile",
+          "service": {
+            "fullName": "google.cloud.dataform.v1beta1.Dataform",
+            "shortName": "Dataform"
+          },
+          "shortName": "ReadFile"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataform_v1beta1.types.ReadFileRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataform_v1beta1.types.ReadFileResponse",
+        "shortName": "read_file"
+      },
+      "description": "Sample for ReadFile",
+      "file": "dataform_v1beta1_generated_dataform_read_file_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dataform_v1beta1_generated_Dataform_ReadFile_async",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 39,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 42,
+          "start": 40,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dataform_v1beta1_generated_dataform_read_file_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dataform_v1beta1.DataformClient",
+          "shortName": "DataformClient"
+        },
+        "fullName": "google.cloud.dataform_v1beta1.DataformClient.read_file",
+        "method": {
+          "fullName": "google.cloud.dataform.v1beta1.Dataform.ReadFile",
+          "service": {
+            "fullName": "google.cloud.dataform.v1beta1.Dataform",
+            "shortName": "Dataform"
+          },
+          "shortName": "ReadFile"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataform_v1beta1.types.ReadFileRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataform_v1beta1.types.ReadFileResponse",
+        "shortName": "read_file"
+      },
+      "description": "Sample for ReadFile",
+      "file": "dataform_v1beta1_generated_dataform_read_file_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dataform_v1beta1_generated_Dataform_ReadFile_sync",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 39,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 42,
+          "start": 40,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dataform_v1beta1_generated_dataform_read_file_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.dataform_v1beta1.DataformAsyncClient",
+          "shortName": "DataformAsyncClient"
+        },
+        "fullName": "google.cloud.dataform_v1beta1.DataformAsyncClient.remove_directory",
+        "method": {
+          "fullName": "google.cloud.dataform.v1beta1.Dataform.RemoveDirectory",
+          "service": {
+            "fullName": "google.cloud.dataform.v1beta1.Dataform",
+            "shortName": "Dataform"
+          },
+          "shortName": "RemoveDirectory"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataform_v1beta1.types.RemoveDirectoryRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "shortName": "remove_directory"
+      },
+      "description": "Sample for RemoveDirectory",
+      "file": "dataform_v1beta1_generated_dataform_remove_directory_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dataform_v1beta1_generated_Dataform_RemoveDirectory_async",
+      "segments": [
+        {
+          "end": 43,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 43,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 39,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 40,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 44,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dataform_v1beta1_generated_dataform_remove_directory_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dataform_v1beta1.DataformClient",
+          "shortName": "DataformClient"
+        },
+        "fullName": "google.cloud.dataform_v1beta1.DataformClient.remove_directory",
+        "method": {
+          "fullName": "google.cloud.dataform.v1beta1.Dataform.RemoveDirectory",
+          "service": {
+            "fullName": "google.cloud.dataform.v1beta1.Dataform",
+            "shortName": "Dataform"
+          },
+          "shortName": "RemoveDirectory"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataform_v1beta1.types.RemoveDirectoryRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "shortName": "remove_directory"
+      },
+      "description": "Sample for RemoveDirectory",
+      "file": "dataform_v1beta1_generated_dataform_remove_directory_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dataform_v1beta1_generated_Dataform_RemoveDirectory_sync",
+      "segments": [
+        {
+          "end": 43,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 43,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 39,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 40,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 44,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dataform_v1beta1_generated_dataform_remove_directory_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.dataform_v1beta1.DataformAsyncClient",
+          "shortName": "DataformAsyncClient"
+        },
+        "fullName": "google.cloud.dataform_v1beta1.DataformAsyncClient.remove_file",
+        "method": {
+          "fullName": "google.cloud.dataform.v1beta1.Dataform.RemoveFile",
+          "service": {
+            "fullName": "google.cloud.dataform.v1beta1.Dataform",
+            "shortName": "Dataform"
+          },
+          "shortName": "RemoveFile"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataform_v1beta1.types.RemoveFileRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "shortName": "remove_file"
+      },
+      "description": "Sample for RemoveFile",
+      "file": "dataform_v1beta1_generated_dataform_remove_file_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dataform_v1beta1_generated_Dataform_RemoveFile_async",
+      "segments": [
+        {
+          "end": 43,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 43,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 39,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 40,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 44,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dataform_v1beta1_generated_dataform_remove_file_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dataform_v1beta1.DataformClient",
+          "shortName": "DataformClient"
+        },
+        "fullName": "google.cloud.dataform_v1beta1.DataformClient.remove_file",
+        "method": {
+          "fullName": "google.cloud.dataform.v1beta1.Dataform.RemoveFile",
+          "service": {
+            "fullName": "google.cloud.dataform.v1beta1.Dataform",
+            "shortName": "Dataform"
+          },
+          "shortName": "RemoveFile"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataform_v1beta1.types.RemoveFileRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "shortName": "remove_file"
+      },
+      "description": "Sample for RemoveFile",
+      "file": "dataform_v1beta1_generated_dataform_remove_file_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dataform_v1beta1_generated_Dataform_RemoveFile_sync",
+      "segments": [
+        {
+          "end": 43,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 43,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 39,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 40,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 44,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dataform_v1beta1_generated_dataform_remove_file_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.dataform_v1beta1.DataformAsyncClient",
+          "shortName": "DataformAsyncClient"
+        },
+        "fullName": "google.cloud.dataform_v1beta1.DataformAsyncClient.reset_workspace_changes",
+        "method": {
+          "fullName": "google.cloud.dataform.v1beta1.Dataform.ResetWorkspaceChanges",
+          "service": {
+            "fullName": "google.cloud.dataform.v1beta1.Dataform",
+            "shortName": "Dataform"
+          },
+          "shortName": "ResetWorkspaceChanges"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataform_v1beta1.types.ResetWorkspaceChangesRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "shortName": "reset_workspace_changes"
+      },
+      "description": "Sample for ResetWorkspaceChanges",
+      "file": "dataform_v1beta1_generated_dataform_reset_workspace_changes_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dataform_v1beta1_generated_Dataform_ResetWorkspaceChanges_async",
+      "segments": [
+        {
+          "end": 42,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 42,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dataform_v1beta1_generated_dataform_reset_workspace_changes_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dataform_v1beta1.DataformClient",
+          "shortName": "DataformClient"
+        },
+        "fullName": "google.cloud.dataform_v1beta1.DataformClient.reset_workspace_changes",
+        "method": {
+          "fullName": "google.cloud.dataform.v1beta1.Dataform.ResetWorkspaceChanges",
+          "service": {
+            "fullName": "google.cloud.dataform.v1beta1.Dataform",
+            "shortName": "Dataform"
+          },
+          "shortName": "ResetWorkspaceChanges"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataform_v1beta1.types.ResetWorkspaceChangesRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "shortName": "reset_workspace_changes"
+      },
+      "description": "Sample for ResetWorkspaceChanges",
+      "file": "dataform_v1beta1_generated_dataform_reset_workspace_changes_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dataform_v1beta1_generated_Dataform_ResetWorkspaceChanges_sync",
+      "segments": [
+        {
+          "end": 42,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 42,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dataform_v1beta1_generated_dataform_reset_workspace_changes_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.dataform_v1beta1.DataformAsyncClient",
+          "shortName": "DataformAsyncClient"
+        },
+        "fullName": "google.cloud.dataform_v1beta1.DataformAsyncClient.update_repository",
+        "method": {
+          "fullName": "google.cloud.dataform.v1beta1.Dataform.UpdateRepository",
+          "service": {
+            "fullName": "google.cloud.dataform.v1beta1.Dataform",
+            "shortName": "Dataform"
+          },
+          "shortName": "UpdateRepository"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataform_v1beta1.types.UpdateRepositoryRequest"
+          },
+          {
+            "name": "repository",
+            "type": "google.cloud.dataform_v1beta1.types.Repository"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataform_v1beta1.types.Repository",
+        "shortName": "update_repository"
+      },
+      "description": "Sample for UpdateRepository",
+      "file": "dataform_v1beta1_generated_dataform_update_repository_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dataform_v1beta1_generated_Dataform_UpdateRepository_async",
+      "segments": [
+        {
+          "end": 43,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 43,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 37,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 44,
+          "start": 41,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dataform_v1beta1_generated_dataform_update_repository_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dataform_v1beta1.DataformClient",
+          "shortName": "DataformClient"
+        },
+        "fullName": "google.cloud.dataform_v1beta1.DataformClient.update_repository",
+        "method": {
+          "fullName": "google.cloud.dataform.v1beta1.Dataform.UpdateRepository",
+          "service": {
+            "fullName": "google.cloud.dataform.v1beta1.Dataform",
+            "shortName": "Dataform"
+          },
+          "shortName": "UpdateRepository"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataform_v1beta1.types.UpdateRepositoryRequest"
+          },
+          {
+            "name": "repository",
+            "type": "google.cloud.dataform_v1beta1.types.Repository"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataform_v1beta1.types.Repository",
+        "shortName": "update_repository"
+      },
+      "description": "Sample for UpdateRepository",
+      "file": "dataform_v1beta1_generated_dataform_update_repository_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dataform_v1beta1_generated_Dataform_UpdateRepository_sync",
+      "segments": [
+        {
+          "end": 43,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 43,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 37,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 44,
+          "start": 41,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dataform_v1beta1_generated_dataform_update_repository_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.dataform_v1beta1.DataformAsyncClient",
+          "shortName": "DataformAsyncClient"
+        },
+        "fullName": "google.cloud.dataform_v1beta1.DataformAsyncClient.write_file",
+        "method": {
+          "fullName": "google.cloud.dataform.v1beta1.Dataform.WriteFile",
+          "service": {
+            "fullName": "google.cloud.dataform.v1beta1.Dataform",
+            "shortName": "Dataform"
+          },
+          "shortName": "WriteFile"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataform_v1beta1.types.WriteFileRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataform_v1beta1.types.WriteFileResponse",
+        "shortName": "write_file"
+      },
+      "description": "Sample for WriteFile",
+      "file": "dataform_v1beta1_generated_dataform_write_file_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dataform_v1beta1_generated_Dataform_WriteFile_async",
+      "segments": [
+        {
+          "end": 46,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 46,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 40,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 43,
+          "start": 41,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 47,
+          "start": 44,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dataform_v1beta1_generated_dataform_write_file_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dataform_v1beta1.DataformClient",
+          "shortName": "DataformClient"
+        },
+        "fullName": "google.cloud.dataform_v1beta1.DataformClient.write_file",
+        "method": {
+          "fullName": "google.cloud.dataform.v1beta1.Dataform.WriteFile",
+          "service": {
+            "fullName": "google.cloud.dataform.v1beta1.Dataform",
+            "shortName": "Dataform"
+          },
+          "shortName": "WriteFile"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataform_v1beta1.types.WriteFileRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataform_v1beta1.types.WriteFileResponse",
+        "shortName": "write_file"
+      },
+      "description": "Sample for WriteFile",
+      "file": "dataform_v1beta1_generated_dataform_write_file_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dataform_v1beta1_generated_Dataform_WriteFile_sync",
+      "segments": [
+        {
+          "end": 46,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 46,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 40,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 43,
+          "start": 41,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 47,
+          "start": 44,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dataform_v1beta1_generated_dataform_write_file_sync.py"
+    }
+  ]
+}

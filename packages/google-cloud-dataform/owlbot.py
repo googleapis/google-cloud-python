@@ -25,31 +25,6 @@ from synthtool.languages import python
 default_version = "v1alpha2"
 
 for library in s.get_staging_dirs(default_version):
-    # work around issues with docstrings
-    s.replace(
-        library / "google/cloud/**/*.py",
-        """\*\*JSON Example\*\*
-                ::""",
-        """\n                **JSON Example**\n
-                .. code-block:: python\n""",
-    )
-
-    s.replace(
-        library / "google/cloud/**/*.py",
-        """\*\*YAML Example\*\*
-                ::""",
-        """\n                **YAML Example**\n
-                ::\n""",
-    )
-
-    s.replace(library / "google/cloud/**/*.py",
-        """                For a description of IAM and its features, see the `IAM
-                developer's""",
-        """\n                For a description of IAM and its features, see the `IAM
-                developer's"""
-    )
-    
-
     # work around bug in generator
     # `vars_` is a reserved term in protobuf
     # https://github.com/googleapis/gapic-generator-python/issues/1348

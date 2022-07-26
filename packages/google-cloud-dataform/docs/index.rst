@@ -8,8 +8,8 @@ API Reference
 .. toctree::
     :maxdepth: 2
 
-    dataform_v1alpha2/services
-    dataform_v1alpha2/types
+    dataform_v1beta1/services
+    dataform_v1beta1/types
 
 
 Changelog
