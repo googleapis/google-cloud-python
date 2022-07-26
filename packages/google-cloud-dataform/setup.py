@@ -21,7 +21,7 @@ import setuptools
 
 name = "google-cloud-dataform"
 description = "Cloud Dataform API client library"
-version = "0.1.0"
+version = "0.2.0"
 release_status = "Development Status :: 3 - Alpha"
 dependencies = [
     "google-api-core[grpc] >= 2.8.0, <3.0.0dev",
