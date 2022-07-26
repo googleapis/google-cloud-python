@@ -334,7 +334,8 @@ def prerelease_deps(session):
 
     # Install all dependencies
     session.install("-e", ".[all, tests, tracing]")
-    session.install(*UNIT_TEST_STANDARD_DEPENDENCIES)
+    unit_deps_all = UNIT_TEST_STANDARD_DEPENDENCIES + UNIT_TEST_EXTERNAL_DEPENDENCIES
+    session.install(*unit_deps_all)
     system_deps_all = (
         SYSTEM_TEST_STANDARD_DEPENDENCIES
         + SYSTEM_TEST_EXTERNAL_DEPENDENCIES
@@ -362,12 +363,6 @@ def prerelease_deps(session):
     ]
 
     session.install(*constraints_deps)
-
-    if os.path.exists("samples/snippets/requirements.txt"):
-        session.install("-r", "samples/snippets/requirements.txt")
-
-    if os.path.exists("samples/snippets/requirements-test.txt"):
-        session.install("-r", "samples/snippets/requirements-test.txt")
 
     prerel_deps = [
         "protobuf",
@@ -405,11 +400,19 @@ def prerelease_deps(session):
     system_test_folder_path = os.path.join("tests", "system")
 
     # Only run system tests if found.
-    if os.path.exists(system_test_path) or os.path.exists(system_test_folder_path):
-        session.run("py.test", "tests/system")
-
-    snippets_test_path = os.path.join("samples", "snippets")
-
-    # Only run samples tests if found.
-    if os.path.exists(snippets_test_path):
-        session.run("py.test", "samples/snippets")
+    if os.path.exists(system_test_path):
+        session.run(
+            "py.test",
+            "--verbose",
+            f"--junitxml=system_{session.python}_sponge_log.xml",
+            system_test_path,
+            *session.posargs,
+        )
+    if os.path.exists(system_test_folder_path):
+        session.run(
+            "py.test",
+            "--verbose",
+            f"--junitxml=system_{session.python}_sponge_log.xml",
+            system_test_folder_path,
+            *session.posargs,
+        )
