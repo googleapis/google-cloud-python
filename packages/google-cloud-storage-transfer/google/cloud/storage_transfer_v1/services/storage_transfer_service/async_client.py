@@ -787,9 +787,6 @@ class StorageTransferServiceAsyncClient:
 
                       }
 
-                   The JSON representation for Empty is empty JSON
-                   object {}.
-
         """
         # Create or coerce a protobuf request object.
         request = transfer.RunTransferJobRequest(request)
