@@ -1082,9 +1082,6 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
 
                       }
 
-                   The JSON representation for Empty is empty JSON
-                   object {}.
-
         """
         # Create or coerce a protobuf request object.
         # Quick check: If we got a request object, we should *not* have
@@ -1681,9 +1678,6 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
                          (google.protobuf.Empty);
 
                       }
-
-                   The JSON representation for Empty is empty JSON
-                   object {}.
 
         """
         # Create or coerce a protobuf request object.
