@@ -919,9 +919,6 @@ class ConversationModelsClient(metaclass=ConversationModelsClientMeta):
 
                       }
 
-                   The JSON representation for Empty is empty JSON
-                   object {}.
-
         """
         # Create or coerce a protobuf request object.
         # Quick check: If we got a request object, we should *not* have
@@ -1046,9 +1043,6 @@ class ConversationModelsClient(metaclass=ConversationModelsClientMeta):
 
                       }
 
-                   The JSON representation for Empty is empty JSON
-                   object {}.
-
         """
         # Create or coerce a protobuf request object.
         # Minor optimization to avoid making a copy if the user passes
@@ -1162,9 +1156,6 @@ class ConversationModelsClient(metaclass=ConversationModelsClientMeta):
                          (google.protobuf.Empty);
 
                       }
-
-                   The JSON representation for Empty is empty JSON
-                   object {}.
 
         """
         # Create or coerce a protobuf request object.

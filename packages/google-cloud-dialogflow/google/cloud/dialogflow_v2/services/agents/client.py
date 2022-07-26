@@ -921,9 +921,6 @@ class AgentsClient(metaclass=AgentsClientMeta):
 
                       }
 
-                   The JSON representation for Empty is empty JSON
-                   object {}.
-
         """
         # Create or coerce a protobuf request object.
         # Quick check: If we got a request object, we should *not* have
@@ -1184,9 +1181,6 @@ class AgentsClient(metaclass=AgentsClientMeta):
 
                       }
 
-                   The JSON representation for Empty is empty JSON
-                   object {}.
-
         """
         # Create or coerce a protobuf request object.
         # Minor optimization to avoid making a copy if the user passes
@@ -1309,9 +1303,6 @@ class AgentsClient(metaclass=AgentsClientMeta):
                          (google.protobuf.Empty);
 
                       }
-
-                   The JSON representation for Empty is empty JSON
-                   object {}.
 
         """
         # Create or coerce a protobuf request object.
