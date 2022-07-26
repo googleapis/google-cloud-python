@@ -949,9 +949,6 @@ class AgentsAsyncClient:
 
                       }
 
-                   The JSON representation for Empty is empty JSON
-                   object {}.
-
         """
         # Create or coerce a protobuf request object.
         request = agent.RestoreAgentRequest(request)
