@@ -1240,9 +1240,6 @@ class NotebookServiceAsyncClient:
 
                       }
 
-                   The JSON representation for Empty is empty JSON
-                   object {}.
-
         """
         # Create or coerce a protobuf request object.
         # Quick check: If we got a request object, we should *not* have
@@ -2496,9 +2493,6 @@ class NotebookServiceAsyncClient:
 
                       }
 
-                   The JSON representation for Empty is empty JSON
-                   object {}.
-
         """
         # Create or coerce a protobuf request object.
         # Quick check: If we got a request object, we should *not* have
@@ -2815,9 +2809,6 @@ class NotebookServiceAsyncClient:
                          (google.protobuf.Empty);
 
                       }
-
-                   The JSON representation for Empty is empty JSON
-                   object {}.
 
         """
         # Create or coerce a protobuf request object.
@@ -3356,9 +3347,6 @@ class NotebookServiceAsyncClient:
                          (google.protobuf.Empty);
 
                       }
-
-                   The JSON representation for Empty is empty JSON
-                   object {}.
 
         """
         # Create or coerce a protobuf request object.

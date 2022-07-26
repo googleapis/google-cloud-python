@@ -883,9 +883,6 @@ class NotebookServiceAsyncClient:
 
                       }
 
-                   The JSON representation for Empty is empty JSON
-                   object {}.
-
         """
         # Create or coerce a protobuf request object.
         request = service.DeleteInstanceRequest(request)
@@ -1842,9 +1839,6 @@ class NotebookServiceAsyncClient:
                          (google.protobuf.Empty);
 
                       }
-
-                   The JSON representation for Empty is empty JSON
-                   object {}.
 
         """
         # Create or coerce a protobuf request object.

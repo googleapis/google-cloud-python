@@ -1129,9 +1129,6 @@ class NotebookServiceClient(metaclass=NotebookServiceClientMeta):
 
                       }
 
-                   The JSON representation for Empty is empty JSON
-                   object {}.
-
         """
         # Create or coerce a protobuf request object.
         # Minor optimization to avoid making a copy if the user passes
@@ -2101,9 +2098,6 @@ class NotebookServiceClient(metaclass=NotebookServiceClientMeta):
                          (google.protobuf.Empty);
 
                       }
-
-                   The JSON representation for Empty is empty JSON
-                   object {}.
 
         """
         # Create or coerce a protobuf request object.
