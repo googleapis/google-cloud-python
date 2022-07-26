@@ -175,7 +175,7 @@ for library in s.get_staging_dirs(default_version):
     # Silence deprecation warnings in pull() method flattened parameter tests.
     s.replace(
         library / f"tests/unit/gapic/pubsub_{library.name}/test_subscriber.py",
-        "import mock",
+        "import os",
         "\g<0>\nimport warnings",
     )
 
@@ -340,6 +340,20 @@ for library in s.get_staging_dirs(default_version):
         library / "samples/generated_samples/**/*.py",
         "pip install google-pubsub",
         "pip install google-cloud-pubsub",
+    )
+
+    # This line is required to move the generated code from the `owl-bot-staging` folder 
+    # to the destination folder `google/pubsub`
+    s.move(
+        library,
+        excludes=[
+            "docs/**/*",
+            "nox.py",
+            "README.rst",
+            "setup.py",
+            f"google/cloud/pubsub_{library.name}/__init__.py",
+            f"google/cloud/pubsub_{library.name}/types.py",
+        ],
     )
 s.remove_staging_dirs()
 
