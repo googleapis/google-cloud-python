@@ -1125,9 +1125,6 @@ class ManagedIdentitiesServiceClient(metaclass=ManagedIdentitiesServiceClientMet
 
                       }
 
-                   The JSON representation for Empty is empty JSON
-                   object {}.
-
         """
         # Create or coerce a protobuf request object.
         # Quick check: If we got a request object, we should *not* have
