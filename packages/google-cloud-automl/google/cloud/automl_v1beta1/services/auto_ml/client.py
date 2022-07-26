@@ -1076,9 +1076,6 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
 
                       }
 
-                   The JSON representation for Empty is empty JSON
-                   object {}.
-
         """
         # Create or coerce a protobuf request object.
         # Quick check: If we got a request object, we should *not* have
@@ -1215,9 +1212,6 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
 
                       }
 
-                   The JSON representation for Empty is empty JSON
-                   object {}.
-
         """
         # Create or coerce a protobuf request object.
         # Quick check: If we got a request object, we should *not* have
@@ -1347,9 +1341,6 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
                          (google.protobuf.Empty);
 
                       }
-
-                   The JSON representation for Empty is empty JSON
-                   object {}.
 
         """
         # Create or coerce a protobuf request object.
@@ -2504,9 +2495,6 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
 
                       }
 
-                   The JSON representation for Empty is empty JSON
-                   object {}.
-
         """
         # Create or coerce a protobuf request object.
         # Quick check: If we got a request object, we should *not* have
@@ -2638,9 +2626,6 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
 
                       }
 
-                   The JSON representation for Empty is empty JSON
-                   object {}.
-
         """
         # Create or coerce a protobuf request object.
         # Quick check: If we got a request object, we should *not* have
@@ -2765,9 +2750,6 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
                          (google.protobuf.Empty);
 
                       }
-
-                   The JSON representation for Empty is empty JSON
-                   object {}.
 
         """
         # Create or coerce a protobuf request object.
@@ -2903,9 +2885,6 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
                          (google.protobuf.Empty);
 
                       }
-
-                   The JSON representation for Empty is empty JSON
-                   object {}.
 
         """
         # Create or coerce a protobuf request object.
@@ -3048,9 +3027,6 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
                          (google.protobuf.Empty);
 
                       }
-
-                   The JSON representation for Empty is empty JSON
-                   object {}.
 
         """
         # Create or coerce a protobuf request object.
