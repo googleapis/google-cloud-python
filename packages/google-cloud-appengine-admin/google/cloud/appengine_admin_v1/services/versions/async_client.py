@@ -624,9 +624,6 @@ class VersionsAsyncClient:
 
                       }
 
-                   The JSON representation for Empty is empty JSON
-                   object {}.
-
         """
         # Create or coerce a protobuf request object.
         request = appengine.DeleteVersionRequest(request)

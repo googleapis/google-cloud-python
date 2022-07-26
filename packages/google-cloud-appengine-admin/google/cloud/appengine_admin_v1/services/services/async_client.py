@@ -516,9 +516,6 @@ class ServicesAsyncClient:
 
                       }
 
-                   The JSON representation for Empty is empty JSON
-                   object {}.
-
         """
         # Create or coerce a protobuf request object.
         request = appengine.DeleteServiceRequest(request)

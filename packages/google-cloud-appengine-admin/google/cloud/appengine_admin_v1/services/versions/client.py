@@ -839,9 +839,6 @@ class VersionsClient(metaclass=VersionsClientMeta):
 
                       }
 
-                   The JSON representation for Empty is empty JSON
-                   object {}.
-
         """
         # Create or coerce a protobuf request object.
         # Minor optimization to avoid making a copy if the user passes
