@@ -664,6 +664,9 @@ class BigQueryWriteClient(metaclass=BigQueryWriteClientMeta):
                 streaming RPC, certain parts of the AppendRowsRequest
                 need only be specified for the first request sent each
                 time the gRPC network connection is opened/reopened.
+                The size of a single AppendRowsRequest must be less than
+                10 MB in size. Requests larger than this return an
+                error, typically `INVALID_ARGUMENT`.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.

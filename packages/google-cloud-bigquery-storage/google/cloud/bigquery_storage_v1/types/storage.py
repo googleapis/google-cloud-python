@@ -73,6 +73,18 @@ class CreateReadSessionRequest(proto.Message):
             leave this unset to let the system to determine an upper
             bound OR set this a size for the maximum "units of work" it
             can gracefully handle.
+        preferred_min_stream_count (int):
+            The minimum preferred stream count. This
+            parameter can be used to inform the service that
+            there is a desired lower bound on the number of
+            streams. This is typically a target parallelism
+            of the client (e.g. a Spark cluster with
+            N-workers would set this to a low multiple of N
+            to ensure good cluster utilization).
+
+            The system will make a best effort to provide at
+            least this number of streams, but in some cases
+            might provide less.
     """
 
     parent = proto.Field(
@@ -87,6 +99,10 @@ class CreateReadSessionRequest(proto.Message):
     max_stream_count = proto.Field(
         proto.INT32,
         number=3,
+    )
+    preferred_min_stream_count = proto.Field(
+        proto.INT32,
+        number=4,
     )
 
 
@@ -343,6 +359,10 @@ class AppendRowsRequest(proto.Message):
     the first request sent each time the gRPC network connection is
     opened/reopened.
 
+    The size of a single AppendRowsRequest must be less than 10 MB in
+    size. Requests larger than this return an error, typically
+    ``INVALID_ARGUMENT``.
+
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
@@ -478,6 +498,9 @@ class AppendRowsResponse(proto.Message):
             rows in the batch will be appended. The API will
             return row level error info, so that the caller
             can remove the bad rows and retry the request.
+        write_stream (str):
+            The target of the append operation. Matches the write_stream
+            in the corresponding request.
     """
 
     class AppendResult(proto.Message):
@@ -517,6 +540,10 @@ class AppendRowsResponse(proto.Message):
         proto.MESSAGE,
         number=4,
         message="RowError",
+    )
+    write_stream = proto.Field(
+        proto.STRING,
+        number=5,
     )
 
 
