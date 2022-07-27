@@ -294,6 +294,14 @@ class CloudSqlProperties(proto.Message):
             Type of the Cloud SQL database.
         credential (google.cloud.bigquery_connection_v1.types.CloudSqlCredential):
             Input only. Cloud SQL credential.
+        service_account_id (str):
+            Output only. The account ID of the service
+            used for the purpose of this connection.
+            When the connection is used in the context of an
+            operation in BigQuery, this service account will
+            serve as identity being used for connecting to
+            the CloudSQL instance specified in this
+            connection.
     """
 
     class DatabaseType(proto.Enum):
@@ -319,6 +327,10 @@ class CloudSqlProperties(proto.Message):
         proto.MESSAGE,
         number=4,
         message="CloudSqlCredential",
+    )
+    service_account_id = proto.Field(
+        proto.STRING,
+        number=5,
     )
 
 
