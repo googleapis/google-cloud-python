@@ -375,7 +375,7 @@ class AudioInput(proto.Message):
             to be processed. A single request can contain up
             to 1 minute of speech audio data. The
             transcribed text cannot contain more than 256
-            bytes.
+            bytes for virtual agent interactions.
     """
 
     config = proto.Field(
@@ -934,8 +934,9 @@ class StreamingAnalyzeContentRequest(proto.Message):
         input_text (str):
             The UTF-8 encoded natural language text to be processed.
             Must be sent if ``text_config`` is set in the first message.
-            Text length must not exceed 256 bytes. The ``input_text``
-            field can be only sent once.
+            Text length must not exceed 256 bytes for virtual agent
+            interactions. The ``input_text`` field can be only sent
+            once.
 
             This field is a member of `oneof`_ ``input``.
         input_dtmf (google.cloud.dialogflow_v2beta1.types.TelephonyDtmfEvents):

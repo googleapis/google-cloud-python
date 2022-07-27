@@ -11125,12 +11125,12 @@
             "type": "google.cloud.dialogflow_v2beta1.types.TextInput"
           },
           {
-            "name": "event_input",
-            "type": "google.cloud.dialogflow_v2beta1.types.EventInput"
-          },
-          {
             "name": "audio_input",
             "type": "google.cloud.dialogflow_v2beta1.types.AudioInput"
+          },
+          {
+            "name": "event_input",
+            "type": "google.cloud.dialogflow_v2beta1.types.EventInput"
           },
           {
             "name": "retry",
@@ -11217,12 +11217,12 @@
             "type": "google.cloud.dialogflow_v2beta1.types.TextInput"
           },
           {
-            "name": "event_input",
-            "type": "google.cloud.dialogflow_v2beta1.types.EventInput"
-          },
-          {
             "name": "audio_input",
             "type": "google.cloud.dialogflow_v2beta1.types.AudioInput"
+          },
+          {
+            "name": "event_input",
+            "type": "google.cloud.dialogflow_v2beta1.types.EventInput"
           },
           {
             "name": "retry",

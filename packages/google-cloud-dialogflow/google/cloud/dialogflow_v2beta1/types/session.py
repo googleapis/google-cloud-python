@@ -1057,7 +1057,8 @@ class TextInput(proto.Message):
         text (str):
             Required. The UTF-8 encoded natural language
             text to be processed. Text length must not
-            exceed 256 characters.
+            exceed 256 characters for virtual agent
+            interactions.
         language_code (str):
             Required. The language of this conversational query. See
             `Language

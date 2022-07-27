@@ -2061,12 +2061,12 @@ def test_analyze_content_flattened():
         client.analyze_content(
             participant="participant_value",
             text_input=session.TextInput(text="text_value"),
-            event_input=session.EventInput(name="name_value"),
             audio_input=gcd_participant.AudioInput(
                 config=audio_config.InputAudioConfig(
                     audio_encoding=audio_config.AudioEncoding.AUDIO_ENCODING_LINEAR_16
                 )
             ),
+            event_input=session.EventInput(name="name_value"),
         )
 
         # Establish that the underlying call was made with the expected
@@ -2076,11 +2076,7 @@ def test_analyze_content_flattened():
         arg = args[0].participant
         mock_val = "participant_value"
         assert arg == mock_val
-        assert args[0].audio_input == gcd_participant.AudioInput(
-            config=audio_config.InputAudioConfig(
-                audio_encoding=audio_config.AudioEncoding.AUDIO_ENCODING_LINEAR_16
-            )
-        )
+        assert args[0].event_input == session.EventInput(name="name_value")
 
 
 def test_analyze_content_flattened_error():
@@ -2095,12 +2091,12 @@ def test_analyze_content_flattened_error():
             gcd_participant.AnalyzeContentRequest(),
             participant="participant_value",
             text_input=session.TextInput(text="text_value"),
-            event_input=session.EventInput(name="name_value"),
             audio_input=gcd_participant.AudioInput(
                 config=audio_config.InputAudioConfig(
                     audio_encoding=audio_config.AudioEncoding.AUDIO_ENCODING_LINEAR_16
                 )
             ),
+            event_input=session.EventInput(name="name_value"),
         )
 
 
@@ -2123,12 +2119,12 @@ async def test_analyze_content_flattened_async():
         response = await client.analyze_content(
             participant="participant_value",
             text_input=session.TextInput(text="text_value"),
-            event_input=session.EventInput(name="name_value"),
             audio_input=gcd_participant.AudioInput(
                 config=audio_config.InputAudioConfig(
                     audio_encoding=audio_config.AudioEncoding.AUDIO_ENCODING_LINEAR_16
                 )
             ),
+            event_input=session.EventInput(name="name_value"),
         )
 
         # Establish that the underlying call was made with the expected
@@ -2138,11 +2134,7 @@ async def test_analyze_content_flattened_async():
         arg = args[0].participant
         mock_val = "participant_value"
         assert arg == mock_val
-        assert args[0].audio_input == gcd_participant.AudioInput(
-            config=audio_config.InputAudioConfig(
-                audio_encoding=audio_config.AudioEncoding.AUDIO_ENCODING_LINEAR_16
-            )
-        )
+        assert args[0].event_input == session.EventInput(name="name_value")
 
 
 @pytest.mark.asyncio
@@ -2158,12 +2150,12 @@ async def test_analyze_content_flattened_error_async():
             gcd_participant.AnalyzeContentRequest(),
             participant="participant_value",
             text_input=session.TextInput(text="text_value"),
-            event_input=session.EventInput(name="name_value"),
             audio_input=gcd_participant.AudioInput(
                 config=audio_config.InputAudioConfig(
                     audio_encoding=audio_config.AudioEncoding.AUDIO_ENCODING_LINEAR_16
                 )
             ),
+            event_input=session.EventInput(name="name_value"),
         )
 
 

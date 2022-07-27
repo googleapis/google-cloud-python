@@ -650,8 +650,8 @@ class ParticipantsAsyncClient:
         *,
         participant: str = None,
         text_input: session.TextInput = None,
-        event_input: session.EventInput = None,
         audio_input: gcd_participant.AudioInput = None,
+        event_input: session.EventInput = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
@@ -701,16 +701,16 @@ class ParticipantsAsyncClient:
                 This corresponds to the ``text_input`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            event_input (:class:`google.cloud.dialogflow_v2beta1.types.EventInput`):
-                An input event to send to Dialogflow.
-                This corresponds to the ``event_input`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
             audio_input (:class:`google.cloud.dialogflow_v2beta1.types.AudioInput`):
                 The natural language speech audio to
                 be processed.
 
                 This corresponds to the ``audio_input`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            event_input (:class:`google.cloud.dialogflow_v2beta1.types.EventInput`):
+                An input event to send to Dialogflow.
+                This corresponds to the ``event_input`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -728,7 +728,7 @@ class ParticipantsAsyncClient:
         # Create or coerce a protobuf request object.
         # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        has_flattened_params = any([participant, text_input, event_input, audio_input])
+        has_flattened_params = any([participant, text_input, audio_input, event_input])
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -743,10 +743,10 @@ class ParticipantsAsyncClient:
             request.participant = participant
         if text_input is not None:
             request.text_input = text_input
-        if event_input is not None:
-            request.event_input = event_input
         if audio_input is not None:
             request.audio_input = audio_input
+        if event_input is not None:
+            request.event_input = event_input
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
