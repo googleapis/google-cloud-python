@@ -71,6 +71,10 @@ class Instance(proto.Message):
             this Instance was created. For instances created before this
             field was added (August 2021), this value is
             ``seconds: 0, nanos: 1``.
+        satisfies_pzs (bool):
+            Output only. Reserved for future use.
+
+            This field is a member of `oneof`_ ``_satisfies_pzs``.
     """
 
     class State(proto.Enum):
@@ -112,6 +116,11 @@ class Instance(proto.Message):
         proto.MESSAGE,
         number=7,
         message=timestamp_pb2.Timestamp,
+    )
+    satisfies_pzs = proto.Field(
+        proto.BOOL,
+        number=8,
+        optional=True,
     )
 
 

@@ -1011,6 +1011,7 @@ def test_get_instance(request_type, transport: str = "grpc"):
             display_name="display_name_value",
             state=instance.Instance.State.READY,
             type_=instance.Instance.Type.PRODUCTION,
+            satisfies_pzs=True,
         )
         response = client.get_instance(request)
 
@@ -1025,6 +1026,7 @@ def test_get_instance(request_type, transport: str = "grpc"):
     assert response.display_name == "display_name_value"
     assert response.state == instance.Instance.State.READY
     assert response.type_ == instance.Instance.Type.PRODUCTION
+    assert response.satisfies_pzs is True
 
 
 def test_get_instance_empty_call():
@@ -1066,6 +1068,7 @@ async def test_get_instance_async(
                 display_name="display_name_value",
                 state=instance.Instance.State.READY,
                 type_=instance.Instance.Type.PRODUCTION,
+                satisfies_pzs=True,
             )
         )
         response = await client.get_instance(request)
@@ -1081,6 +1084,7 @@ async def test_get_instance_async(
     assert response.display_name == "display_name_value"
     assert response.state == instance.Instance.State.READY
     assert response.type_ == instance.Instance.Type.PRODUCTION
+    assert response.satisfies_pzs is True
 
 
 @pytest.mark.asyncio
@@ -1490,6 +1494,7 @@ def test_update_instance(request_type, transport: str = "grpc"):
             display_name="display_name_value",
             state=instance.Instance.State.READY,
             type_=instance.Instance.Type.PRODUCTION,
+            satisfies_pzs=True,
         )
         response = client.update_instance(request)
 
@@ -1504,6 +1509,7 @@ def test_update_instance(request_type, transport: str = "grpc"):
     assert response.display_name == "display_name_value"
     assert response.state == instance.Instance.State.READY
     assert response.type_ == instance.Instance.Type.PRODUCTION
+    assert response.satisfies_pzs is True
 
 
 def test_update_instance_empty_call():
@@ -1544,6 +1550,7 @@ async def test_update_instance_async(
                 display_name="display_name_value",
                 state=instance.Instance.State.READY,
                 type_=instance.Instance.Type.PRODUCTION,
+                satisfies_pzs=True,
             )
         )
         response = await client.update_instance(request)
@@ -1559,6 +1566,7 @@ async def test_update_instance_async(
     assert response.display_name == "display_name_value"
     assert response.state == instance.Instance.State.READY
     assert response.type_ == instance.Instance.Type.PRODUCTION
+    assert response.satisfies_pzs is True
 
 
 @pytest.mark.asyncio

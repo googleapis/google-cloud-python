@@ -79,7 +79,7 @@ class bigtable_adminCallTransformer(cst.CSTTransformer):
         'update_app_profile': ('app_profile', 'update_mask', 'ignore_warnings', ),
         'update_backup': ('backup', 'update_mask', ),
         'update_cluster': ('name', 'location', 'state', 'serve_nodes', 'cluster_config', 'default_storage_type', 'encryption_config', ),
-        'update_instance': ('display_name', 'name', 'state', 'type_', 'labels', 'create_time', ),
+        'update_instance': ('display_name', 'name', 'state', 'type_', 'labels', 'create_time', 'satisfies_pzs', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:
