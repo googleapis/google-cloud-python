@@ -246,7 +246,7 @@ def get_service_account_token(request, service_account="default", scopes=None):
         scopes (Optional[Union[str, List[str]]]): Optional string or list of
             strings with auth scopes.
     Returns:
-        Union[str, datetime]: The access token and its expiration.
+        Tuple[str, datetime]: The access token and its expiration.
 
     Raises:
         google.auth.exceptions.TransportError: if an error occurred while
