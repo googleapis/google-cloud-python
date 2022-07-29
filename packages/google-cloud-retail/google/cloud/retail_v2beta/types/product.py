@@ -510,12 +510,12 @@ class Product(proto.Message):
             -  [name][google.cloud.retail.v2beta.Product.name]
             -  [color_info][google.cloud.retail.v2beta.Product.color_info]
 
-            Maximum number of paths is 30. Otherwise, an
+            The maximum number of paths is 30. Otherwise, an
             INVALID_ARGUMENT error is returned.
 
             Note: Returning more fields in
             [SearchResponse][google.cloud.retail.v2beta.SearchResponse]
-            may increase response payload size and serving latency.
+            can increase response payload size and serving latency.
         variants (Sequence[google.cloud.retail_v2beta.types.Product]):
             Output only. Product variants grouped together on primary
             product which share similar product attributes. It's

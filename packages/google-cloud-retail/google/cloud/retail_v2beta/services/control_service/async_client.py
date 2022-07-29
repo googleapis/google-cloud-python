@@ -257,7 +257,7 @@ class ControlServiceAsyncClient:
                 The request object. Request for CreateControl method.
             parent (:class:`str`):
                 Required. Full resource name of parent catalog. Format:
-                projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}
+                ``projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -374,7 +374,7 @@ class ControlServiceAsyncClient:
             name (:class:`str`):
                 Required. The resource name of the Control to delete.
                 Format:
-                projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}/controls/{control_id}
+                ``projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}/controls/{control_id}``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -581,7 +581,7 @@ class ControlServiceAsyncClient:
             name (:class:`str`):
                 Required. The resource name of the Control to delete.
                 Format:
-                projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}/controls/{control_id}
+                ``projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}/controls/{control_id}``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -678,7 +678,7 @@ class ControlServiceAsyncClient:
                 The request object. Request for ListControls method.
             parent (:class:`str`):
                 Required. The catalog resource name. Format:
-                projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}
+                ``projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this

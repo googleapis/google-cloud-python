@@ -49,6 +49,7 @@ from .common import (
     LocalInventory,
     PriceInfo,
     Rating,
+    RecommendationsFilteringOption,
     Rule,
     SearchSolutionUseCase,
     SolutionType,
@@ -65,10 +66,12 @@ from .control_service import (
     UpdateControlRequest,
 )
 from .export_config import (
+    BigQueryOutputResult,
     ExportErrorsConfig,
     ExportMetadata,
     ExportProductsResponse,
     ExportUserEventsResponse,
+    OutputResult,
 )
 from .import_config import (
     BigQuerySource,
@@ -170,6 +173,7 @@ __all__ = (
     "Rule",
     "UserInfo",
     "AttributeConfigLevel",
+    "RecommendationsFilteringOption",
     "SearchSolutionUseCase",
     "SolutionType",
     "CompleteQueryRequest",
@@ -181,10 +185,12 @@ __all__ = (
     "ListControlsRequest",
     "ListControlsResponse",
     "UpdateControlRequest",
+    "BigQueryOutputResult",
     "ExportErrorsConfig",
     "ExportMetadata",
     "ExportProductsResponse",
     "ExportUserEventsResponse",
+    "OutputResult",
     "BigQuerySource",
     "CompletionDataInputConfig",
     "GcsSource",

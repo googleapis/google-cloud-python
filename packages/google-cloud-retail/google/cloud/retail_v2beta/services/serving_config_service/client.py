@@ -506,7 +506,7 @@ class ServingConfigServiceClient(metaclass=ServingConfigServiceClientMeta):
                 method.
             parent (str):
                 Required. Full resource name of parent. Format:
-                projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}
+                ``projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this

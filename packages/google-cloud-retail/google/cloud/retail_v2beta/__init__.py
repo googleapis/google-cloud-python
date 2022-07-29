@@ -70,6 +70,7 @@ from .types.common import (
     LocalInventory,
     PriceInfo,
     Rating,
+    RecommendationsFilteringOption,
     Rule,
     SearchSolutionUseCase,
     SolutionType,
@@ -86,10 +87,12 @@ from .types.control_service import (
     UpdateControlRequest,
 )
 from .types.export_config import (
+    BigQueryOutputResult,
     ExportErrorsConfig,
     ExportMetadata,
     ExportProductsResponse,
     ExportUserEventsResponse,
+    OutputResult,
 )
 from .types.import_config import (
     BigQuerySource,
@@ -186,6 +189,7 @@ __all__ = (
     "AttributeConfigLevel",
     "AttributesConfig",
     "Audience",
+    "BigQueryOutputResult",
     "BigQuerySource",
     "Catalog",
     "CatalogAttribute",
@@ -242,6 +246,7 @@ __all__ = (
     "LocalInventory",
     "MerchantCenterLink",
     "MerchantCenterLinkingConfig",
+    "OutputResult",
     "PredictRequest",
     "PredictResponse",
     "PredictionServiceClient",
@@ -258,6 +263,7 @@ __all__ = (
     "PurgeUserEventsRequest",
     "PurgeUserEventsResponse",
     "Rating",
+    "RecommendationsFilteringOption",
     "RejoinUserEventsMetadata",
     "RejoinUserEventsRequest",
     "RejoinUserEventsResponse",

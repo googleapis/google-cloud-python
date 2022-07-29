@@ -1216,7 +1216,7 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
                 method.
             name (str):
                 Required. Full AttributesConfig resource name. Format:
-                projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}/attributesConfig
+                ``projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}/attributesConfig``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this

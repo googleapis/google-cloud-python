@@ -508,7 +508,8 @@ class ProductServiceClient(metaclass=ProductServiceClientMeta):
         Args:
             request (Union[google.cloud.retail_v2beta.types.CreateProductRequest, dict]):
                 The request object. Request message for
-                [CreateProduct][] method.
+                [ProductService.CreateProduct][google.cloud.retail.v2beta.ProductService.CreateProduct]
+                method.
             parent (str):
                 Required. The parent catalog resource name, such as
                 ``projects/*/locations/global/catalogs/default_catalog/branches/default_branch``.
@@ -638,7 +639,8 @@ class ProductServiceClient(metaclass=ProductServiceClientMeta):
 
         Args:
             request (Union[google.cloud.retail_v2beta.types.GetProductRequest, dict]):
-                The request object. Request message for [GetProduct][]
+                The request object. Request message for
+                [ProductService.GetProduct][google.cloud.retail.v2beta.ProductService.GetProduct]
                 method.
             name (str):
                 Required. Full resource name of
@@ -866,7 +868,8 @@ class ProductServiceClient(metaclass=ProductServiceClientMeta):
         Args:
             request (Union[google.cloud.retail_v2beta.types.UpdateProductRequest, dict]):
                 The request object. Request message for
-                [UpdateProduct][] method.
+                [ProductService.UpdateProduct][google.cloud.retail.v2beta.ProductService.UpdateProduct]
+                method.
             product (google.cloud.retail_v2beta.types.Product):
                 Required. The product to update/create.
 
@@ -892,6 +895,11 @@ class ProductServiceClient(metaclass=ProductServiceClientMeta):
 
                 If an unsupported or unknown field is provided, an
                 INVALID_ARGUMENT error is returned.
+
+                The attribute key can be updated by setting the mask
+                path as "attributes.${key_name}". If a key name is
+                present in the mask but not in the patching product from
+                the request, this key will be deleted after the update.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -985,7 +993,8 @@ class ProductServiceClient(metaclass=ProductServiceClientMeta):
         Args:
             request (Union[google.cloud.retail_v2beta.types.DeleteProductRequest, dict]):
                 The request object. Request message for
-                [DeleteProduct][] method.
+                [ProductService.DeleteProduct][google.cloud.retail.v2beta.ProductService.DeleteProduct]
+                method.
             name (str):
                 Required. Full resource name of
                 [Product][google.cloud.retail.v2beta.Product], such as
@@ -1073,8 +1082,8 @@ class ProductServiceClient(metaclass=ProductServiceClientMeta):
         r"""Bulk import of multiple
         [Product][google.cloud.retail.v2beta.Product]s.
 
-        Request processing may be synchronous. No partial updating is
-        supported. Non-existing items are created.
+        Request processing may be synchronous. Non-existing items are
+        created.
 
         Note that it is possible for a subset of the
         [Product][google.cloud.retail.v2beta.Product]s to be
@@ -1186,21 +1195,21 @@ class ProductServiceClient(metaclass=ProductServiceClientMeta):
         consequence, when a response is returned, updates are not
         immediately manifested in the
         [Product][google.cloud.retail.v2beta.Product] queried by
-        [GetProduct][google.cloud.retail.v2beta.ProductService.GetProduct]
+        [ProductService.GetProduct][google.cloud.retail.v2beta.ProductService.GetProduct]
         or
-        [ListProducts][google.cloud.retail.v2beta.ProductService.ListProducts].
+        [ProductService.ListProducts][google.cloud.retail.v2beta.ProductService.ListProducts].
 
         When inventory is updated with
-        [CreateProduct][google.cloud.retail.v2beta.ProductService.CreateProduct]
+        [ProductService.CreateProduct][google.cloud.retail.v2beta.ProductService.CreateProduct]
         and
-        [UpdateProduct][google.cloud.retail.v2beta.ProductService.UpdateProduct],
+        [ProductService.UpdateProduct][google.cloud.retail.v2beta.ProductService.UpdateProduct],
         the specified inventory field value(s) will overwrite any
         existing value(s) while ignoring the last update time for this
         field. Furthermore, the last update time for the specified
         inventory fields will be overwritten to the time of the
-        [CreateProduct][google.cloud.retail.v2beta.ProductService.CreateProduct]
+        [ProductService.CreateProduct][google.cloud.retail.v2beta.ProductService.CreateProduct]
         or
-        [UpdateProduct][google.cloud.retail.v2beta.ProductService.UpdateProduct]
+        [ProductService.UpdateProduct][google.cloud.retail.v2beta.ProductService.UpdateProduct]
         request.
 
         If no inventory fields are set in
@@ -1213,10 +1222,10 @@ class ProductServiceClient(metaclass=ProductServiceClientMeta):
         then any existing inventory information will be preserved.
 
         Pre-existing inventory information can only be updated with
-        [SetInventory][google.cloud.retail.v2beta.ProductService.SetInventory],
-        [AddFulfillmentPlaces][google.cloud.retail.v2beta.ProductService.AddFulfillmentPlaces],
+        [ProductService.SetInventory][google.cloud.retail.v2beta.ProductService.SetInventory],
+        [ProductService.AddFulfillmentPlaces][google.cloud.retail.v2beta.ProductService.AddFulfillmentPlaces],
         and
-        [RemoveFulfillmentPlaces][google.cloud.retail.v2beta.ProductService.RemoveFulfillmentPlaces].
+        [ProductService.RemoveFulfillmentPlaces][google.cloud.retail.v2beta.ProductService.RemoveFulfillmentPlaces].
 
         This feature is only available for users who have Retail Search
         enabled. Please enable Retail Search on Cloud Console before
@@ -1250,7 +1259,8 @@ class ProductServiceClient(metaclass=ProductServiceClientMeta):
 
         Args:
             request (Union[google.cloud.retail_v2beta.types.SetInventoryRequest, dict]):
-                The request object. Request message for [SetInventory][]
+                The request object. Request message for
+                [ProductService.SetInventory][google.cloud.retail.v2beta.ProductService.SetInventory]
                 method.
             inventory (google.cloud.retail_v2beta.types.Product):
                 Required. The inventory information to update. The
@@ -1263,8 +1273,10 @@ class ProductServiceClient(metaclass=ProductServiceClientMeta):
                    The updated inventory fields must be specified in
                    [SetInventoryRequest.set_mask][google.cloud.retail.v2beta.SetInventoryRequest.set_mask].
 
-                If [SetInventoryRequest.inventory.name][] is empty or
-                invalid, an INVALID_ARGUMENT error is returned.
+                If
+                [SetInventoryRequest.inventory.name][google.cloud.retail.v2beta.Product.name]
+                is empty or invalid, an INVALID_ARGUMENT error is
+                returned.
 
                 If the caller does not have permission to update the
                 [Product][google.cloud.retail.v2beta.Product] named in
@@ -1290,7 +1302,7 @@ class ProductServiceClient(metaclass=ProductServiceClientMeta):
                    [SetInventoryRequest.set_mask][google.cloud.retail.v2beta.SetInventoryRequest.set_mask]
                 -  Specifies only the desired fulfillment types and
                    corresponding place IDs to update in
-                   [SetInventoryRequest.inventory.fulfillment_info][]
+                   [SetInventoryRequest.inventory.fulfillment_info][google.cloud.retail.v2beta.Product.fulfillment_info]
 
                 The caller can clear all place IDs from a subset of
                 fulfillment types in the following ways:
@@ -1298,10 +1310,11 @@ class ProductServiceClient(metaclass=ProductServiceClientMeta):
                 -  Adds "fulfillment_info" in
                    [SetInventoryRequest.set_mask][google.cloud.retail.v2beta.SetInventoryRequest.set_mask]
                 -  Specifies only the desired fulfillment types to clear
-                   in [SetInventoryRequest.inventory.fulfillment_info][]
+                   in
+                   [SetInventoryRequest.inventory.fulfillment_info][google.cloud.retail.v2beta.Product.fulfillment_info]
                 -  Checks that only the desired fulfillment info types
                    have empty
-                   [SetInventoryRequest.inventory.fulfillment_info.place_ids][]
+                   [SetInventoryRequest.inventory.fulfillment_info.place_ids][google.cloud.retail.v2beta.FulfillmentInfo.place_ids]
 
                 The last update time is recorded for the following
                 inventory fields:
@@ -1312,8 +1325,9 @@ class ProductServiceClient(metaclass=ProductServiceClientMeta):
                 -  [Product.fulfillment_info][google.cloud.retail.v2beta.Product.fulfillment_info]
 
                 If a full overwrite of inventory information while
-                ignoring timestamps is needed, [UpdateProduct][] should
-                be invoked instead.
+                ignoring timestamps is needed,
+                [ProductService.UpdateProduct][google.cloud.retail.v2beta.ProductService.UpdateProduct]
+                should be invoked instead.
 
                 This corresponds to the ``inventory`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1343,7 +1357,8 @@ class ProductServiceClient(metaclass=ProductServiceClientMeta):
 
                 The result type for the operation will be :class:`google.cloud.retail_v2beta.types.SetInventoryResponse` Response of the SetInventoryRequest. Currently empty because
                    there is no meaningful response populated from the
-                   [SetInventory][] method.
+                   [ProductService.SetInventory][google.cloud.retail.v2beta.ProductService.SetInventory]
+                   method.
 
         """
         # Create or coerce a protobuf request object.
@@ -1419,9 +1434,9 @@ class ProductServiceClient(metaclass=ProductServiceClientMeta):
         consequence, when a response is returned, the added place IDs
         are not immediately manifested in the
         [Product][google.cloud.retail.v2beta.Product] queried by
-        [GetProduct][google.cloud.retail.v2beta.ProductService.GetProduct]
+        [ProductService.GetProduct][google.cloud.retail.v2beta.ProductService.GetProduct]
         or
-        [ListProducts][google.cloud.retail.v2beta.ProductService.ListProducts].
+        [ProductService.ListProducts][google.cloud.retail.v2beta.ProductService.ListProducts].
 
         This feature is only available for users who have Retail Search
         enabled. Please enable Retail Search on Cloud Console before
@@ -1455,7 +1470,8 @@ class ProductServiceClient(metaclass=ProductServiceClientMeta):
         Args:
             request (Union[google.cloud.retail_v2beta.types.AddFulfillmentPlacesRequest, dict]):
                 The request object. Request message for
-                [AddFulfillmentPlaces][] method.
+                [ProductService.AddFulfillmentPlaces][google.cloud.retail.v2beta.ProductService.AddFulfillmentPlaces]
+                method.
             product (str):
                 Required. Full resource name of
                 [Product][google.cloud.retail.v2beta.Product], such as
@@ -1481,7 +1497,8 @@ class ProductServiceClient(metaclass=ProductServiceClientMeta):
 
                 The result type for the operation will be :class:`google.cloud.retail_v2beta.types.AddFulfillmentPlacesResponse` Response of the AddFulfillmentPlacesRequest. Currently empty because
                    there is no meaningful response populated from the
-                   [AddFulfillmentPlaces][] method.
+                   [ProductService.AddFulfillmentPlaces][google.cloud.retail.v2beta.ProductService.AddFulfillmentPlaces]
+                   method.
 
         """
         # Create or coerce a protobuf request object.
@@ -1553,9 +1570,9 @@ class ProductServiceClient(metaclass=ProductServiceClientMeta):
         consequence, when a response is returned, the removed place IDs
         are not immediately manifested in the
         [Product][google.cloud.retail.v2beta.Product] queried by
-        [GetProduct][google.cloud.retail.v2beta.ProductService.GetProduct]
+        [ProductService.GetProduct][google.cloud.retail.v2beta.ProductService.GetProduct]
         or
-        [ListProducts][google.cloud.retail.v2beta.ProductService.ListProducts].
+        [ProductService.ListProducts][google.cloud.retail.v2beta.ProductService.ListProducts].
 
         This feature is only available for users who have Retail Search
         enabled. Please enable Retail Search on Cloud Console before
@@ -1589,7 +1606,8 @@ class ProductServiceClient(metaclass=ProductServiceClientMeta):
         Args:
             request (Union[google.cloud.retail_v2beta.types.RemoveFulfillmentPlacesRequest, dict]):
                 The request object. Request message for
-                [RemoveFulfillmentPlaces][] method.
+                [ProductService.RemoveFulfillmentPlaces][google.cloud.retail.v2beta.ProductService.RemoveFulfillmentPlaces]
+                method.
             product (str):
                 Required. Full resource name of
                 [Product][google.cloud.retail.v2beta.Product], such as
@@ -1615,7 +1633,8 @@ class ProductServiceClient(metaclass=ProductServiceClientMeta):
 
                 The result type for the operation will be :class:`google.cloud.retail_v2beta.types.RemoveFulfillmentPlacesResponse` Response of the RemoveFulfillmentPlacesRequest. Currently empty because there
                    is no meaningful response populated from the
-                   [RemoveFulfillmentPlaces][] method.
+                   [ProductService.RemoveFulfillmentPlaces][google.cloud.retail.v2beta.ProductService.RemoveFulfillmentPlaces]
+                   method.
 
         """
         # Create or coerce a protobuf request object.
@@ -1691,15 +1710,15 @@ class ProductServiceClient(metaclass=ProductServiceClientMeta):
         consequence, when a response is returned, updates are not
         immediately manifested in the
         [Product][google.cloud.retail.v2beta.Product] queried by
-        [GetProduct][google.cloud.retail.v2beta.ProductService.GetProduct]
+        [ProductService.GetProduct][google.cloud.retail.v2beta.ProductService.GetProduct]
         or
-        [ListProducts][google.cloud.retail.v2beta.ProductService.ListProducts].
+        [ProductService.ListProducts][google.cloud.retail.v2beta.ProductService.ListProducts].
 
         Local inventory information can only be modified using this
         method.
-        [CreateProduct][google.cloud.retail.v2beta.ProductService.CreateProduct]
+        [ProductService.CreateProduct][google.cloud.retail.v2beta.ProductService.CreateProduct]
         and
-        [UpdateProduct][google.cloud.retail.v2beta.ProductService.UpdateProduct]
+        [ProductService.UpdateProduct][google.cloud.retail.v2beta.ProductService.UpdateProduct]
         has no effect on local inventories.
 
         This feature is only available for users who have Retail Search
@@ -1732,7 +1751,8 @@ class ProductServiceClient(metaclass=ProductServiceClientMeta):
         Args:
             request (Union[google.cloud.retail_v2beta.types.AddLocalInventoriesRequest, dict]):
                 The request object. Request message for
-                [AddLocalInventories][] method.
+                [ProductService.AddLocalInventories][google.cloud.retail.v2beta.ProductService.AddLocalInventories]
+                method.
             product (str):
                 Required. Full resource name of
                 [Product][google.cloud.retail.v2beta.Product], such as
@@ -1756,9 +1776,12 @@ class ProductServiceClient(metaclass=ProductServiceClientMeta):
             google.api_core.operation.Operation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be :class:`google.cloud.retail_v2beta.types.AddLocalInventoriesResponse` Response of the [AddLocalInventories][] API. Currently empty because
-                   there is no meaningful response populated from the
-                   [AddLocalInventories][] method.
+                The result type for the operation will be :class:`google.cloud.retail_v2beta.types.AddLocalInventoriesResponse` Response of the
+                   [ProductService.AddLocalInventories][google.cloud.retail.v2beta.ProductService.AddLocalInventories]
+                   API. Currently empty because there is no meaningful
+                   response populated from the
+                   [ProductService.AddLocalInventories][google.cloud.retail.v2beta.ProductService.AddLocalInventories]
+                   method.
 
         """
         # Create or coerce a protobuf request object.
@@ -1829,15 +1852,15 @@ class ProductServiceClient(metaclass=ProductServiceClientMeta):
         consequence, when a response is returned, removals are not
         immediately manifested in the
         [Product][google.cloud.retail.v2beta.Product] queried by
-        [GetProduct][google.cloud.retail.v2beta.ProductService.GetProduct]
+        [ProductService.GetProduct][google.cloud.retail.v2beta.ProductService.GetProduct]
         or
-        [ListProducts][google.cloud.retail.v2beta.ProductService.ListProducts].
+        [ProductService.ListProducts][google.cloud.retail.v2beta.ProductService.ListProducts].
 
         Local inventory information can only be removed using this
         method.
-        [CreateProduct][google.cloud.retail.v2beta.ProductService.CreateProduct]
+        [ProductService.CreateProduct][google.cloud.retail.v2beta.ProductService.CreateProduct]
         and
-        [UpdateProduct][google.cloud.retail.v2beta.ProductService.UpdateProduct]
+        [ProductService.UpdateProduct][google.cloud.retail.v2beta.ProductService.UpdateProduct]
         has no effect on local inventories.
 
         This feature is only available for users who have Retail Search
@@ -1871,7 +1894,8 @@ class ProductServiceClient(metaclass=ProductServiceClientMeta):
         Args:
             request (Union[google.cloud.retail_v2beta.types.RemoveLocalInventoriesRequest, dict]):
                 The request object. Request message for
-                [RemoveLocalInventories][] method.
+                [ProductService.RemoveLocalInventories][google.cloud.retail.v2beta.ProductService.RemoveLocalInventories]
+                method.
             product (str):
                 Required. Full resource name of
                 [Product][google.cloud.retail.v2beta.Product], such as
@@ -1895,9 +1919,12 @@ class ProductServiceClient(metaclass=ProductServiceClientMeta):
             google.api_core.operation.Operation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be :class:`google.cloud.retail_v2beta.types.RemoveLocalInventoriesResponse` Response of the [RemoveLocalInventories][] API. Currently empty because
-                   there is no meaningful response populated from the
-                   [RemoveLocalInventories][] method.
+                The result type for the operation will be :class:`google.cloud.retail_v2beta.types.RemoveLocalInventoriesResponse` Response of the
+                   [ProductService.RemoveLocalInventories][google.cloud.retail.v2beta.ProductService.RemoveLocalInventories]
+                   API. Currently empty because there is no meaningful
+                   response populated from the
+                   [ProductService.RemoveLocalInventories][google.cloud.retail.v2beta.ProductService.RemoveLocalInventories]
+                   method.
 
         """
         # Create or coerce a protobuf request object.

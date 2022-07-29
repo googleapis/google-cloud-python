@@ -21,6 +21,7 @@ __protobuf__ = proto.module(
     manifest={
         "AttributeConfigLevel",
         "SolutionType",
+        "RecommendationsFilteringOption",
         "SearchSolutionUseCase",
         "Condition",
         "Rule",
@@ -50,6 +51,13 @@ class SolutionType(proto.Enum):
     SOLUTION_TYPE_UNSPECIFIED = 0
     SOLUTION_TYPE_RECOMMENDATION = 1
     SOLUTION_TYPE_SEARCH = 2
+
+
+class RecommendationsFilteringOption(proto.Enum):
+    r"""If filtering for recommendations is enabled."""
+    RECOMMENDATIONS_FILTERING_OPTION_UNSPECIFIED = 0
+    RECOMMENDATIONS_FILTERING_DISABLED = 1
+    RECOMMENDATIONS_FILTERING_ENABLED = 3
 
 
 class SearchSolutionUseCase(proto.Enum):
@@ -252,12 +260,15 @@ class Rule(proto.Message):
     class FilterAction(proto.Message):
         r"""-  Rule Condition:
 
-           -  No [Condition][query_terms] provided is a global match.
-           -  1 or more [Condition][query_terms] provided is combined with
-              OR operator.
+           -  No
+              [Condition.query_terms][google.cloud.retail.v2beta.Condition.query_terms]
+              provided is a global match.
+           -  1 or more
+              [Condition.query_terms][google.cloud.retail.v2beta.Condition.query_terms]
+              provided are combined with OR operator.
 
-        -  Action Input: The request query and filter that will be applied
-           to the retrieved products, in addition to any filters already
+        -  Action Input: The request query and filter that are applied to
+           the retrieved products, in addition to any filters already
            provided with the SearchRequest. The AND operator is used to
            combine the query's existing filters with the filter rule(s).
            NOTE: May result in 0 results when filters conflict.
@@ -291,7 +302,8 @@ class Rule(proto.Message):
 
         -  Rule Condition:
 
-           -  Must specify [Condition][query_terms].
+           -  Must specify
+              [Condition.query_terms][google.cloud.retail.v2beta.Condition.query_terms].
 
         -  Action Input: Request Query
         -  Action Result: Redirects shopper to provided uri.
@@ -607,11 +619,15 @@ class CustomAttribute(proto.Message):
             should be set. Otherwise, an INVALID_ARGUMENT error is
             returned.
         searchable (bool):
-            This field will only be used when
+            This field is normally ignored unless
             [AttributesConfig.attribute_config_level][google.cloud.retail.v2beta.AttributesConfig.attribute_config_level]
-            of the [Catalog][google.cloud.retail.v2beta.Catalog] is
-            'PRODUCT_LEVEL_ATTRIBUTE_CONFIG', if true, custom attribute
-            values are searchable by text queries in
+            of the [Catalog][google.cloud.retail.v2beta.Catalog] is set
+            to the deprecated 'PRODUCT_LEVEL_ATTRIBUTE_CONFIG' mode. For
+            information about product-level attribute configuration, see
+            `Configuration
+            modes <https://cloud.google.com/retail/docs/attribute-config#config-modes>`__.
+            If true, custom attribute values are searchable by text
+            queries in
             [SearchService.Search][google.cloud.retail.v2beta.SearchService.Search].
 
             This field is ignored in a
@@ -623,12 +639,15 @@ class CustomAttribute(proto.Message):
 
             This field is a member of `oneof`_ ``_searchable``.
         indexable (bool):
-            This field will only be used when
+            This field is normally ignored unless
             [AttributesConfig.attribute_config_level][google.cloud.retail.v2beta.AttributesConfig.attribute_config_level]
-            of the [Catalog][google.cloud.retail.v2beta.Catalog] is
-            'PRODUCT_LEVEL_ATTRIBUTE_CONFIG', if true, custom attribute
-            values are indexed, so that it can be filtered, faceted or
-            boosted in
+            of the [Catalog][google.cloud.retail.v2beta.Catalog] is set
+            to the deprecated 'PRODUCT_LEVEL_ATTRIBUTE_CONFIG' mode. For
+            information about product-level attribute configuration, see
+            `Configuration
+            modes <https://cloud.google.com/retail/docs/attribute-config#config-modes>`__.
+            If true, custom attribute values are indexed, so that they
+            can be filtered, faceted or boosted in
             [SearchService.Search][google.cloud.retail.v2beta.SearchService.Search].
 
             This field is ignored in a
@@ -838,7 +857,11 @@ class PriceInfo(proto.Message):
         original_price (float):
             Price of the product without any discount. If zero, by
             default set to be the
-            [price][google.cloud.retail.v2beta.PriceInfo.price].
+            [price][google.cloud.retail.v2beta.PriceInfo.price]. If set,
+            [original_price][google.cloud.retail.v2beta.PriceInfo.original_price]
+            should be greater than or equal to
+            [price][google.cloud.retail.v2beta.PriceInfo.price],
+            otherwise an INVALID_ARGUMENT error is thrown.
         cost (float):
             The costs associated with the sale of a particular product.
             Used for gross profit reporting.
@@ -1018,9 +1041,14 @@ class UserInfo(proto.Message):
     Attributes:
         user_id (str):
             Highly recommended for logged-in users. Unique identifier
-            for logged-in user, such as a user name.
+            for logged-in user, such as a user name. Don't set for
+            anonymous users.
 
             Always use a hashed value for this ID.
+
+            Don't set the field to the same fixed ID for different
+            users. This mixes the event history of those users together,
+            which results in degraded model quality.
 
             The field must be a UTF-8 encoded string with a length limit
             of 128 characters. Otherwise, an INVALID_ARGUMENT error is
