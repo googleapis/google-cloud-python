@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.12.1](https://github.com/googleapis/python-secret-manager/compare/v2.12.0...v2.12.1) (2022-07-26)
+
+
+### Bug Fixes
+
+* wrong package name google-cloud-secretmanager ([#325](https://github.com/googleapis/python-secret-manager/issues/325)) ([1693fd1](https://github.com/googleapis/python-secret-manager/commit/1693fd1bda20e487995adb84d030c1903491388c))
+
 ## [2.12.0](https://github.com/googleapis/python-secret-manager/compare/v2.11.1...v2.12.0) (2022-07-16)
 
 
