@@ -342,12 +342,12 @@ class SpannerDDLCompiler(DDLCompiler):
             + " "
             + self.dialect.type_compiler.process(column.type, type_expression=column)
         )
-        default = self.get_column_default_string(column)
-        if default is not None:
-            colspec += " DEFAULT " + default
-
         if not column.nullable:
             colspec += " NOT NULL"
+
+        default = self.get_column_default_string(column)
+        if default is not None:
+            colspec += " DEFAULT (" + default + ")"
 
         if column.computed is not None:
             colspec += " " + self.process(column.computed)
