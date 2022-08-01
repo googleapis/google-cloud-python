@@ -232,7 +232,7 @@ class Credentials(
         self._target_principal = target_principal
         self._target_scopes = target_scopes
         self._delegates = delegates
-        self._lifetime = lifetime
+        self._lifetime = lifetime or _DEFAULT_TOKEN_LIFETIME_SECS
         self.token = None
         self.expiry = _helpers.utcnow()
         self._quota_project_id = quota_project_id

@@ -59,6 +59,7 @@ class Credentials(external_account.Credentials):
         token_url,
         credential_source,
         service_account_impersonation_url=None,
+        service_account_impersonation_options={},
         client_id=None,
         client_secret=None,
         quota_project_id=None,
@@ -256,6 +257,10 @@ class Credentials(external_account.Credentials):
             service_account_impersonation_url=info.get(
                 "service_account_impersonation_url"
             ),
+            service_account_impersonation_options=info.get(
+                "service_account_impersonation"
+            )
+            or {},
             client_id=info.get("client_id"),
             client_secret=info.get("client_secret"),
             credential_source=info.get("credential_source"),

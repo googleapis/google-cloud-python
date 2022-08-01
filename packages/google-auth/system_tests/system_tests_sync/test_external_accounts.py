@@ -171,6 +171,34 @@ def test_file_based_external_account(
             },
         )
 
+# This test makes sure that setting a token lifetime works
+# for service account impersonation.
+def test_file_based_external_account_with_configure_token_lifetime(
+    oidc_credentials, service_account_info, dns_access
+):
+    with NamedTemporaryFile() as tmpfile:
+        tmpfile.write(oidc_credentials.token.encode("utf-8"))
+        tmpfile.flush()
+
+        assert get_project_dns(
+            dns_access,
+            {
+                "type": "external_account",
+                "audience": _AUDIENCE_OIDC,
+                "subject_token_type": "urn:ietf:params:oauth:token-type:jwt",
+                "token_url": "https://sts.googleapis.com/v1/token",
+                "service_account_impersonation_url": "https://iamcredentials.googleapis.com/v1/projects/-/serviceAccounts/{}:generateAccessToken".format(
+                    oidc_credentials.service_account_email
+                ),
+                "service_account_impersonation": {
+                    "token_lifetime_seconds": 2800,
+                },
+                "credential_source": {
+                    "file": tmpfile.name,
+                },
+            },
+        )
+
 
 # This test makes sure that setting up an http server to provide credentials
 # works to allow access to Google resources.

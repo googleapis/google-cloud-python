@@ -70,6 +70,7 @@ class Credentials(credentials.Scoped, credentials.CredentialsWithQuotaProject):
         token_url,
         credential_source,
         service_account_impersonation_url=None,
+        service_account_impersonation_options={},
         client_id=None,
         client_secret=None,
         quota_project_id=None,
@@ -108,6 +109,9 @@ class Credentials(credentials.Scoped, credentials.CredentialsWithQuotaProject):
         self._token_url = token_url
         self._credential_source = credential_source
         self._service_account_impersonation_url = service_account_impersonation_url
+        self._service_account_impersonation_options = (
+            service_account_impersonation_options or {}
+        )
         self._client_id = client_id
         self._client_secret = client_secret
         self._quota_project_id = quota_project_id
@@ -158,6 +162,10 @@ class Credentials(credentials.Scoped, credentials.CredentialsWithQuotaProject):
             "subject_token_type": self._subject_token_type,
             "token_url": self._token_url,
             "service_account_impersonation_url": self._service_account_impersonation_url,
+            "service_account_impersonation": copy.deepcopy(
+                self._service_account_impersonation_options
+            )
+            or None,
             "credential_source": copy.deepcopy(self._credential_source),
             "quota_project_id": self._quota_project_id,
             "client_id": self._client_id,
@@ -250,6 +258,7 @@ class Credentials(credentials.Scoped, credentials.CredentialsWithQuotaProject):
             token_url=self._token_url,
             credential_source=self._credential_source,
             service_account_impersonation_url=self._service_account_impersonation_url,
+            service_account_impersonation_options=self._service_account_impersonation_options,
             client_id=self._client_id,
             client_secret=self._client_secret,
             quota_project_id=self._quota_project_id,
@@ -360,6 +369,7 @@ class Credentials(credentials.Scoped, credentials.CredentialsWithQuotaProject):
             token_url=self._token_url,
             credential_source=self._credential_source,
             service_account_impersonation_url=self._service_account_impersonation_url,
+            service_account_impersonation_options=self._service_account_impersonation_options,
             client_id=self._client_id,
             client_secret=self._client_secret,
             quota_project_id=quota_project_id,
@@ -393,6 +403,7 @@ class Credentials(credentials.Scoped, credentials.CredentialsWithQuotaProject):
             token_url=self._token_url,
             credential_source=self._credential_source,
             service_account_impersonation_url=None,
+            service_account_impersonation_options={},
             client_id=self._client_id,
             client_secret=self._client_secret,
             quota_project_id=self._quota_project_id,
@@ -419,6 +430,9 @@ class Credentials(credentials.Scoped, credentials.CredentialsWithQuotaProject):
             target_scopes=scopes,
             quota_project_id=self._quota_project_id,
             iam_endpoint_override=self._service_account_impersonation_url,
+            lifetime=self._service_account_impersonation_options.get(
+                "token_lifetime_seconds"
+            ),
         )
 
     @staticmethod

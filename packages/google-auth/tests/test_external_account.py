@@ -74,6 +74,7 @@ class CredentialsImpl(external_account.Credentials):
         token_url,
         credential_source,
         service_account_impersonation_url=None,
+        service_account_impersonation_options={},
         client_id=None,
         client_secret=None,
         quota_project_id=None,
@@ -87,6 +88,7 @@ class CredentialsImpl(external_account.Credentials):
             token_url=token_url,
             credential_source=credential_source,
             service_account_impersonation_url=service_account_impersonation_url,
+            service_account_impersonation_options=service_account_impersonation_options,
             client_id=client_id,
             client_secret=client_secret,
             quota_project_id=quota_project_id,
@@ -166,12 +168,14 @@ class TestCredentials(object):
         scopes=None,
         default_scopes=None,
         service_account_impersonation_url=None,
+        service_account_impersonation_options={},
     ):
         return CredentialsImpl(
             audience=cls.AUDIENCE,
             subject_token_type=cls.SUBJECT_TOKEN_TYPE,
             token_url=cls.TOKEN_URL,
             service_account_impersonation_url=service_account_impersonation_url,
+            service_account_impersonation_options=service_account_impersonation_options,
             credential_source=cls.CREDENTIAL_SOURCE,
             client_id=client_id,
             client_secret=client_secret,
@@ -493,6 +497,7 @@ class TestCredentials(object):
             scopes=self.SCOPES,
             default_scopes=["default1"],
             service_account_impersonation_url=self.SERVICE_ACCOUNT_IMPERSONATION_URL,
+            service_account_impersonation_options={"token_lifetime_seconds": 2800},
         )
 
         with mock.patch.object(
@@ -508,6 +513,7 @@ class TestCredentials(object):
             token_url=self.TOKEN_URL,
             credential_source=self.CREDENTIAL_SOURCE,
             service_account_impersonation_url=self.SERVICE_ACCOUNT_IMPERSONATION_URL,
+            service_account_impersonation_options={"token_lifetime_seconds": 2800},
             client_id=CLIENT_ID,
             client_secret=CLIENT_SECRET,
             quota_project_id=self.QUOTA_PROJECT_ID,
@@ -550,6 +556,7 @@ class TestCredentials(object):
             scopes=self.SCOPES,
             default_scopes=["default1"],
             service_account_impersonation_url=self.SERVICE_ACCOUNT_IMPERSONATION_URL,
+            service_account_impersonation_options={"token_lifetime_seconds": 2800},
         )
 
         with mock.patch.object(
@@ -565,6 +572,7 @@ class TestCredentials(object):
             token_url=self.TOKEN_URL,
             credential_source=self.CREDENTIAL_SOURCE,
             service_account_impersonation_url=self.SERVICE_ACCOUNT_IMPERSONATION_URL,
+            service_account_impersonation_options={"token_lifetime_seconds": 2800},
             client_id=CLIENT_ID,
             client_secret=CLIENT_SECRET,
             quota_project_id="project-foo",
@@ -614,6 +622,7 @@ class TestCredentials(object):
             client_secret=CLIENT_SECRET,
             quota_project_id=self.QUOTA_PROJECT_ID,
             service_account_impersonation_url=self.SERVICE_ACCOUNT_IMPERSONATION_URL,
+            service_account_impersonation_options={"token_lifetime_seconds": 2800},
         )
 
         assert credentials.info == {
@@ -622,6 +631,7 @@ class TestCredentials(object):
             "subject_token_type": self.SUBJECT_TOKEN_TYPE,
             "token_url": self.TOKEN_URL,
             "service_account_impersonation_url": self.SERVICE_ACCOUNT_IMPERSONATION_URL,
+            "service_account_impersonation": {"token_lifetime_seconds": 2800},
             "credential_source": self.CREDENTIAL_SOURCE.copy(),
             "quota_project_id": self.QUOTA_PROJECT_ID,
             "client_id": CLIENT_ID,
@@ -1732,6 +1742,71 @@ class TestCredentials(object):
         assert project_id == self.PROJECT_ID
         # No additional requests.
         assert len(request.call_args_list) == 2
+
+    def test_refresh_impersonation_with_lifetime(self):
+        # Simulate service account access token expires in 2800 seconds.
+        expire_time = (
+            _helpers.utcnow().replace(microsecond=0) + datetime.timedelta(seconds=2800)
+        ).isoformat("T") + "Z"
+        expected_expiry = datetime.datetime.strptime(expire_time, "%Y-%m-%dT%H:%M:%SZ")
+        # STS token exchange request/response.
+        token_response = self.SUCCESS_RESPONSE.copy()
+        token_headers = {"Content-Type": "application/x-www-form-urlencoded"}
+        token_request_data = {
+            "grant_type": "urn:ietf:params:oauth:grant-type:token-exchange",
+            "audience": self.AUDIENCE,
+            "requested_token_type": "urn:ietf:params:oauth:token-type:access_token",
+            "subject_token": "subject_token_0",
+            "subject_token_type": self.SUBJECT_TOKEN_TYPE,
+            "scope": "https://www.googleapis.com/auth/iam",
+        }
+        # Service account impersonation request/response.
+        impersonation_response = {
+            "accessToken": "SA_ACCESS_TOKEN",
+            "expireTime": expire_time,
+        }
+        impersonation_headers = {
+            "Content-Type": "application/json",
+            "authorization": "Bearer {}".format(token_response["access_token"]),
+        }
+        impersonation_request_data = {
+            "delegates": None,
+            "scope": self.SCOPES,
+            "lifetime": "2800s",
+        }
+        # Initialize mock request to handle token exchange and service account
+        # impersonation request.
+        request = self.make_mock_request(
+            status=http_client.OK,
+            data=token_response,
+            impersonation_status=http_client.OK,
+            impersonation_data=impersonation_response,
+        )
+        # Initialize credentials with service account impersonation.
+        credentials = self.make_credentials(
+            service_account_impersonation_url=self.SERVICE_ACCOUNT_IMPERSONATION_URL,
+            service_account_impersonation_options={"token_lifetime_seconds": 2800},
+            scopes=self.SCOPES,
+        )
+
+        credentials.refresh(request)
+
+        # Only 2 requests should be processed.
+        assert len(request.call_args_list) == 2
+        # Verify token exchange request parameters.
+        self.assert_token_request_kwargs(
+            request.call_args_list[0][1], token_headers, token_request_data
+        )
+        # Verify service account impersonation request parameters.
+        self.assert_impersonation_request_kwargs(
+            request.call_args_list[1][1],
+            impersonation_headers,
+            impersonation_request_data,
+        )
+        assert credentials.valid
+        assert credentials.expiry == expected_expiry
+        assert not credentials.expired
+        assert credentials.token == impersonation_response["accessToken"]
 
     def test_get_project_id_cloud_resource_manager_error(self):
         # Simulate resource doesn't have sufficient permissions to access
