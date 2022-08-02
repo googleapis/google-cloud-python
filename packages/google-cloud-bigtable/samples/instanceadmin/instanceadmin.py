@@ -159,7 +159,7 @@ def add_cluster(project_id, instance_id, cluster_id):
         else:
             operation = cluster.create()
             # Ensure the operation completes.
-            operation.result(timeout=60)
+            operation.result(timeout=120)
             print("\nCluster created: {}".format(cluster_id))
         # [END bigtable_create_cluster]
 
