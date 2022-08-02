@@ -32,6 +32,7 @@ __protobuf__ = proto.module(
         "AwsProperties",
         "AwsCrossAccountRole",
         "AwsAccessRole",
+        "AzureProperties",
         "CloudResourceProperties",
     },
 )
@@ -212,6 +213,10 @@ class Connection(proto.Message):
             Amazon Web Services (AWS) properties.
 
             This field is a member of `oneof`_ ``properties``.
+        azure (google.cloud.bigquery_connection_v1.types.AzureProperties):
+            Azure properties.
+
+            This field is a member of `oneof`_ ``properties``.
         cloud_spanner (google.cloud.bigquery_connection_v1.types.CloudSpannerProperties):
             Cloud Spanner properties.
 
@@ -254,6 +259,12 @@ class Connection(proto.Message):
         number=8,
         oneof="properties",
         message="AwsProperties",
+    )
+    azure = proto.Field(
+        proto.MESSAGE,
+        number=11,
+        oneof="properties",
+        message="AzureProperties",
     )
     cloud_spanner = proto.Field(
         proto.MESSAGE,
@@ -390,7 +401,7 @@ class AwsProperties(proto.Message):
         cross_account_role (google.cloud.bigquery_connection_v1.types.AwsCrossAccountRole):
             Authentication using Google owned AWS IAM
             user's access key to assume into customer's AWS
-            IAM Role.
+            IAM Role. Deprecated, do not use.
 
             This field is a member of `oneof`_ ``authentication_method``.
         access_role (google.cloud.bigquery_connection_v1.types.AwsAccessRole):
@@ -469,6 +480,66 @@ class AwsAccessRole(proto.Message):
     identity = proto.Field(
         proto.STRING,
         number=2,
+    )
+
+
+class AzureProperties(proto.Message):
+    r"""Container for connection properties specific to Azure.
+
+    Attributes:
+        application (str):
+            Output only. The name of the Azure Active
+            Directory Application.
+        client_id (str):
+            Output only. The client id of the Azure
+            Active Directory Application.
+        object_id (str):
+            Output only. The object id of the Azure
+            Active Directory Application.
+        customer_tenant_id (str):
+            The id of customer's directory that host the
+            data.
+        redirect_uri (str):
+            The URL user will be redirected to after
+            granting consent during connection setup.
+        federated_application_client_id (str):
+            The client id of the user's Azure Active
+            Directory Application used for a federated
+            connection.
+        identity (str):
+            Output only. A unique Google-owned and
+            Google-generated identity for the Connection.
+            This identity will be used to access the user's
+            Azure Active Directory Application.
+    """
+
+    application = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    client_id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    object_id = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    customer_tenant_id = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    redirect_uri = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    federated_application_client_id = proto.Field(
+        proto.STRING,
+        number=6,
+    )
+    identity = proto.Field(
+        proto.STRING,
+        number=7,
     )
 
 
