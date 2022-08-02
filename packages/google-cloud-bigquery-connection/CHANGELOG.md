@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.7.0](https://github.com/googleapis/python-bigquery-connection/compare/v1.6.0...v1.7.0) (2022-08-02)
+
+
+### Features
+
+* Add service_account_id output field to CloudSQL properties ([#237](https://github.com/googleapis/python-bigquery-connection/issues/237)) ([adc73a6](https://github.com/googleapis/python-bigquery-connection/commit/adc73a6d8ce3f35de56c46a140e940bc63dcd23b))
+
+
+### Documentation
+
+* deprecate the AwsCrossAccountRole property ([#240](https://github.com/googleapis/python-bigquery-connection/issues/240)) ([ad17197](https://github.com/googleapis/python-bigquery-connection/commit/ad17197e49d34ef933876d2c1926d2ee4ee206f8))
+
 ## [1.6.0](https://github.com/googleapis/python-bigquery-connection/compare/v1.5.1...v1.6.0) (2022-07-16)
 
 
