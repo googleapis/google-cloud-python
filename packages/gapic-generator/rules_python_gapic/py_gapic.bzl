@@ -42,6 +42,7 @@ def py_gapic_library(
         opt_args = None,
         metadata = True,
         service_yaml = None,
+        transport = None,
         deps = [],
         **kwargs):
     srcjar_target_name = "%s_srcjar" % name
@@ -58,6 +59,9 @@ def py_gapic_library(
         file_args[grpc_service_config] = "retry-config"
     if service_yaml:
         file_args[service_yaml] = "service-yaml"
+
+    if transport:
+        opt_args = opt_args + ["transport=%s" % transport]
 
     proto_custom_library(
         name = srcjar_target_name,
