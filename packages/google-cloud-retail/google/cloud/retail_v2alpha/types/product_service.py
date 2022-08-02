@@ -49,7 +49,9 @@ __protobuf__ = proto.module(
 
 
 class CreateProductRequest(proto.Message):
-    r"""Request message for [CreateProduct][] method.
+    r"""Request message for
+    [ProductService.CreateProduct][google.cloud.retail.v2alpha.ProductService.CreateProduct]
+    method.
 
     Attributes:
         parent (str):
@@ -96,7 +98,9 @@ class CreateProductRequest(proto.Message):
 
 
 class GetProductRequest(proto.Message):
-    r"""Request message for [GetProduct][] method.
+    r"""Request message for
+    [ProductService.GetProduct][google.cloud.retail.v2alpha.ProductService.GetProduct]
+    method.
 
     Attributes:
         name (str):
@@ -121,7 +125,9 @@ class GetProductRequest(proto.Message):
 
 
 class UpdateProductRequest(proto.Message):
-    r"""Request message for [UpdateProduct][] method.
+    r"""Request message for
+    [ProductService.UpdateProduct][google.cloud.retail.v2alpha.ProductService.UpdateProduct]
+    method.
 
     Attributes:
         product (google.cloud.retail_v2alpha.types.Product):
@@ -145,6 +151,11 @@ class UpdateProductRequest(proto.Message):
 
             If an unsupported or unknown field is provided, an
             INVALID_ARGUMENT error is returned.
+
+            The attribute key can be updated by setting the mask path as
+            "attributes.${key_name}". If a key name is present in the
+            mask but not in the patching product from the request, this
+            key will be deleted after the update.
         allow_missing (bool):
             If set to true, and the
             [Product][google.cloud.retail.v2alpha.Product] is not found,
@@ -169,7 +180,9 @@ class UpdateProductRequest(proto.Message):
 
 
 class DeleteProductRequest(proto.Message):
-    r"""Request message for [DeleteProduct][] method.
+    r"""Request message for
+    [ProductService.DeleteProduct][google.cloud.retail.v2alpha.ProductService.DeleteProduct]
+    method.
 
     Attributes:
         name (str):
@@ -379,7 +392,9 @@ class ListProductsResponse(proto.Message):
 
 
 class SetInventoryRequest(proto.Message):
-    r"""Request message for [SetInventory][] method.
+    r"""Request message for
+    [ProductService.SetInventory][google.cloud.retail.v2alpha.ProductService.SetInventory]
+    method.
 
     Attributes:
         inventory (google.cloud.retail_v2alpha.types.Product):
@@ -393,8 +408,9 @@ class SetInventoryRequest(proto.Message):
                The updated inventory fields must be specified in
                [SetInventoryRequest.set_mask][google.cloud.retail.v2alpha.SetInventoryRequest.set_mask].
 
-            If [SetInventoryRequest.inventory.name][] is empty or
-            invalid, an INVALID_ARGUMENT error is returned.
+            If
+            [SetInventoryRequest.inventory.name][google.cloud.retail.v2alpha.Product.name]
+            is empty or invalid, an INVALID_ARGUMENT error is returned.
 
             If the caller does not have permission to update the
             [Product][google.cloud.retail.v2alpha.Product] named in
@@ -420,7 +436,7 @@ class SetInventoryRequest(proto.Message):
                [SetInventoryRequest.set_mask][google.cloud.retail.v2alpha.SetInventoryRequest.set_mask]
             -  Specifies only the desired fulfillment types and
                corresponding place IDs to update in
-               [SetInventoryRequest.inventory.fulfillment_info][]
+               [SetInventoryRequest.inventory.fulfillment_info][google.cloud.retail.v2alpha.Product.fulfillment_info]
 
             The caller can clear all place IDs from a subset of
             fulfillment types in the following ways:
@@ -428,10 +444,10 @@ class SetInventoryRequest(proto.Message):
             -  Adds "fulfillment_info" in
                [SetInventoryRequest.set_mask][google.cloud.retail.v2alpha.SetInventoryRequest.set_mask]
             -  Specifies only the desired fulfillment types to clear in
-               [SetInventoryRequest.inventory.fulfillment_info][]
+               [SetInventoryRequest.inventory.fulfillment_info][google.cloud.retail.v2alpha.Product.fulfillment_info]
             -  Checks that only the desired fulfillment info types have
                empty
-               [SetInventoryRequest.inventory.fulfillment_info.place_ids][]
+               [SetInventoryRequest.inventory.fulfillment_info.place_ids][google.cloud.retail.v2alpha.FulfillmentInfo.place_ids]
 
             The last update time is recorded for the following inventory
             fields:
@@ -442,8 +458,9 @@ class SetInventoryRequest(proto.Message):
             -  [Product.fulfillment_info][google.cloud.retail.v2alpha.Product.fulfillment_info]
 
             If a full overwrite of inventory information while ignoring
-            timestamps is needed, [UpdateProduct][] should be invoked
-            instead.
+            timestamps is needed,
+            [ProductService.UpdateProduct][google.cloud.retail.v2alpha.ProductService.UpdateProduct]
+            should be invoked instead.
         set_mask (google.protobuf.field_mask_pb2.FieldMask):
             Indicates which inventory fields in the provided
             [Product][google.cloud.retail.v2alpha.Product] to update.
@@ -493,21 +510,26 @@ class SetInventoryRequest(proto.Message):
 class SetInventoryMetadata(proto.Message):
     r"""Metadata related to the progress of the SetInventory operation.
     Currently empty because there is no meaningful metadata populated
-    from the [SetInventory][] method.
+    from the
+    [ProductService.SetInventory][google.cloud.retail.v2alpha.ProductService.SetInventory]
+    method.
 
     """
 
 
 class SetInventoryResponse(proto.Message):
     r"""Response of the SetInventoryRequest. Currently empty because there
-    is no meaningful response populated from the [SetInventory][]
+    is no meaningful response populated from the
+    [ProductService.SetInventory][google.cloud.retail.v2alpha.ProductService.SetInventory]
     method.
 
     """
 
 
 class AddFulfillmentPlacesRequest(proto.Message):
-    r"""Request message for [AddFulfillmentPlaces][] method.
+    r"""Request message for
+    [ProductService.AddFulfillmentPlaces][google.cloud.retail.v2alpha.ProductService.AddFulfillmentPlaces]
+    method.
 
     Attributes:
         product (str):
@@ -540,7 +562,7 @@ class AddFulfillmentPlacesRequest(proto.Message):
             an INVALID_ARGUMENT error is returned.
 
             This field directly corresponds to
-            [Product.fulfillment_info.type][].
+            [Product.fulfillment_info.type][google.cloud.retail.v2alpha.FulfillmentInfo.type].
         place_ids (Sequence[str]):
             Required. The IDs for this
             [type][google.cloud.retail.v2alpha.AddFulfillmentPlacesRequest.type],
@@ -599,7 +621,9 @@ class AddFulfillmentPlacesRequest(proto.Message):
 class AddFulfillmentPlacesMetadata(proto.Message):
     r"""Metadata related to the progress of the AddFulfillmentPlaces
     operation. Currently empty because there is no meaningful metadata
-    populated from the [AddFulfillmentPlaces][] method.
+    populated from the
+    [ProductService.AddFulfillmentPlaces][google.cloud.retail.v2alpha.ProductService.AddFulfillmentPlaces]
+    method.
 
     """
 
@@ -607,13 +631,16 @@ class AddFulfillmentPlacesMetadata(proto.Message):
 class AddFulfillmentPlacesResponse(proto.Message):
     r"""Response of the AddFulfillmentPlacesRequest. Currently empty because
     there is no meaningful response populated from the
-    [AddFulfillmentPlaces][] method.
+    [ProductService.AddFulfillmentPlaces][google.cloud.retail.v2alpha.ProductService.AddFulfillmentPlaces]
+    method.
 
     """
 
 
 class AddLocalInventoriesRequest(proto.Message):
-    r"""Request message for [AddLocalInventories][] method.
+    r"""Request message for
+    [ProductService.AddLocalInventories][google.cloud.retail.v2alpha.ProductService.AddLocalInventories]
+    method.
 
     Attributes:
         product (str):
@@ -692,21 +719,28 @@ class AddLocalInventoriesRequest(proto.Message):
 class AddLocalInventoriesMetadata(proto.Message):
     r"""Metadata related to the progress of the AddLocalInventories
     operation. Currently empty because there is no meaningful metadata
-    populated from the [AddLocalInventories][] method.
+    populated from the
+    [ProductService.AddLocalInventories][google.cloud.retail.v2alpha.ProductService.AddLocalInventories]
+    method.
 
     """
 
 
 class AddLocalInventoriesResponse(proto.Message):
-    r"""Response of the [AddLocalInventories][] API. Currently empty because
-    there is no meaningful response populated from the
-    [AddLocalInventories][] method.
+    r"""Response of the
+    [ProductService.AddLocalInventories][google.cloud.retail.v2alpha.ProductService.AddLocalInventories]
+    API. Currently empty because there is no meaningful response
+    populated from the
+    [ProductService.AddLocalInventories][google.cloud.retail.v2alpha.ProductService.AddLocalInventories]
+    method.
 
     """
 
 
 class RemoveLocalInventoriesRequest(proto.Message):
-    r"""Request message for [RemoveLocalInventories][] method.
+    r"""Request message for
+    [ProductService.RemoveLocalInventories][google.cloud.retail.v2alpha.ProductService.RemoveLocalInventories]
+    method.
 
     Attributes:
         product (str):
@@ -759,21 +793,28 @@ class RemoveLocalInventoriesRequest(proto.Message):
 class RemoveLocalInventoriesMetadata(proto.Message):
     r"""Metadata related to the progress of the RemoveLocalInventories
     operation. Currently empty because there is no meaningful metadata
-    populated from the [RemoveLocalInventories][] method.
+    populated from the
+    [ProductService.RemoveLocalInventories][google.cloud.retail.v2alpha.ProductService.RemoveLocalInventories]
+    method.
 
     """
 
 
 class RemoveLocalInventoriesResponse(proto.Message):
-    r"""Response of the [RemoveLocalInventories][] API. Currently empty
-    because there is no meaningful response populated from the
-    [RemoveLocalInventories][] method.
+    r"""Response of the
+    [ProductService.RemoveLocalInventories][google.cloud.retail.v2alpha.ProductService.RemoveLocalInventories]
+    API. Currently empty because there is no meaningful response
+    populated from the
+    [ProductService.RemoveLocalInventories][google.cloud.retail.v2alpha.ProductService.RemoveLocalInventories]
+    method.
 
     """
 
 
 class RemoveFulfillmentPlacesRequest(proto.Message):
-    r"""Request message for [RemoveFulfillmentPlaces][] method.
+    r"""Request message for
+    [ProductService.RemoveFulfillmentPlaces][google.cloud.retail.v2alpha.ProductService.RemoveFulfillmentPlaces]
+    method.
 
     Attributes:
         product (str):
@@ -806,7 +847,7 @@ class RemoveFulfillmentPlacesRequest(proto.Message):
             an INVALID_ARGUMENT error is returned.
 
             This field directly corresponds to
-            [Product.fulfillment_info.type][].
+            [Product.fulfillment_info.type][google.cloud.retail.v2alpha.FulfillmentInfo.type].
         place_ids (Sequence[str]):
             Required. The IDs for this
             [type][google.cloud.retail.v2alpha.RemoveFulfillmentPlacesRequest.type],
@@ -860,7 +901,9 @@ class RemoveFulfillmentPlacesRequest(proto.Message):
 class RemoveFulfillmentPlacesMetadata(proto.Message):
     r"""Metadata related to the progress of the RemoveFulfillmentPlaces
     operation. Currently empty because there is no meaningful metadata
-    populated from the [RemoveFulfillmentPlaces][] method.
+    populated from the
+    [ProductService.RemoveFulfillmentPlaces][google.cloud.retail.v2alpha.ProductService.RemoveFulfillmentPlaces]
+    method.
 
     """
 
@@ -868,7 +911,8 @@ class RemoveFulfillmentPlacesMetadata(proto.Message):
 class RemoveFulfillmentPlacesResponse(proto.Message):
     r"""Response of the RemoveFulfillmentPlacesRequest. Currently empty
     because there is no meaningful response populated from the
-    [RemoveFulfillmentPlaces][] method.
+    [ProductService.RemoveFulfillmentPlaces][google.cloud.retail.v2alpha.ProductService.RemoveFulfillmentPlaces]
+    method.
 
     """
 

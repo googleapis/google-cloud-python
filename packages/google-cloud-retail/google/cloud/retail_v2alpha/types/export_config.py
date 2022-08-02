@@ -24,6 +24,8 @@ __protobuf__ = proto.module(
         "ExportMetadata",
         "ExportProductsResponse",
         "ExportUserEventsResponse",
+        "OutputResult",
+        "BigQueryOutputResult",
     },
 )
 
@@ -86,8 +88,10 @@ class ExportProductsResponse(proto.Message):
             A sample of errors encountered while
             processing the request.
         errors_config (google.cloud.retail_v2alpha.types.ExportErrorsConfig):
-            Echoes the destination for the complete
-            errors in the request if set.
+            This field is never set.
+        output_result (google.cloud.retail_v2alpha.types.OutputResult):
+            Output result indicating where the data were
+            exported to.
     """
 
     error_samples = proto.RepeatedField(
@@ -99,6 +103,11 @@ class ExportProductsResponse(proto.Message):
         proto.MESSAGE,
         number=2,
         message="ExportErrorsConfig",
+    )
+    output_result = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="OutputResult",
     )
 
 
@@ -113,8 +122,10 @@ class ExportUserEventsResponse(proto.Message):
             A sample of errors encountered while
             processing the request.
         errors_config (google.cloud.retail_v2alpha.types.ExportErrorsConfig):
-            Echoes the destination for the complete
-            errors if this field was set in the request.
+            This field is never set.
+        output_result (google.cloud.retail_v2alpha.types.OutputResult):
+            Output result indicating where the data were
+            exported to.
     """
 
     error_samples = proto.RepeatedField(
@@ -126,6 +137,46 @@ class ExportUserEventsResponse(proto.Message):
         proto.MESSAGE,
         number=2,
         message="ExportErrorsConfig",
+    )
+    output_result = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="OutputResult",
+    )
+
+
+class OutputResult(proto.Message):
+    r"""Output result.
+
+    Attributes:
+        bigquery_result (Sequence[google.cloud.retail_v2alpha.types.BigQueryOutputResult]):
+            Export result in BigQuery.
+    """
+
+    bigquery_result = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="BigQueryOutputResult",
+    )
+
+
+class BigQueryOutputResult(proto.Message):
+    r"""A BigQuery output result.
+
+    Attributes:
+        dataset_id (str):
+            The ID of a BigQuery Dataset.
+        table_id (str):
+            The ID of a BigQuery Table.
+    """
+
+    dataset_id = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    table_id = proto.Field(
+        proto.STRING,
+        number=2,
     )
 
 

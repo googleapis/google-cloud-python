@@ -34,7 +34,7 @@ class ServingConfig(proto.Message):
     Attributes:
         name (str):
             Immutable. Fully qualified name
-            projects/\ */locations/global/catalogs/*/servingConfig/\*
+            ``projects/*/locations/global/catalogs/*/servingConfig/*``
         display_name (str):
             Required. The human readable serving config display name.
             Used in Retail UI.
@@ -103,11 +103,12 @@ class ServingConfig(proto.Message):
 
             Notice that if both
             [ServingConfig.boost_control_ids][google.cloud.retail.v2alpha.ServingConfig.boost_control_ids]
-            and [SearchRequest.boost_spec] are set, the boost conditions
-            from both places are evaluated. If a search request matches
-            multiple boost conditions, the final boost score is equal to
-            the sum of the boost scores from all matched boost
-            conditions.
+            and
+            [SearchRequest.boost_spec][google.cloud.retail.v2alpha.SearchRequest.boost_spec]
+            are set, the boost conditions from both places are
+            evaluated. If a search request matches multiple boost
+            conditions, the final boost score is equal to the sum of the
+            boost scores from all matched boost conditions.
 
             Can only be set if
             [solution_types][google.cloud.retail.v2alpha.ServingConfig.solution_types]

@@ -51,7 +51,7 @@ class Control(proto.Message):
             This field is a member of `oneof`_ ``control``.
         name (str):
             Immutable. Fully qualified name
-            projects/\ */locations/global/catalogs/*/controls/\*
+            ``projects/*/locations/global/catalogs/*/controls/*``
         display_name (str):
             Required. The human readable control display name. Used in
             Retail UI.

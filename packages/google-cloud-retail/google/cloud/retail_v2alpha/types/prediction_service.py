@@ -33,22 +33,38 @@ class PredictRequest(proto.Message):
     Attributes:
         placement (str):
             Required. Full resource name of the format:
-            {name=projects/*/locations/global/catalogs/default_catalog/placements/*}
-            The ID of the Recommendations AI placement. Before you can
-            request predictions from your model, you must create at
-            least one placement for it. For more information, see
-            `Managing
-            placements <https://cloud.google.com/retail/recommendations-ai/docs/manage-placements>`__.
+            ``{placement=projects/*/locations/global/catalogs/default_catalog/servingConfigs/*}``
+            or
+            ``{placement=projects/*/locations/global/catalogs/default_catalog/placements/*}``.
+            We recommend using the ``servingConfigs`` resource.
+            ``placements`` is a legacy resource. The ID of the
+            Recommendations AI serving config or placement. Before you
+            can request predictions from your model, you must create at
+            least one serving config or placement for it. For more
+            information, see [Managing serving configurations]
+            (https://cloud.google.com/retail/docs/manage-configs).
 
-            The full list of available placements can be seen at
-            https://console.cloud.google.com/recommendation/catalogs/default_catalog/placements
+            The full list of available serving configs can be seen at
+            https://console.cloud.google.com/ai/retail/catalogs/default_catalog/configs
         user_event (google.cloud.retail_v2alpha.types.UserEvent):
-            Required. Context about the user, what they
-            are looking at and what action they took to
-            trigger the predict request. Note that this user
-            event detail won't be ingested to userEvent
-            logs. Thus, a separate userEvent write request
-            is required for event logging.
+            Required. Context about the user, what they are looking at
+            and what action they took to trigger the predict request.
+            Note that this user event detail won't be ingested to
+            userEvent logs. Thus, a separate userEvent write request is
+            required for event logging.
+
+            Don't set
+            [UserEvent.visitor_id][google.cloud.retail.v2alpha.UserEvent.visitor_id]
+            or
+            [UserInfo.user_id][google.cloud.retail.v2alpha.UserInfo.user_id]
+            to the same fixed ID for different users. If you are trying
+            to receive non-personalized recommendations (not
+            recommended; this can negatively impact model performance),
+            instead set
+            [UserEvent.visitor_id][google.cloud.retail.v2alpha.UserEvent.visitor_id]
+            to a random unique ID and leave
+            [UserInfo.user_id][google.cloud.retail.v2alpha.UserInfo.user_id]
+            unset.
         page_size (int):
             Maximum number of results to return per page.
             Set this property to the number of prediction
@@ -56,7 +72,8 @@ class PredictRequest(proto.Message):
             a reasonable default. The maximum allowed value
             is 100. Values above 100 will be coerced to 100.
         page_token (str):
-            The previous PredictResponse.next_page_token.
+            This field is not used for now; leave it
+            unset.
         filter (str):
             Filter for restricting prediction results with a length
             limit of 5,000 characters. Accepts values for tags and the
@@ -91,6 +108,15 @@ class PredictRequest(proto.Message):
             receive empty results instead. Note that the API will never
             return items with storageStatus of "EXPIRED" or "DELETED"
             regardless of filter choices.
+
+            If ``filterSyntaxV2`` is set to true under the ``params``
+            field, then attribute-based expressions are expected instead
+            of the above described tag-based syntax. Examples:
+
+            -  (colors: ANY("Red", "Blue")) AND NOT (categories:
+               ANY("Phones"))
+            -  (availability: ANY("IN_STOCK")) AND (colors: ANY("Red")
+               OR categories: ANY("Phones"))
         validate_only (bool):
             Use validate only mode for this prediction
             query. If set to true, a dummy model will be
@@ -126,6 +152,9 @@ class PredictRequest(proto.Message):
                'low-diversity', 'medium-diversity', 'high-diversity',
                'auto-diversity'}. This gives request-level control and
                adjusts prediction results based on product category.
+            -  ``filterSyntaxV2``: Boolean. False by default. If set to
+               true, the ``filter`` field is interpreteted according to
+               the new, attribute-based syntax.
         labels (Mapping[str, str]):
             The labels applied to a resource must meet the following
             requirements:
@@ -134,8 +163,8 @@ class PredictRequest(proto.Message):
                of 64.
             -  Each label must be a key-value pair.
             -  Keys have a minimum length of 1 character and a maximum
-               length of 63 characters, and cannot be empty. Values can
-               be empty, and have a maximum length of 63 characters.
+               length of 63 characters and cannot be empty. Values can
+               be empty and have a maximum length of 63 characters.
             -  Keys and values can contain only lowercase letters,
                numeric characters, underscores, and dashes. All
                characters must use UTF-8 encoding, and international
@@ -221,11 +250,11 @@ class PredictResponse(proto.Message):
 
                 Possible values:
 
-                -  ``product``: JSON representation of the product. Will be
-                   set if ``returnProduct`` is set to true in
+                -  ``product``: JSON representation of the product. Is set
+                   if ``returnProduct`` is set to true in
                    ``PredictRequest.params``.
-                -  ``score``: Prediction score in double value. Will be set
-                   if ``returnScore`` is set to true in
+                -  ``score``: Prediction score in double value. Is set if
+                   ``returnScore`` is set to true in
                    ``PredictRequest.params``.
         """
 

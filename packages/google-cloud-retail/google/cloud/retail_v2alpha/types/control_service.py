@@ -37,7 +37,7 @@ class CreateControlRequest(proto.Message):
     Attributes:
         parent (str):
             Required. Full resource name of parent catalog. Format:
-            projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}
+            ``projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}``
         control (google.cloud.retail_v2alpha.types.Control):
             Required. The Control to create.
         control_id (str):
@@ -98,7 +98,7 @@ class DeleteControlRequest(proto.Message):
         name (str):
             Required. The resource name of the Control to delete.
             Format:
-            projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}/controls/{control_id}
+            ``projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}/controls/{control_id}``
     """
 
     name = proto.Field(
@@ -114,7 +114,7 @@ class GetControlRequest(proto.Message):
         name (str):
             Required. The resource name of the Control to delete.
             Format:
-            projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}/controls/{control_id}
+            ``projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}/controls/{control_id}``
     """
 
     name = proto.Field(
@@ -129,7 +129,7 @@ class ListControlsRequest(proto.Message):
     Attributes:
         parent (str):
             Required. The catalog resource name. Format:
-            projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}
+            ``projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}``
         page_size (int):
             Optional. Maximum number of results to
             return. If unspecified, defaults to 50. Max

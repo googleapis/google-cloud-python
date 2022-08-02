@@ -39,7 +39,7 @@ class CreateServingConfigRequest(proto.Message):
     Attributes:
         parent (str):
             Required. Full resource name of parent. Format:
-            projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}
+            ``projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}``
         serving_config (google.cloud.retail_v2alpha.types.ServingConfig):
             Required. The ServingConfig to create.
         serving_config_id (str):

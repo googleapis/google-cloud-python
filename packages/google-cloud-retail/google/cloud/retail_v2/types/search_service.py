@@ -36,8 +36,10 @@ class SearchRequest(proto.Message):
 
     Attributes:
         placement (str):
-            Required. The resource name of the search engine placement,
-            such as
+            Required. The resource name of the Retail Search serving
+            config, such as
+            ``projects/*/locations/global/catalogs/default_catalog/servingConfigs/default_serving_config``
+            or the name of the legacy placement resource, such as
             ``projects/*/locations/global/catalogs/default_catalog/placements/default_search``.
             This field is used to identify the serving configuration
             name and the set of models that will be used to make the
@@ -480,17 +482,24 @@ class SearchRequest(proto.Message):
                     "categories" facet will give only "Women > Shoe"
                     and "Men > Shoe". Only supported on textual
                     fields. Maximum is 10.
+                case_insensitive (bool):
+                    True to make facet keys case insensitive when
+                    getting faceting values with prefixes or
+                    contains; false otherwise.
                 order_by (str):
-                    The order in which [Facet.values][] are returned.
+                    The order in which
+                    [SearchResponse.Facet.values][google.cloud.retail.v2.SearchResponse.Facet.values]
+                    are returned.
 
                     Allowed values are:
 
                     -  "count desc", which means order by
-                       [Facet.FacetValue.count][] descending.
+                       [SearchResponse.Facet.values.count][google.cloud.retail.v2.SearchResponse.Facet.FacetValue.count]
+                       descending.
 
                     -  "value desc", which means order by
-                       [Facet.FacetValue.value][] descending. Only applies to
-                       textual facets.
+                       [SearchResponse.Facet.values.value][google.cloud.retail.v2.SearchResponse.Facet.FacetValue.value]
+                       descending. Only applies to textual facets.
 
                     If not set, textual values are sorted in `natural
                     order <https://en.wikipedia.org/wiki/Natural_sort_order>`__;
@@ -510,9 +519,11 @@ class SearchRequest(proto.Message):
                     [FacetKey.key][google.cloud.retail.v2.SearchRequest.FacetSpec.FacetKey.key]
                     when query is specified.
 
-                    In the response, [FacetValue.value][] will be always "1" and
-                    [FacetValue.count][] will be the number of results that
-                    matches the query.
+                    In the response,
+                    [SearchResponse.Facet.values.value][google.cloud.retail.v2.SearchResponse.Facet.FacetValue.value]
+                    will be always "1" and
+                    [SearchResponse.Facet.values.count][google.cloud.retail.v2.SearchResponse.Facet.FacetValue.count]
+                    will be the number of results that match the query.
 
                     For example, you can set a customized facet for
                     "shipToStore", where
@@ -522,6 +533,10 @@ class SearchRequest(proto.Message):
                     is "availability: ANY("IN_STOCK") AND shipToStore:
                     ANY("123")". Then the facet will count the products that are
                     both in stock and ship to store "123".
+                return_min_max (bool):
+                    Returns the min and max value for each
+                    numerical facet intervals. Ignored for textual
+                    facets.
             """
 
             key = proto.Field(
@@ -545,6 +560,10 @@ class SearchRequest(proto.Message):
                 proto.STRING,
                 number=9,
             )
+            case_insensitive = proto.Field(
+                proto.BOOL,
+                number=10,
+            )
             order_by = proto.Field(
                 proto.STRING,
                 number=4,
@@ -552,6 +571,10 @@ class SearchRequest(proto.Message):
             query = proto.Field(
                 proto.STRING,
                 number=5,
+            )
+            return_min_max = proto.Field(
+                proto.BOOL,
+                number=11,
             )
 
         facet_key = proto.Field(
@@ -871,8 +894,8 @@ class SearchResponse(proto.Message):
         corrected_query (str):
             Contains the spell corrected query, if found. If the spell
             correction type is AUTOMATIC, then the search results are
-            based on corrected_query. Otherwise the original query will
-            be used for search.
+            based on corrected_query. Otherwise the original query is
+            used for search.
         attribution_token (str):
             A unique search token. This should be included in the
             [UserEvent][google.cloud.retail.v2.UserEvent] logs resulting
@@ -1045,6 +1068,18 @@ class SearchResponse(proto.Message):
                     This field is a member of `oneof`_ ``facet_value``.
                 count (int):
                     Number of items that have this facet value.
+                min_value (float):
+                    The minimum value in the
+                    [FacetValue.interval][google.cloud.retail.v2.SearchResponse.Facet.FacetValue.interval].
+                    Only supported on numerical facets and returned if
+                    [SearchRequest.FacetSpec.FacetKey.return_min_max][google.cloud.retail.v2.SearchRequest.FacetSpec.FacetKey.return_min_max]
+                    is true.
+                max_value (float):
+                    The maximum value in the
+                    [FacetValue.interval][google.cloud.retail.v2.SearchResponse.Facet.FacetValue.interval].
+                    Only supported on numerical facets and returned if
+                    [SearchRequest.FacetSpec.FacetKey.return_min_max][google.cloud.retail.v2.SearchRequest.FacetSpec.FacetKey.return_min_max]
+                    is true.
             """
 
             value = proto.Field(
@@ -1061,6 +1096,14 @@ class SearchResponse(proto.Message):
             count = proto.Field(
                 proto.INT64,
                 number=3,
+            )
+            min_value = proto.Field(
+                proto.DOUBLE,
+                number=5,
+            )
+            max_value = proto.Field(
+                proto.DOUBLE,
+                number=6,
             )
 
         key = proto.Field(

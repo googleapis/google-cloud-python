@@ -49,7 +49,8 @@ class ProductLevelConfig(proto.Message):
                will default to
                [Product.Type.PRIMARY][google.cloud.retail.v2alpha.Product.Type.PRIMARY]
                if unset.
-            -  ``variant``: You can only ingest
+            -  ``variant`` (incompatible with Retail Search): You can
+               only ingest
                [Product.Type.VARIANT][google.cloud.retail.v2alpha.Product.Type.VARIANT]
                [Product][google.cloud.retail.v2alpha.Product]s. This
                means
@@ -63,8 +64,8 @@ class ProductLevelConfig(proto.Message):
             [merchant_center_product_id_field][google.cloud.retail.v2alpha.ProductLevelConfig.merchant_center_product_id_field]
             is ``itemGroupId``, an INVALID_ARGUMENT error is returned.
 
-            See `Using product
-            levels <https://cloud.google.com/retail/recommendations-ai/docs/catalog#product-levels>`__
+            See `Product
+            levels <https://cloud.google.com/retail/docs/catalog#product-levels>`__
             for more details.
         merchant_center_product_id_field (str):
             Which field of `Merchant Center
@@ -87,8 +88,8 @@ class ProductLevelConfig(proto.Message):
             [ingestion_product_type][google.cloud.retail.v2alpha.ProductLevelConfig.ingestion_product_type]
             is ``variant``, an INVALID_ARGUMENT error is returned.
 
-            See `Using product
-            levels <https://cloud.google.com/retail/recommendations-ai/docs/catalog#product-levels>`__
+            See `Product
+            levels <https://cloud.google.com/retail/docs/catalog#product-levels>`__
             for more details.
     """
 
@@ -111,7 +112,11 @@ class CatalogAttribute(proto.Message):
         key (str):
             Required. Attribute name. For example: ``color``,
             ``brands``, ``attributes.custom_attribute``, such as
-            ``attributes.xyz``.
+            ``attributes.xyz``. To be indexable, the attribute name can
+            contain only alpha-numeric characters and underscores. For
+            example, an attribute named ``attributes.abc_xyz`` can be
+            indexed, but an attribute named ``attributes.abc-xyz``
+            cannot be indexed.
         in_use (bool):
             Output only. Indicates whether this attribute has been used
             by any products. ``True`` if at least one
@@ -121,18 +126,22 @@ class CatalogAttribute(proto.Message):
             Otherwise, this field is ``False``.
 
             [CatalogAttribute][google.cloud.retail.v2alpha.CatalogAttribute]
-            can be pre-loaded by using [AddCatalogAttribute][],
-            [ImportCatalogAttributes][], or [UpdateAttributesConfig][]
+            can be pre-loaded by using
+            [CatalogService.AddCatalogAttribute][google.cloud.retail.v2alpha.CatalogService.AddCatalogAttribute],
+            [CatalogService.ImportCatalogAttributes][google.cloud.retail.v2alpha.CatalogService.ImportCatalogAttributes],
+            or
+            [CatalogService.UpdateAttributesConfig][google.cloud.retail.v2alpha.CatalogService.UpdateAttributesConfig]
             APIs. This field is ``False`` for pre-loaded
             [CatalogAttribute][google.cloud.retail.v2alpha.CatalogAttribute]s.
 
-            Only
+            Only pre-loaded
             [CatalogAttribute][google.cloud.retail.v2alpha.CatalogAttribute]s
-            that are not in use by products can be deleted.
+            that are neither in use by products nor predefined can be
+            deleted.
             [CatalogAttribute][google.cloud.retail.v2alpha.CatalogAttribute]s
-            that are in use by products cannot be deleted; however,
-            their configuration properties will reset to default values
-            upon removal request.
+            that are either in use by products or are predefined cannot
+            be deleted; however, their configuration properties will
+            reset to default values upon removal request.
 
             After catalog changes, it takes about 10 minutes for this
             field to update.
@@ -166,6 +175,14 @@ class CatalogAttribute(proto.Message):
             [SearchService.Search][google.cloud.retail.v2alpha.SearchService.Search],
             as there are no text values associated to numerical
             attributes.
+        recommendations_filtering_option (google.cloud.retail_v2alpha.types.RecommendationsFilteringOption):
+            When
+            [AttributesConfig.attribute_config_level][google.cloud.retail.v2alpha.AttributesConfig.attribute_config_level]
+            is CATALOG_LEVEL_ATTRIBUTE_CONFIG, if
+            RECOMMENDATIONS_FILTERING_ENABLED, attribute values are
+            filterable for recommendations. This option works for
+            categorical features only, does not work for numerical
+            features, inventory filtering.
     """
 
     class AttributeType(proto.Enum):
@@ -221,6 +238,11 @@ class CatalogAttribute(proto.Message):
         proto.ENUM,
         number=7,
         enum=SearchableOption,
+    )
+    recommendations_filtering_option = proto.Field(
+        proto.ENUM,
+        number=8,
+        enum=common.RecommendationsFilteringOption,
     )
 
 
@@ -287,15 +309,18 @@ class CompletionConfig(proto.Message):
             Default value: 'exact-prefix'.
         max_suggestions (int):
             The maximum number of autocomplete
-            suggestions returned per term. The maximum
-            allowed max suggestions is 20. Default value is
+            suggestions returned per term. Default value is
             20. If left unset or set to 0, then will
             fallback to default value.
+
+            Value range is 1 to 20.
         min_prefix_length (int):
             The minimum number of characters needed to be
             typed in order to get suggestions. Default value
             is 2. If left unset or set to 0, then will
             fallback to default value.
+
+            Value range is 1 to 20.
         auto_learning (bool):
             If set to true, the auto learning function is enabled. Auto
             learning uses user data to generate suggestions using ML
@@ -303,9 +328,8 @@ class CompletionConfig(proto.Message):
             learning can users use ``cloud-retail`` data in
             [CompleteQueryRequest][google.cloud.retail.v2alpha.CompleteQueryRequest].
         suggestions_input_config (google.cloud.retail_v2alpha.types.CompletionDataInputConfig):
-            Output only. The input config for the import
-            of the source data that contains the
-            autocomplete phrases uploaded by the customer.
+            Output only. The source data for the latest
+            import of the autocomplete suggestion phrases.
         last_suggestions_import_operation (str):
             Output only. Name of the LRO corresponding to the latest
             suggestion terms list import.
@@ -315,26 +339,22 @@ class CompletionConfig(proto.Message):
             API to retrieve the latest state of the Long Running
             Operation.
         denylist_input_config (google.cloud.retail_v2alpha.types.CompletionDataInputConfig):
-            Output only. The input config for the import
-            of the source data that contains the /
-            autocomplete denylist phrases uploaded by the
-            customer.
+            Output only. The source data for the latest
+            import of the autocomplete denylist phrases.
         last_denylist_import_operation (str):
-            Output only. LRO corresponding to the latest denylist
-            import.
+            Output only. Name of the LRO corresponding to the latest
+            denylist import.
 
             Can use
             [GetOperation][google.longrunning.Operations.GetOperation]
             API to retrieve the latest state of the Long Running
             Operation.
         allowlist_input_config (google.cloud.retail_v2alpha.types.CompletionDataInputConfig):
-            Output only. The input config for the import
-            of the source data that contains the
-            autocomplete allowlist phrases uploaded by the
-            customer.
+            Output only. The source data for the latest
+            import of the autocomplete allowlist phrases.
         last_allowlist_import_operation (str):
-            Output only. LRO corresponding to the latest allowlist
-            import.
+            Output only. Name of the LRO corresponding to the latest
+            allowlist import.
 
             Can use
             [GetOperation][google.longrunning.Operations.GetOperation]

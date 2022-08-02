@@ -49,6 +49,7 @@ from .common import (
     LocalInventory,
     PriceInfo,
     Rating,
+    RecommendationsFilteringOption,
     Rule,
     SearchSolutionUseCase,
     SolutionType,
@@ -65,10 +66,12 @@ from .control_service import (
     UpdateControlRequest,
 )
 from .export_config import (
+    BigQueryOutputResult,
     ExportErrorsConfig,
     ExportMetadata,
     ExportProductsResponse,
     ExportUserEventsResponse,
+    OutputResult,
 )
 from .import_config import (
     BigQuerySource,
@@ -87,6 +90,20 @@ from .import_config import (
     UserEventImportSummary,
     UserEventInlineSource,
     UserEventInputConfig,
+)
+from .model import Model
+from .model_service import (
+    CreateModelMetadata,
+    CreateModelRequest,
+    DeleteModelRequest,
+    ListModelsRequest,
+    ListModelsResponse,
+    PauseModelRequest,
+    ResumeModelRequest,
+    TuneModelMetadata,
+    TuneModelRequest,
+    TuneModelResponse,
+    UpdateModelRequest,
 )
 from .prediction_service import PredictRequest, PredictResponse
 from .product import Product
@@ -177,6 +194,7 @@ __all__ = (
     "Rule",
     "UserInfo",
     "AttributeConfigLevel",
+    "RecommendationsFilteringOption",
     "SearchSolutionUseCase",
     "SolutionType",
     "CompleteQueryRequest",
@@ -188,10 +206,12 @@ __all__ = (
     "ListControlsRequest",
     "ListControlsResponse",
     "UpdateControlRequest",
+    "BigQueryOutputResult",
     "ExportErrorsConfig",
     "ExportMetadata",
     "ExportProductsResponse",
     "ExportUserEventsResponse",
+    "OutputResult",
     "BigQuerySource",
     "CompletionDataInputConfig",
     "GcsSource",
@@ -208,6 +228,18 @@ __all__ = (
     "UserEventImportSummary",
     "UserEventInlineSource",
     "UserEventInputConfig",
+    "Model",
+    "CreateModelMetadata",
+    "CreateModelRequest",
+    "DeleteModelRequest",
+    "ListModelsRequest",
+    "ListModelsResponse",
+    "PauseModelRequest",
+    "ResumeModelRequest",
+    "TuneModelMetadata",
+    "TuneModelRequest",
+    "TuneModelResponse",
+    "UpdateModelRequest",
     "PredictRequest",
     "PredictResponse",
     "Product",

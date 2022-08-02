@@ -505,7 +505,7 @@ class ControlServiceClient(metaclass=ControlServiceClientMeta):
                 The request object. Request for CreateControl method.
             parent (str):
                 Required. Full resource name of parent catalog. Format:
-                projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}
+                ``projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -622,7 +622,7 @@ class ControlServiceClient(metaclass=ControlServiceClientMeta):
             name (str):
                 Required. The resource name of the Control to delete.
                 Format:
-                projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}/controls/{control_id}
+                ``projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}/controls/{control_id}``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -830,7 +830,7 @@ class ControlServiceClient(metaclass=ControlServiceClientMeta):
             name (str):
                 Required. The resource name of the Control to delete.
                 Format:
-                projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}/controls/{control_id}
+                ``projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}/controls/{control_id}``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -927,7 +927,7 @@ class ControlServiceClient(metaclass=ControlServiceClientMeta):
                 The request object. Request for ListControls method.
             parent (str):
                 Required. The catalog resource name. Format:
-                projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}
+                ``projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this

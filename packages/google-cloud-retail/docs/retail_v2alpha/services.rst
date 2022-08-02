@@ -6,6 +6,7 @@ Services for Google Cloud Retail v2alpha API
     catalog_service
     completion_service
     control_service
+    model_service
     prediction_service
     product_service
     search_service

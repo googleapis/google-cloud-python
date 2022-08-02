@@ -282,12 +282,31 @@ class ImportProductsRequest(proto.Message):
             products to be imported. Defaults to
             [ReconciliationMode.INCREMENTAL][google.cloud.retail.v2alpha.ImportProductsRequest.ReconciliationMode.INCREMENTAL].
         notification_pubsub_topic (str):
-            Pub/Sub topic for receiving notification. If this field is
-            set, when the import is finished, a notification will be
-            sent to specified Pub/Sub topic. The message data will be
-            JSON string of a [Operation][google.longrunning.Operation].
+            Full Pub/Sub topic name for receiving notification. If this
+            field is set, when the import is finished, a notification
+            will be sent to specified Pub/Sub topic. The message data
+            will be JSON string of a
+            [Operation][google.longrunning.Operation].
+
             Format of the Pub/Sub topic is
-            ``projects/{project}/topics/{topic}``.
+            ``projects/{project}/topics/{topic}``. It has to be within
+            the same project as
+            [ImportProductsRequest.parent][google.cloud.retail.v2alpha.ImportProductsRequest.parent].
+            Make sure that both
+            ``cloud-retail-customer-data-access@system.gserviceaccount.com``
+            and
+            ``service-<project number>@gcp-sa-retail.iam.gserviceaccount.com``
+            have the ``pubsub.topics.publish`` IAM permission on the
+            topic.
+
+            Only supported when
+            [ImportProductsRequest.reconciliation_mode][google.cloud.retail.v2alpha.ImportProductsRequest.reconciliation_mode]
+            is set to ``FULL``.
+        skip_default_branch_protection (bool):
+            If true, will perform the FULL import even if it would
+            delete a large proportion of the products in the default
+            branch, which could potentially cause outages if you have
+            live predict/search traffic.
 
             Only supported when
             [ImportProductsRequest.reconciliation_mode][google.cloud.retail.v2alpha.ImportProductsRequest.reconciliation_mode]
@@ -333,6 +352,10 @@ class ImportProductsRequest(proto.Message):
     notification_pubsub_topic = proto.Field(
         proto.STRING,
         number=7,
+    )
+    skip_default_branch_protection = proto.Field(
+        proto.BOOL,
+        number=8,
     )
 
 

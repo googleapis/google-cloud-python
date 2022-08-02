@@ -319,7 +319,7 @@ class GetAttributesConfigRequest(proto.Message):
     Attributes:
         name (str):
             Required. Full AttributesConfig resource name. Format:
-            projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}/attributesConfig
+            ``projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}/attributesConfig``
     """
 
     name = proto.Field(
@@ -368,7 +368,7 @@ class AddCatalogAttributeRequest(proto.Message):
     Attributes:
         attributes_config (str):
             Required. Full AttributesConfig resource name. Format:
-            projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}/attributesConfig
+            ``projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}/attributesConfig``
         catalog_attribute (google.cloud.retail_v2alpha.types.CatalogAttribute):
             Required. The
             [CatalogAttribute][google.cloud.retail.v2alpha.CatalogAttribute]
@@ -394,7 +394,7 @@ class RemoveCatalogAttributeRequest(proto.Message):
     Attributes:
         attributes_config (str):
             Required. Full AttributesConfig resource name. Format:
-            projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}/attributesConfig
+            ``projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}/attributesConfig``
         key (str):
             Required. The attribute name key of the
             [CatalogAttribute][google.cloud.retail.v2alpha.CatalogAttribute]
@@ -419,7 +419,7 @@ class ReplaceCatalogAttributeRequest(proto.Message):
     Attributes:
         attributes_config (str):
             Required. Full AttributesConfig resource name. Format:
-            projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}/attributesConfig
+            ``projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}/attributesConfig``
         catalog_attribute (google.cloud.retail_v2alpha.types.CatalogAttribute):
             Required. The updated
             [CatalogAttribute][google.cloud.retail.v2alpha.CatalogAttribute].

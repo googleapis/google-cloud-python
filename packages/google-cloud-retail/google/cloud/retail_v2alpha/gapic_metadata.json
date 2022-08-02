@@ -227,6 +227,90 @@
         }
       }
     },
+    "ModelService": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "ModelServiceClient",
+          "rpcs": {
+            "CreateModel": {
+              "methods": [
+                "create_model"
+              ]
+            },
+            "DeleteModel": {
+              "methods": [
+                "delete_model"
+              ]
+            },
+            "ListModels": {
+              "methods": [
+                "list_models"
+              ]
+            },
+            "PauseModel": {
+              "methods": [
+                "pause_model"
+              ]
+            },
+            "ResumeModel": {
+              "methods": [
+                "resume_model"
+              ]
+            },
+            "TuneModel": {
+              "methods": [
+                "tune_model"
+              ]
+            },
+            "UpdateModel": {
+              "methods": [
+                "update_model"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "ModelServiceAsyncClient",
+          "rpcs": {
+            "CreateModel": {
+              "methods": [
+                "create_model"
+              ]
+            },
+            "DeleteModel": {
+              "methods": [
+                "delete_model"
+              ]
+            },
+            "ListModels": {
+              "methods": [
+                "list_models"
+              ]
+            },
+            "PauseModel": {
+              "methods": [
+                "pause_model"
+              ]
+            },
+            "ResumeModel": {
+              "methods": [
+                "resume_model"
+              ]
+            },
+            "TuneModel": {
+              "methods": [
+                "tune_model"
+              ]
+            },
+            "UpdateModel": {
+              "methods": [
+                "update_model"
+              ]
+            }
+          }
+        }
+      }
+    },
     "PredictionService": {
       "clients": {
         "grpc": {
