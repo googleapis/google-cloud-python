@@ -1457,9 +1457,10 @@ class BinaryAuthorization(proto.Message):
 
     Attributes:
         enabled (bool):
-            Enable Binary Authorization for this cluster.
-            If enabled, all container images will be
-            validated by Binary Authorization.
+            This field is deprecated. Leave this unset and instead
+            configure BinaryAuthorization using evaluation_mode. If
+            evaluation_mode is set to anything other than
+            EVALUATION_MODE_UNSPECIFIED, this field is ignored.
         evaluation_mode (google.cloud.container_v1.types.BinaryAuthorization.EvaluationMode):
             Mode of operation for binauthz policy
             evaluation. Currently the only options are
@@ -2287,8 +2288,8 @@ class NodeConfigDefaults(proto.Message):
 
     Attributes:
         gcfs_config (google.cloud.container_v1.types.GcfsConfig):
-            GCFS (Google Container File System, a.k.a.
-            Riptide) options.
+            GCFS (Google Container File System, also
+            known as Riptide) options.
     """
 
     gcfs_config = proto.Field(
@@ -4967,7 +4968,7 @@ class CompleteNodePoolUpgradeRequest(proto.Message):
         name (str):
             The name (project, location, cluster, node pool id) of the
             node pool to complete upgrade. Specified in the format
-            'projects/*/locations/*/clusters/*/nodePools/*'.
+            ``projects/*/locations/*/clusters/*/nodePools/*``.
     """
 
     name = proto.Field(
@@ -5132,9 +5133,10 @@ class AutoprovisioningNodePoolDefaults(proto.Message):
             information, read `how to specify min CPU
             platform <https://cloud.google.com/compute/docs/instances/specify-min-cpu-platform>`__
             This field is deprecated, min_cpu_platform should be
-            specified using cloud.google.com/requested-min-cpu-platform
-            label selector on the pod. To unset the min cpu platform
-            field pass "automatic" as field value.
+            specified using
+            https://cloud.google.com/requested-min-cpu-platform label
+            selector on the pod. To unset the min cpu platform field
+            pass "automatic" as field value.
         disk_size_gb (int):
             Size of the disk attached to each node,
             specified in GB. The smallest allowed disk size
