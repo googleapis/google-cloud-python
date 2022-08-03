@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-storage/#history
 
+## [2.5.0](https://github.com/googleapis/python-storage/compare/v2.4.0...v2.5.0) (2022-07-24)
+
+
+### Features
+
+* Custom Placement Config Dual Region Support ([#819](https://github.com/googleapis/python-storage/issues/819)) ([febece7](https://github.com/googleapis/python-storage/commit/febece76802252278bb7626d931973a76561382a))
+
+
+### Documentation
+
+* open file-like objects in byte mode for uploads ([#824](https://github.com/googleapis/python-storage/issues/824)) ([4bd3d1d](https://github.com/googleapis/python-storage/commit/4bd3d1ddf21196b075bbd84cdcb553c5d7355b93))
+
 ## [2.4.0](https://github.com/googleapis/python-storage/compare/v2.3.0...v2.4.0) (2022-06-07)
 
 
