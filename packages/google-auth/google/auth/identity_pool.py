@@ -56,14 +56,8 @@ class Credentials(external_account.Credentials):
         subject_token_type,
         token_url,
         credential_source,
-        service_account_impersonation_url=None,
-        service_account_impersonation_options={},
-        client_id=None,
-        client_secret=None,
-        quota_project_id=None,
-        scopes=None,
-        default_scopes=None,
-        workforce_pool_user_project=None,
+        *args,
+        **kwargs
     ):
         """Instantiates an external account credentials object from a file/URL.
 
@@ -91,21 +85,8 @@ class Credentials(external_account.Credentials):
                     {
                         "file": "/path/to/token/file.txt"
                     }
-
-            service_account_impersonation_url (Optional[str]): The optional service account
-                impersonation getAccessToken URL.
-            client_id (Optional[str]): The optional client ID.
-            client_secret (Optional[str]): The optional client secret.
-            quota_project_id (Optional[str]): The optional quota project ID.
-            scopes (Optional[Sequence[str]]): Optional scopes to request during the
-                authorization grant.
-            default_scopes (Optional[Sequence[str]]): Default scopes passed by a
-                Google client library. Use 'scopes' for user-defined scopes.
-            workforce_pool_user_project (Optona[str]): The optional workforce pool user
-                project number when the credential corresponds to a workforce pool and not
-                a workload identity pool. The underlying principal must still have
-                serviceusage.services.use IAM permission to use the project for
-                billing/quota.
+            args (List): Optional positional arguments passed into the underlying :meth:`~external_account.Credentials.__init__` method.
+            kwargs (Mapping): Optional keyword arguments passed into the underlying :meth:`~external_account.Credentials.__init__` method.
 
         Raises:
             google.auth.exceptions.RefreshError: If an error is encountered during
@@ -122,14 +103,8 @@ class Credentials(external_account.Credentials):
             subject_token_type=subject_token_type,
             token_url=token_url,
             credential_source=credential_source,
-            service_account_impersonation_url=service_account_impersonation_url,
-            service_account_impersonation_options=service_account_impersonation_options,
-            client_id=client_id,
-            client_secret=client_secret,
-            quota_project_id=quota_project_id,
-            scopes=scopes,
-            default_scopes=default_scopes,
-            workforce_pool_user_project=workforce_pool_user_project,
+            *args,
+            **kwargs
         )
         if not isinstance(credential_source, Mapping):
             self._credential_source_file = None
@@ -257,24 +232,7 @@ class Credentials(external_account.Credentials):
         Raises:
             ValueError: For invalid parameters.
         """
-        return cls(
-            audience=info.get("audience"),
-            subject_token_type=info.get("subject_token_type"),
-            token_url=info.get("token_url"),
-            service_account_impersonation_url=info.get(
-                "service_account_impersonation_url"
-            ),
-            service_account_impersonation_options=info.get(
-                "service_account_impersonation"
-            )
-            or {},
-            client_id=info.get("client_id"),
-            client_secret=info.get("client_secret"),
-            credential_source=info.get("credential_source"),
-            quota_project_id=info.get("quota_project_id"),
-            workforce_pool_user_project=info.get("workforce_pool_user_project"),
-            **kwargs
-        )
+        return super(Credentials, cls).from_info(info, **kwargs)
 
     @classmethod
     def from_file(cls, filename, **kwargs):
@@ -288,6 +246,4 @@ class Credentials(external_account.Credentials):
             google.auth.identity_pool.Credentials: The constructed
                 credentials.
         """
-        with io.open(filename, "r", encoding="utf-8") as json_file:
-            data = json.load(json_file)
-            return cls.from_info(data, **kwargs)
+        return super(Credentials, cls).from_file(filename, **kwargs)

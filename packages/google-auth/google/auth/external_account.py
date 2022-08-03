@@ -30,6 +30,7 @@ token exchange endpoint following the `OAuth 2.0 Token Exchange`_ spec.
 import abc
 import copy
 import datetime
+import io
 import json
 import re
 
@@ -70,7 +71,7 @@ class Credentials(credentials.Scoped, credentials.CredentialsWithQuotaProject):
         token_url,
         credential_source,
         service_account_impersonation_url=None,
-        service_account_impersonation_options={},
+        service_account_impersonation_options=None,
         client_id=None,
         client_secret=None,
         quota_project_id=None,
@@ -482,3 +483,54 @@ class Credentials(credentials.Scoped, credentials.CredentialsWithQuotaProject):
             return False
 
         return any(re.compile(p).match(uri.hostname.lower()) for p in patterns)
+
+    @classmethod
+    def from_info(cls, info, **kwargs):
+        """Creates a Credentials instance from parsed external account info.
+
+        Args:
+            info (Mapping[str, str]): The external account info in Google
+                format.
+            kwargs: Additional arguments to pass to the constructor.
+
+        Returns:
+            google.auth.identity_pool.Credentials: The constructed
+                credentials.
+
+        Raises:
+            ValueError: For invalid parameters.
+        """
+        return cls(
+            audience=info.get("audience"),
+            subject_token_type=info.get("subject_token_type"),
+            token_url=info.get("token_url"),
+            service_account_impersonation_url=info.get(
+                "service_account_impersonation_url"
+            ),
+            service_account_impersonation_options=info.get(
+                "service_account_impersonation"
+            )
+            or {},
+            client_id=info.get("client_id"),
+            client_secret=info.get("client_secret"),
+            credential_source=info.get("credential_source"),
+            quota_project_id=info.get("quota_project_id"),
+            workforce_pool_user_project=info.get("workforce_pool_user_project"),
+            **kwargs
+        )
+
+    @classmethod
+    def from_file(cls, filename, **kwargs):
+        """Creates a Credentials instance from an external account json file.
+
+        Args:
+            filename (str): The path to the external account json file.
+            kwargs: Additional arguments to pass to the constructor.
+
+        Returns:
+            google.auth.identity_pool.Credentials: The constructed
+                credentials.
+        """
+        with io.open(filename, "r", encoding="utf-8") as json_file:
+            data = json.load(json_file)
+            return cls.from_info(data, **kwargs)

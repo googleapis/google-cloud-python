@@ -817,6 +817,7 @@ class TestCredentials(object):
             client_secret=CLIENT_SECRET,
             credential_source=self.CREDENTIAL_SOURCE,
             quota_project_id=QUOTA_PROJECT_ID,
+            workforce_pool_user_project=None,
         )
 
     @mock.patch.object(aws.Credentials, "__init__", return_value=None)
@@ -842,6 +843,7 @@ class TestCredentials(object):
             client_secret=None,
             credential_source=self.CREDENTIAL_SOURCE,
             quota_project_id=None,
+            workforce_pool_user_project=None,
         )
 
     @mock.patch.object(aws.Credentials, "__init__", return_value=None)
@@ -873,6 +875,7 @@ class TestCredentials(object):
             client_secret=CLIENT_SECRET,
             credential_source=self.CREDENTIAL_SOURCE,
             quota_project_id=QUOTA_PROJECT_ID,
+            workforce_pool_user_project=None,
         )
 
     @mock.patch.object(aws.Credentials, "__init__", return_value=None)
@@ -899,6 +902,7 @@ class TestCredentials(object):
             client_secret=None,
             credential_source=self.CREDENTIAL_SOURCE,
             quota_project_id=None,
+            workforce_pool_user_project=None,
         )
 
     def test_constructor_invalid_credential_source(self):
