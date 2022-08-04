@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.1](https://github.com/googleapis/python-run/compare/v0.2.0...v0.2.1) (2022-07-26)
+
+
+### Bug Fixes
+
+* require python 3.7+ ([#26](https://github.com/googleapis/python-run/issues/26)) ([854f73d](https://github.com/googleapis/python-run/commit/854f73db0893e080dc6098d134809692e8685f39))
+
 ## [0.2.0](https://github.com/googleapis/python-run/compare/v0.1.0...v0.2.0) (2022-04-14)
 
 
