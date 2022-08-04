@@ -4,6 +4,27 @@
 
 [1]: https://pypi.org/project/google-cloud-bigtable/#history
 
+## [2.11.0](https://github.com/googleapis/python-bigtable/compare/v2.10.1...v2.11.0) (2022-08-04)
+
+
+### Features
+
+* add audience parameter ([a7a7699](https://github.com/googleapis/python-bigtable/commit/a7a76998fad3c12215527e4ebb517a1526cc152e))
+* add satisfies_pzs output only field ([#614](https://github.com/googleapis/python-bigtable/issues/614)) ([7dc1469](https://github.com/googleapis/python-bigtable/commit/7dc1469fef2dc38f1509b35a37e9c97381ab7601))
+* Add storage_utilization_gib_per_node to Autoscaling target ([a7a7699](https://github.com/googleapis/python-bigtable/commit/a7a76998fad3c12215527e4ebb517a1526cc152e))
+* Cloud Bigtable Undelete Table service and message proto files ([a7a7699](https://github.com/googleapis/python-bigtable/commit/a7a76998fad3c12215527e4ebb517a1526cc152e))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.32.0,>=2.8.0 ([a7a7699](https://github.com/googleapis/python-bigtable/commit/a7a76998fad3c12215527e4ebb517a1526cc152e))
+* require python 3.7+ ([#610](https://github.com/googleapis/python-bigtable/issues/610)) ([10d00f5](https://github.com/googleapis/python-bigtable/commit/10d00f5af5d5878c26529f5e48a5fb8d8385696d))
+
+
+### Performance Improvements
+
+* improve row merging ([#619](https://github.com/googleapis/python-bigtable/issues/619)) ([b4853e5](https://github.com/googleapis/python-bigtable/commit/b4853e59d0efd8a7b37f3fcb06b14dbd9f5d20a4))
+
 ## [2.10.1](https://github.com/googleapis/python-bigtable/compare/v2.10.0...v2.10.1) (2022-06-03)
 
 
