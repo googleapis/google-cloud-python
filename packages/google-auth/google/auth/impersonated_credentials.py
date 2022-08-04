@@ -374,7 +374,7 @@ class IDTokenCredentials(credentials.CredentialsWithQuotaProject):
 
     def from_credentials(self, target_credentials, target_audience=None):
         return self.__class__(
-            target_credentials=self._target_credentials,
+            target_credentials=target_credentials,
             target_audience=target_audience,
             include_email=self._include_email,
             quota_project_id=self._quota_project_id,
