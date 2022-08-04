@@ -48,6 +48,7 @@ class Options:
     transport: List[str] = dataclasses.field(default_factory=lambda: [])
     service_yaml_config: Dict[str, Any] = dataclasses.field(
         default_factory=dict)
+    rest_numeric_enums: bool = False
 
     # Class constants
     PYTHON_GAPIC_PREFIX: str = 'python-gapic-'
@@ -63,6 +64,8 @@ class Options:
         # transport type(s) delineated by '+' (i.e. grpc, rest, custom.[something], etc?)
         'transport',
         'warehouse-package-name',  # change the package name on PyPI
+        # when transport includes "rest", request that response enums be JSON-encoded as numbers
+        'rest-numeric-enums',
     ))
 
     @classmethod
@@ -178,6 +181,7 @@ class Options:
             # transport should include desired transports delimited by '+', e.g. transport='grpc+rest'
             transport=opts.pop('transport', ['grpc'])[0].split('+'),
             service_yaml_config=service_yaml_config,
+            rest_numeric_enums=bool(opts.pop('rest-numeric-enums', False)),
         )
 
         # Note: if we ever need to recursively check directories for sample

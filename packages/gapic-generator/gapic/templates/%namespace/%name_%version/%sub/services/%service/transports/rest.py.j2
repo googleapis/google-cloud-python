@@ -52,6 +52,12 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     rest_version=requests_version,
 )
 
+{% if opts.rest_numeric_enums %}
+# TODO (numeric enums): This file was generated with the option to
+#   request that the server respond with enums JSON-encoded as
+#   numbers. The code below does not implement that functionality yet.
+
+{% endif %}
 
 class {{ service.name }}RestInterceptor:
     """Interceptor for {{ service.name }}.

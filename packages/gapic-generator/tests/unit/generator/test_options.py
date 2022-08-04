@@ -170,6 +170,20 @@ def test_options_service_yaml_config(fs):
     assert opts.service_yaml_config == expected_config
 
 
+def test_options_transport():
+    opts = Options.build("")
+    assert opts.transport == ["grpc"]
+
+    opts = Options.build("transport=rest")
+    assert opts.transport == ["rest"]
+
+    opts = Options.build("transport=grpc+rest")
+    assert opts.transport == ["grpc", "rest"]
+
+    opts = Options.build("transport=alpha+beta+gamma")
+    assert opts.transport == ["alpha", "beta", "gamma"]
+
+
 def test_options_bool_flags():
     # Most options are default False.
     # New options should follow the dash-case/snake_case convention.
@@ -181,6 +195,7 @@ def test_options_bool_flags():
          "add-iam-methods",
          "metadata",
          "warehouse-package-name",
+         "rest-numeric-enums",
          ]}
 
     for opt, attr in opt_str_to_attr_name.items():
