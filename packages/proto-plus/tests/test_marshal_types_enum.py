@@ -97,5 +97,4 @@ def test_enum_map_insert():
     clam = Bivalve.CLAM
     mc.bivalves["clam"] = clam
     mc.bivalves["oyster"] = 1
-
-    assert mc.bivalves == {"clam": clam, "oyster": Bivalve.OYSTER}
+    assert dict(mc.bivalves) == {"clam": clam, "oyster": Bivalve.OYSTER}
