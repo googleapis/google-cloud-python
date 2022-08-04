@@ -1268,7 +1268,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Creates multiple instances. Count specifies the
-        number of instances to create.
+        number of instances to create. For more information, see
+        About bulk creation of VMs.
 
         Args:
             request (Union[google.cloud.compute_v1.types.BulkInsertInstanceRequest, dict]):
@@ -1371,7 +1372,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Creates multiple instances. Count specifies the
-        number of instances to create.
+        number of instances to create. For more information, see
+        About bulk creation of VMs.
 
         Args:
             request (Union[google.cloud.compute_v1.types.BulkInsertInstanceRequest, dict]):

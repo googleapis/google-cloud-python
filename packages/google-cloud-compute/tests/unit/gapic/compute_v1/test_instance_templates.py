@@ -1765,6 +1765,7 @@ def test_insert_rest(request_type):
             "description": "description_value",
             "disks": [
                 {
+                    "architecture": "architecture_value",
                     "auto_delete": True,
                     "boot": True,
                     "device_name": "device_name_value",
@@ -1779,6 +1780,7 @@ def test_insert_rest(request_type):
                     "guest_os_features": [{"type_": "type__value"}],
                     "index": 536,
                     "initialize_params": {
+                        "architecture": "architecture_value",
                         "description": "description_value",
                         "disk_name": "disk_name_value",
                         "disk_size_gb": 1261,
@@ -1818,6 +1820,7 @@ def test_insert_rest(request_type):
                     "accelerator_type": "accelerator_type_value",
                 }
             ],
+            "key_revocation_action_type": "key_revocation_action_type_value",
             "labels": {},
             "machine_type": "machine_type_value",
             "metadata": {
@@ -2152,6 +2155,7 @@ def test_insert_rest_bad_request(
             "description": "description_value",
             "disks": [
                 {
+                    "architecture": "architecture_value",
                     "auto_delete": True,
                     "boot": True,
                     "device_name": "device_name_value",
@@ -2166,6 +2170,7 @@ def test_insert_rest_bad_request(
                     "guest_os_features": [{"type_": "type__value"}],
                     "index": 536,
                     "initialize_params": {
+                        "architecture": "architecture_value",
                         "description": "description_value",
                         "disk_name": "disk_name_value",
                         "disk_size_gb": 1261,
@@ -2205,6 +2210,7 @@ def test_insert_rest_bad_request(
                     "accelerator_type": "accelerator_type_value",
                 }
             ],
+            "key_revocation_action_type": "key_revocation_action_type_value",
             "labels": {},
             "machine_type": "machine_type_value",
             "metadata": {
@@ -2419,6 +2425,7 @@ def test_insert_unary_rest(request_type):
             "description": "description_value",
             "disks": [
                 {
+                    "architecture": "architecture_value",
                     "auto_delete": True,
                     "boot": True,
                     "device_name": "device_name_value",
@@ -2433,6 +2440,7 @@ def test_insert_unary_rest(request_type):
                     "guest_os_features": [{"type_": "type__value"}],
                     "index": 536,
                     "initialize_params": {
+                        "architecture": "architecture_value",
                         "description": "description_value",
                         "disk_name": "disk_name_value",
                         "disk_size_gb": 1261,
@@ -2472,6 +2480,7 @@ def test_insert_unary_rest(request_type):
                     "accelerator_type": "accelerator_type_value",
                 }
             ],
+            "key_revocation_action_type": "key_revocation_action_type_value",
             "labels": {},
             "machine_type": "machine_type_value",
             "metadata": {
@@ -2784,6 +2793,7 @@ def test_insert_unary_rest_bad_request(
             "description": "description_value",
             "disks": [
                 {
+                    "architecture": "architecture_value",
                     "auto_delete": True,
                     "boot": True,
                     "device_name": "device_name_value",
@@ -2798,6 +2808,7 @@ def test_insert_unary_rest_bad_request(
                     "guest_os_features": [{"type_": "type__value"}],
                     "index": 536,
                     "initialize_params": {
+                        "architecture": "architecture_value",
                         "description": "description_value",
                         "disk_name": "disk_name_value",
                         "disk_size_gb": 1261,
@@ -2837,6 +2848,7 @@ def test_insert_unary_rest_bad_request(
                     "accelerator_type": "accelerator_type_value",
                 }
             ],
+            "key_revocation_action_type": "key_revocation_action_type_value",
             "labels": {},
             "machine_type": "machine_type_value",
             "metadata": {

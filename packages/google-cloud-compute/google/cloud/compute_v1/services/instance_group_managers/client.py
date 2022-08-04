@@ -2744,14 +2744,16 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListManagedInstancesPager:
-        r"""Lists all of the instances in the managed instance
-        group. Each instance in the list has a currentAction,
-        which indicates the action that the managed instance
-        group is performing on the instance. For example, if the
-        group is still creating an instance, the currentAction
-        is CREATING. If a previous action failed, the list
-        displays the errors for that failed action. The orderBy
-        query parameter is not supported.
+        r"""Lists all of the instances in the managed instance group. Each
+        instance in the list has a currentAction, which indicates the
+        action that the managed instance group is performing on the
+        instance. For example, if the group is still creating an
+        instance, the currentAction is CREATING. If a previous action
+        failed, the list displays the errors for that failed action. The
+        orderBy query parameter is not supported. The ``pageToken``
+        query parameter is supported only in the alpha and beta API and
+        only if the group's ``listManagedInstancesResults`` field is set
+        to ``PAGINATED``.
 
         Args:
             request (Union[google.cloud.compute_v1.types.ListManagedInstancesInstanceGroupManagersRequest, dict]):

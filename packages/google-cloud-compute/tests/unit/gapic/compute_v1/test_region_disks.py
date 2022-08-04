@@ -1206,8 +1206,10 @@ def test_create_snapshot_rest(request_type):
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "region": "sample2", "disk": "sample3"}
     request_init["snapshot_resource"] = {
+        "architecture": "architecture_value",
         "auto_created": True,
         "chain_name": "chain_name_value",
+        "creation_size_bytes": 2037,
         "creation_timestamp": "creation_timestamp_value",
         "description": "description_value",
         "disk_size_gb": 1261,
@@ -1229,9 +1231,12 @@ def test_create_snapshot_rest(request_type):
             "rsa_encrypted_key": "rsa_encrypted_key_value",
             "sha256": "sha256_value",
         },
+        "snapshot_type": "snapshot_type_value",
         "source_disk": "source_disk_value",
         "source_disk_encryption_key": {},
         "source_disk_id": "source_disk_id_value",
+        "source_snapshot_schedule_policy": "source_snapshot_schedule_policy_value",
+        "source_snapshot_schedule_policy_id": "source_snapshot_schedule_policy_id_value",
         "status": "status_value",
         "storage_bytes": 1403,
         "storage_bytes_status": "storage_bytes_status_value",
@@ -1465,8 +1470,10 @@ def test_create_snapshot_rest_bad_request(
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "region": "sample2", "disk": "sample3"}
     request_init["snapshot_resource"] = {
+        "architecture": "architecture_value",
         "auto_created": True,
         "chain_name": "chain_name_value",
+        "creation_size_bytes": 2037,
         "creation_timestamp": "creation_timestamp_value",
         "description": "description_value",
         "disk_size_gb": 1261,
@@ -1488,9 +1495,12 @@ def test_create_snapshot_rest_bad_request(
             "rsa_encrypted_key": "rsa_encrypted_key_value",
             "sha256": "sha256_value",
         },
+        "snapshot_type": "snapshot_type_value",
         "source_disk": "source_disk_value",
         "source_disk_encryption_key": {},
         "source_disk_id": "source_disk_id_value",
+        "source_snapshot_schedule_policy": "source_snapshot_schedule_policy_value",
+        "source_snapshot_schedule_policy_id": "source_snapshot_schedule_policy_id_value",
         "status": "status_value",
         "storage_bytes": 1403,
         "storage_bytes_status": "storage_bytes_status_value",
@@ -1529,7 +1539,7 @@ def test_create_snapshot_rest_flattened():
             project="project_value",
             region="region_value",
             disk="disk_value",
-            snapshot_resource=compute.Snapshot(auto_created=True),
+            snapshot_resource=compute.Snapshot(architecture="architecture_value"),
         )
         mock_args.update(sample_request)
 
@@ -1568,7 +1578,7 @@ def test_create_snapshot_rest_flattened_error(transport: str = "rest"):
             project="project_value",
             region="region_value",
             disk="disk_value",
-            snapshot_resource=compute.Snapshot(auto_created=True),
+            snapshot_resource=compute.Snapshot(architecture="architecture_value"),
         )
 
 
@@ -1594,8 +1604,10 @@ def test_create_snapshot_unary_rest(request_type):
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "region": "sample2", "disk": "sample3"}
     request_init["snapshot_resource"] = {
+        "architecture": "architecture_value",
         "auto_created": True,
         "chain_name": "chain_name_value",
+        "creation_size_bytes": 2037,
         "creation_timestamp": "creation_timestamp_value",
         "description": "description_value",
         "disk_size_gb": 1261,
@@ -1617,9 +1629,12 @@ def test_create_snapshot_unary_rest(request_type):
             "rsa_encrypted_key": "rsa_encrypted_key_value",
             "sha256": "sha256_value",
         },
+        "snapshot_type": "snapshot_type_value",
         "source_disk": "source_disk_value",
         "source_disk_encryption_key": {},
         "source_disk_id": "source_disk_id_value",
+        "source_snapshot_schedule_policy": "source_snapshot_schedule_policy_value",
+        "source_snapshot_schedule_policy_id": "source_snapshot_schedule_policy_id_value",
         "status": "status_value",
         "storage_bytes": 1403,
         "storage_bytes_status": "storage_bytes_status_value",
@@ -1831,8 +1846,10 @@ def test_create_snapshot_unary_rest_bad_request(
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "region": "sample2", "disk": "sample3"}
     request_init["snapshot_resource"] = {
+        "architecture": "architecture_value",
         "auto_created": True,
         "chain_name": "chain_name_value",
+        "creation_size_bytes": 2037,
         "creation_timestamp": "creation_timestamp_value",
         "description": "description_value",
         "disk_size_gb": 1261,
@@ -1854,9 +1871,12 @@ def test_create_snapshot_unary_rest_bad_request(
             "rsa_encrypted_key": "rsa_encrypted_key_value",
             "sha256": "sha256_value",
         },
+        "snapshot_type": "snapshot_type_value",
         "source_disk": "source_disk_value",
         "source_disk_encryption_key": {},
         "source_disk_id": "source_disk_id_value",
+        "source_snapshot_schedule_policy": "source_snapshot_schedule_policy_value",
+        "source_snapshot_schedule_policy_id": "source_snapshot_schedule_policy_id_value",
         "status": "status_value",
         "storage_bytes": 1403,
         "storage_bytes_status": "storage_bytes_status_value",
@@ -1895,7 +1915,7 @@ def test_create_snapshot_unary_rest_flattened():
             project="project_value",
             region="region_value",
             disk="disk_value",
-            snapshot_resource=compute.Snapshot(auto_created=True),
+            snapshot_resource=compute.Snapshot(architecture="architecture_value"),
         )
         mock_args.update(sample_request)
 
@@ -1934,7 +1954,7 @@ def test_create_snapshot_unary_rest_flattened_error(transport: str = "rest"):
             project="project_value",
             region="region_value",
             disk="disk_value",
-            snapshot_resource=compute.Snapshot(auto_created=True),
+            snapshot_resource=compute.Snapshot(architecture="architecture_value"),
         )
 
 
@@ -2581,6 +2601,7 @@ def test_get_rest(request_type):
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
         return_value = compute.Disk(
+            architecture="architecture_value",
             creation_timestamp="creation_timestamp_value",
             description="description_value",
             id=205,
@@ -2624,6 +2645,7 @@ def test_get_rest(request_type):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, compute.Disk)
+    assert response.architecture == "architecture_value"
     assert response.creation_timestamp == "creation_timestamp_value"
     assert response.description == "description_value"
     assert response.id == 205
@@ -3196,6 +3218,7 @@ def test_insert_rest(request_type):
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "region": "sample2"}
     request_init["disk_resource"] = {
+        "architecture": "architecture_value",
         "creation_timestamp": "creation_timestamp_value",
         "description": "description_value",
         "disk_encryption_key": {
@@ -3470,6 +3493,7 @@ def test_insert_rest_bad_request(
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "region": "sample2"}
     request_init["disk_resource"] = {
+        "architecture": "architecture_value",
         "creation_timestamp": "creation_timestamp_value",
         "description": "description_value",
         "disk_encryption_key": {
@@ -3545,7 +3569,7 @@ def test_insert_rest_flattened():
         mock_args = dict(
             project="project_value",
             region="region_value",
-            disk_resource=compute.Disk(creation_timestamp="creation_timestamp_value"),
+            disk_resource=compute.Disk(architecture="architecture_value"),
         )
         mock_args.update(sample_request)
 
@@ -3583,7 +3607,7 @@ def test_insert_rest_flattened_error(transport: str = "rest"):
             compute.InsertRegionDiskRequest(),
             project="project_value",
             region="region_value",
-            disk_resource=compute.Disk(creation_timestamp="creation_timestamp_value"),
+            disk_resource=compute.Disk(architecture="architecture_value"),
         )
 
 
@@ -3609,6 +3633,7 @@ def test_insert_unary_rest(request_type):
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "region": "sample2"}
     request_init["disk_resource"] = {
+        "architecture": "architecture_value",
         "creation_timestamp": "creation_timestamp_value",
         "description": "description_value",
         "disk_encryption_key": {
@@ -3863,6 +3888,7 @@ def test_insert_unary_rest_bad_request(
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "region": "sample2"}
     request_init["disk_resource"] = {
+        "architecture": "architecture_value",
         "creation_timestamp": "creation_timestamp_value",
         "description": "description_value",
         "disk_encryption_key": {
@@ -3938,7 +3964,7 @@ def test_insert_unary_rest_flattened():
         mock_args = dict(
             project="project_value",
             region="region_value",
-            disk_resource=compute.Disk(creation_timestamp="creation_timestamp_value"),
+            disk_resource=compute.Disk(architecture="architecture_value"),
         )
         mock_args.update(sample_request)
 
@@ -3976,7 +4002,7 @@ def test_insert_unary_rest_flattened_error(transport: str = "rest"):
             compute.InsertRegionDiskRequest(),
             project="project_value",
             region="region_value",
-            disk_resource=compute.Disk(creation_timestamp="creation_timestamp_value"),
+            disk_resource=compute.Disk(architecture="architecture_value"),
         )
 
 

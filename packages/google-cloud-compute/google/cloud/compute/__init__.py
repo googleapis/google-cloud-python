@@ -556,6 +556,8 @@ from google.cloud.compute_v1.types.compute import Duration
 from google.cloud.compute_v1.types.compute import EnableXpnHostProjectRequest
 from google.cloud.compute_v1.types.compute import EnableXpnResourceProjectRequest
 from google.cloud.compute_v1.types.compute import Error
+from google.cloud.compute_v1.types.compute import ErrorDetails
+from google.cloud.compute_v1.types.compute import ErrorInfo
 from google.cloud.compute_v1.types.compute import Errors
 from google.cloud.compute_v1.types.compute import ExchangedPeeringRoute
 from google.cloud.compute_v1.types.compute import ExchangedPeeringRoutesList
@@ -751,6 +753,8 @@ from google.cloud.compute_v1.types.compute import HealthCheckServicesList
 from google.cloud.compute_v1.types.compute import HealthChecksScopedList
 from google.cloud.compute_v1.types.compute import HealthStatus
 from google.cloud.compute_v1.types.compute import HealthStatusForNetworkEndpoint
+from google.cloud.compute_v1.types.compute import Help
+from google.cloud.compute_v1.types.compute import HelpLink
 from google.cloud.compute_v1.types.compute import HostRule
 from google.cloud.compute_v1.types.compute import HTTP2HealthCheck
 from google.cloud.compute_v1.types.compute import HttpFaultAbort
@@ -1103,8 +1107,10 @@ from google.cloud.compute_v1.types.compute import ListXpnHostsProjectsRequest
 from google.cloud.compute_v1.types.compute import ListZoneOperationsRequest
 from google.cloud.compute_v1.types.compute import ListZonesRequest
 from google.cloud.compute_v1.types.compute import LocalDisk
+from google.cloud.compute_v1.types.compute import LocalizedMessage
 from google.cloud.compute_v1.types.compute import LocationPolicy
 from google.cloud.compute_v1.types.compute import LocationPolicyLocation
+from google.cloud.compute_v1.types.compute import LocationPolicyLocationConstraints
 from google.cloud.compute_v1.types.compute import LogConfig
 from google.cloud.compute_v1.types.compute import LogConfigCloudAuditOptions
 from google.cloud.compute_v1.types.compute import LogConfigCounterOptions
@@ -1806,6 +1812,9 @@ from google.cloud.compute_v1.types.compute import VmEndpointNatMappings
 from google.cloud.compute_v1.types.compute import (
     VmEndpointNatMappingsInterfaceNatMappings,
 )
+from google.cloud.compute_v1.types.compute import (
+    VmEndpointNatMappingsInterfaceNatMappingsNatRuleMappings,
+)
 from google.cloud.compute_v1.types.compute import VmEndpointNatMappingsList
 from google.cloud.compute_v1.types.compute import VpnGateway
 from google.cloud.compute_v1.types.compute import VpnGatewayAggregatedList
@@ -2184,6 +2193,8 @@ __all__ = (
     "EnableXpnHostProjectRequest",
     "EnableXpnResourceProjectRequest",
     "Error",
+    "ErrorDetails",
+    "ErrorInfo",
     "Errors",
     "ExchangedPeeringRoute",
     "ExchangedPeeringRoutesList",
@@ -2357,6 +2368,8 @@ __all__ = (
     "HealthChecksScopedList",
     "HealthStatus",
     "HealthStatusForNetworkEndpoint",
+    "Help",
+    "HelpLink",
     "HostRule",
     "HTTP2HealthCheck",
     "HttpFaultAbort",
@@ -2631,8 +2644,10 @@ __all__ = (
     "ListZoneOperationsRequest",
     "ListZonesRequest",
     "LocalDisk",
+    "LocalizedMessage",
     "LocationPolicy",
     "LocationPolicyLocation",
+    "LocationPolicyLocationConstraints",
     "LogConfig",
     "LogConfigCloudAuditOptions",
     "LogConfigCounterOptions",
@@ -3152,6 +3167,7 @@ __all__ = (
     "ValidateUrlMapRequest",
     "VmEndpointNatMappings",
     "VmEndpointNatMappingsInterfaceNatMappings",
+    "VmEndpointNatMappingsInterfaceNatMappingsNatRuleMappings",
     "VmEndpointNatMappingsList",
     "VpnGateway",
     "VpnGatewayAggregatedList",

@@ -366,6 +366,8 @@ from .types.compute import Duration
 from .types.compute import EnableXpnHostProjectRequest
 from .types.compute import EnableXpnResourceProjectRequest
 from .types.compute import Error
+from .types.compute import ErrorDetails
+from .types.compute import ErrorInfo
 from .types.compute import Errors
 from .types.compute import ExchangedPeeringRoute
 from .types.compute import ExchangedPeeringRoutesList
@@ -539,6 +541,8 @@ from .types.compute import HealthCheckServicesList
 from .types.compute import HealthChecksScopedList
 from .types.compute import HealthStatus
 from .types.compute import HealthStatusForNetworkEndpoint
+from .types.compute import Help
+from .types.compute import HelpLink
 from .types.compute import HostRule
 from .types.compute import HTTP2HealthCheck
 from .types.compute import HttpFaultAbort
@@ -813,8 +817,10 @@ from .types.compute import ListXpnHostsProjectsRequest
 from .types.compute import ListZoneOperationsRequest
 from .types.compute import ListZonesRequest
 from .types.compute import LocalDisk
+from .types.compute import LocalizedMessage
 from .types.compute import LocationPolicy
 from .types.compute import LocationPolicyLocation
+from .types.compute import LocationPolicyLocationConstraints
 from .types.compute import LogConfig
 from .types.compute import LogConfigCloudAuditOptions
 from .types.compute import LogConfigCounterOptions
@@ -1336,6 +1342,7 @@ from .types.compute import ValidateRegionUrlMapRequest
 from .types.compute import ValidateUrlMapRequest
 from .types.compute import VmEndpointNatMappings
 from .types.compute import VmEndpointNatMappingsInterfaceNatMappings
+from .types.compute import VmEndpointNatMappingsInterfaceNatMappingsNatRuleMappings
 from .types.compute import VmEndpointNatMappingsList
 from .types.compute import VpnGateway
 from .types.compute import VpnGatewayAggregatedList
@@ -1634,6 +1641,8 @@ __all__ = (
     "EnableXpnHostProjectRequest",
     "EnableXpnResourceProjectRequest",
     "Error",
+    "ErrorDetails",
+    "ErrorInfo",
     "Errors",
     "ExchangedPeeringRoute",
     "ExchangedPeeringRoutesList",
@@ -1821,6 +1830,8 @@ __all__ = (
     "HealthChecksScopedList",
     "HealthStatus",
     "HealthStatusForNetworkEndpoint",
+    "Help",
+    "HelpLink",
     "HostRule",
     "HttpFaultAbort",
     "HttpFaultDelay",
@@ -2103,8 +2114,10 @@ __all__ = (
     "ListZoneOperationsRequest",
     "ListZonesRequest",
     "LocalDisk",
+    "LocalizedMessage",
     "LocationPolicy",
     "LocationPolicyLocation",
+    "LocationPolicyLocationConstraints",
     "LogConfig",
     "LogConfigCloudAuditOptions",
     "LogConfigCounterOptions",
@@ -2676,6 +2689,7 @@ __all__ = (
     "ValidateUrlMapRequest",
     "VmEndpointNatMappings",
     "VmEndpointNatMappingsInterfaceNatMappings",
+    "VmEndpointNatMappingsInterfaceNatMappingsNatRuleMappings",
     "VmEndpointNatMappingsList",
     "VpnGateway",
     "VpnGatewayAggregatedList",

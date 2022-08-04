@@ -2288,6 +2288,7 @@ def test_attach_disk_rest(request_type):
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "zone": "sample2", "instance": "sample3"}
     request_init["attached_disk_resource"] = {
+        "architecture": "architecture_value",
         "auto_delete": True,
         "boot": True,
         "device_name": "device_name_value",
@@ -2302,6 +2303,7 @@ def test_attach_disk_rest(request_type):
         "guest_os_features": [{"type_": "type__value"}],
         "index": 536,
         "initialize_params": {
+            "architecture": "architecture_value",
             "description": "description_value",
             "disk_name": "disk_name_value",
             "disk_size_gb": 1261,
@@ -2568,6 +2570,7 @@ def test_attach_disk_rest_bad_request(
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "zone": "sample2", "instance": "sample3"}
     request_init["attached_disk_resource"] = {
+        "architecture": "architecture_value",
         "auto_delete": True,
         "boot": True,
         "device_name": "device_name_value",
@@ -2582,6 +2585,7 @@ def test_attach_disk_rest_bad_request(
         "guest_os_features": [{"type_": "type__value"}],
         "index": 536,
         "initialize_params": {
+            "architecture": "architecture_value",
             "description": "description_value",
             "disk_name": "disk_name_value",
             "disk_size_gb": 1261,
@@ -2649,7 +2653,9 @@ def test_attach_disk_rest_flattened():
             project="project_value",
             zone="zone_value",
             instance="instance_value",
-            attached_disk_resource=compute.AttachedDisk(auto_delete=True),
+            attached_disk_resource=compute.AttachedDisk(
+                architecture="architecture_value"
+            ),
         )
         mock_args.update(sample_request)
 
@@ -2688,7 +2694,9 @@ def test_attach_disk_rest_flattened_error(transport: str = "rest"):
             project="project_value",
             zone="zone_value",
             instance="instance_value",
-            attached_disk_resource=compute.AttachedDisk(auto_delete=True),
+            attached_disk_resource=compute.AttachedDisk(
+                architecture="architecture_value"
+            ),
         )
 
 
@@ -2714,6 +2722,7 @@ def test_attach_disk_unary_rest(request_type):
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "zone": "sample2", "instance": "sample3"}
     request_init["attached_disk_resource"] = {
+        "architecture": "architecture_value",
         "auto_delete": True,
         "boot": True,
         "device_name": "device_name_value",
@@ -2728,6 +2737,7 @@ def test_attach_disk_unary_rest(request_type):
         "guest_os_features": [{"type_": "type__value"}],
         "index": 536,
         "initialize_params": {
+            "architecture": "architecture_value",
             "description": "description_value",
             "disk_name": "disk_name_value",
             "disk_size_gb": 1261,
@@ -2972,6 +2982,7 @@ def test_attach_disk_unary_rest_bad_request(
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "zone": "sample2", "instance": "sample3"}
     request_init["attached_disk_resource"] = {
+        "architecture": "architecture_value",
         "auto_delete": True,
         "boot": True,
         "device_name": "device_name_value",
@@ -2986,6 +2997,7 @@ def test_attach_disk_unary_rest_bad_request(
         "guest_os_features": [{"type_": "type__value"}],
         "index": 536,
         "initialize_params": {
+            "architecture": "architecture_value",
             "description": "description_value",
             "disk_name": "disk_name_value",
             "disk_size_gb": 1261,
@@ -3053,7 +3065,9 @@ def test_attach_disk_unary_rest_flattened():
             project="project_value",
             zone="zone_value",
             instance="instance_value",
-            attached_disk_resource=compute.AttachedDisk(auto_delete=True),
+            attached_disk_resource=compute.AttachedDisk(
+                architecture="architecture_value"
+            ),
         )
         mock_args.update(sample_request)
 
@@ -3092,7 +3106,9 @@ def test_attach_disk_unary_rest_flattened_error(transport: str = "rest"):
             project="project_value",
             zone="zone_value",
             instance="instance_value",
-            attached_disk_resource=compute.AttachedDisk(auto_delete=True),
+            attached_disk_resource=compute.AttachedDisk(
+                architecture="architecture_value"
+            ),
         )
 
 
@@ -3130,6 +3146,7 @@ def test_bulk_insert_rest(request_type):
             "description": "description_value",
             "disks": [
                 {
+                    "architecture": "architecture_value",
                     "auto_delete": True,
                     "boot": True,
                     "device_name": "device_name_value",
@@ -3144,6 +3161,7 @@ def test_bulk_insert_rest(request_type):
                     "guest_os_features": [{"type_": "type__value"}],
                     "index": 536,
                     "initialize_params": {
+                        "architecture": "architecture_value",
                         "description": "description_value",
                         "disk_name": "disk_name_value",
                         "disk_size_gb": 1261,
@@ -3183,6 +3201,7 @@ def test_bulk_insert_rest(request_type):
                     "accelerator_type": "accelerator_type_value",
                 }
             ],
+            "key_revocation_action_type": "key_revocation_action_type_value",
             "labels": {},
             "machine_type": "machine_type_value",
             "metadata": {
@@ -3509,6 +3528,7 @@ def test_bulk_insert_rest_bad_request(
             "description": "description_value",
             "disks": [
                 {
+                    "architecture": "architecture_value",
                     "auto_delete": True,
                     "boot": True,
                     "device_name": "device_name_value",
@@ -3523,6 +3543,7 @@ def test_bulk_insert_rest_bad_request(
                     "guest_os_features": [{"type_": "type__value"}],
                     "index": 536,
                     "initialize_params": {
+                        "architecture": "architecture_value",
                         "description": "description_value",
                         "disk_name": "disk_name_value",
                         "disk_size_gb": 1261,
@@ -3562,6 +3583,7 @@ def test_bulk_insert_rest_bad_request(
                     "accelerator_type": "accelerator_type_value",
                 }
             ],
+            "key_revocation_action_type": "key_revocation_action_type_value",
             "labels": {},
             "machine_type": "machine_type_value",
             "metadata": {
@@ -3767,6 +3789,7 @@ def test_bulk_insert_unary_rest(request_type):
             "description": "description_value",
             "disks": [
                 {
+                    "architecture": "architecture_value",
                     "auto_delete": True,
                     "boot": True,
                     "device_name": "device_name_value",
@@ -3781,6 +3804,7 @@ def test_bulk_insert_unary_rest(request_type):
                     "guest_os_features": [{"type_": "type__value"}],
                     "index": 536,
                     "initialize_params": {
+                        "architecture": "architecture_value",
                         "description": "description_value",
                         "disk_name": "disk_name_value",
                         "disk_size_gb": 1261,
@@ -3820,6 +3844,7 @@ def test_bulk_insert_unary_rest(request_type):
                     "accelerator_type": "accelerator_type_value",
                 }
             ],
+            "key_revocation_action_type": "key_revocation_action_type_value",
             "labels": {},
             "machine_type": "machine_type_value",
             "metadata": {
@@ -4124,6 +4149,7 @@ def test_bulk_insert_unary_rest_bad_request(
             "description": "description_value",
             "disks": [
                 {
+                    "architecture": "architecture_value",
                     "auto_delete": True,
                     "boot": True,
                     "device_name": "device_name_value",
@@ -4138,6 +4164,7 @@ def test_bulk_insert_unary_rest_bad_request(
                     "guest_os_features": [{"type_": "type__value"}],
                     "index": 536,
                     "initialize_params": {
+                        "architecture": "architecture_value",
                         "description": "description_value",
                         "disk_name": "disk_name_value",
                         "disk_size_gb": 1261,
@@ -4177,6 +4204,7 @@ def test_bulk_insert_unary_rest_bad_request(
                     "accelerator_type": "accelerator_type_value",
                 }
             ],
+            "key_revocation_action_type": "key_revocation_action_type_value",
             "labels": {},
             "machine_type": "machine_type_value",
             "metadata": {
@@ -6377,6 +6405,7 @@ def test_get_rest(request_type):
             fingerprint="fingerprint_value",
             hostname="hostname_value",
             id=205,
+            key_revocation_action_type="key_revocation_action_type_value",
             kind="kind_value",
             label_fingerprint="label_fingerprint_value",
             last_start_timestamp="last_start_timestamp_value",
@@ -6414,6 +6443,7 @@ def test_get_rest(request_type):
     assert response.fingerprint == "fingerprint_value"
     assert response.hostname == "hostname_value"
     assert response.id == 205
+    assert response.key_revocation_action_type == "key_revocation_action_type_value"
     assert response.kind == "kind_value"
     assert response.label_fingerprint == "label_fingerprint_value"
     assert response.last_start_timestamp == "last_start_timestamp_value"
@@ -8450,6 +8480,7 @@ def test_insert_rest(request_type):
         "description": "description_value",
         "disks": [
             {
+                "architecture": "architecture_value",
                 "auto_delete": True,
                 "boot": True,
                 "device_name": "device_name_value",
@@ -8464,6 +8495,7 @@ def test_insert_rest(request_type):
                 "guest_os_features": [{"type_": "type__value"}],
                 "index": 536,
                 "initialize_params": {
+                    "architecture": "architecture_value",
                     "description": "description_value",
                     "disk_name": "disk_name_value",
                     "disk_size_gb": 1261,
@@ -8504,6 +8536,7 @@ def test_insert_rest(request_type):
         ],
         "hostname": "hostname_value",
         "id": 205,
+        "key_revocation_action_type": "key_revocation_action_type_value",
         "kind": "kind_value",
         "label_fingerprint": "label_fingerprint_value",
         "labels": {},
@@ -8847,6 +8880,7 @@ def test_insert_rest_bad_request(
         "description": "description_value",
         "disks": [
             {
+                "architecture": "architecture_value",
                 "auto_delete": True,
                 "boot": True,
                 "device_name": "device_name_value",
@@ -8861,6 +8895,7 @@ def test_insert_rest_bad_request(
                 "guest_os_features": [{"type_": "type__value"}],
                 "index": 536,
                 "initialize_params": {
+                    "architecture": "architecture_value",
                     "description": "description_value",
                     "disk_name": "disk_name_value",
                     "disk_size_gb": 1261,
@@ -8901,6 +8936,7 @@ def test_insert_rest_bad_request(
         ],
         "hostname": "hostname_value",
         "id": 205,
+        "key_revocation_action_type": "key_revocation_action_type_value",
         "kind": "kind_value",
         "label_fingerprint": "label_fingerprint_value",
         "labels": {},
@@ -9117,6 +9153,7 @@ def test_insert_unary_rest(request_type):
         "description": "description_value",
         "disks": [
             {
+                "architecture": "architecture_value",
                 "auto_delete": True,
                 "boot": True,
                 "device_name": "device_name_value",
@@ -9131,6 +9168,7 @@ def test_insert_unary_rest(request_type):
                 "guest_os_features": [{"type_": "type__value"}],
                 "index": 536,
                 "initialize_params": {
+                    "architecture": "architecture_value",
                     "description": "description_value",
                     "disk_name": "disk_name_value",
                     "disk_size_gb": 1261,
@@ -9171,6 +9209,7 @@ def test_insert_unary_rest(request_type):
         ],
         "hostname": "hostname_value",
         "id": 205,
+        "key_revocation_action_type": "key_revocation_action_type_value",
         "kind": "kind_value",
         "label_fingerprint": "label_fingerprint_value",
         "labels": {},
@@ -9492,6 +9531,7 @@ def test_insert_unary_rest_bad_request(
         "description": "description_value",
         "disks": [
             {
+                "architecture": "architecture_value",
                 "auto_delete": True,
                 "boot": True,
                 "device_name": "device_name_value",
@@ -9506,6 +9546,7 @@ def test_insert_unary_rest_bad_request(
                 "guest_os_features": [{"type_": "type__value"}],
                 "index": 536,
                 "initialize_params": {
+                    "architecture": "architecture_value",
                     "description": "description_value",
                     "disk_name": "disk_name_value",
                     "disk_size_gb": 1261,
@@ -9546,6 +9587,7 @@ def test_insert_unary_rest_bad_request(
         ],
         "hostname": "hostname_value",
         "id": 205,
+        "key_revocation_action_type": "key_revocation_action_type_value",
         "kind": "kind_value",
         "label_fingerprint": "label_fingerprint_value",
         "labels": {},
@@ -23844,6 +23886,7 @@ def test_update_rest(request_type):
         "description": "description_value",
         "disks": [
             {
+                "architecture": "architecture_value",
                 "auto_delete": True,
                 "boot": True,
                 "device_name": "device_name_value",
@@ -23858,6 +23901,7 @@ def test_update_rest(request_type):
                 "guest_os_features": [{"type_": "type__value"}],
                 "index": 536,
                 "initialize_params": {
+                    "architecture": "architecture_value",
                     "description": "description_value",
                     "disk_name": "disk_name_value",
                     "disk_size_gb": 1261,
@@ -23898,6 +23942,7 @@ def test_update_rest(request_type):
         ],
         "hostname": "hostname_value",
         "id": 205,
+        "key_revocation_action_type": "key_revocation_action_type_value",
         "kind": "kind_value",
         "label_fingerprint": "label_fingerprint_value",
         "labels": {},
@@ -24246,6 +24291,7 @@ def test_update_rest_bad_request(
         "description": "description_value",
         "disks": [
             {
+                "architecture": "architecture_value",
                 "auto_delete": True,
                 "boot": True,
                 "device_name": "device_name_value",
@@ -24260,6 +24306,7 @@ def test_update_rest_bad_request(
                 "guest_os_features": [{"type_": "type__value"}],
                 "index": 536,
                 "initialize_params": {
+                    "architecture": "architecture_value",
                     "description": "description_value",
                     "disk_name": "disk_name_value",
                     "disk_size_gb": 1261,
@@ -24300,6 +24347,7 @@ def test_update_rest_bad_request(
         ],
         "hostname": "hostname_value",
         "id": 205,
+        "key_revocation_action_type": "key_revocation_action_type_value",
         "kind": "kind_value",
         "label_fingerprint": "label_fingerprint_value",
         "labels": {},
@@ -24522,6 +24570,7 @@ def test_update_unary_rest(request_type):
         "description": "description_value",
         "disks": [
             {
+                "architecture": "architecture_value",
                 "auto_delete": True,
                 "boot": True,
                 "device_name": "device_name_value",
@@ -24536,6 +24585,7 @@ def test_update_unary_rest(request_type):
                 "guest_os_features": [{"type_": "type__value"}],
                 "index": 536,
                 "initialize_params": {
+                    "architecture": "architecture_value",
                     "description": "description_value",
                     "disk_name": "disk_name_value",
                     "disk_size_gb": 1261,
@@ -24576,6 +24626,7 @@ def test_update_unary_rest(request_type):
         ],
         "hostname": "hostname_value",
         "id": 205,
+        "key_revocation_action_type": "key_revocation_action_type_value",
         "kind": "kind_value",
         "label_fingerprint": "label_fingerprint_value",
         "labels": {},
@@ -24902,6 +24953,7 @@ def test_update_unary_rest_bad_request(
         "description": "description_value",
         "disks": [
             {
+                "architecture": "architecture_value",
                 "auto_delete": True,
                 "boot": True,
                 "device_name": "device_name_value",
@@ -24916,6 +24968,7 @@ def test_update_unary_rest_bad_request(
                 "guest_os_features": [{"type_": "type__value"}],
                 "index": 536,
                 "initialize_params": {
+                    "architecture": "architecture_value",
                     "description": "description_value",
                     "disk_name": "disk_name_value",
                     "disk_size_gb": 1261,
@@ -24956,6 +25009,7 @@ def test_update_unary_rest_bad_request(
         ],
         "hostname": "hostname_value",
         "id": 205,
+        "key_revocation_action_type": "key_revocation_action_type_value",
         "kind": "kind_value",
         "label_fingerprint": "label_fingerprint_value",
         "labels": {},

@@ -1796,6 +1796,7 @@ def test_get_rest(request_type):
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
         return_value = compute.Image(
+            architecture="architecture_value",
             archive_size_bytes=1922,
             creation_timestamp="creation_timestamp_value",
             description="description_value",
@@ -1830,6 +1831,7 @@ def test_get_rest(request_type):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, compute.Image)
+    assert response.architecture == "architecture_value"
     assert response.archive_size_bytes == 1922
     assert response.creation_timestamp == "creation_timestamp_value"
     assert response.description == "description_value"
@@ -2103,6 +2105,7 @@ def test_get_from_family_rest(request_type):
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
         return_value = compute.Image(
+            architecture="architecture_value",
             archive_size_bytes=1922,
             creation_timestamp="creation_timestamp_value",
             description="description_value",
@@ -2137,6 +2140,7 @@ def test_get_from_family_rest(request_type):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, compute.Image)
+    assert response.architecture == "architecture_value"
     assert response.archive_size_bytes == 1922
     assert response.creation_timestamp == "creation_timestamp_value"
     assert response.description == "description_value"
@@ -2680,6 +2684,7 @@ def test_insert_rest(request_type):
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1"}
     request_init["image_resource"] = {
+        "architecture": "architecture_value",
         "archive_size_bytes": 1922,
         "creation_timestamp": "creation_timestamp_value",
         "deprecated": {
@@ -2957,6 +2962,7 @@ def test_insert_rest_bad_request(
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1"}
     request_init["image_resource"] = {
+        "architecture": "architecture_value",
         "archive_size_bytes": 1922,
         "creation_timestamp": "creation_timestamp_value",
         "deprecated": {
@@ -3041,7 +3047,7 @@ def test_insert_rest_flattened():
         # get truthy value for each flattened field
         mock_args = dict(
             project="project_value",
-            image_resource=compute.Image(archive_size_bytes=1922),
+            image_resource=compute.Image(architecture="architecture_value"),
         )
         mock_args.update(sample_request)
 
@@ -3077,7 +3083,7 @@ def test_insert_rest_flattened_error(transport: str = "rest"):
         client.insert(
             compute.InsertImageRequest(),
             project="project_value",
-            image_resource=compute.Image(archive_size_bytes=1922),
+            image_resource=compute.Image(architecture="architecture_value"),
         )
 
 
@@ -3103,6 +3109,7 @@ def test_insert_unary_rest(request_type):
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1"}
     request_init["image_resource"] = {
+        "architecture": "architecture_value",
         "archive_size_bytes": 1922,
         "creation_timestamp": "creation_timestamp_value",
         "deprecated": {
@@ -3358,6 +3365,7 @@ def test_insert_unary_rest_bad_request(
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1"}
     request_init["image_resource"] = {
+        "architecture": "architecture_value",
         "archive_size_bytes": 1922,
         "creation_timestamp": "creation_timestamp_value",
         "deprecated": {
@@ -3442,7 +3450,7 @@ def test_insert_unary_rest_flattened():
         # get truthy value for each flattened field
         mock_args = dict(
             project="project_value",
-            image_resource=compute.Image(archive_size_bytes=1922),
+            image_resource=compute.Image(architecture="architecture_value"),
         )
         mock_args.update(sample_request)
 
@@ -3478,7 +3486,7 @@ def test_insert_unary_rest_flattened_error(transport: str = "rest"):
         client.insert_unary(
             compute.InsertImageRequest(),
             project="project_value",
-            image_resource=compute.Image(archive_size_bytes=1922),
+            image_resource=compute.Image(architecture="architecture_value"),
         )
 
 
@@ -3836,6 +3844,7 @@ def test_patch_rest(request_type):
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "image": "sample2"}
     request_init["image_resource"] = {
+        "architecture": "architecture_value",
         "archive_size_bytes": 1922,
         "creation_timestamp": "creation_timestamp_value",
         "deprecated": {
@@ -4108,6 +4117,7 @@ def test_patch_rest_bad_request(
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "image": "sample2"}
     request_init["image_resource"] = {
+        "architecture": "architecture_value",
         "archive_size_bytes": 1922,
         "creation_timestamp": "creation_timestamp_value",
         "deprecated": {
@@ -4193,7 +4203,7 @@ def test_patch_rest_flattened():
         mock_args = dict(
             project="project_value",
             image="image_value",
-            image_resource=compute.Image(archive_size_bytes=1922),
+            image_resource=compute.Image(architecture="architecture_value"),
         )
         mock_args.update(sample_request)
 
@@ -4231,7 +4241,7 @@ def test_patch_rest_flattened_error(transport: str = "rest"):
             compute.PatchImageRequest(),
             project="project_value",
             image="image_value",
-            image_resource=compute.Image(archive_size_bytes=1922),
+            image_resource=compute.Image(architecture="architecture_value"),
         )
 
 
@@ -4257,6 +4267,7 @@ def test_patch_unary_rest(request_type):
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "image": "sample2"}
     request_init["image_resource"] = {
+        "architecture": "architecture_value",
         "archive_size_bytes": 1922,
         "creation_timestamp": "creation_timestamp_value",
         "deprecated": {
@@ -4507,6 +4518,7 @@ def test_patch_unary_rest_bad_request(
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "image": "sample2"}
     request_init["image_resource"] = {
+        "architecture": "architecture_value",
         "archive_size_bytes": 1922,
         "creation_timestamp": "creation_timestamp_value",
         "deprecated": {
@@ -4592,7 +4604,7 @@ def test_patch_unary_rest_flattened():
         mock_args = dict(
             project="project_value",
             image="image_value",
-            image_resource=compute.Image(archive_size_bytes=1922),
+            image_resource=compute.Image(architecture="architecture_value"),
         )
         mock_args.update(sample_request)
 
@@ -4630,7 +4642,7 @@ def test_patch_unary_rest_flattened_error(transport: str = "rest"):
             compute.PatchImageRequest(),
             project="project_value",
             image="image_value",
-            image_resource=compute.Image(archive_size_bytes=1922),
+            image_resource=compute.Image(architecture="architecture_value"),
         )
 
 

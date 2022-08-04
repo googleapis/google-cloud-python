@@ -279,6 +279,8 @@ __protobuf__ = proto.module(
         "EnableXpnHostProjectRequest",
         "EnableXpnResourceProjectRequest",
         "Error",
+        "ErrorDetails",
+        "ErrorInfo",
         "Errors",
         "ExchangedPeeringRoute",
         "ExchangedPeeringRoutesList",
@@ -455,6 +457,8 @@ __protobuf__ = proto.module(
         "HealthChecksScopedList",
         "HealthStatus",
         "HealthStatusForNetworkEndpoint",
+        "Help",
+        "HelpLink",
         "HostRule",
         "HttpFaultAbort",
         "HttpFaultDelay",
@@ -726,8 +730,10 @@ __protobuf__ = proto.module(
         "ListZoneOperationsRequest",
         "ListZonesRequest",
         "LocalDisk",
+        "LocalizedMessage",
         "LocationPolicy",
         "LocationPolicyLocation",
+        "LocationPolicyLocationConstraints",
         "LogConfig",
         "LogConfigCloudAuditOptions",
         "LogConfigCounterOptions",
@@ -1247,6 +1253,7 @@ __protobuf__ = proto.module(
         "ValidateUrlMapRequest",
         "VmEndpointNatMappings",
         "VmEndpointNatMappingsInterfaceNatMappings",
+        "VmEndpointNatMappingsInterfaceNatMappingsNatRuleMappings",
         "VmEndpointNatMappingsList",
         "VpnGateway",
         "VpnGatewayAggregatedList",
@@ -8989,6 +8996,12 @@ class AttachedDisk(proto.Message):
     r"""An instance-attached disk resource.
 
     Attributes:
+        architecture (str):
+            [Output Only] The architecture of the attached disk. Valid
+            values are ARM64 or X86_64. Check the Architecture enum for
+            the list of possible values.
+
+            This field is a member of `oneof`_ ``_architecture``.
         auto_delete (bool):
             Specifies whether the disk will be
             auto-deleted when the instance is deleted (but
@@ -9114,6 +9127,15 @@ class AttachedDisk(proto.Message):
             This field is a member of `oneof`_ ``_type``.
     """
 
+    class Architecture(proto.Enum):
+        r"""[Output Only] The architecture of the attached disk. Valid values
+        are ARM64 or X86_64.
+        """
+        UNDEFINED_ARCHITECTURE = 0
+        ARCHITECTURE_UNSPECIFIED = 394750507
+        ARM64 = 62547450
+        X86_64 = 425300551
+
     class Interface(proto.Enum):
         r"""Specifies the disk interface to use for attaching this disk,
         which is either SCSI or NVME. The default is SCSI. Persistent
@@ -9143,6 +9165,11 @@ class AttachedDisk(proto.Message):
         PERSISTENT = 460683927
         SCRATCH = 496778970
 
+    architecture = proto.Field(
+        proto.STRING,
+        number=302803283,
+        optional=True,
+    )
     auto_delete = proto.Field(
         proto.BOOL,
         number=464761403,
@@ -9232,6 +9259,12 @@ class AttachedDiskInitializeParams(proto.Message):
     other, but not both.
 
     Attributes:
+        architecture (str):
+            The architecture of the attached disk. Valid values are
+            arm64 or x86_64. Check the Architecture enum for the list of
+            possible values.
+
+            This field is a member of `oneof`_ ``_architecture``.
         description (str):
             An optional description. Provide this
             property when creating the disk.
@@ -9359,6 +9392,15 @@ class AttachedDiskInitializeParams(proto.Message):
             This field is a member of `oneof`_ ``_source_snapshot_encryption_key``.
     """
 
+    class Architecture(proto.Enum):
+        r"""The architecture of the attached disk. Valid values are arm64 or
+        x86_64.
+        """
+        UNDEFINED_ARCHITECTURE = 0
+        ARCHITECTURE_UNSPECIFIED = 394750507
+        ARM64 = 62547450
+        X86_64 = 425300551
+
     class OnUpdateAction(proto.Enum):
         r"""Specifies which action to take on instance update with this
         disk. Default is to use the existing disk.
@@ -9368,6 +9410,11 @@ class AttachedDiskInitializeParams(proto.Message):
         RECREATE_DISK_IF_SOURCE_CHANGED = 398099712
         USE_EXISTING_DISK = 232682233
 
+    architecture = proto.Field(
+        proto.STRING,
+        number=302803283,
+        optional=True,
+    )
     description = proto.Field(
         proto.STRING,
         number=422937596,
@@ -10616,7 +10663,7 @@ class Backend(proto.Message):
             This field is a member of `oneof`_ ``_max_rate_per_instance``.
         max_utilization (float):
             Optional parameter to define a target capacity for the
-            UTILIZATIONbalancing mode. The valid range is [0.0, 1.0].
+            UTILIZATION balancing mode. The valid range is [0.0, 1.0].
             For usage guidelines, see Utilization balancing mode.
 
             This field is a member of `oneof`_ ``_max_utilization``.
@@ -13316,7 +13363,8 @@ class BulkInsertInstanceResource(proto.Message):
 
             This field is a member of `oneof`_ ``_instance_properties``.
         location_policy (google.cloud.compute_v1.types.LocationPolicy):
-            Policy for chosing target zone.
+            Policy for chosing target zone. For more
+            information, see Create VMs in bulk .
 
             This field is a member of `oneof`_ ``_location_policy``.
         min_count (int):
@@ -13971,6 +14019,7 @@ class Commitment(proto.Message):
         """
         UNDEFINED_STATUS = 0
         ACTIVE = 314733318
+        CANCELLED = 41957681
         CREATING = 455564985
         EXPIRED = 482489093
         NOT_YET_ACTIVE = 20607337
@@ -19151,6 +19200,12 @@ class Disk(proto.Message):
     information, read Regional resources.
 
     Attributes:
+        architecture (str):
+            The architecture of the disk. Valid values are ARM64 or
+            X86_64. Check the Architecture enum for the list of possible
+            values.
+
+            This field is a member of `oneof`_ ``_architecture``.
         creation_timestamp (str):
             [Output Only] Creation timestamp in RFC3339 text format.
 
@@ -19434,6 +19489,13 @@ class Disk(proto.Message):
             This field is a member of `oneof`_ ``_zone``.
     """
 
+    class Architecture(proto.Enum):
+        r"""The architecture of the disk. Valid values are ARM64 or X86_64."""
+        UNDEFINED_ARCHITECTURE = 0
+        ARCHITECTURE_UNSPECIFIED = 394750507
+        ARM64 = 62547450
+        X86_64 = 425300551
+
     class Status(proto.Enum):
         r"""[Output Only] The status of disk creation. - CREATING: Disk is
         provisioning. - RESTORING: Source data is being copied into the
@@ -19447,6 +19509,11 @@ class Disk(proto.Message):
         READY = 77848963
         RESTORING = 404263851
 
+    architecture = proto.Field(
+        proto.STRING,
+        number=302803283,
+        optional=True,
+    )
     creation_timestamp = proto.Field(
         proto.STRING,
         number=30525366,
@@ -20499,6 +20566,103 @@ class Error(proto.Message):
     )
 
 
+class ErrorDetails(proto.Message):
+    r"""
+
+    Attributes:
+        error_info (google.cloud.compute_v1.types.ErrorInfo):
+
+            This field is a member of `oneof`_ ``_error_info``.
+        help_ (google.cloud.compute_v1.types.Help):
+
+            This field is a member of `oneof`_ ``_help``.
+        localized_message (google.cloud.compute_v1.types.LocalizedMessage):
+
+            This field is a member of `oneof`_ ``_localized_message``.
+    """
+
+    error_info = proto.Field(
+        proto.MESSAGE,
+        number=25251973,
+        optional=True,
+        message="ErrorInfo",
+    )
+    help_ = proto.Field(
+        proto.MESSAGE,
+        number=3198785,
+        optional=True,
+        message="Help",
+    )
+    localized_message = proto.Field(
+        proto.MESSAGE,
+        number=404537155,
+        optional=True,
+        message="LocalizedMessage",
+    )
+
+
+class ErrorInfo(proto.Message):
+    r"""Describes the cause of the error with structured details. Example of
+    an error when contacting the "pubsub.googleapis.com" API when it is
+    not enabled: { "reason": "API_DISABLED" "domain": "googleapis.com"
+    "metadata": { "resource": "projects/123", "service":
+    "pubsub.googleapis.com" } } This response indicates that the
+    pubsub.googleapis.com API is not enabled. Example of an error that
+    is returned when attempting to create a Spanner instance in a region
+    that is out of stock: { "reason": "STOCKOUT" "domain":
+    "spanner.googleapis.com", "metadata": { "availableRegions":
+    "us-central1,us-east2" } }
+
+    Attributes:
+        domain (str):
+            The logical grouping to which the "reason"
+            belongs. The error domain is typically the
+            registered service name of the tool or product
+            that generates the error. Example:
+            "pubsub.googleapis.com". If the error is
+            generated by some common infrastructure, the
+            error domain must be a globally unique value
+            that identifies the infrastructure. For Google
+            API infrastructure, the error domain is
+            "googleapis.com".
+
+            This field is a member of `oneof`_ ``_domain``.
+        metadatas (Mapping[str, str]):
+            Additional structured details about this error. Keys should
+            match `[a-zA-Z0-9-_]` and be limited to 64 characters in
+            length. When identifying the current value of an exceeded
+            limit, the units should be contained in the key, not the
+            value. For example, rather than {"instanceLimit":
+            "100/request"}, should be returned as,
+            {"instanceLimitPerRequest": "100"}, if the client exceeds
+            the number of instances that can be created in a single
+            (batch) request.
+        reason (str):
+            The reason of the error. This is a constant value that
+            identifies the proximate cause of the error. Error reasons
+            are unique within a particular domain of errors. This should
+            be at most 63 characters and match `[A-Z0-9_]+`.
+
+            This field is a member of `oneof`_ ``_reason``.
+    """
+
+    domain = proto.Field(
+        proto.STRING,
+        number=284415172,
+        optional=True,
+    )
+    metadatas = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=8514340,
+    )
+    reason = proto.Field(
+        proto.STRING,
+        number=138777156,
+        optional=True,
+    )
+
+
 class Errors(proto.Message):
     r"""
 
@@ -20507,6 +20671,12 @@ class Errors(proto.Message):
             [Output Only] The error type identifier for this error.
 
             This field is a member of `oneof`_ ``_code``.
+        error_details (Sequence[google.cloud.compute_v1.types.ErrorDetails]):
+            [Output Only] An optional list of messages that contain the
+            error details. There is a set of defined message types to
+            use for providing details.The syntax depends on the error
+            code. For example, QuotaExceededInfo will have details when
+            the error code is QUOTA_EXCEEDED.
         location (str):
             [Output Only] Indicates the field in the request that caused
             the error. This property is optional.
@@ -20522,6 +20692,11 @@ class Errors(proto.Message):
         proto.STRING,
         number=3059181,
         optional=True,
+    )
+    error_details = proto.RepeatedField(
+        proto.MESSAGE,
+        number=274653963,
+        message="ErrorDetails",
     )
     location = proto.Field(
         proto.STRING,
@@ -22254,9 +22429,8 @@ class ForwardingRule(proto.Message):
         ip_version (str):
             The IP Version that will be used by this
             forwarding rule. Valid options are IPV4 or IPV6.
-            This can only be specified for an external
-            global forwarding rule. Check the IpVersion enum
-            for the list of possible values.
+            Check the IpVersion enum for the list of
+            possible values.
 
             This field is a member of `oneof`_ ``_ip_version``.
         is_mirroring_collector (bool):
@@ -22476,8 +22650,7 @@ class ForwardingRule(proto.Message):
 
     class IpVersion(proto.Enum):
         r"""The IP Version that will be used by this forwarding rule.
-        Valid options are IPV4 or IPV6. This can only be specified for
-        an external global forwarding rule.
+        Valid options are IPV4 or IPV6.
         """
         UNDEFINED_IP_VERSION = 0
         IPV4 = 2254341
@@ -22516,6 +22689,7 @@ class ForwardingRule(proto.Message):
         UNDEFINED_PSC_CONNECTION_STATUS = 0
         ACCEPTED = 246714279
         CLOSED = 380163436
+        NEEDS_ATTENTION = 344491452
         PENDING = 35394935
         REJECTED = 174130302
         STATUS_UNSPECIFIED = 42133066
@@ -28130,6 +28304,52 @@ class HealthStatusForNetworkEndpoint(proto.Message):
     )
 
 
+class Help(proto.Message):
+    r"""Provides links to documentation or for performing an out of
+    band action. For example, if a quota check failed with an error
+    indicating the calling project hasn't enabled the accessed
+    service, this can contain a URL pointing directly to the right
+    place in the developer console to flip the bit.
+
+    Attributes:
+        links (Sequence[google.cloud.compute_v1.types.HelpLink]):
+            URL(s) pointing to additional information on
+            handling the current error.
+    """
+
+    links = proto.RepeatedField(
+        proto.MESSAGE,
+        number=102977465,
+        message="HelpLink",
+    )
+
+
+class HelpLink(proto.Message):
+    r"""Describes a URL link.
+
+    Attributes:
+        description (str):
+            Describes what the link offers.
+
+            This field is a member of `oneof`_ ``_description``.
+        url (str):
+            The URL of the link.
+
+            This field is a member of `oneof`_ ``_url``.
+    """
+
+    description = proto.Field(
+        proto.STRING,
+        number=422937596,
+        optional=True,
+    )
+    url = proto.Field(
+        proto.STRING,
+        number=116079,
+        optional=True,
+    )
+
+
 class HostRule(proto.Message):
     r"""UrlMaps A host-matching rule for a URL. If matched, will use
     the named PathMatcher to select the BackendService.
@@ -29137,6 +29357,12 @@ class Image(proto.Message):
     Images.
 
     Attributes:
+        architecture (str):
+            The architecture of the image. Valid values are ARM64 or
+            X86_64. Check the Architecture enum for the list of possible
+            values.
+
+            This field is a member of `oneof`_ ``_architecture``.
         archive_size_bytes (int):
             Size of the image tar.gz archive stored in
             Google Cloud Storage (in bytes).
@@ -29347,6 +29573,13 @@ class Image(proto.Message):
             image (regional or multi-regional).
     """
 
+    class Architecture(proto.Enum):
+        r"""The architecture of the image. Valid values are ARM64 or X86_64."""
+        UNDEFINED_ARCHITECTURE = 0
+        ARCHITECTURE_UNSPECIFIED = 394750507
+        ARM64 = 62547450
+        X86_64 = 425300551
+
     class SourceType(proto.Enum):
         r"""The type of the image used to create this disk. The default
         and only valid value is RAW.
@@ -29366,6 +29599,11 @@ class Image(proto.Message):
         PENDING = 35394935
         READY = 77848963
 
+    architecture = proto.Field(
+        proto.STRING,
+        number=302803283,
+        optional=True,
+    )
     archive_size_bytes = proto.Field(
         proto.INT64,
         number=381093450,
@@ -33141,6 +33379,14 @@ class Instance(proto.Message):
             identifier is defined by the server.
 
             This field is a member of `oneof`_ ``_id``.
+        key_revocation_action_type (str):
+            KeyRevocationActionType of the instance.
+            Supported options are "STOP" and "NONE". The
+            default value is "NONE" if it is not specified.
+            Check the KeyRevocationActionType enum for the
+            list of possible values.
+
+            This field is a member of `oneof`_ ``_key_revocation_action_type``.
         kind (str):
             [Output Only] Type of the resource. Always compute#instance
             for instances.
@@ -33323,6 +33569,16 @@ class Instance(proto.Message):
             This field is a member of `oneof`_ ``_zone``.
     """
 
+    class KeyRevocationActionType(proto.Enum):
+        r"""KeyRevocationActionType of the instance. Supported options
+        are "STOP" and "NONE". The default value is "NONE" if it is not
+        specified.
+        """
+        UNDEFINED_KEY_REVOCATION_ACTION_TYPE = 0
+        KEY_REVOCATION_ACTION_TYPE_UNSPECIFIED = 467110106
+        NONE = 2402104
+        STOP = 2555906
+
     class PrivateIpv6GoogleAccess(proto.Enum):
         r"""The private IPv6 google access type for the VM. If not specified,
         use INHERIT_FROM_SUBNETWORK as default.
@@ -33416,6 +33672,11 @@ class Instance(proto.Message):
     id = proto.Field(
         proto.UINT64,
         number=3355,
+        optional=True,
+    )
+    key_revocation_action_type = proto.Field(
+        proto.STRING,
+        number=235941474,
         optional=True,
     )
     kind = proto.Field(
@@ -35979,6 +36240,14 @@ class InstanceProperties(proto.Message):
             A list of guest accelerator cards' type and
             count to use for instances created from these
             properties.
+        key_revocation_action_type (str):
+            KeyRevocationActionType of the instance.
+            Supported options are "STOP" and "NONE". The
+            default value is "NONE" if it is not specified.
+            Check the KeyRevocationActionType enum for the
+            list of possible values.
+
+            This field is a member of `oneof`_ ``_key_revocation_action_type``.
         labels (Mapping[str, str]):
             Labels to apply to instances that are created
             from these properties.
@@ -36067,6 +36336,16 @@ class InstanceProperties(proto.Message):
             This field is a member of `oneof`_ ``_tags``.
     """
 
+    class KeyRevocationActionType(proto.Enum):
+        r"""KeyRevocationActionType of the instance. Supported options
+        are "STOP" and "NONE". The default value is "NONE" if it is not
+        specified.
+        """
+        UNDEFINED_KEY_REVOCATION_ACTION_TYPE = 0
+        KEY_REVOCATION_ACTION_TYPE_UNSPECIFIED = 467110106
+        NONE = 2402104
+        STOP = 2555906
+
     class PrivateIpv6GoogleAccess(proto.Enum):
         r"""The private IPv6 google access type for VMs. If not specified, use
         INHERIT_FROM_SUBNETWORK as default. Note that for MachineImage, this
@@ -36108,6 +36387,11 @@ class InstanceProperties(proto.Message):
         proto.MESSAGE,
         number=463595119,
         message="AcceleratorConfig",
+    )
+    key_revocation_action_type = proto.Field(
+        proto.STRING,
+        number=235941474,
+        optional=True,
     )
     labels = proto.MapField(
         proto.STRING,
@@ -51258,6 +51542,37 @@ class LocalDisk(proto.Message):
     )
 
 
+class LocalizedMessage(proto.Message):
+    r"""Provides a localized error message that is safe to return to
+    the user which can be attached to an RPC error.
+
+    Attributes:
+        locale (str):
+            The locale used following the specification
+            defined at
+            http://www.rfc-editor.org/rfc/bcp/bcp47.txt.
+            Examples are: "en-US", "fr-CH", "es-MX".
+
+            This field is a member of `oneof`_ ``_locale``.
+        message (str):
+            The localized error message in the above
+            locale.
+
+            This field is a member of `oneof`_ ``_message``.
+    """
+
+    locale = proto.Field(
+        proto.STRING,
+        number=513150554,
+        optional=True,
+    )
+    message = proto.Field(
+        proto.STRING,
+        number=418054151,
+        optional=True,
+    )
+
+
 class LocationPolicy(proto.Message):
     r"""Configuration for location policy among multiple possible
     locations (e.g. preferences for zone selection among zones in a
@@ -51301,24 +51616,54 @@ class LocationPolicyLocation(proto.Message):
     r"""
 
     Attributes:
+        constraints (google.cloud.compute_v1.types.LocationPolicyLocationConstraints):
+            Constraints that the caller requires on the
+            result distribution in this zone.
+
+            This field is a member of `oneof`_ ``_constraints``.
         preference (str):
-            Preference for a given location.
-            Check the Preference enum for the list of
-            possible values.
+            Preference for a given location. Set to
+            either ALLOW or DENY. Check the Preference enum
+            for the list of possible values.
 
             This field is a member of `oneof`_ ``_preference``.
     """
 
     class Preference(proto.Enum):
-        r"""Preference for a given location."""
+        r"""Preference for a given location. Set to either ALLOW or DENY."""
         UNDEFINED_PREFERENCE = 0
         ALLOW = 62368553
         DENY = 2094604
         PREFERENCE_UNSPECIFIED = 496219571
 
+    constraints = proto.Field(
+        proto.MESSAGE,
+        number=3909174,
+        optional=True,
+        message="LocationPolicyLocationConstraints",
+    )
     preference = proto.Field(
         proto.STRING,
         number=150781147,
+        optional=True,
+    )
+
+
+class LocationPolicyLocationConstraints(proto.Message):
+    r"""Per-zone constraints on location policy for this zone.
+
+    Attributes:
+        max_count (int):
+            Maximum number of items that are allowed to
+            be placed in this zone. The value must be
+            non-negative.
+
+            This field is a member of `oneof`_ ``_max_count``.
+    """
+
+    max_count = proto.Field(
+        proto.INT32,
+        number=287620724,
         optional=True,
     )
 
@@ -52728,6 +53073,11 @@ class Network(proto.Message):
             google defined ULA prefix fd20::/20. .
 
             This field is a member of `oneof`_ ``_enable_ula_internal_ipv6``.
+        firewall_policy (str):
+            [Output Only] URL of the firewall policy the network is
+            associated with.
+
+            This field is a member of `oneof`_ ``_firewall_policy``.
         gateway_i_pv4 (str):
             [Output Only] The gateway address for default routing out of
             the network, selected by GCP.
@@ -52837,6 +53187,11 @@ class Network(proto.Message):
     enable_ula_internal_ipv6 = proto.Field(
         proto.BOOL,
         number=423757720,
+        optional=True,
+    )
+    firewall_policy = proto.Field(
+        proto.STRING,
+        number=498173265,
         optional=True,
     )
     gateway_i_pv4 = proto.Field(
@@ -53540,10 +53895,10 @@ class NetworkEndpointGroupAppEngine(proto.Message):
             request URLs "foo1-dot-appname.appspot.com/v1"
             and "foo1-dot-appname.appspot.com/v2" can be
             backed by the same Serverless NEG with URL mask
-            "-dot-appname.appspot.com/". The URL mask will
-            parse them to { service = "foo1", version = "v1"
-            } and { service = "foo1", version = "v2" }
-            respectively.
+            "<service>-dot-appname.appspot.com/<version>".
+            The URL mask will parse them to { service =
+            "foo1", version = "v1" } and { service = "foo1",
+            version = "v2" } respectively.
 
             This field is a member of `oneof`_ ``_url_mask``.
         version (str):
@@ -53592,9 +53947,10 @@ class NetworkEndpointGroupCloudFunction(proto.Message):
             backend services. For example, request URLs "
             mydomain.com/function1" and
             "mydomain.com/function2" can be backed by the
-            same Serverless NEG with URL mask "/". The URL
-            mask will parse them to { function = "function1"
-            } and { function = "function2" } respectively.
+            same Serverless NEG with URL mask "/<function>".
+            The URL mask will parse them to { function =
+            "function1" } and { function = "function2" }
+            respectively.
 
             This field is a member of `oneof`_ ``_url_mask``.
     """
@@ -63224,8 +63580,6 @@ class RegionTargetHttpsProxiesSetSslCertificatesRequest(proto.Message):
         ssl_certificates (Sequence[str]):
             New set of SslCertificate resources to
             associate with this TargetHttpsProxy resource.
-            Currently exactly one SslCertificate resource
-            must be specified.
     """
 
     ssl_certificates = proto.RepeatedField(
@@ -64016,7 +64370,12 @@ class RequestMirrorPolicy(proto.Message):
     Attributes:
         backend_service (str):
             The full or partial URL to the BackendService
-            resource being mirrored to.
+            resource being mirrored to. The backend service
+            configured for a mirroring policy must reference
+            backends that are of the same type as the
+            original backend service matched in the URL map.
+            Serverless NEG backends are not currently
+            supported as a mirrored backend service.
 
             This field is a member of `oneof`_ ``_backend_service``.
     """
@@ -68230,6 +68589,11 @@ class SavedDisk(proto.Message):
     r"""An instance-attached disk resource.
 
     Attributes:
+        architecture (str):
+            [Output Only] The architecture of the attached disk. Check
+            the Architecture enum for the list of possible values.
+
+            This field is a member of `oneof`_ ``_architecture``.
         kind (str):
             [Output Only] Type of the resource. Always compute#savedDisk
             for attached disks.
@@ -68257,6 +68621,13 @@ class SavedDisk(proto.Message):
             This field is a member of `oneof`_ ``_storage_bytes_status``.
     """
 
+    class Architecture(proto.Enum):
+        r"""[Output Only] The architecture of the attached disk."""
+        UNDEFINED_ARCHITECTURE = 0
+        ARCHITECTURE_UNSPECIFIED = 394750507
+        ARM64 = 62547450
+        X86_64 = 425300551
+
     class StorageBytesStatus(proto.Enum):
         r"""[Output Only] An indicator whether storageBytes is in a stable state
         or it is being adjusted as a result of shared storage reallocation.
@@ -68268,6 +68639,11 @@ class SavedDisk(proto.Message):
         UPDATING = 494614342
         UP_TO_DATE = 101306702
 
+    architecture = proto.Field(
+        proto.STRING,
+        number=302803283,
+        optional=True,
+    )
     kind = proto.Field(
         proto.STRING,
         number=3292052,
@@ -68341,7 +68717,7 @@ class ScalingScheduleStatus(proto.Message):
 
 
 class Scheduling(proto.Message):
-    r"""Sets the scheduling options for an Instance. NextID: 21
+    r"""Sets the scheduling options for an Instance.
 
     Attributes:
         automatic_restart (bool):
@@ -70097,6 +70473,7 @@ class ServiceAttachmentConnectedEndpoint(proto.Message):
         UNDEFINED_STATUS = 0
         ACCEPTED = 246714279
         CLOSED = 380163436
+        NEEDS_ATTENTION = 344491452
         PENDING = 35394935
         REJECTED = 174130302
         STATUS_UNSPECIFIED = 42133066
@@ -73796,6 +74173,12 @@ class Snapshot(proto.Message):
     information, read Creating persistent disk snapshots.
 
     Attributes:
+        architecture (str):
+            [Output Only] The architecture of the snapshot. Valid values
+            are ARM64 or X86_64. Check the Architecture enum for the
+            list of possible values.
+
+            This field is a member of `oneof`_ ``_architecture``.
         auto_created (bool):
             [Output Only] Set to true if snapshots are automatically
             created by applying resource policy on the target disk.
@@ -73813,6 +74196,11 @@ class Snapshot(proto.Message):
             it has a non-empty value.
 
             This field is a member of `oneof`_ ``_chain_name``.
+        creation_size_bytes (int):
+            [Output Only] Size in bytes of the snapshot at creation
+            time.
+
+            This field is a member of `oneof`_ ``_creation_size_bytes``.
         creation_timestamp (str):
             [Output Only] Creation timestamp in RFC3339 text format.
 
@@ -73910,6 +74298,12 @@ class Snapshot(proto.Message):
             snapshot later.
 
             This field is a member of `oneof`_ ``_snapshot_encryption_key``.
+        snapshot_type (str):
+            Indicates the type of the snapshot.
+            Check the SnapshotType enum for the list of
+            possible values.
+
+            This field is a member of `oneof`_ ``_snapshot_type``.
         source_disk (str):
             The source disk used to create this snapshot.
 
@@ -73927,6 +74321,16 @@ class Snapshot(proto.Message):
             of a given disk name.
 
             This field is a member of `oneof`_ ``_source_disk_id``.
+        source_snapshot_schedule_policy (str):
+            [Output Only] URL of the resource policy which created this
+            scheduled snapshot.
+
+            This field is a member of `oneof`_ ``_source_snapshot_schedule_policy``.
+        source_snapshot_schedule_policy_id (str):
+            [Output Only] ID of the resource policy which created this
+            scheduled snapshot.
+
+            This field is a member of `oneof`_ ``_source_snapshot_schedule_policy_id``.
         status (str):
             [Output Only] The status of the snapshot. This can be
             CREATING, DELETING, FAILED, READY, or UPLOADING. Check the
@@ -73954,6 +74358,21 @@ class Snapshot(proto.Message):
             snapshot (regional or multi-regional).
     """
 
+    class Architecture(proto.Enum):
+        r"""[Output Only] The architecture of the snapshot. Valid values are
+        ARM64 or X86_64.
+        """
+        UNDEFINED_ARCHITECTURE = 0
+        ARCHITECTURE_UNSPECIFIED = 394750507
+        ARM64 = 62547450
+        X86_64 = 425300551
+
+    class SnapshotType(proto.Enum):
+        r"""Indicates the type of the snapshot."""
+        UNDEFINED_SNAPSHOT_TYPE = 0
+        ARCHIVE = 506752162
+        STANDARD = 484642493
+
     class Status(proto.Enum):
         r"""[Output Only] The status of the snapshot. This can be CREATING,
         DELETING, FAILED, READY, or UPLOADING.
@@ -73976,6 +74395,11 @@ class Snapshot(proto.Message):
         UPDATING = 494614342
         UP_TO_DATE = 101306702
 
+    architecture = proto.Field(
+        proto.STRING,
+        number=302803283,
+        optional=True,
+    )
     auto_created = proto.Field(
         proto.BOOL,
         number=463922264,
@@ -73984,6 +74408,11 @@ class Snapshot(proto.Message):
     chain_name = proto.Field(
         proto.STRING,
         number=68644169,
+        optional=True,
+    )
+    creation_size_bytes = proto.Field(
+        proto.INT64,
+        number=125400077,
         optional=True,
     )
     creation_timestamp = proto.Field(
@@ -74060,6 +74489,11 @@ class Snapshot(proto.Message):
         optional=True,
         message="CustomerEncryptionKey",
     )
+    snapshot_type = proto.Field(
+        proto.STRING,
+        number=124349653,
+        optional=True,
+    )
     source_disk = proto.Field(
         proto.STRING,
         number=451753793,
@@ -74074,6 +74508,16 @@ class Snapshot(proto.Message):
     source_disk_id = proto.Field(
         proto.STRING,
         number=454190809,
+        optional=True,
+    )
+    source_snapshot_schedule_policy = proto.Field(
+        proto.STRING,
+        number=235756291,
+        optional=True,
+    )
+    source_snapshot_schedule_policy_id = proto.Field(
+        proto.STRING,
+        number=70489047,
         optional=True,
     )
     status = proto.Field(
@@ -74262,6 +74706,14 @@ class SourceInstanceProperties(proto.Message):
             A list of guest accelerator cards' type and
             count to use for instances created from this
             machine image.
+        key_revocation_action_type (str):
+            KeyRevocationActionType of the instance.
+            Supported options are "STOP" and "NONE". The
+            default value is "NONE" if it is not specified.
+            Check the KeyRevocationActionType enum for the
+            list of possible values.
+
+            This field is a member of `oneof`_ ``_key_revocation_action_type``.
         labels (Mapping[str, str]):
             Labels to apply to instances that are created
             from this machine image.
@@ -74315,6 +74767,16 @@ class SourceInstanceProperties(proto.Message):
             This field is a member of `oneof`_ ``_tags``.
     """
 
+    class KeyRevocationActionType(proto.Enum):
+        r"""KeyRevocationActionType of the instance. Supported options
+        are "STOP" and "NONE". The default value is "NONE" if it is not
+        specified.
+        """
+        UNDEFINED_KEY_REVOCATION_ACTION_TYPE = 0
+        KEY_REVOCATION_ACTION_TYPE_UNSPECIFIED = 467110106
+        NONE = 2402104
+        STOP = 2555906
+
     can_ip_forward = proto.Field(
         proto.BOOL,
         number=467731324,
@@ -74339,6 +74801,11 @@ class SourceInstanceProperties(proto.Message):
         proto.MESSAGE,
         number=463595119,
         message="AcceleratorConfig",
+    )
+    key_revocation_action_type = proto.Field(
+        proto.STRING,
+        number=235941474,
+        optional=True,
     )
     labels = proto.MapField(
         proto.STRING,
@@ -77404,9 +77871,10 @@ class TargetInstance(proto.Message):
 
             This field is a member of `oneof`_ ``_name``.
         nat_policy (str):
-            NAT option controlling how IPs are NAT'ed to the instance.
-            Currently only NO_NAT (default value) is supported. Check
-            the NatPolicy enum for the list of possible values.
+            Must have a value of NO_NAT. Protocol forwarding delivers
+            packets while preserving the destination IP address of the
+            forwarding rule referencing the target instance. Check the
+            NatPolicy enum for the list of possible values.
 
             This field is a member of `oneof`_ ``_nat_policy``.
         network (str):
@@ -77430,8 +77898,9 @@ class TargetInstance(proto.Message):
     """
 
     class NatPolicy(proto.Enum):
-        r"""NAT option controlling how IPs are NAT'ed to the instance. Currently
-        only NO_NAT (default value) is supported.
+        r"""Must have a value of NO_NAT. Protocol forwarding delivers packets
+        while preserving the destination IP address of the forwarding rule
+        referencing the target instance.
         """
         UNDEFINED_NAT_POLICY = 0
         NO_NAT = 161455491
@@ -82217,6 +82686,9 @@ class VmEndpointNatMappingsInterfaceNatMappings(proto.Message):
             field nat_ip_port_ranges.
 
             This field is a member of `oneof`_ ``_num_total_nat_ports``.
+        rule_mappings (Sequence[google.cloud.compute_v1.types.VmEndpointNatMappingsInterfaceNatMappingsNatRuleMappings]):
+            Information about mappings provided by rules
+            in this NAT.
         source_alias_ip_range (str):
             Alias IP range for this interface endpoint.
             It will be a private (RFC 1918) IP range.
@@ -82247,6 +82719,11 @@ class VmEndpointNatMappingsInterfaceNatMappings(proto.Message):
         number=299904384,
         optional=True,
     )
+    rule_mappings = proto.RepeatedField(
+        proto.MESSAGE,
+        number=486192968,
+        message="VmEndpointNatMappingsInterfaceNatMappingsNatRuleMappings",
+    )
     source_alias_ip_range = proto.Field(
         proto.STRING,
         number=440340952,
@@ -82255,6 +82732,63 @@ class VmEndpointNatMappingsInterfaceNatMappings(proto.Message):
     source_virtual_ip = proto.Field(
         proto.STRING,
         number=149836159,
+        optional=True,
+    )
+
+
+class VmEndpointNatMappingsInterfaceNatMappingsNatRuleMappings(proto.Message):
+    r"""Contains information of NAT Mappings provided by a NAT Rule.
+
+    Attributes:
+        drain_nat_ip_port_ranges (Sequence[str]):
+            List of all drain IP:port-range mappings assigned to this
+            interface by this rule. These ranges are inclusive, that is,
+            both the first and the last ports can be used for NAT.
+            Example: ["2.2.2.2:12345-12355", "1.1.1.1:2234-2234"].
+        nat_ip_port_ranges (Sequence[str]):
+            A list of all IP:port-range mappings assigned to this
+            interface by this rule. These ranges are inclusive, that is,
+            both the first and the last ports can be used for NAT.
+            Example: ["2.2.2.2:12345-12355", "1.1.1.1:2234-2234"].
+        num_total_drain_nat_ports (int):
+            Total number of drain ports across all NAT IPs allocated to
+            this interface by this rule. It equals the aggregated port
+            number in the field drain_nat_ip_port_ranges.
+
+            This field is a member of `oneof`_ ``_num_total_drain_nat_ports``.
+        num_total_nat_ports (int):
+            Total number of ports across all NAT IPs allocated to this
+            interface by this rule. It equals the aggregated port number
+            in the field nat_ip_port_ranges.
+
+            This field is a member of `oneof`_ ``_num_total_nat_ports``.
+        rule_number (int):
+            Rule number of the NAT Rule.
+
+            This field is a member of `oneof`_ ``_rule_number``.
+    """
+
+    drain_nat_ip_port_ranges = proto.RepeatedField(
+        proto.STRING,
+        number=395440577,
+    )
+    nat_ip_port_ranges = proto.RepeatedField(
+        proto.STRING,
+        number=531830810,
+    )
+    num_total_drain_nat_ports = proto.Field(
+        proto.INT32,
+        number=335532793,
+        optional=True,
+    )
+    num_total_nat_ports = proto.Field(
+        proto.INT32,
+        number=299904384,
+        optional=True,
+    )
+    rule_number = proto.Field(
+        proto.INT32,
+        number=535211500,
         optional=True,
     )
 
@@ -83554,6 +84088,7 @@ class Warning(proto.Message):
         EXTERNAL_API_WARNING = 175546307
         FIELD_VALUE_OVERRIDEN = 329669423
         INJECTED_KERNELS_DEPRECATED = 417377419
+        INVALID_HEALTH_CHECK_FOR_DYNAMIC_WIEGHTED_LB = 401542606
         LARGE_DEPLOYMENT_WARNING = 481440678
         MISSING_TYPE_DEPENDENCY = 344505463
         NEXT_HOP_ADDRESS_NOT_ASSIGNED = 324964999
@@ -83626,6 +84161,7 @@ class Warnings(proto.Message):
         EXTERNAL_API_WARNING = 175546307
         FIELD_VALUE_OVERRIDEN = 329669423
         INJECTED_KERNELS_DEPRECATED = 417377419
+        INVALID_HEALTH_CHECK_FOR_DYNAMIC_WIEGHTED_LB = 401542606
         LARGE_DEPLOYMENT_WARNING = 481440678
         MISSING_TYPE_DEPENDENCY = 344505463
         NEXT_HOP_ADDRESS_NOT_ASSIGNED = 324964999

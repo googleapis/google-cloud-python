@@ -42,6 +42,8 @@ s.replace(
 # Work around formatting issues with docstrings
 s.replace("google/cloud/**/types/compute.py", """\"IT_\"""", """`IT_`""")
 s.replace("google/cloud/**/types/compute.py", """\"NS_\"""", """`NS_`""")
+s.replace("google/cloud/**/types/compute.py", """\/\[a-zA-Z0-9-_\]\/""", """`[a-zA-Z0-9-_]`""")
+s.replace("google/cloud/**/types/compute.py", """\/\[A-Z0-9_\]\+\/""", """`[A-Z0-9_]+`""")
 
 # ----------------------------------------------------------------------------
 # Add templated files

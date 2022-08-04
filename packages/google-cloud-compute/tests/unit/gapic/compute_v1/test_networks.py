@@ -1854,6 +1854,7 @@ def test_get_rest(request_type):
             creation_timestamp="creation_timestamp_value",
             description="description_value",
             enable_ula_internal_ipv6=True,
+            firewall_policy="firewall_policy_value",
             gateway_i_pv4="gateway_i_pv4_value",
             id=205,
             internal_ipv6_range="internal_ipv6_range_value",
@@ -1881,6 +1882,7 @@ def test_get_rest(request_type):
     assert response.creation_timestamp == "creation_timestamp_value"
     assert response.description == "description_value"
     assert response.enable_ula_internal_ipv6 is True
+    assert response.firewall_policy == "firewall_policy_value"
     assert response.gateway_i_pv4 == "gateway_i_pv4_value"
     assert response.id == 205
     assert response.internal_ipv6_range == "internal_ipv6_range_value"
@@ -2419,6 +2421,7 @@ def test_insert_rest(request_type):
         "creation_timestamp": "creation_timestamp_value",
         "description": "description_value",
         "enable_ula_internal_ipv6": True,
+        "firewall_policy": "firewall_policy_value",
         "gateway_i_pv4": "gateway_i_pv4_value",
         "id": 205,
         "internal_ipv6_range": "internal_ipv6_range_value",
@@ -2666,6 +2669,7 @@ def test_insert_rest_bad_request(
         "creation_timestamp": "creation_timestamp_value",
         "description": "description_value",
         "enable_ula_internal_ipv6": True,
+        "firewall_policy": "firewall_policy_value",
         "gateway_i_pv4": "gateway_i_pv4_value",
         "id": 205,
         "internal_ipv6_range": "internal_ipv6_range_value",
@@ -2792,6 +2796,7 @@ def test_insert_unary_rest(request_type):
         "creation_timestamp": "creation_timestamp_value",
         "description": "description_value",
         "enable_ula_internal_ipv6": True,
+        "firewall_policy": "firewall_policy_value",
         "gateway_i_pv4": "gateway_i_pv4_value",
         "id": 205,
         "internal_ipv6_range": "internal_ipv6_range_value",
@@ -3017,6 +3022,7 @@ def test_insert_unary_rest_bad_request(
         "creation_timestamp": "creation_timestamp_value",
         "description": "description_value",
         "enable_ula_internal_ipv6": True,
+        "firewall_policy": "firewall_policy_value",
         "gateway_i_pv4": "gateway_i_pv4_value",
         "id": 205,
         "internal_ipv6_range": "internal_ipv6_range_value",
@@ -3831,6 +3837,7 @@ def test_patch_rest(request_type):
         "creation_timestamp": "creation_timestamp_value",
         "description": "description_value",
         "enable_ula_internal_ipv6": True,
+        "firewall_policy": "firewall_policy_value",
         "gateway_i_pv4": "gateway_i_pv4_value",
         "id": 205,
         "internal_ipv6_range": "internal_ipv6_range_value",
@@ -4083,6 +4090,7 @@ def test_patch_rest_bad_request(
         "creation_timestamp": "creation_timestamp_value",
         "description": "description_value",
         "enable_ula_internal_ipv6": True,
+        "firewall_policy": "firewall_policy_value",
         "gateway_i_pv4": "gateway_i_pv4_value",
         "id": 205,
         "internal_ipv6_range": "internal_ipv6_range_value",
@@ -4212,6 +4220,7 @@ def test_patch_unary_rest(request_type):
         "creation_timestamp": "creation_timestamp_value",
         "description": "description_value",
         "enable_ula_internal_ipv6": True,
+        "firewall_policy": "firewall_policy_value",
         "gateway_i_pv4": "gateway_i_pv4_value",
         "id": 205,
         "internal_ipv6_range": "internal_ipv6_range_value",
@@ -4442,6 +4451,7 @@ def test_patch_unary_rest_bad_request(
         "creation_timestamp": "creation_timestamp_value",
         "description": "description_value",
         "enable_ula_internal_ipv6": True,
+        "firewall_policy": "firewall_policy_value",
         "gateway_i_pv4": "gateway_i_pv4_value",
         "id": 205,
         "internal_ipv6_range": "internal_ipv6_range_value",
