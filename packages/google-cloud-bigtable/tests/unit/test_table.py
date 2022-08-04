@@ -2206,10 +2206,12 @@ class _MockFailureIterator_2(object):
     __next__ = next
 
 
-class _ReadRowsResponseV2(object):
-    def __init__(self, chunks, last_scanned_row_key=""):
-        self.chunks = chunks
-        self.last_scanned_row_key = last_scanned_row_key
+def _ReadRowsResponseV2(chunks, last_scanned_row_key=b""):
+    from google.cloud.bigtable_v2.types import bigtable as messages_v2_pb2
+
+    return messages_v2_pb2.ReadRowsResponse(
+        chunks=chunks, last_scanned_row_key=last_scanned_row_key
+    )
 
 
 def _TablePB(*args, **kw):

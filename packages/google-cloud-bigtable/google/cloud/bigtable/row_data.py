@@ -474,7 +474,11 @@ class PartialRowsData(object):
 
     def _read_next_response(self):
         """Helper for :meth:`__iter__`."""
-        return self.retry(self._read_next, on_error=self._on_error)()
+        resp_protoplus = self.retry(self._read_next, on_error=self._on_error)()
+        # unwrap the underlying protobuf, there is a significant amount of
+        # overhead that protoplus imposes for very little gain. The protos
+        # are not user visible, so we just use the raw protos for merging.
+        return data_messages_v2_pb2.ReadRowsResponse.pb(resp_protoplus)
 
     def __iter__(self):
         """Consume the ``ReadRowsResponse`` s from the stream.
@@ -543,11 +547,12 @@ class PartialRowsData(object):
     def _update_cell(self, chunk):
         if self._cell is None:
             qualifier = None
-            if "qualifier" in chunk:
-                qualifier = chunk.qualifier
+            if chunk.HasField("qualifier"):
+                qualifier = chunk.qualifier.value
+
             family = None
-            if "family_name" in chunk:
-                family = chunk.family_name
+            if chunk.HasField("family_name"):
+                family = chunk.family_name.value
 
             self._cell = PartialCellData(
                 chunk.row_key,
@@ -577,8 +582,8 @@ class PartialRowsData(object):
 
         # No reset with other keys
         _raise_if(chunk.row_key)
-        _raise_if("family_name" in chunk)
-        _raise_if("qualifier" in chunk)
+        _raise_if(chunk.HasField("family_name"))
+        _raise_if(chunk.HasField("qualifier"))
         _raise_if(chunk.timestamp_micros)
         _raise_if(chunk.labels)
         _raise_if(chunk.value_size)

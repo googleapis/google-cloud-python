@@ -637,15 +637,15 @@ def test_partial_rows_data__copy_from_previous_filled():
 
 def test_partial_rows_data_valid_last_scanned_row_key_on_start():
     client = _Client()
-    response = _ReadRowsResponseV2(chunks=(), last_scanned_row_key="2.AFTER")
+    response = _ReadRowsResponseV2([], last_scanned_row_key=b"2.AFTER")
     iterator = _MockCancellableIterator(response)
     client._data_stub = mock.MagicMock()
     client._data_stub.read_rows.side_effect = [iterator]
     request = object()
     yrd = _make_partial_rows_data(client._data_stub.read_rows, request)
-    yrd.last_scanned_row_key = "1.BEFORE"
+    yrd.last_scanned_row_key = b"1.BEFORE"
     _partial_rows_data_consume_all(yrd)
-    assert yrd.last_scanned_row_key == "2.AFTER"
+    assert yrd.last_scanned_row_key == b"2.AFTER"
 
 
 def test_partial_rows_data_invalid_empty_chunk():
@@ -666,6 +666,7 @@ def test_partial_rows_data_invalid_empty_chunk():
 
 def test_partial_rows_data_state_cell_in_progress():
     from google.cloud.bigtable_v2.services.bigtable import BigtableClient
+    from google.cloud.bigtable_v2.types import bigtable as messages_v2_pb2
 
     LABELS = ["L1", "L2"]
 
@@ -682,6 +683,9 @@ def test_partial_rows_data_state_cell_in_progress():
         value=VALUE,
         labels=LABELS,
     )
+    # _update_cell expects to be called after the protoplus wrapper has been
+    # shucked
+    chunk = messages_v2_pb2.ReadRowsResponse.CellChunk.pb(chunk)
     yrd._update_cell(chunk)
 
     more_cell_data = _ReadRowsResponseCellChunkPB(value=VALUE)
@@ -1455,10 +1459,12 @@ class _PartialCellData(object):
         self.__dict__.update(kw)
 
 
-class _ReadRowsResponseV2(object):
-    def __init__(self, chunks, last_scanned_row_key=""):
-        self.chunks = chunks
-        self.last_scanned_row_key = last_scanned_row_key
+def _ReadRowsResponseV2(chunks, last_scanned_row_key=b""):
+    from google.cloud.bigtable_v2.types import bigtable as messages_v2_pb2
+
+    return messages_v2_pb2.ReadRowsResponse(
+        chunks=chunks, last_scanned_row_key=last_scanned_row_key
+    )
 
 
 def _generate_cell_chunks(chunk_text_pbs):
