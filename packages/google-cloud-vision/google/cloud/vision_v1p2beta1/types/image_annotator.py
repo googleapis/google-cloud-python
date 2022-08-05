@@ -745,11 +745,18 @@ class TextDetectionParams(proto.Message):
             By default, Cloud Vision API only includes confidence score
             for DOCUMENT_TEXT_DETECTION result. Set the flag to true to
             include confidence score for TEXT_DETECTION as well.
+        advanced_ocr_options (Sequence[str]):
+            A list of advanced OCR options to fine-tune
+            OCR behavior.
     """
 
     enable_text_detection_confidence_score = proto.Field(
         proto.BOOL,
         number=9,
+    )
+    advanced_ocr_options = proto.RepeatedField(
+        proto.STRING,
+        number=11,
     )
 
 
