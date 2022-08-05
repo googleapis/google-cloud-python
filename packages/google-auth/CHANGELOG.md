@@ -4,6 +4,24 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+## [2.10.0](https://github.com/googleapis/google-auth-library-python/compare/v2.9.1...v2.10.0) (2022-08-05)
+
+
+### Features
+
+* add integration tests for pluggable auth ([#1073](https://github.com/googleapis/google-auth-library-python/issues/1073)) ([f8d776a](https://github.com/googleapis/google-auth-library-python/commit/f8d776a290270da8c43b0f5ba8e8a1fabfcf4dd3))
+* support for configurable token lifetime ([0dc6a9a](https://github.com/googleapis/google-auth-library-python/commit/0dc6a9a30b994f20ad027bfc3715792aa97bd8af))
+* support for configurable token lifetime ([#1079](https://github.com/googleapis/google-auth-library-python/issues/1079)) ([0dc6a9a](https://github.com/googleapis/google-auth-library-python/commit/0dc6a9a30b994f20ad027bfc3715792aa97bd8af))
+
+
+### Bug Fixes
+
+* async certificate decoding ([#1085](https://github.com/googleapis/google-auth-library-python/issues/1085)) ([741c6c6](https://github.com/googleapis/google-auth-library-python/commit/741c6c6f5e2d4e98cbae1e6c7a9bc128c6a97bae))
+* Async system tests were not unwrapping async_generators ([#1086](https://github.com/googleapis/google-auth-library-python/issues/1086)) ([29d248a](https://github.com/googleapis/google-auth-library-python/commit/29d248acaf554c2bdba81c96999371c9e610c6b6))
+* Fix IDTokenCredentials update bug ([#1072](https://github.com/googleapis/google-auth-library-python/issues/1072)) ([b62c25c](https://github.com/googleapis/google-auth-library-python/commit/b62c25ca408f72d86fda35b611edb3d2c6eb4f85))
+* make expiration_time optional in response schema ([#1091](https://github.com/googleapis/google-auth-library-python/issues/1091)) ([032fb8d](https://github.com/googleapis/google-auth-library-python/commit/032fb8d1685a50081974ba85e6ead946f30a1ea8))
+* refactor credential subclass parameters ([#1095](https://github.com/googleapis/google-auth-library-python/issues/1095)) ([8d15f69](https://github.com/googleapis/google-auth-library-python/commit/8d15f69711f38196934eabff5f05be26b3afcbf6))
+
 ## [2.9.1](https://github.com/googleapis/google-auth-library-python/compare/v2.9.0...v2.9.1) (2022-07-12)
 
 
