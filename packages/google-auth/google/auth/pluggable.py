@@ -262,11 +262,14 @@ class Credentials(external_account.Credentials):
                     response["code"], response["message"]
                 )
             )
-        if "expiration_time" not in response:
+        if (
+            "expiration_time" not in response
+            and self._credential_source_executable_output_file
+        ):
             raise ValueError(
-                "The executable response is missing the expiration_time field."
+                "The executable response must contain an expiration_time for successful responses when an output_file has been specified in the configuration."
             )
-        if response["expiration_time"] < time.time():
+        if "expiration_time" in response and response["expiration_time"] < time.time():
             raise exceptions.RefreshError(
                 "The token returned by the executable is expired."
             )

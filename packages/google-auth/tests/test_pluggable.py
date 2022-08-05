@@ -636,7 +636,9 @@ class TestCredentials(object):
             )
 
     @mock.patch.dict(os.environ, {"GOOGLE_EXTERNAL_ACCOUNT_ALLOW_EXECUTABLES": "1"})
-    def test_retrieve_subject_token_missing_expiration_time(self):
+    def test_retrieve_subject_token_without_expiration_time_should_fail_when_output_file_specified(
+        self
+    ):
         EXECUTABLE_SUCCESSFUL_OIDC_RESPONSE = {
             "version": 1,
             "success": True,
@@ -658,8 +660,63 @@ class TestCredentials(object):
                 _ = credentials.retrieve_subject_token(None)
 
             assert excinfo.match(
-                r"The executable response is missing the expiration_time field."
+                r"The executable response must contain an expiration_time for successful responses when an output_file has been specified in the configuration."
             )
+
+    @mock.patch.dict(os.environ, {"GOOGLE_EXTERNAL_ACCOUNT_ALLOW_EXECUTABLES": "1"})
+    def test_retrieve_subject_token_without_expiration_time_should_fail_when_retrieving_from_output_file(
+        self
+    ):
+        ACTUAL_CREDENTIAL_SOURCE_EXECUTABLE_OUTPUT_FILE = "actual_output_file"
+        ACTUAL_CREDENTIAL_SOURCE_EXECUTABLE = {
+            "command": "command",
+            "timeout_millis": 30000,
+            "output_file": ACTUAL_CREDENTIAL_SOURCE_EXECUTABLE_OUTPUT_FILE,
+        }
+        ACTUAL_CREDENTIAL_SOURCE = {"executable": ACTUAL_CREDENTIAL_SOURCE_EXECUTABLE}
+        data = self.EXECUTABLE_SUCCESSFUL_OIDC_RESPONSE_ID_TOKEN.copy()
+        data.pop("expiration_time")
+
+        with open(ACTUAL_CREDENTIAL_SOURCE_EXECUTABLE_OUTPUT_FILE, "w") as output_file:
+            json.dump(data, output_file)
+
+        credentials = self.make_pluggable(credential_source=ACTUAL_CREDENTIAL_SOURCE)
+
+        with pytest.raises(ValueError) as excinfo:
+            _ = credentials.retrieve_subject_token(None)
+
+        assert excinfo.match(
+            r"The executable response must contain an expiration_time for successful responses when an output_file has been specified in the configuration."
+        )
+        os.remove(ACTUAL_CREDENTIAL_SOURCE_EXECUTABLE_OUTPUT_FILE)
+
+    @mock.patch.dict(os.environ, {"GOOGLE_EXTERNAL_ACCOUNT_ALLOW_EXECUTABLES": "1"})
+    def test_retrieve_subject_token_without_expiration_time_should_pass_when_output_file_not_specified(
+        self
+    ):
+        EXECUTABLE_SUCCESSFUL_OIDC_RESPONSE = {
+            "version": 1,
+            "success": True,
+            "token_type": "urn:ietf:params:oauth:token-type:id_token",
+            "id_token": self.EXECUTABLE_OIDC_TOKEN,
+        }
+
+        CREDENTIAL_SOURCE = {
+            "executable": {"command": "command", "timeout_millis": 30000}
+        }
+
+        with mock.patch(
+            "subprocess.run",
+            return_value=subprocess.CompletedProcess(
+                args=[],
+                stdout=json.dumps(EXECUTABLE_SUCCESSFUL_OIDC_RESPONSE).encode("UTF-8"),
+                returncode=0,
+            ),
+        ):
+            credentials = self.make_pluggable(credential_source=CREDENTIAL_SOURCE)
+            subject_token = credentials.retrieve_subject_token(None)
+
+            assert subject_token == self.EXECUTABLE_OIDC_TOKEN
 
     @mock.patch.dict(os.environ, {"GOOGLE_EXTERNAL_ACCOUNT_ALLOW_EXECUTABLES": "1"})
     def test_retrieve_subject_token_missing_token_type(self):
