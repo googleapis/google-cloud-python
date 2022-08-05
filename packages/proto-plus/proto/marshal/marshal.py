@@ -18,6 +18,7 @@ import enum
 from google.protobuf import message
 from google.protobuf import duration_pb2
 from google.protobuf import timestamp_pb2
+from google.protobuf import field_mask_pb2
 from google.protobuf import struct_pb2
 from google.protobuf import wrappers_pb2
 
@@ -31,6 +32,7 @@ from proto.marshal.rules import stringy_numbers
 from proto.marshal.rules import dates
 from proto.marshal.rules import struct
 from proto.marshal.rules import wrappers
+from proto.marshal.rules import field_mask
 from proto.primitives import ProtoType
 
 
@@ -125,6 +127,9 @@ class BaseMarshal:
         # Register date and time wrappers.
         self.register(timestamp_pb2.Timestamp, dates.TimestampRule())
         self.register(duration_pb2.Duration, dates.DurationRule())
+
+        # Register FieldMask wrappers.
+        self.register(field_mask_pb2.FieldMask, field_mask.FieldMaskRule())
 
         # Register nullable primitive wrappers.
         self.register(wrappers_pb2.BoolValue, wrappers.BoolValueRule())

@@ -98,6 +98,24 @@ def test_timestamp_write_pb2():
     assert Foo.pb(foo).event_time.seconds == 1335020400
 
 
+def test_timestamp_write_string():
+    class Foo(proto.Message):
+        event_time = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            message=timestamp_pb2.Timestamp,
+        )
+
+    foo = Foo()
+    foo.event_time = "2012-04-21T15:00:00Z"
+    assert isinstance(foo.event_time, DatetimeWithNanoseconds)
+    assert isinstance(Foo.pb(foo).event_time, timestamp_pb2.Timestamp)
+    assert foo.event_time.year == 2012
+    assert foo.event_time.month == 4
+    assert foo.event_time.hour == 15
+    assert Foo.pb(foo).event_time.seconds == 1335020400
+
+
 def test_timestamp_rmw_nanos():
     class Foo(proto.Message):
         event_time = proto.Field(
@@ -201,6 +219,22 @@ def test_duration_write_pb2():
 
     foo = Foo()
     foo.ttl = duration_pb2.Duration(seconds=120)
+    assert isinstance(foo.ttl, timedelta)
+    assert isinstance(Foo.pb(foo).ttl, duration_pb2.Duration)
+    assert foo.ttl.seconds == 120
+    assert Foo.pb(foo).ttl.seconds == 120
+
+
+def test_duration_write_string():
+    class Foo(proto.Message):
+        ttl = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            message=duration_pb2.Duration,
+        )
+
+    foo = Foo()
+    foo.ttl = "120s"
     assert isinstance(foo.ttl, timedelta)
     assert isinstance(Foo.pb(foo).ttl, duration_pb2.Duration)
     assert foo.ttl.seconds == 120

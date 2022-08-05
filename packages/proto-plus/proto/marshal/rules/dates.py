@@ -47,6 +47,10 @@ class TimestampRule:
                 seconds=int(value.timestamp()),
                 nanos=value.microsecond * 1000,
             )
+        if isinstance(value, str):
+            timestamp_value = timestamp_pb2.Timestamp()
+            timestamp_value.FromJsonString(value=value)
+            return timestamp_value
         return value
 
 
@@ -74,4 +78,8 @@ class DurationRule:
                 seconds=value.days * 86400 + value.seconds,
                 nanos=value.microseconds * 1000,
             )
+        if isinstance(value, str):
+            duration_value = duration_pb2.Duration()
+            duration_value.FromJsonString(value=value)
+            return duration_value
         return value
