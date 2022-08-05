@@ -17,11 +17,15 @@ from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
+from google.analytics.admin_v1alpha.types import access_report
+from google.analytics.admin_v1alpha.types import audience as gaa_audience
 from google.analytics.admin_v1alpha.types import resources
 
 __protobuf__ = proto.module(
     package="google.analytics.admin.v1alpha",
     manifest={
+        "RunAccessReportRequest",
+        "RunAccessReportResponse",
         "GetAccountRequest",
         "ListAccountsRequest",
         "ListAccountsResponse",
@@ -114,8 +118,207 @@ __protobuf__ = proto.module(
         "ListDataStreamsRequest",
         "ListDataStreamsResponse",
         "GetDataStreamRequest",
+        "GetAudienceRequest",
+        "ListAudiencesRequest",
+        "ListAudiencesResponse",
+        "CreateAudienceRequest",
+        "UpdateAudienceRequest",
+        "ArchiveAudienceRequest",
+        "GetAttributionSettingsRequest",
+        "UpdateAttributionSettingsRequest",
     },
 )
+
+
+class RunAccessReportRequest(proto.Message):
+    r"""The request for a Data Access Record Report.
+
+    Attributes:
+        entity (str):
+            The Data Access Report is requested for this
+            property. For example if "123" is your GA4
+            property ID, then entity should be
+            "properties/123".
+        dimensions (Sequence[google.analytics.admin_v1alpha.types.AccessDimension]):
+            The dimensions requested and displayed in the
+            response. Requests are allowed up to 9
+            dimensions.
+        metrics (Sequence[google.analytics.admin_v1alpha.types.AccessMetric]):
+            The metrics requested and displayed in the
+            response. Requests are allowed up to 10 metrics.
+        date_ranges (Sequence[google.analytics.admin_v1alpha.types.AccessDateRange]):
+            Date ranges of access records to read. If
+            multiple date ranges are requested, each
+            response row will contain a zero based date
+            range index. If two date ranges overlap, the
+            access records for the overlapping days is
+            included in the response rows for both date
+            ranges. Requests are allowed up to 2 date
+            ranges.
+        dimension_filter (google.analytics.admin_v1alpha.types.AccessFilterExpression):
+            Dimension filters allow you to restrict report response to
+            specific dimension values which match the filter. For
+            example, filtering on access records of a single user. To
+            learn more, see `Fundamentals of Dimension
+            Filters <https://developers.google.com/analytics/devguides/reporting/data/v1/basics#dimension_filters>`__
+            for examples. Metrics cannot be used in this filter.
+        metric_filter (google.analytics.admin_v1alpha.types.AccessFilterExpression):
+            Metric filters allow you to restrict report
+            response to specific metric values which match
+            the filter. Metric filters are applied after
+            aggregating the report's rows, similar to SQL
+            having-clause. Dimensions cannot be used in this
+            filter.
+        offset (int):
+            The row count of the start row. The first row is counted as
+            row 0. If offset is unspecified, it is treated as 0. If
+            offset is zero, then this method will return the first page
+            of results with ``limit`` entries.
+
+            To learn more about this pagination parameter, see
+            `Pagination <https://developers.google.com/analytics/devguides/reporting/data/v1/basics#pagination>`__.
+        limit (int):
+            The number of rows to return. If unspecified, 10,000 rows
+            are returned. The API returns a maximum of 100,000 rows per
+            request, no matter how many you ask for. ``limit`` must be
+            positive.
+
+            The API may return fewer rows than the requested ``limit``,
+            if there aren't as many remaining rows as the ``limit``. For
+            instance, there are fewer than 300 possible values for the
+            dimension ``country``, so when reporting on only
+            ``country``, you can't get more than 300 rows, even if you
+            set ``limit`` to a higher value.
+
+            To learn more about this pagination parameter, see
+            `Pagination <https://developers.google.com/analytics/devguides/reporting/data/v1/basics#pagination>`__.
+        time_zone (str):
+            This request's time zone if specified. If unspecified, the
+            property's time zone is used. The request's time zone is
+            used to interpret the start & end dates of the report.
+
+            Formatted as strings from the IANA Time Zone database
+            (https://www.iana.org/time-zones); for example
+            "America/New_York" or "Asia/Tokyo".
+        order_bys (Sequence[google.analytics.admin_v1alpha.types.AccessOrderBy]):
+            Specifies how rows are ordered in the
+            response.
+        return_entity_quota (bool):
+            Toggles whether to return the current state of this
+            Analytics Property's quota. Quota is returned in
+            `AccessQuota <#AccessQuota>`__.
+    """
+
+    entity = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    dimensions = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message=access_report.AccessDimension,
+    )
+    metrics = proto.RepeatedField(
+        proto.MESSAGE,
+        number=3,
+        message=access_report.AccessMetric,
+    )
+    date_ranges = proto.RepeatedField(
+        proto.MESSAGE,
+        number=4,
+        message=access_report.AccessDateRange,
+    )
+    dimension_filter = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=access_report.AccessFilterExpression,
+    )
+    metric_filter = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message=access_report.AccessFilterExpression,
+    )
+    offset = proto.Field(
+        proto.INT64,
+        number=7,
+    )
+    limit = proto.Field(
+        proto.INT64,
+        number=8,
+    )
+    time_zone = proto.Field(
+        proto.STRING,
+        number=9,
+    )
+    order_bys = proto.RepeatedField(
+        proto.MESSAGE,
+        number=10,
+        message=access_report.AccessOrderBy,
+    )
+    return_entity_quota = proto.Field(
+        proto.BOOL,
+        number=11,
+    )
+
+
+class RunAccessReportResponse(proto.Message):
+    r"""The customized Data Access Record Report response.
+
+    Attributes:
+        dimension_headers (Sequence[google.analytics.admin_v1alpha.types.AccessDimensionHeader]):
+            The header for a column in the report that
+            corresponds to a specific dimension. The number
+            of DimensionHeaders and ordering of
+            DimensionHeaders matches the dimensions present
+            in rows.
+        metric_headers (Sequence[google.analytics.admin_v1alpha.types.AccessMetricHeader]):
+            The header for a column in the report that
+            corresponds to a specific metric. The number of
+            MetricHeaders and ordering of MetricHeaders
+            matches the metrics present in rows.
+        rows (Sequence[google.analytics.admin_v1alpha.types.AccessRow]):
+            Rows of dimension value combinations and
+            metric values in the report.
+        row_count (int):
+            The total number of rows in the query result. ``rowCount``
+            is independent of the number of rows returned in the
+            response, the ``limit`` request parameter, and the
+            ``offset`` request parameter. For example if a query returns
+            175 rows and includes ``limit`` of 50 in the API request,
+            the response will contain ``rowCount`` of 175 but only 50
+            rows.
+
+            To learn more about this pagination parameter, see
+            `Pagination <https://developers.google.com/analytics/devguides/reporting/data/v1/basics#pagination>`__.
+        quota (google.analytics.admin_v1alpha.types.AccessQuota):
+            The quota state for this Analytics property
+            including this request.
+    """
+
+    dimension_headers = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=access_report.AccessDimensionHeader,
+    )
+    metric_headers = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message=access_report.AccessMetricHeader,
+    )
+    rows = proto.RepeatedField(
+        proto.MESSAGE,
+        number=3,
+        message=access_report.AccessRow,
+    )
+    row_count = proto.Field(
+        proto.INT32,
+        number=4,
+    )
+    quota = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=access_report.AccessQuota,
+    )
 
 
 class GetAccountRequest(proto.Message):
@@ -2346,6 +2549,186 @@ class GetDataStreamRequest(proto.Message):
     name = proto.Field(
         proto.STRING,
         number=1,
+    )
+
+
+class GetAudienceRequest(proto.Message):
+    r"""Request message for GetAudience RPC.
+
+    Attributes:
+        name (str):
+            Required. The name of the Audience to get.
+            Example format: properties/1234/audiences/5678
+    """
+
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class ListAudiencesRequest(proto.Message):
+    r"""Request message for ListAudiences RPC.
+
+    Attributes:
+        parent (str):
+            Required. Example format: properties/1234
+        page_size (int):
+            The maximum number of resources to return.
+            If unspecified, at most 50 resources will be
+            returned. The maximum value is 200 (higher
+            values will be coerced to the maximum).
+        page_token (str):
+            A page token, received from a previous ``ListAudiences``
+            call. Provide this to retrieve the subsequent page.
+
+            When paginating, all other parameters provided to
+            ``ListAudiences`` must match the call that provided the page
+            token.
+    """
+
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class ListAudiencesResponse(proto.Message):
+    r"""Response message for ListAudiences RPC.
+
+    Attributes:
+        audiences (Sequence[google.analytics.admin_v1alpha.types.Audience]):
+            List of Audiences.
+        next_page_token (str):
+            A token, which can be sent as ``page_token`` to retrieve the
+            next page. If this field is omitted, there are no subsequent
+            pages.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    audiences = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=gaa_audience.Audience,
+    )
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class CreateAudienceRequest(proto.Message):
+    r"""Request message for CreateAudience RPC.
+
+    Attributes:
+        parent (str):
+            Required. Example format: properties/1234
+        audience (google.analytics.admin_v1alpha.types.Audience):
+            Required. The audience to create.
+    """
+
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    audience = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=gaa_audience.Audience,
+    )
+
+
+class UpdateAudienceRequest(proto.Message):
+    r"""Request message for UpdateAudience RPC.
+
+    Attributes:
+        audience (google.analytics.admin_v1alpha.types.Audience):
+            Required. The audience to update. The audience's ``name``
+            field is used to identify the audience to be updated.
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            Required. The list of fields to be updated. Field names must
+            be in snake case (e.g., "field_to_update"). Omitted fields
+            will not be updated. To replace the entire entity, use one
+            path with the string "*" to match all fields.
+    """
+
+    audience = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=gaa_audience.Audience,
+    )
+    update_mask = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
+    )
+
+
+class ArchiveAudienceRequest(proto.Message):
+    r"""Request message for ArchiveAudience RPC.
+
+    Attributes:
+        name (str):
+            Required. Example format:
+            properties/1234/audiences/5678
+    """
+
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class GetAttributionSettingsRequest(proto.Message):
+    r"""Request message for GetAttributionSettings RPC.
+
+    Attributes:
+        name (str):
+            Required. The name of the attribution
+            settings to retrieve. Format:
+            properties/{property}/attributionSettings
+    """
+
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class UpdateAttributionSettingsRequest(proto.Message):
+    r"""Request message for UpdateAttributionSettings RPC
+
+    Attributes:
+        attribution_settings (google.analytics.admin_v1alpha.types.AttributionSettings):
+            Required. The attribution settings to update. The ``name``
+            field is used to identify the settings to be updated.
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            Required. The list of fields to be updated. Field names must
+            be in snake case (e.g., "field_to_update"). Omitted fields
+            will not be updated. To replace the entire entity, use one
+            path with the string "*" to match all fields.
+    """
+
+    attribution_settings = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=resources.AttributionSettings,
+    )
+    update_mask = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
     )
 
 

@@ -20,6 +20,11 @@
                 "approve_display_video360_advertiser_link_proposal"
               ]
             },
+            "ArchiveAudience": {
+              "methods": [
+                "archive_audience"
+              ]
+            },
             "ArchiveCustomDimension": {
               "methods": [
                 "archive_custom_dimension"
@@ -58,6 +63,11 @@
             "CancelDisplayVideo360AdvertiserLinkProposal": {
               "methods": [
                 "cancel_display_video360_advertiser_link_proposal"
+              ]
+            },
+            "CreateAudience": {
+              "methods": [
+                "create_audience"
               ]
             },
             "CreateConversionEvent": {
@@ -170,6 +180,16 @@
                 "get_account"
               ]
             },
+            "GetAttributionSettings": {
+              "methods": [
+                "get_attribution_settings"
+              ]
+            },
+            "GetAudience": {
+              "methods": [
+                "get_audience"
+              ]
+            },
             "GetConversionEvent": {
               "methods": [
                 "get_conversion_event"
@@ -245,6 +265,11 @@
                 "list_accounts"
               ]
             },
+            "ListAudiences": {
+              "methods": [
+                "list_audiences"
+              ]
+            },
             "ListConversionEvents": {
               "methods": [
                 "list_conversion_events"
@@ -305,6 +330,11 @@
                 "provision_account_ticket"
               ]
             },
+            "RunAccessReport": {
+              "methods": [
+                "run_access_report"
+              ]
+            },
             "SearchChangeHistoryEvents": {
               "methods": [
                 "search_change_history_events"
@@ -313,6 +343,16 @@
             "UpdateAccount": {
               "methods": [
                 "update_account"
+              ]
+            },
+            "UpdateAttributionSettings": {
+              "methods": [
+                "update_attribution_settings"
+              ]
+            },
+            "UpdateAudience": {
+              "methods": [
+                "update_audience"
               ]
             },
             "UpdateCustomDimension": {
@@ -380,6 +420,11 @@
                 "approve_display_video360_advertiser_link_proposal"
               ]
             },
+            "ArchiveAudience": {
+              "methods": [
+                "archive_audience"
+              ]
+            },
             "ArchiveCustomDimension": {
               "methods": [
                 "archive_custom_dimension"
@@ -418,6 +463,11 @@
             "CancelDisplayVideo360AdvertiserLinkProposal": {
               "methods": [
                 "cancel_display_video360_advertiser_link_proposal"
+              ]
+            },
+            "CreateAudience": {
+              "methods": [
+                "create_audience"
               ]
             },
             "CreateConversionEvent": {
@@ -530,6 +580,16 @@
                 "get_account"
               ]
             },
+            "GetAttributionSettings": {
+              "methods": [
+                "get_attribution_settings"
+              ]
+            },
+            "GetAudience": {
+              "methods": [
+                "get_audience"
+              ]
+            },
             "GetConversionEvent": {
               "methods": [
                 "get_conversion_event"
@@ -605,6 +665,11 @@
                 "list_accounts"
               ]
             },
+            "ListAudiences": {
+              "methods": [
+                "list_audiences"
+              ]
+            },
             "ListConversionEvents": {
               "methods": [
                 "list_conversion_events"
@@ -665,6 +730,11 @@
                 "provision_account_ticket"
               ]
             },
+            "RunAccessReport": {
+              "methods": [
+                "run_access_report"
+              ]
+            },
             "SearchChangeHistoryEvents": {
               "methods": [
                 "search_change_history_events"
@@ -673,6 +743,16 @@
             "UpdateAccount": {
               "methods": [
                 "update_account"
+              ]
+            },
+            "UpdateAttributionSettings": {
+              "methods": [
+                "update_attribution_settings"
+              ]
+            },
+            "UpdateAudience": {
+              "methods": [
+                "update_audience"
               ]
             },
             "UpdateCustomDimension": {

@@ -26,7 +26,10 @@ from google.oauth2 import service_account  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
 import pkg_resources
 
-from google.analytics.admin_v1alpha.types import analytics_admin, resources
+from google.analytics.admin_v1alpha.types import analytics_admin
+from google.analytics.admin_v1alpha.types import audience
+from google.analytics.admin_v1alpha.types import audience as gaa_audience
+from google.analytics.admin_v1alpha.types import resources
 
 try:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
@@ -485,6 +488,46 @@ class AnalyticsAdminServiceTransport(abc.ABC):
             ),
             self.get_data_stream: gapic_v1.method.wrap_method(
                 self.get_data_stream,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_audience: gapic_v1.method.wrap_method(
+                self.get_audience,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_audiences: gapic_v1.method.wrap_method(
+                self.list_audiences,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.create_audience: gapic_v1.method.wrap_method(
+                self.create_audience,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_audience: gapic_v1.method.wrap_method(
+                self.update_audience,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.archive_audience: gapic_v1.method.wrap_method(
+                self.archive_audience,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_attribution_settings: gapic_v1.method.wrap_method(
+                self.get_attribution_settings,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_attribution_settings: gapic_v1.method.wrap_method(
+                self.update_attribution_settings,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.run_access_report: gapic_v1.method.wrap_method(
+                self.run_access_report,
                 default_timeout=None,
                 client_info=client_info,
             ),
@@ -1237,6 +1280,84 @@ class AnalyticsAdminServiceTransport(abc.ABC):
     ) -> Callable[
         [analytics_admin.GetDataStreamRequest],
         Union[resources.DataStream, Awaitable[resources.DataStream]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_audience(
+        self,
+    ) -> Callable[
+        [analytics_admin.GetAudienceRequest],
+        Union[audience.Audience, Awaitable[audience.Audience]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_audiences(
+        self,
+    ) -> Callable[
+        [analytics_admin.ListAudiencesRequest],
+        Union[
+            analytics_admin.ListAudiencesResponse,
+            Awaitable[analytics_admin.ListAudiencesResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_audience(
+        self,
+    ) -> Callable[
+        [analytics_admin.CreateAudienceRequest],
+        Union[gaa_audience.Audience, Awaitable[gaa_audience.Audience]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_audience(
+        self,
+    ) -> Callable[
+        [analytics_admin.UpdateAudienceRequest],
+        Union[gaa_audience.Audience, Awaitable[gaa_audience.Audience]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def archive_audience(
+        self,
+    ) -> Callable[
+        [analytics_admin.ArchiveAudienceRequest],
+        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_attribution_settings(
+        self,
+    ) -> Callable[
+        [analytics_admin.GetAttributionSettingsRequest],
+        Union[resources.AttributionSettings, Awaitable[resources.AttributionSettings]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_attribution_settings(
+        self,
+    ) -> Callable[
+        [analytics_admin.UpdateAttributionSettingsRequest],
+        Union[resources.AttributionSettings, Awaitable[resources.AttributionSettings]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def run_access_report(
+        self,
+    ) -> Callable[
+        [analytics_admin.RunAccessReportRequest],
+        Union[
+            analytics_admin.RunAccessReportResponse,
+            Awaitable[analytics_admin.RunAccessReportResponse],
+        ],
     ]:
         raise NotImplementedError()
 

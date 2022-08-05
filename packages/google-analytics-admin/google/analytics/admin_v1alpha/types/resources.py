@@ -29,6 +29,7 @@ __protobuf__ = proto.module(
         "GoogleSignalsConsent",
         "LinkProposalInitiatingProduct",
         "LinkProposalState",
+        "PropertyType",
         "Account",
         "Property",
         "DataStream",
@@ -51,6 +52,7 @@ __protobuf__ = proto.module(
         "CustomDimension",
         "CustomMetric",
         "DataRetentionSettings",
+        "AttributionSettings",
     },
 )
 
@@ -130,7 +132,9 @@ class ChangeHistoryResourceType(proto.Enum):
     DATA_RETENTION_SETTINGS = 13
     DISPLAY_VIDEO_360_ADVERTISER_LINK = 14
     DISPLAY_VIDEO_360_ADVERTISER_LINK_PROPOSAL = 15
+    SEARCH_ADS_360_LINK = 16
     DATA_STREAM = 18
+    ATTRIBUTION_SETTINGS = 20
 
 
 class GoogleSignalsState(proto.Enum):
@@ -169,6 +173,14 @@ class LinkProposalState(proto.Enum):
     DECLINED = 4
     EXPIRED = 5
     OBSOLETE = 6
+
+
+class PropertyType(proto.Enum):
+    r"""Types of Property resources."""
+    PROPERTY_TYPE_UNSPECIFIED = 0
+    PROPERTY_TYPE_ORDINARY = 1
+    PROPERTY_TYPE_SUBPROPERTY = 2
+    PROPERTY_TYPE_ROLLUP = 3
 
 
 class Account(proto.Message):
@@ -234,6 +246,12 @@ class Property(proto.Message):
         name (str):
             Output only. Resource name of this property. Format:
             properties/{property_id} Example: "properties/1000".
+        property_type (google.analytics.admin_v1alpha.types.PropertyType):
+            Immutable. The property type for this Property resource.
+            When creating a property, if the type is
+            "PROPERTY_TYPE_UNSPECIFIED", then "ORDINARY_PROPERTY" will
+            be implied. "SUBPROPERTY" and "ROLLUP_PROPERTY" types cannot
+            yet be created via Google Analytics Admin API.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Time when the entity was
             originally created.
@@ -244,8 +262,9 @@ class Property(proto.Message):
             Immutable. Resource name of this property's
             logical parent.
             Note: The Property-Moving UI can be used to
-            change the parent. Format: accounts/{account}
-            Example: "accounts/100".
+            change the parent. Format: accounts/{account},
+            properties/{property} Example: "accounts/100",
+            "properties/101".
         display_name (str):
             Required. Human-readable display name for
             this property.
@@ -290,6 +309,11 @@ class Property(proto.Message):
     name = proto.Field(
         proto.STRING,
         number=1,
+    )
+    property_type = proto.Field(
+        proto.ENUM,
+        number=14,
+        enum="PropertyType",
     )
     create_time = proto.Field(
         proto.MESSAGE,
@@ -836,6 +860,15 @@ class PropertySummary(proto.Message):
         display_name (str):
             Display name for the property referred to in
             this property summary.
+        property_type (google.analytics.admin_v1alpha.types.PropertyType):
+            The property's property type.
+        parent (str):
+            Resource name of this property's logical
+            parent.
+            Note: The Property-Moving UI can be used to
+            change the parent. Format: accounts/{account},
+            properties/{property} Example: "accounts/100",
+            "properties/200".
     """
 
     property = proto.Field(
@@ -845,6 +878,15 @@ class PropertySummary(proto.Message):
     display_name = proto.Field(
         proto.STRING,
         number=2,
+    )
+    property_type = proto.Field(
+        proto.ENUM,
+        number=3,
+        enum="PropertyType",
+    )
+    parent = proto.Field(
+        proto.STRING,
+        number=4,
     )
 
 
@@ -856,7 +898,7 @@ class MeasurementProtocolSecret(proto.Message):
             Output only. Resource name of this secret.
             This secret may be a child of any type of
             stream. Format:
-            properties/{property}/webDataStreams/{webDataStream}/measurementProtocolSecrets/{measurementProtocolSecret}
+            properties/{property}/dataStreams/{dataStream}/measurementProtocolSecrets/{measurementProtocolSecret}
         display_name (str):
             Required. Human-readable display name for
             this secret.
@@ -1040,6 +1082,11 @@ class ChangeHistoryChange(proto.Message):
                 history.
 
                 This field is a member of `oneof`_ ``resource``.
+            attribution_settings (google.analytics.admin_v1alpha.types.AttributionSettings):
+                A snapshot of AttributionSettings resource in
+                change history.
+
+                This field is a member of `oneof`_ ``resource``.
         """
 
         account = proto.Field(
@@ -1119,6 +1166,12 @@ class ChangeHistoryChange(proto.Message):
             number=18,
             oneof="resource",
             message="DataStream",
+        )
+        attribution_settings = proto.Field(
+            proto.MESSAGE,
+            number=20,
+            oneof="resource",
+            message="AttributionSettings",
         )
 
     resource = proto.Field(
@@ -1625,6 +1678,88 @@ class DataRetentionSettings(proto.Message):
     reset_user_data_on_new_activity = proto.Field(
         proto.BOOL,
         number=3,
+    )
+
+
+class AttributionSettings(proto.Message):
+    r"""The attribution settings used for a given property. This is a
+    singleton resource.
+
+    Attributes:
+        name (str):
+            Output only. Resource name of this attribution settings
+            resource. Format:
+            properties/{property_id}/attributionSettings Example:
+            "properties/1000/attributionSettings".
+        acquisition_conversion_event_lookback_window (google.analytics.admin_v1alpha.types.AttributionSettings.AcquisitionConversionEventLookbackWindow):
+            Required. The lookback window configuration
+            for acquisition conversion events. The default
+            window size is 30 days.
+        other_conversion_event_lookback_window (google.analytics.admin_v1alpha.types.AttributionSettings.OtherConversionEventLookbackWindow):
+            Required. The lookback window for all other,
+            non-acquisition conversion events. The default
+            window size is 90 days.
+        reporting_attribution_model (google.analytics.admin_v1alpha.types.AttributionSettings.ReportingAttributionModel):
+            Required. The reporting attribution model
+            used to calculate conversion credit in this
+            property's reports.
+            Changing the attribution model will apply to
+            both historical and future data. These changes
+            will be reflected in reports with conversion and
+            revenue data. User and session data will be
+            unaffected.
+    """
+
+    class AcquisitionConversionEventLookbackWindow(proto.Enum):
+        r"""How far back in time events should be considered for
+        inclusion in a converting path which leads to the first install
+        of an app or the first visit to a site.
+        """
+        ACQUISITION_CONVERSION_EVENT_LOOKBACK_WINDOW_UNSPECIFIED = 0
+        ACQUISITION_CONVERSION_EVENT_LOOKBACK_WINDOW_7_DAYS = 1
+        ACQUISITION_CONVERSION_EVENT_LOOKBACK_WINDOW_30_DAYS = 2
+
+    class OtherConversionEventLookbackWindow(proto.Enum):
+        r"""How far back in time events should be considered for
+        inclusion in a converting path for all conversions other than
+        first app install/first site visit.
+        """
+        OTHER_CONVERSION_EVENT_LOOKBACK_WINDOW_UNSPECIFIED = 0
+        OTHER_CONVERSION_EVENT_LOOKBACK_WINDOW_30_DAYS = 1
+        OTHER_CONVERSION_EVENT_LOOKBACK_WINDOW_60_DAYS = 2
+        OTHER_CONVERSION_EVENT_LOOKBACK_WINDOW_90_DAYS = 3
+
+    class ReportingAttributionModel(proto.Enum):
+        r"""The reporting attribution model used to calculate conversion
+        credit in this property's reports.
+        """
+        REPORTING_ATTRIBUTION_MODEL_UNSPECIFIED = 0
+        CROSS_CHANNEL_DATA_DRIVEN = 1
+        CROSS_CHANNEL_LAST_CLICK = 2
+        CROSS_CHANNEL_FIRST_CLICK = 3
+        CROSS_CHANNEL_LINEAR = 4
+        CROSS_CHANNEL_POSITION_BASED = 5
+        CROSS_CHANNEL_TIME_DECAY = 6
+        ADS_PREFERRED_LAST_CLICK = 7
+
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    acquisition_conversion_event_lookback_window = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=AcquisitionConversionEventLookbackWindow,
+    )
+    other_conversion_event_lookback_window = proto.Field(
+        proto.ENUM,
+        number=3,
+        enum=OtherConversionEventLookbackWindow,
+    )
+    reporting_attribution_model = proto.Field(
+        proto.ENUM,
+        number=4,
+        enum=ReportingAttributionModel,
     )
 
 

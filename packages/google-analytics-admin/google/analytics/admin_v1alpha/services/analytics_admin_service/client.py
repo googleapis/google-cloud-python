@@ -39,7 +39,10 @@ from google.protobuf import timestamp_pb2  # type: ignore
 from google.protobuf import wrappers_pb2  # type: ignore
 
 from google.analytics.admin_v1alpha.services.analytics_admin_service import pagers
-from google.analytics.admin_v1alpha.types import analytics_admin, resources
+from google.analytics.admin_v1alpha.types import access_report, analytics_admin
+from google.analytics.admin_v1alpha.types import audience
+from google.analytics.admin_v1alpha.types import audience as gaa_audience
+from google.analytics.admin_v1alpha.types import resources
 
 from .transports.base import DEFAULT_CLIENT_INFO, AnalyticsAdminServiceTransport
 from .transports.grpc import AnalyticsAdminServiceGrpcTransport
@@ -195,6 +198,40 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
     def parse_account_summary_path(path: str) -> Dict[str, str]:
         """Parses a account_summary path into its component segments."""
         m = re.match(r"^accountSummaries/(?P<account_summary>.+?)$", path)
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def attribution_settings_path(
+        property: str,
+    ) -> str:
+        """Returns a fully-qualified attribution_settings string."""
+        return "properties/{property}/attributionSettings".format(
+            property=property,
+        )
+
+    @staticmethod
+    def parse_attribution_settings_path(path: str) -> Dict[str, str]:
+        """Parses a attribution_settings path into its component segments."""
+        m = re.match(r"^properties/(?P<property>.+?)/attributionSettings$", path)
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def audience_path(
+        property: str,
+        audience: str,
+    ) -> str:
+        """Returns a fully-qualified audience string."""
+        return "properties/{property}/audiences/{audience}".format(
+            property=property,
+            audience=audience,
+        )
+
+    @staticmethod
+    def parse_audience_path(path: str) -> Dict[str, str]:
+        """Parses a audience path into its component segments."""
+        m = re.match(
+            r"^properties/(?P<property>.+?)/audiences/(?P<audience>.+?)$", path
+        )
         return m.groupdict() if m else {}
 
     @staticmethod
@@ -7777,6 +7814,805 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def get_audience(
+        self,
+        request: Union[analytics_admin.GetAudienceRequest, dict] = None,
+        *,
+        name: str = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> audience.Audience:
+        r"""Lookup for a single Audience.
+        Audiences created before 2020 may not be supported.
+
+        .. code-block:: python
+
+            from google.analytics import admin_v1alpha
+
+            def sample_get_audience():
+                # Create a client
+                client = admin_v1alpha.AnalyticsAdminServiceClient()
+
+                # Initialize request argument(s)
+                request = admin_v1alpha.GetAudienceRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_audience(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.analytics.admin_v1alpha.types.GetAudienceRequest, dict]):
+                The request object. Request message for GetAudience RPC.
+            name (str):
+                Required. The name of the Audience to
+                get. Example format:
+                properties/1234/audiences/5678
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.analytics.admin_v1alpha.types.Audience:
+                A resource message representing a GA4
+                Audience.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a analytics_admin.GetAudienceRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, analytics_admin.GetAudienceRequest):
+            request = analytics_admin.GetAudienceRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.get_audience]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def list_audiences(
+        self,
+        request: Union[analytics_admin.ListAudiencesRequest, dict] = None,
+        *,
+        parent: str = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListAudiencesPager:
+        r"""Lists Audiences on a property.
+        Audiences created before 2020 may not be supported.
+
+        .. code-block:: python
+
+            from google.analytics import admin_v1alpha
+
+            def sample_list_audiences():
+                # Create a client
+                client = admin_v1alpha.AnalyticsAdminServiceClient()
+
+                # Initialize request argument(s)
+                request = admin_v1alpha.ListAudiencesRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_audiences(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
+        Args:
+            request (Union[google.analytics.admin_v1alpha.types.ListAudiencesRequest, dict]):
+                The request object. Request message for ListAudiences
+                RPC.
+            parent (str):
+                Required. Example format:
+                properties/1234
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.analytics.admin_v1alpha.services.analytics_admin_service.pagers.ListAudiencesPager:
+                Response message for ListAudiences
+                RPC.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a analytics_admin.ListAudiencesRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, analytics_admin.ListAudiencesRequest):
+            request = analytics_admin.ListAudiencesRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.list_audiences]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.ListAudiencesPager(
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def create_audience(
+        self,
+        request: Union[analytics_admin.CreateAudienceRequest, dict] = None,
+        *,
+        parent: str = None,
+        audience: gaa_audience.Audience = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> gaa_audience.Audience:
+        r"""Creates an Audience.
+
+        .. code-block:: python
+
+            from google.analytics import admin_v1alpha
+
+            def sample_create_audience():
+                # Create a client
+                client = admin_v1alpha.AnalyticsAdminServiceClient()
+
+                # Initialize request argument(s)
+                audience = admin_v1alpha.Audience()
+                audience.display_name = "display_name_value"
+                audience.description = "description_value"
+                audience.membership_duration_days = 2561
+                audience.filter_clauses.simple_filter.scope = "AUDIENCE_FILTER_SCOPE_ACROSS_ALL_SESSIONS"
+                audience.filter_clauses.clause_type = "EXCLUDE"
+
+                request = admin_v1alpha.CreateAudienceRequest(
+                    parent="parent_value",
+                    audience=audience,
+                )
+
+                # Make the request
+                response = client.create_audience(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.analytics.admin_v1alpha.types.CreateAudienceRequest, dict]):
+                The request object. Request message for CreateAudience
+                RPC.
+            parent (str):
+                Required. Example format:
+                properties/1234
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            audience (google.analytics.admin_v1alpha.types.Audience):
+                Required. The audience to create.
+                This corresponds to the ``audience`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.analytics.admin_v1alpha.types.Audience:
+                A resource message representing a GA4
+                Audience.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent, audience])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a analytics_admin.CreateAudienceRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, analytics_admin.CreateAudienceRequest):
+            request = analytics_admin.CreateAudienceRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+            if audience is not None:
+                request.audience = audience
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.create_audience]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def update_audience(
+        self,
+        request: Union[analytics_admin.UpdateAudienceRequest, dict] = None,
+        *,
+        audience: gaa_audience.Audience = None,
+        update_mask: field_mask_pb2.FieldMask = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> gaa_audience.Audience:
+        r"""Updates an Audience on a property.
+
+        .. code-block:: python
+
+            from google.analytics import admin_v1alpha
+
+            def sample_update_audience():
+                # Create a client
+                client = admin_v1alpha.AnalyticsAdminServiceClient()
+
+                # Initialize request argument(s)
+                audience = admin_v1alpha.Audience()
+                audience.display_name = "display_name_value"
+                audience.description = "description_value"
+                audience.membership_duration_days = 2561
+                audience.filter_clauses.simple_filter.scope = "AUDIENCE_FILTER_SCOPE_ACROSS_ALL_SESSIONS"
+                audience.filter_clauses.clause_type = "EXCLUDE"
+
+                request = admin_v1alpha.UpdateAudienceRequest(
+                    audience=audience,
+                )
+
+                # Make the request
+                response = client.update_audience(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.analytics.admin_v1alpha.types.UpdateAudienceRequest, dict]):
+                The request object. Request message for UpdateAudience
+                RPC.
+            audience (google.analytics.admin_v1alpha.types.Audience):
+                Required. The audience to update. The audience's
+                ``name`` field is used to identify the audience to be
+                updated.
+
+                This corresponds to the ``audience`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            update_mask (google.protobuf.field_mask_pb2.FieldMask):
+                Required. The list of fields to be updated. Field names
+                must be in snake case (e.g., "field_to_update"). Omitted
+                fields will not be updated. To replace the entire
+                entity, use one path with the string "*" to match all
+                fields.
+
+                This corresponds to the ``update_mask`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.analytics.admin_v1alpha.types.Audience:
+                A resource message representing a GA4
+                Audience.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([audience, update_mask])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a analytics_admin.UpdateAudienceRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, analytics_admin.UpdateAudienceRequest):
+            request = analytics_admin.UpdateAudienceRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if audience is not None:
+                request.audience = audience
+            if update_mask is not None:
+                request.update_mask = update_mask
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.update_audience]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("audience.name", request.audience.name),)
+            ),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def archive_audience(
+        self,
+        request: Union[analytics_admin.ArchiveAudienceRequest, dict] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> None:
+        r"""Archives an Audience on a property.
+
+        .. code-block:: python
+
+            from google.analytics import admin_v1alpha
+
+            def sample_archive_audience():
+                # Create a client
+                client = admin_v1alpha.AnalyticsAdminServiceClient()
+
+                # Initialize request argument(s)
+                request = admin_v1alpha.ArchiveAudienceRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                client.archive_audience(request=request)
+
+        Args:
+            request (Union[google.analytics.admin_v1alpha.types.ArchiveAudienceRequest, dict]):
+                The request object. Request message for ArchiveAudience
+                RPC.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        # Create or coerce a protobuf request object.
+        # Minor optimization to avoid making a copy if the user passes
+        # in a analytics_admin.ArchiveAudienceRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, analytics_admin.ArchiveAudienceRequest):
+            request = analytics_admin.ArchiveAudienceRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.archive_audience]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+    def get_attribution_settings(
+        self,
+        request: Union[analytics_admin.GetAttributionSettingsRequest, dict] = None,
+        *,
+        name: str = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> resources.AttributionSettings:
+        r"""Lookup for a AttributionSettings singleton.
+
+        .. code-block:: python
+
+            from google.analytics import admin_v1alpha
+
+            def sample_get_attribution_settings():
+                # Create a client
+                client = admin_v1alpha.AnalyticsAdminServiceClient()
+
+                # Initialize request argument(s)
+                request = admin_v1alpha.GetAttributionSettingsRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_attribution_settings(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.analytics.admin_v1alpha.types.GetAttributionSettingsRequest, dict]):
+                The request object. Request message for
+                GetAttributionSettings RPC.
+            name (str):
+                Required. The name of the attribution
+                settings to retrieve. Format:
+                properties/{property}/attributionSettings
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.analytics.admin_v1alpha.types.AttributionSettings:
+                The attribution settings used for a
+                given property. This is a singleton
+                resource.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a analytics_admin.GetAttributionSettingsRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, analytics_admin.GetAttributionSettingsRequest):
+            request = analytics_admin.GetAttributionSettingsRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.get_attribution_settings]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def update_attribution_settings(
+        self,
+        request: Union[analytics_admin.UpdateAttributionSettingsRequest, dict] = None,
+        *,
+        attribution_settings: resources.AttributionSettings = None,
+        update_mask: field_mask_pb2.FieldMask = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> resources.AttributionSettings:
+        r"""Updates attribution settings on a property.
+
+        .. code-block:: python
+
+            from google.analytics import admin_v1alpha
+
+            def sample_update_attribution_settings():
+                # Create a client
+                client = admin_v1alpha.AnalyticsAdminServiceClient()
+
+                # Initialize request argument(s)
+                attribution_settings = admin_v1alpha.AttributionSettings()
+                attribution_settings.acquisition_conversion_event_lookback_window = "ACQUISITION_CONVERSION_EVENT_LOOKBACK_WINDOW_30_DAYS"
+                attribution_settings.other_conversion_event_lookback_window = "OTHER_CONVERSION_EVENT_LOOKBACK_WINDOW_90_DAYS"
+                attribution_settings.reporting_attribution_model = "ADS_PREFERRED_LAST_CLICK"
+
+                request = admin_v1alpha.UpdateAttributionSettingsRequest(
+                    attribution_settings=attribution_settings,
+                )
+
+                # Make the request
+                response = client.update_attribution_settings(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.analytics.admin_v1alpha.types.UpdateAttributionSettingsRequest, dict]):
+                The request object. Request message for
+                UpdateAttributionSettings RPC
+            attribution_settings (google.analytics.admin_v1alpha.types.AttributionSettings):
+                Required. The attribution settings to update. The
+                ``name`` field is used to identify the settings to be
+                updated.
+
+                This corresponds to the ``attribution_settings`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            update_mask (google.protobuf.field_mask_pb2.FieldMask):
+                Required. The list of fields to be updated. Field names
+                must be in snake case (e.g., "field_to_update"). Omitted
+                fields will not be updated. To replace the entire
+                entity, use one path with the string "*" to match all
+                fields.
+
+                This corresponds to the ``update_mask`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.analytics.admin_v1alpha.types.AttributionSettings:
+                The attribution settings used for a
+                given property. This is a singleton
+                resource.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([attribution_settings, update_mask])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a analytics_admin.UpdateAttributionSettingsRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, analytics_admin.UpdateAttributionSettingsRequest):
+            request = analytics_admin.UpdateAttributionSettingsRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if attribution_settings is not None:
+                request.attribution_settings = attribution_settings
+            if update_mask is not None:
+                request.update_mask = update_mask
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[
+            self._transport.update_attribution_settings
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("attribution_settings.name", request.attribution_settings.name),)
+            ),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def run_access_report(
+        self,
+        request: Union[analytics_admin.RunAccessReportRequest, dict] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> analytics_admin.RunAccessReportResponse:
+        r"""Returns a customized report of data access records. The report
+        provides records of each time a user reads Google Analytics
+        reporting data. Access records are retained for up to 2 years.
+
+        Data Access Reports can be requested for a property. The
+        property must be in Google Analytics 360. This method is only
+        available to Administrators.
+
+        These data access records include GA4 UI Reporting, GA4 UI
+        Explorations, GA4 Data API, and other products like Firebase &
+        Admob that can retrieve data from Google Analytics through a
+        linkage. These records don't include property configuration
+        changes like adding a stream or changing a property's time zone.
+        For configuration change history, see
+        `searchChangeHistoryEvents <https://developers.google.com/analytics/devguides/config/admin/v1/rest/v1alpha/accounts/searchChangeHistoryEvents>`__.
+
+        .. code-block:: python
+
+            from google.analytics import admin_v1alpha
+
+            def sample_run_access_report():
+                # Create a client
+                client = admin_v1alpha.AnalyticsAdminServiceClient()
+
+                # Initialize request argument(s)
+                request = admin_v1alpha.RunAccessReportRequest(
+                )
+
+                # Make the request
+                response = client.run_access_report(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.analytics.admin_v1alpha.types.RunAccessReportRequest, dict]):
+                The request object. The request for a Data Access Record
+                Report.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.analytics.admin_v1alpha.types.RunAccessReportResponse:
+                The customized Data Access Record
+                Report response.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Minor optimization to avoid making a copy if the user passes
+        # in a analytics_admin.RunAccessReportRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, analytics_admin.RunAccessReportRequest):
+            request = analytics_admin.RunAccessReportRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.run_access_report]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("entity", request.entity),)),
         )
 
         # Send the request.
