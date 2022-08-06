@@ -404,6 +404,38 @@ def test_mock_value_original_type_message():
     assert entry_field.mock_value_original_type == {}
 
 
+def test_merged_mock_value_message():
+    subfields = collections.OrderedDict((
+        ('foo', make_field(name='foo', type='TYPE_INT32')),
+        ('bar', make_field(name='bar', type='TYPE_STRING'))
+    ))
+
+    message = wrappers.MessageType(
+        fields=subfields,
+        message_pb=descriptor_pb2.DescriptorProto(name="Message", field=[
+            i.field_pb for i in subfields.values()
+        ]),
+        meta=metadata.Metadata(address=metadata.Address(
+            module="bogus",
+            name="Message",
+        )),
+        nested_enums={},
+        nested_messages={},
+    )
+
+    field = make_field(
+        type="TYPE_MESSAGE",
+        type_name="bogus.Message",
+        message=message,
+    )
+
+    mock = field.merged_mock_value({"foo": 777, "another": "another_value"})
+    assert mock == {"foo": 777, "bar": "bar_value", "another": "another_value"}
+
+    mock = field.merged_mock_value(None)
+    assert mock == {"bar": "bar_value", "foo": 324}
+
+
 def test_mock_value_original_type_enum():
     mollusc_field = make_field(
         name="class",

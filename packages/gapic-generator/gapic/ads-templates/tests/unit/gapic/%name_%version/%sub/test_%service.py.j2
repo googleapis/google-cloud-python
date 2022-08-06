@@ -1001,7 +1001,7 @@ def test_{{ method.name|snake_case }}_rest(request_type):
     {% for field in method.body_fields.values() %}
     {% if not field.oneof or field.proto3_optional %}
     {# ignore oneof fields that might conflict with sample_request #}
-    request_init["{{ field.name }}"] = {{ field.mock_value_original_type }}
+    request_init["{{ field.name }}"] = {{ field.merged_mock_value(method.http_options[0].sample_request(method).get(field.name)) }}
     {% endif %}
     {% endfor %}
     request = request_type(request_init)
@@ -1293,7 +1293,7 @@ def test_{{ method_name }}_rest_bad_request(transport: str = 'rest', request_typ
     {% for field in method.body_fields.values() %}
     {% if not field.oneof or field.proto3_optional %}
     {# ignore oneof fields that might conflict with sample_request #}
-    request_init["{{ field.name }}"] = {{ field.mock_value_original_type }}
+    request_init["{{ field.name }}"] = {{ field.merged_mock_value(method.http_options[0].sample_request(method).get(field.name)) }}
     {% endif %}
     {% endfor %}
     request = request_type(request_init)
