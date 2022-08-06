@@ -47,7 +47,7 @@ class CreateAlertPolicyRequest(proto.Message):
 
             Note that this field names the parent container in which the
             alerting policy will be written, not the name of the created
-            policy. \|name\| must be a host project of a workspace,
+            policy. \|name\| must be a host project of a Metrics Scope,
             otherwise INVALID_ARGUMENT error will return. The alerting
             policy that is returned will have a name that contains a
             normalized representation of this name as a prefix but adds

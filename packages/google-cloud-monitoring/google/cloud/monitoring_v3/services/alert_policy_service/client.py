@@ -84,14 +84,14 @@ class AlertPolicyServiceClientMeta(type):
 
 class AlertPolicyServiceClient(metaclass=AlertPolicyServiceClientMeta):
     """The AlertPolicyService API is used to manage (list, create, delete,
-    edit) alert policies in Stackdriver Monitoring. An alerting policy
-    is a description of the conditions under which some aspect of your
-    system is considered to be "unhealthy" and the ways to notify people
-    or services about this state. In addition to using this API, alert
-    policies can also be managed through `Stackdriver
+    edit) alert policies in Cloud Monitoring. An alerting policy is a
+    description of the conditions under which some aspect of your system
+    is considered to be "unhealthy" and the ways to notify people or
+    services about this state. In addition to using this API, alert
+    policies can also be managed through `Cloud
     Monitoring <https://cloud.google.com/monitoring/docs/>`__, which can
     be reached by clicking the "Monitoring" tab in `Cloud
-    Console <https://console.cloud.google.com/>`__.
+    console <https://console.cloud.google.com/>`__.
     """
 
     @staticmethod
@@ -728,10 +728,10 @@ class AlertPolicyServiceClient(metaclass=AlertPolicyServiceClientMeta):
                 Note that this field names the parent container in which
                 the alerting policy will be written, not the name of the
                 created policy. \|name\| must be a host project of a
-                workspace, otherwise INVALID_ARGUMENT error will return.
-                The alerting policy that is returned will have a name
-                that contains a normalized representation of this name
-                as a prefix but adds a suffix of the form
+                Metrics Scope, otherwise INVALID_ARGUMENT error will
+                return. The alerting policy that is returned will have a
+                name that contains a normalized representation of this
+                name as a prefix but adds a suffix of the form
                 ``/alertPolicies/[ALERT_POLICY_ID]``, identifying the
                 policy in the container.
 

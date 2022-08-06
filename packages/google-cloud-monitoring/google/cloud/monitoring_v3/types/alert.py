@@ -46,8 +46,8 @@ class AlertPolicy(proto.Message):
 
                 projects/[PROJECT_ID_OR_NUMBER]/alertPolicies/[ALERT_POLICY_ID]
 
-            ``[ALERT_POLICY_ID]`` is assigned by Stackdriver Monitoring
-            when the policy is created. When calling the
+            ``[ALERT_POLICY_ID]`` is assigned by Cloud Monitoring when
+            the policy is created. When calling the
             [alertPolicies.create][google.monitoring.v3.AlertPolicyService.CreateAlertPolicy]
             method, do not include the ``name`` field in the alerting
             policy passed as part of the request.
@@ -146,7 +146,9 @@ class AlertPolicy(proto.Message):
                 The text of the documentation, interpreted according to
                 ``mime_type``. The content may not exceed 8,192 Unicode
                 characters and may not exceed more than 10,240 bytes when
-                encoded in UTF-8 format, whichever is smaller.
+                encoded in UTF-8 format, whichever is smaller. This text can
+                be `templatized by using
+                variables <https://cloud.google.com/monitoring/alerts/doc-variables>`__.
             mime_type (str):
                 The format of the ``content`` field. Presently, only the
                 value ``"text/markdown"`` is supported. See
@@ -184,16 +186,16 @@ class AlertPolicy(proto.Message):
 
                     projects/[PROJECT_ID_OR_NUMBER]/alertPolicies/[POLICY_ID]/conditions/[CONDITION_ID]
 
-                ``[CONDITION_ID]`` is assigned by Stackdriver Monitoring
-                when the condition is created as part of a new or updated
-                alerting policy.
+                ``[CONDITION_ID]`` is assigned by Cloud Monitoring when the
+                condition is created as part of a new or updated alerting
+                policy.
 
                 When calling the
                 [alertPolicies.create][google.monitoring.v3.AlertPolicyService.CreateAlertPolicy]
                 method, do not include the ``name`` field in the conditions
-                of the requested alerting policy. Stackdriver Monitoring
-                creates the condition identifiers and includes them in the
-                new policy.
+                of the requested alerting policy. Cloud Monitoring creates
+                the condition identifiers and includes them in the new
+                policy.
 
                 When calling the
                 [alertPolicies.update][google.monitoring.v3.AlertPolicyService.UpdateAlertPolicy]
@@ -234,6 +236,16 @@ class AlertPolicy(proto.Message):
 
                 This field is a member of `oneof`_ ``condition``.
         """
+
+        class EvaluationMissingData(proto.Enum):
+            r"""A condition control that determines how metric-threshold
+            conditions are evaluated when data stops arriving.
+            This control doesn't affect metric-absence policies.
+            """
+            EVALUATION_MISSING_DATA_UNSPECIFIED = 0
+            EVALUATION_MISSING_DATA_INACTIVE = 1
+            EVALUATION_MISSING_DATA_ACTIVE = 2
+            EVALUATION_MISSING_DATA_NO_OP = 3
 
         class Trigger(proto.Message):
             r"""Specifies how many time series must fail a predicate to trigger a
@@ -360,6 +372,10 @@ class AlertPolicy(proto.Message):
                     identified by ``filter`` and ``aggregations``, or by the
                     ratio, if ``denominator_filter`` and
                     ``denominator_aggregations`` are specified.
+                evaluation_missing_data (google.cloud.monitoring_v3.types.AlertPolicy.Condition.EvaluationMissingData):
+                    A condition control that determines how
+                    metric-threshold conditions are evaluated when
+                    data stops arriving.
             """
 
             filter = proto.Field(
@@ -398,6 +414,11 @@ class AlertPolicy(proto.Message):
                 proto.MESSAGE,
                 number=7,
                 message="AlertPolicy.Condition.Trigger",
+            )
+            evaluation_missing_data = proto.Field(
+                proto.ENUM,
+                number=11,
+                enum="AlertPolicy.Condition.EvaluationMissingData",
             )
 
         class MetricAbsence(proto.Message):
@@ -536,6 +557,10 @@ class AlertPolicy(proto.Message):
                     identified by ``filter`` and ``aggregations``, or by the
                     ratio, if ``denominator_filter`` and
                     ``denominator_aggregations`` are specified.
+                evaluation_missing_data (google.cloud.monitoring_v3.types.AlertPolicy.Condition.EvaluationMissingData):
+                    A condition control that determines how
+                    metric-threshold conditions are evaluated when
+                    data stops arriving.
             """
 
             query = proto.Field(
@@ -551,6 +576,11 @@ class AlertPolicy(proto.Message):
                 proto.MESSAGE,
                 number=3,
                 message="AlertPolicy.Condition.Trigger",
+            )
+            evaluation_missing_data = proto.Field(
+                proto.ENUM,
+                number=4,
+                enum="AlertPolicy.Condition.EvaluationMissingData",
             )
 
         name = proto.Field(

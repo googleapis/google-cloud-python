@@ -34,14 +34,14 @@ class AlertPolicyServiceGrpcTransport(AlertPolicyServiceTransport):
     """gRPC backend transport for AlertPolicyService.
 
     The AlertPolicyService API is used to manage (list, create, delete,
-    edit) alert policies in Stackdriver Monitoring. An alerting policy
-    is a description of the conditions under which some aspect of your
-    system is considered to be "unhealthy" and the ways to notify people
-    or services about this state. In addition to using this API, alert
-    policies can also be managed through `Stackdriver
+    edit) alert policies in Cloud Monitoring. An alerting policy is a
+    description of the conditions under which some aspect of your system
+    is considered to be "unhealthy" and the ways to notify people or
+    services about this state. In addition to using this API, alert
+    policies can also be managed through `Cloud
     Monitoring <https://cloud.google.com/monitoring/docs/>`__, which can
     be reached by clicking the "Monitoring" tab in `Cloud
-    Console <https://console.cloud.google.com/>`__.
+    console <https://console.cloud.google.com/>`__.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
