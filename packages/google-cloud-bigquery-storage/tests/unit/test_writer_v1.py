@@ -12,9 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import time
 from unittest import mock
 
-import freezegun
 import pytest
 
 from google.api_core import exceptions
@@ -128,10 +128,11 @@ def test_initial_send_with_timeout(background_consumer, bidi_rpc, module_under_t
     initial_request = gapic_types.AppendRowsRequest(
         write_stream="this-is-a-stream-resource-path"
     )
-
-    with pytest.raises(exceptions.Unknown), freezegun.freeze_time(
-        auto_tick_seconds=module_under_test._DEFAULT_TIMEOUT + 1
-    ):
+    now = time.monotonic()
+    later = now + module_under_test._DEFAULT_TIMEOUT + 1
+    with mock.patch.object(module_under_test.time, "sleep"), mock.patch.object(
+        module_under_test.time, "monotonic", mock.MagicMock(side_effect=(now, later))
+    ), pytest.raises(exceptions.Unknown):
         manager.send(initial_request)
 
 

@@ -32,7 +32,6 @@ extras = {
     "pandas": ["pandas>=0.21.1"],
     "fastavro": ["fastavro>=0.21.2"],
     "pyarrow": ["pyarrow>=0.15.0"],
-    "tests": ["freezegun"],
 }
 
 package_root = os.path.abspath(os.path.dirname(__file__))
