@@ -13,8 +13,6 @@
 # limitations under the License.
 
 
-import os
-
 import mock
 import pytest
 
@@ -24,7 +22,6 @@ TIMESTAMP_MICROS = 18738724000  # Make sure millis granularity
 ROW_KEY = b"row-key"
 FAMILY_NAME = "family"
 QUALIFIER = b"qualifier"
-TIMESTAMP_MICROS = 100
 VALUE = b"value"
 TABLE_NAME = "table_name"
 
@@ -366,6 +363,51 @@ def test_partial_rows_data_constructor():
     assert partial_rows_data.request is request
     assert partial_rows_data.rows == {}
     assert partial_rows_data.retry == DEFAULT_RETRY_READ_ROWS
+
+
+def test_partial_rows_data_consume_all():
+    resp = _ReadRowsResponseV2(
+        [
+            _ReadRowsResponseCellChunkPB(
+                row_key=ROW_KEY,
+                family_name=FAMILY_NAME,
+                qualifier=QUALIFIER,
+                timestamp_micros=TIMESTAMP_MICROS,
+                value=VALUE,
+                commit_row=True,
+            ),
+            _ReadRowsResponseCellChunkPB(
+                row_key=ROW_KEY + b"2",
+                family_name=FAMILY_NAME,
+                qualifier=QUALIFIER,
+                timestamp_micros=TIMESTAMP_MICROS,
+                value=VALUE,
+                commit_row=True,
+            ),
+        ]
+    )
+
+    call_count = 0
+    iterator = _MockCancellableIterator(resp)
+
+    def fake_read(*args, **kwargs):
+        nonlocal call_count
+        call_count += 1
+        return iterator
+
+    partial_rows_data = _make_partial_rows_data(fake_read, None)
+    partial_rows_data.consume_all()
+
+    row1 = _make_partial_row_data(ROW_KEY)
+    row1._cells[FAMILY_NAME] = {
+        QUALIFIER: [_make_cell(value=VALUE, timestamp_micros=TIMESTAMP_MICROS)]
+    }
+    row2 = _make_partial_row_data(ROW_KEY + b"2")
+    row2._cells[FAMILY_NAME] = {
+        QUALIFIER: [_make_cell(value=VALUE, timestamp_micros=TIMESTAMP_MICROS)]
+    }
+
+    assert partial_rows_data.rows == {row1.row_key: row1, row2.row_key: row2}
 
 
 def test_partial_rows_data_constructor_with_retry():
@@ -1122,304 +1164,6 @@ def test_RRRM_build_updated_request_row_ranges_valid():
     assert len(updated_request.rows.row_ranges) > 0
 
 
-@pytest.fixture(scope="session")
-def json_tests():
-    dirname = os.path.dirname(__file__)
-    filename = os.path.join(dirname, "read-rows-acceptance-test.json")
-    raw = _parse_readrows_acceptance_tests(filename)
-    tests = {}
-    for (name, chunks, results) in raw:
-        tests[name] = chunks, results
-
-    yield tests
-
-
-# JSON Error cases:  invalid chunks
-
-
-def _fail_during_consume(json_tests, testcase_name):
-    from google.cloud.bigtable.row_data import InvalidChunk
-
-    client = _Client()
-    chunks, results = json_tests[testcase_name]
-    response = _ReadRowsResponseV2(chunks)
-    iterator = _MockCancellableIterator(response)
-    client._data_stub = mock.MagicMock()
-    client._data_stub.ReadRows.side_effect = [iterator]
-    request = object()
-    prd = _make_partial_rows_data(client._data_stub.ReadRows, request)
-    with pytest.raises(InvalidChunk):
-        prd.consume_all()
-    expected_result = _sort_flattend_cells(
-        [result for result in results if not result["error"]]
-    )
-    flattened = _sort_flattend_cells(_flatten_cells(prd))
-    assert flattened == expected_result
-
-
-def test_prd_json_accept_invalid_no_cell_key_before_commit(json_tests):
-    _fail_during_consume(json_tests, "invalid - no cell key before commit")
-
-
-def test_prd_json_accept_invalid_no_cell_key_before_value(json_tests):
-    _fail_during_consume(json_tests, "invalid - no cell key before value")
-
-
-def test_prd_json_accept_invalid_new_col_family_wo_qualifier(json_tests):
-    _fail_during_consume(json_tests, "invalid - new col family must specify qualifier")
-
-
-def test_prd_json_accept_invalid_no_commit_between_rows(json_tests):
-    _fail_during_consume(json_tests, "invalid - no commit between rows")
-
-
-def test_prd_json_accept_invalid_no_commit_after_first_row(json_tests):
-    _fail_during_consume(json_tests, "invalid - no commit after first row")
-
-
-def test_prd_json_accept_invalid_duplicate_row_key(json_tests):
-    _fail_during_consume(json_tests, "invalid - duplicate row key")
-
-
-def test_prd_json_accept_invalid_new_row_missing_row_key(json_tests):
-    _fail_during_consume(json_tests, "invalid - new row missing row key")
-
-
-def test_prd_json_accept_invalid_bare_reset(json_tests):
-    _fail_during_consume(json_tests, "invalid - bare reset")
-
-
-def test_prd_json_accept_invalid_bad_reset_no_commit(json_tests):
-    _fail_during_consume(json_tests, "invalid - bad reset, no commit")
-
-
-def test_prd_json_accept_invalid_missing_key_after_reset(json_tests):
-    _fail_during_consume(json_tests, "invalid - missing key after reset")
-
-
-def test_prd_json_accept_invalid_reset_with_chunk(json_tests):
-    _fail_during_consume(json_tests, "invalid - reset with chunk")
-
-
-def test_prd_json_accept_invalid_commit_with_chunk(json_tests):
-    _fail_during_consume(json_tests, "invalid - commit with chunk")
-
-
-# JSON Error cases:  incomplete final row
-
-
-def _sort_flattend_cells(flattened):
-    import operator
-
-    key_func = operator.itemgetter("rk", "fm", "qual")
-    return sorted(flattened, key=key_func)
-
-
-def _incomplete_final_row(json_tests, testcase_name):
-    client = _Client()
-    chunks, results = json_tests[testcase_name]
-    response = _ReadRowsResponseV2(chunks)
-    iterator = _MockCancellableIterator(response)
-    client._data_stub = mock.MagicMock()
-    client._data_stub.ReadRows.side_effect = [iterator]
-    request = object()
-    prd = _make_partial_rows_data(client._data_stub.ReadRows, request)
-    with pytest.raises(ValueError):
-        prd.consume_all()
-    assert prd.state == prd.ROW_IN_PROGRESS
-    expected_result = _sort_flattend_cells(
-        [result for result in results if not result["error"]]
-    )
-    flattened = _sort_flattend_cells(_flatten_cells(prd))
-    assert flattened == expected_result
-
-
-def test_prd_json_accept_invalid_no_commit(json_tests):
-    _incomplete_final_row(json_tests, "invalid - no commit")
-
-
-def test_prd_json_accept_invalid_last_row_missing_commit(json_tests):
-    _incomplete_final_row(json_tests, "invalid - last row missing commit")
-
-
-# Non-error cases
-
-_marker = object()
-
-
-def _match_results(json_tests, testcase_name, expected_result=_marker):
-    from google.cloud.bigtable_v2.services.bigtable import BigtableClient
-
-    client = _Client()
-    chunks, results = json_tests[testcase_name]
-    response = _ReadRowsResponseV2(chunks)
-    iterator = _MockCancellableIterator(response)
-    data_api = mock.create_autospec(BigtableClient)
-    client._table_data_client = data_api
-    client._table_data_client.read_rows.side_effect = [iterator]
-    request = object()
-    prd = _make_partial_rows_data(client._table_data_client.read_rows, request)
-    prd.consume_all()
-    flattened = _sort_flattend_cells(_flatten_cells(prd))
-    if expected_result is _marker:
-        expected_result = _sort_flattend_cells(results)
-    assert flattened == expected_result
-
-
-def test_prd_json_accept_bare_commit_implies_ts_zero(json_tests):
-    _match_results(json_tests, "bare commit implies ts=0")
-
-
-def test_prd_json_accept_simple_row_with_timestamp(json_tests):
-    _match_results(json_tests, "simple row with timestamp")
-
-
-def test_prd_json_accept_missing_timestamp_implies_ts_zero(json_tests):
-    _match_results(json_tests, "missing timestamp, implied ts=0")
-
-
-def test_prd_json_accept_empty_cell_value(json_tests):
-    _match_results(json_tests, "empty cell value")
-
-
-def test_prd_json_accept_two_unsplit_cells(json_tests):
-    _match_results(json_tests, "two unsplit cells")
-
-
-def test_prd_json_accept_two_qualifiers(json_tests):
-    _match_results(json_tests, "two qualifiers")
-
-
-def test_prd_json_accept_two_families(json_tests):
-    _match_results(json_tests, "two families")
-
-
-def test_prd_json_accept_with_labels(json_tests):
-    _match_results(json_tests, "with labels")
-
-
-def test_prd_json_accept_split_cell_bare_commit(json_tests):
-    _match_results(json_tests, "split cell, bare commit")
-
-
-def test_prd_json_accept_split_cell(json_tests):
-    _match_results(json_tests, "split cell")
-
-
-def test_prd_json_accept_split_four_ways(json_tests):
-    _match_results(json_tests, "split four ways")
-
-
-def test_prd_json_accept_two_split_cells(json_tests):
-    _match_results(json_tests, "two split cells")
-
-
-def test_prd_json_accept_multi_qualifier_splits(json_tests):
-    _match_results(json_tests, "multi-qualifier splits")
-
-
-def test_prd_json_accept_multi_qualifier_multi_split(json_tests):
-    _match_results(json_tests, "multi-qualifier multi-split")
-
-
-def test_prd_json_accept_multi_family_split(json_tests):
-    _match_results(json_tests, "multi-family split")
-
-
-def test_prd_json_accept_two_rows(json_tests):
-    _match_results(json_tests, "two rows")
-
-
-def test_prd_json_accept_two_rows_implicit_timestamp(json_tests):
-    _match_results(json_tests, "two rows implicit timestamp")
-
-
-def test_prd_json_accept_two_rows_empty_value(json_tests):
-    _match_results(json_tests, "two rows empty value")
-
-
-def test_prd_json_accept_two_rows_one_with_multiple_cells(json_tests):
-    _match_results(json_tests, "two rows, one with multiple cells")
-
-
-def test_prd_json_accept_two_rows_multiple_cells_multiple_families(json_tests):
-    _match_results(json_tests, "two rows, multiple cells, multiple families")
-
-
-def test_prd_json_accept_two_rows_multiple_cells(json_tests):
-    _match_results(json_tests, "two rows, multiple cells")
-
-
-def test_prd_json_accept_two_rows_four_cells_two_labels(json_tests):
-    _match_results(json_tests, "two rows, four cells, 2 labels")
-
-
-def test_prd_json_accept_two_rows_with_splits_same_timestamp(json_tests):
-    _match_results(json_tests, "two rows with splits, same timestamp")
-
-
-def test_prd_json_accept_no_data_after_reset(json_tests):
-    # JSON testcase has `"results": null`
-    _match_results(json_tests, "no data after reset", expected_result=[])
-
-
-def test_prd_json_accept_simple_reset(json_tests):
-    _match_results(json_tests, "simple reset")
-
-
-def test_prd_json_accept_reset_to_new_val(json_tests):
-    _match_results(json_tests, "reset to new val")
-
-
-def test_prd_json_accept_reset_to_new_qual(json_tests):
-    _match_results(json_tests, "reset to new qual")
-
-
-def test_prd_json_accept_reset_with_splits(json_tests):
-    _match_results(json_tests, "reset with splits")
-
-
-def test_prd_json_accept_two_resets(json_tests):
-    _match_results(json_tests, "two resets")
-
-
-def test_prd_json_accept_reset_to_new_row(json_tests):
-    _match_results(json_tests, "reset to new row")
-
-
-def test_prd_json_accept_reset_in_between_chunks(json_tests):
-    _match_results(json_tests, "reset in between chunks")
-
-
-def test_prd_json_accept_empty_cell_chunk(json_tests):
-    _match_results(json_tests, "empty cell chunk")
-
-
-def test_prd_json_accept_empty_second_qualifier(json_tests):
-    _match_results(json_tests, "empty second qualifier")
-
-
-def _flatten_cells(prd):
-    # Match results format from JSON testcases.
-    # Doesn't handle error cases.
-    from google.cloud._helpers import _bytes_to_unicode
-    from google.cloud._helpers import _microseconds_from_datetime
-
-    for row_key, row in prd.rows.items():
-        for family_name, family in row.cells.items():
-            for qualifier, column in family.items():
-                for cell in column:
-                    yield {
-                        "rk": _bytes_to_unicode(row_key),
-                        "fm": family_name,
-                        "qual": _bytes_to_unicode(qualifier),
-                        "ts": _microseconds_from_datetime(cell.timestamp),
-                        "value": _bytes_to_unicode(cell.value),
-                        "label": " ".join(cell.labels),
-                        "error": False,
-                    }
-
-
 class _MockCancellableIterator(object):
 
     cancel_calls = 0
@@ -1479,25 +1223,6 @@ def _generate_cell_chunks(chunk_text_pbs):
         chunks.append(chunk)
 
     return chunks
-
-
-def _parse_readrows_acceptance_tests(filename):
-    """Parse acceptance tests from JSON
-
-    See
-    https://github.com/googleapis/python-bigtable/blob/main/\
-    tests/unit/read-rows-acceptance-test.json
-    """
-    import json
-
-    with open(filename) as json_file:
-        test_json = json.load(json_file)
-
-    for test in test_json["tests"]:
-        name = test["name"]
-        chunks = _generate_cell_chunks(test["chunks"])
-        results = test["results"]
-        yield name, chunks, results
 
 
 def _ReadRowsResponseCellChunkPB(*args, **kw):
