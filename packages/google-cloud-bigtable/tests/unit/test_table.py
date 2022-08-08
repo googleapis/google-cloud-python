@@ -47,6 +47,7 @@ RETRYABLE_2 = StatusCode.ABORTED.value[0]
 RETRYABLE_3 = StatusCode.UNAVAILABLE.value[0]
 RETRYABLES = (RETRYABLE_1, RETRYABLE_2, RETRYABLE_3)
 NON_RETRYABLE = StatusCode.CANCELLED.value[0]
+STATUS_INTERNAL = StatusCode.INTERNAL.value[0]
 
 
 @mock.patch("google.cloud.bigtable.table._MAX_BULK_MUTATIONS", new=3)
@@ -1636,6 +1637,7 @@ def _do_mutate_retryable_rows_helper(
     raising_retry=False,
     retryable_error=False,
     timeout=None,
+    mutate_rows_side_effect=None,
 ):
     from google.api_core.exceptions import ServiceUnavailable
     from google.cloud.bigtable.row import DirectRow
@@ -1664,8 +1666,13 @@ def _do_mutate_retryable_rows_helper(
 
     data_api = client._table_data_client = _make_data_api()
     if retryable_error:
-        data_api.mutate_rows.side_effect = ServiceUnavailable("testing")
+        if mutate_rows_side_effect is not None:
+            data_api.mutate_rows.side_effect = mutate_rows_side_effect
+        else:
+            data_api.mutate_rows.side_effect = ServiceUnavailable("testing")
     else:
+        if mutate_rows_side_effect is not None:
+            data_api.mutate_rows.side_effect = mutate_rows_side_effect
         data_api.mutate_rows.return_value = [response]
 
     worker = _make_worker(client, table.name, rows=rows)
@@ -1783,6 +1790,52 @@ def test_rmrw_do_mutate_retryable_rows_w_retryable_error():
         responses,
         retryable_error=True,
     )
+
+
+def test_rmrw_do_mutate_retryable_rows_w_retryable_error_internal_rst_stream_error():
+    # Mutate two rows
+    # Raise internal server error with RST STREAM error messages
+    # There should be no error raised and that the request is retried
+    from google.api_core.exceptions import InternalServerError
+    from google.cloud.bigtable.row_data import RETRYABLE_INTERNAL_ERROR_MESSAGES
+
+    row_cells = [
+        (b"row_key_1", ("cf", b"col", b"value1")),
+        (b"row_key_2", ("cf", b"col", b"value2")),
+    ]
+    responses = ()
+
+    for retryable_internal_error_message in RETRYABLE_INTERNAL_ERROR_MESSAGES:
+        for message in [
+            retryable_internal_error_message,
+            retryable_internal_error_message.upper(),
+        ]:
+            _do_mutate_retryable_rows_helper(
+                row_cells,
+                responses,
+                retryable_error=True,
+                mutate_rows_side_effect=InternalServerError(message),
+            )
+
+
+def test_rmrw_do_mutate_rows_w_retryable_error_internal_not_retryable():
+    # Mutate two rows
+    # Raise internal server error but not RST STREAM error messages
+    # mutate_rows should raise Internal Server Error
+    from google.api_core.exceptions import InternalServerError
+
+    row_cells = [
+        (b"row_key_1", ("cf", b"col", b"value1")),
+        (b"row_key_2", ("cf", b"col", b"value2")),
+    ]
+    responses = ()
+
+    with pytest.raises(InternalServerError):
+        _do_mutate_retryable_rows_helper(
+            row_cells,
+            responses,
+            mutate_rows_side_effect=InternalServerError("Error not retryable."),
+        )
 
 
 def test_rmrw_do_mutate_retryable_rows_retry():

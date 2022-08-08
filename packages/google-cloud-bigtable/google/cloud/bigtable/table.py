@@ -23,6 +23,7 @@ from google.api_core.exceptions import DeadlineExceeded
 from google.api_core.exceptions import NotFound
 from google.api_core.exceptions import RetryError
 from google.api_core.exceptions import ServiceUnavailable
+from google.api_core.exceptions import InternalServerError
 from google.api_core.gapic_v1.method import DEFAULT
 from google.api_core.retry import if_exception_type
 from google.api_core.retry import Retry
@@ -37,7 +38,10 @@ from google.cloud.bigtable.policy import Policy
 from google.cloud.bigtable.row import AppendRow
 from google.cloud.bigtable.row import ConditionalRow
 from google.cloud.bigtable.row import DirectRow
-from google.cloud.bigtable.row_data import PartialRowsData
+from google.cloud.bigtable.row_data import (
+    PartialRowsData,
+    _retriable_internal_server_error,
+)
 from google.cloud.bigtable.row_data import DEFAULT_RETRY_READ_ROWS
 from google.cloud.bigtable.row_set import RowSet
 from google.cloud.bigtable.row_set import RowRange
@@ -55,8 +59,14 @@ from google.cloud.bigtable_admin_v2.types import (
 _MAX_BULK_MUTATIONS = 100000
 VIEW_NAME_ONLY = enums.Table.View.NAME_ONLY
 
-RETRYABLE_MUTATION_ERRORS = (Aborted, DeadlineExceeded, ServiceUnavailable)
+RETRYABLE_MUTATION_ERRORS = (
+    Aborted,
+    DeadlineExceeded,
+    ServiceUnavailable,
+    InternalServerError,
+)
 """Errors which can be retried during row mutation."""
+
 
 RETRYABLE_CODES: Set[int] = set()
 
@@ -1130,11 +1140,18 @@ class _RetryableMutateRowsWorker(object):
                 retry=None,
                 **kwargs
             )
-        except RETRYABLE_MUTATION_ERRORS:
+        except RETRYABLE_MUTATION_ERRORS as exc:
             # If an exception, considered retryable by `RETRYABLE_MUTATION_ERRORS`, is
             # returned from the initial call, consider
             # it to be retryable. Wrap as a Bigtable Retryable Error.
-            raise _BigtableRetryableError
+            # For InternalServerError, it is only retriable if the message is related to RST Stream messages
+            if _retriable_internal_server_error(exc) or not isinstance(
+                exc, InternalServerError
+            ):
+                raise _BigtableRetryableError
+            else:
+                # re-raise the original exception
+                raise
 
         num_responses = 0
         num_retryable_responses = 0

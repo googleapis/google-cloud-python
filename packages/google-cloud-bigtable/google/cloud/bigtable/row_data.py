@@ -332,10 +332,32 @@ class InvalidRetryRequest(RuntimeError):
     """Exception raised when retry request is invalid."""
 
 
+RETRYABLE_INTERNAL_ERROR_MESSAGES = (
+    "rst_stream",
+    "rst stream",
+    "received unexpected eos on data frame from server",
+)
+"""Internal error messages that can be retried during read row and mutation."""
+
+
+def _retriable_internal_server_error(exc):
+    """
+    Return True if the internal server error is retriable.
+    """
+    return isinstance(exc, exceptions.InternalServerError) and any(
+        retryable_message in exc.message.lower()
+        for retryable_message in RETRYABLE_INTERNAL_ERROR_MESSAGES
+    )
+
+
 def _retry_read_rows_exception(exc):
+    """Return True if the exception is retriable for read row requests."""
     if isinstance(exc, grpc.RpcError):
         exc = exceptions.from_grpc_error(exc)
-    return isinstance(exc, (exceptions.ServiceUnavailable, exceptions.DeadlineExceeded))
+
+    return _retriable_internal_server_error(exc) or isinstance(
+        exc, (exceptions.ServiceUnavailable, exceptions.DeadlineExceeded)
+    )
 
 
 DEFAULT_RETRY_READ_ROWS = retry.Retry(

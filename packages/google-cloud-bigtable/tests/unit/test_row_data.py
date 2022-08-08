@@ -310,6 +310,31 @@ def test__retry_read_rows_exception_deadline_exceeded():
     assert _retry_read_rows_exception(exception)
 
 
+def test__retry_read_rows_exception_internal_server_not_retriable():
+    from google.api_core.exceptions import InternalServerError
+    from google.cloud.bigtable.row_data import (
+        _retry_read_rows_exception,
+        RETRYABLE_INTERNAL_ERROR_MESSAGES,
+    )
+
+    err_message = "500 Error"
+    exception = InternalServerError(err_message)
+    assert err_message not in RETRYABLE_INTERNAL_ERROR_MESSAGES
+    assert not _retry_read_rows_exception(exception)
+
+
+def test__retry_read_rows_exception_internal_server_retriable():
+    from google.api_core.exceptions import InternalServerError
+    from google.cloud.bigtable.row_data import (
+        _retry_read_rows_exception,
+        RETRYABLE_INTERNAL_ERROR_MESSAGES,
+    )
+
+    for err_message in RETRYABLE_INTERNAL_ERROR_MESSAGES:
+        exception = InternalServerError(err_message)
+        assert _retry_read_rows_exception(exception)
+
+
 def test__retry_read_rows_exception_miss_wrapped_in_grpc():
     from google.api_core.exceptions import Conflict
     from google.cloud.bigtable.row_data import _retry_read_rows_exception
