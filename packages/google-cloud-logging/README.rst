@@ -57,11 +57,12 @@ dependencies.
 
 Supported Python Versions
 ^^^^^^^^^^^^^^^^^^^^^^^^^
-Python >= 3.6
+Python >= 3.7
 
 Unsupported Python Versions
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Python == 2.7. The last version of the library compatible with Python 2.7 is `google-cloud-logging==1.15.1`.
+Python == 3.6. The last version of the library compatible with Python 3.6 is `google-cloud-logging==3.1.2`.
 
 
 Mac/Linux
