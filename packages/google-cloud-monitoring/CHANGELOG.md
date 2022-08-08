@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-monitoring/#history
 
+## [2.11.0](https://github.com/googleapis/python-monitoring/compare/v2.10.1...v2.11.0) (2022-08-06)
+
+
+### Features
+
+* Added support for evaluating missing data in AlertPolicy ([#470](https://github.com/googleapis/python-monitoring/issues/470)) ([71e94c2](https://github.com/googleapis/python-monitoring/commit/71e94c234d500515ed22cc7df031ea0d45153084))
+
+
+### Documentation
+
+* **samples:** add docstrings to explain the project ID format ([#469](https://github.com/googleapis/python-monitoring/issues/469)) ([7009724](https://github.com/googleapis/python-monitoring/commit/700972421378c06951094bbf525ba53c75748a61))
+
 ## [2.10.1](https://github.com/googleapis/python-monitoring/compare/v2.10.0...v2.10.1) (2022-07-14)
 
 
