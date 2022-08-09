@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.12.2](https://github.com/googleapis/python-secret-manager/compare/v2.12.1...v2.12.2) (2022-08-08)
+
+
+### Documentation
+
+* **samples:** add sample to update secret with alias ([#307](https://github.com/googleapis/python-secret-manager/issues/307)) ([dab8e16](https://github.com/googleapis/python-secret-manager/commit/dab8e166a77aff67b6b750f5b1c753f0b2c17169))
+
 ## [2.12.1](https://github.com/googleapis/python-secret-manager/compare/v2.12.0...v2.12.1) (2022-07-26)
 
 
