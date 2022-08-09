@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.17.8](https://github.com/googleapis/python-bigquery-pandas/compare/v0.17.7...v0.17.8) (2022-08-09)
+
+
+### Bug Fixes
+
+* **deps:** allow pyarrow < 10 ([#550](https://github.com/googleapis/python-bigquery-pandas/issues/550)) ([c21a414](https://github.com/googleapis/python-bigquery-pandas/commit/c21a41425d4d06b9df5fbdeb15e90f79de841612))
+
 ## [0.17.7](https://github.com/googleapis/python-bigquery-pandas/compare/v0.17.6...v0.17.7) (2022-07-11)
 
 
