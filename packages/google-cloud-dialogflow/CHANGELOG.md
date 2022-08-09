@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/dialogflow/#history
 
+## [2.15.1](https://github.com/googleapis/python-dialogflow/compare/v2.15.0...v2.15.1) (2022-08-09)
+
+
+### Documentation
+
+* added an explicit note that DetectIntentRequest's text input is limited by 256 characters ([#543](https://github.com/googleapis/python-dialogflow/issues/543)) ([4b36501](https://github.com/googleapis/python-dialogflow/commit/4b36501ada91f1eb97e3d80da6b429ea591b432c))
+* updated some method comments and added an explicit note that DetectIntentRequest's text input is limited by 256 characters ([#545](https://github.com/googleapis/python-dialogflow/issues/545)) ([1efd108](https://github.com/googleapis/python-dialogflow/commit/1efd10881e1bb40de1452c4c6e6696cf61b81c90))
+
 ## [2.15.0](https://github.com/googleapis/python-dialogflow/compare/v2.14.1...v2.15.0) (2022-07-16)
 
 
