@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-container/#history
 
+## [2.11.1](https://github.com/googleapis/python-container/compare/v2.11.0...v2.11.1) (2022-08-02)
+
+
+### Documentation
+
+* **v1beta1:** BinaryAuthorization.enabled field is marked as deprecated ([0088035](https://github.com/googleapis/python-container/commit/00880358b4021191ff90f1f2a0f08160ce7b6d6a))
+* **v1:** BinaryAuthorization.enabled field is marked as deprecated ([#272](https://github.com/googleapis/python-container/issues/272)) ([0088035](https://github.com/googleapis/python-container/commit/00880358b4021191ff90f1f2a0f08160ce7b6d6a))
+
 ## [2.11.0](https://github.com/googleapis/python-container/compare/v2.10.8...v2.11.0) (2022-07-16)
 
 
