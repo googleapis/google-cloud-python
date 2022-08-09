@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.10.0](https://github.com/googleapis/python-analytics-admin/compare/v0.9.0...v0.10.0) (2022-08-05)
+
+
+### Features
+
+* **v1alpha:** add `GetAttributionSettings`, `UpdateAttributionSettings` methods ([6e6b741](https://github.com/googleapis/python-analytics-admin/commit/6e6b74144706ffe6ecd898d11f9eb41e46d77c94))
+* **v1alpha:** add `GetAudience`, 'ListAudience', 'CreateAudience', 'UpdateAudience', 'ArchiveAudience' methods ([6e6b741](https://github.com/googleapis/python-analytics-admin/commit/6e6b74144706ffe6ecd898d11f9eb41e46d77c94))
+* **v1alpha:** add `RunAccessReport` method ([#246](https://github.com/googleapis/python-analytics-admin/issues/246)) ([6e6b741](https://github.com/googleapis/python-analytics-admin/commit/6e6b74144706ffe6ecd898d11f9eb41e46d77c94))
+
 ## [0.9.0](https://github.com/googleapis/python-analytics-admin/compare/v0.8.2...v0.9.0) (2022-07-20)
 
 
