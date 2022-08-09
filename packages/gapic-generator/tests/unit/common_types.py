@@ -16,7 +16,7 @@ import dataclasses
 import itertools
 
 from collections import namedtuple
-from typing import(Any, Dict, Iterable, Optional)
+from typing import (Any, Dict, Iterable, Optional)
 
 from google.protobuf import descriptor_pb2
 
