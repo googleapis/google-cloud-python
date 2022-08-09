@@ -176,7 +176,7 @@ class Asset(proto.Message):
             policy set on this resource and each policy set on all of
             the resource's ancestry resource levels in the hierarchy.
             See `this
-            topic <https://cloud.google.com/iam/docs/policies#inheritance>`__
+            topic <https://cloud.google.com/iam/help/allow-policies/inheritance>`__
             for more information.
         org_policy (Sequence[google.cloud.orgpolicy.v1.orgpolicy_pb2.Policy]):
             A representation of an `organization
@@ -496,7 +496,7 @@ class RelatedAsset(proto.Message):
 
 class ResourceSearchResult(proto.Message):
     r"""A result of Resource Search, containing information of a
-    cloud resource.
+    cloud resource. Next ID: 29
 
     Attributes:
         name (str):

@@ -1146,6 +1146,17 @@ class AssetServiceAsyncClient:
                 -  ``kmsKey:key`` to find Cloud resources encrypted with
                    a customer-managed encryption key whose name contains
                    the word "key".
+                -  ``relationships:instance-group-1`` to find Cloud
+                   resources that have relationships with
+                   "instance-group-1" in the related resource name.
+                -  ``relationships:INSTANCE_TO_INSTANCEGROUP`` to find
+                   compute instances that have relationships of type
+                   "INSTANCE_TO_INSTANCEGROUP".
+                -  ``relationships.INSTANCE_TO_INSTANCEGROUP:instance-group-1``
+                   to find compute instances that have relationships
+                   with "instance-group-1" in the compute instance group
+                   resource name, for relationship type
+                   "INSTANCE_TO_INSTANCEGROUP".
                 -  ``state:ACTIVE`` to find Cloud resources whose state
                    contains "ACTIVE" as a word.
                 -  ``NOT state:ACTIVE`` to find Cloud resources whose
@@ -1339,8 +1350,8 @@ class AssetServiceAsyncClient:
                 principals, roles, and Cloud IAM conditions. The
                 returned Cloud IAM policies will only contain the
                 bindings that match your query. To learn more about the
-                IAM policy structure, see `IAM policy
-                doc <https://cloud.google.com/iam/docs/policies#structure>`__.
+                IAM policy structure, see the `IAM policy
+                documentation <https://cloud.google.com/iam/help/allow-policies/structure>`__.
 
                 Examples:
 
@@ -2326,7 +2337,16 @@ class AssetServiceAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.batch_get_effective_iam_policies,
-            default_timeout=None,
+            default_retry=retries.Retry(
+                initial=0.1,
+                maximum=60.0,
+                multiplier=1.3,
+                predicate=retries.if_exception_type(
+                    core_exceptions.ServiceUnavailable,
+                ),
+                deadline=300.0,
+            ),
+            default_timeout=300.0,
             client_info=DEFAULT_CLIENT_INFO,
         )
 
