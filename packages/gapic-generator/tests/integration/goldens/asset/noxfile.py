@@ -35,9 +35,9 @@ CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
 LOWER_BOUND_CONSTRAINTS_FILE = CURRENT_DIRECTORY / "constraints.txt"
 PACKAGE_NAME = subprocess.check_output([sys.executable, "setup.py", "--name"], encoding="utf-8")
 
-BLACK_VERSION = "black==19.10b0"
+BLACK_VERSION = "black==22.3.0"
 BLACK_PATHS = ["docs", "google", "tests", "samples", "noxfile.py", "setup.py"]
-DEFAULT_PYTHON_VERSION = "3.9"
+DEFAULT_PYTHON_VERSION = "3.10"
 
 nox.sessions = [
     "unit",

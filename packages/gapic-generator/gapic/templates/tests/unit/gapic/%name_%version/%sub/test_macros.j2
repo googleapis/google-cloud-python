@@ -973,7 +973,7 @@ def test_{{ method_name }}_rest_required_fields(request_type={{ method.input.ide
         ))
 
     # verify fields with default values are dropped
-    {% for req_field in method.input.required_fields if req_field.is_primitive and req_field.name in method.query_params %}
+    {% for req_field in method.input.required_fields if req_field.name in method.query_params %}
     {% set field_name = req_field.name | camel_case %}
     assert "{{ field_name }}" not in jsonified_request
     {% endfor %}
@@ -982,7 +982,7 @@ def test_{{ method_name }}_rest_required_fields(request_type={{ method.input.ide
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
-    {% for req_field in method.input.required_fields if req_field.is_primitive and req_field.name in method.query_params %}
+    {% for req_field in method.input.required_fields if req_field.name in method.query_params %}
     {% set field_name = req_field.name | camel_case %}
     assert "{{ field_name }}" in jsonified_request
     assert jsonified_request["{{ field_name }}"] == request_init["{{ req_field.name }}"]
@@ -1067,7 +1067,7 @@ def test_{{ method_name }}_rest_required_fields(request_type={{ method.input.ide
             {% endif %}
 
             expected_params = [
-            {% for req_field in method.input.required_fields if req_field.is_primitive and req_field.name in method.query_params %}
+            {% for req_field in method.input.required_fields if req_field.name in method.query_params %}
                 (
                     "{{ req_field.name | camel_case }}",
                     {% if req_field.field_pb.type == 9 %}
