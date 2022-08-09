@@ -1,5 +1,25 @@
 # Changelog
 
+## [1.8.0](https://github.com/googleapis/python-retail/compare/v1.7.0...v1.8.0) (2022-08-09)
+
+
+### Features
+
+* allow adding labels in search requests ([d981c65](https://github.com/googleapis/python-retail/commit/d981c65fcf7f8f04fd36f728b639dd15756af04d))
+* allow disabling spell check in search requests ([d981c65](https://github.com/googleapis/python-retail/commit/d981c65fcf7f8f04fd36f728b639dd15756af04d))
+* allow enabling recommendation filtering on custom attributes ([d981c65](https://github.com/googleapis/python-retail/commit/d981c65fcf7f8f04fd36f728b639dd15756af04d))
+* allow returning min/max values on search numeric facets ([d981c65](https://github.com/googleapis/python-retail/commit/d981c65fcf7f8f04fd36f728b639dd15756af04d))
+* allow skipping default branch protection when doing product full import ([fabe71c](https://github.com/googleapis/python-retail/commit/fabe71c5aacc44cacd4dc6d95fc02878691a8185))
+* allow using serving configs as an alias of placements ([d981c65](https://github.com/googleapis/python-retail/commit/d981c65fcf7f8f04fd36f728b639dd15756af04d))
+* new model service to manage recommendation models ([fabe71c](https://github.com/googleapis/python-retail/commit/fabe71c5aacc44cacd4dc6d95fc02878691a8185))
+* return output BigQuery table on product / event export response ([d981c65](https://github.com/googleapis/python-retail/commit/d981c65fcf7f8f04fd36f728b639dd15756af04d))
+* support case insensitive match on search facets ([#301](https://github.com/googleapis/python-retail/issues/301)) ([d981c65](https://github.com/googleapis/python-retail/commit/d981c65fcf7f8f04fd36f728b639dd15756af04d))
+
+
+### Documentation
+
+* keep the API doc up-to-date with recent changes ([d981c65](https://github.com/googleapis/python-retail/commit/d981c65fcf7f8f04fd36f728b639dd15756af04d))
+
 ## [1.7.0](https://github.com/googleapis/python-retail/compare/v1.6.1...v1.7.0) (2022-07-17)
 
 
