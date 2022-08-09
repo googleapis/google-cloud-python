@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-tasks/#history
 
+## [2.10.1](https://github.com/googleapis/python-tasks/compare/v2.10.0...v2.10.1) (2022-08-09)
+
+
+### Documentation
+
+* **sample:** update protobuf in create_http_task.py ([#283](https://github.com/googleapis/python-tasks/issues/283)) ([b685da5](https://github.com/googleapis/python-tasks/commit/b685da5c2e315965a6fb294d89ecf98a6d684162))
+
 ## [2.10.0](https://github.com/googleapis/python-tasks/compare/v2.9.1...v2.10.0) (2022-07-16)
 
 
