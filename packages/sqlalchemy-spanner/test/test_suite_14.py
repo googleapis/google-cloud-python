@@ -1252,10 +1252,6 @@ class InsertBehaviorTest(_InsertBehaviorTest):
     def test_insert_from_select_autoinc(self):
         pass
 
-    @pytest.mark.skip("Spanner doesn't support default column values")
-    def test_insert_from_select_with_defaults(self):
-        pass
-
     def test_autoclose_on_insert(self):
         """
         SPANNER OVERRIDE:
