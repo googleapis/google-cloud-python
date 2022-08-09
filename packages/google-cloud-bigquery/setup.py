@@ -44,7 +44,7 @@ dependencies = [
     "packaging >= 14.3, <22.0.0dev",
     "protobuf >= 3.12.0, <4.0.0dev",  # For the legacy proto-based types.
     "python-dateutil >= 2.7.2, <3.0dev",
-    "pyarrow >= 3.0.0, < 9.0dev",
+    "pyarrow >= 3.0.0, < 10.0dev",
     "requests >= 2.18.0, < 3.0.0dev",
 ]
 extras = {
