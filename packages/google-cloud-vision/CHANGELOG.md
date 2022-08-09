@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-vision/#history
 
+## [3.1.0](https://github.com/googleapis/python-vision/compare/v3.0.0...v3.1.0) (2022-08-05)
+
+
+### Features
+
+* Add TextDetectionParams.advanced_ocr_options ([#464](https://github.com/googleapis/python-vision/issues/464)) ([0886a2d](https://github.com/googleapis/python-vision/commit/0886a2d444c2ec9067eb36286d258f569b02954b))
+
 ## [3.0.0](https://github.com/googleapis/python-vision/compare/v2.8.0...v3.0.0) (2022-07-18)
 
 
