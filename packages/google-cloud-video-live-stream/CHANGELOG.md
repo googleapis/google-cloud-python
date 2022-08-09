@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.1](https://github.com/googleapis/python-video-live-stream/compare/v1.0.0...v1.0.1) (2022-08-02)
+
+
+### Documentation
+
+* **samples:** fix timeout for create input and start channel LROs; first call can take up to 15 minutes ([#86](https://github.com/googleapis/python-video-live-stream/issues/86)) ([6062208](https://github.com/googleapis/python-video-live-stream/commit/60622087d88be430cce2ef9c77ffe58b15af24e7))
+
 ## [1.0.0](https://github.com/googleapis/python-video-live-stream/compare/v0.2.0...v1.0.0) (2022-07-18)
 
 
