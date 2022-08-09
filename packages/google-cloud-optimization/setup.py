@@ -22,7 +22,7 @@ import setuptools
 
 name = "google-cloud-optimization"
 description = "Cloud Optimization API client library"
-version = "1.0.1"
+version = "1.1.0"
 release_status = "Development Status :: 5 - Production/Stable"
 url = "https://github.com/googleapis/python-optimization"
 dependencies = [

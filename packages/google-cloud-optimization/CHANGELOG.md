@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.1.0](https://github.com/googleapis/python-optimization/compare/v1.0.1...v1.1.0) (2022-08-05)
+
+
+### Features
+
+* add audience parameter ([2b17d6a](https://github.com/googleapis/python-optimization/commit/2b17d6a68205a46a31d0bf5e1bbe62af8f98ac66))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.32.0,>=2.8.0 ([#48](https://github.com/googleapis/python-optimization/issues/48)) ([2b17d6a](https://github.com/googleapis/python-optimization/commit/2b17d6a68205a46a31d0bf5e1bbe62af8f98ac66))
+* require python 3.7+ ([#50](https://github.com/googleapis/python-optimization/issues/50)) ([a49598b](https://github.com/googleapis/python-optimization/commit/a49598b350b3d4688e8742d6371027a028915073))
+
 ## [1.0.1](https://github.com/googleapis/python-optimization/compare/v1.0.0...v1.0.1) (2022-06-07)
 
 
