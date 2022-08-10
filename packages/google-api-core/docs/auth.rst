@@ -165,7 +165,7 @@ possible to call Google Cloud APIs with a user account via
     getting started with the ``google-cloud-*`` library.
 
 The simplest way to use credentials from a user account is via
-Application Default Credentials using ``gcloud auth login``
+Application Default Credentials using ``gcloud auth application-default login``
 (as mentioned above) and :func:`google.auth.default`:
 
 .. code:: python
