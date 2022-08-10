@@ -137,6 +137,17 @@ assert 1 == s.replace(
 """,
 )
 
+assert 1 == s.replace(
+    "noxfile.py",
+    """\
+    # Only run system tests if found.
+    """,
+    """\
+    env = {}
+    # Only run system tests if found.
+    """,
+)
+
 assert 2 == s.replace(
     "noxfile.py",
     """system_test_path,\n""",

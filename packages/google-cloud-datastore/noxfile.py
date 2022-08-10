@@ -428,6 +428,7 @@ def prerelease_deps(session):
     system_test_path = os.path.join("tests", "system.py")
     system_test_folder_path = os.path.join("tests", "system")
 
+    env = {}
     # Only run system tests if found.
     if os.path.exists(system_test_path):
         session.run(
