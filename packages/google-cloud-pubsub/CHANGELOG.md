@@ -5,6 +5,13 @@
 [1]: https://pypi.org/project/google-cloud-pubsub/#history
 
 
+## [2.13.5](https://github.com/googleapis/python-pubsub/compare/v2.13.4...v2.13.5) (2022-08-10)
+
+
+### Documentation
+
+* reorganize sphinx structure ([#751](https://github.com/googleapis/python-pubsub/issues/751)) ([b6de574](https://github.com/googleapis/python-pubsub/commit/b6de57458a1976a068dd229208b9b678a9d3f866))
+
 ## [2.13.4](https://github.com/googleapis/python-pubsub/compare/v2.13.3...v2.13.4) (2022-07-15)
 
 
