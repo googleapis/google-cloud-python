@@ -13,11 +13,11 @@ API Documentation
     across the documentation.
 
 .. toctree::
-    :maxdepth: 3
+    :maxdepth: 4
 
-    Publisher Client <publisher/index>
-    Subscriber Client <subscriber/index>
-    Types <types>
+    Publisher Client <pubsub/publisher/index>
+    Subscriber Client <pubsub/subscriber/index>
+    Types <pubsub/types>
 
 
 Migration Guide
