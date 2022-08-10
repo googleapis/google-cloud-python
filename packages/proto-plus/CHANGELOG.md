@@ -1,5 +1,16 @@
 # Changelog
 
+## [1.22.0](https://github.com/googleapis/proto-plus-python/compare/v1.21.0...v1.22.0) (2022-08-10)
+
+### Features
+
+* Add support for protobuf v4 ([#327](https://github.com/googleapis/proto-plus-python/issues/327)) ([ed353aa](https://github.com/googleapis/proto-plus-python/commit/ed353aaf8bd5a659535eb493221320e449f3f637))
+
+### Bug Fixes
+
+* Fix Timestamp, Duration and FieldMask marshaling in REST transport ([a2e7300](https://github.com/googleapis/proto-plus-python/commit/a2e7300368625ceec39dd2c2dfb96291ad8cf1f1))
+* fixes bug in the test. ([#332](https://github.com/googleapis/proto-plus-python/issues/332)) ([f85f470](https://github.com/googleapis/proto-plus-python/commit/f85f470c880a7bff7f3c813d33d15e657e7b5123))
+
 ## [1.20.6](https://github.com/googleapis/proto-plus-python/compare/v1.20.5...v1.20.6) (2022-06-13)
 
 
