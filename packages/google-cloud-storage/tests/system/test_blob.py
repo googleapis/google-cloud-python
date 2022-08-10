@@ -17,6 +17,7 @@ import gzip
 import io
 import os
 import tempfile
+import uuid
 import warnings
 
 import pytest
@@ -44,7 +45,7 @@ def test_large_file_write_from_stream(
     file_data,
     service_account,
 ):
-    blob = shared_bucket.blob("LargeFile")
+    blob = shared_bucket.blob(f"LargeFile{uuid.uuid4().hex}")
 
     info = file_data["big"]
     with open(info["path"], "rb") as file_obj:
@@ -60,7 +61,7 @@ def test_large_file_write_from_stream_w_checksum(
     file_data,
     service_account,
 ):
-    blob = shared_bucket.blob("LargeFile")
+    blob = shared_bucket.blob(f"LargeFile{uuid.uuid4().hex}")
 
     info = file_data["big"]
     with open(info["path"], "rb") as file_obj:
@@ -76,7 +77,7 @@ def test_large_file_write_from_stream_w_failed_checksum(
     file_data,
     service_account,
 ):
-    blob = shared_bucket.blob("LargeFile")
+    blob = shared_bucket.blob(f"LargeFile{uuid.uuid4().hex}")
 
     # Intercept the digest processing at the last stage and replace it
     # with garbage.  This is done with a patch to monkey-patch the
@@ -128,7 +129,7 @@ def test_small_file_write_from_filename(
     file_data,
     service_account,
 ):
-    blob = shared_bucket.blob("SmallFile")
+    blob = shared_bucket.blob(f"SmallFile{uuid.uuid4().hex}")
 
     info = file_data["simple"]
     blob.upload_from_filename(info["path"])
@@ -143,7 +144,7 @@ def test_small_file_write_from_filename_with_checksum(
     file_data,
     service_account,
 ):
-    blob = shared_bucket.blob("SmallFile")
+    blob = shared_bucket.blob(f"SmallFile{uuid.uuid4().hex}")
 
     info = file_data["simple"]
     blob.upload_from_filename(info["path"], checksum="crc32c")
@@ -158,7 +159,7 @@ def test_small_file_write_from_filename_with_failed_checksum(
     file_data,
     service_account,
 ):
-    blob = shared_bucket.blob("SmallFile")
+    blob = shared_bucket.blob(f"SmallFile{uuid.uuid4().hex}")
 
     info = file_data["simple"]
     # Intercept the digest processing at the last stage and replace
@@ -381,7 +382,7 @@ def test_blob_acl_w_user_project(
     with_user_project = storage_client.bucket(
         shared_bucket.name, user_project=user_project
     )
-    blob = with_user_project.blob("SmallFile")
+    blob = with_user_project.blob(f"SmallFile{uuid.uuid4().hex}")
 
     info = file_data["simple"]
 
@@ -444,10 +445,10 @@ def test_blob_acl_upload_predefined(
     file_data,
     service_account,
 ):
-    control = shared_bucket.blob("logo")
+    control = shared_bucket.blob(f"logo{uuid.uuid4().hex}")
     control_info = file_data["logo"]
 
-    blob = shared_bucket.blob("SmallFile")
+    blob = shared_bucket.blob(f"SmallFile{uuid.uuid4().hex}")
     info = file_data["simple"]
 
     try:
@@ -649,7 +650,7 @@ def test_blob_upload_from_file_resumable_with_generation(
     file_data,
     service_account,
 ):
-    blob = shared_bucket.blob("LargeFile")
+    blob = shared_bucket.blob(f"LargeFile{uuid.uuid4().hex}")
     wrong_generation = 3
     wrong_meta_generation = 3
 
@@ -826,13 +827,13 @@ def test_blob_compose_new_blob_wo_content_type(shared_bucket, blobs_to_delete):
 
 def test_blob_compose_replace_existing_blob(shared_bucket, blobs_to_delete):
     payload_before = b"AAA\n"
-    original = shared_bucket.blob("original")
+    original = shared_bucket.blob(uuid.uuid4().hex)
     original.content_type = "text/plain"
     original.upload_from_string(payload_before)
     blobs_to_delete.append(original)
 
     payload_to_append = b"BBB\n"
-    to_append = shared_bucket.blob("to_append")
+    to_append = shared_bucket.blob(uuid.uuid4().hex)
     to_append.upload_from_string(payload_to_append)
     blobs_to_delete.append(to_append)
 
@@ -843,7 +844,7 @@ def test_blob_compose_replace_existing_blob(shared_bucket, blobs_to_delete):
 
 def test_blob_compose_w_generation_match_list(shared_bucket, blobs_to_delete):
     payload_before = b"AAA\n"
-    original = shared_bucket.blob("original")
+    original = shared_bucket.blob(uuid.uuid4().hex)
     original.content_type = "text/plain"
     original.upload_from_string(payload_before)
     blobs_to_delete.append(original)
@@ -851,7 +852,7 @@ def test_blob_compose_w_generation_match_list(shared_bucket, blobs_to_delete):
     wrong_metagenerations = [8, 9]
 
     payload_to_append = b"BBB\n"
-    to_append = shared_bucket.blob("to_append")
+    to_append = shared_bucket.blob(uuid.uuid4().hex)
     to_append.upload_from_string(payload_to_append)
     blobs_to_delete.append(to_append)
 
@@ -877,13 +878,13 @@ def test_blob_compose_w_generation_match_list(shared_bucket, blobs_to_delete):
 
 def test_blob_compose_w_generation_match_long(shared_bucket, blobs_to_delete):
     payload_before = b"AAA\n"
-    original = shared_bucket.blob("original")
+    original = shared_bucket.blob(uuid.uuid4().hex)
     original.content_type = "text/plain"
     original.upload_from_string(payload_before)
     blobs_to_delete.append(original)
 
     payload_to_append = b"BBB\n"
-    to_append = shared_bucket.blob("to_append")
+    to_append = shared_bucket.blob(uuid.uuid4().hex)
     to_append.upload_from_string(payload_to_append)
     blobs_to_delete.append(to_append)
 
@@ -897,14 +898,14 @@ def test_blob_compose_w_generation_match_long(shared_bucket, blobs_to_delete):
 
 def test_blob_compose_w_source_generation_match(shared_bucket, blobs_to_delete):
     payload_before = b"AAA\n"
-    original = shared_bucket.blob("original")
+    original = shared_bucket.blob(uuid.uuid4().hex)
     original.content_type = "text/plain"
     original.upload_from_string(payload_before)
     blobs_to_delete.append(original)
     wrong_source_generations = [6, 7]
 
     payload_to_append = b"BBB\n"
-    to_append = shared_bucket.blob("to_append")
+    to_append = shared_bucket.blob(uuid.uuid4().hex)
     to_append.upload_from_string(payload_to_append)
     blobs_to_delete.append(to_append)
 
@@ -929,18 +930,18 @@ def test_blob_compose_w_user_project(storage_client, buckets_to_delete, user_pro
     created.requester_pays = True
 
     payload_1 = b"AAA\n"
-    source_1 = created.blob("source-1")
+    source_1 = created.blob(uuid.uuid4().hex)
     source_1.upload_from_string(payload_1)
 
     payload_2 = b"BBB\n"
-    source_2 = created.blob("source-2")
+    source_2 = created.blob(uuid.uuid4().hex)
     source_2.upload_from_string(payload_2)
 
     with_user_project = storage_client.bucket(
         new_bucket_name, user_project=user_project
     )
 
-    destination = with_user_project.blob("destination")
+    destination = with_user_project.blob(uuid.uuid4().hex)
     destination.content_type = "text/plain"
     destination.compose([source_1, source_2])
 
@@ -949,13 +950,13 @@ def test_blob_compose_w_user_project(storage_client, buckets_to_delete, user_pro
 
 def test_blob_rewrite_new_blob_add_key(shared_bucket, blobs_to_delete, file_data):
     info = file_data["simple"]
-    source = shared_bucket.blob("source")
+    source = shared_bucket.blob(uuid.uuid4().hex)
     source.upload_from_filename(info["path"])
     blobs_to_delete.append(source)
     source_data = source.download_as_bytes()
 
     key = os.urandom(32)
-    dest = shared_bucket.blob("dest", encryption_key=key)
+    dest = shared_bucket.blob(uuid.uuid4().hex, encryption_key=key)
     token, rewritten, total = dest.rewrite(source)
     blobs_to_delete.append(dest)
 
@@ -1097,7 +1098,7 @@ def test_blob_update_storage_class_large_file(
 ):
     from google.cloud.storage import constants
 
-    blob = shared_bucket.blob("BigFile")
+    blob = shared_bucket.blob(f"BigFile{uuid.uuid4().hex}")
 
     info = file_data["big"]
     blob.upload_from_filename(info["path"])

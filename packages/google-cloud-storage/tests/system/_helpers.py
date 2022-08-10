@@ -46,9 +46,33 @@ def _has_kms_key_name(blob):
     return blob.kms_key_name is not None
 
 
+def _has_retention_expiration(blob):
+    return blob.retention_expiration_time is not None
+
+
+def _no_retention_expiration(blob):
+    return blob.retention_expiration_time is None
+
+
+def _has_retetion_period(bucket):
+    return bucket.retention_period is not None
+
+
+def _no_retetion_period(bucket):
+    return bucket.retention_period is None
+
+
 retry_bad_copy = RetryErrors(exceptions.BadRequest, error_predicate=_bad_copy)
-retry_no_event_based_hold = RetryInstanceState(_no_event_based_hold)
-retry_has_kms_key_name = RetryInstanceState(_has_kms_key_name)
+retry_no_event_based_hold = RetryInstanceState(_no_event_based_hold, max_tries=10)
+retry_has_kms_key_name = RetryInstanceState(_has_kms_key_name, max_tries=10)
+retry_has_retention_expiration = RetryInstanceState(
+    _has_retention_expiration, max_tries=10
+)
+retry_no_retention_expiration = RetryInstanceState(
+    _no_retention_expiration, max_tries=10
+)
+retry_has_retention_period = RetryInstanceState(_has_retetion_period, max_tries=10)
+retry_no_retention_period = RetryInstanceState(_no_retetion_period, max_tries=10)
 
 
 def unique_name(prefix):

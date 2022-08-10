@@ -632,6 +632,10 @@ def test_bucket_w_retention_period(
     bucket.default_event_based_hold = False
     bucket.patch()
 
+    # Changes to the bucket will be readable immediately after writing,
+    # but configuration changes may take time to propagate.
+    _helpers.retry_has_retention_period(bucket.reload)()
+
     assert bucket.retention_period == period_secs
     assert isinstance(bucket.retention_policy_effective_time, datetime.datetime)
     assert not bucket.default_event_based_hold
@@ -645,6 +649,7 @@ def test_bucket_w_retention_period(
     blobs_to_delete.append(blob)
 
     other = bucket.get_blob(blob_name)
+    _helpers.retry_has_retention_expiration(other.reload)()
 
     assert not other.event_based_hold
     assert not other.temporary_hold
@@ -656,12 +661,16 @@ def test_bucket_w_retention_period(
     bucket.retention_period = None
     bucket.patch()
 
+    # Changes to the bucket will be readable immediately after writing,
+    # but configuration changes may take time to propagate.
+    _helpers.retry_no_retention_period(bucket.reload)()
+
     assert bucket.retention_period is None
     assert bucket.retention_policy_effective_time is None
     assert not bucket.default_event_based_hold
     assert not bucket.retention_policy_locked
 
-    _helpers.retry_no_event_based_hold(other.reload)()
+    _helpers.retry_no_retention_expiration(other.reload)()
 
     assert not other.event_based_hold
     assert not other.temporary_hold
@@ -719,8 +728,7 @@ def test_bucket_w_default_event_based_hold(
     blob.upload_from_string(payload)
 
     # https://github.com/googleapis/python-storage/issues/435
-    if blob.event_based_hold:
-        _helpers.retry_no_event_based_hold(blob.reload)()
+    _helpers.retry_no_event_based_hold(blob.reload)()
 
     assert not blob.event_based_hold
     assert not blob.temporary_hold
