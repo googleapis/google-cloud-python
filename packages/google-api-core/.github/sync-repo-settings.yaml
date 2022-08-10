@@ -11,12 +11,10 @@ branchProtectionRules:
     # No Kokoro:  the following are Github actions
     - 'lint'
     - 'mypy'
-    - 'unit-3.6'
     - 'unit-3.7'
     - 'unit-3.8'
     - 'unit-3.9'
     - 'unit-3.10'
-    - 'unit_wo_grpc-3.6'
     - 'unit_wo_grpc-3.10'
     - 'cover'
     - 'docs'

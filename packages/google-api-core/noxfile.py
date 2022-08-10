@@ -43,14 +43,14 @@ nox.options.sessions = [
 ]
 
 
-def _greater_or_equal_than_36(version_string):
+def _greater_or_equal_than_37(version_string):
     tokens = version_string.split(".")
     for i, token in enumerate(tokens):
         try:
             tokens[i] = int(token)
         except ValueError:
             pass
-    return tokens >= [3, 6]
+    return tokens >= [3, 7]
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
@@ -122,9 +122,9 @@ def default(session, install_grpc=True):
         ),
     ]
 
-    # Inject AsyncIO content and proto-plus, if version >= 3.6.
+    # Inject AsyncIO content and proto-plus, if version >= 3.7.
     # proto-plus is needed for a field mask test in test_protobuf_helpers.py
-    if _greater_or_equal_than_36(session.python):
+    if _greater_or_equal_than_37(session.python):
         session.install("asyncmock", "pytest-asyncio", "proto-plus")
 
         # Having positional arguments means the user wants to run specific tests.
@@ -136,19 +136,19 @@ def default(session, install_grpc=True):
     session.run(*pytest_args)
 
 
-@nox.session(python=["3.6", "3.7", "3.8", "3.9", "3.10"])
+@nox.session(python=["3.7", "3.8", "3.9", "3.10"])
 def unit(session):
     """Run the unit test suite."""
     default(session)
 
 
-@nox.session(python=["3.6", "3.10"])
+@nox.session(python=["3.8", "3.10"])
 def unit_wo_grpc(session):
     """Run the unit test suite w/o grpcio installed"""
     default(session, install_grpc=False)
 
 
-@nox.session(python="3.6")
+@nox.session(python="3.8")
 def lint_setup_py(session):
     """Verify that setup.py is valid (including RST check)."""
 
@@ -156,8 +156,7 @@ def lint_setup_py(session):
     session.run("python", "setup.py", "check", "--restructuredtext", "--strict")
 
 
-# No 3.7 because pytype supports up to 3.6 only.
-@nox.session(python="3.6")
+@nox.session(python="3.8")
 def pytype(session):
     """Run type-checking."""
     session.install(".[grpc]", "pytype >= 2019.3.21")
@@ -178,7 +177,7 @@ def mypy(session):
     session.run("mypy", "google", "tests")
 
 
-@nox.session(python="3.6")
+@nox.session(python="3.8")
 def cover(session):
     """Run the final coverage report.
 

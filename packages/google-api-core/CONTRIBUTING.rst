@@ -21,7 +21,7 @@ In order to add a feature:
   documentation.
 
 - The feature must work fully on the following CPython versions:
-  3.6, 3.7, 3.8, 3.9, and 3.10 on both UNIX and Windows.
+  3.7, 3.8, 3.9, and 3.10 on both UNIX and Windows.
 
 - The feature must not add unnecessary dependencies (where
   "unnecessary" is of course subjective, but new dependencies should
@@ -197,13 +197,11 @@ Supported Python Versions
 
 We support:
 
--  `Python 3.6`_
 -  `Python 3.7`_
 -  `Python 3.8`_
 -  `Python 3.9`_
 -  `Python 3.10`_
 
-.. _Python 3.6: https://docs.python.org/3.6/
 .. _Python 3.7: https://docs.python.org/3.7/
 .. _Python 3.8: https://docs.python.org/3.8/
 .. _Python 3.9: https://docs.python.org/3.9/
@@ -214,18 +212,6 @@ Supported versions can be found in our ``noxfile.py`` `config`_.
 
 .. _config: https://github.com/googleapis/python-api-core/blob/main/noxfile.py
 
-
-We also explicitly decided to support Python 3 beginning with version 3.6.
-Reasons for this include:
-
--  Encouraging use of newest versions of Python 3
--  Taking the lead of `prominent`_ open-source `projects`_
--  `Unicode literal support`_ which allows for a cleaner codebase that
-   works in both Python 2 and Python 3
-
-.. _prominent: https://docs.djangoproject.com/en/1.9/faq/install/#what-python-version-can-i-use-with-django
-.. _projects: http://flask.pocoo.org/docs/0.10/python3/
-.. _Unicode literal support: https://www.python.org/dev/peps/pep-0414/
 
 **********
 Versioning

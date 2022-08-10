@@ -30,6 +30,7 @@ excludes = [
     ".coveragerc",  # layout
     "CONTRIBUTING.rst",  # no systests
     ".github/workflows/unittest.yml", # exclude unittest gh action
+    "README.rst",
 ]
 templated_files = common.py_library(microgenerator=True, cov_level=100)
 s.move(templated_files, excludes=excludes)
