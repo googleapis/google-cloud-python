@@ -25,8 +25,8 @@ version = "0.2.0"
 release_status = "Development Status :: 3 - Alpha"
 dependencies = [
     "google-api-core[grpc] >= 2.8.0, <3.0.0dev",
-    "proto-plus >= 1.15.0, <2.0.0dev",
-    "protobuf >= 3.19.0, <4.0.0dev",
+    "proto-plus >= 1.22.0, <2.0.0dev",
+    "protobuf >= 3.19.0, <5.0.0dev",
     "grpc-google-iam-v1 >=0.12.4, <1.0.0dev",
 ]
 url = "https://github.com/googleapis/python-dataform"
