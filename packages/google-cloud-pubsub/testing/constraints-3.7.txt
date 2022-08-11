@@ -7,6 +7,6 @@
 grpcio==1.38.1
 google-api-core==1.32.0
 libcst==0.3.10
-proto-plus==1.15.0
+proto-plus==1.22.0
 grpc-google-iam-v1==0.12.4
 protobuf==3.19.0
