@@ -25,8 +25,8 @@ version = "0.1.0"
 release_status = "Development Status :: 4 - Beta"
 dependencies = [
     "google-api-core[grpc] >= 2.8.0, <3.0.0dev",
-    "proto-plus >= 1.15.0, <2.0.0dev",
-    "protobuf >= 3.19.0, <4.0.0dev",
+    "proto-plus >= 1.22.0, <2.0.0dev",
+    "protobuf >= 3.19.0, <5.0.0dev",
 ]
 url = "https://github.com/googleapis/python-gke-backup"
 
