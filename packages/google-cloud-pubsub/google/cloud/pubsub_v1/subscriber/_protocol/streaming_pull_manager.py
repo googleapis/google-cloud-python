@@ -451,7 +451,10 @@ class StreamingPullManager(object):
                 self._ack_deadline = max(
                     self._ack_deadline, _MIN_ACK_DEADLINE_SECS_WHEN_EXACTLY_ONCE_ENABLED
                 )
-
+            # If we have updated the ack_deadline and it is longer than the stream_ack_deadline
+            # set the stream_ack_deadline to the new ack_deadline.
+            if self._ack_deadline > self._stream_ack_deadline:
+                self._stream_ack_deadline = self._ack_deadline
             return self._ack_deadline
 
     @property
@@ -818,7 +821,7 @@ class StreamingPullManager(object):
         )
 
         # Create the RPC
-        stream_ack_deadline_seconds = self.ack_deadline
+        stream_ack_deadline_seconds = self._stream_ack_deadline
 
         get_initial_request = functools.partial(
             self._get_initial_request, stream_ack_deadline_seconds
