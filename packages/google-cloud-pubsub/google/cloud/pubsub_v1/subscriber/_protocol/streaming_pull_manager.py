@@ -20,7 +20,7 @@ import itertools
 import logging
 import threading
 import typing
-from typing import Any, Dict, Callable, Iterable, List, Optional, Tuple, Union
+from typing import Any, Dict, Callable, Iterable, List, Optional, Tuple
 import uuid
 
 import grpc  # type: ignore
@@ -73,6 +73,15 @@ _MIN_ACK_DEADLINE_SECS_WHEN_EXACTLY_ONCE_ENABLED = 60
 """The minimum ack_deadline, in seconds, for when exactly_once is enabled for
 a subscription. We do this to reduce premature ack expiration.
 """
+
+_DEFAULT_STREAM_ACK_DEADLINE: float = 60
+"""The default stream ack deadline in seconds."""
+
+_MAX_STREAM_ACK_DEADLINE: float = 600
+"""The maximum stream ack deadline in seconds."""
+
+_MIN_STREAM_ACK_DEADLINE: float = 10
+"""The minimum stream ack deadline in seconds."""
 
 _EXACTLY_ONCE_DELIVERY_TEMPORARY_RETRY_ERRORS = {
     code_pb2.DEADLINE_EXCEEDED,
@@ -270,7 +279,36 @@ class StreamingPullManager(object):
         self._await_callbacks_on_shutdown = await_callbacks_on_shutdown
         self._ack_histogram = histogram.Histogram()
         self._last_histogram_size = 0
-        self._ack_deadline: Union[int, float] = histogram.MIN_ACK_DEADLINE
+
+        # If max_duration_per_lease_extension is the default
+        # we set the stream_ack_deadline to the default of 60
+        if self._flow_control.max_duration_per_lease_extension == 0:
+            self._stream_ack_deadline = _DEFAULT_STREAM_ACK_DEADLINE
+        # We will not be able to extend more than the default minimum
+        elif (
+            self._flow_control.max_duration_per_lease_extension
+            < _MIN_STREAM_ACK_DEADLINE
+        ):
+            self._stream_ack_deadline = _MIN_STREAM_ACK_DEADLINE
+        # Will not be able to extend past the max
+        elif (
+            self._flow_control.max_duration_per_lease_extension
+            > _MAX_STREAM_ACK_DEADLINE
+        ):
+            self._stream_ack_deadline = _MAX_STREAM_ACK_DEADLINE
+        else:
+            self._stream_ack_deadline = (
+                self._flow_control.max_duration_per_lease_extension
+            )
+
+        self._ack_deadline = max(
+            min(
+                self._flow_control.min_duration_per_lease_extension,
+                histogram.MAX_ACK_DEADLINE,
+            ),
+            histogram.MIN_ACK_DEADLINE,
+        )
+
         self._rpc: Optional[bidi.ResumableBidiRpc] = None
         self._callback: Optional[functools.partial] = None
         self._closing = threading.Lock()
@@ -741,10 +779,10 @@ class StreamingPullManager(object):
 
             if send_new_ack_deadline:
                 request = gapic_types.StreamingPullRequest(
-                    stream_ack_deadline_seconds=self.ack_deadline
+                    stream_ack_deadline_seconds=self._stream_ack_deadline
                 )
                 _LOGGER.debug(
-                    "Sending new ack_deadline of %d seconds.", self.ack_deadline
+                    "Sending new ack_deadline of %d seconds.", self._stream_ack_deadline
                 )
             else:
                 request = gapic_types.StreamingPullRequest()
@@ -796,7 +834,7 @@ class StreamingPullManager(object):
 
         _LOGGER.debug(
             "Creating a stream, default ACK deadline set to {} seconds.".format(
-                stream_ack_deadline_seconds
+                self._stream_ack_deadline
             )
         )
 
@@ -928,6 +966,8 @@ class StreamingPullManager(object):
             suitable for any other purpose).
         """
         # Put the request together.
+        # We need to set streaming ack deadline, but it's not useful since we'll modack to send receipt
+        # anyway. Set to some big-ish value in case we modack late.
         request = gapic_types.StreamingPullRequest(
             stream_ack_deadline_seconds=stream_ack_deadline_seconds,
             modify_deadline_ack_ids=[],
