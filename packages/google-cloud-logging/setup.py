@@ -34,8 +34,8 @@ dependencies = [
     "google-cloud-audit-log >= 0.1.0, < 1.0.0dev",
     "google-cloud-core >= 2.0.0, <3.0.0dev",
     "grpc-google-iam-v1 >=0.12.4, <1.0.0dev",
-    "proto-plus >= 1.15.0, <2.0.0dev",
-    "protobuf >= 3.19.0, <4.0.0dev",
+    "proto-plus >= 1.22.0, <2.0.0dev",
+    "protobuf >= 3.19.0, <5.0.0dev",
 ]
 extras = {}
 
