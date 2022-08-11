@@ -1271,14 +1271,14 @@ class Client(ClientWithProject):
             Iterator of all :class:`~google.cloud.storage.blob.Blob`
             in this bucket matching the arguments.
 
-        Example:
-            List blobs in the bucket with user_project.
+            As part of the response, you'll also get back an iterator.prefixes entity that lists object names
+            up to and including the requested delimiter. Duplicate entries are omitted from this list.
 
-            >>> from google.cloud import storage
-            >>> client = storage.Client()
+        .. note::
+          List prefixes (directories) in a bucket using a prefix and delimiter.
+          See a [sample](https://cloud.google.com/storage/docs/samples/storage-list-files-with-prefix#storage_list_files_with_prefix-python)
+          listing objects using a prefix filter.
 
-            >>> bucket = storage.Bucket(client, "my-bucket-name", user_project="my-project")
-            >>> all_blobs = list(client.list_blobs(bucket))
         """
         bucket = self._bucket_arg_to_bucket(bucket_or_name)
 
