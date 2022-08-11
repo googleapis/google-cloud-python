@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.2.1](https://github.com/googleapis/python-spanner-sqlalchemy/compare/v1.2.0...v1.2.1) (2022-08-09)
+
+
+### Bug Fixes
+
+* alembic migration fails in case of a sequential upgrade ([#200](https://github.com/googleapis/python-spanner-sqlalchemy/issues/200)) ([f62f664](https://github.com/googleapis/python-spanner-sqlalchemy/commit/f62f664f31ec052068e241729344aec5f605c4f8))
+* don't reset attributes of non-Spanner connections ([#222](https://github.com/googleapis/python-spanner-sqlalchemy/issues/222)) ([072415e](https://github.com/googleapis/python-spanner-sqlalchemy/commit/072415eb9ea0bf701be2a35c4cc3dc80854ca831))
+* incorrect DDL generated when using server_default ([#209](https://github.com/googleapis/python-spanner-sqlalchemy/issues/209)) ([#220](https://github.com/googleapis/python-spanner-sqlalchemy/issues/220)) ([7ab1742](https://github.com/googleapis/python-spanner-sqlalchemy/commit/7ab174233dc75fd34d4127cb06dd49c216d92abc))
+
+
+### Documentation
+
+* add a note about connection URL prefixes ([#219](https://github.com/googleapis/python-spanner-sqlalchemy/issues/219)) ([a986949](https://github.com/googleapis/python-spanner-sqlalchemy/commit/a9869498f220a529a1dcc51c89d53af54311074c))
+
 ## [1.2.0](https://github.com/googleapis/python-spanner-sqlalchemy/compare/v1.1.0...v1.2.0) (2022-06-03)
 
 
