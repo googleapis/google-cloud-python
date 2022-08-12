@@ -15,6 +15,7 @@
 
 import time
 import google.api_core.exceptions
+import google.protobuf
 
 from google.cloud.compute_v1.services.firewalls.client import FirewallsClient
 from google.cloud.compute_v1.services.instances.client import InstancesClient
@@ -29,6 +30,8 @@ from google.cloud.compute_v1.types import (
     ShieldedInstanceConfig,
 )
 from tests.system.base import TestBase
+
+PROTOBUF_VERSION = google.protobuf.__version__
 
 
 class TestComputeSmoke(TestBase):
@@ -75,7 +78,11 @@ class TestComputeSmoke(TestBase):
         with self.assertRaises(expected_exception=TypeError) as ex:
             self.client.get(instance=self.name, zone=0)
         self.assertIn(
-            "0 has type int, but expected one of: bytes, unicode",
+            (
+                "0 has type int, but expected one of: bytes, unicode"
+                if PROTOBUF_VERSION[0] == "3"
+                else "('bad argument type for built-in operation',)"
+            ),
             str(ex.exception.args),
         )
 
