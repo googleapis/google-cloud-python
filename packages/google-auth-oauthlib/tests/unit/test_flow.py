@@ -403,6 +403,24 @@ class TestInstalledAppFlow(object):
 
         assert not webbrowser_mock.open.called
 
+    @mock.patch("google_auth_oauthlib.flow.webbrowser", autospec=True)
+    @mock.patch("wsgiref.simple_server.make_server", autospec=True)
+    def test_run_local_server_bind_addr(
+        self, make_server_mock, webbrowser_mock, instance, mock_fetch_token
+    ):
+        def assign_last_request_uri(host, port, wsgi_app, **kwargs):
+            wsgi_app.last_request_uri = self.REDIRECT_REQUEST_PATH
+            return mock.Mock()
+
+        make_server_mock.side_effect = assign_last_request_uri
+
+        my_ip = socket.gethostbyname(socket.gethostname())
+        instance.run_local_server(bind_addr=my_ip, host="localhost")
+
+        assert webbrowser_mock.open.called
+        name, args, kwargs = make_server_mock.mock_calls[0]
+        assert args[0] == my_ip
+
     @pytest.mark.webtest
     @mock.patch("google_auth_oauthlib.flow.webbrowser", autospec=True)
     def test_run_local_server_occupied_port(

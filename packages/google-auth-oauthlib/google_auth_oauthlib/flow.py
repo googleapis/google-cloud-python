@@ -443,6 +443,7 @@ class InstalledAppFlow(Flow):
     def run_local_server(
         self,
         host="localhost",
+        bind_addr=None,
         port=8080,
         authorization_prompt_message=_DEFAULT_AUTH_PROMPT_MESSAGE,
         success_message=_DEFAULT_WEB_SUCCESS_MESSAGE,
@@ -463,6 +464,11 @@ class InstalledAppFlow(Flow):
         Args:
             host (str): The hostname for the local redirect server. This will
                 be served over http, not https.
+            bind_addr (str): Optionally provide an ip address for the redirect
+                server to listen on when it is not the same as host
+                (e.g. in a container). Default value is None,
+                which means that the redirect server will listen
+                on the ip address specified in the host parameter.
             port (int): The port for the local redirect server.
             authorization_prompt_message (str): The message to display to tell
                 the user to navigate to the authorization URL.
@@ -483,7 +489,7 @@ class InstalledAppFlow(Flow):
         # Fail fast if the address is occupied
         wsgiref.simple_server.WSGIServer.allow_reuse_address = False
         local_server = wsgiref.simple_server.make_server(
-            host, port, wsgi_app, handler_class=_WSGIRequestHandler
+            bind_addr or host, port, wsgi_app, handler_class=_WSGIRequestHandler
         )
 
         redirect_uri_format = (
