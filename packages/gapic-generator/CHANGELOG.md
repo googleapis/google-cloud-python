@@ -1,6 +1,21 @@
 # Changelog
 
 
+## [1.2.0](https://github.com/googleapis/gapic-generator-python/compare/v1.1.2...v1.2.0) (2022-08-12)
+
+
+### Features
+
+* Add rest-numeric-enums option ([#1385](https://github.com/googleapis/gapic-generator-python/issues/1385)) ([099d31a](https://github.com/googleapis/gapic-generator-python/commit/099d31af79914439be0be5477a0e44ec816e9ff3))
+* regenerates pb2 file with new protoc. ([#1344](https://github.com/googleapis/gapic-generator-python/issues/1344)) ([e74940f](https://github.com/googleapis/gapic-generator-python/commit/e74940f626502afd13fc5dcdde6dc4c4c11d3237))
+
+
+### Bug Fixes
+
+* Fix required fields test for REST transport ([#1389](https://github.com/googleapis/gapic-generator-python/issues/1389)) ([c3ffee8](https://github.com/googleapis/gapic-generator-python/commit/c3ffee8cf902a25a9343f0e27c9a7c28bd81f1b0))
+* fixes bug in a test with explicit_routing ([#1397](https://github.com/googleapis/gapic-generator-python/issues/1397)) ([6d974a1](https://github.com/googleapis/gapic-generator-python/commit/6d974a12cb91846b40323c7aa64af50ba7410b99))
+* Unit test for nested fields in url path ([#1387](https://github.com/googleapis/gapic-generator-python/issues/1387)) ([35f6fa3](https://github.com/googleapis/gapic-generator-python/commit/35f6fa30b523736d3aa0fbc17400fe0213391c74))
+
 ## [1.1.2](https://github.com/googleapis/gapic-generator-python/compare/v1.1.1...v1.1.2) (2022-07-21)
 
 
