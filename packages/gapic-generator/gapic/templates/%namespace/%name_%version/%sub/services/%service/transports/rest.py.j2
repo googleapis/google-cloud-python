@@ -134,6 +134,12 @@ class {{service.name}}RestTransport({{service.name}}Transport):
     and call it.
 
     It sends JSON representations of protocol buffers over HTTP/1.1
+
+    {% if not opts.rest_numeric_enums %}
+    NOTE: This REST transport functionality is currently in a beta
+    state (preview). We welcome your feedback via an issue in this
+    library's source repository. Thank you!
+    {% endif %}
     """
 
 
@@ -153,6 +159,12 @@ class {{service.name}}RestTransport({{service.name}}Transport):
             api_audience: Optional[str] = None,
             ) -> None:
         """Instantiate the transport.
+
+       {% if not opts.rest_numeric_enums %}
+       NOTE: This REST transport functionality is currently in a beta
+       state (preview). We welcome your feedback via a GitHub issue in
+       this library's repository. Thank you!
+       {% endif %}
 
         Args:
             host ({% if service.host %}Optional[str]{% else %}str{% endif %}):
