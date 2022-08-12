@@ -349,6 +349,10 @@ class {{service.name}}RestTransport({{service.name}}Transport):
             query_params.update(self._get_unset_required_fields(query_params))
             {% endif %}{# required fields #}
 
+            {% if opts.rest_numeric_enums %}
+            query_params["$alt"] = "json;enum-encoding=int"
+            {% endif %}
+
             # Send the request
             headers = dict(metadata)
             headers['Content-Type'] = 'application/json'
