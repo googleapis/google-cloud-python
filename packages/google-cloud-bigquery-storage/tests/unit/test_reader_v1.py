@@ -477,9 +477,7 @@ def test_to_dataframe_w_scalars(class_under_test, mock_gapic_client):
     )
     pandas.testing.assert_series_equal(
         got_ts.reset_index(drop=True),
-        expected_ts.reset_index(drop=True),
-        check_dtype=False,  # fastavro's UTC means different dtype
-        check_datetimelike_compat=True,
+        expected_ts.reset_index(drop=True).astype(got_ts.dtype),
     )
 
 
