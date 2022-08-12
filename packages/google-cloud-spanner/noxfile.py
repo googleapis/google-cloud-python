@@ -371,7 +371,8 @@ def docfx(session):
 
 
 @nox.session(python=SYSTEM_TEST_PYTHON_VERSIONS)
-def prerelease_deps(session):
+@nox.parametrize("database_dialect", ["GOOGLE_STANDARD_SQL", "POSTGRESQL"])
+def prerelease_deps(session, database_dialect):
     """Run all tests with prerelease versions of dependencies installed."""
 
     # Install all dependencies

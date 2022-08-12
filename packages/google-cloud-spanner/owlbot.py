@@ -290,6 +290,13 @@ s.replace("noxfile.py",
 
 s.replace(
     "noxfile.py",
+    """def prerelease_deps\(session\):""",
+    """@nox.parametrize("database_dialect", ["GOOGLE_STANDARD_SQL", "POSTGRESQL"])
+def prerelease_deps(session, database_dialect):"""
+)
+
+s.replace(
+    "noxfile.py",
     r"""# Install all test dependencies, then install this package into the
     # virtualenv's dist-packages.
     session.install\("mock", "pytest", "google-cloud-testutils", "-c", constraints_path\)
