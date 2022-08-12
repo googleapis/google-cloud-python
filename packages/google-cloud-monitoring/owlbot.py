@@ -14,6 +14,7 @@
 
 """This script is used to synthesize generated parts of this library."""
 import re
+import os
 
 import synthtool as s
 import synthtool.gcp as gcp
@@ -149,3 +150,21 @@ s.replace(".github/workflows/unittest.yml", "--fail-under=100", "--fail-under=99
 python.configure_previous_major_version_branches()
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)
+
+
+# --------------------------------------------------------------------------
+# Modify test configs
+# --------------------------------------------------------------------------
+
+# add shared environment variables to test configs
+tracked_subdirs = ["continuous", "presubmit", "release", "samples", "docs"]
+for subdir in tracked_subdirs:
+    for path, subdirs, files in os.walk(f".kokoro/{subdir}"):
+        for name in files:
+            if name == "common.cfg":
+                file_path = os.path.join(path, name)
+                s.move(
+                    ".kokoro/common_env_vars.cfg",
+                    file_path,
+                    merge=lambda src, dst, _, : f"{dst}\n{src}",
+                )
