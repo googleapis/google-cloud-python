@@ -9,5 +9,5 @@
     "repo": "googleapis/google-auth-library-python-oauthlib",
     "distribution_name": "google-auth-oauthlib",
     "default_version": "",
-    "codeowner_team": ""
+    "codeowner_team": "@googleapis/googleapis-auth"
 }
