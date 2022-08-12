@@ -2273,12 +2273,12 @@ class Bucket(_PropertyMixin):
 
         .. note::
 
-           The getter for this property returns a list which contains
+           The getter for this property returns a generator which yields
            *copies* of the bucket's lifecycle rules mappings.  Mutating the
-           list or one of its dicts has no effect unless you then re-assign
-           the dict via the setter.  E.g.:
+           output dicts has no effect unless you then re-assign the dict via
+           the setter.  E.g.:
 
-           >>> rules = bucket.lifecycle_rules
+           >>> rules = list(bucket.lifecycle_rules)
            >>> rules.append({'origin': '/foo', ...})
            >>> rules[1]['rule']['action']['type'] = 'Delete'
            >>> del rules[0]
