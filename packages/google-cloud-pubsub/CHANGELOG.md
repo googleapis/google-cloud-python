@@ -5,6 +5,16 @@
 [1]: https://pypi.org/project/google-cloud-pubsub/#history
 
 
+## [2.13.6](https://github.com/googleapis/python-pubsub/compare/v2.13.5...v2.13.6) (2022-08-11)
+
+
+### Bug Fixes
+
+* **deps:** allow protobuf < 5.0.0 ([#762](https://github.com/googleapis/python-pubsub/issues/762)) ([260bd18](https://github.com/googleapis/python-pubsub/commit/260bd183ffe19992be9a1c1d298438c1f44d3fa9))
+* **deps:** require proto-plus >= 1.22.0 ([260bd18](https://github.com/googleapis/python-pubsub/commit/260bd183ffe19992be9a1c1d298438c1f44d3fa9))
+* set stream_ack_deadline to max_duration_per_lease_extension or 60 s, set ack_deadline to min_duration_per_lease_extension or 10 s ([#760](https://github.com/googleapis/python-pubsub/issues/760)) ([4444129](https://github.com/googleapis/python-pubsub/commit/4444129b28a19296752e865b73827b78e99adea5))
+* Update stream_ack_deadline with ack_deadline ([#763](https://github.com/googleapis/python-pubsub/issues/763)) ([e600ad8](https://github.com/googleapis/python-pubsub/commit/e600ad8228930445765ffa0c45500a7779e25817))
+
 ## [2.13.5](https://github.com/googleapis/python-pubsub/compare/v2.13.4...v2.13.5) (2022-08-10)
 
 
