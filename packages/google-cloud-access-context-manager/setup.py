@@ -29,11 +29,10 @@ version = "0.1.13"
 release_status = "Development Status :: 4 - Beta"
 dependencies = [
     "google-api-core[grpc] >= 1.32.0, <3.0.0dev,!=2.0.*,!=2.1.*,!=2.2.*,!=2.3.*,!=2.4.*,!=2.5.*,!=2.6.*,!=2.7.*",
-    "protobuf >= 3.19.0, <4.0.0dev",
+    "protobuf >= 3.19.0, <5.0.0dev",
 ]
 
 # Setup boilerplate below this line.
-
 package_root = os.path.abspath(os.path.dirname(__file__))
 
 readme_filename = os.path.join(package_root, "README.md")
