@@ -78,7 +78,7 @@ s.remove_staging_dirs()
 templated_files = common.py_library(
     samples=True,  # set to True only if there are samples
     microgenerator=True,
-    cov_level=100,
+    cov_level=99,
 )
 s.move(templated_files, excludes=[".coveragerc"])  # microgenerator has a good .coveragerc file
 python.configure_previous_major_version_branches()

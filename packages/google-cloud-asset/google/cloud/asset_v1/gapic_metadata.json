@@ -85,6 +85,11 @@
                 "list_saved_queries"
               ]
             },
+            "QueryAssets": {
+              "methods": [
+                "query_assets"
+              ]
+            },
             "SearchAllIamPolicies": {
               "methods": [
                 "search_all_iam_policies"
@@ -183,6 +188,11 @@
             "ListSavedQueries": {
               "methods": [
                 "list_saved_queries"
+              ]
+            },
+            "QueryAssets": {
+              "methods": [
+                "query_assets"
               ]
             },
             "SearchAllIamPolicies": {

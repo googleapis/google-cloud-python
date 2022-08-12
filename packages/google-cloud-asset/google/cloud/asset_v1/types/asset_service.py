@@ -19,6 +19,7 @@ from google.cloud.asset_v1.types import assets as gca_assets
 from google.iam.v1 import policy_pb2  # type: ignore
 from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
+from google.protobuf import struct_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.rpc import status_pb2  # type: ignore
 from google.type import expr_pb2  # type: ignore
@@ -72,6 +73,12 @@ __protobuf__ = proto.module(
         "MoveAnalysis",
         "MoveAnalysisResult",
         "MoveImpact",
+        "QueryAssetsOutputConfig",
+        "QueryAssetsRequest",
+        "QueryAssetsResponse",
+        "QueryResult",
+        "TableSchema",
+        "TableFieldSchema",
         "BatchGetEffectiveIamPoliciesRequest",
         "BatchGetEffectiveIamPoliciesResponse",
     },
@@ -2449,6 +2456,370 @@ class MoveImpact(proto.Message):
     detail = proto.Field(
         proto.STRING,
         number=1,
+    )
+
+
+class QueryAssetsOutputConfig(proto.Message):
+    r"""Output configuration query assets.
+
+    Attributes:
+        bigquery_destination (google.cloud.asset_v1.types.QueryAssetsOutputConfig.BigQueryDestination):
+            BigQuery destination where the query results
+            will be saved.
+    """
+
+    class BigQueryDestination(proto.Message):
+        r"""BigQuery destination.
+
+        Attributes:
+            dataset (str):
+                Required. The BigQuery dataset where the
+                query results will be saved. It has the format
+                of "projects/{projectId}/datasets/{datasetId}".
+            table (str):
+                Required. The BigQuery table where the query
+                results will be saved. If this table does not
+                exist, a new table with the given name will be
+                created.
+            write_disposition (str):
+                Specifies the action that occurs if the destination table or
+                partition already exists. The following values are
+                supported:
+
+                -  WRITE_TRUNCATE: If the table or partition already exists,
+                   BigQuery overwrites the entire table or all the
+                   partitions data.
+                -  WRITE_APPEND: If the table or partition already exists,
+                   BigQuery appends the data to the table or the latest
+                   partition.
+                -  WRITE_EMPTY: If the table already exists and contains
+                   data, an error is returned.
+        """
+
+        dataset = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        table = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+        write_disposition = proto.Field(
+            proto.STRING,
+            number=3,
+        )
+
+    bigquery_destination = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=BigQueryDestination,
+    )
+
+
+class QueryAssetsRequest(proto.Message):
+    r"""QueryAssets request.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        parent (str):
+            Required. The relative name of the root asset. This can only
+            be an organization number (such as "organizations/123"), a
+            project ID (such as "projects/my-project-id"), or a project
+            number (such as "projects/12345"), or a folder number (such
+            as "folders/123").
+
+            Only assets belonging to the ``parent`` will be returned.
+        statement (str):
+            Optional. A SQL statement that's compatible with `BigQuery
+            Standard
+            SQL <http://cloud/bigquery/docs/reference/standard-sql/enabling-standard-sql>`__.
+
+            This field is a member of `oneof`_ ``query``.
+        job_reference (str):
+            Optional. Reference to the query job, which is from the
+            ``QueryAssetsResponse`` of previous ``QueryAssets`` call.
+
+            This field is a member of `oneof`_ ``query``.
+        page_size (int):
+            Optional. The maximum number of rows to return in the
+            results. Responses are limited to 10 MB and 1000 rows.
+
+            By default, the maximum row count is 1000. When the byte or
+            row count limit is reached, the rest of the query results
+            will be paginated.
+
+            The field will be ignored when [output_config] is specified.
+        page_token (str):
+            Optional. A page token received from previous
+            ``QueryAssets``.
+
+            The field will be ignored when [output_config] is specified.
+        timeout (google.protobuf.duration_pb2.Duration):
+            Optional. Specifies the maximum amount of time that the
+            client is willing to wait for the query to complete. By
+            default, this limit is 5 min for the first query, and 1
+            minute for the following queries. If the query is complete,
+            the ``done`` field in the ``QueryAssetsResponse`` is true,
+            otherwise false.
+
+            Like BigQuery `jobs.query
+            API <https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/query#queryrequest>`__
+            The call is not guaranteed to wait for the specified
+            timeout; it typically returns after around 200 seconds
+            (200,000 milliseconds), even if the query is not complete.
+
+            The field will be ignored when [output_config] is specified.
+        read_time_window (google.cloud.asset_v1.types.TimeWindow):
+            Optional. [start_time] is required. [start_time] must be
+            less than [end_time] Defaults [end_time] to now if
+            [start_time] is set and [end_time] isn't. Maximum permitted
+            time range is 7 days.
+
+            This field is a member of `oneof`_ ``time``.
+        read_time (google.protobuf.timestamp_pb2.Timestamp):
+            Optional. Queries cloud assets as they
+            appeared at the specified point in time.
+
+            This field is a member of `oneof`_ ``time``.
+        output_config (google.cloud.asset_v1.types.QueryAssetsOutputConfig):
+            Optional. Destination where the query results will be saved.
+
+            When this field is specified, the query results won't be
+            saved in the [QueryAssetsResponse.query_result]. Instead
+            [QueryAssetsResponse.output_config] will be set.
+
+            Meanwhile, [QueryAssetsResponse.job_reference] will be set
+            and can be used to check the status of the query job when
+            passed to a following [QueryAssets] API call.
+    """
+
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    statement = proto.Field(
+        proto.STRING,
+        number=2,
+        oneof="query",
+    )
+    job_reference = proto.Field(
+        proto.STRING,
+        number=3,
+        oneof="query",
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=4,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    timeout = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message=duration_pb2.Duration,
+    )
+    read_time_window = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        oneof="time",
+        message=gca_assets.TimeWindow,
+    )
+    read_time = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        oneof="time",
+        message=timestamp_pb2.Timestamp,
+    )
+    output_config = proto.Field(
+        proto.MESSAGE,
+        number=9,
+        message="QueryAssetsOutputConfig",
+    )
+
+
+class QueryAssetsResponse(proto.Message):
+    r"""QueryAssets response.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        job_reference (str):
+            Reference to a query job.
+        done (bool):
+            The query response, which can be either an ``error`` or a
+            valid ``response``.
+
+            If ``done`` == ``false`` and the query result is being saved
+            in a output, the output_config field will be set. If
+            ``done`` == ``true``, exactly one of ``error``,
+            ``query_result`` or ``output_config`` will be set.
+        error (google.rpc.status_pb2.Status):
+            Error status.
+
+            This field is a member of `oneof`_ ``response``.
+        query_result (google.cloud.asset_v1.types.QueryResult):
+            Result of the query.
+
+            This field is a member of `oneof`_ ``response``.
+        output_config (google.cloud.asset_v1.types.QueryAssetsOutputConfig):
+            Output configuration which indicates instead
+            of being returned in API response on the fly,
+            the query result will be saved in a specific
+            output.
+
+            This field is a member of `oneof`_ ``response``.
+    """
+
+    job_reference = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    done = proto.Field(
+        proto.BOOL,
+        number=2,
+    )
+    error = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        oneof="response",
+        message=status_pb2.Status,
+    )
+    query_result = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        oneof="response",
+        message="QueryResult",
+    )
+    output_config = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        oneof="response",
+        message="QueryAssetsOutputConfig",
+    )
+
+
+class QueryResult(proto.Message):
+    r"""Execution results of the query.
+
+    The result is formatted as rows represented by BigQuery compatible
+    [schema]. When pagination is necessary, it will contains the page
+    token to retrieve the results of following pages.
+
+    Attributes:
+        rows (Sequence[google.protobuf.struct_pb2.Struct]):
+            Each row hold a query result in the format of ``Struct``.
+        schema (google.cloud.asset_v1.types.TableSchema):
+            Describes the format of the [rows].
+        next_page_token (str):
+            Token to retrieve the next page of the
+            results.
+        total_rows (int):
+            Total rows of the whole query results.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    rows = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=struct_pb2.Struct,
+    )
+    schema = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="TableSchema",
+    )
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    total_rows = proto.Field(
+        proto.INT64,
+        number=4,
+    )
+
+
+class TableSchema(proto.Message):
+    r"""BigQuery Compatible table schema.
+
+    Attributes:
+        fields (Sequence[google.cloud.asset_v1.types.TableFieldSchema]):
+            Describes the fields in a table.
+    """
+
+    fields = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="TableFieldSchema",
+    )
+
+
+class TableFieldSchema(proto.Message):
+    r"""A field in TableSchema.
+
+    Attributes:
+        field (str):
+            The field name. The name must contain only letters (a-z,
+            A-Z), numbers (0-9), or underscores (_), and must start with
+            a letter or underscore. The maximum length is 128
+            characters.
+        type_ (str):
+            The field data type. Possible values include
+
+            -  STRING
+            -  BYTES
+            -  INTEGER
+            -  FLOAT
+            -  BOOLEAN
+            -  TIMESTAMP
+            -  DATE
+            -  TIME
+            -  DATETIME
+            -  GEOGRAPHY,
+            -  NUMERIC,
+            -  BIGNUMERIC,
+            -  RECORD (where RECORD indicates that the field contains a
+               nested schema).
+        mode (str):
+            The field mode. Possible values include
+            NULLABLE, REQUIRED and REPEATED. The default
+            value is NULLABLE.
+        fields (Sequence[google.cloud.asset_v1.types.TableFieldSchema]):
+            Describes the nested schema fields if the
+            type property is set to RECORD.
+    """
+
+    field = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    type_ = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    mode = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    fields = proto.RepeatedField(
+        proto.MESSAGE,
+        number=4,
+        message="TableFieldSchema",
     )
 
 

@@ -52,6 +52,7 @@ from google.oauth2 import service_account
 from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
+from google.rpc import status_pb2  # type: ignore
 from google.type import expr_pb2  # type: ignore
 import google.auth
 
@@ -3952,6 +3953,161 @@ async def test_analyze_move_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
+        asset_service.QueryAssetsRequest,
+        dict,
+    ],
+)
+def test_query_assets(request_type, transport: str = "grpc"):
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.query_assets), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = asset_service.QueryAssetsResponse(
+            job_reference="job_reference_value",
+            done=True,
+            error=status_pb2.Status(code=411),
+        )
+        response = client.query_assets(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == asset_service.QueryAssetsRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, asset_service.QueryAssetsResponse)
+    assert response.job_reference == "job_reference_value"
+    assert response.done is True
+
+
+def test_query_assets_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.query_assets), "__call__") as call:
+        client.query_assets()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == asset_service.QueryAssetsRequest()
+
+
+@pytest.mark.asyncio
+async def test_query_assets_async(
+    transport: str = "grpc_asyncio", request_type=asset_service.QueryAssetsRequest
+):
+    client = AssetServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.query_assets), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            asset_service.QueryAssetsResponse(
+                job_reference="job_reference_value",
+                done=True,
+            )
+        )
+        response = await client.query_assets(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == asset_service.QueryAssetsRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, asset_service.QueryAssetsResponse)
+    assert response.job_reference == "job_reference_value"
+    assert response.done is True
+
+
+@pytest.mark.asyncio
+async def test_query_assets_async_from_dict():
+    await test_query_assets_async(request_type=dict)
+
+
+def test_query_assets_field_headers():
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = asset_service.QueryAssetsRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.query_assets), "__call__") as call:
+        call.return_value = asset_service.QueryAssetsResponse()
+        client.query_assets(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_query_assets_field_headers_async():
+    client = AssetServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = asset_service.QueryAssetsRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.query_assets), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            asset_service.QueryAssetsResponse()
+        )
+        await client.query_assets(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
         asset_service.CreateSavedQueryRequest,
         dict,
     ],
@@ -5720,6 +5876,7 @@ def test_asset_service_base_transport():
         "analyze_iam_policy",
         "analyze_iam_policy_longrunning",
         "analyze_move",
+        "query_assets",
         "create_saved_query",
         "get_saved_query",
         "list_saved_queries",

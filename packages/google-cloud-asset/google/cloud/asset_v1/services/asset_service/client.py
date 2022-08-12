@@ -41,6 +41,7 @@ from google.cloud.asset_v1.types import asset_service
 from google.cloud.asset_v1.types import assets
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
+from google.rpc import status_pb2  # type: ignore
 from google.type import expr_pb2  # type: ignore
 from .transports.base import AssetServiceTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc import AssetServiceGrpcTransport
@@ -1974,6 +1975,93 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def query_assets(
+        self,
+        request: Union[asset_service.QueryAssetsRequest, dict] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> asset_service.QueryAssetsResponse:
+        r"""Issue a job that queries assets using a SQL statement compatible
+        with `BigQuery Standard
+        SQL <http://cloud/bigquery/docs/reference/standard-sql/enabling-standard-sql>`__.
+
+        If the query execution finishes within timeout and there's no
+        pagination, the full query results will be returned in the
+        ``QueryAssetsResponse``.
+
+        Otherwise, full query results can be obtained by issuing extra
+        requests with the ``job_reference`` from the a previous
+        ``QueryAssets`` call.
+
+        Note, the query result has approximately 10 GB limitation
+        enforced by BigQuery
+        https://cloud.google.com/bigquery/docs/best-practices-performance-output,
+        queries return larger results will result in errors.
+
+        .. code-block:: python
+
+            from google.cloud import asset_v1
+
+            def sample_query_assets():
+                # Create a client
+                client = asset_v1.AssetServiceClient()
+
+                # Initialize request argument(s)
+                request = asset_v1.QueryAssetsRequest(
+                    statement="statement_value",
+                    parent="parent_value",
+                )
+
+                # Make the request
+                response = client.query_assets(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.asset_v1.types.QueryAssetsRequest, dict]):
+                The request object. QueryAssets request.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.asset_v1.types.QueryAssetsResponse:
+                QueryAssets response.
+        """
+        # Create or coerce a protobuf request object.
+        # Minor optimization to avoid making a copy if the user passes
+        # in a asset_service.QueryAssetsRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, asset_service.QueryAssetsRequest):
+            request = asset_service.QueryAssetsRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.query_assets]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
         )
 
         # Send the request.

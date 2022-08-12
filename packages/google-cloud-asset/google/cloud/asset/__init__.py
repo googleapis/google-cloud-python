@@ -66,11 +66,17 @@ from google.cloud.asset_v1.types.asset_service import OutputConfig
 from google.cloud.asset_v1.types.asset_service import OutputResult
 from google.cloud.asset_v1.types.asset_service import PartitionSpec
 from google.cloud.asset_v1.types.asset_service import PubsubDestination
+from google.cloud.asset_v1.types.asset_service import QueryAssetsOutputConfig
+from google.cloud.asset_v1.types.asset_service import QueryAssetsRequest
+from google.cloud.asset_v1.types.asset_service import QueryAssetsResponse
+from google.cloud.asset_v1.types.asset_service import QueryResult
 from google.cloud.asset_v1.types.asset_service import SavedQuery
 from google.cloud.asset_v1.types.asset_service import SearchAllIamPoliciesRequest
 from google.cloud.asset_v1.types.asset_service import SearchAllIamPoliciesResponse
 from google.cloud.asset_v1.types.asset_service import SearchAllResourcesRequest
 from google.cloud.asset_v1.types.asset_service import SearchAllResourcesResponse
+from google.cloud.asset_v1.types.asset_service import TableFieldSchema
+from google.cloud.asset_v1.types.asset_service import TableSchema
 from google.cloud.asset_v1.types.asset_service import UpdateFeedRequest
 from google.cloud.asset_v1.types.asset_service import UpdateSavedQueryRequest
 from google.cloud.asset_v1.types.asset_service import ContentType
@@ -133,11 +139,17 @@ __all__ = (
     "OutputResult",
     "PartitionSpec",
     "PubsubDestination",
+    "QueryAssetsOutputConfig",
+    "QueryAssetsRequest",
+    "QueryAssetsResponse",
+    "QueryResult",
     "SavedQuery",
     "SearchAllIamPoliciesRequest",
     "SearchAllIamPoliciesResponse",
     "SearchAllResourcesRequest",
     "SearchAllResourcesResponse",
+    "TableFieldSchema",
+    "TableSchema",
     "UpdateFeedRequest",
     "UpdateSavedQueryRequest",
     "ContentType",

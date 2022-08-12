@@ -662,6 +662,49 @@ class AssetServiceGrpcAsyncIOTransport(AssetServiceTransport):
         return self._stubs["analyze_move"]
 
     @property
+    def query_assets(
+        self,
+    ) -> Callable[
+        [asset_service.QueryAssetsRequest], Awaitable[asset_service.QueryAssetsResponse]
+    ]:
+        r"""Return a callable for the query assets method over gRPC.
+
+        Issue a job that queries assets using a SQL statement compatible
+        with `BigQuery Standard
+        SQL <http://cloud/bigquery/docs/reference/standard-sql/enabling-standard-sql>`__.
+
+        If the query execution finishes within timeout and there's no
+        pagination, the full query results will be returned in the
+        ``QueryAssetsResponse``.
+
+        Otherwise, full query results can be obtained by issuing extra
+        requests with the ``job_reference`` from the a previous
+        ``QueryAssets`` call.
+
+        Note, the query result has approximately 10 GB limitation
+        enforced by BigQuery
+        https://cloud.google.com/bigquery/docs/best-practices-performance-output,
+        queries return larger results will result in errors.
+
+        Returns:
+            Callable[[~.QueryAssetsRequest],
+                    Awaitable[~.QueryAssetsResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "query_assets" not in self._stubs:
+            self._stubs["query_assets"] = self.grpc_channel.unary_unary(
+                "/google.cloud.asset.v1.AssetService/QueryAssets",
+                request_serializer=asset_service.QueryAssetsRequest.serialize,
+                response_deserializer=asset_service.QueryAssetsResponse.deserialize,
+            )
+        return self._stubs["query_assets"]
+
+    @property
     def create_saved_query(
         self,
     ) -> Callable[

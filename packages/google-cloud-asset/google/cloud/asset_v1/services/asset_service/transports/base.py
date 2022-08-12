@@ -272,6 +272,20 @@ class AssetServiceTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.query_assets: gapic_v1.method.wrap_method(
+                self.query_assets,
+                default_retry=retries.Retry(
+                    initial=0.1,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=200.0,
+                ),
+                default_timeout=200.0,
+                client_info=client_info,
+            ),
             self.create_saved_query: gapic_v1.method.wrap_method(
                 self.create_saved_query,
                 default_timeout=None,
@@ -299,16 +313,7 @@ class AssetServiceTransport(abc.ABC):
             ),
             self.batch_get_effective_iam_policies: gapic_v1.method.wrap_method(
                 self.batch_get_effective_iam_policies,
-                default_retry=retries.Retry(
-                    initial=0.1,
-                    maximum=60.0,
-                    multiplier=1.3,
-                    predicate=retries.if_exception_type(
-                        core_exceptions.ServiceUnavailable,
-                    ),
-                    deadline=300.0,
-                ),
-                default_timeout=300.0,
+                default_timeout=None,
                 client_info=client_info,
             ),
         }
@@ -460,6 +465,18 @@ class AssetServiceTransport(abc.ABC):
         Union[
             asset_service.AnalyzeMoveResponse,
             Awaitable[asset_service.AnalyzeMoveResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def query_assets(
+        self,
+    ) -> Callable[
+        [asset_service.QueryAssetsRequest],
+        Union[
+            asset_service.QueryAssetsResponse,
+            Awaitable[asset_service.QueryAssetsResponse],
         ],
     ]:
         raise NotImplementedError()

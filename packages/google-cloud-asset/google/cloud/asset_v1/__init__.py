@@ -56,11 +56,17 @@ from .types.asset_service import OutputConfig
 from .types.asset_service import OutputResult
 from .types.asset_service import PartitionSpec
 from .types.asset_service import PubsubDestination
+from .types.asset_service import QueryAssetsOutputConfig
+from .types.asset_service import QueryAssetsRequest
+from .types.asset_service import QueryAssetsResponse
+from .types.asset_service import QueryResult
 from .types.asset_service import SavedQuery
 from .types.asset_service import SearchAllIamPoliciesRequest
 from .types.asset_service import SearchAllIamPoliciesResponse
 from .types.asset_service import SearchAllResourcesRequest
 from .types.asset_service import SearchAllResourcesResponse
+from .types.asset_service import TableFieldSchema
+from .types.asset_service import TableSchema
 from .types.asset_service import UpdateFeedRequest
 from .types.asset_service import UpdateSavedQueryRequest
 from .types.asset_service import ContentType
@@ -130,6 +136,10 @@ __all__ = (
     "OutputResult",
     "PartitionSpec",
     "PubsubDestination",
+    "QueryAssetsOutputConfig",
+    "QueryAssetsRequest",
+    "QueryAssetsResponse",
+    "QueryResult",
     "RelatedAsset",
     "RelatedAssets",
     "RelatedResource",
@@ -142,6 +152,8 @@ __all__ = (
     "SearchAllIamPoliciesResponse",
     "SearchAllResourcesRequest",
     "SearchAllResourcesResponse",
+    "TableFieldSchema",
+    "TableSchema",
     "TemporalAsset",
     "TimeWindow",
     "UpdateFeedRequest",
