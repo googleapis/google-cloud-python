@@ -572,7 +572,7 @@ def test_{{ method_name }}_pager(transport_name: str = "grpc"):
         )
 
         metadata = ()
-        {% if method.field_headers %}
+        {% if not method.explicit_routing and method.field_headers %}
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
                 {% for field_header in method.field_headers %}
