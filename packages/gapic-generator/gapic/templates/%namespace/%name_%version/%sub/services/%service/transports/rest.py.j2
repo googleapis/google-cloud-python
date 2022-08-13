@@ -338,12 +338,12 @@ class {{service.name}}RestTransport({{service.name}}Transport):
             body = {% if body_spec == '*' -%}
                 {{method.input.ident}}.to_json(
                 {{method.input.ident}}(transcoded_request['body']),
-            {%- else -%}
+            {% else -%}
                 {{method.input.fields[body_spec].type.ident}}.to_json(
                 {{method.input.fields[body_spec].type.ident}}(transcoded_request['body']),
-            {%- endif %}{# body_spec == "*" #}
+            {% endif %}{# body_spec == "*" #}
                 including_default_value_fields=False,
-                use_integers_for_enums=False
+                use_integers_for_enums={{ opts.rest_numeric_enums }}
             )
             {%- endif %}{# body_spec #}
 
@@ -354,7 +354,7 @@ class {{service.name}}RestTransport({{service.name}}Transport):
             query_params = json.loads({{method.input.ident}}.to_json(
                 {{method.input.ident}}(transcoded_request['query_params']),
                 including_default_value_fields=False,
-                use_integers_for_enums=False
+                use_integers_for_enums={{ opts.rest_numeric_enums }}
             ))
 
             {% if method.input.required_fields %}
