@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.1.2](https://github.com/googleapis/python-apigee-registry/compare/v0.1.1...v0.1.2) (2022-08-15)
+
+
+### Bug Fixes
+
+* **deps:** allow protobuf < 5.0.0 ([#11](https://github.com/googleapis/python-apigee-registry/issues/11)) ([5e5a1b0](https://github.com/googleapis/python-apigee-registry/commit/5e5a1b07059588758b43ab7fcafdff8c1175e8da))
+* **deps:** require proto-plus >= 1.22.0 ([5e5a1b0](https://github.com/googleapis/python-apigee-registry/commit/5e5a1b07059588758b43ab7fcafdff8c1175e8da))
+
 ## [0.1.1](https://github.com/googleapis/python-apigee-registry/compare/v0.1.0...v0.1.1) (2022-07-18)
 
 
