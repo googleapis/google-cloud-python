@@ -5,6 +5,14 @@
 [1]: https://pypi.org/project/google-cloud-phishing-protection/#history
 
 
+## [1.6.2](https://github.com/googleapis/python-phishingprotection/compare/v1.6.1...v1.6.2) (2022-08-11)
+
+
+### Bug Fixes
+
+* **deps:** allow protobuf < 5.0.0 ([#204](https://github.com/googleapis/python-phishingprotection/issues/204)) ([bc64e61](https://github.com/googleapis/python-phishingprotection/commit/bc64e61d820d1f6941ac4c632b7192bee9d20cce))
+* **deps:** require proto-plus >= 1.22.0 ([bc64e61](https://github.com/googleapis/python-phishingprotection/commit/bc64e61d820d1f6941ac4c632b7192bee9d20cce))
+
 ## [1.6.1](https://github.com/googleapis/python-phishingprotection/compare/v1.6.0...v1.6.1) (2022-07-14)
 
 
