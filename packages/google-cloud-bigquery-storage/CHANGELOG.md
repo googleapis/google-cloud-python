@@ -4,6 +4,20 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery-storage/#history
 
+## [2.14.2](https://github.com/googleapis/python-bigquery-storage/compare/v2.14.1...v2.14.2) (2022-08-12)
+
+
+### Bug Fixes
+
+* **deps:** allow protobuf < 5.0.0 ([#486](https://github.com/googleapis/python-bigquery-storage/issues/486)) ([e96a352](https://github.com/googleapis/python-bigquery-storage/commit/e96a3529c3fc0f971a34aa9a8e51634eb4e1ee5d))
+* **deps:** drop freezegun dependency in extras ([#481](https://github.com/googleapis/python-bigquery-storage/issues/481)) ([7ba7953](https://github.com/googleapis/python-bigquery-storage/commit/7ba7953dd7b5f0fd676871064946fae8d1ceb57e))
+* **deps:** require proto-plus >= 1.22.0 ([e96a352](https://github.com/googleapis/python-bigquery-storage/commit/e96a3529c3fc0f971a34aa9a8e51634eb4e1ee5d))
+
+
+### Documentation
+
+* clarify size limitations for AppendRowsRequest ([#474](https://github.com/googleapis/python-bigquery-storage/issues/474)) ([7132617](https://github.com/googleapis/python-bigquery-storage/commit/7132617ec15eba7855dac33b4757f6d63cc80aba))
+
 ## [2.14.1](https://github.com/googleapis/python-bigquery-storage/compare/v2.14.0...v2.14.1) (2022-07-13)
 
 
