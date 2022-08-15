@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.4.1](https://github.com/googleapis/python-vpc-access/compare/v1.4.0...v1.4.1) (2022-08-11)
+
+
+### Bug Fixes
+
+* **deps:** allow protobuf < 5.0.0 ([#129](https://github.com/googleapis/python-vpc-access/issues/129)) ([b95e2e8](https://github.com/googleapis/python-vpc-access/commit/b95e2e8aa477eddfe6af07eb85bb7df9c5530dca))
+* **deps:** require proto-plus >= 1.22.0 ([b95e2e8](https://github.com/googleapis/python-vpc-access/commit/b95e2e8aa477eddfe6af07eb85bb7df9c5530dca))
+
 ## [1.4.0](https://github.com/googleapis/python-vpc-access/compare/v1.3.2...v1.4.0) (2022-07-16)
 
 
