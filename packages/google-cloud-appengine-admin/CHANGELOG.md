@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.5.1](https://github.com/googleapis/python-appengine-admin/compare/v1.5.0...v1.5.1) (2022-08-11)
+
+
+### Bug Fixes
+
+* **deps:** allow protobuf < 5.0.0 ([#184](https://github.com/googleapis/python-appengine-admin/issues/184)) ([ee28547](https://github.com/googleapis/python-appengine-admin/commit/ee28547fb402ae8917a70ad776fa99e927599852))
+* **deps:** require proto-plus >= 1.22.0 ([ee28547](https://github.com/googleapis/python-appengine-admin/commit/ee28547fb402ae8917a70ad776fa99e927599852))
+
 ## [1.5.0](https://github.com/googleapis/python-appengine-admin/compare/v1.4.1...v1.5.0) (2022-07-18)
 
 
