@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.2.6](https://github.com/googleapis/python-source-context/compare/v1.2.5...v1.2.6) (2022-08-11)
+
+
+### Bug Fixes
+
+* **deps:** allow protobuf < 5.0.0 ([#103](https://github.com/googleapis/python-source-context/issues/103)) ([bcc515b](https://github.com/googleapis/python-source-context/commit/bcc515bdafa3a6d0e992ba659f5e7bc89289edd5))
+* **deps:** require proto-plus >= 1.22.0 ([bcc515b](https://github.com/googleapis/python-source-context/commit/bcc515bdafa3a6d0e992ba659f5e7bc89289edd5))
+
 ## [1.2.5](https://github.com/googleapis/python-source-context/compare/v1.2.4...v1.2.5) (2022-07-10)
 
 
