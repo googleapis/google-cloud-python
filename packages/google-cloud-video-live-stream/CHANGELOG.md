@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.0.2](https://github.com/googleapis/python-video-live-stream/compare/v1.0.1...v1.0.2) (2022-08-11)
+
+
+### Bug Fixes
+
+* **deps:** allow protobuf < 5.0.0 ([#91](https://github.com/googleapis/python-video-live-stream/issues/91)) ([7493188](https://github.com/googleapis/python-video-live-stream/commit/749318882fade03988ef26f7dde297e9301fb6fd))
+* **deps:** require proto-plus >= 1.22.0 ([7493188](https://github.com/googleapis/python-video-live-stream/commit/749318882fade03988ef26f7dde297e9301fb6fd))
+
 ## [1.0.1](https://github.com/googleapis/python-video-live-stream/compare/v1.0.0...v1.0.1) (2022-08-02)
 
 
