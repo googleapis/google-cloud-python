@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.12.2](https://github.com/googleapis/python-os-config/compare/v1.12.1...v1.12.2) (2022-08-11)
+
+
+### Bug Fixes
+
+* **deps:** allow protobuf < 5.0.0 ([#227](https://github.com/googleapis/python-os-config/issues/227)) ([c3a2047](https://github.com/googleapis/python-os-config/commit/c3a2047ac58a718e6bc34b6f6f43f48e42b65f92))
+* **deps:** require proto-plus >= 1.22.0 ([c3a2047](https://github.com/googleapis/python-os-config/commit/c3a2047ac58a718e6bc34b6f6f43f48e42b65f92))
+
 ## [1.12.1](https://github.com/googleapis/python-os-config/compare/v1.12.0...v1.12.1) (2022-07-13)
 
 
