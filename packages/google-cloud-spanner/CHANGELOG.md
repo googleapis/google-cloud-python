@@ -4,6 +4,20 @@
 
 [1]: https://pypi.org/project/google-cloud-spanner/#history
 
+## [3.18.0](https://github.com/googleapis/python-spanner/compare/v3.17.0...v3.18.0) (2022-08-12)
+
+
+### Features
+
+* Add ListDatabaseRoles API to support role based access control ([#774](https://github.com/googleapis/python-spanner/issues/774)) ([3867882](https://github.com/googleapis/python-spanner/commit/3867882a14c9a2edeb4a47d5a77ec10b2e8e35da))
+
+
+### Bug Fixes
+
+* **deps:** allow protobuf < 5.0.0 ([eee5f31](https://github.com/googleapis/python-spanner/commit/eee5f31b2fe977d542c711831f4e6d06f743fab4))
+* **deps:** require proto-plus >= 1.22.0 ([eee5f31](https://github.com/googleapis/python-spanner/commit/eee5f31b2fe977d542c711831f4e6d06f743fab4))
+* target new spanner db admin service config ([8c73cb3](https://github.com/googleapis/python-spanner/commit/8c73cb3ff1093996dfd88a2361e7c73cad321fd6))
+
 ## [3.17.0](https://github.com/googleapis/python-spanner/compare/v3.16.0...v3.17.0) (2022-07-19)
 
 
