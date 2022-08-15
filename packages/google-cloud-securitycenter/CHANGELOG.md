@@ -4,6 +4,20 @@
 
 [1]: https://pypi.org/project/google-cloud-securitycenter/#history
 
+## [1.13.0](https://github.com/googleapis/python-securitycenter/compare/v1.12.0...v1.13.0) (2022-08-12)
+
+
+### Features
+
+* Added container field to findings attributes ([#353](https://github.com/googleapis/python-securitycenter/issues/353)) ([027a423](https://github.com/googleapis/python-securitycenter/commit/027a42305267381aa280d2a94665b26b08156f18))
+* Added kubernetes field to findings attribute. This field is populated only when the container is a kubernetes cluster explicitly ([027a423](https://github.com/googleapis/python-securitycenter/commit/027a42305267381aa280d2a94665b26b08156f18))
+
+
+### Bug Fixes
+
+* **deps:** allow protobuf < 5.0.0 ([#362](https://github.com/googleapis/python-securitycenter/issues/362)) ([eb521a8](https://github.com/googleapis/python-securitycenter/commit/eb521a8a12b53688420ec5eafcd8892ce1adfd78))
+* **deps:** require proto-plus >= 1.22.0 ([eb521a8](https://github.com/googleapis/python-securitycenter/commit/eb521a8a12b53688420ec5eafcd8892ce1adfd78))
+
 ## [1.12.0](https://github.com/googleapis/python-securitycenter/compare/v1.11.1...v1.12.0) (2022-07-17)
 
 
