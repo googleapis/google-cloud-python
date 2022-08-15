@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.4.1](https://github.com/googleapis/python-tpu/compare/v1.4.0...v1.4.1) (2022-08-11)
+
+
+### Bug Fixes
+
+* **deps:** allow protobuf < 5.0.0 ([#175](https://github.com/googleapis/python-tpu/issues/175)) ([a7b60dc](https://github.com/googleapis/python-tpu/commit/a7b60dc3416a0f33f28e97b361df8951da706bf8))
+* **deps:** require proto-plus >= 1.22.0 ([a7b60dc](https://github.com/googleapis/python-tpu/commit/a7b60dc3416a0f33f28e97b361df8951da706bf8))
+
 ## [1.4.0](https://github.com/googleapis/python-tpu/compare/v1.3.4...v1.4.0) (2022-07-16)
 
 
