@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.4.2](https://github.com/googleapis/python-notebooks/compare/v1.4.1...v1.4.2) (2022-08-11)
+
+
+### Bug Fixes
+
+* **deps:** allow protobuf < 5.0.0 ([#188](https://github.com/googleapis/python-notebooks/issues/188)) ([f0bd9a2](https://github.com/googleapis/python-notebooks/commit/f0bd9a21ee9c41607f2bb5d0a911e2cb94185169))
+* **deps:** require proto-plus >= 1.22.0 ([f0bd9a2](https://github.com/googleapis/python-notebooks/commit/f0bd9a21ee9c41607f2bb5d0a911e2cb94185169))
+
 ## [1.4.1](https://github.com/googleapis/python-notebooks/compare/v1.4.0...v1.4.1) (2022-07-13)
 
 
