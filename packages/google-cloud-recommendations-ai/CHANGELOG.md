@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.7.1](https://github.com/googleapis/python-recommendations-ai/compare/v0.7.0...v0.7.1) (2022-08-11)
+
+
+### Bug Fixes
+
+* **deps:** allow protobuf < 5.0.0 ([#170](https://github.com/googleapis/python-recommendations-ai/issues/170)) ([97d5284](https://github.com/googleapis/python-recommendations-ai/commit/97d52849e30a8539c0f26629c9de2eb16d270a58))
+* **deps:** require proto-plus >= 1.22.0 ([97d5284](https://github.com/googleapis/python-recommendations-ai/commit/97d52849e30a8539c0f26629c9de2eb16d270a58))
+
 ## [0.7.0](https://github.com/googleapis/python-recommendations-ai/compare/v0.6.2...v0.7.0) (2022-07-13)
 
 
