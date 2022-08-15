@@ -212,7 +212,7 @@ class Revision(proto.Message):
             VPC Access configuration for this Revision.
             For more information, visit
             https://cloud.google.com/run/docs/configuring/connecting-vpc.
-        container_concurrency (int):
+        max_instance_request_concurrency (int):
             Sets the maximum number of requests that each
             serving instance can receive.
         timeout (google.protobuf.duration_pb2.Duration):
@@ -230,9 +230,6 @@ class Revision(proto.Message):
         volumes (Sequence[google.cloud.run_v2.types.Volume]):
             A list of Volumes to make available to
             containers.
-        confidential (bool):
-            Indicates whether Confidential Cloud Run is
-            enabled in this Revision.
         execution_environment (google.cloud.run_v2.types.ExecutionEnvironment):
             The execution environment being used to host
             this Revision.
@@ -326,9 +323,9 @@ class Revision(proto.Message):
         number=13,
         message=vendor_settings.VpcAccess,
     )
-    container_concurrency = proto.Field(
+    max_instance_request_concurrency = proto.Field(
         proto.INT32,
-        number=14,
+        number=34,
     )
     timeout = proto.Field(
         proto.MESSAGE,
@@ -348,10 +345,6 @@ class Revision(proto.Message):
         proto.MESSAGE,
         number=18,
         message=k8s_min.Volume,
-    )
-    confidential = proto.Field(
-        proto.BOOL,
-        number=19,
     )
     execution_environment = proto.Field(
         proto.ENUM,

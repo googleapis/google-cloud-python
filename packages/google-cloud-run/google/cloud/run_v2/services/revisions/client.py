@@ -539,6 +539,7 @@ class RevisionsClient(metaclass=RevisionsClientMeta):
                 quota_project_id=client_options.quota_project_id,
                 client_info=client_info,
                 always_use_jwt_access=True,
+                api_audience=client_options.api_audience,
             )
 
     def get_revision(
@@ -623,11 +624,19 @@ class RevisionsClient(metaclass=RevisionsClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.get_revision]
 
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        header_params = {}
+
+        routing_param_regex = re.compile(
+            "^projects/[^/]+/locations/(?P<location>[^/]+)(?:/.*)?$"
         )
+        regex_match = routing_param_regex.match(request.name)
+        if regex_match and regex_match.group("location"):
+            header_params["location"] = regex_match.group("location")
+
+        if header_params:
+            metadata = tuple(metadata) + (
+                gapic_v1.routing_header.to_grpc_metadata(header_params),
+            )
 
         # Send the request.
         response = rpc(
@@ -726,11 +735,19 @@ class RevisionsClient(metaclass=RevisionsClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.list_revisions]
 
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        header_params = {}
+
+        routing_param_regex = re.compile(
+            "^projects/[^/]+/locations/(?P<location>[^/]+)(?:/.*)?$"
         )
+        regex_match = routing_param_regex.match(request.parent)
+        if regex_match and regex_match.group("location"):
+            header_params["location"] = regex_match.group("location")
+
+        if header_params:
+            metadata = tuple(metadata) + (
+                gapic_v1.routing_header.to_grpc_metadata(header_params),
+            )
 
         # Send the request.
         response = rpc(
@@ -840,11 +857,19 @@ class RevisionsClient(metaclass=RevisionsClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.delete_revision]
 
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        header_params = {}
+
+        routing_param_regex = re.compile(
+            "^projects/[^/]+/locations/(?P<location>[^/]+)(?:/.*)?$"
         )
+        regex_match = routing_param_regex.match(request.name)
+        if regex_match and regex_match.group("location"):
+            header_params["location"] = regex_match.group("location")
+
+        if header_params:
+            metadata = tuple(metadata) + (
+                gapic_v1.routing_header.to_grpc_metadata(header_params),
+            )
 
         # Send the request.
         response = rpc(

@@ -60,14 +60,6 @@ class Condition(proto.Message):
             condition.
 
             This field is a member of `oneof`_ ``reasons``.
-        internal_reason (google.cloud.run_v2.types.Condition.InternalReason):
-            A reason for the internal condition.
-
-            This field is a member of `oneof`_ ``reasons``.
-        domain_mapping_reason (google.cloud.run_v2.types.Condition.DomainMappingReason):
-            A reason for the domain mapping condition.
-
-            This field is a member of `oneof`_ ``reasons``.
         revision_reason (google.cloud.run_v2.types.Condition.RevisionReason):
             A reason for the revision condition.
 
@@ -97,10 +89,8 @@ class Condition(proto.Message):
         r"""Reasons common to all types of conditions."""
         COMMON_REASON_UNDEFINED = 0
         UNKNOWN = 1
-        ROUTE_MISSING = 2
         REVISION_FAILED = 3
         PROGRESS_DEADLINE_EXCEEDED = 4
-        BUILD_STEP_FAILED = 5
         CONTAINER_MISSING = 6
         CONTAINER_PERMISSION_DENIED = 7
         CONTAINER_IMAGE_UNAUTHORIZED = 8
@@ -111,30 +101,7 @@ class Condition(proto.Message):
         WAITING_FOR_OPERATION = 13
         IMMEDIATE_RETRY = 14
         POSTPONED_RETRY = 15
-
-    class InternalReason(proto.Enum):
-        r"""Reasons applicable to internal resources not exposed to
-        users. These will surface in Service.conditions, and could be
-        useful for further diagnosis.
-        """
-        INTERNAL_REASON_UNDEFINED = 0
-        CONFLICTING_REVISION_NAME = 1
-        REVISION_MISSING = 2
-        CONFIGURATION_MISSING = 3
-        ASSIGNING_TRAFFIC = 4
-        UPDATING_INGRESS_TRAFFIC_ALLOWED = 5
-        REVISION_ORG_POLICY_VIOLATION = 6
-        ENABLING_GCFV2_URI_SUPPORT = 7
-
-    class DomainMappingReason(proto.Enum):
-        r"""Reasons specific to DomainMapping resource."""
-        DOMAIN_MAPPING_REASON_UNDEFINED = 0
-        ROUTE_NOT_READY = 1
-        PERMISSION_DENIED = 2
-        CERTIFICATE_ALREADY_EXISTS = 3
-        MAPPING_ALREADY_EXISTS = 4
-        CERTIFICATE_PENDING = 5
-        CERTIFICATE_FAILED = 6
+        INTERNAL = 16
 
     class RevisionReason(proto.Enum):
         r"""Reasons specific to Revision resource."""
@@ -185,18 +152,6 @@ class Condition(proto.Message):
         number=6,
         oneof="reasons",
         enum=CommonReason,
-    )
-    internal_reason = proto.Field(
-        proto.ENUM,
-        number=7,
-        oneof="reasons",
-        enum=InternalReason,
-    )
-    domain_mapping_reason = proto.Field(
-        proto.ENUM,
-        number=8,
-        oneof="reasons",
-        enum=DomainMappingReason,
     )
     revision_reason = proto.Field(
         proto.ENUM,

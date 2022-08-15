@@ -20,7 +20,6 @@ from google.cloud.run_v2.types import condition
 from google.cloud.run_v2.types import revision_template
 from google.cloud.run_v2.types import traffic_target
 from google.cloud.run_v2.types import vendor_settings
-from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 
 
@@ -83,8 +82,6 @@ class UpdateServiceRequest(proto.Message):
     Attributes:
         service (google.cloud.run_v2.types.Service):
             Required. The Service to be updated.
-        update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            The list of fields to be updated.
         validate_only (bool):
             Indicates that the request should be
             validated and default values populated, without
@@ -101,11 +98,6 @@ class UpdateServiceRequest(proto.Message):
         proto.MESSAGE,
         number=1,
         message="Service",
-    )
-    update_mask = proto.Field(
-        proto.MESSAGE,
-        number=2,
-        message=field_mask_pb2.FieldMask,
     )
     validate_only = proto.Field(
         proto.BOOL,
@@ -255,9 +247,11 @@ class Service(proto.Message):
             string and guaranteed to remain unchanged until
             the resource is deleted.
         generation (int):
-            Output only. A number that monotonically
-            increases every time the user modifies the
-            desired state.
+            Output only. A number that monotonically increases every
+            time the user modifies the desired state. Please note that
+            unlike v1, this is an int64 value. As with most Google APIs,
+            its JSON representation will be a ``string`` instead of an
+            ``integer``.
         labels (Mapping[str, str]):
             Map of string keys and values that can be
             used to organize and categorize objects.
@@ -327,7 +321,9 @@ class Service(proto.Message):
             Output only. The generation of this Service currently
             serving traffic. See comments in ``reconciling`` for
             additional information on reconciliation process in Cloud
-            Run.
+            Run. Please note that unlike v1, this is an int64 value. As
+            with most Google APIs, its JSON representation will be a
+            ``string`` instead of an ``integer``.
         terminal_condition (google.cloud.run_v2.types.Condition):
             Output only. The Condition of this Service, containing its
             readiness status, and detailed error information in case it

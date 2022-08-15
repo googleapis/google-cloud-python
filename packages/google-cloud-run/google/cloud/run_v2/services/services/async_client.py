@@ -43,7 +43,6 @@ from google.cloud.run_v2.types import traffic_target
 from google.cloud.run_v2.types import vendor_settings
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
-from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 from .transports.base import ServicesTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc_asyncio import ServicesGrpcAsyncIOTransport
@@ -592,7 +591,6 @@ class ServicesAsyncClient:
         request: Union[gcr_service.UpdateServiceRequest, dict] = None,
         *,
         service: gcr_service.Service = None,
-        update_mask: field_mask_pb2.FieldMask = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
@@ -630,11 +628,6 @@ class ServicesAsyncClient:
                 This corresponds to the ``service`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
-                The list of fields to be updated.
-                This corresponds to the ``update_mask`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -657,7 +650,7 @@ class ServicesAsyncClient:
         # Create or coerce a protobuf request object.
         # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        has_flattened_params = any([service, update_mask])
+        has_flattened_params = any([service])
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -670,8 +663,6 @@ class ServicesAsyncClient:
         # request, apply these.
         if service is not None:
             request.service = service
-        if update_mask is not None:
-            request.update_mask = update_mask
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.

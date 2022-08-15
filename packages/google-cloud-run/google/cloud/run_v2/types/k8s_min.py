@@ -46,7 +46,8 @@ class Container(proto.Message):
             Name of the container specified as a DNS_LABEL.
         image (str):
             Required. URL of the Container image in
-            Google Container Registry or Docker More info:
+            Google Container Registry or Google Artifact
+            Registry. More info:
             https://kubernetes.io/docs/concepts/containers/images
         command (Sequence[str]):
             Entrypoint array. Not executed within a shell. The docker
@@ -457,7 +458,7 @@ class CloudSqlInstance(proto.Message):
     r"""Represents a specific Cloud SQL instance.
 
     Attributes:
-        connections (Sequence[str]):
+        instances (Sequence[str]):
             The Cloud SQL instance connection names, as
             can be found in
             https://console.cloud.google.com/sql/instances.
@@ -468,7 +469,7 @@ class CloudSqlInstance(proto.Message):
             {project}:{location}:{instance}
     """
 
-    connections = proto.RepeatedField(
+    instances = proto.RepeatedField(
         proto.STRING,
         number=1,
     )

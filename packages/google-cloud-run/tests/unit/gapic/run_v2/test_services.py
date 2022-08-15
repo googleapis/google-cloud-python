@@ -14,7 +14,13 @@
 # limitations under the License.
 #
 import os
-import mock
+
+# try/except added for compatibility with python < 3.8
+try:
+    from unittest import mock
+    from unittest.mock import AsyncMock
+except ImportError:
+    import mock
 
 import grpc
 from grpc.experimental import aio
@@ -224,6 +230,7 @@ def test_services_client_client_options(client_class, transport_class, transport
             quota_project_id=None,
             client_info=transports.base.DEFAULT_CLIENT_INFO,
             always_use_jwt_access=True,
+            api_audience=None,
         )
 
     # Check the case api_endpoint is not provided and GOOGLE_API_USE_MTLS_ENDPOINT is
@@ -241,6 +248,7 @@ def test_services_client_client_options(client_class, transport_class, transport
                 quota_project_id=None,
                 client_info=transports.base.DEFAULT_CLIENT_INFO,
                 always_use_jwt_access=True,
+                api_audience=None,
             )
 
     # Check the case api_endpoint is not provided and GOOGLE_API_USE_MTLS_ENDPOINT is
@@ -258,6 +266,7 @@ def test_services_client_client_options(client_class, transport_class, transport
                 quota_project_id=None,
                 client_info=transports.base.DEFAULT_CLIENT_INFO,
                 always_use_jwt_access=True,
+                api_audience=None,
             )
 
     # Check the case api_endpoint is not provided and GOOGLE_API_USE_MTLS_ENDPOINT has
@@ -287,6 +296,25 @@ def test_services_client_client_options(client_class, transport_class, transport
             quota_project_id="octopus",
             client_info=transports.base.DEFAULT_CLIENT_INFO,
             always_use_jwt_access=True,
+            api_audience=None,
+        )
+    # Check the case api_endpoint is provided
+    options = client_options.ClientOptions(
+        api_audience="https://language.googleapis.com"
+    )
+    with mock.patch.object(transport_class, "__init__") as patched:
+        patched.return_value = None
+        client = client_class(client_options=options, transport=transport_name)
+        patched.assert_called_once_with(
+            credentials=None,
+            credentials_file=None,
+            host=client.DEFAULT_ENDPOINT,
+            scopes=None,
+            client_cert_source_for_mtls=None,
+            quota_project_id=None,
+            client_info=transports.base.DEFAULT_CLIENT_INFO,
+            always_use_jwt_access=True,
+            api_audience="https://language.googleapis.com",
         )
 
 
@@ -352,6 +380,7 @@ def test_services_client_mtls_env_auto(
                 quota_project_id=None,
                 client_info=transports.base.DEFAULT_CLIENT_INFO,
                 always_use_jwt_access=True,
+                api_audience=None,
             )
 
     # Check the case ADC client cert is provided. Whether client cert is used depends on
@@ -386,6 +415,7 @@ def test_services_client_mtls_env_auto(
                         quota_project_id=None,
                         client_info=transports.base.DEFAULT_CLIENT_INFO,
                         always_use_jwt_access=True,
+                        api_audience=None,
                     )
 
     # Check the case client_cert_source and ADC client cert are not provided.
@@ -408,6 +438,7 @@ def test_services_client_mtls_env_auto(
                     quota_project_id=None,
                     client_info=transports.base.DEFAULT_CLIENT_INFO,
                     always_use_jwt_access=True,
+                    api_audience=None,
                 )
 
 
@@ -514,6 +545,7 @@ def test_services_client_client_options_scopes(
             quota_project_id=None,
             client_info=transports.base.DEFAULT_CLIENT_INFO,
             always_use_jwt_access=True,
+            api_audience=None,
         )
 
 
@@ -547,6 +579,7 @@ def test_services_client_client_options_credentials_file(
             quota_project_id=None,
             client_info=transports.base.DEFAULT_CLIENT_INFO,
             always_use_jwt_access=True,
+            api_audience=None,
         )
 
 
@@ -565,6 +598,7 @@ def test_services_client_client_options_from_dict():
             quota_project_id=None,
             client_info=transports.base.DEFAULT_CLIENT_INFO,
             always_use_jwt_access=True,
+            api_audience=None,
         )
 
 
@@ -598,6 +632,7 @@ def test_services_client_create_channel_credentials_file(
             quota_project_id=None,
             client_info=transports.base.DEFAULT_CLIENT_INFO,
             always_use_jwt_access=True,
+            api_audience=None,
         )
 
     # test that the credentials from file are saved and used as the credentials.
@@ -712,16 +747,16 @@ async def test_create_service_async_from_dict():
     await test_create_service_async(request_type=dict)
 
 
-def test_create_service_field_headers():
+def test_create_service_routing_parameters():
     client = ServicesClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = gcr_service.CreateServiceRequest()
-
-    request.parent = "parent_value"
+    request = gcr_service.CreateServiceRequest(
+        {"parent": "projects/sample1/locations/sample2"}
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_service), "__call__") as call:
@@ -733,44 +768,9 @@ def test_create_service_field_headers():
         _, args, _ = call.mock_calls[0]
         assert args[0] == request
 
-    # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert (
-        "x-goog-request-params",
-        "parent=parent_value",
-    ) in kw["metadata"]
-
-
-@pytest.mark.asyncio
-async def test_create_service_field_headers_async():
-    client = ServicesAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = gcr_service.CreateServiceRequest()
-
-    request.parent = "parent_value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.create_service), "__call__") as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/op")
-        )
-        await client.create_service(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert (
-        "x-goog-request-params",
-        "parent=parent_value",
-    ) in kw["metadata"]
+    # This test doesn't assert anything useful.
+    assert kw["metadata"]
 
 
 def test_create_service_flattened():
@@ -1024,16 +1024,16 @@ async def test_get_service_async_from_dict():
     await test_get_service_async(request_type=dict)
 
 
-def test_get_service_field_headers():
+def test_get_service_routing_parameters():
     client = ServicesClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = service.GetServiceRequest()
-
-    request.name = "name_value"
+    request = service.GetServiceRequest(
+        {"name": "projects/sample1/locations/sample2/sample3"}
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_service), "__call__") as call:
@@ -1045,42 +1045,9 @@ def test_get_service_field_headers():
         _, args, _ = call.mock_calls[0]
         assert args[0] == request
 
-    # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert (
-        "x-goog-request-params",
-        "name=name_value",
-    ) in kw["metadata"]
-
-
-@pytest.mark.asyncio
-async def test_get_service_field_headers_async():
-    client = ServicesAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = service.GetServiceRequest()
-
-    request.name = "name_value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_service), "__call__") as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(service.Service())
-        await client.get_service(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert (
-        "x-goog-request-params",
-        "name=name_value",
-    ) in kw["metadata"]
+    # This test doesn't assert anything useful.
+    assert kw["metadata"]
 
 
 def test_get_service_flattened():
@@ -1252,16 +1219,16 @@ async def test_list_services_async_from_dict():
     await test_list_services_async(request_type=dict)
 
 
-def test_list_services_field_headers():
+def test_list_services_routing_parameters():
     client = ServicesClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = service.ListServicesRequest()
-
-    request.parent = "parent_value"
+    request = service.ListServicesRequest(
+        {"parent": "projects/sample1/locations/sample2"}
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_services), "__call__") as call:
@@ -1273,44 +1240,9 @@ def test_list_services_field_headers():
         _, args, _ = call.mock_calls[0]
         assert args[0] == request
 
-    # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert (
-        "x-goog-request-params",
-        "parent=parent_value",
-    ) in kw["metadata"]
-
-
-@pytest.mark.asyncio
-async def test_list_services_field_headers_async():
-    client = ServicesAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = service.ListServicesRequest()
-
-    request.parent = "parent_value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_services), "__call__") as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            service.ListServicesResponse()
-        )
-        await client.list_services(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert (
-        "x-goog-request-params",
-        "parent=parent_value",
-    ) in kw["metadata"]
+    # This test doesn't assert anything useful.
+    assert kw["metadata"]
 
 
 def test_list_services_flattened():
@@ -1433,9 +1365,6 @@ def test_list_services_pager(transport_name: str = "grpc"):
         )
 
         metadata = ()
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
-        )
         pager = client.list_services(request={})
 
         assert pager._metadata == metadata
@@ -1666,16 +1595,16 @@ async def test_update_service_async_from_dict():
     await test_update_service_async(request_type=dict)
 
 
-def test_update_service_field_headers():
+def test_update_service_routing_parameters():
     client = ServicesClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = gcr_service.UpdateServiceRequest()
-
-    request.service.name = "name_value"
+    request = gcr_service.UpdateServiceRequest(
+        {"service": {"name": "projects/sample1/locations/sample2/sample3"}}
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_service), "__call__") as call:
@@ -1687,44 +1616,9 @@ def test_update_service_field_headers():
         _, args, _ = call.mock_calls[0]
         assert args[0] == request
 
-    # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert (
-        "x-goog-request-params",
-        "service.name=name_value",
-    ) in kw["metadata"]
-
-
-@pytest.mark.asyncio
-async def test_update_service_field_headers_async():
-    client = ServicesAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = gcr_service.UpdateServiceRequest()
-
-    request.service.name = "name_value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.update_service), "__call__") as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/op")
-        )
-        await client.update_service(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert (
-        "x-goog-request-params",
-        "service.name=name_value",
-    ) in kw["metadata"]
+    # This test doesn't assert anything useful.
+    assert kw["metadata"]
 
 
 def test_update_service_flattened():
@@ -1740,7 +1634,6 @@ def test_update_service_flattened():
         # using the keyword arguments to the method.
         client.update_service(
             service=gcr_service.Service(name="name_value"),
-            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
         # Establish that the underlying call was made with the expected
@@ -1749,9 +1642,6 @@ def test_update_service_flattened():
         _, args, _ = call.mock_calls[0]
         arg = args[0].service
         mock_val = gcr_service.Service(name="name_value")
-        assert arg == mock_val
-        arg = args[0].update_mask
-        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
         assert arg == mock_val
 
 
@@ -1766,7 +1656,6 @@ def test_update_service_flattened_error():
         client.update_service(
             gcr_service.UpdateServiceRequest(),
             service=gcr_service.Service(name="name_value"),
-            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
 
@@ -1788,7 +1677,6 @@ async def test_update_service_flattened_async():
         # using the keyword arguments to the method.
         response = await client.update_service(
             service=gcr_service.Service(name="name_value"),
-            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
         # Establish that the underlying call was made with the expected
@@ -1797,9 +1685,6 @@ async def test_update_service_flattened_async():
         _, args, _ = call.mock_calls[0]
         arg = args[0].service
         mock_val = gcr_service.Service(name="name_value")
-        assert arg == mock_val
-        arg = args[0].update_mask
-        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
         assert arg == mock_val
 
 
@@ -1815,7 +1700,6 @@ async def test_update_service_flattened_error_async():
         await client.update_service(
             gcr_service.UpdateServiceRequest(),
             service=gcr_service.Service(name="name_value"),
-            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
 
@@ -1902,16 +1786,16 @@ async def test_delete_service_async_from_dict():
     await test_delete_service_async(request_type=dict)
 
 
-def test_delete_service_field_headers():
+def test_delete_service_routing_parameters():
     client = ServicesClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = service.DeleteServiceRequest()
-
-    request.name = "name_value"
+    request = service.DeleteServiceRequest(
+        {"name": "projects/sample1/locations/sample2/sample3"}
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_service), "__call__") as call:
@@ -1923,44 +1807,9 @@ def test_delete_service_field_headers():
         _, args, _ = call.mock_calls[0]
         assert args[0] == request
 
-    # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert (
-        "x-goog-request-params",
-        "name=name_value",
-    ) in kw["metadata"]
-
-
-@pytest.mark.asyncio
-async def test_delete_service_field_headers_async():
-    client = ServicesAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = service.DeleteServiceRequest()
-
-    request.name = "name_value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.delete_service), "__call__") as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/op")
-        )
-        await client.delete_service(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert (
-        "x-goog-request-params",
-        "name=name_value",
-    ) in kw["metadata"]
+    # This test doesn't assert anything useful.
+    assert kw["metadata"]
 
 
 def test_delete_service_flattened():
@@ -2796,6 +2645,28 @@ def test_services_transport_auth_adc(transport_class):
 
 
 @pytest.mark.parametrize(
+    "transport_class",
+    [
+        transports.ServicesGrpcTransport,
+        transports.ServicesGrpcAsyncIOTransport,
+    ],
+)
+def test_services_transport_auth_gdch_credentials(transport_class):
+    host = "https://language.com"
+    api_audience_tests = [None, "https://language2.com"]
+    api_audience_expect = [host, "https://language2.com"]
+    for t, e in zip(api_audience_tests, api_audience_expect):
+        with mock.patch.object(google.auth, "default", autospec=True) as adc:
+            gdch_mock = mock.MagicMock()
+            type(gdch_mock).with_gdch_audience = mock.PropertyMock(
+                return_value=gdch_mock
+            )
+            adc.return_value = (gdch_mock, None)
+            transport_class(host=host, api_audience=t)
+            gdch_mock.with_gdch_audience.assert_called_once_with(e)
+
+
+@pytest.mark.parametrize(
     "transport_class,grpc_helpers",
     [
         (transports.ServicesGrpcTransport, grpc_helpers),
@@ -3417,4 +3288,5 @@ def test_api_key_credentials(client_class, transport_class):
                 quota_project_id=None,
                 client_info=transports.base.DEFAULT_CLIENT_INFO,
                 always_use_jwt_access=True,
+                api_audience=None,
             )

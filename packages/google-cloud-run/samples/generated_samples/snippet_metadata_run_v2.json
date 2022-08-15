@@ -1639,10 +1639,6 @@
             "type": "google.cloud.run_v2.types.Service"
           },
           {
-            "name": "update_mask",
-            "type": "google.protobuf.field_mask_pb2.FieldMask"
-          },
-          {
             "name": "retry",
             "type": "google.api_core.retry.Retry"
           },
@@ -1721,10 +1717,6 @@
           {
             "name": "service",
             "type": "google.cloud.run_v2.types.Service"
-          },
-          {
-            "name": "update_mask",
-            "type": "google.protobuf.field_mask_pb2.FieldMask"
           },
           {
             "name": "retry",

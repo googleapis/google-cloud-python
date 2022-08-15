@@ -39,7 +39,7 @@ class IngressTraffic(proto.Enum):
 class ExecutionEnvironment(proto.Enum):
     r"""Alternatives for execution environments."""
     EXECUTION_ENVIRONMENT_UNSPECIFIED = 0
-    EXECUTION_ENVIRONMENT_DEFAULT = 1
+    EXECUTION_ENVIRONMENT_GEN1 = 1
     EXECUTION_ENVIRONMENT_GEN2 = 2
 
 
