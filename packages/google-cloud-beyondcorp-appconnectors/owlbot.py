@@ -25,32 +25,6 @@ from synthtool.languages import python
 default_version = "v1"
 
 for library in s.get_staging_dirs(default_version):
-    # work around issues with docstrings
-    s.replace(
-        library / "google/cloud/**/*.py",
-        """resource.
-                \*\*JSON Example\*\*
-                ::""",
-        """resource. JSON Example.
-
-                .. code-block:: python\n""",
-    )
-
-    s.replace(
-        library / "google/cloud/**/*.py",
-        """\*\*YAML Example\*\*
-                ::""",
-        """\n                **YAML Example**
-
-                ::\n""",
-    )
-
-    s.replace(library / "google/cloud/**/*.py",
-        """                For a description of IAM and its features, see the `IAM
-                developer's""",
-        """\n                For a description of IAM and its features, see the `IAM
-                developer's"""
-    )
     s.replace(library / "google/cloud/**/*.py","\n    ------------\n\n   ",":")
     s.replace(library / "google/cloud/**/*.py","\n    ----------\n\n   ",":") 
     s.move(library, excludes=["google/cloud/beyondcorp_appconnectors", "setup.py"])
@@ -61,7 +35,7 @@ s.remove_staging_dirs()
 # ----------------------------------------------------------------------------
 
 templated_files = gcp.CommonTemplates().py_library(
-    cov_level=98,
+    cov_level=100,
     microgenerator=True,
     versions=gcp.common.detect_versions(path="./google", default_first=True),
 )
