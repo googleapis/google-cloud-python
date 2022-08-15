@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.4.1](https://github.com/googleapis/python-resource-settings/compare/v1.4.0...v1.4.1) (2022-08-11)
+
+
+### Bug Fixes
+
+* **deps:** allow protobuf < 5.0.0 ([#127](https://github.com/googleapis/python-resource-settings/issues/127)) ([6455479](https://github.com/googleapis/python-resource-settings/commit/6455479446b23a0d34fe2345973efa5e876b5e06))
+* **deps:** require proto-plus >= 1.22.0 ([6455479](https://github.com/googleapis/python-resource-settings/commit/6455479446b23a0d34fe2345973efa5e876b5e06))
+
 ## [1.4.0](https://github.com/googleapis/python-resource-settings/compare/v1.3.2...v1.4.0) (2022-07-16)
 
 
