@@ -166,7 +166,7 @@ def get_user_credentials(
         client_config, scopes=scopes
     )
 
-    port = find_open_port()
+    port = find_open_port(start=minimum_port, stop=maximum_port)
     if not port:
         raise ConnectionError("Could not find open port.")
 

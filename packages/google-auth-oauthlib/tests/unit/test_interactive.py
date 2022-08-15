@@ -80,7 +80,7 @@ def test_get_user_credentials_raises_connectionerror(monkeypatch):
     from google_auth_oauthlib import flow
     from google_auth_oauthlib import interactive as module_under_test
 
-    def mock_find_open_port():
+    def mock_find_open_port(start=8080, stop=None):
         return None
 
     monkeypatch.setattr(module_under_test, "find_open_port", mock_find_open_port)
