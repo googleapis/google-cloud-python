@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.7.1](https://github.com/googleapis/python-bigquery-connection/compare/v1.7.0...v1.7.1) (2022-08-11)
+
+
+### Bug Fixes
+
+* **deps:** allow protobuf < 5.0.0 ([#243](https://github.com/googleapis/python-bigquery-connection/issues/243)) ([5d2e50c](https://github.com/googleapis/python-bigquery-connection/commit/5d2e50c72536f1e8679cea1f02831d93d52e3d9f))
+* **deps:** require proto-plus >= 1.22.0 ([5d2e50c](https://github.com/googleapis/python-bigquery-connection/commit/5d2e50c72536f1e8679cea1f02831d93d52e3d9f))
+
 ## [1.7.0](https://github.com/googleapis/python-bigquery-connection/compare/v1.6.0...v1.7.0) (2022-08-02)
 
 
