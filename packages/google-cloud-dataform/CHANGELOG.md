@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.2.1](https://github.com/googleapis/python-dataform/compare/v0.2.0...v0.2.1) (2022-08-15)
+
+
+### Bug Fixes
+
+* **deps:** allow protobuf < 5.0.0 ([#12](https://github.com/googleapis/python-dataform/issues/12)) ([ddde619](https://github.com/googleapis/python-dataform/commit/ddde61929b91d52f5a82191702583234394263e4))
+* **deps:** require proto-plus >= 1.22.0 ([ddde619](https://github.com/googleapis/python-dataform/commit/ddde61929b91d52f5a82191702583234394263e4))
+
 ## [0.2.0](https://github.com/googleapis/python-dataform/compare/v0.1.0...v0.2.0) (2022-07-26)
 
 
