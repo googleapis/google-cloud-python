@@ -3032,7 +3032,7 @@ def test_cancel_operation(transport: str = "grpc"):
 
 
 @pytest.mark.asyncio
-async def test_cancel_operation(transport: str = "grpc"):
+async def test_cancel_operation_async(transport: str = "grpc"):
     client = TransitionRouteGroupsAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
@@ -3171,7 +3171,7 @@ def test_get_operation(transport: str = "grpc"):
 
 
 @pytest.mark.asyncio
-async def test_get_operation(transport: str = "grpc"):
+async def test_get_operation_async(transport: str = "grpc"):
     client = TransitionRouteGroupsAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
@@ -3316,7 +3316,7 @@ def test_list_operations(transport: str = "grpc"):
 
 
 @pytest.mark.asyncio
-async def test_list_operations(transport: str = "grpc"):
+async def test_list_operations_async(transport: str = "grpc"):
     client = TransitionRouteGroupsAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
@@ -3461,7 +3461,7 @@ def test_list_locations(transport: str = "grpc"):
 
 
 @pytest.mark.asyncio
-async def test_list_locations(transport: str = "grpc"):
+async def test_list_locations_async(transport: str = "grpc"):
     client = TransitionRouteGroupsAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
