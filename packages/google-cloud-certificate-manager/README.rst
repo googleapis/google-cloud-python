@@ -1,14 +1,14 @@
 Python Client for Certificate Manager API
 =========================================
 
-|preview| |pypi| |versions|
+|stable| |pypi| |versions|
 
 `Certificate Manager API`_: lets you acquire and manage TLS (SSL) certificates for use with Cloud Load Balancing.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
 
-.. |preview| image:: https://img.shields.io/badge/support-preview-orange.svg
+.. |stable| image:: https://img.shields.io/badge/support-stable-gold.svg
    :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#stability-levels
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-certificate-manager.svg
    :target: https://pypi.org/project/google-cloud-certificate-manager/
