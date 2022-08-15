@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.7.1](https://github.com/googleapis/python-area120-tables/compare/v0.7.0...v0.7.1) (2022-08-11)
+
+
+### Bug Fixes
+
+* **deps:** allow protobuf < 5.0.0 ([#181](https://github.com/googleapis/python-area120-tables/issues/181)) ([6c45184](https://github.com/googleapis/python-area120-tables/commit/6c451840d2e6169c108ad6e455289e9d81c6c317))
+* **deps:** require proto-plus >= 1.22.0 ([6c45184](https://github.com/googleapis/python-area120-tables/commit/6c451840d2e6169c108ad6e455289e9d81c6c317))
+
 ## [0.7.0](https://github.com/googleapis/python-area120-tables/compare/v0.6.2...v0.7.0) (2022-07-18)
 
 
