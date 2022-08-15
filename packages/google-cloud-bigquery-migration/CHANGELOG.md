@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.7.0](https://github.com/googleapis/python-bigquery-migration/compare/v0.6.0...v0.7.0) (2022-08-11)
+
+
+### Features
+
+* **v2:** Add MySQL dialect ([#116](https://github.com/googleapis/python-bigquery-migration/issues/116)) ([9f66ca4](https://github.com/googleapis/python-bigquery-migration/commit/9f66ca4c1e8b1438a8f11919c24fb6506a5790ea))
+
+
+### Bug Fixes
+
+* **deps:** allow protobuf < 5.0.0 ([#118](https://github.com/googleapis/python-bigquery-migration/issues/118)) ([b217543](https://github.com/googleapis/python-bigquery-migration/commit/b2175431fd5b2391f9490a5900977c5768d6712a))
+* **deps:** require proto-plus >= 1.22.0 ([b217543](https://github.com/googleapis/python-bigquery-migration/commit/b2175431fd5b2391f9490a5900977c5768d6712a))
+
 ## [0.6.0](https://github.com/googleapis/python-bigquery-migration/compare/v0.5.0...v0.6.0) (2022-07-16)
 
 
