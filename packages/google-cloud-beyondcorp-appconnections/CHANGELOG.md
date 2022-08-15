@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.1.1](https://github.com/googleapis/python-beyondcorp-appconnections/compare/v0.1.0...v0.1.1) (2022-08-15)
+
+
+### Bug Fixes
+
+* **deps:** allow protobuf < 5.0.0 ([#12](https://github.com/googleapis/python-beyondcorp-appconnections/issues/12)) ([b874c80](https://github.com/googleapis/python-beyondcorp-appconnections/commit/b874c80796c1a445887ee2671b130c4daca830a3))
+* **deps:** require proto-plus >= 1.22.0 ([b874c80](https://github.com/googleapis/python-beyondcorp-appconnections/commit/b874c80796c1a445887ee2671b130c4daca830a3))
+
 ## 0.1.0 (2022-07-18)
 
 
