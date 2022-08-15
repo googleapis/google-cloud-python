@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.4.1](https://github.com/googleapis/python-org-policy/compare/v1.4.0...v1.4.1) (2022-08-12)
+
+
+### Bug Fixes
+
+* **deps:** allow protobuf < 5.0.0 ([1a1e2e4](https://github.com/googleapis/python-org-policy/commit/1a1e2e40a4853c8b3e27533ffca0bacdbd52e1a0))
+* **deps:** require proto-plus >= 1.22.0 ([1a1e2e4](https://github.com/googleapis/python-org-policy/commit/1a1e2e40a4853c8b3e27533ffca0bacdbd52e1a0))
+
 ## [1.4.0](https://github.com/googleapis/python-org-policy/compare/v1.3.3...v1.4.0) (2022-07-13)
 
 
