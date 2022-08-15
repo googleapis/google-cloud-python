@@ -18,7 +18,7 @@ import os
 
 import setuptools  # type: ignore
 
-version = "0.2.0"
+version = "0.2.1"
 
 package_root = os.path.abspath(os.path.dirname(__file__))
 

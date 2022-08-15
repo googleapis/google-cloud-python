@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.2.1](https://github.com/googleapis/python-video-stitcher/compare/v0.2.0...v0.2.1) (2022-08-11)
+
+
+### Bug Fixes
+
+* **deps:** allow protobuf < 5.0.0 ([#53](https://github.com/googleapis/python-video-stitcher/issues/53)) ([42d07be](https://github.com/googleapis/python-video-stitcher/commit/42d07be69e0dd60f55de4619645c0d14c47f8660))
+* **deps:** require proto-plus >= 1.22.0 ([42d07be](https://github.com/googleapis/python-video-stitcher/commit/42d07be69e0dd60f55de4619645c0d14c47f8660))
+
 ## [0.2.0](https://github.com/googleapis/python-video-stitcher/compare/v0.1.2...v0.2.0) (2022-07-16)
 
 
