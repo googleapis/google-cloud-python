@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.1.1](https://github.com/googleapis/python-beyondcorp-clientgateways/compare/v0.1.0...v0.1.1) (2022-08-15)
+
+
+### Bug Fixes
+
+* **deps:** allow protobuf < 5.0.0 ([#11](https://github.com/googleapis/python-beyondcorp-clientgateways/issues/11)) ([ea422f3](https://github.com/googleapis/python-beyondcorp-clientgateways/commit/ea422f3053969c627d99fee5a822b86777fece98))
+* **deps:** require proto-plus >= 1.22.0 ([ea422f3](https://github.com/googleapis/python-beyondcorp-clientgateways/commit/ea422f3053969c627d99fee5a822b86777fece98))
+
 ## 0.1.0 (2022-07-20)
 
 
