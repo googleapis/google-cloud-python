@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.13.2](https://github.com/googleapis/python-analytics-data/compare/v0.13.1...v0.13.2) (2022-08-11)
+
+
+### Bug Fixes
+
+* **deps:** allow protobuf < 5.0.0 ([#266](https://github.com/googleapis/python-analytics-data/issues/266)) ([0990dae](https://github.com/googleapis/python-analytics-data/commit/0990daeb180e59855ef7dd4e549ed7fb20d8ecdc))
+* **deps:** require proto-plus >= 1.22.0 ([0990dae](https://github.com/googleapis/python-analytics-data/commit/0990daeb180e59855ef7dd4e549ed7fb20d8ecdc))
+
 ## [0.13.1](https://github.com/googleapis/python-analytics-data/compare/v0.13.0...v0.13.1) (2022-07-19)
 
 
