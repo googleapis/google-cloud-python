@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery-datatransfer/#history
 
+## [3.7.1](https://github.com/googleapis/python-bigquery-datatransfer/compare/v3.7.0...v3.7.1) (2022-08-12)
+
+
+### Bug Fixes
+
+* **deps:** allow protobuf < 5.0.0 ([#375](https://github.com/googleapis/python-bigquery-datatransfer/issues/375)) ([4bbf741](https://github.com/googleapis/python-bigquery-datatransfer/commit/4bbf741b77c3210e7065daeb0eb56625ae60a488))
+* **deps:** require proto-plus >= 1.22.0 ([4bbf741](https://github.com/googleapis/python-bigquery-datatransfer/commit/4bbf741b77c3210e7065daeb0eb56625ae60a488))
+
 ## [3.7.0](https://github.com/googleapis/python-bigquery-datatransfer/compare/v3.6.2...v3.7.0) (2022-07-16)
 
 
