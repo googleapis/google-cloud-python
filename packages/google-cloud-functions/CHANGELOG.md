@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.8.1](https://github.com/googleapis/python-functions/compare/v1.8.0...v1.8.1) (2022-08-11)
+
+
+### Bug Fixes
+
+* **deps:** allow protobuf < 5.0.0 ([#207](https://github.com/googleapis/python-functions/issues/207)) ([bdc415b](https://github.com/googleapis/python-functions/commit/bdc415b435de8de9072e136cee7d27e9cd802d2c))
+* **deps:** require proto-plus >= 1.22.0 ([bdc415b](https://github.com/googleapis/python-functions/commit/bdc415b435de8de9072e136cee7d27e9cd802d2c))
+
 ## [1.8.0](https://github.com/googleapis/python-functions/compare/v1.7.0...v1.8.0) (2022-07-14)
 
 
