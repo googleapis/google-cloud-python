@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-cloud-asset/#history
 
+## [3.12.0](https://github.com/googleapis/python-asset/compare/v3.11.0...v3.12.0) (2022-08-12)
+
+
+### Features
+
+* Release of query system ([#467](https://github.com/googleapis/python-asset/issues/467)) ([5517102](https://github.com/googleapis/python-asset/commit/551710241f08019005583100cc73c2b46ee9c9af))
+
+
+### Bug Fixes
+
+* **deps:** allow protobuf < 5.0.0 ([#469](https://github.com/googleapis/python-asset/issues/469)) ([7d4a11f](https://github.com/googleapis/python-asset/commit/7d4a11fcdc868b1f135b251ebf877cb57b78391d))
+* **deps:** require proto-plus >= 1.22.0 ([7d4a11f](https://github.com/googleapis/python-asset/commit/7d4a11fcdc868b1f135b251ebf877cb57b78391d))
+
 ## [3.11.0](https://github.com/googleapis/python-asset/compare/v3.10.0...v3.11.0) (2022-08-09)
 
 
