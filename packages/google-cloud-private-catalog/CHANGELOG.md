@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.6.2](https://github.com/googleapis/python-private-catalog/compare/v0.6.1...v0.6.2) (2022-08-11)
+
+
+### Bug Fixes
+
+* **deps:** allow protobuf < 5.0.0 ([#139](https://github.com/googleapis/python-private-catalog/issues/139)) ([b1db819](https://github.com/googleapis/python-private-catalog/commit/b1db81954c4bb7da17ed74808d3cb8439adc7a04))
+* **deps:** require proto-plus >= 1.22.0 ([b1db819](https://github.com/googleapis/python-private-catalog/commit/b1db81954c4bb7da17ed74808d3cb8439adc7a04))
+
 ## [0.6.1](https://github.com/googleapis/python-private-catalog/compare/v0.6.0...v0.6.1) (2022-07-14)
 
 
