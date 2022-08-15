@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.4.1](https://github.com/googleapis/python-service-usage/compare/v1.4.0...v1.4.1) (2022-08-11)
+
+
+### Bug Fixes
+
+* **deps:** allow protobuf < 5.0.0 ([#133](https://github.com/googleapis/python-service-usage/issues/133)) ([586a7f9](https://github.com/googleapis/python-service-usage/commit/586a7f92c6658c907cd990461a9a9beb45f7514a))
+* **deps:** require proto-plus >= 1.22.0 ([586a7f9](https://github.com/googleapis/python-service-usage/commit/586a7f92c6658c907cd990461a9a9beb45f7514a))
+
 ## [1.4.0](https://github.com/googleapis/python-service-usage/compare/v1.3.2...v1.4.0) (2022-07-16)
 
 
