@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.0](https://github.com/googleapis/python-certificate-manager/compare/v0.2.1...v1.0.0) (2022-08-15)
+
+
+### Features
+
+* bump release level to production/stable ([#68](https://github.com/googleapis/python-certificate-manager/issues/68)) ([dfdfff8](https://github.com/googleapis/python-certificate-manager/commit/dfdfff87145f90b9b921fc4ec1085407a99777c5))
+
 ## [0.2.1](https://github.com/googleapis/python-certificate-manager/compare/v0.2.0...v0.2.1) (2022-08-15)
 
 
