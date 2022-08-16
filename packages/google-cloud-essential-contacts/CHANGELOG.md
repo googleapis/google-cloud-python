@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.2.1](https://github.com/googleapis/python-essential-contacts/compare/v1.2.0...v1.2.1) (2022-08-11)
+
+
+### Bug Fixes
+
+* **deps:** allow protobuf < 5.0.0 ([#134](https://github.com/googleapis/python-essential-contacts/issues/134)) ([36bc3d8](https://github.com/googleapis/python-essential-contacts/commit/36bc3d8de260870491bb2b8113576d9f6f73575d))
+* **deps:** require proto-plus >= 1.22.0 ([36bc3d8](https://github.com/googleapis/python-essential-contacts/commit/36bc3d8de260870491bb2b8113576d9f6f73575d))
+
 ## [1.2.0](https://github.com/googleapis/python-essential-contacts/compare/v1.1.2...v1.2.0) (2022-07-14)
 
 
