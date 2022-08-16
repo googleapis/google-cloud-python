@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.7.1](https://github.com/googleapis/python-data-qna/compare/v0.7.0...v0.7.1) (2022-08-11)
+
+
+### Bug Fixes
+
+* **deps:** allow protobuf < 5.0.0 ([#167](https://github.com/googleapis/python-data-qna/issues/167)) ([46b9f57](https://github.com/googleapis/python-data-qna/commit/46b9f576649fd44a77b41cc43db038e15babcd9c))
+* **deps:** require proto-plus >= 1.22.0 ([46b9f57](https://github.com/googleapis/python-data-qna/commit/46b9f576649fd44a77b41cc43db038e15babcd9c))
+
 ## [0.7.0](https://github.com/googleapis/python-data-qna/compare/v0.6.3...v0.7.0) (2022-07-15)
 
 
