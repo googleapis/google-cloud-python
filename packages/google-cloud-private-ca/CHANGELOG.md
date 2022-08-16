@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.4.1](https://github.com/googleapis/python-security-private-ca/compare/v1.4.0...v1.4.1) (2022-08-11)
+
+
+### Bug Fixes
+
+* **deps:** allow protobuf < 5.0.0 ([#278](https://github.com/googleapis/python-security-private-ca/issues/278)) ([2d5cd50](https://github.com/googleapis/python-security-private-ca/commit/2d5cd507c1d438958622ed9d4b7c80f99d2bc6a1))
+* **deps:** require proto-plus >= 1.22.0 ([2d5cd50](https://github.com/googleapis/python-security-private-ca/commit/2d5cd507c1d438958622ed9d4b7c80f99d2bc6a1))
+
 ## [1.4.0](https://github.com/googleapis/python-security-private-ca/compare/v1.3.2...v1.4.0) (2022-07-18)
 
 
