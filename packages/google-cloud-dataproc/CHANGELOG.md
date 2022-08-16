@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-dataproc/#history
 
+## [5.0.1](https://github.com/googleapis/python-dataproc/compare/v5.0.0...v5.0.1) (2022-08-11)
+
+
+### Bug Fixes
+
+* **deps:** allow protobuf < 5.0.0 ([#456](https://github.com/googleapis/python-dataproc/issues/456)) ([a446937](https://github.com/googleapis/python-dataproc/commit/a44693711df3218a083f060e00cad3801537dd9b))
+* **deps:** require proto-plus >= 1.22.0 ([a446937](https://github.com/googleapis/python-dataproc/commit/a44693711df3218a083f060e00cad3801537dd9b))
+
 ## [5.0.0](https://github.com/googleapis/python-dataproc/compare/v4.0.3...v5.0.0) (2022-07-19)
 
 
