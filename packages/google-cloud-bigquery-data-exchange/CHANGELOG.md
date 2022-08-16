@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.2.1](https://github.com/googleapis/python-bigquery-data-exchange/compare/v0.2.0...v0.2.1) (2022-08-11)
+
+
+### Bug Fixes
+
+* **deps:** allow protobuf < 5.0.0 ([#25](https://github.com/googleapis/python-bigquery-data-exchange/issues/25)) ([c3f6f45](https://github.com/googleapis/python-bigquery-data-exchange/commit/c3f6f45f30349066f98d81a00382f392b8d06db2))
+* **deps:** require proto-plus >= 1.22.0 ([c3f6f45](https://github.com/googleapis/python-bigquery-data-exchange/commit/c3f6f45f30349066f98d81a00382f392b8d06db2))
+
 ## [0.2.0](https://github.com/googleapis/python-bigquery-data-exchange/compare/v0.1.1...v0.2.0) (2022-07-20)
 
 
