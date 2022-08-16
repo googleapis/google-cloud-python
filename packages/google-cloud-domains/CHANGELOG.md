@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.2.1](https://github.com/googleapis/python-domains/compare/v1.2.0...v1.2.1) (2022-08-11)
+
+
+### Bug Fixes
+
+* **deps:** allow protobuf < 5.0.0 ([#162](https://github.com/googleapis/python-domains/issues/162)) ([38cb2a7](https://github.com/googleapis/python-domains/commit/38cb2a77e5e230daad9dd93619bf8be02859bc39))
+* **deps:** require proto-plus >= 1.22.0 ([38cb2a7](https://github.com/googleapis/python-domains/commit/38cb2a77e5e230daad9dd93619bf8be02859bc39))
+
 ## [1.2.0](https://github.com/googleapis/python-domains/compare/v1.1.3...v1.2.0) (2022-07-14)
 
 
