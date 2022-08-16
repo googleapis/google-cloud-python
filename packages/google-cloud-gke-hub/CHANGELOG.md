@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.5.1](https://github.com/googleapis/python-gke-hub/compare/v1.5.0...v1.5.1) (2022-08-16)
+
+
+### Bug Fixes
+
+* **deps:** allow protobuf < 5.0.0 ([#190](https://github.com/googleapis/python-gke-hub/issues/190)) ([928bf9a](https://github.com/googleapis/python-gke-hub/commit/928bf9af1c24881ff0810b47833e2e166fecf00a))
+* **deps:** require proto-plus >= 1.22.0 ([928bf9a](https://github.com/googleapis/python-gke-hub/commit/928bf9af1c24881ff0810b47833e2e166fecf00a))
+
 ## [1.5.0](https://github.com/googleapis/python-gke-hub/compare/v1.4.3...v1.5.0) (2022-07-14)
 
 
