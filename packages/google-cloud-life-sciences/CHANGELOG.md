@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.6.2](https://github.com/googleapis/python-life-sciences/compare/v0.6.1...v0.6.2) (2022-08-11)
+
+
+### Bug Fixes
+
+* **deps:** allow protobuf < 5.0.0 ([#122](https://github.com/googleapis/python-life-sciences/issues/122)) ([cc9189f](https://github.com/googleapis/python-life-sciences/commit/cc9189fe102e35cdc47d2a8cf7786e7a78f10eab))
+* **deps:** require proto-plus >= 1.22.0 ([cc9189f](https://github.com/googleapis/python-life-sciences/commit/cc9189fe102e35cdc47d2a8cf7786e7a78f10eab))
+
 ## [0.6.1](https://github.com/googleapis/python-life-sciences/compare/v0.6.0...v0.6.1) (2022-07-13)
 
 
