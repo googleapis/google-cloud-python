@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.3.1](https://github.com/googleapis/python-deploy/compare/v1.3.0...v1.3.1) (2022-08-11)
+
+
+### Bug Fixes
+
+* **deps:** allow protobuf < 5.0.0 ([#118](https://github.com/googleapis/python-deploy/issues/118)) ([8afd6d3](https://github.com/googleapis/python-deploy/commit/8afd6d3ba9171ab957547245294305dd78101767))
+* **deps:** require proto-plus >= 1.22.0 ([8afd6d3](https://github.com/googleapis/python-deploy/commit/8afd6d3ba9171ab957547245294305dd78101767))
+
 ## [1.3.0](https://github.com/googleapis/python-deploy/compare/v1.2.1...v1.3.0) (2022-07-14)
 
 
