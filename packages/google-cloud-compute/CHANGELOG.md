@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.5.1](https://github.com/googleapis/python-compute/compare/v1.5.0...v1.5.1) (2022-08-12)
+
+
+### Bug Fixes
+
+* **deps:** allow protobuf < 5.0.0 ([#320](https://github.com/googleapis/python-compute/issues/320)) ([e4edea7](https://github.com/googleapis/python-compute/commit/e4edea7267b8d64a586cca6b2586c1d41dc73508))
+
+
+### Documentation
+
+* **samples:** Various ways of creating a new disk ([#308](https://github.com/googleapis/python-compute/issues/308)) ([d7b7825](https://github.com/googleapis/python-compute/commit/d7b782526b8aee1e9a7108a09d440bbee25c0322))
+
 ## [1.5.0](https://github.com/googleapis/python-compute/compare/v1.4.0...v1.5.0) (2022-08-04)
 
 
