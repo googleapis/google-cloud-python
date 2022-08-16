@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.5.2](https://github.com/googleapis/python-iap/compare/v1.5.1...v1.5.2) (2022-08-11)
+
+
+### Bug Fixes
+
+* **deps:** allow protobuf < 5.0.0 ([#120](https://github.com/googleapis/python-iap/issues/120)) ([e5e67d0](https://github.com/googleapis/python-iap/commit/e5e67d0df1f26b1a786e23b26028de1406458b3f))
+* **deps:** require proto-plus >= 1.22.0 ([e5e67d0](https://github.com/googleapis/python-iap/commit/e5e67d0df1f26b1a786e23b26028de1406458b3f))
+
 ## [1.5.1](https://github.com/googleapis/python-iap/compare/v1.5.0...v1.5.1) (2022-07-13)
 
 
