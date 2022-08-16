@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/dialogflow/#history
 
+## [2.15.2](https://github.com/googleapis/python-dialogflow/compare/v2.15.1...v2.15.2) (2022-08-15)
+
+
+### Bug Fixes
+
+* **deps:** allow protobuf < 5.0.0 ([#554](https://github.com/googleapis/python-dialogflow/issues/554)) ([45f74b4](https://github.com/googleapis/python-dialogflow/commit/45f74b4e720bd8d1d601e3630f6118ca8079a93d))
+* **deps:** require proto-plus >= 1.22.0 ([45f74b4](https://github.com/googleapis/python-dialogflow/commit/45f74b4e720bd8d1d601e3630f6118ca8079a93d))
+
 ## [2.15.1](https://github.com/googleapis/python-dialogflow/compare/v2.15.0...v2.15.1) (2022-08-09)
 
 
