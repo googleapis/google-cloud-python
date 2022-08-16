@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.4.1](https://github.com/googleapis/python-assured-workloads/compare/v1.4.0...v1.4.1) (2022-08-15)
+
+
+### Bug Fixes
+
+* **deps:** allow protobuf < 5.0.0 ([#186](https://github.com/googleapis/python-assured-workloads/issues/186)) ([ae92f13](https://github.com/googleapis/python-assured-workloads/commit/ae92f13919d7ca2d9415e899a78f18914403a1e2))
+* **deps:** require proto-plus >= 1.22.0 ([ae92f13](https://github.com/googleapis/python-assured-workloads/commit/ae92f13919d7ca2d9415e899a78f18914403a1e2))
+
 ## [1.4.0](https://github.com/googleapis/python-assured-workloads/compare/v1.3.0...v1.4.0) (2022-07-19)
 
 
