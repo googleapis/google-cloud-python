@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.4.1](https://github.com/googleapis/python-apigee-connect/compare/v1.4.0...v1.4.1) (2022-08-11)
+
+
+### Bug Fixes
+
+* **deps:** allow protobuf < 5.0.0 ([#133](https://github.com/googleapis/python-apigee-connect/issues/133)) ([25c184a](https://github.com/googleapis/python-apigee-connect/commit/25c184aa094ac77ee92bf87d6c4160d2fd20b4a8))
+* **deps:** require proto-plus >= 1.22.0 ([25c184a](https://github.com/googleapis/python-apigee-connect/commit/25c184aa094ac77ee92bf87d6c4160d2fd20b4a8))
+
 ## [1.4.0](https://github.com/googleapis/python-apigee-connect/compare/v1.3.2...v1.4.0) (2022-07-17)
 
 
