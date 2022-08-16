@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.9.2](https://github.com/googleapis/python-media-translation/compare/v0.9.1...v0.9.2) (2022-08-11)
+
+
+### Bug Fixes
+
+* **deps:** allow protobuf < 5.0.0 ([#211](https://github.com/googleapis/python-media-translation/issues/211)) ([5f455e4](https://github.com/googleapis/python-media-translation/commit/5f455e42faffddb714471f79753887cd88f2701c))
+* **deps:** require proto-plus >= 1.22.0 ([5f455e4](https://github.com/googleapis/python-media-translation/commit/5f455e42faffddb714471f79753887cd88f2701c))
+
 ## [0.9.1](https://github.com/googleapis/python-media-translation/compare/v0.9.0...v0.9.1) (2022-07-13)
 
 
