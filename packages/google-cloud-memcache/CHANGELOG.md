@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.4.2](https://github.com/googleapis/python-memcache/compare/v1.4.1...v1.4.2) (2022-08-11)
+
+
+### Bug Fixes
+
+* **deps:** allow protobuf < 5.0.0 ([#207](https://github.com/googleapis/python-memcache/issues/207)) ([8a21a06](https://github.com/googleapis/python-memcache/commit/8a21a069eae8ad4e3b0f33012d1f50cf547baafd))
+* **deps:** require proto-plus >= 1.22.0 ([8a21a06](https://github.com/googleapis/python-memcache/commit/8a21a069eae8ad4e3b0f33012d1f50cf547baafd))
+
 ## [1.4.1](https://github.com/googleapis/python-memcache/compare/v1.4.0...v1.4.1) (2022-07-13)
 
 
