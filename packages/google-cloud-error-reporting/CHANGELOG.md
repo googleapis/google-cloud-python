@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-error-reporting/#history
 
+## [1.6.1](https://github.com/googleapis/python-error-reporting/compare/v1.6.0...v1.6.1) (2022-08-12)
+
+
+### Bug Fixes
+
+* **deps:** allow protobuf < 5.0.0 ([#366](https://github.com/googleapis/python-error-reporting/issues/366)) ([9535a28](https://github.com/googleapis/python-error-reporting/commit/9535a289a458badf7406688d3e9a77f0e580d0a8))
+* **deps:** require proto-plus >= 1.22.0 ([9535a28](https://github.com/googleapis/python-error-reporting/commit/9535a289a458badf7406688d3e9a77f0e580d0a8))
+
 ## [1.6.0](https://github.com/googleapis/python-error-reporting/compare/v1.5.3...v1.6.0) (2022-07-14)
 
 
