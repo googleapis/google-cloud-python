@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-talent/#history
 
+## [2.7.1](https://github.com/googleapis/python-talent/compare/v2.7.0...v2.7.1) (2022-08-11)
+
+
+### Bug Fixes
+
+* **deps:** allow protobuf < 5.0.0 ([#273](https://github.com/googleapis/python-talent/issues/273)) ([8763dab](https://github.com/googleapis/python-talent/commit/8763dabec94573b1c11c699582f0c7f76fee8abd))
+* **deps:** require proto-plus >= 1.22.0 ([8763dab](https://github.com/googleapis/python-talent/commit/8763dabec94573b1c11c699582f0c7f76fee8abd))
+
 ## [2.7.0](https://github.com/googleapis/python-talent/compare/v2.6.0...v2.7.0) (2022-07-17)
 
 
