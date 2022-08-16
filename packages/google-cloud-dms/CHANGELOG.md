@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.4.1](https://github.com/googleapis/python-dms/compare/v1.4.0...v1.4.1) (2022-08-11)
+
+
+### Bug Fixes
+
+* **deps:** allow protobuf < 5.0.0 ([#138](https://github.com/googleapis/python-dms/issues/138)) ([38c3499](https://github.com/googleapis/python-dms/commit/38c34995c1f34e1bf44791f462cca975fd5fddb4))
+* **deps:** require proto-plus >= 1.22.0 ([38c3499](https://github.com/googleapis/python-dms/commit/38c34995c1f34e1bf44791f462cca975fd5fddb4))
+
 ## [1.4.0](https://github.com/googleapis/python-dms/compare/v1.3.2...v1.4.0) (2022-07-14)
 
 
