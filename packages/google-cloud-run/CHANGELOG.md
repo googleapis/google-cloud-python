@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.3.0](https://github.com/googleapis/python-run/compare/v0.2.1...v0.3.0) (2022-08-15)
+
+
+### Features
+
+* add audience parameter ([0d02163](https://github.com/googleapis/python-run/commit/0d02163a93eade5b9218d5330ece1723e375a3ff))
+
+
+### Bug Fixes
+
+* **deps:** allow protobuf < 5.0.0 ([#33](https://github.com/googleapis/python-run/issues/33)) ([55bf980](https://github.com/googleapis/python-run/commit/55bf98023e2a6855a394e487db11b6aa7dc57c17))
+* **deps:** require google-api-core>=1.32.0,>=2.8.0 ([0d02163](https://github.com/googleapis/python-run/commit/0d02163a93eade5b9218d5330ece1723e375a3ff))
+* **deps:** require proto-plus >= 1.22.0 ([55bf980](https://github.com/googleapis/python-run/commit/55bf98023e2a6855a394e487db11b6aa7dc57c17))
+* Updates pre-release Cloud Run v2 Preview client libraries to work with the latest API revision ([0d02163](https://github.com/googleapis/python-run/commit/0d02163a93eade5b9218d5330ece1723e375a3ff))
+
 ## [0.2.1](https://github.com/googleapis/python-run/compare/v0.2.0...v0.2.1) (2022-07-26)
 
 
