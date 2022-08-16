@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.4.2](https://github.com/googleapis/python-network-connectivity/compare/v1.4.1...v1.4.2) (2022-08-11)
+
+
+### Bug Fixes
+
+* **deps:** allow protobuf < 5.0.0 ([#197](https://github.com/googleapis/python-network-connectivity/issues/197)) ([87f279d](https://github.com/googleapis/python-network-connectivity/commit/87f279d794852626fe283472644f2d4a37ce12de))
+* **deps:** require proto-plus >= 1.22.0 ([87f279d](https://github.com/googleapis/python-network-connectivity/commit/87f279d794852626fe283472644f2d4a37ce12de))
+
 ## [1.4.1](https://github.com/googleapis/python-network-connectivity/compare/v1.4.0...v1.4.1) (2022-07-13)
 
 
