@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.4](https://github.com/googleapis/python-audit-log/compare/v0.2.3...v0.2.4) (2022-08-11)
+
+
+### Bug Fixes
+
+* **deps:** allow protobuf < 5.0.0 ([#67](https://github.com/googleapis/python-audit-log/issues/67)) ([e337e78](https://github.com/googleapis/python-audit-log/commit/e337e781951dea0fbbb6ef9c4ff9896fa3fce86a))
+
 ## [0.2.3](https://github.com/googleapis/python-audit-log/compare/v0.2.2...v0.2.3) (2022-07-16)
 
 
