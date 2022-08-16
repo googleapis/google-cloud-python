@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.9.1](https://github.com/googleapis/python-containeranalysis/compare/v2.9.0...v2.9.1) (2022-08-12)
+
+
+### Bug Fixes
+
+* **deps:** allow protobuf < 5.0.0 ([#310](https://github.com/googleapis/python-containeranalysis/issues/310)) ([6f2622f](https://github.com/googleapis/python-containeranalysis/commit/6f2622faff8b7b8b3a62936ec43641058084d0e5))
+* **deps:** require proto-plus >= 1.22.0 ([6f2622f](https://github.com/googleapis/python-containeranalysis/commit/6f2622faff8b7b8b3a62936ec43641058084d0e5))
+
 ## [2.9.0](https://github.com/googleapis/python-containeranalysis/compare/v2.8.1...v2.9.0) (2022-07-16)
 
 
