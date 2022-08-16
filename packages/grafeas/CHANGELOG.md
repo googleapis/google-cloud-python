@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/grafeas/#history
 
+## [1.5.1](https://github.com/googleapis/python-grafeas/compare/v1.5.0...v1.5.1) (2022-08-11)
+
+
+### Bug Fixes
+
+* **deps:** allow protobuf < 5.0.0 ([#198](https://github.com/googleapis/python-grafeas/issues/198)) ([e66561a](https://github.com/googleapis/python-grafeas/commit/e66561a9ed210a0564b5027a1decb7f36413e447))
+* **deps:** require proto-plus >= 1.22.0 ([e66561a](https://github.com/googleapis/python-grafeas/commit/e66561a9ed210a0564b5027a1decb7f36413e447))
+
 ## [1.5.0](https://github.com/googleapis/python-grafeas/compare/v1.4.5...v1.5.0) (2022-07-14)
 
 
