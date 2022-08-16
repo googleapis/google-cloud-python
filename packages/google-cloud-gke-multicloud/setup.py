@@ -21,7 +21,7 @@ import setuptools
 
 name = "google-cloud-gke-multicloud"
 description = "Anthos Multicloud API client library"
-version = "0.1.0"
+version = "0.1.1"
 release_status = "Development Status :: 4 - Beta"
 dependencies = [
     "google-api-core[grpc] >= 2.8.0, <3.0.0dev",
