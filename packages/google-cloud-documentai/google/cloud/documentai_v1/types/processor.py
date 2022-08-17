@@ -1,0 +1,207 @@
+# -*- coding: utf-8 -*-
+# Copyright 2022 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+from google.protobuf import timestamp_pb2  # type: ignore
+import proto  # type: ignore
+
+__protobuf__ = proto.module(
+    package="google.cloud.documentai.v1",
+    manifest={
+        "ProcessorVersion",
+        "Processor",
+    },
+)
+
+
+class ProcessorVersion(proto.Message):
+    r"""A processor version is an implementation of a processor. Each
+    processor can have multiple versions, pre-trained by Google
+    internally or up-trained by the customer. At a time, a processor
+    can only have one default version version. So the processor's
+    behavior (when processing documents) is defined by a default
+    version
+
+    Attributes:
+        name (str):
+            The resource name of the processor version. Format:
+            ``projects/{project}/locations/{location}/processors/{processor}/processorVersions/{processor_version}``
+        display_name (str):
+            The display name of the processor version.
+        state (google.cloud.documentai_v1.types.ProcessorVersion.State):
+            The state of the processor version.
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
+            The time the processor version was created.
+        kms_key_name (str):
+            The KMS key name used for encryption.
+        kms_key_version_name (str):
+            The KMS key version with which data is
+            encrypted.
+        google_managed (bool):
+            Denotes that this ProcessorVersion is managed
+            by google.
+        deprecation_info (google.cloud.documentai_v1.types.ProcessorVersion.DeprecationInfo):
+            If set, information about the eventual
+            deprecation of this version.
+    """
+
+    class State(proto.Enum):
+        r"""The possible states of the processor version."""
+        STATE_UNSPECIFIED = 0
+        DEPLOYED = 1
+        DEPLOYING = 2
+        UNDEPLOYED = 3
+        UNDEPLOYING = 4
+        CREATING = 5
+        DELETING = 6
+        FAILED = 7
+
+    class DeprecationInfo(proto.Message):
+        r"""Information about the upcoming deprecation of this processor
+        version.
+
+        Attributes:
+            deprecation_time (google.protobuf.timestamp_pb2.Timestamp):
+                The time at which this processor version will
+                be deprecated.
+            replacement_processor_version (str):
+                If set, the processor version that will be
+                used as a replacement.
+        """
+
+        deprecation_time = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            message=timestamp_pb2.Timestamp,
+        )
+        replacement_processor_version = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    display_name = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    state = proto.Field(
+        proto.ENUM,
+        number=6,
+        enum=State,
+    )
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message=timestamp_pb2.Timestamp,
+    )
+    kms_key_name = proto.Field(
+        proto.STRING,
+        number=9,
+    )
+    kms_key_version_name = proto.Field(
+        proto.STRING,
+        number=10,
+    )
+    google_managed = proto.Field(
+        proto.BOOL,
+        number=11,
+    )
+    deprecation_info = proto.Field(
+        proto.MESSAGE,
+        number=13,
+        message=DeprecationInfo,
+    )
+
+
+class Processor(proto.Message):
+    r"""The first-class citizen for Document AI. Each processor
+    defines how to extract structural information from a document.
+
+    Attributes:
+        name (str):
+            Output only. Immutable. The resource name of the processor.
+            Format:
+            ``projects/{project}/locations/{location}/processors/{processor}``
+        type_ (str):
+            The processor type, e.g., OCR_PROCESSOR, INVOICE_PROCESSOR,
+            etc. To get a list of processors types, see
+            [FetchProcessorTypes][google.cloud.documentai.v1.DocumentProcessorService.FetchProcessorTypes].
+        display_name (str):
+            The display name of the processor.
+        state (google.cloud.documentai_v1.types.Processor.State):
+            Output only. The state of the processor.
+        default_processor_version (str):
+            The default processor version.
+        process_endpoint (str):
+            Output only. Immutable. The http endpoint
+            that can be called to invoke processing.
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
+            The time the processor was created.
+        kms_key_name (str):
+            The KMS key used for encryption/decryption in
+            CMEK scenarios. See
+            https://cloud.google.com/security-key-management.
+    """
+
+    class State(proto.Enum):
+        r"""The possible states of the processor."""
+        STATE_UNSPECIFIED = 0
+        ENABLED = 1
+        DISABLED = 2
+        ENABLING = 3
+        DISABLING = 4
+        CREATING = 5
+        FAILED = 6
+        DELETING = 7
+
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    type_ = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    display_name = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    state = proto.Field(
+        proto.ENUM,
+        number=4,
+        enum=State,
+    )
+    default_processor_version = proto.Field(
+        proto.STRING,
+        number=9,
+    )
+    process_endpoint = proto.Field(
+        proto.STRING,
+        number=6,
+    )
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message=timestamp_pb2.Timestamp,
+    )
+    kms_key_name = proto.Field(
+        proto.STRING,
+        number=8,
+    )
+
+
+__all__ = tuple(sorted(__protobuf__.manifest))

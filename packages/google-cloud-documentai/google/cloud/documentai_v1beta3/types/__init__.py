@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from .barcode import Barcode
 from .document import Document
 from .document_io import (
     BatchDocumentsInputConfig,
@@ -29,6 +30,11 @@ from .document_processor_service import (
     CreateProcessorRequest,
     DeleteProcessorMetadata,
     DeleteProcessorRequest,
+    DeleteProcessorVersionMetadata,
+    DeleteProcessorVersionRequest,
+    DeployProcessorVersionMetadata,
+    DeployProcessorVersionRequest,
+    DeployProcessorVersionResponse,
     DisableProcessorMetadata,
     DisableProcessorRequest,
     DisableProcessorResponse,
@@ -37,21 +43,35 @@ from .document_processor_service import (
     EnableProcessorResponse,
     FetchProcessorTypesRequest,
     FetchProcessorTypesResponse,
+    GetProcessorRequest,
+    GetProcessorVersionRequest,
     HumanReviewStatus,
     ListProcessorsRequest,
     ListProcessorsResponse,
+    ListProcessorTypesRequest,
+    ListProcessorTypesResponse,
+    ListProcessorVersionsRequest,
+    ListProcessorVersionsResponse,
     ProcessRequest,
     ProcessResponse,
     ReviewDocumentOperationMetadata,
     ReviewDocumentRequest,
     ReviewDocumentResponse,
+    SetDefaultProcessorVersionMetadata,
+    SetDefaultProcessorVersionRequest,
+    SetDefaultProcessorVersionResponse,
+    UndeployProcessorVersionMetadata,
+    UndeployProcessorVersionRequest,
+    UndeployProcessorVersionResponse,
 )
+from .document_schema import DocumentSchema
 from .geometry import BoundingPoly, NormalizedVertex, Vertex
 from .operation_metadata import CommonOperationMetadata
-from .processor import Processor
+from .processor import Processor, ProcessorVersion
 from .processor_type import ProcessorType
 
 __all__ = (
+    "Barcode",
     "Document",
     "BatchDocumentsInputConfig",
     "DocumentOutputConfig",
@@ -65,6 +85,11 @@ __all__ = (
     "CreateProcessorRequest",
     "DeleteProcessorMetadata",
     "DeleteProcessorRequest",
+    "DeleteProcessorVersionMetadata",
+    "DeleteProcessorVersionRequest",
+    "DeployProcessorVersionMetadata",
+    "DeployProcessorVersionRequest",
+    "DeployProcessorVersionResponse",
     "DisableProcessorMetadata",
     "DisableProcessorRequest",
     "DisableProcessorResponse",
@@ -73,18 +98,32 @@ __all__ = (
     "EnableProcessorResponse",
     "FetchProcessorTypesRequest",
     "FetchProcessorTypesResponse",
+    "GetProcessorRequest",
+    "GetProcessorVersionRequest",
     "HumanReviewStatus",
     "ListProcessorsRequest",
     "ListProcessorsResponse",
+    "ListProcessorTypesRequest",
+    "ListProcessorTypesResponse",
+    "ListProcessorVersionsRequest",
+    "ListProcessorVersionsResponse",
     "ProcessRequest",
     "ProcessResponse",
     "ReviewDocumentOperationMetadata",
     "ReviewDocumentRequest",
     "ReviewDocumentResponse",
+    "SetDefaultProcessorVersionMetadata",
+    "SetDefaultProcessorVersionRequest",
+    "SetDefaultProcessorVersionResponse",
+    "UndeployProcessorVersionMetadata",
+    "UndeployProcessorVersionRequest",
+    "UndeployProcessorVersionResponse",
+    "DocumentSchema",
     "BoundingPoly",
     "NormalizedVertex",
     "Vertex",
     "CommonOperationMetadata",
     "Processor",
+    "ProcessorVersion",
     "ProcessorType",
 )

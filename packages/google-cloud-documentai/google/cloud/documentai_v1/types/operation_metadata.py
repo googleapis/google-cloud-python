@@ -33,6 +33,8 @@ class CommonOperationMetadata(proto.Message):
         state_message (str):
             A message providing more details about the
             current state of processing.
+        resource (str):
+            A related resource to this operation.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             The creation time of the operation.
         update_time (google.protobuf.timestamp_pb2.Timestamp):
@@ -56,6 +58,10 @@ class CommonOperationMetadata(proto.Message):
     state_message = proto.Field(
         proto.STRING,
         number=2,
+    )
+    resource = proto.Field(
+        proto.STRING,
+        number=5,
     )
     create_time = proto.Field(
         proto.MESSAGE,

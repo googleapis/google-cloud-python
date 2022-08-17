@@ -19,11 +19,13 @@ import warnings
 from google.api_core import gapic_v1, grpc_helpers_async, operations_v1
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
+from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
 
 from google.cloud.documentai_v1beta3.types import document_processor_service
+from google.cloud.documentai_v1beta3.types import processor
 from google.cloud.documentai_v1beta3.types import processor as gcd_processor
 
 from .base import DEFAULT_CLIENT_INFO, DocumentProcessorServiceTransport
@@ -322,7 +324,8 @@ class DocumentProcessorServiceGrpcAsyncIOTransport(DocumentProcessorServiceTrans
     ]:
         r"""Return a callable for the fetch processor types method over gRPC.
 
-        Fetches processor types.
+        Fetches processor types. Note that we do not use
+        ListProcessorTypes here because it is not paginated.
 
         Returns:
             Callable[[~.FetchProcessorTypesRequest],
@@ -341,6 +344,35 @@ class DocumentProcessorServiceGrpcAsyncIOTransport(DocumentProcessorServiceTrans
                 response_deserializer=document_processor_service.FetchProcessorTypesResponse.deserialize,
             )
         return self._stubs["fetch_processor_types"]
+
+    @property
+    def list_processor_types(
+        self,
+    ) -> Callable[
+        [document_processor_service.ListProcessorTypesRequest],
+        Awaitable[document_processor_service.ListProcessorTypesResponse],
+    ]:
+        r"""Return a callable for the list processor types method over gRPC.
+
+        Lists the processor types that exist.
+
+        Returns:
+            Callable[[~.ListProcessorTypesRequest],
+                    Awaitable[~.ListProcessorTypesResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_processor_types" not in self._stubs:
+            self._stubs["list_processor_types"] = self.grpc_channel.unary_unary(
+                "/google.cloud.documentai.v1beta3.DocumentProcessorService/ListProcessorTypes",
+                request_serializer=document_processor_service.ListProcessorTypesRequest.serialize,
+                response_deserializer=document_processor_service.ListProcessorTypesResponse.deserialize,
+            )
+        return self._stubs["list_processor_types"]
 
     @property
     def list_processors(
@@ -370,6 +402,180 @@ class DocumentProcessorServiceGrpcAsyncIOTransport(DocumentProcessorServiceTrans
                 response_deserializer=document_processor_service.ListProcessorsResponse.deserialize,
             )
         return self._stubs["list_processors"]
+
+    @property
+    def get_processor(
+        self,
+    ) -> Callable[
+        [document_processor_service.GetProcessorRequest], Awaitable[processor.Processor]
+    ]:
+        r"""Return a callable for the get processor method over gRPC.
+
+        Gets a processor detail.
+
+        Returns:
+            Callable[[~.GetProcessorRequest],
+                    Awaitable[~.Processor]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_processor" not in self._stubs:
+            self._stubs["get_processor"] = self.grpc_channel.unary_unary(
+                "/google.cloud.documentai.v1beta3.DocumentProcessorService/GetProcessor",
+                request_serializer=document_processor_service.GetProcessorRequest.serialize,
+                response_deserializer=processor.Processor.deserialize,
+            )
+        return self._stubs["get_processor"]
+
+    @property
+    def get_processor_version(
+        self,
+    ) -> Callable[
+        [document_processor_service.GetProcessorVersionRequest],
+        Awaitable[processor.ProcessorVersion],
+    ]:
+        r"""Return a callable for the get processor version method over gRPC.
+
+        Gets a processor version detail.
+
+        Returns:
+            Callable[[~.GetProcessorVersionRequest],
+                    Awaitable[~.ProcessorVersion]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_processor_version" not in self._stubs:
+            self._stubs["get_processor_version"] = self.grpc_channel.unary_unary(
+                "/google.cloud.documentai.v1beta3.DocumentProcessorService/GetProcessorVersion",
+                request_serializer=document_processor_service.GetProcessorVersionRequest.serialize,
+                response_deserializer=processor.ProcessorVersion.deserialize,
+            )
+        return self._stubs["get_processor_version"]
+
+    @property
+    def list_processor_versions(
+        self,
+    ) -> Callable[
+        [document_processor_service.ListProcessorVersionsRequest],
+        Awaitable[document_processor_service.ListProcessorVersionsResponse],
+    ]:
+        r"""Return a callable for the list processor versions method over gRPC.
+
+        Lists all versions of a processor.
+
+        Returns:
+            Callable[[~.ListProcessorVersionsRequest],
+                    Awaitable[~.ListProcessorVersionsResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_processor_versions" not in self._stubs:
+            self._stubs["list_processor_versions"] = self.grpc_channel.unary_unary(
+                "/google.cloud.documentai.v1beta3.DocumentProcessorService/ListProcessorVersions",
+                request_serializer=document_processor_service.ListProcessorVersionsRequest.serialize,
+                response_deserializer=document_processor_service.ListProcessorVersionsResponse.deserialize,
+            )
+        return self._stubs["list_processor_versions"]
+
+    @property
+    def delete_processor_version(
+        self,
+    ) -> Callable[
+        [document_processor_service.DeleteProcessorVersionRequest],
+        Awaitable[operations_pb2.Operation],
+    ]:
+        r"""Return a callable for the delete processor version method over gRPC.
+
+        Deletes the processor version, all artifacts under
+        the processor version will be deleted.
+
+        Returns:
+            Callable[[~.DeleteProcessorVersionRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_processor_version" not in self._stubs:
+            self._stubs["delete_processor_version"] = self.grpc_channel.unary_unary(
+                "/google.cloud.documentai.v1beta3.DocumentProcessorService/DeleteProcessorVersion",
+                request_serializer=document_processor_service.DeleteProcessorVersionRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["delete_processor_version"]
+
+    @property
+    def deploy_processor_version(
+        self,
+    ) -> Callable[
+        [document_processor_service.DeployProcessorVersionRequest],
+        Awaitable[operations_pb2.Operation],
+    ]:
+        r"""Return a callable for the deploy processor version method over gRPC.
+
+        Deploys the processor version.
+
+        Returns:
+            Callable[[~.DeployProcessorVersionRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "deploy_processor_version" not in self._stubs:
+            self._stubs["deploy_processor_version"] = self.grpc_channel.unary_unary(
+                "/google.cloud.documentai.v1beta3.DocumentProcessorService/DeployProcessorVersion",
+                request_serializer=document_processor_service.DeployProcessorVersionRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["deploy_processor_version"]
+
+    @property
+    def undeploy_processor_version(
+        self,
+    ) -> Callable[
+        [document_processor_service.UndeployProcessorVersionRequest],
+        Awaitable[operations_pb2.Operation],
+    ]:
+        r"""Return a callable for the undeploy processor version method over gRPC.
+
+        Undeploys the processor version.
+
+        Returns:
+            Callable[[~.UndeployProcessorVersionRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "undeploy_processor_version" not in self._stubs:
+            self._stubs["undeploy_processor_version"] = self.grpc_channel.unary_unary(
+                "/google.cloud.documentai.v1beta3.DocumentProcessorService/UndeployProcessorVersion",
+                request_serializer=document_processor_service.UndeployProcessorVersionRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["undeploy_processor_version"]
 
     @property
     def create_processor(
@@ -492,6 +698,42 @@ class DocumentProcessorServiceGrpcAsyncIOTransport(DocumentProcessorServiceTrans
         return self._stubs["disable_processor"]
 
     @property
+    def set_default_processor_version(
+        self,
+    ) -> Callable[
+        [document_processor_service.SetDefaultProcessorVersionRequest],
+        Awaitable[operations_pb2.Operation],
+    ]:
+        r"""Return a callable for the set default processor version method over gRPC.
+
+        Set the default (active) version of a
+        [Processor][google.cloud.documentai.v1beta3.Processor] that will
+        be used in
+        [ProcessDocument][google.cloud.documentai.v1beta3.DocumentProcessorService.ProcessDocument]
+        and
+        [BatchProcessDocuments][google.cloud.documentai.v1beta3.DocumentProcessorService.BatchProcessDocuments].
+
+        Returns:
+            Callable[[~.SetDefaultProcessorVersionRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "set_default_processor_version" not in self._stubs:
+            self._stubs[
+                "set_default_processor_version"
+            ] = self.grpc_channel.unary_unary(
+                "/google.cloud.documentai.v1beta3.DocumentProcessorService/SetDefaultProcessorVersion",
+                request_serializer=document_processor_service.SetDefaultProcessorVersionRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["set_default_processor_version"]
+
+    @property
     def review_document(
         self,
     ) -> Callable[
@@ -523,6 +765,95 @@ class DocumentProcessorServiceGrpcAsyncIOTransport(DocumentProcessorServiceTrans
 
     def close(self):
         return self.grpc_channel.close()
+
+    @property
+    def cancel_operation(
+        self,
+    ) -> Callable[[operations_pb2.CancelOperationRequest], None]:
+        r"""Return a callable for the cancel_operation method over gRPC."""
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "cancel_operation" not in self._stubs:
+            self._stubs["cancel_operation"] = self.grpc_channel.unary_unary(
+                "/google.longrunning.Operations/CancelOperation",
+                request_serializer=operations_pb2.CancelOperationRequest.SerializeToString,
+                response_deserializer=None,
+            )
+        return self._stubs["cancel_operation"]
+
+    @property
+    def get_operation(
+        self,
+    ) -> Callable[[operations_pb2.GetOperationRequest], operations_pb2.Operation]:
+        r"""Return a callable for the get_operation method over gRPC."""
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_operation" not in self._stubs:
+            self._stubs["get_operation"] = self.grpc_channel.unary_unary(
+                "/google.longrunning.Operations/GetOperation",
+                request_serializer=operations_pb2.GetOperationRequest.SerializeToString,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["get_operation"]
+
+    @property
+    def list_operations(
+        self,
+    ) -> Callable[
+        [operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse
+    ]:
+        r"""Return a callable for the list_operations method over gRPC."""
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_operations" not in self._stubs:
+            self._stubs["list_operations"] = self.grpc_channel.unary_unary(
+                "/google.longrunning.Operations/ListOperations",
+                request_serializer=operations_pb2.ListOperationsRequest.SerializeToString,
+                response_deserializer=operations_pb2.ListOperationsResponse.FromString,
+            )
+        return self._stubs["list_operations"]
+
+    @property
+    def list_locations(
+        self,
+    ) -> Callable[
+        [locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse
+    ]:
+        r"""Return a callable for the list locations method over gRPC."""
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_locations" not in self._stubs:
+            self._stubs["list_locations"] = self.grpc_channel.unary_unary(
+                "/google.cloud.location.Locations/ListLocations",
+                request_serializer=locations_pb2.ListLocationsRequest.SerializeToString,
+                response_deserializer=locations_pb2.ListLocationsResponse.FromString,
+            )
+        return self._stubs["list_locations"]
+
+    @property
+    def get_location(
+        self,
+    ) -> Callable[[locations_pb2.GetLocationRequest], locations_pb2.Location]:
+        r"""Return a callable for the list locations method over gRPC."""
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_location" not in self._stubs:
+            self._stubs["get_location"] = self.grpc_channel.unary_unary(
+                "/google.cloud.location.Locations/GetLocation",
+                request_serializer=locations_pb2.GetLocationRequest.SerializeToString,
+                response_deserializer=locations_pb2.Location.FromString,
+            )
+        return self._stubs["get_location"]
 
 
 __all__ = ("DocumentProcessorServiceGrpcAsyncIOTransport",)

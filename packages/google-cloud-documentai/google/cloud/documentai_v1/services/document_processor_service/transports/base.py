@@ -22,11 +22,14 @@ from google.api_core import gapic_v1, operations_v1
 from google.api_core import retry as retries
 import google.auth  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
+from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 import pkg_resources
 
 from google.cloud.documentai_v1.types import document_processor_service
+from google.cloud.documentai_v1.types import processor
+from google.cloud.documentai_v1.types import processor as gcd_processor
 
 try:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
@@ -158,6 +161,76 @@ class DocumentProcessorServiceTransport(abc.ABC):
                 default_timeout=120.0,
                 client_info=client_info,
             ),
+            self.fetch_processor_types: gapic_v1.method.wrap_method(
+                self.fetch_processor_types,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_processor_types: gapic_v1.method.wrap_method(
+                self.list_processor_types,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_processors: gapic_v1.method.wrap_method(
+                self.list_processors,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_processor: gapic_v1.method.wrap_method(
+                self.get_processor,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_processor_version: gapic_v1.method.wrap_method(
+                self.get_processor_version,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_processor_versions: gapic_v1.method.wrap_method(
+                self.list_processor_versions,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_processor_version: gapic_v1.method.wrap_method(
+                self.delete_processor_version,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.deploy_processor_version: gapic_v1.method.wrap_method(
+                self.deploy_processor_version,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.undeploy_processor_version: gapic_v1.method.wrap_method(
+                self.undeploy_processor_version,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.create_processor: gapic_v1.method.wrap_method(
+                self.create_processor,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_processor: gapic_v1.method.wrap_method(
+                self.delete_processor,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.enable_processor: gapic_v1.method.wrap_method(
+                self.enable_processor,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.disable_processor: gapic_v1.method.wrap_method(
+                self.disable_processor,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.set_default_processor_version: gapic_v1.method.wrap_method(
+                self.set_default_processor_version,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.review_document: gapic_v1.method.wrap_method(
                 self.review_document,
                 default_retry=retries.Retry(
@@ -211,11 +284,197 @@ class DocumentProcessorServiceTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
+    def fetch_processor_types(
+        self,
+    ) -> Callable[
+        [document_processor_service.FetchProcessorTypesRequest],
+        Union[
+            document_processor_service.FetchProcessorTypesResponse,
+            Awaitable[document_processor_service.FetchProcessorTypesResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_processor_types(
+        self,
+    ) -> Callable[
+        [document_processor_service.ListProcessorTypesRequest],
+        Union[
+            document_processor_service.ListProcessorTypesResponse,
+            Awaitable[document_processor_service.ListProcessorTypesResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_processors(
+        self,
+    ) -> Callable[
+        [document_processor_service.ListProcessorsRequest],
+        Union[
+            document_processor_service.ListProcessorsResponse,
+            Awaitable[document_processor_service.ListProcessorsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_processor(
+        self,
+    ) -> Callable[
+        [document_processor_service.GetProcessorRequest],
+        Union[processor.Processor, Awaitable[processor.Processor]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_processor_version(
+        self,
+    ) -> Callable[
+        [document_processor_service.GetProcessorVersionRequest],
+        Union[processor.ProcessorVersion, Awaitable[processor.ProcessorVersion]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_processor_versions(
+        self,
+    ) -> Callable[
+        [document_processor_service.ListProcessorVersionsRequest],
+        Union[
+            document_processor_service.ListProcessorVersionsResponse,
+            Awaitable[document_processor_service.ListProcessorVersionsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_processor_version(
+        self,
+    ) -> Callable[
+        [document_processor_service.DeleteProcessorVersionRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def deploy_processor_version(
+        self,
+    ) -> Callable[
+        [document_processor_service.DeployProcessorVersionRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def undeploy_processor_version(
+        self,
+    ) -> Callable[
+        [document_processor_service.UndeployProcessorVersionRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_processor(
+        self,
+    ) -> Callable[
+        [document_processor_service.CreateProcessorRequest],
+        Union[gcd_processor.Processor, Awaitable[gcd_processor.Processor]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_processor(
+        self,
+    ) -> Callable[
+        [document_processor_service.DeleteProcessorRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def enable_processor(
+        self,
+    ) -> Callable[
+        [document_processor_service.EnableProcessorRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def disable_processor(
+        self,
+    ) -> Callable[
+        [document_processor_service.DisableProcessorRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def set_default_processor_version(
+        self,
+    ) -> Callable[
+        [document_processor_service.SetDefaultProcessorVersionRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
     def review_document(
         self,
     ) -> Callable[
         [document_processor_service.ReviewDocumentRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_operations(
+        self,
+    ) -> Callable[
+        [operations_pb2.ListOperationsRequest],
+        Union[
+            operations_pb2.ListOperationsResponse,
+            Awaitable[operations_pb2.ListOperationsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_operation(
+        self,
+    ) -> Callable[
+        [operations_pb2.GetOperationRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def cancel_operation(
+        self,
+    ) -> Callable[[operations_pb2.CancelOperationRequest], None,]:
+        raise NotImplementedError()
+
+    @property
+    def get_location(
+        self,
+    ) -> Callable[
+        [locations_pb2.GetLocationRequest],
+        Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_locations(
+        self,
+    ) -> Callable[
+        [locations_pb2.ListLocationsRequest],
+        Union[
+            locations_pb2.ListLocationsResponse,
+            Awaitable[locations_pb2.ListLocationsResponse],
+        ],
     ]:
         raise NotImplementedError()
 

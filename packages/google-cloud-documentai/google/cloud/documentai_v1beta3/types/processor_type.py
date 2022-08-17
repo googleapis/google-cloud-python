@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from google.api import launch_stage_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -29,19 +30,23 @@ class ProcessorType(proto.Message):
 
     Attributes:
         name (str):
-            The resource name of the processor type.
+            The resource name of the processor type. Format:
+            projects/{project}/processorTypes/{processor_type}
         type_ (str):
-            The type of the processor.
+            The type of the processor, e.g., "invoice_parsing".
         category (str):
-            The processor category.
+            The processor category, used by UI to group
+            processor types.
         available_locations (Sequence[google.cloud.documentai_v1beta3.types.ProcessorType.LocationInfo]):
             The locations in which this processor is
             available.
         allow_creation (bool):
             Whether the processor type allows creation.
-            If yes, user can create a processor of this
-            processor type. Otherwise, user needs to require
-            for whitelisting.
+            If true, users can create a processor of this
+            processor type. Otherwise, users need to request
+            access.
+        launch_stage (google.api.launch_stage_pb2.LaunchStage):
+            Launch stage of the processor type
     """
 
     class LocationInfo(proto.Message):
@@ -50,7 +55,7 @@ class ProcessorType(proto.Message):
 
         Attributes:
             location_id (str):
-                The location id.
+                The location id, currently must be one of [us, eu].
         """
 
         location_id = proto.Field(
@@ -78,6 +83,11 @@ class ProcessorType(proto.Message):
     allow_creation = proto.Field(
         proto.BOOL,
         number=6,
+    )
+    launch_stage = proto.Field(
+        proto.ENUM,
+        number=8,
+        enum=launch_stage_pb2.LaunchStage,
     )
 
 

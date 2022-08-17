@@ -22,6 +22,7 @@ from google.type import money_pb2  # type: ignore
 from google.type import postal_address_pb2  # type: ignore
 import proto  # type: ignore
 
+from google.cloud.documentai_v1beta3.types import barcode as gcd_barcode
 from google.cloud.documentai_v1beta3.types import geometry
 
 __protobuf__ = proto.module(
@@ -34,10 +35,9 @@ __protobuf__ = proto.module(
 
 class Document(proto.Message):
     r"""Document represents the canonical document resource in
-    Document Understanding AI.
-    It is an interchange format that provides insights into
-    documents and allows for collaboration between users and
-    Document Understanding AI to iterate and optimize for quality.
+    Document AI. It is an interchange format that provides insights
+    into documents and allows for collaboration between users and
+    Document AI to iterate and optimize for quality.
 
     This message has `oneof`_ fields (mutually exclusive fields).
     For each oneof, at most one member field can be set at the same time.
@@ -264,6 +264,8 @@ class Document(proto.Message):
             symbols (Sequence[google.cloud.documentai_v1beta3.types.Document.Page.Symbol]):
                 A list of visually detected symbols on the
                 page.
+            detected_barcodes (Sequence[google.cloud.documentai_v1beta3.types.Document.Page.DetectedBarcode]):
+                A list of detected barcodes.
             provenance (google.cloud.documentai_v1beta3.types.Document.Provenance):
                 The history of this page.
         """
@@ -739,6 +741,16 @@ class Document(proto.Message):
                     -  blank (this indicates the field_value is normal text)
                     -  "unfilled_checkbox"
                     -  "filled_checkbox".
+                corrected_key_text (str):
+                    Created for Labeling UI to export key text. If corrections
+                    were made to the text identified by the
+                    ``field_name.text_anchor``, this field will contain the
+                    correction.
+                corrected_value_text (str):
+                    Created for Labeling UI to export value text. If corrections
+                    were made to the text identified by the
+                    ``field_value.text_anchor``, this field will contain the
+                    correction.
                 provenance (google.cloud.documentai_v1beta3.types.Document.Provenance):
                     The history of this annotation.
             """
@@ -767,10 +779,42 @@ class Document(proto.Message):
                 proto.STRING,
                 number=5,
             )
+            corrected_key_text = proto.Field(
+                proto.STRING,
+                number=6,
+            )
+            corrected_value_text = proto.Field(
+                proto.STRING,
+                number=7,
+            )
             provenance = proto.Field(
                 proto.MESSAGE,
                 number=8,
                 message="Document.Provenance",
+            )
+
+        class DetectedBarcode(proto.Message):
+            r"""A detected barcode.
+
+            Attributes:
+                layout (google.cloud.documentai_v1beta3.types.Document.Page.Layout):
+                    [Layout][google.cloud.documentai.v1beta3.Document.Page.Layout]
+                    for
+                    [DetectedBarcode][google.cloud.documentai.v1beta3.Document.Page.DetectedBarcode].
+                barcode (google.cloud.documentai_v1beta3.types.Barcode):
+                    Detailed barcode information of the
+                    [DetectedBarcode][google.cloud.documentai.v1beta3.Document.Page.DetectedBarcode].
+            """
+
+            layout = proto.Field(
+                proto.MESSAGE,
+                number=1,
+                message="Document.Page.Layout",
+            )
+            barcode = proto.Field(
+                proto.MESSAGE,
+                number=2,
+                message=gcd_barcode.Barcode,
             )
 
         class DetectedLanguage(proto.Message):
@@ -863,6 +907,11 @@ class Document(proto.Message):
             number=12,
             message="Document.Page.Symbol",
         )
+        detected_barcodes = proto.RepeatedField(
+            proto.MESSAGE,
+            number=15,
+            message="Document.Page.DetectedBarcode",
+        )
         provenance = proto.Field(
             proto.MESSAGE,
             number=16,
@@ -952,6 +1001,14 @@ class Document(proto.Message):
                     binary values, or for checkboxes.
 
                     This field is a member of `oneof`_ ``structured_value``.
+                integer_value (int):
+                    Integer value.
+
+                    This field is a member of `oneof`_ ``structured_value``.
+                float_value (float):
+                    Float value.
+
+                    This field is a member of `oneof`_ ``structured_value``.
                 text (str):
                     Optional. An optional field to store a normalized string.
                     For some entity types, one of respective
@@ -997,6 +1054,16 @@ class Document(proto.Message):
             boolean_value = proto.Field(
                 proto.BOOL,
                 number=6,
+                oneof="structured_value",
+            )
+            integer_value = proto.Field(
+                proto.INT32,
+                number=7,
+                oneof="structured_value",
+            )
+            float_value = proto.Field(
+                proto.FLOAT,
+                number=8,
                 oneof="structured_value",
             )
             text = proto.Field(
@@ -1317,6 +1384,11 @@ class Document(proto.Message):
                 The revisions that this revision is based on. This can
                 include one or more parent (when documents are merged.) This
                 field represents the index into the ``revisions`` field.
+            parent_ids (Sequence[str]):
+                The revisions that this revision is based on. Must include
+                all the ids that have anything to do with this revision -
+                eg. there are ``provenance.parent.revision`` fields that
+                index into this field.
             create_time (google.protobuf.timestamp_pb2.Timestamp):
                 The time that the revision was created.
             human_review (google.cloud.documentai_v1beta3.types.Document.Revision.HumanReview):
@@ -1362,6 +1434,10 @@ class Document(proto.Message):
         parent = proto.RepeatedField(
             proto.INT32,
             number=2,
+        )
+        parent_ids = proto.RepeatedField(
+            proto.STRING,
+            number=7,
         )
         create_time = proto.Field(
             proto.MESSAGE,
