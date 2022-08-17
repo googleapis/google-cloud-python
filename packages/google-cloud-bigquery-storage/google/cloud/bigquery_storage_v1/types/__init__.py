@@ -21,6 +21,7 @@ from .arrow import (
 from .avro import (
     AvroRows,
     AvroSchema,
+    AvroSerializationOptions,
 )
 from .protobuf import (
     ProtoRows,
@@ -65,6 +66,7 @@ __all__ = (
     "ArrowSerializationOptions",
     "AvroRows",
     "AvroSchema",
+    "AvroSerializationOptions",
     "ProtoRows",
     "ProtoSchema",
     "AppendRowsRequest",

@@ -122,15 +122,48 @@ class ReadSession(proto.Message):
     class TableReadOptions(proto.Message):
         r"""Options dictating how we read a table.
 
+        This message has `oneof`_ fields (mutually exclusive fields).
+        For each oneof, at most one member field can be set at the same time.
+        Setting any member of the oneof automatically clears all other
+        members.
+
         .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
         Attributes:
             selected_fields (Sequence[str]):
-                Names of the fields in the table that should be read. If
-                empty, all fields will be read. If the specified field is a
-                nested field, all the sub-fields in the field will be
-                selected. The output field order is unrelated to the order
-                of fields in selected_fields.
+                Optional. The names of the fields in the table to be
+                returned. If no field names are specified, then all fields
+                in the table are returned.
+
+                Nested fields -- the child elements of a STRUCT field -- can
+                be selected individually using their fully-qualified names,
+                and will be returned as record fields containing only the
+                selected nested fields. If a STRUCT field is specified in
+                the selected fields list, all of the child elements will be
+                returned.
+
+                As an example, consider a table with the following schema:
+
+                { "name": "struct_field", "type": "RECORD", "mode":
+                "NULLABLE", "fields": [ { "name": "string_field1", "type":
+                "STRING", . "mode": "NULLABLE" }, { "name": "string_field2",
+                "type": "STRING", "mode": "NULLABLE" } ] }
+
+                Specifying "struct_field" in the selected fields list will
+                result in a read session schema with the following logical
+                structure:
+
+                struct_field { string_field1 string_field2 }
+
+                Specifying "struct_field.string_field1" in the selected
+                fields list will result in a read session schema with the
+                following logical structure:
+
+                struct_field { string_field1 }
+
+                The order of the fields in the read session schema is
+                derived from the table schema and does not correspond to the
+                order in which the fields are specified in this list.
             row_restriction (str):
                 SQL text filtering statement, similar to a WHERE clause in a
                 query. Aggregates are not supported.
@@ -144,6 +177,11 @@ class ReadSession(proto.Message):
             arrow_serialization_options (google.cloud.bigquery_storage_v1.types.ArrowSerializationOptions):
                 Optional. Options specific to the Apache
                 Arrow output format.
+
+                This field is a member of `oneof`_ ``output_format_serialization_options``.
+            avro_serialization_options (google.cloud.bigquery_storage_v1.types.AvroSerializationOptions):
+                Optional. Options specific to the Apache Avro
+                output format
 
                 This field is a member of `oneof`_ ``output_format_serialization_options``.
         """
@@ -161,6 +199,12 @@ class ReadSession(proto.Message):
             number=3,
             oneof="output_format_serialization_options",
             message=arrow.ArrowSerializationOptions,
+        )
+        avro_serialization_options = proto.Field(
+            proto.MESSAGE,
+            number=4,
+            oneof="output_format_serialization_options",
+            message=avro.AvroSerializationOptions,
         )
 
     name = proto.Field(

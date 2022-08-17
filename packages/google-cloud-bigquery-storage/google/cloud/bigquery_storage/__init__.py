@@ -29,6 +29,7 @@ from google.cloud.bigquery_storage_v1.types.arrow import ArrowSchema
 from google.cloud.bigquery_storage_v1.types.arrow import ArrowSerializationOptions
 from google.cloud.bigquery_storage_v1.types.avro import AvroRows
 from google.cloud.bigquery_storage_v1.types.avro import AvroSchema
+from google.cloud.bigquery_storage_v1.types.avro import AvroSerializationOptions
 from google.cloud.bigquery_storage_v1.types.protobuf import ProtoRows
 from google.cloud.bigquery_storage_v1.types.protobuf import ProtoSchema
 from google.cloud.bigquery_storage_v1.types.storage import AppendRowsRequest
@@ -72,6 +73,7 @@ __all__ = (
     "ArrowSerializationOptions",
     "AvroRows",
     "AvroSchema",
+    "AvroSerializationOptions",
     "ProtoRows",
     "ProtoSchema",
     "AppendRowsRequest",
