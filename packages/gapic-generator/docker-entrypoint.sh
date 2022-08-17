@@ -44,6 +44,7 @@ while [ -n "$1" ]; do
 done
 
 protoc --proto_path=/protos/ --proto_path=/in/ \
+       --experimental_allow_proto3_optional \
        --python_gapic_out=/out/ \
        --python_gapic_opt=${PLUGIN_OPTIONS:1} \
        `find /in/ -name *.proto`
