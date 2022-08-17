@@ -1,5 +1,35 @@
 # Changelog
 
+## [2.0.0](https://github.com/googleapis/python-documentai/compare/v1.5.1...v2.0.0) (2022-08-17)
+
+
+### ⚠ BREAKING CHANGES
+
+* **v1beta3:** Added Processor Management and Processor Version support to v1 library
+* **v1:** Added Processor Management and Processor Version support to v1 library
+* **v1beta3:** Changed the name field for ProcessRequest and BatchProcessorRequest to accept * so the name field can accept Processor and ProcessorVersion.
+
+### Features
+
+* **v1:** Added corrected_key_text, correct_value_text to FormField object in document.proto ([78e7fba](https://github.com/googleapis/python-documentai/commit/78e7fba988e73e689af5efc8780d99ae226b1b00))
+* **v1:** Added field_mask to ProcessRequest object in document_processor_service.proto ([78e7fba](https://github.com/googleapis/python-documentai/commit/78e7fba988e73e689af5efc8780d99ae226b1b00))
+* **v1:** Added integer_values, float_values and non_present to Entity object in document.proto ([78e7fba](https://github.com/googleapis/python-documentai/commit/78e7fba988e73e689af5efc8780d99ae226b1b00))
+* **v1:** Added OperationMetadata resource ([78e7fba](https://github.com/googleapis/python-documentai/commit/78e7fba988e73e689af5efc8780d99ae226b1b00))
+* **v1:** Added parent_ids to Revision object in document.proto ([78e7fba](https://github.com/googleapis/python-documentai/commit/78e7fba988e73e689af5efc8780d99ae226b1b00))
+* **v1:** Added Processor Management and Processor Version support to v1 library ([78e7fba](https://github.com/googleapis/python-documentai/commit/78e7fba988e73e689af5efc8780d99ae226b1b00))
+* **v1beta3:** Added Barcode support ([78e7fba](https://github.com/googleapis/python-documentai/commit/78e7fba988e73e689af5efc8780d99ae226b1b00))
+* **v1beta3:** Added corrected_key_text, correct_value_text to FormField object in document.proto ([78e7fba](https://github.com/googleapis/python-documentai/commit/78e7fba988e73e689af5efc8780d99ae226b1b00))
+* **v1beta3:** Added integer_values, float_values and non_present to Entity object in document.proto ([78e7fba](https://github.com/googleapis/python-documentai/commit/78e7fba988e73e689af5efc8780d99ae226b1b00))
+* **v1beta3:** Added OperationMetadata resource ([78e7fba](https://github.com/googleapis/python-documentai/commit/78e7fba988e73e689af5efc8780d99ae226b1b00))
+* **v1beta3:** Added parent_ids to Revision object in document.proto ([78e7fba](https://github.com/googleapis/python-documentai/commit/78e7fba988e73e689af5efc8780d99ae226b1b00))
+* **v1beta3:** Added Processor Management and Processor Version support to v1 library ([78e7fba](https://github.com/googleapis/python-documentai/commit/78e7fba988e73e689af5efc8780d99ae226b1b00))
+
+
+### Documentation
+
+* fix minor docstring formatting ([78e7fba](https://github.com/googleapis/python-documentai/commit/78e7fba988e73e689af5efc8780d99ae226b1b00))
+* **samples:** Added Human Review Request Sample ([#357](https://github.com/googleapis/python-documentai/issues/357)) ([1a5ebea](https://github.com/googleapis/python-documentai/commit/1a5ebea358d8f63f5c048ee47efde57da9d84b2c))
+
 ## [1.5.1](https://github.com/googleapis/python-documentai/compare/v1.5.0...v1.5.1) (2022-08-11)
 
 
