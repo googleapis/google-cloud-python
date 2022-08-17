@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-asset/#history
 
+## [3.13.0](https://github.com/googleapis/python-asset/compare/v3.12.0...v3.13.0) (2022-08-17)
+
+
+### Features
+
+* Add client library support for AssetService v1 BatchGetEffectiveIamPolicies API ([#474](https://github.com/googleapis/python-asset/issues/474)) ([28fdf20](https://github.com/googleapis/python-asset/commit/28fdf206a594b03cd15b985fa1e7de1fd8998df6))
+
 ## [3.12.0](https://github.com/googleapis/python-asset/compare/v3.11.0...v3.12.0) (2022-08-12)
 
 
