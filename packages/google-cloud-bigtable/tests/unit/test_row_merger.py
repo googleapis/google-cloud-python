@@ -7,6 +7,7 @@ import pytest
 
 from google.cloud.bigtable.row_data import PartialRowsData, PartialRowData, InvalidChunk
 from google.cloud.bigtable_v2.types.bigtable import ReadRowsResponse
+from google.cloud.bigtable.row_merger import _RowMerger
 
 
 # TODO: autogenerate protos from
@@ -76,3 +77,154 @@ def test_scenario(test_case: ReadRowsTest):
 
     for expected, actual in zip_longest(test_case.results, actual_results):
         assert actual == expected
+
+
+def test_out_of_order_rows():
+    row_merger = _RowMerger(last_seen_row=b"z")
+    with pytest.raises(InvalidChunk):
+        list(row_merger.process_chunks(ReadRowsResponse(last_scanned_row_key=b"a")))
+
+
+def test_bare_reset():
+    first_chunk = ReadRowsResponse.CellChunk(
+        ReadRowsResponse.CellChunk(
+            row_key=b"a", family_name="f", qualifier=b"q", value=b"v"
+        )
+    )
+    with pytest.raises(InvalidChunk):
+        _process_chunks(
+            first_chunk,
+            ReadRowsResponse.CellChunk(
+                ReadRowsResponse.CellChunk(reset_row=True, row_key=b"a")
+            ),
+        )
+    with pytest.raises(InvalidChunk):
+        _process_chunks(
+            first_chunk,
+            ReadRowsResponse.CellChunk(
+                ReadRowsResponse.CellChunk(reset_row=True, family_name="f")
+            ),
+        )
+    with pytest.raises(InvalidChunk):
+        _process_chunks(
+            first_chunk,
+            ReadRowsResponse.CellChunk(
+                ReadRowsResponse.CellChunk(reset_row=True, qualifier=b"q")
+            ),
+        )
+    with pytest.raises(InvalidChunk):
+        _process_chunks(
+            first_chunk,
+            ReadRowsResponse.CellChunk(
+                ReadRowsResponse.CellChunk(reset_row=True, timestamp_micros=1000)
+            ),
+        )
+    with pytest.raises(InvalidChunk):
+        _process_chunks(
+            first_chunk,
+            ReadRowsResponse.CellChunk(
+                ReadRowsResponse.CellChunk(reset_row=True, labels=["a"])
+            ),
+        )
+    with pytest.raises(InvalidChunk):
+        _process_chunks(
+            first_chunk,
+            ReadRowsResponse.CellChunk(
+                ReadRowsResponse.CellChunk(reset_row=True, value=b"v")
+            ),
+        )
+
+
+def test_missing_family():
+    with pytest.raises(InvalidChunk):
+        _process_chunks(
+            ReadRowsResponse.CellChunk(
+                row_key=b"a",
+                qualifier=b"q",
+                timestamp_micros=1000,
+                value=b"v",
+                commit_row=True,
+            )
+        )
+
+
+def test_mid_cell_row_key_change():
+    with pytest.raises(InvalidChunk):
+        _process_chunks(
+            ReadRowsResponse.CellChunk(
+                row_key=b"a",
+                family_name="f",
+                qualifier=b"q",
+                timestamp_micros=1000,
+                value_size=2,
+                value=b"v",
+            ),
+            ReadRowsResponse.CellChunk(row_key=b"b", value=b"v", commit_row=True),
+        )
+
+
+def test_mid_cell_family_change():
+    with pytest.raises(InvalidChunk):
+        _process_chunks(
+            ReadRowsResponse.CellChunk(
+                row_key=b"a",
+                family_name="f",
+                qualifier=b"q",
+                timestamp_micros=1000,
+                value_size=2,
+                value=b"v",
+            ),
+            ReadRowsResponse.CellChunk(family_name="f2", value=b"v", commit_row=True),
+        )
+
+
+def test_mid_cell_qualifier_change():
+    with pytest.raises(InvalidChunk):
+        _process_chunks(
+            ReadRowsResponse.CellChunk(
+                row_key=b"a",
+                family_name="f",
+                qualifier=b"q",
+                timestamp_micros=1000,
+                value_size=2,
+                value=b"v",
+            ),
+            ReadRowsResponse.CellChunk(qualifier=b"q2", value=b"v", commit_row=True),
+        )
+
+
+def test_mid_cell_timestamp_change():
+    with pytest.raises(InvalidChunk):
+        _process_chunks(
+            ReadRowsResponse.CellChunk(
+                row_key=b"a",
+                family_name="f",
+                qualifier=b"q",
+                timestamp_micros=1000,
+                value_size=2,
+                value=b"v",
+            ),
+            ReadRowsResponse.CellChunk(
+                timestamp_micros=2000, value=b"v", commit_row=True
+            ),
+        )
+
+
+def test_mid_cell_labels_change():
+    with pytest.raises(InvalidChunk):
+        _process_chunks(
+            ReadRowsResponse.CellChunk(
+                row_key=b"a",
+                family_name="f",
+                qualifier=b"q",
+                timestamp_micros=1000,
+                value_size=2,
+                value=b"v",
+            ),
+            ReadRowsResponse.CellChunk(labels=["b"], value=b"v", commit_row=True),
+        )
+
+
+def _process_chunks(*chunks):
+    req = ReadRowsResponse.pb(ReadRowsResponse(chunks=chunks))
+    return list(_RowMerger().process_chunks(req))

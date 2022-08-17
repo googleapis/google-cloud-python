@@ -630,78 +630,6 @@ def test_partial_rows_data_cancel_between_chunks():
     assert list(yrd) == []
 
 
-# 'consume_next' tested via 'TestPartialRowsData_JSON_acceptance_tests'
-
-
-def test_partial_rows_data__copy_from_previous_unset():
-    client = _Client()
-    client._data_stub = mock.MagicMock()
-    request = object()
-    yrd = _make_partial_rows_data(client._data_stub.read_rows, request)
-    cell = _PartialCellData()
-    yrd._copy_from_previous(cell)
-    assert cell.row_key == b""
-    assert cell.family_name == ""
-    assert cell.qualifier is None
-    assert cell.timestamp_micros == 0
-    assert cell.labels == []
-
-
-def test_partial_rows_data__copy_from_previous_blank():
-    ROW_KEY = "RK"
-    FAMILY_NAME = "A"
-    QUALIFIER = b"C"
-    TIMESTAMP_MICROS = 100
-    LABELS = ["L1", "L2"]
-    client = _Client()
-    client._data_stub = mock.MagicMock()
-    request = object()
-    yrd = _make_partial_rows_data(client._data_stub.ReadRows, request)
-    cell = _PartialCellData(
-        row_key=ROW_KEY,
-        family_name=FAMILY_NAME,
-        qualifier=QUALIFIER,
-        timestamp_micros=TIMESTAMP_MICROS,
-        labels=LABELS,
-    )
-    yrd._previous_cell = _PartialCellData()
-    yrd._copy_from_previous(cell)
-    assert cell.row_key == ROW_KEY
-    assert cell.family_name == FAMILY_NAME
-    assert cell.qualifier == QUALIFIER
-    assert cell.timestamp_micros == TIMESTAMP_MICROS
-    assert cell.labels == LABELS
-
-
-def test_partial_rows_data__copy_from_previous_filled():
-    from google.cloud.bigtable_v2.services.bigtable import BigtableClient
-
-    ROW_KEY = "RK"
-    FAMILY_NAME = "A"
-    QUALIFIER = b"C"
-    TIMESTAMP_MICROS = 100
-    LABELS = ["L1", "L2"]
-    client = _Client()
-    data_api = mock.create_autospec(BigtableClient)
-    client._data_stub = data_api
-    request = object()
-    yrd = _make_partial_rows_data(client._data_stub.read_rows, request)
-    yrd._previous_cell = _PartialCellData(
-        row_key=ROW_KEY,
-        family_name=FAMILY_NAME,
-        qualifier=QUALIFIER,
-        timestamp_micros=TIMESTAMP_MICROS,
-        labels=LABELS,
-    )
-    cell = _PartialCellData()
-    yrd._copy_from_previous(cell)
-    assert cell.row_key == ROW_KEY
-    assert cell.family_name == FAMILY_NAME
-    assert cell.qualifier == QUALIFIER
-    assert cell.timestamp_micros == 0
-    assert cell.labels == []
-
-
 def test_partial_rows_data_valid_last_scanned_row_key_on_start():
     client = _Client()
     response = _ReadRowsResponseV2([], last_scanned_row_key=b"2.AFTER")
@@ -732,38 +660,36 @@ def test_partial_rows_data_invalid_empty_chunk():
 
 
 def test_partial_rows_data_state_cell_in_progress():
-    from google.cloud.bigtable_v2.services.bigtable import BigtableClient
-    from google.cloud.bigtable_v2.types import bigtable as messages_v2_pb2
-
-    LABELS = ["L1", "L2"]
-
-    request = object()
-    client = _Client()
-    client._data_stub = mock.create_autospec(BigtableClient)
-    yrd = _make_partial_rows_data(client._data_stub.read_rows, request)
-
-    chunk = _ReadRowsResponseCellChunkPB(
-        row_key=ROW_KEY,
-        family_name=FAMILY_NAME,
-        qualifier=QUALIFIER,
-        timestamp_micros=TIMESTAMP_MICROS,
-        value=VALUE,
-        labels=LABELS,
+    labels = ["L1", "L2"]
+    resp = _ReadRowsResponseV2(
+        [
+            _ReadRowsResponseCellChunkPB(
+                row_key=ROW_KEY,
+                family_name=FAMILY_NAME,
+                qualifier=QUALIFIER,
+                timestamp_micros=TIMESTAMP_MICROS,
+                value=VALUE,
+                value_size=(2 * len(VALUE)),
+                labels=labels,
+            ),
+            _ReadRowsResponseCellChunkPB(value=VALUE, commit_row=True),
+        ]
     )
-    # _update_cell expects to be called after the protoplus wrapper has been
-    # shucked
-    chunk = messages_v2_pb2.ReadRowsResponse.CellChunk.pb(chunk)
-    yrd._update_cell(chunk)
 
-    more_cell_data = _ReadRowsResponseCellChunkPB(value=VALUE)
-    yrd._update_cell(more_cell_data)
+    def fake_read(*args, **kwargs):
+        return iter([resp])
 
-    assert yrd._cell.row_key == ROW_KEY
-    assert yrd._cell.family_name == FAMILY_NAME
-    assert yrd._cell.qualifier == QUALIFIER
-    assert yrd._cell.timestamp_micros == TIMESTAMP_MICROS
-    assert yrd._cell.labels == LABELS
-    assert yrd._cell.value == VALUE + VALUE
+    yrd = _make_partial_rows_data(fake_read, None)
+    yrd.consume_all()
+
+    expected_row = _make_partial_row_data(ROW_KEY)
+    expected_row._cells = {
+        QUALIFIER: [
+            _make_cell(
+                value=(VALUE + VALUE), timestamp_micros=TIMESTAMP_MICROS, labels=labels
+            )
+        ]
+    }
 
 
 def test_partial_rows_data_yield_rows_data():
@@ -1213,19 +1139,6 @@ class _MockFailureIterator_1(object):
         raise DeadlineExceeded("Failed to read from server")
 
     __next__ = next
-
-
-class _PartialCellData(object):
-
-    row_key = b""
-    family_name = ""
-    qualifier = None
-    timestamp_micros = 0
-    last_scanned_row_key = ""
-
-    def __init__(self, **kw):
-        self.labels = kw.pop("labels", [])
-        self.__dict__.update(kw)
 
 
 def _ReadRowsResponseV2(chunks, last_scanned_row_key=b""):
