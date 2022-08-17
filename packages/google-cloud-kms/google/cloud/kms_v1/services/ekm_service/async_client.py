@@ -84,7 +84,6 @@ class EkmServiceAsyncClient:
         """Creates an instance of this client using the provided credentials
             info.
 
-
         Args:
             info (dict): The service account private key info.
             args: Additional arguments to pass to the constructor.
@@ -99,7 +98,6 @@ class EkmServiceAsyncClient:
     def from_service_account_file(cls, filename: str, *args, **kwargs):
         """Creates an instance of this client using the provided credentials
             file.
-
 
         Args:
             filename (str): The path to the service account private key json
@@ -135,7 +133,6 @@ class EkmServiceAsyncClient:
         use the default API endpoint.
 
         More details can be found at https://google.aip.dev/auth/4114.
-
 
         Args:
             client_options (google.api_core.client_options.ClientOptions): Custom options for the
@@ -173,7 +170,6 @@ class EkmServiceAsyncClient:
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the ekm service client.
-
 
         Args:
             credentials (Optional[google.auth.credentials.Credentials]): The
@@ -242,7 +238,6 @@ class EkmServiceAsyncClient:
                 # Handle the response
                 async for response in page_result:
                     print(response)
-
 
         Args:
             request (Union[google.cloud.kms_v1.types.ListEkmConnectionsRequest, dict]):
@@ -364,7 +359,6 @@ class EkmServiceAsyncClient:
                 # Handle the response
                 print(response)
 
-
         Args:
             request (Union[google.cloud.kms_v1.types.GetEkmConnectionRequest, dict]):
                 The request object. Request message for
@@ -485,7 +479,6 @@ class EkmServiceAsyncClient:
 
                 # Handle the response
                 print(response)
-
 
         Args:
             request (Union[google.cloud.kms_v1.types.CreateEkmConnectionRequest, dict]):
@@ -624,7 +617,6 @@ class EkmServiceAsyncClient:
                 # Handle the response
                 print(response)
 
-
         Args:
             request (Union[google.cloud.kms_v1.types.UpdateEkmConnectionRequest, dict]):
                 The request object. Request message for
@@ -734,7 +726,6 @@ class EkmServiceAsyncClient:
 
         Replaces any existing policy.
 
-
         Args:
             request (:class:`~.policy_pb2.SetIamPolicyRequest`):
                 The request object. Request message for `SetIamPolicy`
@@ -759,6 +750,7 @@ class EkmServiceAsyncClient:
                 expression that further constrains the role binding
                 based on attributes about the request and/or target
                 resource.
+
 
                 **JSON Example**::
 
@@ -786,7 +778,9 @@ class EkmServiceAsyncClient:
                       ]
                     }
 
-                **YAML Example**::
+                **YAML Example**
+
+                ::
 
                     bindings:
                     - members:
@@ -852,7 +846,6 @@ class EkmServiceAsyncClient:
         Returns an empty policy if the function exists and does
         not have a policy set.
 
-
         Args:
             request (:class:`~.iam_policy_pb2.GetIamPolicyRequest`):
                 The request object. Request message for `GetIamPolicy`
@@ -878,7 +871,9 @@ class EkmServiceAsyncClient:
                 based on attributes about the request and/or target
                 resource.
 
+
                 **JSON Example**::
+
 
                     {
                       "bindings": [
@@ -904,7 +899,9 @@ class EkmServiceAsyncClient:
                       ]
                     }
 
-                **YAML Example**::
+                **YAML Example**
+
+                ::
 
                     bindings:
                     - members:
@@ -970,7 +967,6 @@ class EkmServiceAsyncClient:
 
         If the function does not exist, this will
         return an empty set of permissions, not a NOT_FOUND error.
-
 
         Args:
             request (:class:`~.iam_policy_pb2.TestIamPermissionsRequest`):

@@ -29,23 +29,9 @@ for library in s.get_staging_dirs(default_version):
     # Escape single '_' which RST treats as target names
     s.replace(library / "google/**/resources.py", '''"(.*?)((SIGN)|(DECRYPT)|(HMAC))_"''', '''"\g<1>\g<2>\_"''')
 
-    # Docstrings of *_iam_policy() methods are formatted poorly and must be fixed
-    # in order to avoid docstring format warnings in docs.
-    s.replace(library / "google/**/*client.py",
-        r"(\s+)Args:",
-        "\n\g<1>Args:"
-    )
     s.replace(library / "google/**/*client.py",
         r"(\s+)\*\*JSON Example\*\*\s+::",
         "\n\g<1>**JSON Example**::\n",
-    )
-    s.replace(library / "google/**/*client.py",
-        r"(\s+)\*\*YAML Example\*\*\s+::",
-        "\n\g<1>**YAML Example**::\n",
-    )
-    s.replace(library / "google/**/*client.py",
-        r"(\s+)For a description of IAM and its features, see",
-        "\n\g<0>",
     )
 
     # Rename `format_` to `format` to avoid breaking change

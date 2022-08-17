@@ -63,7 +63,6 @@ class EkmServiceClientMeta(type):
     ) -> Type[EkmServiceTransport]:
         """Returns an appropriate transport class.
 
-
         Args:
             label: The name of the desired transport. If none is
                 provided, then the first transport in the registry is used.
@@ -95,7 +94,6 @@ class EkmServiceClient(metaclass=EkmServiceClientMeta):
 
         Convert "*.sandbox.googleapis.com" and "*.googleapis.com" to
         "*.mtls.sandbox.googleapis.com" and "*.mtls.googleapis.com" respectively.
-
         Args:
             api_endpoint (Optional[str]): the api endpoint to convert.
         Returns:
@@ -130,7 +128,6 @@ class EkmServiceClient(metaclass=EkmServiceClientMeta):
         """Creates an instance of this client using the provided credentials
             info.
 
-
         Args:
             info (dict): The service account private key info.
             args: Additional arguments to pass to the constructor.
@@ -147,7 +144,6 @@ class EkmServiceClient(metaclass=EkmServiceClientMeta):
     def from_service_account_file(cls, filename: str, *args, **kwargs):
         """Creates an instance of this client using the provided credentials
             file.
-
 
         Args:
             filename (str): The path to the service account private key json
@@ -319,7 +315,6 @@ class EkmServiceClient(metaclass=EkmServiceClientMeta):
 
         More details can be found at https://google.aip.dev/auth/4114.
 
-
         Args:
             client_options (google.api_core.client_options.ClientOptions): Custom options for the
                 client. Only the `api_endpoint` and `client_cert_source` properties may be used
@@ -374,7 +369,6 @@ class EkmServiceClient(metaclass=EkmServiceClientMeta):
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the ekm service client.
-
 
         Args:
             credentials (Optional[google.auth.credentials.Credentials]): The
@@ -496,7 +490,6 @@ class EkmServiceClient(metaclass=EkmServiceClientMeta):
                 for response in page_result:
                     print(response)
 
-
         Args:
             request (Union[google.cloud.kms_v1.types.ListEkmConnectionsRequest, dict]):
                 The request object. Request message for
@@ -606,7 +599,6 @@ class EkmServiceClient(metaclass=EkmServiceClientMeta):
 
                 # Handle the response
                 print(response)
-
 
         Args:
             request (Union[google.cloud.kms_v1.types.GetEkmConnectionRequest, dict]):
@@ -718,7 +710,6 @@ class EkmServiceClient(metaclass=EkmServiceClientMeta):
 
                 # Handle the response
                 print(response)
-
 
         Args:
             request (Union[google.cloud.kms_v1.types.CreateEkmConnectionRequest, dict]):
@@ -847,7 +838,6 @@ class EkmServiceClient(metaclass=EkmServiceClientMeta):
                 # Handle the response
                 print(response)
 
-
         Args:
             request (Union[google.cloud.kms_v1.types.UpdateEkmConnectionRequest, dict]):
                 The request object. Request message for
@@ -960,7 +950,6 @@ class EkmServiceClient(metaclass=EkmServiceClientMeta):
 
         Replaces any existing policy.
 
-
         Args:
             request (:class:`~.iam_policy_pb2.SetIamPolicyRequest`):
                 The request object. Request message for `SetIamPolicy`
@@ -986,7 +975,9 @@ class EkmServiceClient(metaclass=EkmServiceClientMeta):
                 based on attributes about the request and/or target
                 resource.
 
+
                 **JSON Example**::
+
 
                     {
                       "bindings": [
@@ -1012,7 +1003,9 @@ class EkmServiceClient(metaclass=EkmServiceClientMeta):
                       ]
                     }
 
-                **YAML Example**::
+                **YAML Example**
+
+                ::
 
                     bindings:
                     - members:
@@ -1078,7 +1071,6 @@ class EkmServiceClient(metaclass=EkmServiceClientMeta):
         Returns an empty policy if the function exists and does not have a
         policy set.
 
-
         Args:
             request (:class:`~.iam_policy_pb2.GetIamPolicyRequest`):
                 The request object. Request message for `GetIamPolicy`
@@ -1104,7 +1096,9 @@ class EkmServiceClient(metaclass=EkmServiceClientMeta):
                 based on attributes about the request and/or target
                 resource.
 
+
                 **JSON Example**::
+
 
                     {
                       "bindings": [
@@ -1130,7 +1124,9 @@ class EkmServiceClient(metaclass=EkmServiceClientMeta):
                       ]
                     }
 
-                **YAML Example**::
+                **YAML Example**
+
+                ::
 
                     bindings:
                     - members:
@@ -1196,7 +1192,6 @@ class EkmServiceClient(metaclass=EkmServiceClientMeta):
 
         If the function does not exist, this will return an empty set
         of permissions, not a NOT_FOUND error.
-
 
         Args:
             request (:class:`~.iam_policy_pb2.TestIamPermissionsRequest`):

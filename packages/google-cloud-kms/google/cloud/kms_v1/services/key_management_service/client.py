@@ -68,7 +68,6 @@ class KeyManagementServiceClientMeta(type):
     ) -> Type[KeyManagementServiceTransport]:
         """Returns an appropriate transport class.
 
-
         Args:
             label: The name of the desired transport. If none is
                 provided, then the first transport in the registry is used.
@@ -106,7 +105,6 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
         Convert "*.sandbox.googleapis.com" and "*.googleapis.com" to
         "*.mtls.sandbox.googleapis.com" and "*.mtls.googleapis.com" respectively.
-
         Args:
             api_endpoint (Optional[str]): the api endpoint to convert.
         Returns:
@@ -141,7 +139,6 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
         """Creates an instance of this client using the provided credentials
             info.
 
-
         Args:
             info (dict): The service account private key info.
             args: Additional arguments to pass to the constructor.
@@ -158,7 +155,6 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
     def from_service_account_file(cls, filename: str, *args, **kwargs):
         """Creates an instance of this client using the provided credentials
             file.
-
 
         Args:
             filename (str): The path to the service account private key json
@@ -406,7 +402,6 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
         More details can be found at https://google.aip.dev/auth/4114.
 
-
         Args:
             client_options (google.api_core.client_options.ClientOptions): Custom options for the
                 client. Only the `api_endpoint` and `client_cert_source` properties may be used
@@ -461,7 +456,6 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the key management service client.
-
 
         Args:
             credentials (Optional[google.auth.credentials.Credentials]): The
@@ -583,7 +577,6 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
                 for response in page_result:
                     print(response)
 
-
         Args:
             request (Union[google.cloud.kms_v1.types.ListKeyRingsRequest, dict]):
                 The request object. Request message for
@@ -693,7 +686,6 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
                 for response in page_result:
                     print(response)
 
-
         Args:
             request (Union[google.cloud.kms_v1.types.ListCryptoKeysRequest, dict]):
                 The request object. Request message for
@@ -802,7 +794,6 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
                 # Handle the response
                 for response in page_result:
                     print(response)
-
 
         Args:
             request (Union[google.cloud.kms_v1.types.ListCryptoKeyVersionsRequest, dict]):
@@ -914,7 +905,6 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
                 for response in page_result:
                     print(response)
 
-
         Args:
             request (Union[google.cloud.kms_v1.types.ListImportJobsRequest, dict]):
                 The request object. Request message for
@@ -1024,7 +1014,6 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
                 # Handle the response
                 print(response)
 
-
         Args:
             request (Union[google.cloud.kms_v1.types.GetKeyRingRequest, dict]):
                 The request object. Request message for
@@ -1122,7 +1111,6 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
                 # Handle the response
                 print(response)
-
 
         Args:
             request (Union[google.cloud.kms_v1.types.GetCryptoKeyRequest, dict]):
@@ -1226,7 +1214,6 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
                 # Handle the response
                 print(response)
-
 
         Args:
             request (Union[google.cloud.kms_v1.types.GetCryptoKeyVersionRequest, dict]):
@@ -1343,7 +1330,6 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
                 # Handle the response
                 print(response)
 
-
         Args:
             request (Union[google.cloud.kms_v1.types.GetPublicKeyRequest, dict]):
                 The request object. Request message for
@@ -1443,7 +1429,6 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
                 # Handle the response
                 print(response)
-
 
         Args:
             request (Union[google.cloud.kms_v1.types.GetImportJobRequest, dict]):
@@ -1589,7 +1574,6 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
                 # Handle the response
                 print(response)
 
-
         Args:
             request (Union[google.cloud.kms_v1.types.CreateKeyRingRequest, dict]):
                 The request object. Request message for
@@ -1711,7 +1695,6 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
                 # Handle the response
                 print(response)
-
 
         Args:
             request (Union[google.cloud.kms_v1.types.CreateCryptoKeyRequest, dict]):
@@ -1840,7 +1823,6 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
                 # Handle the response
                 print(response)
-
 
         Args:
             request (Union[google.cloud.kms_v1.types.CreateCryptoKeyVersionRequest, dict]):
@@ -1974,7 +1956,6 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
                 # Handle the response
                 print(response)
 
-
         Args:
             request (Union[google.cloud.kms_v1.types.ImportCryptoKeyVersionRequest, dict]):
                 The request object. Request message for
@@ -2075,7 +2056,6 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
                 # Handle the response
                 print(response)
-
 
         Args:
             request (Union[google.cloud.kms_v1.types.CreateImportJobRequest, dict]):
@@ -2235,7 +2215,6 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
                 # Handle the response
                 print(response)
 
-
         Args:
             request (Union[google.cloud.kms_v1.types.UpdateCryptoKeyRequest, dict]):
                 The request object. Request message for
@@ -2360,7 +2339,6 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
                 # Handle the response
                 print(response)
-
 
         Args:
             request (Union[google.cloud.kms_v1.types.UpdateCryptoKeyVersionRequest, dict]):
@@ -2489,7 +2467,6 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
                 # Handle the response
                 print(response)
-
 
         Args:
             request (Union[google.cloud.kms_v1.types.UpdateCryptoKeyPrimaryVersionRequest, dict]):
@@ -2626,7 +2603,6 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
                 # Handle the response
                 print(response)
 
-
         Args:
             request (Union[google.cloud.kms_v1.types.DestroyCryptoKeyVersionRequest, dict]):
                 The request object. Request message for
@@ -2748,7 +2724,6 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
                 # Handle the response
                 print(response)
 
-
         Args:
             request (Union[google.cloud.kms_v1.types.RestoreCryptoKeyVersionRequest, dict]):
                 The request object. Request message for
@@ -2864,7 +2839,6 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
                 # Handle the response
                 print(response)
-
 
         Args:
             request (Union[google.cloud.kms_v1.types.EncryptRequest, dict]):
@@ -2992,7 +2966,6 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
                 # Handle the response
                 print(response)
 
-
         Args:
             request (Union[google.cloud.kms_v1.types.DecryptRequest, dict]):
                 The request object. Request message for
@@ -3104,7 +3077,6 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
                 # Handle the response
                 print(response)
-
 
         Args:
             request (Union[google.cloud.kms_v1.types.AsymmetricSignRequest, dict]):
@@ -3225,7 +3197,6 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
                 # Handle the response
                 print(response)
 
-
         Args:
             request (Union[google.cloud.kms_v1.types.AsymmetricDecryptRequest, dict]):
                 The request object. Request message for
@@ -3337,7 +3308,6 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
                 # Handle the response
                 print(response)
-
 
         Args:
             request (Union[google.cloud.kms_v1.types.MacSignRequest, dict]):
@@ -3452,7 +3422,6 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
                 # Handle the response
                 print(response)
-
 
         Args:
             request (Union[google.cloud.kms_v1.types.MacVerifyRequest, dict]):
@@ -3569,7 +3538,6 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
                 # Handle the response
                 print(response)
 
-
         Args:
             request (Union[google.cloud.kms_v1.types.GenerateRandomBytesRequest, dict]):
                 The request object. Request message for
@@ -3684,7 +3652,6 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
         Replaces any existing policy.
 
-
         Args:
             request (:class:`~.iam_policy_pb2.SetIamPolicyRequest`):
                 The request object. Request message for `SetIamPolicy`
@@ -3710,7 +3677,9 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
                 based on attributes about the request and/or target
                 resource.
 
+
                 **JSON Example**::
+
 
                     {
                       "bindings": [
@@ -3736,7 +3705,9 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
                       ]
                     }
 
-                **YAML Example**::
+                **YAML Example**
+
+                ::
 
                     bindings:
                     - members:
@@ -3802,7 +3773,6 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
         Returns an empty policy if the function exists and does not have a
         policy set.
 
-
         Args:
             request (:class:`~.iam_policy_pb2.GetIamPolicyRequest`):
                 The request object. Request message for `GetIamPolicy`
@@ -3828,7 +3798,9 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
                 based on attributes about the request and/or target
                 resource.
 
+
                 **JSON Example**::
+
 
                     {
                       "bindings": [
@@ -3854,7 +3826,9 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
                       ]
                     }
 
-                **YAML Example**::
+                **YAML Example**
+
+                ::
 
                     bindings:
                     - members:
@@ -3920,7 +3894,6 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
         If the function does not exist, this will return an empty set
         of permissions, not a NOT_FOUND error.
-
 
         Args:
             request (:class:`~.iam_policy_pb2.TestIamPermissionsRequest`):
