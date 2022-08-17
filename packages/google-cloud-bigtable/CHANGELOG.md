@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-bigtable/#history
 
+## [2.11.3](https://github.com/googleapis/python-bigtable/compare/v2.11.2...v2.11.3) (2022-08-17)
+
+
+### Performance Improvements
+
+* optimize row merging ([#628](https://github.com/googleapis/python-bigtable/issues/628)) ([c71ec70](https://github.com/googleapis/python-bigtable/commit/c71ec70e55f6e236e46127870a9ed4717eee5da5))
+
 ## [2.11.2](https://github.com/googleapis/python-bigtable/compare/v2.11.1...v2.11.2) (2022-08-11)
 
 
