@@ -238,31 +238,6 @@ for library in s.get_staging_dirs(default_version):
         "client_library_version=\g<1>'google-cloud-pubsub'",
     )
 
-    # Docstrings of *_iam_policy() methods are formatted poorly and must be fixed
-    # in order to avoid docstring format warnings in docs.
-    s.replace(
-        library / f"google/pubsub_{library.name}/services/*er/client.py",
-        r"(\s+)Args:",
-        "\n\g<1>Args:",
-    )
-    s.replace(
-        library / f"google/pubsub_{library.name}/services/*er/client.py",
-        r"(\s+)\*\*JSON Example\*\*\s+::",
-        "\n\g<1>**JSON Example**::\n",
-    )
-
-    s.replace(
-        library / f"google/pubsub_{library.name}/services/*er/client.py",
-        r"(\s+)\*\*YAML Example\*\*\s+::",
-        "\n\g<1>**YAML Example**::\n",
-    )
-
-    s.replace(
-        library / f"google/pubsub_{library.name}/services/*er/client.py",
-        r"(\s+)For a description of IAM and its features, see",
-        "\n\g<0>",
-    )
-
     # Allow timeout to be an instance of google.api_core.timeout.*
     s.replace(
         library / f"google/pubsub_{library.name}/types/__init__.py",
