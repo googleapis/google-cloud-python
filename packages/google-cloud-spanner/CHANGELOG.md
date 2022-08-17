@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-spanner/#history
 
+## [3.19.0](https://github.com/googleapis/python-spanner/compare/v3.18.0...v3.19.0) (2022-08-17)
+
+
+### Features
+
+* support JSON object consisting of an array. ([#782](https://github.com/googleapis/python-spanner/issues/782)) ([92a3169](https://github.com/googleapis/python-spanner/commit/92a3169b59bae527d77ecc19f798998650ca4192))
+
 ## [3.18.0](https://github.com/googleapis/python-spanner/compare/v3.17.0...v3.18.0) (2022-08-12)
 
 
