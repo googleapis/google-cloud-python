@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.8.1](https://github.com/googleapis/python-retail/compare/v1.8.0...v1.8.1) (2022-08-12)
+
+
+### Bug Fixes
+
+* **deps:** allow protobuf < 5.0.0 ([#313](https://github.com/googleapis/python-retail/issues/313)) ([9c8c730](https://github.com/googleapis/python-retail/commit/9c8c730f97f155b41f795ef73f4a362c97479455))
+* **deps:** require proto-plus >= 1.22.0 ([9c8c730](https://github.com/googleapis/python-retail/commit/9c8c730f97f155b41f795ef73f4a362c97479455))
+
 ## [1.8.0](https://github.com/googleapis/python-retail/compare/v1.7.0...v1.8.0) (2022-08-09)
 
 
