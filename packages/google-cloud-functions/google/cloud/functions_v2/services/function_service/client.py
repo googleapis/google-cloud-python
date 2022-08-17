@@ -1633,9 +1633,11 @@ class FunctionServiceClient(metaclass=FunctionServiceClientMeta):
                 optionally specify a ``condition``, which is a logic
                 expression that further constrains the role binding
                 based on attributes about the request and/or target
-                resource. JSON Example.
+                resource.
 
-                .. code-block:: python
+                **JSON Example**
+
+                ::
 
                     {
                       "bindings": [
@@ -1752,9 +1754,11 @@ class FunctionServiceClient(metaclass=FunctionServiceClientMeta):
                 optionally specify a ``condition``, which is a logic
                 expression that further constrains the role binding
                 based on attributes about the request and/or target
-                resource. JSON Example.
+                resource.
 
-                .. code-block:: python
+                **JSON Example**
+
+                ::
 
                     {
                       "bindings": [
