@@ -19,15 +19,29 @@ import json
 
 class JsonObject(dict):
     """
-    JsonObject type help format Django JSONField to compatible Cloud Spanner's
-    JSON type. Before making queries, it'll help differentiate between
-    normal parameters and JSON parameters.
+    Provides functionality of JSON data type in Cloud Spanner
+    API, mimicking simple `dict()` behaviour and making
+    all the necessary conversions under the hood.
     """
 
     def __init__(self, *args, **kwargs):
         self._is_null = (args, kwargs) == ((), {}) or args == (None,)
+        self._is_array = len(args) and isinstance(args[0], (list, tuple))
+
+        # if the JSON object is represented with an array,
+        # the value is contained separately
+        if self._is_array:
+            self._array_value = args[0]
+            return
+
         if not self._is_null:
             super(JsonObject, self).__init__(*args, **kwargs)
+
+    def __repr__(self):
+        if self._is_array:
+            return str(self._array_value)
+
+        return super(JsonObject, self).__repr__()
 
     @classmethod
     def from_str(cls, str_repr):
@@ -52,5 +66,8 @@ class JsonObject(dict):
         """
         if self._is_null:
             return None
+
+        if self._is_array:
+            return json.dumps(self._array_value, sort_keys=True, separators=(",", ":"))
 
         return json.dumps(self, sort_keys=True, separators=(",", ":"))

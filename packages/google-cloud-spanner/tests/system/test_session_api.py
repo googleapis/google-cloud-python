@@ -120,6 +120,7 @@ LIVE_ALL_TYPES_ROWDATA = (
     AllTypesRowData(pkey=108, timestamp_value=NANO_TIME),
     AllTypesRowData(pkey=109, numeric_value=NUMERIC_1),
     AllTypesRowData(pkey=110, json_value=JSON_1),
+    AllTypesRowData(pkey=111, json_value=[JSON_1, JSON_2]),
     # empty array values
     AllTypesRowData(pkey=201, int_array=[]),
     AllTypesRowData(pkey=202, bool_array=[]),

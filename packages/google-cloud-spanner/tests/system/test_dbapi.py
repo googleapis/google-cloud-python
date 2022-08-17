@@ -339,8 +339,10 @@ def test_DDL_autocommit(shared_instance, dbapi_database):
 
 @pytest.mark.skipif(_helpers.USE_EMULATOR, reason="Emulator does not support json.")
 def test_autocommit_with_json_data(shared_instance, dbapi_database):
-    """Check that DDLs in autocommit mode are immediately executed for
-    json fields."""
+    """
+    Check that DDLs in autocommit mode are immediately
+    executed for json fields.
+    """
     # Create table
     conn = Connection(shared_instance, dbapi_database)
     conn.autocommit = True
@@ -373,6 +375,35 @@ def test_autocommit_with_json_data(shared_instance, dbapi_database):
     # Drop the table
     cur.execute("DROP TABLE JsonDetails")
     conn.commit()
+    conn.close()
+
+
+@pytest.mark.skipif(_helpers.USE_EMULATOR, reason="Emulator does not support json.")
+def test_json_array(shared_instance, dbapi_database):
+    # Create table
+    conn = Connection(shared_instance, dbapi_database)
+    conn.autocommit = True
+
+    cur = conn.cursor()
+    cur.execute(
+        """
+        CREATE TABLE JsonDetails (
+            DataId     INT64 NOT NULL,
+            Details    JSON,
+        ) PRIMARY KEY (DataId)
+    """
+    )
+    cur.execute(
+        "INSERT INTO JsonDetails (DataId, Details) VALUES (%s, %s)",
+        [1, JsonObject([1, 2, 3])],
+    )
+
+    cur.execute("SELECT * FROM JsonDetails WHERE DataId = 1")
+    row = cur.fetchone()
+    assert isinstance(row[1], JsonObject)
+    assert row[1].serialize() == "[1,2,3]"
+
+    cur.execute("DROP TABLE JsonDetails")
     conn.close()
 
 
