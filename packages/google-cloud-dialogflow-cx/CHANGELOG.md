@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.13.1](https://github.com/googleapis/python-dialogflow-cx/compare/v1.13.0...v1.13.1) (2022-08-15)
+
+
+### Bug Fixes
+
+* **deps:** allow protobuf < 5.0.0 ([#435](https://github.com/googleapis/python-dialogflow-cx/issues/435)) ([519012b](https://github.com/googleapis/python-dialogflow-cx/commit/519012bf13179d4fdbe6856ca21fd539b4f776b1))
+* **deps:** require proto-plus >= 1.22.0 ([519012b](https://github.com/googleapis/python-dialogflow-cx/commit/519012bf13179d4fdbe6856ca21fd539b4f776b1))
+
 ## [1.13.0](https://github.com/googleapis/python-dialogflow-cx/compare/v1.12.1...v1.13.0) (2022-07-15)
 
 
