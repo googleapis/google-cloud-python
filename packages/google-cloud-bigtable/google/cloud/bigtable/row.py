@@ -28,6 +28,15 @@ _PACK_I64 = struct.Struct(">q").pack
 MAX_MUTATIONS = 100000
 """The maximum number of mutations that a row can accumulate."""
 
+_MISSING_COLUMN_FAMILY = "Column family {} is not among the cells stored in this row."
+_MISSING_COLUMN = (
+    "Column {} is not among the cells stored in this row in the column family {}."
+)
+_MISSING_INDEX = (
+    "Index {!r} is not valid for the cells stored in this row for column {} "
+    "in the column family {}. There are {} such cells."
+)
+
 
 class Row(object):
     """Base representation of a Google Cloud Bigtable Row.
@@ -1013,3 +1022,246 @@ def _parse_family_pb(family_pb):
             cells.append(val_pair)
 
     return family_pb.name, result
+
+
+class PartialRowData(object):
+    """Representation of partial row in a Google Cloud Bigtable Table.
+
+    These are expected to be updated directly from a
+    :class:`._generated.bigtable_service_messages_pb2.ReadRowsResponse`
+
+    :type row_key: bytes
+    :param row_key: The key for the row holding the (partial) data.
+    """
+
+    def __init__(self, row_key):
+        self._row_key = row_key
+        self._cells = {}
+
+    def __eq__(self, other):
+        if not isinstance(other, self.__class__):
+            return NotImplemented
+        return other._row_key == self._row_key and other._cells == self._cells
+
+    def __ne__(self, other):
+        return not self == other
+
+    def to_dict(self):
+        """Convert the cells to a dictionary.
+
+        This is intended to be used with HappyBase, so the column family and
+        column qualiers are combined (with ``:``).
+
+        :rtype: dict
+        :returns: Dictionary containing all the data in the cells of this row.
+        """
+        result = {}
+        for column_family_id, columns in self._cells.items():
+            for column_qual, cells in columns.items():
+                key = _to_bytes(column_family_id) + b":" + _to_bytes(column_qual)
+                result[key] = cells
+        return result
+
+    @property
+    def cells(self):
+        """Property returning all the cells accumulated on this partial row.
+
+        For example:
+
+        .. literalinclude:: snippets_table.py
+            :start-after: [START bigtable_api_row_data_cells]
+            :end-before: [END bigtable_api_row_data_cells]
+            :dedent: 4
+
+        :rtype: dict
+        :returns: Dictionary of the :class:`Cell` objects accumulated. This
+                  dictionary has two-levels of keys (first for column families
+                  and second for column names/qualifiers within a family). For
+                  a given column, a list of :class:`Cell` objects is stored.
+        """
+        return self._cells
+
+    @property
+    def row_key(self):
+        """Getter for the current (partial) row's key.
+
+        :rtype: bytes
+        :returns: The current (partial) row's key.
+        """
+        return self._row_key
+
+    def find_cells(self, column_family_id, column):
+        """Get a time series of cells stored on this instance.
+
+        For example:
+
+        .. literalinclude:: snippets_table.py
+            :start-after: [START bigtable_api_row_find_cells]
+            :end-before: [END bigtable_api_row_find_cells]
+            :dedent: 4
+
+        Args:
+            column_family_id (str): The ID of the column family. Must be of the
+                form ``[_a-zA-Z0-9][-_.a-zA-Z0-9]*``.
+            column (bytes): The column within the column family where the cells
+                are located.
+
+        Returns:
+            List[~google.cloud.bigtable.row_data.Cell]: The cells stored in the
+            specified column.
+
+        Raises:
+            KeyError: If ``column_family_id`` is not among the cells stored
+                in this row.
+            KeyError: If ``column`` is not among the cells stored in this row
+                for the given ``column_family_id``.
+        """
+        try:
+            column_family = self._cells[column_family_id]
+        except KeyError:
+            raise KeyError(_MISSING_COLUMN_FAMILY.format(column_family_id))
+
+        try:
+            cells = column_family[column]
+        except KeyError:
+            raise KeyError(_MISSING_COLUMN.format(column, column_family_id))
+
+        return cells
+
+    def cell_value(self, column_family_id, column, index=0):
+        """Get a single cell value stored on this instance.
+
+        For example:
+
+        .. literalinclude:: snippets_table.py
+            :start-after: [START bigtable_api_row_cell_value]
+            :end-before: [END bigtable_api_row_cell_value]
+            :dedent: 4
+
+        Args:
+            column_family_id (str): The ID of the column family. Must be of the
+                form ``[_a-zA-Z0-9][-_.a-zA-Z0-9]*``.
+            column (bytes): The column within the column family where the cell
+                is located.
+            index (Optional[int]): The offset within the series of values. If
+                not specified, will return the first cell.
+
+        Returns:
+            ~google.cloud.bigtable.row_data.Cell value: The cell value stored
+            in the specified column and specified index.
+
+        Raises:
+            KeyError: If ``column_family_id`` is not among the cells stored
+                in this row.
+            KeyError: If ``column`` is not among the cells stored in this row
+                for the given ``column_family_id``.
+            IndexError: If ``index`` cannot be found within the cells stored
+                in this row for the given ``column_family_id``, ``column``
+                pair.
+        """
+        cells = self.find_cells(column_family_id, column)
+
+        try:
+            cell = cells[index]
+        except (TypeError, IndexError):
+            num_cells = len(cells)
+            msg = _MISSING_INDEX.format(index, column, column_family_id, num_cells)
+            raise IndexError(msg)
+
+        return cell.value
+
+    def cell_values(self, column_family_id, column, max_count=None):
+        """Get a time series of cells stored on this instance.
+
+        For example:
+
+        .. literalinclude:: snippets_table.py
+            :start-after: [START bigtable_api_row_cell_values]
+            :end-before: [END bigtable_api_row_cell_values]
+            :dedent: 4
+
+        Args:
+            column_family_id (str): The ID of the column family. Must be of the
+                form ``[_a-zA-Z0-9][-_.a-zA-Z0-9]*``.
+            column (bytes): The column within the column family where the cells
+                are located.
+            max_count (int): The maximum number of cells to use.
+
+        Returns:
+            A generator which provides: cell.value, cell.timestamp_micros
+                for each cell in the list of cells
+
+        Raises:
+            KeyError: If ``column_family_id`` is not among the cells stored
+                in this row.
+            KeyError: If ``column`` is not among the cells stored in this row
+                for the given ``column_family_id``.
+        """
+        cells = self.find_cells(column_family_id, column)
+        if max_count is None:
+            max_count = len(cells)
+
+        for index, cell in enumerate(cells):
+            if index == max_count:
+                break
+
+            yield cell.value, cell.timestamp_micros
+
+
+class Cell(object):
+    """Representation of a Google Cloud Bigtable Cell.
+
+    :type value: bytes
+    :param value: The value stored in the cell.
+
+    :type timestamp_micros: int
+    :param timestamp_micros: The timestamp_micros when the cell was stored.
+
+    :type labels: list
+    :param labels: (Optional) List of strings. Labels applied to the cell.
+    """
+
+    def __init__(self, value, timestamp_micros, labels=None):
+        self.value = value
+        self.timestamp_micros = timestamp_micros
+        self.labels = list(labels) if labels is not None else []
+
+    @classmethod
+    def from_pb(cls, cell_pb):
+        """Create a new cell from a Cell protobuf.
+
+        :type cell_pb: :class:`._generated.data_pb2.Cell`
+        :param cell_pb: The protobuf to convert.
+
+        :rtype: :class:`Cell`
+        :returns: The cell corresponding to the protobuf.
+        """
+        if cell_pb.labels:
+            return cls(cell_pb.value, cell_pb.timestamp_micros, labels=cell_pb.labels)
+        else:
+            return cls(cell_pb.value, cell_pb.timestamp_micros)
+
+    @property
+    def timestamp(self):
+        return _datetime_from_microseconds(self.timestamp_micros)
+
+    def __eq__(self, other):
+        if not isinstance(other, self.__class__):
+            return NotImplemented
+        return (
+            other.value == self.value
+            and other.timestamp_micros == self.timestamp_micros
+            and other.labels == self.labels
+        )
+
+    def __ne__(self, other):
+        return not self == other
+
+    def __repr__(self):
+        return "<{name} value={value!r} timestamp={timestamp}>".format(
+            name=self.__class__.__name__, value=self.value, timestamp=self.timestamp
+        )
+
+
+class InvalidChunk(RuntimeError):
+    """Exception raised to invalid chunk data from back-end."""
