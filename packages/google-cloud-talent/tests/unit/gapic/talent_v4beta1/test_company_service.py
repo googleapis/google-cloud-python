@@ -2868,7 +2868,7 @@ def test_get_operation(transport: str = "grpc"):
 
 
 @pytest.mark.asyncio
-async def test_get_operation(transport: str = "grpc"):
+async def test_get_operation_async(transport: str = "grpc"):
     client = CompanyServiceAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
