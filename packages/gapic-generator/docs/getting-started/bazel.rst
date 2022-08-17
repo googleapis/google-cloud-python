@@ -94,6 +94,16 @@ your ``BUILD.bazel`` file. You can use the Python section of the Document AI
             ":documentai_py_gapic",
         ],
     )
+
+Some of the ``py_gapic_library`` rule that may be of interest:
+  * ``transport``: the desired transport(s) to generate, delimited by ``+`` e.g. ``grpc+rest``.
+    - Acceptable values are ``grpc`` and ``rest``.
+    - Defaults to ``grpc``.
+
+  * ``rest_numeric_enums``: if ``True``, enables generation of system parameter requesting response enums be encoded as numbers.
+    - Default is ``False``.
+    - Only effective when ``rest`` is included as a ``transport`` to be generated.
+      
 .. _BUILD.bazel: https://github.com/googleapis/googleapis/blob/master/google/cloud/documentai/v1beta2/BUILD.bazel
 
 Compiling an API
