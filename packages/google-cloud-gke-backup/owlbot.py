@@ -125,12 +125,86 @@ for library in s.get_staging_dirs(default_version):
                 RestorePlans in this location""",
     """be unique within the set of RestorePlans in this location""")
 
-    # Workaround generator bug. To be fixed in
-    # https://github.com/googleapis/gapic-generator-python/pull/1343/files
+    # workaround issue with docstrings
     s.replace(
-        library / f"tests/unit/gapic/**/*.py",
-        """\n        transports.BackupForGKERestTransport,""",
-        "",
+        library / f"google/cloud/**/*.py",
+        """projects/\\\ \*/locations/\*\n""",
+        "``projects/*/locations/*``\n",
+    )
+    s.replace(
+        library / f"google/cloud/**/*.py",
+        """projects/\\\ \*/locations/\*/backupPlans/\\\\\*\n""",
+        "``projects/*/locations/*/backupPlans/*``\n",
+    )
+    s.replace(
+        library / f"google/cloud/**/*.py",
+        """projects/\\\ \*/locations/\*/backupPlans/\*.\n""",
+        "``projects/*/locations/*/backupPlans/*``.\n",
+    )
+    s.replace(
+        library / f"google/cloud/**/*.py",
+        """projects/\\\ \*/locations/\*/backupPlans/\*/backups/\*\n""",
+        "``projects/*/locations/*/backupPlans/*/backups/*``\n",
+    )
+    s.replace(
+        library / f"google/cloud/**/*.py",
+        """projects/\\\ \*/locations/\*/backupPlans/\*/backups/\*.\n""",
+        "``projects/*/locations/*/backupPlans/*/backups/*``.\n",
+    )
+
+    s.replace(
+        library / f"google/cloud/**/*.py",
+        "projects/\\\ \*/locations/\*/backupPlans/\*/backups/\*/volumeBackups/\\\\\*\n",
+        "``projects/*/locations/*/backupPlans/*/backups/*/volumeBackups/*``\n",
+    )
+    s.replace(
+        library / f"google/cloud/**/*.py",
+        "projects/\\\ \*/locations/\*/backupPlans/\*/backups/\*/volumeBackups/\*.\n",
+        "``projects/*/locations/*/backupPlans/*/backups/*/volumeBackups/*``.\n",
+    )
+    s.replace(
+        library / f"google/cloud/**/*.py",
+        "projects/\\\ \*/locations/\*/restorePlans/\\\\\*\n",
+        "``projects/*/locations/*/restorePlans/*``\n",
+    )
+    s.replace(
+        library / f"google/cloud/**/*.py",
+        "projects/\\\ \*/locations/\*/restorePlans/\*.\n",
+        "``projects/*/locations/*/restorePlans/*``.\n",
+    )
+    s.replace(
+        library / f"google/cloud/**/*.py",
+        "projects/\\\ \*/locations/\*/restorePlans/\*/restores/\*\n",
+        "``projects/*/locations/*/restorePlans/*/restores/*``\n",
+    )
+    s.replace(
+        library / f"google/cloud/**/*.py",
+        "projects/\\\ \*/locations/\*/restorePlans/\*/restores/\*/volumeRestores/\\\\\*\n",
+        "``projects/*/locations/*/restorePlans/*/restores/*/volumeRestores/*``\n",
+    )
+    s.replace(
+        library / f"google/cloud/**/*.py",
+        "projects/\\\ \*/locations/\*/restorePlans/\*/restores/\*/volumeRestores/\*.\n",
+        "``projects/*/locations/*/restorePlans/*/restores/*/volumeRestores/*``.\n",
+    )
+    s.replace(
+        library / f"google/cloud/**/*.py",
+        """-  projects/\\\ \*/locations/\*/clusters/\\\\\*
+            -  projects/\\\ \*/zones/\*/clusters/\\\\\*""",
+        """-  ``projects/*/locations/*/clusters/*``
+            -  ``projects/*/zones/*/clusters/*``""",
+    )
+    s.replace(
+        library / f"google/cloud/**/*.py",
+        """-  projects/\\\ \*/locations/\*/clusters/\\\\\*
+                -  projects/\\\ \*/zones/\*/clusters/\\\\\*""",
+        """-  ``projects/*/locations/*/clusters/*``
+                -  ``projects/*/zones/*/clusters/*``""",
+    )
+    s.replace(
+        library / f"google/cloud/**/*.py",
+        """projects/\\\ \*/locations/\*/keyRings/\*/cryptoKeys/\*""",
+        """``projects/*/locations/*/keyRings/*/cryptoKeys/*``""",
     )
 
     s.move(library, excludes=["google/cloud/gke_backup/", "setup.py"])
