@@ -158,12 +158,14 @@ primary key:
        )
 
 As Spanner restricts changing a primary key value, not setting the flag
-to ``False`` can cause migration problems.
+to ``False`` can cause migration problems.  
+
+Also notice that DDL statements in Spanner are not transactional and will not be automatically reverted in case of a migration fail.
 
 | **Warning!**
 | A migration script can produce a lot of DDL statements. If each of the
-  statements are executed separately, performance issues can occur. To
-  avoid these, it's highly recommended to use the `Alembic batch
+  statements is executed separately, performance issues can occur. To
+  avoid it, it's highly recommended to use the `Alembic batch
   context <https://alembic.sqlalchemy.org/en/latest/batch.html>`__
   feature to pack DDL statements into groups of statements.
 
