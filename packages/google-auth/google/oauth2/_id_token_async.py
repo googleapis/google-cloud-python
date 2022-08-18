@@ -93,9 +93,9 @@ async def _fetch_certs(request, certs_url):
             "Could not fetch certificates at {}".format(certs_url)
         )
 
-    data = await response.data.read()
+    data = await response.content()
 
-    return json.loads(data.decode("utf-8"))
+    return json.loads(data)
 
 
 async def verify_token(
