@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+## [2.11.0](https://github.com/googleapis/google-auth-library-python/compare/v2.10.0...v2.11.0) (2022-08-18)
+
+
+### Features
+
+* add integration tests for configurable token lifespan ([#1103](https://github.com/googleapis/google-auth-library-python/issues/1103)) ([124bae6](https://github.com/googleapis/google-auth-library-python/commit/124bae60771a8984674a1d7eeab3ec22b2fa0033))
+
+
+### Bug Fixes
+
+* Async certificate retrieving ([#1101](https://github.com/googleapis/google-auth-library-python/issues/1101)) ([05f125d](https://github.com/googleapis/google-auth-library-python/commit/05f125def1205a14db52c870f2bfcef47f047206))
+
 ## [2.10.0](https://github.com/googleapis/google-auth-library-python/compare/v2.9.1...v2.10.0) (2022-08-05)
 
 
