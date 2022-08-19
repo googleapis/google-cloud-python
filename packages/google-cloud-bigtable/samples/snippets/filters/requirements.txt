@@ -1,2 +1,2 @@
-google-cloud-bigtable==2.11.1
+google-cloud-bigtable==2.11.3
 snapshottest==0.6.0
