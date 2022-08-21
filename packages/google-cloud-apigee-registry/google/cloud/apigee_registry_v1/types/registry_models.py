@@ -31,9 +31,8 @@ __protobuf__ = proto.module(
 
 
 class Api(proto.Message):
-    r"""An Api is a top-level description of an API.
-    Apis are produced by producers and are commitments to provide
-    services.
+    r"""A top-level description of an API.
+    Produced by producers and are commitments to provide services.
 
     Attributes:
         name (str):
@@ -50,31 +49,27 @@ class Api(proto.Message):
             A user-definable description of the
             availability of this service. Format: free-form,
             but we expect single words that describe
-            availability, e.g. "NONE", "TESTING", "PREVIEW",
-            "GENERAL", "DEPRECATED", "SHUTDOWN".
+            availability, e.g., "NONE", "TESTING",
+            "PREVIEW", "GENERAL", "DEPRECATED", "SHUTDOWN".
         recommended_version (str):
-            The recommended version of the API.
-            Format: apis/{api}/versions/{version}
+            The recommended version of the API. Format:
+            ``apis/{api}/versions/{version}``
         recommended_deployment (str):
-            The recommended deployment of the API.
-            Format: apis/{api}/deployments/{deployment}
+            The recommended deployment of the API. Format:
+            ``apis/{api}/deployments/{deployment}``
         labels (Mapping[str, str]):
-            Labels attach identifying metadata to
-            resources. Identifying metadata can be used to
-            filter list operations.
-            Label keys and values can be no longer than 64
-            characters (Unicode codepoints), can only
-            contain lowercase letters, numeric characters,
-            underscores and dashes. International characters
-            are allowed. No more than 64 user labels can be
-            associated with one resource (System labels are
-            excluded).
+            Labels attach identifying metadata to resources. Identifying
+            metadata can be used to filter list operations.
 
-            See https://goo.gl/xmQnxf for more information
-            and examples of labels. System reserved label
-            keys are prefixed with
-            "apigeeregistry.googleapis.com/" and cannot be
-            changed.
+            Label keys and values can be no longer than 64 characters
+            (Unicode codepoints), can only contain lowercase letters,
+            numeric characters, underscores, and dashes. International
+            characters are allowed. No more than 64 user labels can be
+            associated with one resource (System labels are excluded).
+
+            See https://goo.gl/xmQnxf for more information and examples
+            of labels. System reserved label keys are prefixed with
+            ``apigeeregistry.googleapis.com/`` and cannot be changed.
         annotations (Mapping[str, str]):
             Annotations attach non-identifying metadata
             to resources.
@@ -132,7 +127,7 @@ class Api(proto.Message):
 
 
 class ApiVersion(proto.Message):
-    r"""An ApiVersion describes a particular version of an API.
+    r"""Describes a particular version of an API.
     ApiVersions are what consumers actually use.
 
     Attributes:
@@ -150,26 +145,22 @@ class ApiVersion(proto.Message):
             A user-definable description of the lifecycle
             phase of this API version. Format: free-form,
             but we expect single words that describe API
-            maturity, e.g. "CONCEPT", "DESIGN",
+            maturity, e.g., "CONCEPT", "DESIGN",
             "DEVELOPMENT", "STAGING", "PRODUCTION",
             "DEPRECATED", "RETIRED".
         labels (Mapping[str, str]):
-            Labels attach identifying metadata to
-            resources. Identifying metadata can be used to
-            filter list operations.
-            Label keys and values can be no longer than 64
-            characters (Unicode codepoints), can only
-            contain lowercase letters, numeric characters,
-            underscores and dashes. International characters
-            are allowed. No more than 64 user labels can be
-            associated with one resource (System labels are
-            excluded).
+            Labels attach identifying metadata to resources. Identifying
+            metadata can be used to filter list operations.
 
-            See https://goo.gl/xmQnxf for more information
-            and examples of labels. System reserved label
-            keys are prefixed with
-            "apigeeregistry.googleapis.com/" and cannot be
-            changed.
+            Label keys and values can be no longer than 64 characters
+            (Unicode codepoints), can only contain lowercase letters,
+            numeric characters, underscores and dashes. International
+            characters are allowed. No more than 64 user labels can be
+            associated with one resource (System labels are excluded).
+
+            See https://goo.gl/xmQnxf for more information and examples
+            of labels. System reserved label keys are prefixed with
+            ``apigeeregistry.googleapis.com/`` and cannot be changed.
         annotations (Mapping[str, str]):
             Annotations attach non-identifying metadata
             to resources.
@@ -219,11 +210,11 @@ class ApiVersion(proto.Message):
 
 
 class ApiSpec(proto.Message):
-    r"""An ApiSpec describes a version of an API in a structured way.
+    r"""Describes a version of an API in a structured way.
     ApiSpecs provide formal descriptions that consumers can use to
     use a version. ApiSpec resources are intended to be
     fully-resolved descriptions of an ApiVersion. When specs consist
-    of multiple files, these should be bundled together (e.g. in a
+    of multiple files, these should be bundled together (e.g., in a
     zip archive) and stored as a unit. Multiple specs can exist to
     provide representations in different API description formats.
     Synchronization of these representations would be provided by
@@ -254,9 +245,9 @@ class ApiSpec(proto.Message):
         mime_type (str):
             A style (format) descriptor for this spec that is specified
             as a Media Type (https://en.wikipedia.org/wiki/Media_type).
-            Possible values include "application/vnd.apigee.proto",
-            "application/vnd.apigee.openapi", and
-            "application/vnd.apigee.graphql", with possible suffixes
+            Possible values include ``application/vnd.apigee.proto``,
+            ``application/vnd.apigee.openapi``, and
+            ``application/vnd.apigee.graphql``, with possible suffixes
             representing compression types. These hypothetical names are
             defined in the vendor tree defined in RFC6838
             (https://tools.ietf.org/html/rfc6838) and are not final.
@@ -282,22 +273,18 @@ class ApiSpec(proto.Message):
             or updated. To access the contents of a spec,
             use GetApiSpecContents.
         labels (Mapping[str, str]):
-            Labels attach identifying metadata to
-            resources. Identifying metadata can be used to
-            filter list operations.
-            Label keys and values can be no longer than 64
-            characters (Unicode codepoints), can only
-            contain lowercase letters, numeric characters,
-            underscores and dashes. International characters
-            are allowed. No more than 64 user labels can be
-            associated with one resource (System labels are
-            excluded).
+            Labels attach identifying metadata to resources. Identifying
+            metadata can be used to filter list operations.
 
-            See https://goo.gl/xmQnxf for more information
-            and examples of labels. System reserved label
-            keys are prefixed with
-            "apigeeregistry.googleapis.com/" and cannot be
-            changed.
+            Label keys and values can be no longer than 64 characters
+            (Unicode codepoints), can only contain lowercase letters,
+            numeric characters, underscores and dashes. International
+            characters are allowed. No more than 64 user labels can be
+            associated with one resource (System labels are excluded).
+
+            See https://goo.gl/xmQnxf for more information and examples
+            of labels. System reserved label keys are prefixed with
+            ``apigeeregistry.googleapis.com/`` and cannot be changed.
         annotations (Mapping[str, str]):
             Annotations attach non-identifying metadata
             to resources.
@@ -372,12 +359,12 @@ class ApiSpec(proto.Message):
 
 
 class ApiDeployment(proto.Message):
-    r"""An ApiDeployment describes a service running at particular
-    address that provides a particular version of an API.
-    ApiDeployments have revisions which correspond to different
-    configurations of a single deployment in time. Revision
-    identifiers should be updated whenever the served API spec or
-    endpoint address changes.
+    r"""Describes a service running at particular address that
+    provides a particular version of an API. ApiDeployments have
+    revisions which correspond to different configurations of a
+    single deployment in time. Revision identifiers should be
+    updated whenever the served API spec or endpoint address
+    changes.
 
     Attributes:
         name (str):
@@ -401,18 +388,17 @@ class ApiDeployment(proto.Message):
             Output only. Last update timestamp: when the
             represented revision was last modified.
         api_spec_revision (str):
-            The full resource name (including revision
-            id) of the spec of the API being served by the
-            deployment. Changes to this value will update
-            the revision. Format:
-            apis/{api}/deployments/{deployment}
+            The full resource name (including revision ID) of the spec
+            of the API being served by the deployment. Changes to this
+            value will update the revision. Format:
+            ``apis/{api}/deployments/{deployment}``
         endpoint_uri (str):
             The address where the deployment is serving.
             Changes to this value will update the revision.
         external_channel_uri (str):
             The address of the external channel of the
-            API (e.g. the Developer Portal). Changes to this
-            value will not affect the revision.
+            API (e.g., the Developer Portal). Changes to
+            this value will not affect the revision.
         intended_audience (str):
             Text briefly identifying the intended
             audience of the API. Changes to this value will
@@ -422,22 +408,18 @@ class ApiDeployment(proto.Message):
             endpoint. Changes to this value will not affect
             the revision.
         labels (Mapping[str, str]):
-            Labels attach identifying metadata to
-            resources. Identifying metadata can be used to
-            filter list operations.
-            Label keys and values can be no longer than 64
-            characters (Unicode codepoints), can only
-            contain lowercase letters, numeric characters,
-            underscores and dashes. International characters
-            are allowed. No more than 64 user labels can be
-            associated with one resource (System labels are
-            excluded).
+            Labels attach identifying metadata to resources. Identifying
+            metadata can be used to filter list operations.
 
-            See https://goo.gl/xmQnxf for more information
-            and examples of labels. System reserved label
-            keys are prefixed with
-            "apigeeregistry.googleapis.com/" and cannot be
-            changed.
+            Label keys and values can be no longer than 64 characters
+            (Unicode codepoints), can only contain lowercase letters,
+            numeric characters, underscores and dashes. International
+            characters are allowed. No more than 64 user labels can be
+            associated with one resource (System labels are excluded).
+
+            See https://goo.gl/xmQnxf for more information and examples
+            of labels. System reserved label keys are prefixed with
+            ``apigeeregistry.googleapis.com/`` and cannot be changed.
         annotations (Mapping[str, str]):
             Annotations attach non-identifying metadata
             to resources.
@@ -512,15 +494,15 @@ class ApiDeployment(proto.Message):
 
 
 class Artifact(proto.Message):
-    r"""Artifacts of resources. Artifacts are unique (single-value)
-    per resource and are used to store metadata that is too large or
-    numerous to be stored directly on the resource. Since artifacts
-    are stored separately from parent resources, they should
-    generally be used for metadata that is needed infrequently, i.e.
-    not for display in primary views of the resource but perhaps
-    displayed or downloaded upon request. The ListArtifacts method
-    allows artifacts to be quickly enumerated and checked for
-    presence without downloading their (potentially-large) contents.
+    r"""Artifacts of resources. Artifacts are unique (single-value) per
+    resource and are used to store metadata that is too large or
+    numerous to be stored directly on the resource. Since artifacts are
+    stored separately from parent resources, they should generally be
+    used for metadata that is needed infrequently, i.e., not for display
+    in primary views of the resource but perhaps displayed or downloaded
+    upon request. The ``ListArtifacts`` method allows artifacts to be
+    quickly enumerated and checked for presence without downloading
+    their (potentially-large) contents.
 
     Attributes:
         name (str):

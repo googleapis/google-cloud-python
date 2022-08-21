@@ -25,11 +25,6 @@ from synthtool.languages import python
 default_version = "v1"
 
 for library in s.get_staging_dirs(default_version):
-    s.replace(
-        library / "google/cloud/**/*.py",
-        """  Example: c7cfa2a8""",
-        """Example: c7cfa2a8""",
-    )
     s.move(library, excludes=["google/cloud/apigee_registry/", "setup.py"])
 s.remove_staging_dirs()
 

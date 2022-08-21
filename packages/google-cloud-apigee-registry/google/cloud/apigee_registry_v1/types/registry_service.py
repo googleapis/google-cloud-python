@@ -74,7 +74,7 @@ class ListApisRequest(proto.Message):
     Attributes:
         parent (str):
             Required. The parent, which owns this collection of APIs.
-            Format: projects/\ */locations/*
+            Format: ``projects/*/locations/*``
         page_size (int):
             The maximum number of APIs to return.
             The service may return fewer than this value. If
@@ -145,7 +145,7 @@ class GetApiRequest(proto.Message):
     Attributes:
         name (str):
             Required. The name of the API to retrieve. Format:
-            projects/\ */locations/*/apis/\*
+            ``projects/*/locations/*/apis/*``
     """
 
     name = proto.Field(
@@ -160,12 +160,12 @@ class CreateApiRequest(proto.Message):
     Attributes:
         parent (str):
             Required. The parent, which owns this collection of APIs.
-            Format: projects/\ */locations/*
+            Format: ``projects/*/locations/*``
         api (google.cloud.apigee_registry_v1.types.Api):
             Required. The API to create.
         api_id (str):
-            Required. The ID to use for the api, which will become the
-            final component of the api's resource name.
+            Required. The ID to use for the API, which will become the
+            final component of the API's resource name.
 
             This value should be 4-63 characters, and valid characters
             are /[a-z][0-9]-/.
@@ -196,15 +196,15 @@ class UpdateApiRequest(proto.Message):
             Required. The API to update.
 
             The ``name`` field is used to identify the API to update.
-            Format: projects/\ */locations/*/apis/\*
+            Format: ``projects/*/locations/*/apis/*``
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
             The list of fields to be updated. If omitted, all fields are
             updated that are set in the request message (fields set to
-            default values are ignored). If a "*" is specified, all
-            fields are updated, including fields that are
+            default values are ignored). If an asterisk "*" is
+            specified, all fields are updated, including fields that are
             unspecified/default in the request.
         allow_missing (bool):
-            If set to true, and the api is not found, a new api will be
+            If set to true, and the API is not found, a new API will be
             created. In this situation, ``update_mask`` is ignored.
     """
 
@@ -230,12 +230,20 @@ class DeleteApiRequest(proto.Message):
     Attributes:
         name (str):
             Required. The name of the API to delete. Format:
-            projects/\ */locations/*/apis/\*
+            ``projects/*/locations/*/apis/*``
+        force (bool):
+            If set to true, any child resources will also
+            be deleted. (Otherwise, the request will only
+            work if there are no child resources.)
     """
 
     name = proto.Field(
         proto.STRING,
         number=1,
+    )
+    force = proto.Field(
+        proto.BOOL,
+        number=2,
     )
 
 
@@ -245,7 +253,7 @@ class ListApiVersionsRequest(proto.Message):
     Attributes:
         parent (str):
             Required. The parent, which owns this collection of
-            versions. Format: projects/\ */locations/*/apis/\*
+            versions. Format: ``projects/*/locations/*/apis/*``
         page_size (int):
             The maximum number of versions to return.
             The service may return fewer than this value. If
@@ -316,7 +324,7 @@ class GetApiVersionRequest(proto.Message):
     Attributes:
         name (str):
             Required. The name of the version to retrieve. Format:
-            projects/\ */locations/*/apis/*/versions/*
+            ``projects/*/locations/*/apis/*/versions/*``
     """
 
     name = proto.Field(
@@ -331,7 +339,7 @@ class CreateApiVersionRequest(proto.Message):
     Attributes:
         parent (str):
             Required. The parent, which owns this collection of
-            versions. Format: projects/\ */locations/*/apis/\*
+            versions. Format: ``projects/*/locations/*/apis/*``
         api_version (google.cloud.apigee_registry_v1.types.ApiVersion):
             Required. The version to create.
         api_version_id (str):
@@ -367,12 +375,12 @@ class UpdateApiVersionRequest(proto.Message):
             Required. The version to update.
 
             The ``name`` field is used to identify the version to
-            update. Format: projects/\ */locations/*/apis/*/versions/*
+            update. Format: ``projects/*/locations/*/apis/*/versions/*``
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
             The list of fields to be updated. If omitted, all fields are
             updated that are set in the request message (fields set to
-            default values are ignored). If a "*" is specified, all
-            fields are updated, including fields that are
+            default values are ignored). If an asterisk "*" is
+            specified, all fields are updated, including fields that are
             unspecified/default in the request.
         allow_missing (bool):
             If set to true, and the version is not found, a new version
@@ -402,12 +410,20 @@ class DeleteApiVersionRequest(proto.Message):
     Attributes:
         name (str):
             Required. The name of the version to delete. Format:
-            projects/\ */locations/*/apis/*/versions/*
+            ``projects/*/locations/*/apis/*/versions/*``
+        force (bool):
+            If set to true, any child resources will also
+            be deleted. (Otherwise, the request will only
+            work if there are no child resources.)
     """
 
     name = proto.Field(
         proto.STRING,
         number=1,
+    )
+    force = proto.Field(
+        proto.BOOL,
+        number=2,
     )
 
 
@@ -417,7 +433,7 @@ class ListApiSpecsRequest(proto.Message):
     Attributes:
         parent (str):
             Required. The parent, which owns this collection of specs.
-            Format: projects/\ */locations/*/apis/*/versions/*
+            Format: ``projects/*/locations/*/apis/*/versions/*``
         page_size (int):
             The maximum number of specs to return.
             The service may return fewer than this value. If
@@ -489,7 +505,7 @@ class GetApiSpecRequest(proto.Message):
     Attributes:
         name (str):
             Required. The name of the spec to retrieve. Format:
-            projects/\ */locations/*/apis/*/versions/*/specs/\*
+            ``projects/*/locations/*/apis/*/versions/*/specs/*``
     """
 
     name = proto.Field(
@@ -505,7 +521,7 @@ class GetApiSpecContentsRequest(proto.Message):
         name (str):
             Required. The name of the spec whose contents should be
             retrieved. Format:
-            projects/\ */locations/*/apis/*/versions/*/specs/\*
+            ``projects/*/locations/*/apis/*/versions/*/specs/*``
     """
 
     name = proto.Field(
@@ -520,7 +536,7 @@ class CreateApiSpecRequest(proto.Message):
     Attributes:
         parent (str):
             Required. The parent, which owns this collection of specs.
-            Format: projects/\ */locations/*/apis/*/versions/*
+            Format: ``projects/*/locations/*/apis/*/versions/*``
         api_spec (google.cloud.apigee_registry_v1.types.ApiSpec):
             Required. The spec to create.
         api_spec_id (str):
@@ -556,12 +572,12 @@ class UpdateApiSpecRequest(proto.Message):
             Required. The spec to update.
 
             The ``name`` field is used to identify the spec to update.
-            Format: projects/\ */locations/*/apis/*/versions/*/specs/\*
+            Format: ``projects/*/locations/*/apis/*/versions/*/specs/*``
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
             The list of fields to be updated. If omitted, all fields are
             updated that are set in the request message (fields set to
-            default values are ignored). If a "*" is specified, all
-            fields are updated, including fields that are
+            default values are ignored). If an asterisk "*" is
+            specified, all fields are updated, including fields that are
             unspecified/default in the request.
         allow_missing (bool):
             If set to true, and the spec is not found, a new spec will
@@ -590,7 +606,7 @@ class DeleteApiSpecRequest(proto.Message):
     Attributes:
         name (str):
             Required. The name of the spec to delete. Format:
-            projects/\ */locations/*/apis/*/versions/*/specs/\*
+            ``projects/*/locations/*/apis/*/versions/*/specs/*``
         force (bool):
             If set to true, any child resources will also
             be deleted. (Otherwise, the request will only
@@ -693,10 +709,10 @@ class RollbackApiSpecRequest(proto.Message):
         name (str):
             Required. The spec being rolled back.
         revision_id (str):
-            Required. The revision ID to roll back to.
-            It must be a revision of the same spec.
+            Required. The revision ID to roll back to. It must be a
+            revision of the same spec.
 
-            Example: c7cfa2a8
+            Example: ``c7cfa2a8``
     """
 
     name = proto.Field(
@@ -714,10 +730,11 @@ class DeleteApiSpecRevisionRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the spec revision to be
-            deleted, with a revision ID explicitly included.
+            Required. The name of the spec revision to be deleted, with
+            a revision ID explicitly included.
+
             Example:
-            projects/sample/locations/global/apis/petstore/versions/1.0.0/specs/openapi.yaml@c7cfa2a8
+            ``projects/sample/locations/global/apis/petstore/versions/1.0.0/specs/openapi.yaml@c7cfa2a8``
     """
 
     name = proto.Field(
@@ -732,7 +749,7 @@ class ListApiDeploymentsRequest(proto.Message):
     Attributes:
         parent (str):
             Required. The parent, which owns this collection of
-            deployments. Format: projects/\ */locations/*/apis/\*
+            deployments. Format: ``projects/*/locations/*/apis/*``
         page_size (int):
             The maximum number of deployments to return.
             The service may return fewer than this value. If
@@ -804,7 +821,7 @@ class GetApiDeploymentRequest(proto.Message):
     Attributes:
         name (str):
             Required. The name of the deployment to retrieve. Format:
-            projects/\ */locations/*/apis/*/deployments/*
+            ``projects/*/locations/*/apis/*/deployments/*``
     """
 
     name = proto.Field(
@@ -819,7 +836,7 @@ class CreateApiDeploymentRequest(proto.Message):
     Attributes:
         parent (str):
             Required. The parent, which owns this collection of
-            deployments. Format: projects/\ */locations/*/apis/\*
+            deployments. Format: ``projects/*/locations/*/apis/*``
         api_deployment (google.cloud.apigee_registry_v1.types.ApiDeployment):
             Required. The deployment to create.
         api_deployment_id (str):
@@ -857,12 +874,12 @@ class UpdateApiDeploymentRequest(proto.Message):
 
             The ``name`` field is used to identify the deployment to
             update. Format:
-            projects/\ */locations/*/apis/*/deployments/*
+            ``projects/*/locations/*/apis/*/deployments/*``
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
             The list of fields to be updated. If omitted, all fields are
             updated that are set in the request message (fields set to
-            default values are ignored). If a "*" is specified, all
-            fields are updated, including fields that are
+            default values are ignored). If an asterisk "*" is
+            specified, all fields are updated, including fields that are
             unspecified/default in the request.
         allow_missing (bool):
             If set to true, and the deployment is not found, a new
@@ -892,7 +909,7 @@ class DeleteApiDeploymentRequest(proto.Message):
     Attributes:
         name (str):
             Required. The name of the deployment to delete. Format:
-            projects/\ */locations/*/apis/*/deployments/*
+            ``projects/*/locations/*/apis/*/deployments/*``
         force (bool):
             If set to true, any child resources will also
             be deleted. (Otherwise, the request will only
@@ -995,9 +1012,10 @@ class RollbackApiDeploymentRequest(proto.Message):
         name (str):
             Required. The deployment being rolled back.
         revision_id (str):
-            Required. The revision ID to roll back to.
-            It must be a revision of the same deployment.
-            Example: c7cfa2a8
+            Required. The revision ID to roll back to. It must be a
+            revision of the same deployment.
+
+            Example: ``c7cfa2a8``
     """
 
     name = proto.Field(
@@ -1015,11 +1033,11 @@ class DeleteApiDeploymentRevisionRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the deployment revision
-            to be deleted, with a revision ID explicitly
-            included.
+            Required. The name of the deployment revision to be deleted,
+            with a revision ID explicitly included.
+
             Example:
-            projects/sample/locations/global/apis/petstore/deployments/prod@c7cfa2a8
+            ``projects/sample/locations/global/apis/petstore/deployments/prod@c7cfa2a8``
     """
 
     name = proto.Field(
@@ -1033,8 +1051,8 @@ class ListArtifactsRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The parent, which owns this
-            collection of artifacts. Format: {parent}
+            Required. The parent, which owns this collection of
+            artifacts. Format: ``{parent}``
         page_size (int):
             The maximum number of artifacts to return.
             The service may return fewer than this value. If
@@ -1106,7 +1124,7 @@ class GetArtifactRequest(proto.Message):
     Attributes:
         name (str):
             Required. The name of the artifact to retrieve. Format:
-            {parent}/artifacts/\*
+            ``{parent}/artifacts/*``
     """
 
     name = proto.Field(
@@ -1121,7 +1139,7 @@ class GetArtifactContentsRequest(proto.Message):
     Attributes:
         name (str):
             Required. The name of the artifact whose contents should be
-            retrieved. Format: {parent}/artifacts/\*
+            retrieved. Format: ``{parent}/artifacts/*``
     """
 
     name = proto.Field(
@@ -1135,8 +1153,8 @@ class CreateArtifactRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The parent, which owns this
-            collection of artifacts. Format: {parent}
+            Required. The parent, which owns this collection of
+            artifacts. Format: ``{parent}``
         artifact (google.cloud.apigee_registry_v1.types.Artifact):
             Required. The artifact to create.
         artifact_id (str):
@@ -1172,7 +1190,7 @@ class ReplaceArtifactRequest(proto.Message):
             Required. The artifact to replace.
 
             The ``name`` field is used to identify the artifact to
-            replace. Format: {parent}/artifacts/\*
+            replace. Format: ``{parent}/artifacts/*``
     """
 
     artifact = proto.Field(
@@ -1188,7 +1206,7 @@ class DeleteArtifactRequest(proto.Message):
     Attributes:
         name (str):
             Required. The name of the artifact to delete. Format:
-            {parent}/artifacts/\*
+            ``{parent}/artifacts/*``
     """
 
     name = proto.Field(

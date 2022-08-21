@@ -245,7 +245,7 @@ class RegistryGrpcTransport(RegistryTransport):
     ]:
         r"""Return a callable for the list apis method over gRPC.
 
-        ListApis returns matching APIs.
+        Returns matching APIs.
 
         Returns:
             Callable[[~.ListApisRequest],
@@ -271,7 +271,7 @@ class RegistryGrpcTransport(RegistryTransport):
     ) -> Callable[[registry_service.GetApiRequest], registry_models.Api]:
         r"""Return a callable for the get api method over gRPC.
 
-        GetApi returns a specified API.
+        Returns a specified API.
 
         Returns:
             Callable[[~.GetApiRequest],
@@ -297,7 +297,7 @@ class RegistryGrpcTransport(RegistryTransport):
     ) -> Callable[[registry_service.CreateApiRequest], registry_models.Api]:
         r"""Return a callable for the create api method over gRPC.
 
-        CreateApi creates a specified API.
+        Creates a specified API.
 
         Returns:
             Callable[[~.CreateApiRequest],
@@ -323,7 +323,7 @@ class RegistryGrpcTransport(RegistryTransport):
     ) -> Callable[[registry_service.UpdateApiRequest], registry_models.Api]:
         r"""Return a callable for the update api method over gRPC.
 
-        UpdateApi can be used to modify a specified API.
+        Used to modify a specified API.
 
         Returns:
             Callable[[~.UpdateApiRequest],
@@ -349,8 +349,8 @@ class RegistryGrpcTransport(RegistryTransport):
     ) -> Callable[[registry_service.DeleteApiRequest], empty_pb2.Empty]:
         r"""Return a callable for the delete api method over gRPC.
 
-        DeleteApi removes a specified API and all of the
-        resources that it owns.
+        Removes a specified API and all of the resources that
+        it owns.
 
         Returns:
             Callable[[~.DeleteApiRequest],
@@ -379,7 +379,7 @@ class RegistryGrpcTransport(RegistryTransport):
     ]:
         r"""Return a callable for the list api versions method over gRPC.
 
-        ListApiVersions returns matching versions.
+        Returns matching versions.
 
         Returns:
             Callable[[~.ListApiVersionsRequest],
@@ -405,7 +405,7 @@ class RegistryGrpcTransport(RegistryTransport):
     ) -> Callable[[registry_service.GetApiVersionRequest], registry_models.ApiVersion]:
         r"""Return a callable for the get api version method over gRPC.
 
-        GetApiVersion returns a specified version.
+        Returns a specified version.
 
         Returns:
             Callable[[~.GetApiVersionRequest],
@@ -433,7 +433,7 @@ class RegistryGrpcTransport(RegistryTransport):
     ]:
         r"""Return a callable for the create api version method over gRPC.
 
-        CreateApiVersion creates a specified version.
+        Creates a specified version.
 
         Returns:
             Callable[[~.CreateApiVersionRequest],
@@ -461,8 +461,7 @@ class RegistryGrpcTransport(RegistryTransport):
     ]:
         r"""Return a callable for the update api version method over gRPC.
 
-        UpdateApiVersion can be used to modify a specified
-        version.
+        Used to modify a specified version.
 
         Returns:
             Callable[[~.UpdateApiVersionRequest],
@@ -488,8 +487,8 @@ class RegistryGrpcTransport(RegistryTransport):
     ) -> Callable[[registry_service.DeleteApiVersionRequest], empty_pb2.Empty]:
         r"""Return a callable for the delete api version method over gRPC.
 
-        DeleteApiVersion removes a specified version and all
-        of the resources that it owns.
+        Removes a specified version and all of the resources
+        that it owns.
 
         Returns:
             Callable[[~.DeleteApiVersionRequest],
@@ -517,7 +516,7 @@ class RegistryGrpcTransport(RegistryTransport):
     ]:
         r"""Return a callable for the list api specs method over gRPC.
 
-        ListApiSpecs returns matching specs.
+        Returns matching specs.
 
         Returns:
             Callable[[~.ListApiSpecsRequest],
@@ -543,7 +542,7 @@ class RegistryGrpcTransport(RegistryTransport):
     ) -> Callable[[registry_service.GetApiSpecRequest], registry_models.ApiSpec]:
         r"""Return a callable for the get api spec method over gRPC.
 
-        GetApiSpec returns a specified spec.
+        Returns a specified spec.
 
         Returns:
             Callable[[~.GetApiSpecRequest],
@@ -569,10 +568,10 @@ class RegistryGrpcTransport(RegistryTransport):
     ) -> Callable[[registry_service.GetApiSpecContentsRequest], httpbody_pb2.HttpBody]:
         r"""Return a callable for the get api spec contents method over gRPC.
 
-        GetApiSpecContents returns the contents of a specified spec. If
-        specs are stored with GZip compression, the default behavior is
-        to return the spec uncompressed (the mime_type response field
-        indicates the exact format returned).
+        Returns the contents of a specified spec. If specs are stored
+        with GZip compression, the default behavior is to return the
+        spec uncompressed (the mime_type response field indicates the
+        exact format returned).
 
         Returns:
             Callable[[~.GetApiSpecContentsRequest],
@@ -598,7 +597,7 @@ class RegistryGrpcTransport(RegistryTransport):
     ) -> Callable[[registry_service.CreateApiSpecRequest], registry_models.ApiSpec]:
         r"""Return a callable for the create api spec method over gRPC.
 
-        CreateApiSpec creates a specified spec.
+        Creates a specified spec.
 
         Returns:
             Callable[[~.CreateApiSpecRequest],
@@ -624,7 +623,7 @@ class RegistryGrpcTransport(RegistryTransport):
     ) -> Callable[[registry_service.UpdateApiSpecRequest], registry_models.ApiSpec]:
         r"""Return a callable for the update api spec method over gRPC.
 
-        UpdateApiSpec can be used to modify a specified spec.
+        Used to modify a specified spec.
 
         Returns:
             Callable[[~.UpdateApiSpecRequest],
@@ -650,8 +649,8 @@ class RegistryGrpcTransport(RegistryTransport):
     ) -> Callable[[registry_service.DeleteApiSpecRequest], empty_pb2.Empty]:
         r"""Return a callable for the delete api spec method over gRPC.
 
-        DeleteApiSpec removes a specified spec, all
-        revisions, and all child resources (e.g. artifacts).
+        Removes a specified spec, all revisions, and all
+        child resources (e.g., artifacts).
 
         Returns:
             Callable[[~.DeleteApiSpecRequest],
@@ -679,8 +678,7 @@ class RegistryGrpcTransport(RegistryTransport):
     ]:
         r"""Return a callable for the tag api spec revision method over gRPC.
 
-        TagApiSpecRevision adds a tag to a specified revision
-        of a spec.
+        Adds a tag to a specified revision of a spec.
 
         Returns:
             Callable[[~.TagApiSpecRevisionRequest],
@@ -709,7 +707,7 @@ class RegistryGrpcTransport(RegistryTransport):
     ]:
         r"""Return a callable for the list api spec revisions method over gRPC.
 
-        ListApiSpecRevisions lists all revisions of a spec.
+        Lists all revisions of a spec.
         Revisions are returned in descending order of revision
         creation time.
 
@@ -737,9 +735,9 @@ class RegistryGrpcTransport(RegistryTransport):
     ) -> Callable[[registry_service.RollbackApiSpecRequest], registry_models.ApiSpec]:
         r"""Return a callable for the rollback api spec method over gRPC.
 
-        RollbackApiSpec sets the current revision to a
-        specified prior revision. Note that this creates a new
-        revision with a new revision ID.
+        Sets the current revision to a specified prior
+        revision. Note that this creates a new revision with a
+        new revision ID.
 
         Returns:
             Callable[[~.RollbackApiSpecRequest],
@@ -767,7 +765,7 @@ class RegistryGrpcTransport(RegistryTransport):
     ]:
         r"""Return a callable for the delete api spec revision method over gRPC.
 
-        DeleteApiSpecRevision deletes a revision of a spec.
+        Deletes a revision of a spec.
 
         Returns:
             Callable[[~.DeleteApiSpecRevisionRequest],
@@ -796,7 +794,7 @@ class RegistryGrpcTransport(RegistryTransport):
     ]:
         r"""Return a callable for the list api deployments method over gRPC.
 
-        ListApiDeployments returns matching deployments.
+        Returns matching deployments.
 
         Returns:
             Callable[[~.ListApiDeploymentsRequest],
@@ -824,7 +822,7 @@ class RegistryGrpcTransport(RegistryTransport):
     ]:
         r"""Return a callable for the get api deployment method over gRPC.
 
-        GetApiDeployment returns a specified deployment.
+        Returns a specified deployment.
 
         Returns:
             Callable[[~.GetApiDeploymentRequest],
@@ -852,7 +850,7 @@ class RegistryGrpcTransport(RegistryTransport):
     ]:
         r"""Return a callable for the create api deployment method over gRPC.
 
-        CreateApiDeployment creates a specified deployment.
+        Creates a specified deployment.
 
         Returns:
             Callable[[~.CreateApiDeploymentRequest],
@@ -880,8 +878,7 @@ class RegistryGrpcTransport(RegistryTransport):
     ]:
         r"""Return a callable for the update api deployment method over gRPC.
 
-        UpdateApiDeployment can be used to modify a specified
-        deployment.
+        Used to modify a specified deployment.
 
         Returns:
             Callable[[~.UpdateApiDeploymentRequest],
@@ -907,8 +904,8 @@ class RegistryGrpcTransport(RegistryTransport):
     ) -> Callable[[registry_service.DeleteApiDeploymentRequest], empty_pb2.Empty]:
         r"""Return a callable for the delete api deployment method over gRPC.
 
-        DeleteApiDeployment removes a specified deployment,
-        all revisions, and all child resources (e.g. artifacts).
+        Removes a specified deployment, all revisions, and
+        all child resources (e.g., artifacts).
 
         Returns:
             Callable[[~.DeleteApiDeploymentRequest],
@@ -937,8 +934,8 @@ class RegistryGrpcTransport(RegistryTransport):
     ]:
         r"""Return a callable for the tag api deployment revision method over gRPC.
 
-        TagApiDeploymentRevision adds a tag to a specified
-        revision of a deployment.
+        Adds a tag to a specified revision of a
+        deployment.
 
         Returns:
             Callable[[~.TagApiDeploymentRevisionRequest],
@@ -967,9 +964,9 @@ class RegistryGrpcTransport(RegistryTransport):
     ]:
         r"""Return a callable for the list api deployment revisions method over gRPC.
 
-        ListApiDeploymentRevisions lists all revisions of a
-        deployment. Revisions are returned in descending order
-        of revision creation time.
+        Lists all revisions of a deployment.
+        Revisions are returned in descending order of revision
+        creation time.
 
         Returns:
             Callable[[~.ListApiDeploymentRevisionsRequest],
@@ -999,9 +996,9 @@ class RegistryGrpcTransport(RegistryTransport):
     ]:
         r"""Return a callable for the rollback api deployment method over gRPC.
 
-        RollbackApiDeployment sets the current revision to a
-        specified prior revision. Note that this creates a new
-        revision with a new revision ID.
+        Sets the current revision to a specified prior
+        revision. Note that this creates a new revision with a
+        new revision ID.
 
         Returns:
             Callable[[~.RollbackApiDeploymentRequest],
@@ -1030,8 +1027,7 @@ class RegistryGrpcTransport(RegistryTransport):
     ]:
         r"""Return a callable for the delete api deployment revision method over gRPC.
 
-        DeleteApiDeploymentRevision deletes a revision of a
-        deployment.
+        Deletes a revision of a deployment.
 
         Returns:
             Callable[[~.DeleteApiDeploymentRevisionRequest],
@@ -1061,7 +1057,7 @@ class RegistryGrpcTransport(RegistryTransport):
     ]:
         r"""Return a callable for the list artifacts method over gRPC.
 
-        ListArtifacts returns matching artifacts.
+        Returns matching artifacts.
 
         Returns:
             Callable[[~.ListArtifactsRequest],
@@ -1087,7 +1083,7 @@ class RegistryGrpcTransport(RegistryTransport):
     ) -> Callable[[registry_service.GetArtifactRequest], registry_models.Artifact]:
         r"""Return a callable for the get artifact method over gRPC.
 
-        GetArtifact returns a specified artifact.
+        Returns a specified artifact.
 
         Returns:
             Callable[[~.GetArtifactRequest],
@@ -1113,10 +1109,10 @@ class RegistryGrpcTransport(RegistryTransport):
     ) -> Callable[[registry_service.GetArtifactContentsRequest], httpbody_pb2.HttpBody]:
         r"""Return a callable for the get artifact contents method over gRPC.
 
-        GetArtifactContents returns the contents of a specified
-        artifact. If artifacts are stored with GZip compression, the
-        default behavior is to return the artifact uncompressed (the
-        mime_type response field indicates the exact format returned).
+        Returns the contents of a specified artifact. If artifacts are
+        stored with GZip compression, the default behavior is to return
+        the artifact uncompressed (the mime_type response field
+        indicates the exact format returned).
 
         Returns:
             Callable[[~.GetArtifactContentsRequest],
@@ -1142,7 +1138,7 @@ class RegistryGrpcTransport(RegistryTransport):
     ) -> Callable[[registry_service.CreateArtifactRequest], registry_models.Artifact]:
         r"""Return a callable for the create artifact method over gRPC.
 
-        CreateArtifact creates a specified artifact.
+        Creates a specified artifact.
 
         Returns:
             Callable[[~.CreateArtifactRequest],
@@ -1168,8 +1164,7 @@ class RegistryGrpcTransport(RegistryTransport):
     ) -> Callable[[registry_service.ReplaceArtifactRequest], registry_models.Artifact]:
         r"""Return a callable for the replace artifact method over gRPC.
 
-        ReplaceArtifact can be used to replace a specified
-        artifact.
+        Used to replace a specified artifact.
 
         Returns:
             Callable[[~.ReplaceArtifactRequest],
@@ -1195,7 +1190,7 @@ class RegistryGrpcTransport(RegistryTransport):
     ) -> Callable[[registry_service.DeleteArtifactRequest], empty_pb2.Empty]:
         r"""Return a callable for the delete artifact method over gRPC.
 
-        DeleteArtifact removes a specified artifact.
+        Removes a specified artifact.
 
         Returns:
             Callable[[~.DeleteArtifactRequest],

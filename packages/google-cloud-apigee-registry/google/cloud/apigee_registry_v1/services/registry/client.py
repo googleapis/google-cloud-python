@@ -541,7 +541,7 @@ class RegistryClient(metaclass=RegistryClientMeta):
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListApisPager:
-        r"""ListApis returns matching APIs.
+        r"""Returns matching APIs.
 
         .. code-block:: python
 
@@ -568,7 +568,7 @@ class RegistryClient(metaclass=RegistryClientMeta):
                 The request object. Request message for ListApis.
             parent (str):
                 Required. The parent, which owns this collection of
-                APIs. Format: projects/\ */locations/*
+                APIs. Format: ``projects/*/locations/*``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -647,7 +647,7 @@ class RegistryClient(metaclass=RegistryClientMeta):
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> registry_models.Api:
-        r"""GetApi returns a specified API.
+        r"""Returns a specified API.
 
         .. code-block:: python
 
@@ -673,7 +673,7 @@ class RegistryClient(metaclass=RegistryClientMeta):
                 The request object. Request message for GetApi.
             name (str):
                 Required. The name of the API to retrieve. Format:
-                projects/\ */locations/*/apis/\*
+                ``projects/*/locations/*/apis/*``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -686,9 +686,9 @@ class RegistryClient(metaclass=RegistryClientMeta):
 
         Returns:
             google.cloud.apigee_registry_v1.types.Api:
-                An Api is a top-level description of
-                an API. Apis are produced by producers
-                and are commitments to provide services.
+                A top-level description of an API.
+                Produced by producers and are
+                commitments to provide services.
 
         """
         # Create or coerce a protobuf request object.
@@ -744,7 +744,7 @@ class RegistryClient(metaclass=RegistryClientMeta):
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> registry_models.Api:
-        r"""CreateApi creates a specified API.
+        r"""Creates a specified API.
 
         .. code-block:: python
 
@@ -771,7 +771,7 @@ class RegistryClient(metaclass=RegistryClientMeta):
                 The request object. Request message for CreateApi.
             parent (str):
                 Required. The parent, which owns this collection of
-                APIs. Format: projects/\ */locations/*
+                APIs. Format: ``projects/*/locations/*``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -782,8 +782,8 @@ class RegistryClient(metaclass=RegistryClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             api_id (str):
-                Required. The ID to use for the api, which will become
-                the final component of the api's resource name.
+                Required. The ID to use for the API, which will become
+                the final component of the API's resource name.
 
                 This value should be 4-63 characters, and valid
                 characters are /[a-z][0-9]-/.
@@ -801,9 +801,9 @@ class RegistryClient(metaclass=RegistryClientMeta):
 
         Returns:
             google.cloud.apigee_registry_v1.types.Api:
-                An Api is a top-level description of
-                an API. Apis are produced by producers
-                and are commitments to provide services.
+                A top-level description of an API.
+                Produced by producers and are
+                commitments to provide services.
 
         """
         # Create or coerce a protobuf request object.
@@ -862,7 +862,7 @@ class RegistryClient(metaclass=RegistryClientMeta):
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> registry_models.Api:
-        r"""UpdateApi can be used to modify a specified API.
+        r"""Used to modify a specified API.
 
         .. code-block:: python
 
@@ -889,7 +889,7 @@ class RegistryClient(metaclass=RegistryClientMeta):
                 Required. The API to update.
 
                 The ``name`` field is used to identify the API to
-                update. Format: projects/\ */locations/*/apis/\*
+                update. Format: ``projects/*/locations/*/apis/*``
 
                 This corresponds to the ``api`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -897,9 +897,9 @@ class RegistryClient(metaclass=RegistryClientMeta):
             update_mask (google.protobuf.field_mask_pb2.FieldMask):
                 The list of fields to be updated. If omitted, all fields
                 are updated that are set in the request message (fields
-                set to default values are ignored). If a "*" is
-                specified, all fields are updated, including fields that
-                are unspecified/default in the request.
+                set to default values are ignored). If an asterisk "*"
+                is specified, all fields are updated, including fields
+                that are unspecified/default in the request.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -912,9 +912,9 @@ class RegistryClient(metaclass=RegistryClientMeta):
 
         Returns:
             google.cloud.apigee_registry_v1.types.Api:
-                An Api is a top-level description of
-                an API. Apis are produced by producers
-                and are commitments to provide services.
+                A top-level description of an API.
+                Produced by producers and are
+                commitments to provide services.
 
         """
         # Create or coerce a protobuf request object.
@@ -970,8 +970,8 @@ class RegistryClient(metaclass=RegistryClientMeta):
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
-        r"""DeleteApi removes a specified API and all of the
-        resources that it owns.
+        r"""Removes a specified API and all of the resources that
+        it owns.
 
         .. code-block:: python
 
@@ -994,7 +994,7 @@ class RegistryClient(metaclass=RegistryClientMeta):
                 The request object. Request message for DeleteApi.
             name (str):
                 Required. The name of the API to delete. Format:
-                projects/\ */locations/*/apis/\*
+                ``projects/*/locations/*/apis/*``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1053,7 +1053,7 @@ class RegistryClient(metaclass=RegistryClientMeta):
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListApiVersionsPager:
-        r"""ListApiVersions returns matching versions.
+        r"""Returns matching versions.
 
         .. code-block:: python
 
@@ -1080,7 +1080,7 @@ class RegistryClient(metaclass=RegistryClientMeta):
                 The request object. Request message for ListApiVersions.
             parent (str):
                 Required. The parent, which owns this collection of
-                versions. Format: projects/\ */locations/*/apis/\*
+                versions. Format: ``projects/*/locations/*/apis/*``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1159,7 +1159,7 @@ class RegistryClient(metaclass=RegistryClientMeta):
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> registry_models.ApiVersion:
-        r"""GetApiVersion returns a specified version.
+        r"""Returns a specified version.
 
         .. code-block:: python
 
@@ -1185,7 +1185,7 @@ class RegistryClient(metaclass=RegistryClientMeta):
                 The request object. Request message for GetApiVersion.
             name (str):
                 Required. The name of the version to retrieve. Format:
-                projects/\ */locations/*/apis/*/versions/*
+                ``projects/*/locations/*/apis/*/versions/*``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1198,9 +1198,9 @@ class RegistryClient(metaclass=RegistryClientMeta):
 
         Returns:
             google.cloud.apigee_registry_v1.types.ApiVersion:
-                An ApiVersion describes a particular
-                version of an API. ApiVersions are what
-                consumers actually use.
+                Describes a particular version of an
+                API. ApiVersions are what consumers
+                actually use.
 
         """
         # Create or coerce a protobuf request object.
@@ -1256,7 +1256,7 @@ class RegistryClient(metaclass=RegistryClientMeta):
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> registry_models.ApiVersion:
-        r"""CreateApiVersion creates a specified version.
+        r"""Creates a specified version.
 
         .. code-block:: python
 
@@ -1284,7 +1284,7 @@ class RegistryClient(metaclass=RegistryClientMeta):
                 CreateApiVersion.
             parent (str):
                 Required. The parent, which owns this collection of
-                versions. Format: projects/\ */locations/*/apis/\*
+                versions. Format: ``projects/*/locations/*/apis/*``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1315,9 +1315,9 @@ class RegistryClient(metaclass=RegistryClientMeta):
 
         Returns:
             google.cloud.apigee_registry_v1.types.ApiVersion:
-                An ApiVersion describes a particular
-                version of an API. ApiVersions are what
-                consumers actually use.
+                Describes a particular version of an
+                API. ApiVersions are what consumers
+                actually use.
 
         """
         # Create or coerce a protobuf request object.
@@ -1376,8 +1376,7 @@ class RegistryClient(metaclass=RegistryClientMeta):
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> registry_models.ApiVersion:
-        r"""UpdateApiVersion can be used to modify a specified
-        version.
+        r"""Used to modify a specified version.
 
         .. code-block:: python
 
@@ -1406,7 +1405,7 @@ class RegistryClient(metaclass=RegistryClientMeta):
 
                 The ``name`` field is used to identify the version to
                 update. Format:
-                projects/\ */locations/*/apis/*/versions/*
+                ``projects/*/locations/*/apis/*/versions/*``
 
                 This corresponds to the ``api_version`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1414,9 +1413,9 @@ class RegistryClient(metaclass=RegistryClientMeta):
             update_mask (google.protobuf.field_mask_pb2.FieldMask):
                 The list of fields to be updated. If omitted, all fields
                 are updated that are set in the request message (fields
-                set to default values are ignored). If a "*" is
-                specified, all fields are updated, including fields that
-                are unspecified/default in the request.
+                set to default values are ignored). If an asterisk "*"
+                is specified, all fields are updated, including fields
+                that are unspecified/default in the request.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1429,9 +1428,9 @@ class RegistryClient(metaclass=RegistryClientMeta):
 
         Returns:
             google.cloud.apigee_registry_v1.types.ApiVersion:
-                An ApiVersion describes a particular
-                version of an API. ApiVersions are what
-                consumers actually use.
+                Describes a particular version of an
+                API. ApiVersions are what consumers
+                actually use.
 
         """
         # Create or coerce a protobuf request object.
@@ -1489,8 +1488,8 @@ class RegistryClient(metaclass=RegistryClientMeta):
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
-        r"""DeleteApiVersion removes a specified version and all
-        of the resources that it owns.
+        r"""Removes a specified version and all of the resources
+        that it owns.
 
         .. code-block:: python
 
@@ -1514,7 +1513,7 @@ class RegistryClient(metaclass=RegistryClientMeta):
                 DeleteApiVersion.
             name (str):
                 Required. The name of the version to delete. Format:
-                projects/\ */locations/*/apis/*/versions/*
+                ``projects/*/locations/*/apis/*/versions/*``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1573,7 +1572,7 @@ class RegistryClient(metaclass=RegistryClientMeta):
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListApiSpecsPager:
-        r"""ListApiSpecs returns matching specs.
+        r"""Returns matching specs.
 
         .. code-block:: python
 
@@ -1601,7 +1600,7 @@ class RegistryClient(metaclass=RegistryClientMeta):
             parent (str):
                 Required. The parent, which owns this collection of
                 specs. Format:
-                projects/\ */locations/*/apis/*/versions/*
+                ``projects/*/locations/*/apis/*/versions/*``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1680,7 +1679,7 @@ class RegistryClient(metaclass=RegistryClientMeta):
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> registry_models.ApiSpec:
-        r"""GetApiSpec returns a specified spec.
+        r"""Returns a specified spec.
 
         .. code-block:: python
 
@@ -1706,7 +1705,7 @@ class RegistryClient(metaclass=RegistryClientMeta):
                 The request object. Request message for GetApiSpec.
             name (str):
                 Required. The name of the spec to retrieve. Format:
-                projects/\ */locations/*/apis/*/versions/*/specs/\*
+                ``projects/*/locations/*/apis/*/versions/*/specs/*``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1719,21 +1718,20 @@ class RegistryClient(metaclass=RegistryClientMeta):
 
         Returns:
             google.cloud.apigee_registry_v1.types.ApiSpec:
-                An ApiSpec describes a version of an
-                API in a structured way. ApiSpecs
-                provide formal descriptions that
-                consumers can use to use a version.
-                ApiSpec resources are intended to be
-                fully-resolved descriptions of an
-                ApiVersion. When specs consist of
-                multiple files, these should be bundled
-                together (e.g. in a zip archive) and
-                stored as a unit. Multiple specs can
-                exist to provide representations in
-                different API description formats.
-                Synchronization of these representations
-                would be provided by tooling and
-                background services.
+                Describes a version of an API in a
+                structured way. ApiSpecs provide formal
+                descriptions that consumers can use to
+                use a version. ApiSpec resources are
+                intended to be fully-resolved
+                descriptions of an ApiVersion. When
+                specs consist of multiple files, these
+                should be bundled together (e.g., in a
+                zip archive) and stored as a unit.
+                Multiple specs can exist to provide
+                representations in different API
+                description formats. Synchronization of
+                these representations would be provided
+                by tooling and background services.
 
         """
         # Create or coerce a protobuf request object.
@@ -1787,10 +1785,10 @@ class RegistryClient(metaclass=RegistryClientMeta):
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> httpbody_pb2.HttpBody:
-        r"""GetApiSpecContents returns the contents of a specified spec. If
-        specs are stored with GZip compression, the default behavior is
-        to return the spec uncompressed (the mime_type response field
-        indicates the exact format returned).
+        r"""Returns the contents of a specified spec. If specs are stored
+        with GZip compression, the default behavior is to return the
+        spec uncompressed (the mime_type response field indicates the
+        exact format returned).
 
         .. code-block:: python
 
@@ -1818,7 +1816,7 @@ class RegistryClient(metaclass=RegistryClientMeta):
             name (str):
                 Required. The name of the spec whose contents should be
                 retrieved. Format:
-                projects/\ */locations/*/apis/*/versions/*/specs/\*
+                ``projects/*/locations/*/apis/*/versions/*/specs/*``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1932,7 +1930,7 @@ class RegistryClient(metaclass=RegistryClientMeta):
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> registry_models.ApiSpec:
-        r"""CreateApiSpec creates a specified spec.
+        r"""Creates a specified spec.
 
         .. code-block:: python
 
@@ -1960,7 +1958,7 @@ class RegistryClient(metaclass=RegistryClientMeta):
             parent (str):
                 Required. The parent, which owns this collection of
                 specs. Format:
-                projects/\ */locations/*/apis/*/versions/*
+                ``projects/*/locations/*/apis/*/versions/*``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1990,21 +1988,20 @@ class RegistryClient(metaclass=RegistryClientMeta):
 
         Returns:
             google.cloud.apigee_registry_v1.types.ApiSpec:
-                An ApiSpec describes a version of an
-                API in a structured way. ApiSpecs
-                provide formal descriptions that
-                consumers can use to use a version.
-                ApiSpec resources are intended to be
-                fully-resolved descriptions of an
-                ApiVersion. When specs consist of
-                multiple files, these should be bundled
-                together (e.g. in a zip archive) and
-                stored as a unit. Multiple specs can
-                exist to provide representations in
-                different API description formats.
-                Synchronization of these representations
-                would be provided by tooling and
-                background services.
+                Describes a version of an API in a
+                structured way. ApiSpecs provide formal
+                descriptions that consumers can use to
+                use a version. ApiSpec resources are
+                intended to be fully-resolved
+                descriptions of an ApiVersion. When
+                specs consist of multiple files, these
+                should be bundled together (e.g., in a
+                zip archive) and stored as a unit.
+                Multiple specs can exist to provide
+                representations in different API
+                description formats. Synchronization of
+                these representations would be provided
+                by tooling and background services.
 
         """
         # Create or coerce a protobuf request object.
@@ -2063,7 +2060,7 @@ class RegistryClient(metaclass=RegistryClientMeta):
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> registry_models.ApiSpec:
-        r"""UpdateApiSpec can be used to modify a specified spec.
+        r"""Used to modify a specified spec.
 
         .. code-block:: python
 
@@ -2091,7 +2088,7 @@ class RegistryClient(metaclass=RegistryClientMeta):
 
                 The ``name`` field is used to identify the spec to
                 update. Format:
-                projects/\ */locations/*/apis/*/versions/*/specs/\*
+                ``projects/*/locations/*/apis/*/versions/*/specs/*``
 
                 This corresponds to the ``api_spec`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2099,9 +2096,9 @@ class RegistryClient(metaclass=RegistryClientMeta):
             update_mask (google.protobuf.field_mask_pb2.FieldMask):
                 The list of fields to be updated. If omitted, all fields
                 are updated that are set in the request message (fields
-                set to default values are ignored). If a "*" is
-                specified, all fields are updated, including fields that
-                are unspecified/default in the request.
+                set to default values are ignored). If an asterisk "*"
+                is specified, all fields are updated, including fields
+                that are unspecified/default in the request.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2114,21 +2111,20 @@ class RegistryClient(metaclass=RegistryClientMeta):
 
         Returns:
             google.cloud.apigee_registry_v1.types.ApiSpec:
-                An ApiSpec describes a version of an
-                API in a structured way. ApiSpecs
-                provide formal descriptions that
-                consumers can use to use a version.
-                ApiSpec resources are intended to be
-                fully-resolved descriptions of an
-                ApiVersion. When specs consist of
-                multiple files, these should be bundled
-                together (e.g. in a zip archive) and
-                stored as a unit. Multiple specs can
-                exist to provide representations in
-                different API description formats.
-                Synchronization of these representations
-                would be provided by tooling and
-                background services.
+                Describes a version of an API in a
+                structured way. ApiSpecs provide formal
+                descriptions that consumers can use to
+                use a version. ApiSpec resources are
+                intended to be fully-resolved
+                descriptions of an ApiVersion. When
+                specs consist of multiple files, these
+                should be bundled together (e.g., in a
+                zip archive) and stored as a unit.
+                Multiple specs can exist to provide
+                representations in different API
+                description formats. Synchronization of
+                these representations would be provided
+                by tooling and background services.
 
         """
         # Create or coerce a protobuf request object.
@@ -2186,8 +2182,8 @@ class RegistryClient(metaclass=RegistryClientMeta):
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
-        r"""DeleteApiSpec removes a specified spec, all
-        revisions, and all child resources (e.g. artifacts).
+        r"""Removes a specified spec, all revisions, and all
+        child resources (e.g., artifacts).
 
         .. code-block:: python
 
@@ -2210,7 +2206,7 @@ class RegistryClient(metaclass=RegistryClientMeta):
                 The request object. Request message for DeleteApiSpec.
             name (str):
                 Required. The name of the spec to delete. Format:
-                projects/\ */locations/*/apis/*/versions/*/specs/\*
+                ``projects/*/locations/*/apis/*/versions/*/specs/*``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2268,8 +2264,7 @@ class RegistryClient(metaclass=RegistryClientMeta):
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> registry_models.ApiSpec:
-        r"""TagApiSpecRevision adds a tag to a specified revision
-        of a spec.
+        r"""Adds a tag to a specified revision of a spec.
 
         .. code-block:: python
 
@@ -2303,21 +2298,20 @@ class RegistryClient(metaclass=RegistryClientMeta):
 
         Returns:
             google.cloud.apigee_registry_v1.types.ApiSpec:
-                An ApiSpec describes a version of an
-                API in a structured way. ApiSpecs
-                provide formal descriptions that
-                consumers can use to use a version.
-                ApiSpec resources are intended to be
-                fully-resolved descriptions of an
-                ApiVersion. When specs consist of
-                multiple files, these should be bundled
-                together (e.g. in a zip archive) and
-                stored as a unit. Multiple specs can
-                exist to provide representations in
-                different API description formats.
-                Synchronization of these representations
-                would be provided by tooling and
-                background services.
+                Describes a version of an API in a
+                structured way. ApiSpecs provide formal
+                descriptions that consumers can use to
+                use a version. ApiSpec resources are
+                intended to be fully-resolved
+                descriptions of an ApiVersion. When
+                specs consist of multiple files, these
+                should be bundled together (e.g., in a
+                zip archive) and stored as a unit.
+                Multiple specs can exist to provide
+                representations in different API
+                description formats. Synchronization of
+                these representations would be provided
+                by tooling and background services.
 
         """
         # Create or coerce a protobuf request object.
@@ -2357,7 +2351,7 @@ class RegistryClient(metaclass=RegistryClientMeta):
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListApiSpecRevisionsPager:
-        r"""ListApiSpecRevisions lists all revisions of a spec.
+        r"""Lists all revisions of a spec.
         Revisions are returned in descending order of revision
         creation time.
 
@@ -2446,9 +2440,9 @@ class RegistryClient(metaclass=RegistryClientMeta):
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> registry_models.ApiSpec:
-        r"""RollbackApiSpec sets the current revision to a
-        specified prior revision. Note that this creates a new
-        revision with a new revision ID.
+        r"""Sets the current revision to a specified prior
+        revision. Note that this creates a new revision with a
+        new revision ID.
 
         .. code-block:: python
 
@@ -2481,21 +2475,20 @@ class RegistryClient(metaclass=RegistryClientMeta):
 
         Returns:
             google.cloud.apigee_registry_v1.types.ApiSpec:
-                An ApiSpec describes a version of an
-                API in a structured way. ApiSpecs
-                provide formal descriptions that
-                consumers can use to use a version.
-                ApiSpec resources are intended to be
-                fully-resolved descriptions of an
-                ApiVersion. When specs consist of
-                multiple files, these should be bundled
-                together (e.g. in a zip archive) and
-                stored as a unit. Multiple specs can
-                exist to provide representations in
-                different API description formats.
-                Synchronization of these representations
-                would be provided by tooling and
-                background services.
+                Describes a version of an API in a
+                structured way. ApiSpecs provide formal
+                descriptions that consumers can use to
+                use a version. ApiSpec resources are
+                intended to be fully-resolved
+                descriptions of an ApiVersion. When
+                specs consist of multiple files, these
+                should be bundled together (e.g., in a
+                zip archive) and stored as a unit.
+                Multiple specs can exist to provide
+                representations in different API
+                description formats. Synchronization of
+                these representations would be provided
+                by tooling and background services.
 
         """
         # Create or coerce a protobuf request object.
@@ -2536,7 +2529,7 @@ class RegistryClient(metaclass=RegistryClientMeta):
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> registry_models.ApiSpec:
-        r"""DeleteApiSpecRevision deletes a revision of a spec.
+        r"""Deletes a revision of a spec.
 
         .. code-block:: python
 
@@ -2562,11 +2555,11 @@ class RegistryClient(metaclass=RegistryClientMeta):
                 The request object. Request message for
                 DeleteApiSpecRevision.
             name (str):
-                Required. The name of the spec
-                revision to be deleted, with a revision
-                ID explicitly included.
+                Required. The name of the spec revision to be deleted,
+                with a revision ID explicitly included.
+
                 Example:
-                projects/sample/locations/global/apis/petstore/versions/1.0.0/specs/openapi.yaml@c7cfa2a8
+                ``projects/sample/locations/global/apis/petstore/versions/1.0.0/specs/openapi.yaml@c7cfa2a8``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2579,21 +2572,20 @@ class RegistryClient(metaclass=RegistryClientMeta):
 
         Returns:
             google.cloud.apigee_registry_v1.types.ApiSpec:
-                An ApiSpec describes a version of an
-                API in a structured way. ApiSpecs
-                provide formal descriptions that
-                consumers can use to use a version.
-                ApiSpec resources are intended to be
-                fully-resolved descriptions of an
-                ApiVersion. When specs consist of
-                multiple files, these should be bundled
-                together (e.g. in a zip archive) and
-                stored as a unit. Multiple specs can
-                exist to provide representations in
-                different API description formats.
-                Synchronization of these representations
-                would be provided by tooling and
-                background services.
+                Describes a version of an API in a
+                structured way. ApiSpecs provide formal
+                descriptions that consumers can use to
+                use a version. ApiSpec resources are
+                intended to be fully-resolved
+                descriptions of an ApiVersion. When
+                specs consist of multiple files, these
+                should be bundled together (e.g., in a
+                zip archive) and stored as a unit.
+                Multiple specs can exist to provide
+                representations in different API
+                description formats. Synchronization of
+                these representations would be provided
+                by tooling and background services.
 
         """
         # Create or coerce a protobuf request object.
@@ -2647,7 +2639,7 @@ class RegistryClient(metaclass=RegistryClientMeta):
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListApiDeploymentsPager:
-        r"""ListApiDeployments returns matching deployments.
+        r"""Returns matching deployments.
 
         .. code-block:: python
 
@@ -2675,7 +2667,7 @@ class RegistryClient(metaclass=RegistryClientMeta):
                 ListApiDeployments.
             parent (str):
                 Required. The parent, which owns this collection of
-                deployments. Format: projects/\ */locations/*/apis/\*
+                deployments. Format: ``projects/*/locations/*/apis/*``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2755,7 +2747,7 @@ class RegistryClient(metaclass=RegistryClientMeta):
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> registry_models.ApiDeployment:
-        r"""GetApiDeployment returns a specified deployment.
+        r"""Returns a specified deployment.
 
         .. code-block:: python
 
@@ -2782,7 +2774,7 @@ class RegistryClient(metaclass=RegistryClientMeta):
                 GetApiDeployment.
             name (str):
                 Required. The name of the deployment to retrieve.
-                Format: projects/\ */locations/*/apis/*/deployments/*
+                Format: ``projects/*/locations/*/apis/*/deployments/*``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2795,9 +2787,9 @@ class RegistryClient(metaclass=RegistryClientMeta):
 
         Returns:
             google.cloud.apigee_registry_v1.types.ApiDeployment:
-                An ApiDeployment describes a service
-                running at particular address that
-                provides a particular version of an API.
+                Describes a service running at
+                particular address that provides a
+                particular version of an API.
                 ApiDeployments have revisions which
                 correspond to different configurations
                 of a single deployment in time. Revision
@@ -2859,7 +2851,7 @@ class RegistryClient(metaclass=RegistryClientMeta):
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> registry_models.ApiDeployment:
-        r"""CreateApiDeployment creates a specified deployment.
+        r"""Creates a specified deployment.
 
         .. code-block:: python
 
@@ -2887,7 +2879,7 @@ class RegistryClient(metaclass=RegistryClientMeta):
                 CreateApiDeployment.
             parent (str):
                 Required. The parent, which owns this collection of
-                deployments. Format: projects/\ */locations/*/apis/\*
+                deployments. Format: ``projects/*/locations/*/apis/*``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2918,9 +2910,9 @@ class RegistryClient(metaclass=RegistryClientMeta):
 
         Returns:
             google.cloud.apigee_registry_v1.types.ApiDeployment:
-                An ApiDeployment describes a service
-                running at particular address that
-                provides a particular version of an API.
+                Describes a service running at
+                particular address that provides a
+                particular version of an API.
                 ApiDeployments have revisions which
                 correspond to different configurations
                 of a single deployment in time. Revision
@@ -2985,8 +2977,7 @@ class RegistryClient(metaclass=RegistryClientMeta):
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> registry_models.ApiDeployment:
-        r"""UpdateApiDeployment can be used to modify a specified
-        deployment.
+        r"""Used to modify a specified deployment.
 
         .. code-block:: python
 
@@ -3015,7 +3006,7 @@ class RegistryClient(metaclass=RegistryClientMeta):
 
                 The ``name`` field is used to identify the deployment to
                 update. Format:
-                projects/\ */locations/*/apis/*/deployments/*
+                ``projects/*/locations/*/apis/*/deployments/*``
 
                 This corresponds to the ``api_deployment`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -3023,9 +3014,9 @@ class RegistryClient(metaclass=RegistryClientMeta):
             update_mask (google.protobuf.field_mask_pb2.FieldMask):
                 The list of fields to be updated. If omitted, all fields
                 are updated that are set in the request message (fields
-                set to default values are ignored). If a "*" is
-                specified, all fields are updated, including fields that
-                are unspecified/default in the request.
+                set to default values are ignored). If an asterisk "*"
+                is specified, all fields are updated, including fields
+                that are unspecified/default in the request.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -3038,9 +3029,9 @@ class RegistryClient(metaclass=RegistryClientMeta):
 
         Returns:
             google.cloud.apigee_registry_v1.types.ApiDeployment:
-                An ApiDeployment describes a service
-                running at particular address that
-                provides a particular version of an API.
+                Describes a service running at
+                particular address that provides a
+                particular version of an API.
                 ApiDeployments have revisions which
                 correspond to different configurations
                 of a single deployment in time. Revision
@@ -3104,8 +3095,8 @@ class RegistryClient(metaclass=RegistryClientMeta):
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
-        r"""DeleteApiDeployment removes a specified deployment,
-        all revisions, and all child resources (e.g. artifacts).
+        r"""Removes a specified deployment, all revisions, and
+        all child resources (e.g., artifacts).
 
         .. code-block:: python
 
@@ -3129,7 +3120,7 @@ class RegistryClient(metaclass=RegistryClientMeta):
                 DeleteApiDeployment.
             name (str):
                 Required. The name of the deployment to delete. Format:
-                projects/\ */locations/*/apis/*/deployments/*
+                ``projects/*/locations/*/apis/*/deployments/*``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -3187,8 +3178,8 @@ class RegistryClient(metaclass=RegistryClientMeta):
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> registry_models.ApiDeployment:
-        r"""TagApiDeploymentRevision adds a tag to a specified
-        revision of a deployment.
+        r"""Adds a tag to a specified revision of a
+        deployment.
 
         .. code-block:: python
 
@@ -3222,9 +3213,9 @@ class RegistryClient(metaclass=RegistryClientMeta):
 
         Returns:
             google.cloud.apigee_registry_v1.types.ApiDeployment:
-                An ApiDeployment describes a service
-                running at particular address that
-                provides a particular version of an API.
+                Describes a service running at
+                particular address that provides a
+                particular version of an API.
                 ApiDeployments have revisions which
                 correspond to different configurations
                 of a single deployment in time. Revision
@@ -3272,9 +3263,9 @@ class RegistryClient(metaclass=RegistryClientMeta):
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListApiDeploymentRevisionsPager:
-        r"""ListApiDeploymentRevisions lists all revisions of a
-        deployment. Revisions are returned in descending order
-        of revision creation time.
+        r"""Lists all revisions of a deployment.
+        Revisions are returned in descending order of revision
+        creation time.
 
         .. code-block:: python
 
@@ -3363,9 +3354,9 @@ class RegistryClient(metaclass=RegistryClientMeta):
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> registry_models.ApiDeployment:
-        r"""RollbackApiDeployment sets the current revision to a
-        specified prior revision. Note that this creates a new
-        revision with a new revision ID.
+        r"""Sets the current revision to a specified prior
+        revision. Note that this creates a new revision with a
+        new revision ID.
 
         .. code-block:: python
 
@@ -3399,9 +3390,9 @@ class RegistryClient(metaclass=RegistryClientMeta):
 
         Returns:
             google.cloud.apigee_registry_v1.types.ApiDeployment:
-                An ApiDeployment describes a service
-                running at particular address that
-                provides a particular version of an API.
+                Describes a service running at
+                particular address that provides a
+                particular version of an API.
                 ApiDeployments have revisions which
                 correspond to different configurations
                 of a single deployment in time. Revision
@@ -3450,8 +3441,7 @@ class RegistryClient(metaclass=RegistryClientMeta):
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> registry_models.ApiDeployment:
-        r"""DeleteApiDeploymentRevision deletes a revision of a
-        deployment.
+        r"""Deletes a revision of a deployment.
 
         .. code-block:: python
 
@@ -3477,11 +3467,11 @@ class RegistryClient(metaclass=RegistryClientMeta):
                 The request object. Request message for
                 DeleteApiDeploymentRevision.
             name (str):
-                Required. The name of the deployment
-                revision to be deleted, with a revision
-                ID explicitly included.
+                Required. The name of the deployment revision to be
+                deleted, with a revision ID explicitly included.
+
                 Example:
-                projects/sample/locations/global/apis/petstore/deployments/prod@c7cfa2a8
+                ``projects/sample/locations/global/apis/petstore/deployments/prod@c7cfa2a8``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -3494,9 +3484,9 @@ class RegistryClient(metaclass=RegistryClientMeta):
 
         Returns:
             google.cloud.apigee_registry_v1.types.ApiDeployment:
-                An ApiDeployment describes a service
-                running at particular address that
-                provides a particular version of an API.
+                Describes a service running at
+                particular address that provides a
+                particular version of an API.
                 ApiDeployments have revisions which
                 correspond to different configurations
                 of a single deployment in time. Revision
@@ -3558,7 +3548,7 @@ class RegistryClient(metaclass=RegistryClientMeta):
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListArtifactsPager:
-        r"""ListArtifacts returns matching artifacts.
+        r"""Returns matching artifacts.
 
         .. code-block:: python
 
@@ -3584,9 +3574,8 @@ class RegistryClient(metaclass=RegistryClientMeta):
             request (Union[google.cloud.apigee_registry_v1.types.ListArtifactsRequest, dict]):
                 The request object. Request message for ListArtifacts.
             parent (str):
-                Required. The parent, which owns this
-                collection of artifacts. Format:
-                {parent}
+                Required. The parent, which owns this collection of
+                artifacts. Format: ``{parent}``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -3665,7 +3654,7 @@ class RegistryClient(metaclass=RegistryClientMeta):
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> registry_models.Artifact:
-        r"""GetArtifact returns a specified artifact.
+        r"""Returns a specified artifact.
 
         .. code-block:: python
 
@@ -3691,7 +3680,7 @@ class RegistryClient(metaclass=RegistryClientMeta):
                 The request object. Request message for GetArtifact.
             name (str):
                 Required. The name of the artifact to retrieve. Format:
-                {parent}/artifacts/\*
+                ``{parent}/artifacts/*``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -3704,21 +3693,17 @@ class RegistryClient(metaclass=RegistryClientMeta):
 
         Returns:
             google.cloud.apigee_registry_v1.types.Artifact:
-                Artifacts of resources. Artifacts are
-                unique (single-value) per resource and
-                are used to store metadata that is too
-                large or numerous to be stored directly
-                on the resource. Since artifacts are
-                stored separately from parent resources,
-                they should generally be used for
-                metadata that is needed infrequently,
-                i.e. not for display in primary views of
-                the resource but perhaps displayed or
-                downloaded upon request. The
-                ListArtifacts method allows artifacts to
-                be quickly enumerated and checked for
-                presence without downloading their
-                (potentially-large) contents.
+                Artifacts of resources. Artifacts are unique (single-value) per resource
+                   and are used to store metadata that is too large or
+                   numerous to be stored directly on the resource. Since
+                   artifacts are stored separately from parent
+                   resources, they should generally be used for metadata
+                   that is needed infrequently, i.e., not for display in
+                   primary views of the resource but perhaps displayed
+                   or downloaded upon request. The ListArtifacts method
+                   allows artifacts to be quickly enumerated and checked
+                   for presence without downloading their
+                   (potentially-large) contents.
 
         """
         # Create or coerce a protobuf request object.
@@ -3772,10 +3757,10 @@ class RegistryClient(metaclass=RegistryClientMeta):
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> httpbody_pb2.HttpBody:
-        r"""GetArtifactContents returns the contents of a specified
-        artifact. If artifacts are stored with GZip compression, the
-        default behavior is to return the artifact uncompressed (the
-        mime_type response field indicates the exact format returned).
+        r"""Returns the contents of a specified artifact. If artifacts are
+        stored with GZip compression, the default behavior is to return
+        the artifact uncompressed (the mime_type response field
+        indicates the exact format returned).
 
         .. code-block:: python
 
@@ -3802,7 +3787,7 @@ class RegistryClient(metaclass=RegistryClientMeta):
                 GetArtifactContents.
             name (str):
                 Required. The name of the artifact whose contents should
-                be retrieved. Format: {parent}/artifacts/\*
+                be retrieved. Format: ``{parent}/artifacts/*``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -3916,7 +3901,7 @@ class RegistryClient(metaclass=RegistryClientMeta):
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> registry_models.Artifact:
-        r"""CreateArtifact creates a specified artifact.
+        r"""Creates a specified artifact.
 
         .. code-block:: python
 
@@ -3942,9 +3927,8 @@ class RegistryClient(metaclass=RegistryClientMeta):
             request (Union[google.cloud.apigee_registry_v1.types.CreateArtifactRequest, dict]):
                 The request object. Request message for CreateArtifact.
             parent (str):
-                Required. The parent, which owns this
-                collection of artifacts. Format:
-                {parent}
+                Required. The parent, which owns this collection of
+                artifacts. Format: ``{parent}``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -3975,21 +3959,17 @@ class RegistryClient(metaclass=RegistryClientMeta):
 
         Returns:
             google.cloud.apigee_registry_v1.types.Artifact:
-                Artifacts of resources. Artifacts are
-                unique (single-value) per resource and
-                are used to store metadata that is too
-                large or numerous to be stored directly
-                on the resource. Since artifacts are
-                stored separately from parent resources,
-                they should generally be used for
-                metadata that is needed infrequently,
-                i.e. not for display in primary views of
-                the resource but perhaps displayed or
-                downloaded upon request. The
-                ListArtifacts method allows artifacts to
-                be quickly enumerated and checked for
-                presence without downloading their
-                (potentially-large) contents.
+                Artifacts of resources. Artifacts are unique (single-value) per resource
+                   and are used to store metadata that is too large or
+                   numerous to be stored directly on the resource. Since
+                   artifacts are stored separately from parent
+                   resources, they should generally be used for metadata
+                   that is needed infrequently, i.e., not for display in
+                   primary views of the resource but perhaps displayed
+                   or downloaded upon request. The ListArtifacts method
+                   allows artifacts to be quickly enumerated and checked
+                   for presence without downloading their
+                   (potentially-large) contents.
 
         """
         # Create or coerce a protobuf request object.
@@ -4047,8 +4027,7 @@ class RegistryClient(metaclass=RegistryClientMeta):
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> registry_models.Artifact:
-        r"""ReplaceArtifact can be used to replace a specified
-        artifact.
+        r"""Used to replace a specified artifact.
 
         .. code-block:: python
 
@@ -4075,7 +4054,7 @@ class RegistryClient(metaclass=RegistryClientMeta):
                 Required. The artifact to replace.
 
                 The ``name`` field is used to identify the artifact to
-                replace. Format: {parent}/artifacts/\*
+                replace. Format: ``{parent}/artifacts/*``
 
                 This corresponds to the ``artifact`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -4088,21 +4067,17 @@ class RegistryClient(metaclass=RegistryClientMeta):
 
         Returns:
             google.cloud.apigee_registry_v1.types.Artifact:
-                Artifacts of resources. Artifacts are
-                unique (single-value) per resource and
-                are used to store metadata that is too
-                large or numerous to be stored directly
-                on the resource. Since artifacts are
-                stored separately from parent resources,
-                they should generally be used for
-                metadata that is needed infrequently,
-                i.e. not for display in primary views of
-                the resource but perhaps displayed or
-                downloaded upon request. The
-                ListArtifacts method allows artifacts to
-                be quickly enumerated and checked for
-                presence without downloading their
-                (potentially-large) contents.
+                Artifacts of resources. Artifacts are unique (single-value) per resource
+                   and are used to store metadata that is too large or
+                   numerous to be stored directly on the resource. Since
+                   artifacts are stored separately from parent
+                   resources, they should generally be used for metadata
+                   that is needed infrequently, i.e., not for display in
+                   primary views of the resource but perhaps displayed
+                   or downloaded upon request. The ListArtifacts method
+                   allows artifacts to be quickly enumerated and checked
+                   for presence without downloading their
+                   (potentially-large) contents.
 
         """
         # Create or coerce a protobuf request object.
@@ -4158,7 +4133,7 @@ class RegistryClient(metaclass=RegistryClientMeta):
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
-        r"""DeleteArtifact removes a specified artifact.
+        r"""Removes a specified artifact.
 
         .. code-block:: python
 
@@ -4181,7 +4156,7 @@ class RegistryClient(metaclass=RegistryClientMeta):
                 The request object. Request message for DeleteArtifact.
             name (str):
                 Required. The name of the artifact to delete. Format:
-                {parent}/artifacts/\*
+                ``{parent}/artifacts/*``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this

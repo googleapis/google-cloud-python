@@ -156,7 +156,7 @@ class Instance(proto.Message):
     Attributes:
         name (str):
             Format: ``projects/*/locations/*/instance``. Currently only
-            locations/global is supported.
+            ``locations/global`` is supported.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Creation timestamp.
         update_time (google.protobuf.timestamp_pb2.Timestamp):
