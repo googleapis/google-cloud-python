@@ -40,6 +40,8 @@ class Indicator(proto.Message):
             The list of matched signatures indicating
             that the given process is present in the
             environment.
+        uris (Sequence[str]):
+            The list of URIs associated to the Findings.
     """
 
     class ProcessSignature(proto.Message):
@@ -146,6 +148,10 @@ class Indicator(proto.Message):
         proto.MESSAGE,
         number=3,
         message=ProcessSignature,
+    )
+    uris = proto.RepeatedField(
+        proto.STRING,
+        number=4,
     )
 
 

@@ -109,6 +109,8 @@ class MitreAttack(proto.Message):
         DOMAIN_POLICY_MODIFICATION = 30
         IMPAIR_DEFENSES = 31
         NETWORK_SERVICE_DISCOVERY = 32
+        ACCESS_TOKEN_MANIPULATION = 33
+        ABUSE_ELEVATION_CONTROL_MECHANISM = 34
 
     primary_tactic = proto.Field(
         proto.ENUM,
