@@ -1719,8 +1719,8 @@ class ArticleSuggestionData(proto.Message):
             Suggestion and the document that it originates
             from.
         query_record (str):
-            Name of the query record. Format:
-            projects/{project}/locations/{location}/queryRecords/{query_record}
+            The name of the answer record. Format:
+            projects/{project}/locations/{location}/answerRecords/{answer_record}
         source (str):
             The knowledge document that this answer was extracted from.
             Format:
@@ -1772,8 +1772,8 @@ class FaqAnswerData(proto.Message):
             Map that contains metadata about the FAQ
             answer and the document that it originates from.
         query_record (str):
-            Name of the query record. Format:
-            projects/{project}/locations/{location}/queryRecords/{query_record}.
+            The name of the answer record. Format:
+            projects/{project}/locations/{location}/answerRecords/{answer_record}
         source (str):
             The knowledge document that this answer was extracted from.
             Format:
@@ -1822,8 +1822,8 @@ class SmartReplyData(proto.Message):
             Map that contains metadata about the Smart
             Reply and the document from which it originates.
         query_record (str):
-            Name of the query record. Format:
-            projects/{project}/locations/{location}/queryRecords/{query_record}
+            The name of the answer record. Format:
+            projects/{project}/locations/{location}/answerRecords/{answer_record}
     """
 
     reply = proto.Field(
@@ -1861,8 +1861,8 @@ class SmartComposeSuggestionData(proto.Message):
             Compose suggestion and the document from which
             it originates.
         query_record (str):
-            Name of the query record. Format:
-            projects/{project}/locations/{location}/queryRecords/{query_record}
+            The name of the answer record. Format:
+            projects/{project}/locations/{location}/answerRecords/{answer_record}
     """
 
     suggestion = proto.Field(
