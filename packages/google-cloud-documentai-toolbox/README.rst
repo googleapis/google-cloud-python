@@ -1,4 +1,4 @@
-Python Client for Document AI SDK
+Document AI SDK
 =================================
 
 |preview| |versions|
