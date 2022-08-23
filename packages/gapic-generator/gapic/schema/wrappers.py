@@ -137,7 +137,11 @@ class Field:
 
             if field.enum:
                 # First Truthy value, fallback to the first value
-                return next((v for v in field.type.values if v.number), field.type.values[0]).number
+                answer = next(
+                    (v for v in field.type.values if v.number), field.type.values[0]).number
+                if field.repeated:
+                    answer = [answer]
+                return answer
 
             answer = field.primitive_mock() or None
 

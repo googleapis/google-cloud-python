@@ -463,6 +463,34 @@ def test_mock_value_original_type_enum():
     assert empty_field.mock_value_original_type == 0
 
 
+def test_mock_value_original_type_enum_repeated():
+    mollusc_field = make_field(
+        name="class",
+        enum=make_enum(
+            name="Class",
+            values=[
+                ("UNKNOWN", 0),
+                ("BIVALVE", 2),
+                ("CEPHALOPOD", 3),
+            ],
+        ),
+        label=3,
+    )
+
+    assert mollusc_field.mock_value_original_type == [2]
+
+    empty_field = make_field(
+        name="empty",
+        enum=make_enum(
+            name="Empty",
+            values=[("UNKNOWN", 0)],
+        ),
+        label=3,
+    )
+
+    assert empty_field.mock_value_original_type == [0]
+
+
 @pytest.mark.parametrize(
     "mock_method,expected",
     [
