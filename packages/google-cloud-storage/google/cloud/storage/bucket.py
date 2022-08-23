@@ -1698,6 +1698,7 @@ class Bucket(_PropertyMixin):
         blobs,
         on_error=None,
         client=None,
+        preserve_generation=False,
         timeout=_DEFAULT_TIMEOUT,
         if_generation_match=None,
         if_generation_not_match=None,
@@ -1708,6 +1709,10 @@ class Bucket(_PropertyMixin):
         """Deletes a list of blobs from the current bucket.
 
         Uses :meth:`delete_blob` to delete each individual blob.
+
+        By default, any generation information in the list of blobs is ignored, and the
+        live versions of all blobs are deleted. Set `preserve_generation` to True
+        if blob generation should instead be propagated from the list of blobs.
 
         If :attr:`user_project` is set, bills the API request to that project.
 
@@ -1724,6 +1729,12 @@ class Bucket(_PropertyMixin):
         :type client: :class:`~google.cloud.storage.client.Client`
         :param client: (Optional) The client to use.  If not passed, falls back
                        to the ``client`` stored on the current bucket.
+
+        :type preserve_generation: bool
+        :param preserve_generation: (Optional) Deletes only the generation specified on the blob object,
+                                    instead of the live version, if set to True. Only :class:~google.cloud.storage.blob.Blob
+                                    objects can have their generation set in this way.
+                                    Default: False.
 
         :type if_generation_match: list of long
         :param if_generation_match:
@@ -1787,11 +1798,15 @@ class Bucket(_PropertyMixin):
         for blob in blobs:
             try:
                 blob_name = blob
+                generation = None
                 if not isinstance(blob_name, str):
                     blob_name = blob.name
+                    generation = blob.generation if preserve_generation else None
+
                 self.delete_blob(
                     blob_name,
                     client=client,
+                    generation=generation,
                     if_generation_match=next(if_generation_match, None),
                     if_generation_not_match=next(if_generation_not_match, None),
                     if_metageneration_match=next(if_metageneration_match, None),

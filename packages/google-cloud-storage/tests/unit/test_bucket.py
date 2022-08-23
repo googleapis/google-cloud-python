@@ -1490,6 +1490,7 @@ class Test_Bucket(unittest.TestCase):
         bucket.delete_blob.assert_called_once_with(
             blob_name,
             client=client,
+            generation=None,
             if_generation_match=None,
             if_generation_not_match=None,
             if_metageneration_match=None,
@@ -1649,6 +1650,7 @@ class Test_Bucket(unittest.TestCase):
         bucket.delete_blob.assert_called_once_with(
             blob_name,
             client=client,
+            generation=None,
             if_generation_match=None,
             if_generation_not_match=None,
             if_metageneration_match=None,
@@ -1693,6 +1695,7 @@ class Test_Bucket(unittest.TestCase):
         call_1 = mock.call(
             blob_name,
             client=None,
+            generation=None,
             if_generation_match=generation_number,
             if_generation_not_match=None,
             if_metageneration_match=None,
@@ -1703,6 +1706,7 @@ class Test_Bucket(unittest.TestCase):
         call_2 = mock.call(
             blob_name2,
             client=None,
+            generation=None,
             if_generation_match=generation_number2,
             if_generation_not_match=None,
             if_metageneration_match=None,
@@ -1730,6 +1734,7 @@ class Test_Bucket(unittest.TestCase):
         call_1 = mock.call(
             blob_name,
             client=None,
+            generation=None,
             if_generation_match=generation_number,
             if_generation_not_match=None,
             if_metageneration_match=None,
@@ -1740,12 +1745,59 @@ class Test_Bucket(unittest.TestCase):
         call_2 = mock.call(
             blob_name2,
             client=None,
+            generation=None,
             if_generation_match=None,
             if_generation_not_match=None,
             if_metageneration_match=None,
             if_metageneration_not_match=None,
             timeout=self._get_default_timeout(),
             retry=DEFAULT_RETRY_IF_GENERATION_SPECIFIED,
+        )
+        bucket.delete_blob.assert_has_calls([call_1, call_2])
+
+    def test_delete_blobs_w_preserve_generation(self):
+        name = "name"
+        blob_name = "blob-name"
+        blob_name2 = "blob-name2"
+        generation_number = 1234567890
+        generation_number2 = 7890123456
+        client = mock.Mock(spec=[])
+        bucket = self._make_one(client=client, name=name)
+        blob = self._make_blob(bucket.name, blob_name)
+        blob.generation = generation_number
+        blob2 = self._make_blob(bucket.name, blob_name2)
+        blob2.generation = generation_number2
+        bucket.delete_blob = mock.Mock()
+        retry = mock.Mock(spec=[])
+
+        # Test generation is propagated from list of blob instances
+        bucket.delete_blobs(
+            [blob, blob2],
+            preserve_generation=True,
+            retry=retry,
+        )
+
+        call_1 = mock.call(
+            blob_name,
+            client=None,
+            generation=generation_number,
+            if_generation_match=None,
+            if_generation_not_match=None,
+            if_metageneration_match=None,
+            if_metageneration_not_match=None,
+            timeout=self._get_default_timeout(),
+            retry=retry,
+        )
+        call_2 = mock.call(
+            blob_name2,
+            client=None,
+            generation=generation_number2,
+            if_generation_match=None,
+            if_generation_not_match=None,
+            if_metageneration_match=None,
+            if_metageneration_not_match=None,
+            timeout=self._get_default_timeout(),
+            retry=retry,
         )
         bucket.delete_blob.assert_has_calls([call_1, call_2])
 
@@ -1766,6 +1818,7 @@ class Test_Bucket(unittest.TestCase):
         call_1 = mock.call(
             blob_name,
             client=None,
+            generation=None,
             if_generation_match=None,
             if_generation_not_match=None,
             if_metageneration_match=None,
@@ -1776,6 +1829,7 @@ class Test_Bucket(unittest.TestCase):
         call_2 = mock.call(
             blob_name2,
             client=None,
+            generation=None,
             if_generation_match=None,
             if_generation_not_match=None,
             if_metageneration_match=None,
@@ -1804,6 +1858,7 @@ class Test_Bucket(unittest.TestCase):
         call_1 = mock.call(
             blob_name,
             client=None,
+            generation=None,
             if_generation_match=None,
             if_generation_not_match=None,
             if_metageneration_match=None,
@@ -1814,6 +1869,7 @@ class Test_Bucket(unittest.TestCase):
         call_2 = mock.call(
             blob_name2,
             client=None,
+            generation=None,
             if_generation_match=None,
             if_generation_not_match=None,
             if_metageneration_match=None,
