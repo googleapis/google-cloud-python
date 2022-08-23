@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.0](https://github.com/googleapis/python-vpc-access/compare/v1.4.1...v1.5.0) (2022-08-23)
+
+
+### Features
+
+* Adds support for configuring scaling settings ([#132](https://github.com/googleapis/python-vpc-access/issues/132)) ([8b69869](https://github.com/googleapis/python-vpc-access/commit/8b698692a6cd0766c55d75793722ec3a60796d66))
+
 ## [1.4.1](https://github.com/googleapis/python-vpc-access/compare/v1.4.0...v1.4.1) (2022-08-11)
 
 
