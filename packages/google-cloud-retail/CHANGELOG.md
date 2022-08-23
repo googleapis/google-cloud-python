@@ -1,5 +1,21 @@
 # Changelog
 
+## [1.9.0](https://github.com/googleapis/python-retail/compare/v1.8.1...v1.9.0) (2022-08-23)
+
+
+### Features
+
+* add local inventories info to the Product resource ([33d7202](https://github.com/googleapis/python-retail/commit/33d7202221535337b8176477d8dd2758a880be40))
+* release AttributesConfig APIs to v2 version ([33d7202](https://github.com/googleapis/python-retail/commit/33d7202221535337b8176477d8dd2758a880be40))
+* release CompletionConfig APIs to v2 version ([33d7202](https://github.com/googleapis/python-retail/commit/33d7202221535337b8176477d8dd2758a880be40))
+* release Control and ServingConfig serivces to v2 version ([#319](https://github.com/googleapis/python-retail/issues/319)) ([33d7202](https://github.com/googleapis/python-retail/commit/33d7202221535337b8176477d8dd2758a880be40))
+
+
+### Documentation
+
+* Improved documentation for Fullfillment and Inventory API in ProductService ([33d7202](https://github.com/googleapis/python-retail/commit/33d7202221535337b8176477d8dd2758a880be40))
+* minor documentation format and typo fixes ([33d7202](https://github.com/googleapis/python-retail/commit/33d7202221535337b8176477d8dd2758a880be40))
+
 ## [1.8.1](https://github.com/googleapis/python-retail/compare/v1.8.0...v1.8.1) (2022-08-12)
 
 
