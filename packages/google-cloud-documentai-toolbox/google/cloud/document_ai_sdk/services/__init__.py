@@ -18,7 +18,7 @@ from .page_wrapper_service import (
     _get_lines,
     _get_paragraphs,
     _get_tokens,
-    _text_from_layout
+    _text_from_layout,
 )
 
 __all__ = (
@@ -26,5 +26,5 @@ __all__ = (
     "_get_paragraphs",
     "_get_tokens",
     "_text_from_layout",
-    "_read_output"
+    "_read_output",
 )

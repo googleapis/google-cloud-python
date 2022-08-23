@@ -32,7 +32,9 @@ ALL_PYTHON = [
 CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
 
 LOWER_BOUND_CONSTRAINTS_FILE = CURRENT_DIRECTORY / "constraints.txt"
-PACKAGE_NAME = subprocess.check_output([sys.executable, "setup.py", "--name"], encoding="utf-8")
+PACKAGE_NAME = subprocess.check_output(
+    [sys.executable, "setup.py", "--name"], encoding="utf-8"
+)
 
 BLACK_VERSION = "black==22.3.0"
 BLACK_PATHS = ["google", "tests", "noxfile.py", "setup.py"]
@@ -47,22 +49,29 @@ nox.sessions = [
     "lint_setup_py",
 ]
 
+
 @nox.session(python=ALL_PYTHON)
 def unit(session):
     """Run the unit test suite."""
 
-    session.install('coverage', 'pytest', 'pytest-cov', 'pytest-asyncio', 'asyncmock; python_version < "3.8"')
-    session.install('-e', '.')
+    session.install(
+        "coverage",
+        "pytest",
+        "pytest-cov",
+        "pytest-asyncio",
+        'asyncmock; python_version < "3.8"',
+    )
+    session.install("-e", ".")
 
     session.run(
-        'py.test',
-        '--quiet',
-        '--cov=google/cloud/contentwarehouse_v1beta1/',
-        '--cov=tests/',
-        '--cov-config=.coveragerc',
-        '--cov-report=term',
-        '--cov-report=html',
-        os.path.join('tests', 'unit', ''.join(session.posargs))
+        "py.test",
+        "--quiet",
+        "--cov=google/cloud/contentwarehouse_v1beta1/",
+        "--cov=tests/",
+        "--cov-config=.coveragerc",
+        "--cov-report=term",
+        "--cov-report=html",
+        os.path.join("tests", "unit", "".join(session.posargs)),
     )
 
 
@@ -81,12 +90,12 @@ def cover(session):
 @nox.session(python=ALL_PYTHON)
 def mypy(session):
     """Run the type checker."""
-    session.install('mypy', 'types-pkg_resources')
-    session.install('.')
+    session.install("mypy", "types-pkg_resources")
+    session.install(".")
     session.run(
-        'mypy',
-        '--explicit-package-bases',
-        'google',
+        "mypy",
+        "--explicit-package-bases",
+        "google",
     )
 
 
