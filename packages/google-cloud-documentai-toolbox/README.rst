@@ -91,12 +91,13 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for Document AI API
+-  Read the `Client Library Documentation`_ for Document AI SDK
    to see other available methods on the client.
 -  Read the `Document AI API Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
+.. _Client Library Documentation:  LINK
 .. _Document AI API Product documentation:  LINK
 .. _README: https://github.com/googlecloudplatfrom/document-ai-sdk/blob/main/README.rst
