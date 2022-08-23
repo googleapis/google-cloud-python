@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-securitycenter/#history
 
+## [1.14.0](https://github.com/googleapis/python-securitycenter/compare/v1.13.0...v1.14.0) (2022-08-22)
+
+
+### Features
+
+* Adding uris to indicator of compromise (IOC) field ([#367](https://github.com/googleapis/python-securitycenter/issues/367)) ([1f7f8c0](https://github.com/googleapis/python-securitycenter/commit/1f7f8c0798f7702d113dc89b8931470518e89f9c))
+
 ## [1.13.0](https://github.com/googleapis/python-securitycenter/compare/v1.12.0...v1.13.0) (2022-08-12)
 
 
