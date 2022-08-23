@@ -5,13 +5,15 @@ Document AI SDK
 
 `Document AI SDK`_: Service to parse structured information from unstructured or semi-structured documents using state-of-the-art Google AI such as natural language, computer vision, translation, and AutoML.
 
-- `Client Library Documentation`_
-- `Product Documentation`_
+- `SDK Documentation`_
 
 .. |preview| image:: https://img.shields.io/badge/support-preview-orange.svg
    :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#stability-levels
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-analytics-admin.svg
    :target: https://pypi.org/project/google-analytics-admin/
+
+.. _Document AI SDK: LINK
+.. _SDK Documentation: LINK
 
 Quick Start
 -----------
