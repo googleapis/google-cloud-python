@@ -427,8 +427,10 @@ class TestCredentials(object):
             assert excinfo.match(r"The token returned by the executable is expired.")
 
     @mock.patch.dict(os.environ, {"GOOGLE_EXTERNAL_ACCOUNT_ALLOW_EXECUTABLES": "1"})
-    def test_retrieve_subject_token_file_cache(self):
-        ACTUAL_CREDENTIAL_SOURCE_EXECUTABLE_OUTPUT_FILE = "actual_output_file"
+    def test_retrieve_subject_token_file_cache(self, tmpdir):
+        ACTUAL_CREDENTIAL_SOURCE_EXECUTABLE_OUTPUT_FILE = tmpdir.join(
+            "actual_output_file"
+        )
         ACTUAL_CREDENTIAL_SOURCE_EXECUTABLE = {
             "command": "command",
             "timeout_millis": 30000,
@@ -472,8 +474,10 @@ class TestCredentials(object):
             assert subject_token == self.EXECUTABLE_OIDC_TOKEN
 
     @mock.patch.dict(os.environ, {"GOOGLE_EXTERNAL_ACCOUNT_ALLOW_EXECUTABLES": "1"})
-    def test_retrieve_subject_token_file_cache_value_error_report(self):
-        ACTUAL_CREDENTIAL_SOURCE_EXECUTABLE_OUTPUT_FILE = "actual_output_file"
+    def test_retrieve_subject_token_file_cache_value_error_report(self, tmpdir):
+        ACTUAL_CREDENTIAL_SOURCE_EXECUTABLE_OUTPUT_FILE = tmpdir.join(
+            "actual_output_file"
+        )
         ACTUAL_CREDENTIAL_SOURCE_EXECUTABLE = {
             "command": "command",
             "timeout_millis": 30000,
@@ -499,8 +503,10 @@ class TestCredentials(object):
         os.remove(ACTUAL_CREDENTIAL_SOURCE_EXECUTABLE_OUTPUT_FILE)
 
     @mock.patch.dict(os.environ, {"GOOGLE_EXTERNAL_ACCOUNT_ALLOW_EXECUTABLES": "1"})
-    def test_retrieve_subject_token_file_cache_refresh_error_retry(self):
-        ACTUAL_CREDENTIAL_SOURCE_EXECUTABLE_OUTPUT_FILE = "actual_output_file"
+    def test_retrieve_subject_token_file_cache_refresh_error_retry(self, tmpdir):
+        ACTUAL_CREDENTIAL_SOURCE_EXECUTABLE_OUTPUT_FILE = tmpdir.join(
+            "actual_output_file"
+        )
         ACTUAL_CREDENTIAL_SOURCE_EXECUTABLE = {
             "command": "command",
             "timeout_millis": 30000,
@@ -637,7 +643,7 @@ class TestCredentials(object):
 
     @mock.patch.dict(os.environ, {"GOOGLE_EXTERNAL_ACCOUNT_ALLOW_EXECUTABLES": "1"})
     def test_retrieve_subject_token_without_expiration_time_should_fail_when_output_file_specified(
-        self
+        self,
     ):
         EXECUTABLE_SUCCESSFUL_OIDC_RESPONSE = {
             "version": 1,
@@ -665,9 +671,11 @@ class TestCredentials(object):
 
     @mock.patch.dict(os.environ, {"GOOGLE_EXTERNAL_ACCOUNT_ALLOW_EXECUTABLES": "1"})
     def test_retrieve_subject_token_without_expiration_time_should_fail_when_retrieving_from_output_file(
-        self
+        self, tmpdir
     ):
-        ACTUAL_CREDENTIAL_SOURCE_EXECUTABLE_OUTPUT_FILE = "actual_output_file"
+        ACTUAL_CREDENTIAL_SOURCE_EXECUTABLE_OUTPUT_FILE = tmpdir.join(
+            "actual_output_file"
+        )
         ACTUAL_CREDENTIAL_SOURCE_EXECUTABLE = {
             "command": "command",
             "timeout_millis": 30000,
@@ -692,7 +700,7 @@ class TestCredentials(object):
 
     @mock.patch.dict(os.environ, {"GOOGLE_EXTERNAL_ACCOUNT_ALLOW_EXECUTABLES": "1"})
     def test_retrieve_subject_token_without_expiration_time_should_pass_when_output_file_not_specified(
-        self
+        self,
     ):
         EXECUTABLE_SUCCESSFUL_OIDC_RESPONSE = {
             "version": 1,
