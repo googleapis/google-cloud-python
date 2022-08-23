@@ -139,6 +139,9 @@ Libraries
    * - `Build <https://github.com/googleapis/python-cloudbuild>`_
      - |stable|
      - |PyPI-google-cloud-build|
+   * - `Certificate Manager <https://github.com/googleapis/python-certificate-manager>`_
+     - |stable|
+     - |PyPI-google-cloud-certificate-manager|
    * - `Channel Services <https://github.com/googleapis/python-channel>`_
      - |stable|
      - |PyPI-google-cloud-channel|
@@ -454,9 +457,6 @@ Libraries
    * - `BigQuery connector for pandas <https://github.com/googleapis/python-bigquery-pandas>`_
      - |preview|
      - |PyPI-pandas-gbq|
-   * - `Certificate Manager <https://github.com/googleapis/python-certificate-manager>`_
-     - |preview|
-     - |PyPI-google-cloud-certificate-manager|
    * - `DNS <https://github.com/googleapis/python-dns>`_
      - |preview|
      - |PyPI-google-cloud-dns|
@@ -561,6 +561,8 @@ Libraries
      :target: https://pypi.org/project/google-cloud-binary-authorization
 .. |PyPI-google-cloud-build| image:: https://img.shields.io/pypi/v/google-cloud-build.svg
      :target: https://pypi.org/project/google-cloud-build
+.. |PyPI-google-cloud-certificate-manager| image:: https://img.shields.io/pypi/v/google-cloud-certificate-manager.svg
+     :target: https://pypi.org/project/google-cloud-certificate-manager
 .. |PyPI-google-cloud-channel| image:: https://img.shields.io/pypi/v/google-cloud-channel.svg
      :target: https://pypi.org/project/google-cloud-channel
 .. |PyPI-google-cloud-common| image:: https://img.shields.io/pypi/v/google-cloud-common.svg
@@ -771,8 +773,6 @@ Libraries
      :target: https://pypi.org/project/google-cloud-bigquery-migration
 .. |PyPI-pandas-gbq| image:: https://img.shields.io/pypi/v/pandas-gbq.svg
      :target: https://pypi.org/project/pandas-gbq
-.. |PyPI-google-cloud-certificate-manager| image:: https://img.shields.io/pypi/v/google-cloud-certificate-manager.svg
-     :target: https://pypi.org/project/google-cloud-certificate-manager
 .. |PyPI-google-cloud-dns| image:: https://img.shields.io/pypi/v/google-cloud-dns.svg
      :target: https://pypi.org/project/google-cloud-dns
 .. |PyPI-google-cloud-datalabeling| image:: https://img.shields.io/pypi/v/google-cloud-datalabeling.svg
