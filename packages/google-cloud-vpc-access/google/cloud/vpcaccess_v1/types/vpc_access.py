@@ -50,13 +50,22 @@ class Connector(proto.Message):
             Default and min is 200.
         max_throughput (int):
             Maximum throughput of the connector in Mbps.
-            Default is 200, max is 1000.
+            Default is 300, max is 1000.
         connected_projects (Sequence[str]):
             Output only. List of projects using the
             connector.
         subnet (google.cloud.vpcaccess_v1.types.Connector.Subnet):
             The subnet in which to house the VPC Access
             Connector.
+        machine_type (str):
+            Machine type of VM Instance underlying
+            connector. Default is e2-micro
+        min_instances (int):
+            Minimum value of instances in autoscaling
+            group underlying the connector.
+        max_instances (int):
+            Maximum value of instances in autoscaling
+            group underlying the connector.
     """
 
     class State(proto.Enum):
@@ -127,6 +136,18 @@ class Connector(proto.Message):
         proto.MESSAGE,
         number=8,
         message=Subnet,
+    )
+    machine_type = proto.Field(
+        proto.STRING,
+        number=10,
+    )
+    min_instances = proto.Field(
+        proto.INT32,
+        number=11,
+    )
+    max_instances = proto.Field(
+        proto.INT32,
+        number=12,
     )
 
 
