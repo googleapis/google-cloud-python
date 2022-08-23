@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.0](https://github.com/googleapis/python-apigee-registry/compare/v0.1.2...v0.2.0) (2022-08-21)
+
+
+### Features
+
+* added support for `force` field for API and API version deletion ([#14](https://github.com/googleapis/python-apigee-registry/issues/14)) ([9ba15f0](https://github.com/googleapis/python-apigee-registry/commit/9ba15f019f49c920b98b62ef4bd930f28703f316))
+
 ## [0.1.2](https://github.com/googleapis/python-apigee-registry/compare/v0.1.1...v0.1.2) (2022-08-15)
 
 
