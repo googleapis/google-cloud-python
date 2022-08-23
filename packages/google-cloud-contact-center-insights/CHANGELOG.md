@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.3](https://github.com/googleapis/python-contact-center-insights/compare/v1.4.2...v1.4.3) (2022-08-23)
+
+
+### Documentation
+
+* Updating comments ([#230](https://github.com/googleapis/python-contact-center-insights/issues/230)) ([4d04a7e](https://github.com/googleapis/python-contact-center-insights/commit/4d04a7eb3c0cefbc4ab3d72d772540efab7ce5b6))
+
 ## [1.4.2](https://github.com/googleapis/python-contact-center-insights/compare/v1.4.1...v1.4.2) (2022-08-12)
 
 
