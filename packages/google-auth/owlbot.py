@@ -15,6 +15,7 @@ s.move(
         "continuous/common.cfg",
         "presubmit/common.cfg",
         "build.sh",
+        "samples/*",
     ],
 )  # just move kokoro configs
 s.move(
