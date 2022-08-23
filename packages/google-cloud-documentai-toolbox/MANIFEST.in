@@ -1,0 +1,1 @@
+recursive-include google/cloud/document-ai-sdk *.py
