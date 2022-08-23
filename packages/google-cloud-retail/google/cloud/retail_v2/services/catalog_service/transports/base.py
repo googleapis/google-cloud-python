@@ -26,6 +26,7 @@ from google.oauth2 import service_account  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
 import pkg_resources
 
+from google.cloud.retail_v2.types import catalog
 from google.cloud.retail_v2.types import catalog as gcr_catalog
 from google.cloud.retail_v2.types import catalog_service
 
@@ -149,6 +150,41 @@ class CatalogServiceTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.get_completion_config: gapic_v1.method.wrap_method(
+                self.get_completion_config,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_completion_config: gapic_v1.method.wrap_method(
+                self.update_completion_config,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_attributes_config: gapic_v1.method.wrap_method(
+                self.get_attributes_config,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_attributes_config: gapic_v1.method.wrap_method(
+                self.update_attributes_config,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.add_catalog_attribute: gapic_v1.method.wrap_method(
+                self.add_catalog_attribute,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.remove_catalog_attribute: gapic_v1.method.wrap_method(
+                self.remove_catalog_attribute,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.replace_catalog_attribute: gapic_v1.method.wrap_method(
+                self.replace_catalog_attribute,
+                default_timeout=None,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -199,6 +235,69 @@ class CatalogServiceTransport(abc.ABC):
             catalog_service.GetDefaultBranchResponse,
             Awaitable[catalog_service.GetDefaultBranchResponse],
         ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_completion_config(
+        self,
+    ) -> Callable[
+        [catalog_service.GetCompletionConfigRequest],
+        Union[catalog.CompletionConfig, Awaitable[catalog.CompletionConfig]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_completion_config(
+        self,
+    ) -> Callable[
+        [catalog_service.UpdateCompletionConfigRequest],
+        Union[catalog.CompletionConfig, Awaitable[catalog.CompletionConfig]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_attributes_config(
+        self,
+    ) -> Callable[
+        [catalog_service.GetAttributesConfigRequest],
+        Union[catalog.AttributesConfig, Awaitable[catalog.AttributesConfig]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_attributes_config(
+        self,
+    ) -> Callable[
+        [catalog_service.UpdateAttributesConfigRequest],
+        Union[catalog.AttributesConfig, Awaitable[catalog.AttributesConfig]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def add_catalog_attribute(
+        self,
+    ) -> Callable[
+        [catalog_service.AddCatalogAttributeRequest],
+        Union[catalog.AttributesConfig, Awaitable[catalog.AttributesConfig]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def remove_catalog_attribute(
+        self,
+    ) -> Callable[
+        [catalog_service.RemoveCatalogAttributeRequest],
+        Union[catalog.AttributesConfig, Awaitable[catalog.AttributesConfig]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def replace_catalog_attribute(
+        self,
+    ) -> Callable[
+        [catalog_service.ReplaceCatalogAttributeRequest],
+        Union[catalog.AttributesConfig, Awaitable[catalog.AttributesConfig]],
     ]:
         raise NotImplementedError()
 

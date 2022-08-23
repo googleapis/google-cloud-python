@@ -46,7 +46,6 @@ __protobuf__ = proto.module(
 
 class GcsSource(proto.Message):
     r"""Google Cloud Storage location for input content.
-    format.
 
     Attributes:
         input_uris (Sequence[str]):
@@ -81,12 +80,14 @@ class GcsSource(proto.Message):
 
             Supported values for control imports:
 
-            -  'control' (default): One JSON [Control][] per line.
+            -  ``control`` (default): One JSON
+               [Control][google.cloud.retail.v2.Control] per line.
 
             Supported values for catalog attribute imports:
 
-            -  'catalog_attribute' (default): One CSV
-               [CatalogAttribute][] per line.
+            -  ``catalog_attribute`` (default): One CSV
+               [CatalogAttribute][google.cloud.retail.v2.CatalogAttribute]
+               per line.
     """
 
     input_uris = proto.RepeatedField(
@@ -109,9 +110,8 @@ class BigQuerySource(proto.Message):
             BigQuery time partitioned table's \_PARTITIONDATE in
             YYYY-MM-DD format.
 
-            Only supported when
-            [ImportProductsRequest.reconciliation_mode][google.cloud.retail.v2.ImportProductsRequest.reconciliation_mode]
-            is set to ``FULL``.
+            Only supported in
+            [ImportProductsRequest][google.cloud.retail.v2.ImportProductsRequest].
 
             This field is a member of `oneof`_ ``partition``.
         project_id (str):
@@ -151,9 +151,7 @@ class BigQuerySource(proto.Message):
                [UserEvent][google.cloud.retail.v2.UserEvent] per line.
             -  ``user_event_ga360``: The schema is available here:
                https://support.google.com/analytics/answer/3437719.
-            -  ``user_event_ga4``: This feature is in private preview.
-               Please contact the support team for importing Google
-               Analytics 4 events. The schema is available here:
+            -  ``user_event_ga4``: The schema is available here:
                https://support.google.com/analytics/answer/7029846.
 
             Supported values for auto-completion imports:
@@ -237,7 +235,7 @@ class ImportErrorsConfig(proto.Message):
         gcs_prefix (str):
             Google Cloud Storage prefix for import errors. This must be
             an empty, existing Cloud Storage directory. Import errors
-            will be written to sharded files in this directory, one per
+            are written to sharded files in this directory, one per
             line, as a JSON-encoded ``google.rpc.Status`` message.
 
             This field is a member of `oneof`_ ``destination``.
@@ -270,34 +268,26 @@ class ImportProductsRequest(proto.Message):
             The desired location of errors incurred
             during the Import.
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Indicates which fields in the provided
-            imported 'products' to update. If not set, will
-            by default update all fields.
+            Indicates which fields in the provided imported ``products``
+            to update. If not set, all fields are updated.
         reconciliation_mode (google.cloud.retail_v2.types.ImportProductsRequest.ReconciliationMode):
             The mode of reconciliation between existing products and the
             products to be imported. Defaults to
             [ReconciliationMode.INCREMENTAL][google.cloud.retail.v2.ImportProductsRequest.ReconciliationMode.INCREMENTAL].
         notification_pubsub_topic (str):
             Full Pub/Sub topic name for receiving notification. If this
-            field is set, when the import is finished, a notification
-            will be sent to specified Pub/Sub topic. The message data
-            will be JSON string of a
-            [Operation][google.longrunning.Operation].
+            field is set, when the import is finished, a notification is
+            sent to specified Pub/Sub topic. The message data is JSON
+            string of a [Operation][google.longrunning.Operation].
 
             Format of the Pub/Sub topic is
             ``projects/{project}/topics/{topic}``. It has to be within
             the same project as
             [ImportProductsRequest.parent][google.cloud.retail.v2.ImportProductsRequest.parent].
-            Make sure that both
-            ``cloud-retail-customer-data-access@system.gserviceaccount.com``
-            and
+            Make sure that
             ``service-<project number>@gcp-sa-retail.iam.gserviceaccount.com``
-            have the ``pubsub.topics.publish`` IAM permission on the
+            has the ``pubsub.topics.publish`` IAM permission on the
             topic.
-
-            Only supported when
-            [ImportProductsRequest.reconciliation_mode][google.cloud.retail.v2.ImportProductsRequest.reconciliation_mode]
-            is set to ``FULL``.
     """
 
     class ReconciliationMode(proto.Enum):
@@ -389,11 +379,10 @@ class ImportCompletionDataRequest(proto.Message):
             data.
         notification_pubsub_topic (str):
             Pub/Sub topic for receiving notification. If this field is
-            set, when the import is finished, a notification will be
-            sent to specified Pub/Sub topic. The message data will be
-            JSON string of a [Operation][google.longrunning.Operation].
-            Format of the Pub/Sub topic is
-            ``projects/{project}/topics/{topic}``.
+            set, when the import is finished, a notification is sent to
+            specified Pub/Sub topic. The message data is JSON string of
+            a [Operation][google.longrunning.Operation]. Format of the
+            Pub/Sub topic is ``projects/{project}/topics/{topic}``.
     """
 
     parent = proto.Field(
@@ -532,8 +521,8 @@ class CompletionDataInputConfig(proto.Message):
 
 class ImportMetadata(proto.Message):
     r"""Metadata related to the progress of the Import operation.
-    This will be returned by the
-    google.longrunning.Operation.metadata field.
+    This is returned by the google.longrunning.Operation.metadata
+    field.
 
     Attributes:
         create_time (google.protobuf.timestamp_pb2.Timestamp):
@@ -551,11 +540,10 @@ class ImportMetadata(proto.Message):
             Deprecated. This field is never set.
         notification_pubsub_topic (str):
             Pub/Sub topic for receiving notification. If this field is
-            set, when the import is finished, a notification will be
-            sent to specified Pub/Sub topic. The message data will be
-            JSON string of a [Operation][google.longrunning.Operation].
-            Format of the Pub/Sub topic is
-            ``projects/{project}/topics/{topic}``.
+            set, when the import is finished, a notification is sent to
+            specified Pub/Sub topic. The message data is JSON string of
+            a [Operation][google.longrunning.Operation]. Format of the
+            Pub/Sub topic is ``projects/{project}/topics/{topic}``.
     """
 
     create_time = proto.Field(

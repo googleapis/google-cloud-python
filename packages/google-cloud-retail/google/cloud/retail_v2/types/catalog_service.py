@@ -28,6 +28,13 @@ __protobuf__ = proto.module(
         "SetDefaultBranchRequest",
         "GetDefaultBranchRequest",
         "GetDefaultBranchResponse",
+        "GetCompletionConfigRequest",
+        "UpdateCompletionConfigRequest",
+        "GetAttributesConfigRequest",
+        "UpdateAttributesConfigRequest",
+        "AddCatalogAttributeRequest",
+        "RemoveCatalogAttributeRequest",
+        "ReplaceCatalogAttributeRequest",
     },
 )
 
@@ -241,6 +248,204 @@ class GetDefaultBranchResponse(proto.Message):
     note = proto.Field(
         proto.STRING,
         number=3,
+    )
+
+
+class GetCompletionConfigRequest(proto.Message):
+    r"""Request for
+    [CatalogService.GetCompletionConfig][google.cloud.retail.v2.CatalogService.GetCompletionConfig]
+    method.
+
+    Attributes:
+        name (str):
+            Required. Full CompletionConfig resource name. Format:
+            projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}/completionConfig
+    """
+
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class UpdateCompletionConfigRequest(proto.Message):
+    r"""Request for
+    [CatalogService.UpdateCompletionConfig][google.cloud.retail.v2.CatalogService.UpdateCompletionConfig]
+    method.
+
+    Attributes:
+        completion_config (google.cloud.retail_v2.types.CompletionConfig):
+            Required. The
+            [CompletionConfig][google.cloud.retail.v2.CompletionConfig]
+            to update.
+
+            If the caller does not have permission to update the
+            [CompletionConfig][google.cloud.retail.v2.CompletionConfig],
+            then a PERMISSION_DENIED error is returned.
+
+            If the
+            [CompletionConfig][google.cloud.retail.v2.CompletionConfig]
+            to update does not exist, a NOT_FOUND error is returned.
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            Indicates which fields in the provided
+            [CompletionConfig][google.cloud.retail.v2.CompletionConfig]
+            to update. The following are the only supported fields:
+
+            -  [CompletionConfig.matching_order][google.cloud.retail.v2.CompletionConfig.matching_order]
+            -  [CompletionConfig.max_suggestions][google.cloud.retail.v2.CompletionConfig.max_suggestions]
+            -  [CompletionConfig.min_prefix_length][google.cloud.retail.v2.CompletionConfig.min_prefix_length]
+            -  [CompletionConfig.auto_learning][google.cloud.retail.v2.CompletionConfig.auto_learning]
+
+            If not set, all supported fields are updated.
+    """
+
+    completion_config = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=gcr_catalog.CompletionConfig,
+    )
+    update_mask = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
+    )
+
+
+class GetAttributesConfigRequest(proto.Message):
+    r"""Request for
+    [CatalogService.GetAttributesConfig][google.cloud.retail.v2.CatalogService.GetAttributesConfig]
+    method.
+
+    Attributes:
+        name (str):
+            Required. Full AttributesConfig resource name. Format:
+            ``projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}/attributesConfig``
+    """
+
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class UpdateAttributesConfigRequest(proto.Message):
+    r"""Request for
+    [CatalogService.UpdateAttributesConfig][google.cloud.retail.v2.CatalogService.UpdateAttributesConfig]
+    method.
+
+    Attributes:
+        attributes_config (google.cloud.retail_v2.types.AttributesConfig):
+            Required. The
+            [AttributesConfig][google.cloud.retail.v2.AttributesConfig]
+            to update.
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            Indicates which fields in the provided
+            [AttributesConfig][google.cloud.retail.v2.AttributesConfig]
+            to update. The following is the only supported field:
+
+            -  [AttributesConfig.catalog_attributes][google.cloud.retail.v2.AttributesConfig.catalog_attributes]
+
+            If not set, all supported fields are updated.
+    """
+
+    attributes_config = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=gcr_catalog.AttributesConfig,
+    )
+    update_mask = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
+    )
+
+
+class AddCatalogAttributeRequest(proto.Message):
+    r"""Request for
+    [CatalogService.AddCatalogAttribute][google.cloud.retail.v2.CatalogService.AddCatalogAttribute]
+    method.
+
+    Attributes:
+        attributes_config (str):
+            Required. Full AttributesConfig resource name. Format:
+            ``projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}/attributesConfig``
+        catalog_attribute (google.cloud.retail_v2.types.CatalogAttribute):
+            Required. The
+            [CatalogAttribute][google.cloud.retail.v2.CatalogAttribute]
+            to add.
+    """
+
+    attributes_config = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    catalog_attribute = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=gcr_catalog.CatalogAttribute,
+    )
+
+
+class RemoveCatalogAttributeRequest(proto.Message):
+    r"""Request for
+    [CatalogService.RemoveCatalogAttribute][google.cloud.retail.v2.CatalogService.RemoveCatalogAttribute]
+    method.
+
+    Attributes:
+        attributes_config (str):
+            Required. Full AttributesConfig resource name. Format:
+            ``projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}/attributesConfig``
+        key (str):
+            Required. The attribute name key of the
+            [CatalogAttribute][google.cloud.retail.v2.CatalogAttribute]
+            to remove.
+    """
+
+    attributes_config = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    key = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class ReplaceCatalogAttributeRequest(proto.Message):
+    r"""Request for
+    [CatalogService.ReplaceCatalogAttribute][google.cloud.retail.v2.CatalogService.ReplaceCatalogAttribute]
+    method.
+
+    Attributes:
+        attributes_config (str):
+            Required. Full AttributesConfig resource name. Format:
+            ``projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}/attributesConfig``
+        catalog_attribute (google.cloud.retail_v2.types.CatalogAttribute):
+            Required. The updated
+            [CatalogAttribute][google.cloud.retail.v2.CatalogAttribute].
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            Indicates which fields in the provided
+            [CatalogAttribute][google.cloud.retail.v2.CatalogAttribute]
+            to update. The following are NOT supported:
+
+            -  [CatalogAttribute.key][google.cloud.retail.v2.CatalogAttribute.key]
+
+            If not set, all supported fields are updated.
+    """
+
+    attributes_config = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    catalog_attribute = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=gcr_catalog.CatalogAttribute,
+    )
+    update_mask = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=field_mask_pb2.FieldMask,
     )
 
 

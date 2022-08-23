@@ -532,13 +532,13 @@ class UserEventServiceAsyncClient:
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
-        r"""Bulk import of User events. Request processing might
-        be synchronous. Events that already exist are skipped.
-        Use this method for backfilling historical user events.
-        Operation.response is of type ImportResponse. Note that
-        it is possible for a subset of the items to be
-        successfully inserted. Operation.metadata is of type
-        ImportMetadata.
+        r"""Bulk import of User events. Request processing might be
+        synchronous. Events that already exist are skipped. Use this
+        method for backfilling historical user events.
+
+        ``Operation.response`` is of type ``ImportResponse``. Note that
+        it is possible for a subset of the items to be successfully
+        inserted. ``Operation.metadata`` is of type ``ImportMetadata``.
 
         .. code-block:: python
 

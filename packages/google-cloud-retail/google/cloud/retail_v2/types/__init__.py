@@ -13,18 +13,33 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .catalog import Catalog, ProductLevelConfig
+from .catalog import (
+    AttributesConfig,
+    Catalog,
+    CatalogAttribute,
+    CompletionConfig,
+    ProductLevelConfig,
+)
 from .catalog_service import (
+    AddCatalogAttributeRequest,
+    GetAttributesConfigRequest,
+    GetCompletionConfigRequest,
     GetDefaultBranchRequest,
     GetDefaultBranchResponse,
     ListCatalogsRequest,
     ListCatalogsResponse,
+    RemoveCatalogAttributeRequest,
+    ReplaceCatalogAttributeRequest,
     SetDefaultBranchRequest,
+    UpdateAttributesConfigRequest,
     UpdateCatalogRequest,
+    UpdateCompletionConfigRequest,
 )
 from .common import (
+    AttributeConfigLevel,
     Audience,
     ColorInfo,
+    Condition,
     CustomAttribute,
     FulfillmentInfo,
     Image,
@@ -32,9 +47,21 @@ from .common import (
     LocalInventory,
     PriceInfo,
     Rating,
+    Rule,
+    SearchSolutionUseCase,
+    SolutionType,
     UserInfo,
 )
 from .completion_service import CompleteQueryRequest, CompleteQueryResponse
+from .control import Control
+from .control_service import (
+    CreateControlRequest,
+    DeleteControlRequest,
+    GetControlRequest,
+    ListControlsRequest,
+    ListControlsResponse,
+    UpdateControlRequest,
+)
 from .import_config import (
     BigQuerySource,
     CompletionDataInputConfig,
@@ -81,6 +108,17 @@ from .product_service import (
 from .promotion import Promotion
 from .purge_config import PurgeMetadata, PurgeUserEventsRequest, PurgeUserEventsResponse
 from .search_service import SearchRequest, SearchResponse
+from .serving_config import ServingConfig
+from .serving_config_service import (
+    AddControlRequest,
+    CreateServingConfigRequest,
+    DeleteServingConfigRequest,
+    GetServingConfigRequest,
+    ListServingConfigsRequest,
+    ListServingConfigsResponse,
+    RemoveControlRequest,
+    UpdateServingConfigRequest,
+)
 from .user_event import CompletionDetail, ProductDetail, PurchaseTransaction, UserEvent
 from .user_event_service import (
     CollectUserEventRequest,
@@ -91,16 +129,27 @@ from .user_event_service import (
 )
 
 __all__ = (
+    "AttributesConfig",
     "Catalog",
+    "CatalogAttribute",
+    "CompletionConfig",
     "ProductLevelConfig",
+    "AddCatalogAttributeRequest",
+    "GetAttributesConfigRequest",
+    "GetCompletionConfigRequest",
     "GetDefaultBranchRequest",
     "GetDefaultBranchResponse",
     "ListCatalogsRequest",
     "ListCatalogsResponse",
+    "RemoveCatalogAttributeRequest",
+    "ReplaceCatalogAttributeRequest",
     "SetDefaultBranchRequest",
+    "UpdateAttributesConfigRequest",
     "UpdateCatalogRequest",
+    "UpdateCompletionConfigRequest",
     "Audience",
     "ColorInfo",
+    "Condition",
     "CustomAttribute",
     "FulfillmentInfo",
     "Image",
@@ -108,9 +157,20 @@ __all__ = (
     "LocalInventory",
     "PriceInfo",
     "Rating",
+    "Rule",
     "UserInfo",
+    "AttributeConfigLevel",
+    "SearchSolutionUseCase",
+    "SolutionType",
     "CompleteQueryRequest",
     "CompleteQueryResponse",
+    "Control",
+    "CreateControlRequest",
+    "DeleteControlRequest",
+    "GetControlRequest",
+    "ListControlsRequest",
+    "ListControlsResponse",
+    "UpdateControlRequest",
     "BigQuerySource",
     "CompletionDataInputConfig",
     "GcsSource",
@@ -157,6 +217,15 @@ __all__ = (
     "PurgeUserEventsResponse",
     "SearchRequest",
     "SearchResponse",
+    "ServingConfig",
+    "AddControlRequest",
+    "CreateServingConfigRequest",
+    "DeleteServingConfigRequest",
+    "GetServingConfigRequest",
+    "ListServingConfigsRequest",
+    "ListServingConfigsResponse",
+    "RemoveControlRequest",
+    "UpdateServingConfigRequest",
     "CompletionDetail",
     "ProductDetail",
     "PurchaseTransaction",

@@ -10,6 +10,21 @@
         "grpc": {
           "libraryClient": "CatalogServiceClient",
           "rpcs": {
+            "AddCatalogAttribute": {
+              "methods": [
+                "add_catalog_attribute"
+              ]
+            },
+            "GetAttributesConfig": {
+              "methods": [
+                "get_attributes_config"
+              ]
+            },
+            "GetCompletionConfig": {
+              "methods": [
+                "get_completion_config"
+              ]
+            },
             "GetDefaultBranch": {
               "methods": [
                 "get_default_branch"
@@ -20,14 +35,34 @@
                 "list_catalogs"
               ]
             },
+            "RemoveCatalogAttribute": {
+              "methods": [
+                "remove_catalog_attribute"
+              ]
+            },
+            "ReplaceCatalogAttribute": {
+              "methods": [
+                "replace_catalog_attribute"
+              ]
+            },
             "SetDefaultBranch": {
               "methods": [
                 "set_default_branch"
               ]
             },
+            "UpdateAttributesConfig": {
+              "methods": [
+                "update_attributes_config"
+              ]
+            },
             "UpdateCatalog": {
               "methods": [
                 "update_catalog"
+              ]
+            },
+            "UpdateCompletionConfig": {
+              "methods": [
+                "update_completion_config"
               ]
             }
           }
@@ -35,6 +70,21 @@
         "grpc-async": {
           "libraryClient": "CatalogServiceAsyncClient",
           "rpcs": {
+            "AddCatalogAttribute": {
+              "methods": [
+                "add_catalog_attribute"
+              ]
+            },
+            "GetAttributesConfig": {
+              "methods": [
+                "get_attributes_config"
+              ]
+            },
+            "GetCompletionConfig": {
+              "methods": [
+                "get_completion_config"
+              ]
+            },
             "GetDefaultBranch": {
               "methods": [
                 "get_default_branch"
@@ -45,14 +95,34 @@
                 "list_catalogs"
               ]
             },
+            "RemoveCatalogAttribute": {
+              "methods": [
+                "remove_catalog_attribute"
+              ]
+            },
+            "ReplaceCatalogAttribute": {
+              "methods": [
+                "replace_catalog_attribute"
+              ]
+            },
             "SetDefaultBranch": {
               "methods": [
                 "set_default_branch"
               ]
             },
+            "UpdateAttributesConfig": {
+              "methods": [
+                "update_attributes_config"
+              ]
+            },
             "UpdateCatalog": {
               "methods": [
                 "update_catalog"
+              ]
+            },
+            "UpdateCompletionConfig": {
+              "methods": [
+                "update_completion_config"
               ]
             }
           }
@@ -87,6 +157,70 @@
             "ImportCompletionData": {
               "methods": [
                 "import_completion_data"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "ControlService": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "ControlServiceClient",
+          "rpcs": {
+            "CreateControl": {
+              "methods": [
+                "create_control"
+              ]
+            },
+            "DeleteControl": {
+              "methods": [
+                "delete_control"
+              ]
+            },
+            "GetControl": {
+              "methods": [
+                "get_control"
+              ]
+            },
+            "ListControls": {
+              "methods": [
+                "list_controls"
+              ]
+            },
+            "UpdateControl": {
+              "methods": [
+                "update_control"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "ControlServiceAsyncClient",
+          "rpcs": {
+            "CreateControl": {
+              "methods": [
+                "create_control"
+              ]
+            },
+            "DeleteControl": {
+              "methods": [
+                "delete_control"
+              ]
+            },
+            "GetControl": {
+              "methods": [
+                "get_control"
+              ]
+            },
+            "ListControls": {
+              "methods": [
+                "list_controls"
+              ]
+            },
+            "UpdateControl": {
+              "methods": [
+                "update_control"
               ]
             }
           }
@@ -259,6 +393,90 @@
             "Search": {
               "methods": [
                 "search"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "ServingConfigService": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "ServingConfigServiceClient",
+          "rpcs": {
+            "AddControl": {
+              "methods": [
+                "add_control"
+              ]
+            },
+            "CreateServingConfig": {
+              "methods": [
+                "create_serving_config"
+              ]
+            },
+            "DeleteServingConfig": {
+              "methods": [
+                "delete_serving_config"
+              ]
+            },
+            "GetServingConfig": {
+              "methods": [
+                "get_serving_config"
+              ]
+            },
+            "ListServingConfigs": {
+              "methods": [
+                "list_serving_configs"
+              ]
+            },
+            "RemoveControl": {
+              "methods": [
+                "remove_control"
+              ]
+            },
+            "UpdateServingConfig": {
+              "methods": [
+                "update_serving_config"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "ServingConfigServiceAsyncClient",
+          "rpcs": {
+            "AddControl": {
+              "methods": [
+                "add_control"
+              ]
+            },
+            "CreateServingConfig": {
+              "methods": [
+                "create_serving_config"
+              ]
+            },
+            "DeleteServingConfig": {
+              "methods": [
+                "delete_serving_config"
+              ]
+            },
+            "GetServingConfig": {
+              "methods": [
+                "get_serving_config"
+              ]
+            },
+            "ListServingConfigs": {
+              "methods": [
+                "list_serving_configs"
+              ]
+            },
+            "RemoveControl": {
+              "methods": [
+                "remove_control"
+              ]
+            },
+            "UpdateServingConfig": {
+              "methods": [
+                "update_serving_config"
               ]
             }
           }

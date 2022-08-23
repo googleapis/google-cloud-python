@@ -37,7 +37,7 @@ from google.protobuf import timestamp_pb2  # type: ignore
 from google.cloud.retail_v2.services.catalog_service import pagers
 from google.cloud.retail_v2.types import catalog
 from google.cloud.retail_v2.types import catalog as gcr_catalog
-from google.cloud.retail_v2.types import catalog_service
+from google.cloud.retail_v2.types import catalog_service, common, import_config
 
 from .client import CatalogServiceClient
 from .transports.base import DEFAULT_CLIENT_INFO, CatalogServiceTransport
@@ -52,10 +52,18 @@ class CatalogServiceAsyncClient:
     DEFAULT_ENDPOINT = CatalogServiceClient.DEFAULT_ENDPOINT
     DEFAULT_MTLS_ENDPOINT = CatalogServiceClient.DEFAULT_MTLS_ENDPOINT
 
+    attributes_config_path = staticmethod(CatalogServiceClient.attributes_config_path)
+    parse_attributes_config_path = staticmethod(
+        CatalogServiceClient.parse_attributes_config_path
+    )
     branch_path = staticmethod(CatalogServiceClient.branch_path)
     parse_branch_path = staticmethod(CatalogServiceClient.parse_branch_path)
     catalog_path = staticmethod(CatalogServiceClient.catalog_path)
     parse_catalog_path = staticmethod(CatalogServiceClient.parse_catalog_path)
+    completion_config_path = staticmethod(CatalogServiceClient.completion_config_path)
+    parse_completion_config_path = staticmethod(
+        CatalogServiceClient.parse_completion_config_path
+    )
     common_billing_account_path = staticmethod(
         CatalogServiceClient.common_billing_account_path
     )
@@ -646,6 +654,705 @@ class CatalogServiceAsyncClient:
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((("catalog", request.catalog),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def get_completion_config(
+        self,
+        request: Union[catalog_service.GetCompletionConfigRequest, dict] = None,
+        *,
+        name: str = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> catalog.CompletionConfig:
+        r"""Gets a
+        [CompletionConfig][google.cloud.retail.v2.CompletionConfig].
+
+        .. code-block:: python
+
+            from google.cloud import retail_v2
+
+            async def sample_get_completion_config():
+                # Create a client
+                client = retail_v2.CatalogServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = retail_v2.GetCompletionConfigRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = await client.get_completion_config(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.retail_v2.types.GetCompletionConfigRequest, dict]):
+                The request object. Request for
+                [CatalogService.GetCompletionConfig][google.cloud.retail.v2.CatalogService.GetCompletionConfig]
+                method.
+            name (:class:`str`):
+                Required. Full CompletionConfig resource name. Format:
+                projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}/completionConfig
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.retail_v2.types.CompletionConfig:
+                Catalog level autocomplete config for
+                customers to customize autocomplete
+                feature's settings.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = catalog_service.GetCompletionConfigRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.get_completion_config,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def update_completion_config(
+        self,
+        request: Union[catalog_service.UpdateCompletionConfigRequest, dict] = None,
+        *,
+        completion_config: catalog.CompletionConfig = None,
+        update_mask: field_mask_pb2.FieldMask = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> catalog.CompletionConfig:
+        r"""Updates the
+        [CompletionConfig][google.cloud.retail.v2.CompletionConfig]s.
+
+        .. code-block:: python
+
+            from google.cloud import retail_v2
+
+            async def sample_update_completion_config():
+                # Create a client
+                client = retail_v2.CatalogServiceAsyncClient()
+
+                # Initialize request argument(s)
+                completion_config = retail_v2.CompletionConfig()
+                completion_config.name = "name_value"
+
+                request = retail_v2.UpdateCompletionConfigRequest(
+                    completion_config=completion_config,
+                )
+
+                # Make the request
+                response = await client.update_completion_config(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.retail_v2.types.UpdateCompletionConfigRequest, dict]):
+                The request object. Request for
+                [CatalogService.UpdateCompletionConfig][google.cloud.retail.v2.CatalogService.UpdateCompletionConfig]
+                method.
+            completion_config (:class:`google.cloud.retail_v2.types.CompletionConfig`):
+                Required. The
+                [CompletionConfig][google.cloud.retail.v2.CompletionConfig]
+                to update.
+
+                If the caller does not have permission to update the
+                [CompletionConfig][google.cloud.retail.v2.CompletionConfig],
+                then a PERMISSION_DENIED error is returned.
+
+                If the
+                [CompletionConfig][google.cloud.retail.v2.CompletionConfig]
+                to update does not exist, a NOT_FOUND error is returned.
+
+                This corresponds to the ``completion_config`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
+                Indicates which fields in the provided
+                [CompletionConfig][google.cloud.retail.v2.CompletionConfig]
+                to update. The following are the only supported fields:
+
+                -  [CompletionConfig.matching_order][google.cloud.retail.v2.CompletionConfig.matching_order]
+                -  [CompletionConfig.max_suggestions][google.cloud.retail.v2.CompletionConfig.max_suggestions]
+                -  [CompletionConfig.min_prefix_length][google.cloud.retail.v2.CompletionConfig.min_prefix_length]
+                -  [CompletionConfig.auto_learning][google.cloud.retail.v2.CompletionConfig.auto_learning]
+
+                If not set, all supported fields are updated.
+
+                This corresponds to the ``update_mask`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.retail_v2.types.CompletionConfig:
+                Catalog level autocomplete config for
+                customers to customize autocomplete
+                feature's settings.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([completion_config, update_mask])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = catalog_service.UpdateCompletionConfigRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if completion_config is not None:
+            request.completion_config = completion_config
+        if update_mask is not None:
+            request.update_mask = update_mask
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.update_completion_config,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("completion_config.name", request.completion_config.name),)
+            ),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def get_attributes_config(
+        self,
+        request: Union[catalog_service.GetAttributesConfigRequest, dict] = None,
+        *,
+        name: str = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> catalog.AttributesConfig:
+        r"""Gets an
+        [AttributesConfig][google.cloud.retail.v2.AttributesConfig].
+
+        .. code-block:: python
+
+            from google.cloud import retail_v2
+
+            async def sample_get_attributes_config():
+                # Create a client
+                client = retail_v2.CatalogServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = retail_v2.GetAttributesConfigRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = await client.get_attributes_config(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.retail_v2.types.GetAttributesConfigRequest, dict]):
+                The request object. Request for
+                [CatalogService.GetAttributesConfig][google.cloud.retail.v2.CatalogService.GetAttributesConfig]
+                method.
+            name (:class:`str`):
+                Required. Full AttributesConfig resource name. Format:
+                ``projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}/attributesConfig``
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.retail_v2.types.AttributesConfig:
+                Catalog level attribute config.
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = catalog_service.GetAttributesConfigRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.get_attributes_config,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def update_attributes_config(
+        self,
+        request: Union[catalog_service.UpdateAttributesConfigRequest, dict] = None,
+        *,
+        attributes_config: catalog.AttributesConfig = None,
+        update_mask: field_mask_pb2.FieldMask = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> catalog.AttributesConfig:
+        r"""Updates the
+        [AttributesConfig][google.cloud.retail.v2.AttributesConfig].
+
+        The catalog attributes in the request will be updated in the
+        catalog, or inserted if they do not exist. Existing catalog
+        attributes not included in the request will remain unchanged.
+        Attributes that are assigned to products, but do not exist at
+        the catalog level, are always included in the response. The
+        product attribute is assigned default values for missing catalog
+        attribute fields, e.g., searchable and dynamic facetable
+        options.
+
+        .. code-block:: python
+
+            from google.cloud import retail_v2
+
+            async def sample_update_attributes_config():
+                # Create a client
+                client = retail_v2.CatalogServiceAsyncClient()
+
+                # Initialize request argument(s)
+                attributes_config = retail_v2.AttributesConfig()
+                attributes_config.name = "name_value"
+
+                request = retail_v2.UpdateAttributesConfigRequest(
+                    attributes_config=attributes_config,
+                )
+
+                # Make the request
+                response = await client.update_attributes_config(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.retail_v2.types.UpdateAttributesConfigRequest, dict]):
+                The request object. Request for
+                [CatalogService.UpdateAttributesConfig][google.cloud.retail.v2.CatalogService.UpdateAttributesConfig]
+                method.
+            attributes_config (:class:`google.cloud.retail_v2.types.AttributesConfig`):
+                Required. The
+                [AttributesConfig][google.cloud.retail.v2.AttributesConfig]
+                to update.
+
+                This corresponds to the ``attributes_config`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
+                Indicates which fields in the provided
+                [AttributesConfig][google.cloud.retail.v2.AttributesConfig]
+                to update. The following is the only supported field:
+
+                -  [AttributesConfig.catalog_attributes][google.cloud.retail.v2.AttributesConfig.catalog_attributes]
+
+                If not set, all supported fields are updated.
+
+                This corresponds to the ``update_mask`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.retail_v2.types.AttributesConfig:
+                Catalog level attribute config.
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([attributes_config, update_mask])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = catalog_service.UpdateAttributesConfigRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if attributes_config is not None:
+            request.attributes_config = attributes_config
+        if update_mask is not None:
+            request.update_mask = update_mask
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.update_attributes_config,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("attributes_config.name", request.attributes_config.name),)
+            ),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def add_catalog_attribute(
+        self,
+        request: Union[catalog_service.AddCatalogAttributeRequest, dict] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> catalog.AttributesConfig:
+        r"""Adds the specified
+        [CatalogAttribute][google.cloud.retail.v2.CatalogAttribute] to
+        the [AttributesConfig][google.cloud.retail.v2.AttributesConfig].
+
+        If the
+        [CatalogAttribute][google.cloud.retail.v2.CatalogAttribute] to
+        add already exists, an ALREADY_EXISTS error is returned.
+
+        .. code-block:: python
+
+            from google.cloud import retail_v2
+
+            async def sample_add_catalog_attribute():
+                # Create a client
+                client = retail_v2.CatalogServiceAsyncClient()
+
+                # Initialize request argument(s)
+                catalog_attribute = retail_v2.CatalogAttribute()
+                catalog_attribute.key = "key_value"
+
+                request = retail_v2.AddCatalogAttributeRequest(
+                    attributes_config="attributes_config_value",
+                    catalog_attribute=catalog_attribute,
+                )
+
+                # Make the request
+                response = await client.add_catalog_attribute(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.retail_v2.types.AddCatalogAttributeRequest, dict]):
+                The request object. Request for
+                [CatalogService.AddCatalogAttribute][google.cloud.retail.v2.CatalogService.AddCatalogAttribute]
+                method.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.retail_v2.types.AttributesConfig:
+                Catalog level attribute config.
+        """
+        # Create or coerce a protobuf request object.
+        request = catalog_service.AddCatalogAttributeRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.add_catalog_attribute,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("attributes_config", request.attributes_config),)
+            ),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def remove_catalog_attribute(
+        self,
+        request: Union[catalog_service.RemoveCatalogAttributeRequest, dict] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> catalog.AttributesConfig:
+        r"""Removes the specified
+        [CatalogAttribute][google.cloud.retail.v2.CatalogAttribute] from
+        the [AttributesConfig][google.cloud.retail.v2.AttributesConfig].
+
+        If the
+        [CatalogAttribute][google.cloud.retail.v2.CatalogAttribute] to
+        remove does not exist, a NOT_FOUND error is returned.
+
+        .. code-block:: python
+
+            from google.cloud import retail_v2
+
+            async def sample_remove_catalog_attribute():
+                # Create a client
+                client = retail_v2.CatalogServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = retail_v2.RemoveCatalogAttributeRequest(
+                    attributes_config="attributes_config_value",
+                    key="key_value",
+                )
+
+                # Make the request
+                response = await client.remove_catalog_attribute(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.retail_v2.types.RemoveCatalogAttributeRequest, dict]):
+                The request object. Request for
+                [CatalogService.RemoveCatalogAttribute][google.cloud.retail.v2.CatalogService.RemoveCatalogAttribute]
+                method.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.retail_v2.types.AttributesConfig:
+                Catalog level attribute config.
+        """
+        # Create or coerce a protobuf request object.
+        request = catalog_service.RemoveCatalogAttributeRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.remove_catalog_attribute,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("attributes_config", request.attributes_config),)
+            ),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def replace_catalog_attribute(
+        self,
+        request: Union[catalog_service.ReplaceCatalogAttributeRequest, dict] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> catalog.AttributesConfig:
+        r"""Replaces the specified
+        [CatalogAttribute][google.cloud.retail.v2.CatalogAttribute] in
+        the [AttributesConfig][google.cloud.retail.v2.AttributesConfig]
+        by updating the catalog attribute with the same
+        [CatalogAttribute.key][google.cloud.retail.v2.CatalogAttribute.key].
+
+        If the
+        [CatalogAttribute][google.cloud.retail.v2.CatalogAttribute] to
+        replace does not exist, a NOT_FOUND error is returned.
+
+        .. code-block:: python
+
+            from google.cloud import retail_v2
+
+            async def sample_replace_catalog_attribute():
+                # Create a client
+                client = retail_v2.CatalogServiceAsyncClient()
+
+                # Initialize request argument(s)
+                catalog_attribute = retail_v2.CatalogAttribute()
+                catalog_attribute.key = "key_value"
+
+                request = retail_v2.ReplaceCatalogAttributeRequest(
+                    attributes_config="attributes_config_value",
+                    catalog_attribute=catalog_attribute,
+                )
+
+                # Make the request
+                response = await client.replace_catalog_attribute(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.retail_v2.types.ReplaceCatalogAttributeRequest, dict]):
+                The request object. Request for
+                [CatalogService.ReplaceCatalogAttribute][google.cloud.retail.v2.CatalogService.ReplaceCatalogAttribute]
+                method.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.retail_v2.types.AttributesConfig:
+                Catalog level attribute config.
+        """
+        # Create or coerce a protobuf request object.
+        request = catalog_service.ReplaceCatalogAttributeRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.replace_catalog_attribute,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("attributes_config", request.attributes_config),)
+            ),
         )
 
         # Send the request.

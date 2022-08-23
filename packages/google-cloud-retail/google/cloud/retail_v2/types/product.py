@@ -146,7 +146,7 @@ class Product(proto.Message):
             [Type.PRIMARY][google.cloud.retail.v2.Product.Type.PRIMARY]
             or
             [Type.VARIANT][google.cloud.retail.v2.Product.Type.VARIANT]
-            otherwise and INVALID_ARGUMENT error is thrown. Should not
+            otherwise an INVALID_ARGUMENT error is thrown. Should not
             set it for other types. A maximum of 1000 values are
             allowed. Otherwise, an INVALID_ARGUMENT error is return.
         gtin (str):
@@ -524,6 +524,13 @@ class Product(proto.Message):
             Note: This field is OUTPUT_ONLY for
             [ProductService.GetProduct][google.cloud.retail.v2.ProductService.GetProduct].
             Do not set this field in API requests.
+        local_inventories (Sequence[google.cloud.retail_v2.types.LocalInventory]):
+            Output only. A list of local inventories specific to
+            different places.
+
+            This is only available for users who have Retail Search
+            enabled, and it can be managed by [AddLocalInventories][]
+            and [RemoveLocalInventories][] APIs.
     """
 
     class Type(proto.Enum):
@@ -694,6 +701,11 @@ class Product(proto.Message):
         proto.MESSAGE,
         number=31,
         message="Product",
+    )
+    local_inventories = proto.RepeatedField(
+        proto.MESSAGE,
+        number=35,
+        message=common.LocalInventory,
     )
 
 

@@ -33,6 +33,7 @@ from google.auth.exceptions import MutualTLSChannelError
 from google.oauth2 import service_account
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
+from google.type import date_pb2  # type: ignore
 import grpc
 from grpc.experimental import aio
 from proto.marshal.rules.dates import DurationRule, TimestampRule
@@ -46,7 +47,7 @@ from google.cloud.retail_v2.services.catalog_service import (
 )
 from google.cloud.retail_v2.types import catalog
 from google.cloud.retail_v2.types import catalog as gcr_catalog
-from google.cloud.retail_v2.types import catalog_service
+from google.cloud.retail_v2.types import catalog_service, common, import_config
 
 
 def client_cert_source_callback():
@@ -1831,6 +1832,1639 @@ async def test_get_default_branch_flattened_error_async():
         )
 
 
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        catalog_service.GetCompletionConfigRequest,
+        dict,
+    ],
+)
+def test_get_completion_config(request_type, transport: str = "grpc"):
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_completion_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = catalog.CompletionConfig(
+            name="name_value",
+            matching_order="matching_order_value",
+            max_suggestions=1632,
+            min_prefix_length=1810,
+            auto_learning=True,
+            last_suggestions_import_operation="last_suggestions_import_operation_value",
+            last_denylist_import_operation="last_denylist_import_operation_value",
+            last_allowlist_import_operation="last_allowlist_import_operation_value",
+        )
+        response = client.get_completion_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == catalog_service.GetCompletionConfigRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, catalog.CompletionConfig)
+    assert response.name == "name_value"
+    assert response.matching_order == "matching_order_value"
+    assert response.max_suggestions == 1632
+    assert response.min_prefix_length == 1810
+    assert response.auto_learning is True
+    assert (
+        response.last_suggestions_import_operation
+        == "last_suggestions_import_operation_value"
+    )
+    assert (
+        response.last_denylist_import_operation
+        == "last_denylist_import_operation_value"
+    )
+    assert (
+        response.last_allowlist_import_operation
+        == "last_allowlist_import_operation_value"
+    )
+
+
+def test_get_completion_config_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_completion_config), "__call__"
+    ) as call:
+        client.get_completion_config()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == catalog_service.GetCompletionConfigRequest()
+
+
+@pytest.mark.asyncio
+async def test_get_completion_config_async(
+    transport: str = "grpc_asyncio",
+    request_type=catalog_service.GetCompletionConfigRequest,
+):
+    client = CatalogServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_completion_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            catalog.CompletionConfig(
+                name="name_value",
+                matching_order="matching_order_value",
+                max_suggestions=1632,
+                min_prefix_length=1810,
+                auto_learning=True,
+                last_suggestions_import_operation="last_suggestions_import_operation_value",
+                last_denylist_import_operation="last_denylist_import_operation_value",
+                last_allowlist_import_operation="last_allowlist_import_operation_value",
+            )
+        )
+        response = await client.get_completion_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == catalog_service.GetCompletionConfigRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, catalog.CompletionConfig)
+    assert response.name == "name_value"
+    assert response.matching_order == "matching_order_value"
+    assert response.max_suggestions == 1632
+    assert response.min_prefix_length == 1810
+    assert response.auto_learning is True
+    assert (
+        response.last_suggestions_import_operation
+        == "last_suggestions_import_operation_value"
+    )
+    assert (
+        response.last_denylist_import_operation
+        == "last_denylist_import_operation_value"
+    )
+    assert (
+        response.last_allowlist_import_operation
+        == "last_allowlist_import_operation_value"
+    )
+
+
+@pytest.mark.asyncio
+async def test_get_completion_config_async_from_dict():
+    await test_get_completion_config_async(request_type=dict)
+
+
+def test_get_completion_config_field_headers():
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = catalog_service.GetCompletionConfigRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_completion_config), "__call__"
+    ) as call:
+        call.return_value = catalog.CompletionConfig()
+        client.get_completion_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_get_completion_config_field_headers_async():
+    client = CatalogServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = catalog_service.GetCompletionConfigRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_completion_config), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            catalog.CompletionConfig()
+        )
+        await client.get_completion_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_get_completion_config_flattened():
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_completion_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = catalog.CompletionConfig()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.get_completion_config(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_get_completion_config_flattened_error():
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_completion_config(
+            catalog_service.GetCompletionConfigRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_completion_config_flattened_async():
+    client = CatalogServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_completion_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = catalog.CompletionConfig()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            catalog.CompletionConfig()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.get_completion_config(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_get_completion_config_flattened_error_async():
+    client = CatalogServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.get_completion_config(
+            catalog_service.GetCompletionConfigRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        catalog_service.UpdateCompletionConfigRequest,
+        dict,
+    ],
+)
+def test_update_completion_config(request_type, transport: str = "grpc"):
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_completion_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = catalog.CompletionConfig(
+            name="name_value",
+            matching_order="matching_order_value",
+            max_suggestions=1632,
+            min_prefix_length=1810,
+            auto_learning=True,
+            last_suggestions_import_operation="last_suggestions_import_operation_value",
+            last_denylist_import_operation="last_denylist_import_operation_value",
+            last_allowlist_import_operation="last_allowlist_import_operation_value",
+        )
+        response = client.update_completion_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == catalog_service.UpdateCompletionConfigRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, catalog.CompletionConfig)
+    assert response.name == "name_value"
+    assert response.matching_order == "matching_order_value"
+    assert response.max_suggestions == 1632
+    assert response.min_prefix_length == 1810
+    assert response.auto_learning is True
+    assert (
+        response.last_suggestions_import_operation
+        == "last_suggestions_import_operation_value"
+    )
+    assert (
+        response.last_denylist_import_operation
+        == "last_denylist_import_operation_value"
+    )
+    assert (
+        response.last_allowlist_import_operation
+        == "last_allowlist_import_operation_value"
+    )
+
+
+def test_update_completion_config_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_completion_config), "__call__"
+    ) as call:
+        client.update_completion_config()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == catalog_service.UpdateCompletionConfigRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_completion_config_async(
+    transport: str = "grpc_asyncio",
+    request_type=catalog_service.UpdateCompletionConfigRequest,
+):
+    client = CatalogServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_completion_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            catalog.CompletionConfig(
+                name="name_value",
+                matching_order="matching_order_value",
+                max_suggestions=1632,
+                min_prefix_length=1810,
+                auto_learning=True,
+                last_suggestions_import_operation="last_suggestions_import_operation_value",
+                last_denylist_import_operation="last_denylist_import_operation_value",
+                last_allowlist_import_operation="last_allowlist_import_operation_value",
+            )
+        )
+        response = await client.update_completion_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == catalog_service.UpdateCompletionConfigRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, catalog.CompletionConfig)
+    assert response.name == "name_value"
+    assert response.matching_order == "matching_order_value"
+    assert response.max_suggestions == 1632
+    assert response.min_prefix_length == 1810
+    assert response.auto_learning is True
+    assert (
+        response.last_suggestions_import_operation
+        == "last_suggestions_import_operation_value"
+    )
+    assert (
+        response.last_denylist_import_operation
+        == "last_denylist_import_operation_value"
+    )
+    assert (
+        response.last_allowlist_import_operation
+        == "last_allowlist_import_operation_value"
+    )
+
+
+@pytest.mark.asyncio
+async def test_update_completion_config_async_from_dict():
+    await test_update_completion_config_async(request_type=dict)
+
+
+def test_update_completion_config_field_headers():
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = catalog_service.UpdateCompletionConfigRequest()
+
+    request.completion_config.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_completion_config), "__call__"
+    ) as call:
+        call.return_value = catalog.CompletionConfig()
+        client.update_completion_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "completion_config.name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_update_completion_config_field_headers_async():
+    client = CatalogServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = catalog_service.UpdateCompletionConfigRequest()
+
+    request.completion_config.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_completion_config), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            catalog.CompletionConfig()
+        )
+        await client.update_completion_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "completion_config.name=name_value",
+    ) in kw["metadata"]
+
+
+def test_update_completion_config_flattened():
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_completion_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = catalog.CompletionConfig()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.update_completion_config(
+            completion_config=catalog.CompletionConfig(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].completion_config
+        mock_val = catalog.CompletionConfig(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
+
+
+def test_update_completion_config_flattened_error():
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_completion_config(
+            catalog_service.UpdateCompletionConfigRequest(),
+            completion_config=catalog.CompletionConfig(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+@pytest.mark.asyncio
+async def test_update_completion_config_flattened_async():
+    client = CatalogServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_completion_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = catalog.CompletionConfig()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            catalog.CompletionConfig()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.update_completion_config(
+            completion_config=catalog.CompletionConfig(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].completion_config
+        mock_val = catalog.CompletionConfig(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_update_completion_config_flattened_error_async():
+    client = CatalogServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.update_completion_config(
+            catalog_service.UpdateCompletionConfigRequest(),
+            completion_config=catalog.CompletionConfig(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        catalog_service.GetAttributesConfigRequest,
+        dict,
+    ],
+)
+def test_get_attributes_config(request_type, transport: str = "grpc"):
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_attributes_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = catalog.AttributesConfig(
+            name="name_value",
+            attribute_config_level=common.AttributeConfigLevel.PRODUCT_LEVEL_ATTRIBUTE_CONFIG,
+        )
+        response = client.get_attributes_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == catalog_service.GetAttributesConfigRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, catalog.AttributesConfig)
+    assert response.name == "name_value"
+    assert (
+        response.attribute_config_level
+        == common.AttributeConfigLevel.PRODUCT_LEVEL_ATTRIBUTE_CONFIG
+    )
+
+
+def test_get_attributes_config_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_attributes_config), "__call__"
+    ) as call:
+        client.get_attributes_config()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == catalog_service.GetAttributesConfigRequest()
+
+
+@pytest.mark.asyncio
+async def test_get_attributes_config_async(
+    transport: str = "grpc_asyncio",
+    request_type=catalog_service.GetAttributesConfigRequest,
+):
+    client = CatalogServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_attributes_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            catalog.AttributesConfig(
+                name="name_value",
+                attribute_config_level=common.AttributeConfigLevel.PRODUCT_LEVEL_ATTRIBUTE_CONFIG,
+            )
+        )
+        response = await client.get_attributes_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == catalog_service.GetAttributesConfigRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, catalog.AttributesConfig)
+    assert response.name == "name_value"
+    assert (
+        response.attribute_config_level
+        == common.AttributeConfigLevel.PRODUCT_LEVEL_ATTRIBUTE_CONFIG
+    )
+
+
+@pytest.mark.asyncio
+async def test_get_attributes_config_async_from_dict():
+    await test_get_attributes_config_async(request_type=dict)
+
+
+def test_get_attributes_config_field_headers():
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = catalog_service.GetAttributesConfigRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_attributes_config), "__call__"
+    ) as call:
+        call.return_value = catalog.AttributesConfig()
+        client.get_attributes_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_get_attributes_config_field_headers_async():
+    client = CatalogServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = catalog_service.GetAttributesConfigRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_attributes_config), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            catalog.AttributesConfig()
+        )
+        await client.get_attributes_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_get_attributes_config_flattened():
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_attributes_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = catalog.AttributesConfig()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.get_attributes_config(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_get_attributes_config_flattened_error():
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_attributes_config(
+            catalog_service.GetAttributesConfigRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_attributes_config_flattened_async():
+    client = CatalogServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_attributes_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = catalog.AttributesConfig()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            catalog.AttributesConfig()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.get_attributes_config(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_get_attributes_config_flattened_error_async():
+    client = CatalogServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.get_attributes_config(
+            catalog_service.GetAttributesConfigRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        catalog_service.UpdateAttributesConfigRequest,
+        dict,
+    ],
+)
+def test_update_attributes_config(request_type, transport: str = "grpc"):
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_attributes_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = catalog.AttributesConfig(
+            name="name_value",
+            attribute_config_level=common.AttributeConfigLevel.PRODUCT_LEVEL_ATTRIBUTE_CONFIG,
+        )
+        response = client.update_attributes_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == catalog_service.UpdateAttributesConfigRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, catalog.AttributesConfig)
+    assert response.name == "name_value"
+    assert (
+        response.attribute_config_level
+        == common.AttributeConfigLevel.PRODUCT_LEVEL_ATTRIBUTE_CONFIG
+    )
+
+
+def test_update_attributes_config_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_attributes_config), "__call__"
+    ) as call:
+        client.update_attributes_config()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == catalog_service.UpdateAttributesConfigRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_attributes_config_async(
+    transport: str = "grpc_asyncio",
+    request_type=catalog_service.UpdateAttributesConfigRequest,
+):
+    client = CatalogServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_attributes_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            catalog.AttributesConfig(
+                name="name_value",
+                attribute_config_level=common.AttributeConfigLevel.PRODUCT_LEVEL_ATTRIBUTE_CONFIG,
+            )
+        )
+        response = await client.update_attributes_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == catalog_service.UpdateAttributesConfigRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, catalog.AttributesConfig)
+    assert response.name == "name_value"
+    assert (
+        response.attribute_config_level
+        == common.AttributeConfigLevel.PRODUCT_LEVEL_ATTRIBUTE_CONFIG
+    )
+
+
+@pytest.mark.asyncio
+async def test_update_attributes_config_async_from_dict():
+    await test_update_attributes_config_async(request_type=dict)
+
+
+def test_update_attributes_config_field_headers():
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = catalog_service.UpdateAttributesConfigRequest()
+
+    request.attributes_config.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_attributes_config), "__call__"
+    ) as call:
+        call.return_value = catalog.AttributesConfig()
+        client.update_attributes_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "attributes_config.name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_update_attributes_config_field_headers_async():
+    client = CatalogServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = catalog_service.UpdateAttributesConfigRequest()
+
+    request.attributes_config.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_attributes_config), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            catalog.AttributesConfig()
+        )
+        await client.update_attributes_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "attributes_config.name=name_value",
+    ) in kw["metadata"]
+
+
+def test_update_attributes_config_flattened():
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_attributes_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = catalog.AttributesConfig()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.update_attributes_config(
+            attributes_config=catalog.AttributesConfig(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].attributes_config
+        mock_val = catalog.AttributesConfig(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
+
+
+def test_update_attributes_config_flattened_error():
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_attributes_config(
+            catalog_service.UpdateAttributesConfigRequest(),
+            attributes_config=catalog.AttributesConfig(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+@pytest.mark.asyncio
+async def test_update_attributes_config_flattened_async():
+    client = CatalogServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_attributes_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = catalog.AttributesConfig()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            catalog.AttributesConfig()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.update_attributes_config(
+            attributes_config=catalog.AttributesConfig(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].attributes_config
+        mock_val = catalog.AttributesConfig(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_update_attributes_config_flattened_error_async():
+    client = CatalogServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.update_attributes_config(
+            catalog_service.UpdateAttributesConfigRequest(),
+            attributes_config=catalog.AttributesConfig(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        catalog_service.AddCatalogAttributeRequest,
+        dict,
+    ],
+)
+def test_add_catalog_attribute(request_type, transport: str = "grpc"):
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.add_catalog_attribute), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = catalog.AttributesConfig(
+            name="name_value",
+            attribute_config_level=common.AttributeConfigLevel.PRODUCT_LEVEL_ATTRIBUTE_CONFIG,
+        )
+        response = client.add_catalog_attribute(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == catalog_service.AddCatalogAttributeRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, catalog.AttributesConfig)
+    assert response.name == "name_value"
+    assert (
+        response.attribute_config_level
+        == common.AttributeConfigLevel.PRODUCT_LEVEL_ATTRIBUTE_CONFIG
+    )
+
+
+def test_add_catalog_attribute_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.add_catalog_attribute), "__call__"
+    ) as call:
+        client.add_catalog_attribute()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == catalog_service.AddCatalogAttributeRequest()
+
+
+@pytest.mark.asyncio
+async def test_add_catalog_attribute_async(
+    transport: str = "grpc_asyncio",
+    request_type=catalog_service.AddCatalogAttributeRequest,
+):
+    client = CatalogServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.add_catalog_attribute), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            catalog.AttributesConfig(
+                name="name_value",
+                attribute_config_level=common.AttributeConfigLevel.PRODUCT_LEVEL_ATTRIBUTE_CONFIG,
+            )
+        )
+        response = await client.add_catalog_attribute(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == catalog_service.AddCatalogAttributeRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, catalog.AttributesConfig)
+    assert response.name == "name_value"
+    assert (
+        response.attribute_config_level
+        == common.AttributeConfigLevel.PRODUCT_LEVEL_ATTRIBUTE_CONFIG
+    )
+
+
+@pytest.mark.asyncio
+async def test_add_catalog_attribute_async_from_dict():
+    await test_add_catalog_attribute_async(request_type=dict)
+
+
+def test_add_catalog_attribute_field_headers():
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = catalog_service.AddCatalogAttributeRequest()
+
+    request.attributes_config = "attributes_config_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.add_catalog_attribute), "__call__"
+    ) as call:
+        call.return_value = catalog.AttributesConfig()
+        client.add_catalog_attribute(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "attributes_config=attributes_config_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_add_catalog_attribute_field_headers_async():
+    client = CatalogServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = catalog_service.AddCatalogAttributeRequest()
+
+    request.attributes_config = "attributes_config_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.add_catalog_attribute), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            catalog.AttributesConfig()
+        )
+        await client.add_catalog_attribute(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "attributes_config=attributes_config_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        catalog_service.RemoveCatalogAttributeRequest,
+        dict,
+    ],
+)
+def test_remove_catalog_attribute(request_type, transport: str = "grpc"):
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.remove_catalog_attribute), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = catalog.AttributesConfig(
+            name="name_value",
+            attribute_config_level=common.AttributeConfigLevel.PRODUCT_LEVEL_ATTRIBUTE_CONFIG,
+        )
+        response = client.remove_catalog_attribute(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == catalog_service.RemoveCatalogAttributeRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, catalog.AttributesConfig)
+    assert response.name == "name_value"
+    assert (
+        response.attribute_config_level
+        == common.AttributeConfigLevel.PRODUCT_LEVEL_ATTRIBUTE_CONFIG
+    )
+
+
+def test_remove_catalog_attribute_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.remove_catalog_attribute), "__call__"
+    ) as call:
+        client.remove_catalog_attribute()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == catalog_service.RemoveCatalogAttributeRequest()
+
+
+@pytest.mark.asyncio
+async def test_remove_catalog_attribute_async(
+    transport: str = "grpc_asyncio",
+    request_type=catalog_service.RemoveCatalogAttributeRequest,
+):
+    client = CatalogServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.remove_catalog_attribute), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            catalog.AttributesConfig(
+                name="name_value",
+                attribute_config_level=common.AttributeConfigLevel.PRODUCT_LEVEL_ATTRIBUTE_CONFIG,
+            )
+        )
+        response = await client.remove_catalog_attribute(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == catalog_service.RemoveCatalogAttributeRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, catalog.AttributesConfig)
+    assert response.name == "name_value"
+    assert (
+        response.attribute_config_level
+        == common.AttributeConfigLevel.PRODUCT_LEVEL_ATTRIBUTE_CONFIG
+    )
+
+
+@pytest.mark.asyncio
+async def test_remove_catalog_attribute_async_from_dict():
+    await test_remove_catalog_attribute_async(request_type=dict)
+
+
+def test_remove_catalog_attribute_field_headers():
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = catalog_service.RemoveCatalogAttributeRequest()
+
+    request.attributes_config = "attributes_config_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.remove_catalog_attribute), "__call__"
+    ) as call:
+        call.return_value = catalog.AttributesConfig()
+        client.remove_catalog_attribute(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "attributes_config=attributes_config_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_remove_catalog_attribute_field_headers_async():
+    client = CatalogServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = catalog_service.RemoveCatalogAttributeRequest()
+
+    request.attributes_config = "attributes_config_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.remove_catalog_attribute), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            catalog.AttributesConfig()
+        )
+        await client.remove_catalog_attribute(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "attributes_config=attributes_config_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        catalog_service.ReplaceCatalogAttributeRequest,
+        dict,
+    ],
+)
+def test_replace_catalog_attribute(request_type, transport: str = "grpc"):
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.replace_catalog_attribute), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = catalog.AttributesConfig(
+            name="name_value",
+            attribute_config_level=common.AttributeConfigLevel.PRODUCT_LEVEL_ATTRIBUTE_CONFIG,
+        )
+        response = client.replace_catalog_attribute(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == catalog_service.ReplaceCatalogAttributeRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, catalog.AttributesConfig)
+    assert response.name == "name_value"
+    assert (
+        response.attribute_config_level
+        == common.AttributeConfigLevel.PRODUCT_LEVEL_ATTRIBUTE_CONFIG
+    )
+
+
+def test_replace_catalog_attribute_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.replace_catalog_attribute), "__call__"
+    ) as call:
+        client.replace_catalog_attribute()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == catalog_service.ReplaceCatalogAttributeRequest()
+
+
+@pytest.mark.asyncio
+async def test_replace_catalog_attribute_async(
+    transport: str = "grpc_asyncio",
+    request_type=catalog_service.ReplaceCatalogAttributeRequest,
+):
+    client = CatalogServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.replace_catalog_attribute), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            catalog.AttributesConfig(
+                name="name_value",
+                attribute_config_level=common.AttributeConfigLevel.PRODUCT_LEVEL_ATTRIBUTE_CONFIG,
+            )
+        )
+        response = await client.replace_catalog_attribute(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == catalog_service.ReplaceCatalogAttributeRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, catalog.AttributesConfig)
+    assert response.name == "name_value"
+    assert (
+        response.attribute_config_level
+        == common.AttributeConfigLevel.PRODUCT_LEVEL_ATTRIBUTE_CONFIG
+    )
+
+
+@pytest.mark.asyncio
+async def test_replace_catalog_attribute_async_from_dict():
+    await test_replace_catalog_attribute_async(request_type=dict)
+
+
+def test_replace_catalog_attribute_field_headers():
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = catalog_service.ReplaceCatalogAttributeRequest()
+
+    request.attributes_config = "attributes_config_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.replace_catalog_attribute), "__call__"
+    ) as call:
+        call.return_value = catalog.AttributesConfig()
+        client.replace_catalog_attribute(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "attributes_config=attributes_config_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_replace_catalog_attribute_field_headers_async():
+    client = CatalogServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = catalog_service.ReplaceCatalogAttributeRequest()
+
+    request.attributes_config = "attributes_config_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.replace_catalog_attribute), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            catalog.AttributesConfig()
+        )
+        await client.replace_catalog_attribute(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "attributes_config=attributes_config_value",
+    ) in kw["metadata"]
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.CatalogServiceGrpcTransport(
@@ -1972,6 +3606,13 @@ def test_catalog_service_base_transport():
         "update_catalog",
         "set_default_branch",
         "get_default_branch",
+        "get_completion_config",
+        "update_completion_config",
+        "get_attributes_config",
+        "update_attributes_config",
+        "add_catalog_attribute",
+        "remove_catalog_attribute",
+        "replace_catalog_attribute",
     )
     for method in methods:
         with pytest.raises(NotImplementedError):
@@ -2317,11 +3958,37 @@ def test_catalog_service_transport_channel_mtls_with_adc(transport_class):
             assert transport.grpc_channel == mock_grpc_channel
 
 
-def test_branch_path():
+def test_attributes_config_path():
     project = "squid"
     location = "clam"
     catalog = "whelk"
-    branch = "octopus"
+    expected = "projects/{project}/locations/{location}/catalogs/{catalog}/attributesConfig".format(
+        project=project,
+        location=location,
+        catalog=catalog,
+    )
+    actual = CatalogServiceClient.attributes_config_path(project, location, catalog)
+    assert expected == actual
+
+
+def test_parse_attributes_config_path():
+    expected = {
+        "project": "octopus",
+        "location": "oyster",
+        "catalog": "nudibranch",
+    }
+    path = CatalogServiceClient.attributes_config_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = CatalogServiceClient.parse_attributes_config_path(path)
+    assert expected == actual
+
+
+def test_branch_path():
+    project = "cuttlefish"
+    location = "mussel"
+    catalog = "winkle"
+    branch = "nautilus"
     expected = "projects/{project}/locations/{location}/catalogs/{catalog}/branches/{branch}".format(
         project=project,
         location=location,
@@ -2334,10 +4001,10 @@ def test_branch_path():
 
 def test_parse_branch_path():
     expected = {
-        "project": "oyster",
-        "location": "nudibranch",
-        "catalog": "cuttlefish",
-        "branch": "mussel",
+        "project": "scallop",
+        "location": "abalone",
+        "catalog": "squid",
+        "branch": "clam",
     }
     path = CatalogServiceClient.branch_path(**expected)
 
@@ -2347,9 +4014,9 @@ def test_parse_branch_path():
 
 
 def test_catalog_path():
-    project = "winkle"
-    location = "nautilus"
-    catalog = "scallop"
+    project = "whelk"
+    location = "octopus"
+    catalog = "oyster"
     expected = "projects/{project}/locations/{location}/catalogs/{catalog}".format(
         project=project,
         location=location,
@@ -2361,14 +4028,40 @@ def test_catalog_path():
 
 def test_parse_catalog_path():
     expected = {
-        "project": "abalone",
-        "location": "squid",
-        "catalog": "clam",
+        "project": "nudibranch",
+        "location": "cuttlefish",
+        "catalog": "mussel",
     }
     path = CatalogServiceClient.catalog_path(**expected)
 
     # Check that the path construction is reversible.
     actual = CatalogServiceClient.parse_catalog_path(path)
+    assert expected == actual
+
+
+def test_completion_config_path():
+    project = "winkle"
+    location = "nautilus"
+    catalog = "scallop"
+    expected = "projects/{project}/locations/{location}/catalogs/{catalog}/completionConfig".format(
+        project=project,
+        location=location,
+        catalog=catalog,
+    )
+    actual = CatalogServiceClient.completion_config_path(project, location, catalog)
+    assert expected == actual
+
+
+def test_parse_completion_config_path():
+    expected = {
+        "project": "abalone",
+        "location": "squid",
+        "catalog": "clam",
+    }
+    path = CatalogServiceClient.completion_config_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = CatalogServiceClient.parse_completion_config_path(path)
     assert expected == actual
 
 

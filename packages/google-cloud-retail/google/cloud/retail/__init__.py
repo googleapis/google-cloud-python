@@ -24,6 +24,10 @@ from google.cloud.retail_v2.services.completion_service.async_client import (
 from google.cloud.retail_v2.services.completion_service.client import (
     CompletionServiceClient,
 )
+from google.cloud.retail_v2.services.control_service.async_client import (
+    ControlServiceAsyncClient,
+)
+from google.cloud.retail_v2.services.control_service.client import ControlServiceClient
 from google.cloud.retail_v2.services.prediction_service.async_client import (
     PredictionServiceAsyncClient,
 )
@@ -38,24 +42,45 @@ from google.cloud.retail_v2.services.search_service.async_client import (
     SearchServiceAsyncClient,
 )
 from google.cloud.retail_v2.services.search_service.client import SearchServiceClient
+from google.cloud.retail_v2.services.serving_config_service.async_client import (
+    ServingConfigServiceAsyncClient,
+)
+from google.cloud.retail_v2.services.serving_config_service.client import (
+    ServingConfigServiceClient,
+)
 from google.cloud.retail_v2.services.user_event_service.async_client import (
     UserEventServiceAsyncClient,
 )
 from google.cloud.retail_v2.services.user_event_service.client import (
     UserEventServiceClient,
 )
-from google.cloud.retail_v2.types.catalog import Catalog, ProductLevelConfig
+from google.cloud.retail_v2.types.catalog import (
+    AttributesConfig,
+    Catalog,
+    CatalogAttribute,
+    CompletionConfig,
+    ProductLevelConfig,
+)
 from google.cloud.retail_v2.types.catalog_service import (
+    AddCatalogAttributeRequest,
+    GetAttributesConfigRequest,
+    GetCompletionConfigRequest,
     GetDefaultBranchRequest,
     GetDefaultBranchResponse,
     ListCatalogsRequest,
     ListCatalogsResponse,
+    RemoveCatalogAttributeRequest,
+    ReplaceCatalogAttributeRequest,
     SetDefaultBranchRequest,
+    UpdateAttributesConfigRequest,
     UpdateCatalogRequest,
+    UpdateCompletionConfigRequest,
 )
 from google.cloud.retail_v2.types.common import (
+    AttributeConfigLevel,
     Audience,
     ColorInfo,
+    Condition,
     CustomAttribute,
     FulfillmentInfo,
     Image,
@@ -63,11 +88,23 @@ from google.cloud.retail_v2.types.common import (
     LocalInventory,
     PriceInfo,
     Rating,
+    Rule,
+    SearchSolutionUseCase,
+    SolutionType,
     UserInfo,
 )
 from google.cloud.retail_v2.types.completion_service import (
     CompleteQueryRequest,
     CompleteQueryResponse,
+)
+from google.cloud.retail_v2.types.control import Control
+from google.cloud.retail_v2.types.control_service import (
+    CreateControlRequest,
+    DeleteControlRequest,
+    GetControlRequest,
+    ListControlsRequest,
+    ListControlsResponse,
+    UpdateControlRequest,
 )
 from google.cloud.retail_v2.types.import_config import (
     BigQuerySource,
@@ -122,6 +159,17 @@ from google.cloud.retail_v2.types.purge_config import (
     PurgeUserEventsResponse,
 )
 from google.cloud.retail_v2.types.search_service import SearchRequest, SearchResponse
+from google.cloud.retail_v2.types.serving_config import ServingConfig
+from google.cloud.retail_v2.types.serving_config_service import (
+    AddControlRequest,
+    CreateServingConfigRequest,
+    DeleteServingConfigRequest,
+    GetServingConfigRequest,
+    ListServingConfigsRequest,
+    ListServingConfigsResponse,
+    RemoveControlRequest,
+    UpdateServingConfigRequest,
+)
 from google.cloud.retail_v2.types.user_event import (
     CompletionDetail,
     ProductDetail,
@@ -141,24 +189,39 @@ __all__ = (
     "CatalogServiceAsyncClient",
     "CompletionServiceClient",
     "CompletionServiceAsyncClient",
+    "ControlServiceClient",
+    "ControlServiceAsyncClient",
     "PredictionServiceClient",
     "PredictionServiceAsyncClient",
     "ProductServiceClient",
     "ProductServiceAsyncClient",
     "SearchServiceClient",
     "SearchServiceAsyncClient",
+    "ServingConfigServiceClient",
+    "ServingConfigServiceAsyncClient",
     "UserEventServiceClient",
     "UserEventServiceAsyncClient",
+    "AttributesConfig",
     "Catalog",
+    "CatalogAttribute",
+    "CompletionConfig",
     "ProductLevelConfig",
+    "AddCatalogAttributeRequest",
+    "GetAttributesConfigRequest",
+    "GetCompletionConfigRequest",
     "GetDefaultBranchRequest",
     "GetDefaultBranchResponse",
     "ListCatalogsRequest",
     "ListCatalogsResponse",
+    "RemoveCatalogAttributeRequest",
+    "ReplaceCatalogAttributeRequest",
     "SetDefaultBranchRequest",
+    "UpdateAttributesConfigRequest",
     "UpdateCatalogRequest",
+    "UpdateCompletionConfigRequest",
     "Audience",
     "ColorInfo",
+    "Condition",
     "CustomAttribute",
     "FulfillmentInfo",
     "Image",
@@ -166,9 +229,20 @@ __all__ = (
     "LocalInventory",
     "PriceInfo",
     "Rating",
+    "Rule",
     "UserInfo",
+    "AttributeConfigLevel",
+    "SearchSolutionUseCase",
+    "SolutionType",
     "CompleteQueryRequest",
     "CompleteQueryResponse",
+    "Control",
+    "CreateControlRequest",
+    "DeleteControlRequest",
+    "GetControlRequest",
+    "ListControlsRequest",
+    "ListControlsResponse",
+    "UpdateControlRequest",
     "BigQuerySource",
     "CompletionDataInputConfig",
     "GcsSource",
@@ -215,6 +289,15 @@ __all__ = (
     "PurgeUserEventsResponse",
     "SearchRequest",
     "SearchResponse",
+    "ServingConfig",
+    "AddControlRequest",
+    "CreateServingConfigRequest",
+    "DeleteServingConfigRequest",
+    "GetServingConfigRequest",
+    "ListServingConfigsRequest",
+    "ListServingConfigsResponse",
+    "RemoveControlRequest",
+    "UpdateServingConfigRequest",
     "CompletionDetail",
     "ProductDetail",
     "PurchaseTransaction",

@@ -23,6 +23,7 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
 import grpc  # type: ignore
 
+from google.cloud.retail_v2.types import catalog
 from google.cloud.retail_v2.types import catalog as gcr_catalog
 from google.cloud.retail_v2.types import catalog_service
 
@@ -375,6 +376,235 @@ class CatalogServiceGrpcTransport(CatalogServiceTransport):
                 response_deserializer=catalog_service.GetDefaultBranchResponse.deserialize,
             )
         return self._stubs["get_default_branch"]
+
+    @property
+    def get_completion_config(
+        self,
+    ) -> Callable[
+        [catalog_service.GetCompletionConfigRequest], catalog.CompletionConfig
+    ]:
+        r"""Return a callable for the get completion config method over gRPC.
+
+        Gets a
+        [CompletionConfig][google.cloud.retail.v2.CompletionConfig].
+
+        Returns:
+            Callable[[~.GetCompletionConfigRequest],
+                    ~.CompletionConfig]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_completion_config" not in self._stubs:
+            self._stubs["get_completion_config"] = self.grpc_channel.unary_unary(
+                "/google.cloud.retail.v2.CatalogService/GetCompletionConfig",
+                request_serializer=catalog_service.GetCompletionConfigRequest.serialize,
+                response_deserializer=catalog.CompletionConfig.deserialize,
+            )
+        return self._stubs["get_completion_config"]
+
+    @property
+    def update_completion_config(
+        self,
+    ) -> Callable[
+        [catalog_service.UpdateCompletionConfigRequest], catalog.CompletionConfig
+    ]:
+        r"""Return a callable for the update completion config method over gRPC.
+
+        Updates the
+        [CompletionConfig][google.cloud.retail.v2.CompletionConfig]s.
+
+        Returns:
+            Callable[[~.UpdateCompletionConfigRequest],
+                    ~.CompletionConfig]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_completion_config" not in self._stubs:
+            self._stubs["update_completion_config"] = self.grpc_channel.unary_unary(
+                "/google.cloud.retail.v2.CatalogService/UpdateCompletionConfig",
+                request_serializer=catalog_service.UpdateCompletionConfigRequest.serialize,
+                response_deserializer=catalog.CompletionConfig.deserialize,
+            )
+        return self._stubs["update_completion_config"]
+
+    @property
+    def get_attributes_config(
+        self,
+    ) -> Callable[
+        [catalog_service.GetAttributesConfigRequest], catalog.AttributesConfig
+    ]:
+        r"""Return a callable for the get attributes config method over gRPC.
+
+        Gets an
+        [AttributesConfig][google.cloud.retail.v2.AttributesConfig].
+
+        Returns:
+            Callable[[~.GetAttributesConfigRequest],
+                    ~.AttributesConfig]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_attributes_config" not in self._stubs:
+            self._stubs["get_attributes_config"] = self.grpc_channel.unary_unary(
+                "/google.cloud.retail.v2.CatalogService/GetAttributesConfig",
+                request_serializer=catalog_service.GetAttributesConfigRequest.serialize,
+                response_deserializer=catalog.AttributesConfig.deserialize,
+            )
+        return self._stubs["get_attributes_config"]
+
+    @property
+    def update_attributes_config(
+        self,
+    ) -> Callable[
+        [catalog_service.UpdateAttributesConfigRequest], catalog.AttributesConfig
+    ]:
+        r"""Return a callable for the update attributes config method over gRPC.
+
+        Updates the
+        [AttributesConfig][google.cloud.retail.v2.AttributesConfig].
+
+        The catalog attributes in the request will be updated in the
+        catalog, or inserted if they do not exist. Existing catalog
+        attributes not included in the request will remain unchanged.
+        Attributes that are assigned to products, but do not exist at
+        the catalog level, are always included in the response. The
+        product attribute is assigned default values for missing catalog
+        attribute fields, e.g., searchable and dynamic facetable
+        options.
+
+        Returns:
+            Callable[[~.UpdateAttributesConfigRequest],
+                    ~.AttributesConfig]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_attributes_config" not in self._stubs:
+            self._stubs["update_attributes_config"] = self.grpc_channel.unary_unary(
+                "/google.cloud.retail.v2.CatalogService/UpdateAttributesConfig",
+                request_serializer=catalog_service.UpdateAttributesConfigRequest.serialize,
+                response_deserializer=catalog.AttributesConfig.deserialize,
+            )
+        return self._stubs["update_attributes_config"]
+
+    @property
+    def add_catalog_attribute(
+        self,
+    ) -> Callable[
+        [catalog_service.AddCatalogAttributeRequest], catalog.AttributesConfig
+    ]:
+        r"""Return a callable for the add catalog attribute method over gRPC.
+
+        Adds the specified
+        [CatalogAttribute][google.cloud.retail.v2.CatalogAttribute] to
+        the [AttributesConfig][google.cloud.retail.v2.AttributesConfig].
+
+        If the
+        [CatalogAttribute][google.cloud.retail.v2.CatalogAttribute] to
+        add already exists, an ALREADY_EXISTS error is returned.
+
+        Returns:
+            Callable[[~.AddCatalogAttributeRequest],
+                    ~.AttributesConfig]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "add_catalog_attribute" not in self._stubs:
+            self._stubs["add_catalog_attribute"] = self.grpc_channel.unary_unary(
+                "/google.cloud.retail.v2.CatalogService/AddCatalogAttribute",
+                request_serializer=catalog_service.AddCatalogAttributeRequest.serialize,
+                response_deserializer=catalog.AttributesConfig.deserialize,
+            )
+        return self._stubs["add_catalog_attribute"]
+
+    @property
+    def remove_catalog_attribute(
+        self,
+    ) -> Callable[
+        [catalog_service.RemoveCatalogAttributeRequest], catalog.AttributesConfig
+    ]:
+        r"""Return a callable for the remove catalog attribute method over gRPC.
+
+        Removes the specified
+        [CatalogAttribute][google.cloud.retail.v2.CatalogAttribute] from
+        the [AttributesConfig][google.cloud.retail.v2.AttributesConfig].
+
+        If the
+        [CatalogAttribute][google.cloud.retail.v2.CatalogAttribute] to
+        remove does not exist, a NOT_FOUND error is returned.
+
+        Returns:
+            Callable[[~.RemoveCatalogAttributeRequest],
+                    ~.AttributesConfig]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "remove_catalog_attribute" not in self._stubs:
+            self._stubs["remove_catalog_attribute"] = self.grpc_channel.unary_unary(
+                "/google.cloud.retail.v2.CatalogService/RemoveCatalogAttribute",
+                request_serializer=catalog_service.RemoveCatalogAttributeRequest.serialize,
+                response_deserializer=catalog.AttributesConfig.deserialize,
+            )
+        return self._stubs["remove_catalog_attribute"]
+
+    @property
+    def replace_catalog_attribute(
+        self,
+    ) -> Callable[
+        [catalog_service.ReplaceCatalogAttributeRequest], catalog.AttributesConfig
+    ]:
+        r"""Return a callable for the replace catalog attribute method over gRPC.
+
+        Replaces the specified
+        [CatalogAttribute][google.cloud.retail.v2.CatalogAttribute] in
+        the [AttributesConfig][google.cloud.retail.v2.AttributesConfig]
+        by updating the catalog attribute with the same
+        [CatalogAttribute.key][google.cloud.retail.v2.CatalogAttribute.key].
+
+        If the
+        [CatalogAttribute][google.cloud.retail.v2.CatalogAttribute] to
+        replace does not exist, a NOT_FOUND error is returned.
+
+        Returns:
+            Callable[[~.ReplaceCatalogAttributeRequest],
+                    ~.AttributesConfig]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "replace_catalog_attribute" not in self._stubs:
+            self._stubs["replace_catalog_attribute"] = self.grpc_channel.unary_unary(
+                "/google.cloud.retail.v2.CatalogService/ReplaceCatalogAttribute",
+                request_serializer=catalog_service.ReplaceCatalogAttributeRequest.serialize,
+                response_deserializer=catalog.AttributesConfig.deserialize,
+            )
+        return self._stubs["replace_catalog_attribute"]
 
     def close(self):
         self.grpc_channel.close()

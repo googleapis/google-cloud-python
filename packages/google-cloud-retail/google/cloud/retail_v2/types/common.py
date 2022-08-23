@@ -19,6 +19,11 @@ import proto  # type: ignore
 __protobuf__ = proto.module(
     package="google.cloud.retail.v2",
     manifest={
+        "AttributeConfigLevel",
+        "SolutionType",
+        "SearchSolutionUseCase",
+        "Condition",
+        "Rule",
         "Audience",
         "ColorInfo",
         "CustomAttribute",
@@ -31,6 +36,459 @@ __protobuf__ = proto.module(
         "LocalInventory",
     },
 )
+
+
+class AttributeConfigLevel(proto.Enum):
+    r"""At which level we offer configuration for attributes."""
+    ATTRIBUTE_CONFIG_LEVEL_UNSPECIFIED = 0
+    PRODUCT_LEVEL_ATTRIBUTE_CONFIG = 1
+    CATALOG_LEVEL_ATTRIBUTE_CONFIG = 2
+
+
+class SolutionType(proto.Enum):
+    r"""The type of solution."""
+    SOLUTION_TYPE_UNSPECIFIED = 0
+    SOLUTION_TYPE_RECOMMENDATION = 1
+    SOLUTION_TYPE_SEARCH = 2
+
+
+class SearchSolutionUseCase(proto.Enum):
+    r"""The use case of Cloud Retail Search."""
+    SEARCH_SOLUTION_USE_CASE_UNSPECIFIED = 0
+    SEARCH_SOLUTION_USE_CASE_SEARCH = 1
+    SEARCH_SOLUTION_USE_CASE_BROWSE = 2
+
+
+class Condition(proto.Message):
+    r"""Metadata that is used to define a condition that triggers an action.
+    A valid condition must specify at least one of 'query_terms' or
+    'products_filter'. If multiple fields are specified, the condition
+    is met if all the fields are satisfied e.g. if a set of query terms
+    and product_filter are set, then only items matching the
+    product_filter for requests with a query matching the query terms
+    wil get boosted.
+
+    Attributes:
+        query_terms (Sequence[google.cloud.retail_v2.types.Condition.QueryTerm]):
+            A list (up to 10 entries) of terms to match
+            the query on. If not specified, match all
+            queries. If many query terms are specified, the
+            condition is matched if any of the terms is a
+            match (i.e. using the OR operator).
+        active_time_range (Sequence[google.cloud.retail_v2.types.Condition.TimeRange]):
+            Range of time(s) specifying when Condition is
+            active. Condition true if any time range
+            matches.
+    """
+
+    class QueryTerm(proto.Message):
+        r"""Query terms that we want to match on.
+
+        Attributes:
+            value (str):
+                The value of the term to match on.
+                Value cannot be empty.
+                Value can have at most 3 terms if specified as a
+                partial match. Each space separated string is
+                considered as one term. Example) "a b c" is 3
+                terms and allowed, " a b c d" is 4 terms and not
+                allowed for partial match.
+            full_match (bool):
+                Whether this is supposed to be a full or
+                partial match.
+        """
+
+        value = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        full_match = proto.Field(
+            proto.BOOL,
+            number=2,
+        )
+
+    class TimeRange(proto.Message):
+        r"""Used for time-dependent conditions.
+        Example: Want to have rule applied for week long sale.
+
+        Attributes:
+            start_time (google.protobuf.timestamp_pb2.Timestamp):
+                Start of time range. Range is inclusive.
+            end_time (google.protobuf.timestamp_pb2.Timestamp):
+                End of time range. Range is inclusive.
+        """
+
+        start_time = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            message=timestamp_pb2.Timestamp,
+        )
+        end_time = proto.Field(
+            proto.MESSAGE,
+            number=2,
+            message=timestamp_pb2.Timestamp,
+        )
+
+    query_terms = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=QueryTerm,
+    )
+    active_time_range = proto.RepeatedField(
+        proto.MESSAGE,
+        number=3,
+        message=TimeRange,
+    )
+
+
+class Rule(proto.Message):
+    r"""A rule is a condition-action pair
+
+    -  A condition defines when a rule is to be triggered.
+    -  An action specifies what occurs on that trigger. Currently rules
+       only work for [controls][google.cloud.retail.v2.Control] with
+       [SOLUTION_TYPE_SEARCH][google.cloud.retail.v2.SolutionType.SOLUTION_TYPE_SEARCH].
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        boost_action (google.cloud.retail_v2.types.Rule.BoostAction):
+            A boost action.
+
+            This field is a member of `oneof`_ ``action``.
+        redirect_action (google.cloud.retail_v2.types.Rule.RedirectAction):
+            Redirects a shopper to a specific page.
+
+            This field is a member of `oneof`_ ``action``.
+        oneway_synonyms_action (google.cloud.retail_v2.types.Rule.OnewaySynonymsAction):
+            Treats specific term as a synonym with a
+            group of terms. Group of terms will not be
+            treated as synonyms with the specific term.
+
+            This field is a member of `oneof`_ ``action``.
+        do_not_associate_action (google.cloud.retail_v2.types.Rule.DoNotAssociateAction):
+            Prevents term from being associated with
+            other terms.
+
+            This field is a member of `oneof`_ ``action``.
+        replacement_action (google.cloud.retail_v2.types.Rule.ReplacementAction):
+            Replaces specific terms in the query.
+
+            This field is a member of `oneof`_ ``action``.
+        ignore_action (google.cloud.retail_v2.types.Rule.IgnoreAction):
+            Ignores specific terms from query during
+            search.
+
+            This field is a member of `oneof`_ ``action``.
+        filter_action (google.cloud.retail_v2.types.Rule.FilterAction):
+            Filters results.
+
+            This field is a member of `oneof`_ ``action``.
+        twoway_synonyms_action (google.cloud.retail_v2.types.Rule.TwowaySynonymsAction):
+            Treats a set of terms as synonyms of one
+            another.
+
+            This field is a member of `oneof`_ ``action``.
+        condition (google.cloud.retail_v2.types.Condition):
+            Required. The condition that triggers the
+            rule. If the condition is empty, the rule will
+            always apply.
+    """
+
+    class BoostAction(proto.Message):
+        r"""A boost action to apply to results matching condition
+        specified above.
+
+        Attributes:
+            boost (float):
+                Strength of the condition boost, which must be in [-1, 1].
+                Negative boost means demotion. Default is 0.0.
+
+                Setting to 1.0 gives the item a big promotion. However, it
+                does not necessarily mean that the boosted item will be the
+                top result at all times, nor that other items will be
+                excluded. Results could still be shown even when none of
+                them matches the condition. And results that are
+                significantly more relevant to the search query can still
+                trump your heavily favored but irrelevant items.
+
+                Setting to -1.0 gives the item a big demotion. However,
+                results that are deeply relevant might still be shown. The
+                item will have an upstream battle to get a fairly high
+                ranking, but it is not blocked out completely.
+
+                Setting to 0.0 means no boost applied. The boosting
+                condition is ignored.
+            products_filter (str):
+                The filter can have a max size of 5000 characters. An
+                expression which specifies which products to apply an action
+                to. The syntax and supported fields are the same as a filter
+                expression. See
+                [SearchRequest.filter][google.cloud.retail.v2.SearchRequest.filter]
+                for detail syntax and limitations.
+
+                Examples:
+
+                -  To boost products with product ID "product_1" or
+                   "product_2", and color "Red" or "Blue": *(id:
+                   ANY("product_1", "product_2"))* *AND* *(colorFamilies:
+                   ANY("Red", "Blue"))*
+        """
+
+        boost = proto.Field(
+            proto.FLOAT,
+            number=1,
+        )
+        products_filter = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+
+    class FilterAction(proto.Message):
+        r"""-  Rule Condition:
+
+           -  No
+              [Condition.query_terms][google.cloud.retail.v2.Condition.query_terms]
+              provided is a global match.
+           -  1 or more
+              [Condition.query_terms][google.cloud.retail.v2.Condition.query_terms]
+              provided are combined with OR operator.
+
+        -  Action Input: The request query and filter that are applied to
+           the retrieved products, in addition to any filters already
+           provided with the SearchRequest. The AND operator is used to
+           combine the query's existing filters with the filter rule(s).
+           NOTE: May result in 0 results when filters conflict.
+        -  Action Result: Filters the returned objects to be ONLY those that
+           passed the filter.
+
+        Attributes:
+            filter (str):
+                A filter to apply on the matching condition results.
+                Supported features:
+
+                -  [filter][google.cloud.retail.v2.Rule.FilterAction.filter]
+                   must be set.
+                -  Filter syntax is identical to
+                   [SearchRequest.filter][google.cloud.retail.v2.SearchRequest.filter].
+                   See more details at the Retail Search `user
+                   guide </retail/search/docs/filter-and-order#filter>`__.
+                -  To filter products with product ID "product_1" or
+                   "product_2", and color "Red" or "Blue": *(id:
+                   ANY("product_1", "product_2"))* *AND* *(colorFamilies:
+                   ANY("Red", "Blue"))*
+        """
+
+        filter = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+
+    class RedirectAction(proto.Message):
+        r"""Redirects a shopper to a specific page.
+
+        -  Rule Condition:
+
+           -  Must specify
+              [Condition.query_terms][google.cloud.retail.v2.Condition.query_terms].
+
+        -  Action Input: Request Query
+        -  Action Result: Redirects shopper to provided uri.
+
+        Attributes:
+            redirect_uri (str):
+                URL must have length equal or less than 2000
+                characters.
+        """
+
+        redirect_uri = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+
+    class TwowaySynonymsAction(proto.Message):
+        r"""Creates a set of terms that will be treated as synonyms of each
+        other. Example: synonyms of "sneakers" and "shoes".
+
+        -  "sneakers" will use a synonym of "shoes".
+        -  "shoes" will use a synonym of "sneakers".
+
+        Attributes:
+            synonyms (Sequence[str]):
+                Defines a set of synonyms.
+                Can specify up to 100 synonyms.
+                Must specify at least 2 synonyms.
+        """
+
+        synonyms = proto.RepeatedField(
+            proto.STRING,
+            number=1,
+        )
+
+    class OnewaySynonymsAction(proto.Message):
+        r"""Maps a set of terms to a set of synonyms. Set of synonyms will be
+        treated as synonyms of each query term only. ``query_terms`` will
+        not be treated as synonyms of each other. Example: "sneakers" will
+        use a synonym of "shoes". "shoes" will not use a synonym of
+        "sneakers".
+
+        Attributes:
+            query_terms (Sequence[str]):
+                Terms from the search query.
+                Will treat synonyms as their synonyms.
+                Not themselves synonyms of the synonyms.
+                Can specify up to 100 terms.
+            synonyms (Sequence[str]):
+                Defines a set of synonyms.
+                Cannot contain duplicates.
+                Can specify up to 100 synonyms.
+            oneway_terms (Sequence[str]):
+                Will be [deprecated = true] post migration;
+        """
+
+        query_terms = proto.RepeatedField(
+            proto.STRING,
+            number=3,
+        )
+        synonyms = proto.RepeatedField(
+            proto.STRING,
+            number=4,
+        )
+        oneway_terms = proto.RepeatedField(
+            proto.STRING,
+            number=2,
+        )
+
+    class DoNotAssociateAction(proto.Message):
+        r"""Prevents ``query_term`` from being associated with specified terms
+        during search. Example: Don't associate "gShoe" and "cheap".
+
+        Attributes:
+            query_terms (Sequence[str]):
+                Terms from the search query. Will not consider
+                do_not_associate_terms for search if in search query. Can
+                specify up to 100 terms.
+            do_not_associate_terms (Sequence[str]):
+                Cannot contain duplicates or the query term.
+                Can specify up to 100 terms.
+            terms (Sequence[str]):
+                Will be [deprecated = true] post migration;
+        """
+
+        query_terms = proto.RepeatedField(
+            proto.STRING,
+            number=2,
+        )
+        do_not_associate_terms = proto.RepeatedField(
+            proto.STRING,
+            number=3,
+        )
+        terms = proto.RepeatedField(
+            proto.STRING,
+            number=1,
+        )
+
+    class ReplacementAction(proto.Message):
+        r"""Replaces a term in the query. Multiple replacement candidates can be
+        specified. All ``query_terms`` will be replaced with the replacement
+        term. Example: Replace "gShoe" with "google shoe".
+
+        Attributes:
+            query_terms (Sequence[str]):
+                Terms from the search query.
+                Will be replaced by replacement term.
+                Can specify up to 100 terms.
+            replacement_term (str):
+                Term that will be used for replacement.
+            term (str):
+                Will be [deprecated = true] post migration;
+        """
+
+        query_terms = proto.RepeatedField(
+            proto.STRING,
+            number=2,
+        )
+        replacement_term = proto.Field(
+            proto.STRING,
+            number=3,
+        )
+        term = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+
+    class IgnoreAction(proto.Message):
+        r"""Prevents a term in the query from being used in search.
+        Example: Don't search for "shoddy".
+
+        Attributes:
+            ignore_terms (Sequence[str]):
+                Terms to ignore in the search query.
+        """
+
+        ignore_terms = proto.RepeatedField(
+            proto.STRING,
+            number=1,
+        )
+
+    boost_action = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        oneof="action",
+        message=BoostAction,
+    )
+    redirect_action = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        oneof="action",
+        message=RedirectAction,
+    )
+    oneway_synonyms_action = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        oneof="action",
+        message=OnewaySynonymsAction,
+    )
+    do_not_associate_action = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        oneof="action",
+        message=DoNotAssociateAction,
+    )
+    replacement_action = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        oneof="action",
+        message=ReplacementAction,
+    )
+    ignore_action = proto.Field(
+        proto.MESSAGE,
+        number=9,
+        oneof="action",
+        message=IgnoreAction,
+    )
+    filter_action = proto.Field(
+        proto.MESSAGE,
+        number=10,
+        oneof="action",
+        message=FilterAction,
+    )
+    twoway_synonyms_action = proto.Field(
+        proto.MESSAGE,
+        number=11,
+        oneof="action",
+        message=TwowaySynonymsAction,
+    )
+    condition = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="Condition",
+    )
 
 
 class Audience(proto.Message):
@@ -154,9 +612,9 @@ class CustomAttribute(proto.Message):
             returned.
         searchable (bool):
             This field is normally ignored unless
-            [AttributesConfig.attribute_config_level][] of the
-            [Catalog][google.cloud.retail.v2.Catalog] is set to the
-            deprecated 'PRODUCT_LEVEL_ATTRIBUTE_CONFIG' mode. For
+            [AttributesConfig.attribute_config_level][google.cloud.retail.v2.AttributesConfig.attribute_config_level]
+            of the [Catalog][google.cloud.retail.v2.Catalog] is set to
+            the deprecated 'PRODUCT_LEVEL_ATTRIBUTE_CONFIG' mode. For
             information about product-level attribute configuration, see
             `Configuration
             modes <https://cloud.google.com/retail/docs/attribute-config#config-modes>`__.
@@ -174,9 +632,9 @@ class CustomAttribute(proto.Message):
             This field is a member of `oneof`_ ``_searchable``.
         indexable (bool):
             This field is normally ignored unless
-            [AttributesConfig.attribute_config_level][] of the
-            [Catalog][google.cloud.retail.v2.Catalog] is set to the
-            deprecated 'PRODUCT_LEVEL_ATTRIBUTE_CONFIG' mode. For
+            [AttributesConfig.attribute_config_level][google.cloud.retail.v2.AttributesConfig.attribute_config_level]
+            of the [Catalog][google.cloud.retail.v2.Catalog] is set to
+            the deprecated 'PRODUCT_LEVEL_ATTRIBUTE_CONFIG' mode. For
             information about product-level attribute configuration, see
             `Configuration
             modes <https://cloud.google.com/retail/docs/attribute-config#config-modes>`__.
