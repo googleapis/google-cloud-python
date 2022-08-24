@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.4.2](https://github.com/googleapis/python-assured-workloads/compare/v1.4.1...v1.4.2) (2022-08-24)
+
+
+### Bug Fixes
+
+* **v1beta1:** Removed `restrict_allowed_services`, `RestrictAllowedServicesRequest`, `RestrictAllowedServicesResponse` ([b07a36a](https://github.com/googleapis/python-assured-workloads/commit/b07a36abb42f6232dcb0a0df7a4211437b3f830e))
+
+
+### Documentation
+
+* **v1beta1:** Update analyzeWorkloadMove documentation ([b07a36a](https://github.com/googleapis/python-assured-workloads/commit/b07a36abb42f6232dcb0a0df7a4211437b3f830e))
+
 ## [1.4.1](https://github.com/googleapis/python-assured-workloads/compare/v1.4.0...v1.4.1) (2022-08-15)
 
 
