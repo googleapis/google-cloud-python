@@ -628,10 +628,10 @@ def test_{{ service.client_name|snake_case }}_create_channel_credentials_file(cl
 
 {% for method in service.methods.values() if 'rest' in opts.transport %}
 {% if method.extended_lro %}
-{{ test_macros.rest_required_tests(method, service, full_extended_lro=True) }}
+{{ test_macros.rest_required_tests(method, service, numeric_enums=opts.rest_numeric_enums, full_extended_lro=True) }}
 
 {% endif %}
-{{ test_macros.rest_required_tests(method, service) }}
+{{ test_macros.rest_required_tests(method, service, numeric_enums=opts.rest_numeric_enums) }}
 
 {% endfor -%} {#- method in methods for rest #}
 
