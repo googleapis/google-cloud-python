@@ -304,42 +304,6 @@ class AssuredWorkloadsServiceGrpcTransport(AssuredWorkloadsServiceTransport):
         return self._stubs["update_workload"]
 
     @property
-    def restrict_allowed_services(
-        self,
-    ) -> Callable[
-        [assuredworkloads.RestrictAllowedServicesRequest],
-        assuredworkloads.RestrictAllowedServicesResponse,
-    ]:
-        r"""Return a callable for the restrict allowed services method over gRPC.
-
-        Restrict the list of services allowed in the Workload
-        environment. The current list of allowed services can be
-        found at
-        https://cloud.google.com/assured-workloads/docs/supported-products
-        In addition to assuredworkloads.workload.update
-        permission, the user should also have
-        orgpolicy.policy.set permission on the folder resource
-        to use this functionality.
-
-        Returns:
-            Callable[[~.RestrictAllowedServicesRequest],
-                    ~.RestrictAllowedServicesResponse]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "restrict_allowed_services" not in self._stubs:
-            self._stubs["restrict_allowed_services"] = self.grpc_channel.unary_unary(
-                "/google.cloud.assuredworkloads.v1beta1.AssuredWorkloadsService/RestrictAllowedServices",
-                request_serializer=assuredworkloads.RestrictAllowedServicesRequest.serialize,
-                response_deserializer=assuredworkloads.RestrictAllowedServicesResponse.deserialize,
-            )
-        return self._stubs["restrict_allowed_services"]
-
-    @property
     def restrict_allowed_resources(
         self,
     ) -> Callable[
@@ -441,8 +405,9 @@ class AssuredWorkloadsServiceGrpcTransport(AssuredWorkloadsServiceTransport):
     ]:
         r"""Return a callable for the analyze workload move method over gRPC.
 
-        Analyze if the source Assured Workloads can be moved
-        to the target Assured Workload
+        A request to analyze a hypothetical move of a source
+        project or project-based workload to a target
+        (destination) folder-based workload.
 
         Returns:
             Callable[[~.AnalyzeWorkloadMoveRequest],

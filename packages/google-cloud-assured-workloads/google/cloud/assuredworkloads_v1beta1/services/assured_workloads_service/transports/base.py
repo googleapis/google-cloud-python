@@ -141,11 +141,6 @@ class AssuredWorkloadsServiceTransport(abc.ABC):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.restrict_allowed_services: gapic_v1.method.wrap_method(
-                self.restrict_allowed_services,
-                default_timeout=None,
-                client_info=client_info,
-            ),
             self.restrict_allowed_resources: gapic_v1.method.wrap_method(
                 self.restrict_allowed_resources,
                 default_timeout=None,
@@ -238,18 +233,6 @@ class AssuredWorkloadsServiceTransport(abc.ABC):
     ) -> Callable[
         [assuredworkloads.UpdateWorkloadRequest],
         Union[assuredworkloads.Workload, Awaitable[assuredworkloads.Workload]],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def restrict_allowed_services(
-        self,
-    ) -> Callable[
-        [assuredworkloads.RestrictAllowedServicesRequest],
-        Union[
-            assuredworkloads.RestrictAllowedServicesResponse,
-            Awaitable[assuredworkloads.RestrictAllowedServicesResponse],
-        ],
     ]:
         raise NotImplementedError()
 

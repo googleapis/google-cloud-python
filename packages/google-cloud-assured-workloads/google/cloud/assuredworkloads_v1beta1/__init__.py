@@ -27,8 +27,6 @@ from .types.assuredworkloads import ListWorkloadsRequest
 from .types.assuredworkloads import ListWorkloadsResponse
 from .types.assuredworkloads import RestrictAllowedResourcesRequest
 from .types.assuredworkloads import RestrictAllowedResourcesResponse
-from .types.assuredworkloads import RestrictAllowedServicesRequest
-from .types.assuredworkloads import RestrictAllowedServicesResponse
 from .types.assuredworkloads import UpdateWorkloadRequest
 from .types.assuredworkloads import Workload
 
@@ -45,8 +43,6 @@ __all__ = (
     "ListWorkloadsResponse",
     "RestrictAllowedResourcesRequest",
     "RestrictAllowedResourcesResponse",
-    "RestrictAllowedServicesRequest",
-    "RestrictAllowedServicesResponse",
     "UpdateWorkloadRequest",
     "Workload",
 )

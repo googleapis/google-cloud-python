@@ -40,11 +40,6 @@
                 "restrict_allowed_resources"
               ]
             },
-            "RestrictAllowedServices": {
-              "methods": [
-                "restrict_allowed_services"
-              ]
-            },
             "UpdateWorkload": {
               "methods": [
                 "update_workload"
@@ -83,11 +78,6 @@
             "RestrictAllowedResources": {
               "methods": [
                 "restrict_allowed_resources"
-              ]
-            },
-            "RestrictAllowedServices": {
-              "methods": [
-                "restrict_allowed_services"
               ]
             },
             "UpdateWorkload": {

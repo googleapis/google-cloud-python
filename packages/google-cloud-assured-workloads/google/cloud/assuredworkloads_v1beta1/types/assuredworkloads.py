@@ -25,8 +25,6 @@ __protobuf__ = proto.module(
     manifest={
         "CreateWorkloadRequest",
         "UpdateWorkloadRequest",
-        "RestrictAllowedServicesRequest",
-        "RestrictAllowedServicesResponse",
         "RestrictAllowedResourcesRequest",
         "RestrictAllowedResourcesResponse",
         "DeleteWorkloadRequest",
@@ -98,43 +96,6 @@ class UpdateWorkloadRequest(proto.Message):
         number=2,
         message=field_mask_pb2.FieldMask,
     )
-
-
-class RestrictAllowedServicesRequest(proto.Message):
-    r"""Request for restricting list of available services in
-    Workload environment.
-
-    Attributes:
-        name (str):
-            Required. The resource name of the Workload. This is the
-            workloads's relative path in the API, formatted as
-            "organizations/{organization_id}/locations/{location_id}/workloads/{workload_id}".
-            For example,
-            "organizations/123/locations/us-east1/workloads/assured-workload-1".
-        restriction_type (google.cloud.assuredworkloads_v1beta1.types.RestrictAllowedServicesRequest.RestrictionType):
-            Required. The type of restriction for using
-            gcp services in the Workload environment.
-    """
-
-    class RestrictionType(proto.Enum):
-        r"""The type of restriction."""
-        RESTRICTION_TYPE_UNSPECIFIED = 0
-        ALLOW_ALL_GCP_SERVICES = 1
-        ALLOW_COMPLIANT_SERVICES = 2
-
-    name = proto.Field(
-        proto.STRING,
-        number=1,
-    )
-    restriction_type = proto.Field(
-        proto.ENUM,
-        number=2,
-        enum=RestrictionType,
-    )
-
-
-class RestrictAllowedServicesResponse(proto.Message):
-    r"""Response for restricting the list of allowed services."""
 
 
 class RestrictAllowedResourcesRequest(proto.Message):
@@ -217,7 +178,8 @@ class GetWorkloadRequest(proto.Message):
 
 
 class AnalyzeWorkloadMoveRequest(proto.Message):
-    r"""Request to check if source workload can be moved to target
+    r"""A request to analyze a hypothetical move of a source project
+    or project-based workload to a target (destination) folder-based
     workload.
 
     This message has `oneof`_ fields (mutually exclusive fields).
@@ -229,28 +191,29 @@ class AnalyzeWorkloadMoveRequest(proto.Message):
 
     Attributes:
         source (str):
-            The Source is project based Workload to be moved. This is
-            the workloads's relative path in the API, formatted as
-            "organizations/{organization_id}/locations/{location_id}/workloads/{workload_id}".
-            For example,
+            The source type is a project-based workload. Specify the
+            workloads's relative resource name, formatted as:
+            "organizations/{ORGANIZATION_ID}/locations/{LOCATION_ID}/workloads/{WORKLOAD_ID}"
+            For example:
             "organizations/123/locations/us-east1/workloads/assured-workload-1".
 
             This field is a member of `oneof`_ ``projectOrWorkloadResource``.
         project (str):
-            The Source is a project based to be moved. This is the
-            project's relative path in the API, formatted as
-            "cloudresourcemanager.googleapis.com/projects/{project_number}"
-            "projects/{project_number}"
-            "cloudresourcemanager.googleapis.com/projects/{project_id}"
-            "projects/{project_id}" For example,
-            "organizations/123/locations/us-east1/workloads/assured-workload-1".
+            The source type is a project. Specify the project's relative
+            resource name, formatted as either a project number or a
+            project ID: "projects/{PROJECT_NUMBER}" or
+            "projects/{PROJECT_ID}" For example: "projects/951040570662"
+            when specifying a project number, or
+            "projects/my-project-123" when specifying a project ID.
 
             This field is a member of `oneof`_ ``projectOrWorkloadResource``.
         target (str):
-            Required. The resource name of the Workload to fetch. This
-            is the workloads's relative path in the API, formatted as
-            "organizations/{organization_id}/locations/{location_id}/workloads/{workload_id}".
-            For example,
+            Required. The resource ID of the folder-based destination
+            workload. This workload is where the source project will
+            hypothetically be moved to. Specify the workload's relative
+            resource name, formatted as:
+            "organizations/{ORGANIZATION_ID}/locations/{LOCATION_ID}/workloads/{WORKLOAD_ID}"
+            For example:
             "organizations/123/locations/us-east1/workloads/assured-workload-2".
     """
 
@@ -271,13 +234,15 @@ class AnalyzeWorkloadMoveRequest(proto.Message):
 
 
 class AnalyzeWorkloadMoveResponse(proto.Message):
-    r"""Response with the analysis if the source workload can be
-    moved to the target workload
+    r"""A response that includes the analysis of the hypothetical
+    resource move.
 
     Attributes:
         blockers (Sequence[str]):
-            List of blockers that prevent moving the
-            source workload to the target workload
+            A list of blockers that should be addressed
+            before moving the source project or
+            project-based workload to the destination
+            folder-based workload.
     """
 
     blockers = proto.RepeatedField(
@@ -388,10 +353,10 @@ class Workload(proto.Message):
             Output only. Immutable. The Workload creation
             timestamp.
         billing_account (str):
-            Input only. The billing account used for the resources which
-            are direct children of workload. This billing account is
-            initially associated with the resources created as part of
-            Workload creation. After the initial creation of these
+            Output only. The billing account used for the resources
+            which are direct children of workload. This billing account
+            is initially associated with the resources created as part
+            of Workload creation. After the initial creation of these
             resources, the customer can change the assigned billing
             account. The resource name has the form
             ``billingAccounts/{billing_account_id}``. For example,
@@ -469,6 +434,7 @@ class Workload(proto.Message):
         EU_REGIONS_AND_SUPPORT = 8
         CA_REGIONS_AND_SUPPORT = 9
         ITAR = 10
+        AU_REGIONS_AND_US_SUPPORT = 11
 
     class KajEnrollmentState(proto.Enum):
         r"""Key Access Justifications(KAJ) Enrollment State."""

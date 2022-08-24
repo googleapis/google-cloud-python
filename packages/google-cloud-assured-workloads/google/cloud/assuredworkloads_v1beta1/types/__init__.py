@@ -24,8 +24,6 @@ from .assuredworkloads import (
     ListWorkloadsResponse,
     RestrictAllowedResourcesRequest,
     RestrictAllowedResourcesResponse,
-    RestrictAllowedServicesRequest,
-    RestrictAllowedServicesResponse,
     UpdateWorkloadRequest,
     Workload,
 )
@@ -41,8 +39,6 @@ __all__ = (
     "ListWorkloadsResponse",
     "RestrictAllowedResourcesRequest",
     "RestrictAllowedResourcesResponse",
-    "RestrictAllowedServicesRequest",
-    "RestrictAllowedServicesResponse",
     "UpdateWorkloadRequest",
     "Workload",
 )

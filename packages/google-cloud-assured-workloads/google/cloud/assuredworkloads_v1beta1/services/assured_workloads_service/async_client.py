@@ -239,7 +239,7 @@ class AssuredWorkloadsServiceAsyncClient:
                 # Initialize request argument(s)
                 workload = assuredworkloads_v1beta1.Workload()
                 workload.display_name = "display_name_value"
-                workload.compliance_regime = "ITAR"
+                workload.compliance_regime = "AU_REGIONS_AND_US_SUPPORT"
 
                 request = assuredworkloads_v1beta1.CreateWorkloadRequest(
                     parent="parent_value",
@@ -364,7 +364,7 @@ class AssuredWorkloadsServiceAsyncClient:
                 # Initialize request argument(s)
                 workload = assuredworkloads_v1beta1.Workload()
                 workload.display_name = "display_name_value"
-                workload.compliance_regime = "ITAR"
+                workload.compliance_regime = "AU_REGIONS_AND_US_SUPPORT"
 
                 request = assuredworkloads_v1beta1.UpdateWorkloadRequest(
                     workload=workload,
@@ -432,89 +432,6 @@ class AssuredWorkloadsServiceAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.update_workload,
             default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("workload.name", request.workload.name),)
-            ),
-        )
-
-        # Send the request.
-        response = await rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # Done; return the response.
-        return response
-
-    async def restrict_allowed_services(
-        self,
-        request: Union[assuredworkloads.RestrictAllowedServicesRequest, dict] = None,
-        *,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> assuredworkloads.RestrictAllowedServicesResponse:
-        r"""Restrict the list of services allowed in the Workload
-        environment. The current list of allowed services can be
-        found at
-        https://cloud.google.com/assured-workloads/docs/supported-products
-        In addition to assuredworkloads.workload.update
-        permission, the user should also have
-        orgpolicy.policy.set permission on the folder resource
-        to use this functionality.
-
-        .. code-block:: python
-
-            from google.cloud import assuredworkloads_v1beta1
-
-            async def sample_restrict_allowed_services():
-                # Create a client
-                client = assuredworkloads_v1beta1.AssuredWorkloadsServiceAsyncClient()
-
-                # Initialize request argument(s)
-                request = assuredworkloads_v1beta1.RestrictAllowedServicesRequest(
-                    name="name_value",
-                    restriction_type="ALLOW_COMPLIANT_SERVICES",
-                )
-
-                # Make the request
-                response = await client.restrict_allowed_services(request=request)
-
-                # Handle the response
-                print(response)
-
-        Args:
-            request (Union[google.cloud.assuredworkloads_v1beta1.types.RestrictAllowedServicesRequest, dict]):
-                The request object. Request for restricting list of
-                available services in Workload environment.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-
-        Returns:
-            google.cloud.assuredworkloads_v1beta1.types.RestrictAllowedServicesResponse:
-                Response for restricting the list of
-                allowed services.
-
-        """
-        # Create or coerce a protobuf request object.
-        request = assuredworkloads.RestrictAllowedServicesRequest(request)
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.restrict_allowed_services,
-            default_timeout=None,
             client_info=DEFAULT_CLIENT_INFO,
         )
 
@@ -819,8 +736,9 @@ class AssuredWorkloadsServiceAsyncClient:
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> assuredworkloads.AnalyzeWorkloadMoveResponse:
-        r"""Analyze if the source Assured Workloads can be moved
-        to the target Assured Workload
+        r"""A request to analyze a hypothetical move of a source
+        project or project-based workload to a target
+        (destination) folder-based workload.
 
         .. code-block:: python
 
@@ -844,27 +762,29 @@ class AssuredWorkloadsServiceAsyncClient:
 
         Args:
             request (Union[google.cloud.assuredworkloads_v1beta1.types.AnalyzeWorkloadMoveRequest, dict]):
-                The request object. Request to check if source workload
-                can be moved to target workload.
+                The request object. A request to analyze a hypothetical
+                move of a source project or project-based workload to a
+                target (destination) folder-based workload.
             project (:class:`str`):
-                The Source is a project based to be moved. This is the
-                project's relative path in the API, formatted as
-                "cloudresourcemanager.googleapis.com/projects/{project_number}"
-                "projects/{project_number}"
-                "cloudresourcemanager.googleapis.com/projects/{project_id}"
-                "projects/{project_id}" For example,
-                "organizations/123/locations/us-east1/workloads/assured-workload-1".
+                The source type is a project. Specify the project's
+                relative resource name, formatted as either a project
+                number or a project ID: "projects/{PROJECT_NUMBER}" or
+                "projects/{PROJECT_ID}" For example:
+                "projects/951040570662" when specifying a project
+                number, or "projects/my-project-123" when specifying a
+                project ID.
 
                 This corresponds to the ``project`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             target (:class:`str`):
-                Required. The resource name of the Workload to fetch.
-                This is the workloads's relative path in the API,
-                formatted as
-                "organizations/{organization_id}/locations/{location_id}/workloads/{workload_id}".
-                For example,
-                "organizations/123/locations/us-east1/workloads/assured-workload-2".
+                Required. The resource ID of the folder-based
+                destination workload. This workload is where the source
+                project will hypothetically be moved to. Specify the
+                workload's relative resource name, formatted as:
+                "organizations/{ORGANIZATION_ID}/locations/{LOCATION_ID}/workloads/{WORKLOAD_ID}"
+                For example:
+                "organizations/123/locations/us-east1/workloads/assured-workload-2"
 
                 This corresponds to the ``target`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -877,9 +797,8 @@ class AssuredWorkloadsServiceAsyncClient:
 
         Returns:
             google.cloud.assuredworkloads_v1beta1.types.AnalyzeWorkloadMoveResponse:
-                Response with the analysis if the
-                source workload can be moved to the
-                target workload
+                A response that includes the analysis
+                of the hypothetical resource move.
 
         """
         # Create or coerce a protobuf request object.

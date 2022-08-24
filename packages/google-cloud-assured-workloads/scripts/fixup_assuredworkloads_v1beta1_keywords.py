@@ -45,7 +45,6 @@ class assuredworkloadsCallTransformer(cst.CSTTransformer):
         'get_workload': ('name', ),
         'list_workloads': ('parent', 'page_size', 'page_token', 'filter', ),
         'restrict_allowed_resources': ('name', 'restriction_type', ),
-        'restrict_allowed_services': ('name', 'restriction_type', ),
         'update_workload': ('workload', 'update_mask', ),
     }
 
