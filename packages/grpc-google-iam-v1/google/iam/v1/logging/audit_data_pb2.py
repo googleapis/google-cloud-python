@@ -28,12 +28,11 @@ from google.protobuf import symbol_database as _symbol_database
 _sym_db = _symbol_database.Default()
 
 
-from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
 from google.iam.v1 import policy_pb2 as google_dot_iam_dot_v1_dot_policy__pb2
 
 
 DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(
-    b'\n&google/iam/v1/logging/audit_data.proto\x12\x15google.iam.v1.logging\x1a\x1cgoogle/api/annotations.proto\x1a\x1agoogle/iam/v1/policy.proto"=\n\tAuditData\x12\x30\n\x0cpolicy_delta\x18\x02 \x01(\x0b\x32\x1a.google.iam.v1.PolicyDeltaB\x89\x01\n\x19\x63om.google.iam.v1.loggingB\x0e\x41uditDataProtoP\x01Z<google.golang.org/genproto/googleapis/iam/v1/logging;logging\xaa\x02\x1bGoogle.Cloud.Iam.V1.Loggingb\x06proto3'
+    b'\n&google/iam/v1/logging/audit_data.proto\x12\x15google.iam.v1.logging\x1a\x1agoogle/iam/v1/policy.proto"=\n\tAuditData\x12\x30\n\x0cpolicy_delta\x18\x02 \x01(\x0b\x32\x1a.google.iam.v1.PolicyDeltaB\x89\x01\n\x19\x63om.google.iam.v1.loggingB\x0e\x41uditDataProtoP\x01Z<google.golang.org/genproto/googleapis/iam/v1/logging;logging\xaa\x02\x1bGoogle.Cloud.Iam.V1.Loggingb\x06proto3'
 )
 
 
@@ -53,6 +52,6 @@ if _descriptor._USE_C_DESCRIPTORS == False:
 
     DESCRIPTOR._options = None
     DESCRIPTOR._serialized_options = b"\n\031com.google.iam.v1.loggingB\016AuditDataProtoP\001Z<google.golang.org/genproto/googleapis/iam/v1/logging;logging\252\002\033Google.Cloud.Iam.V1.Logging"
-    _AUDITDATA._serialized_start = 123
-    _AUDITDATA._serialized_end = 184
+    _AUDITDATA._serialized_start = 93
+    _AUDITDATA._serialized_end = 154
 # @@protoc_insertion_point(module_scope)
