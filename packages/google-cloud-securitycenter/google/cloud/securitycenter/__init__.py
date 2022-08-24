@@ -20,7 +20,11 @@ from google.cloud.securitycenter_v1.services.security_center.async_client import
 from google.cloud.securitycenter_v1.services.security_center.client import (
     SecurityCenterClient,
 )
-from google.cloud.securitycenter_v1.types.access import Access, Geolocation
+from google.cloud.securitycenter_v1.types.access import (
+    Access,
+    Geolocation,
+    ServiceAccountDelegationInfo,
+)
 from google.cloud.securitycenter_v1.types.asset import Asset
 from google.cloud.securitycenter_v1.types.bigquery_export import BigQueryExport
 from google.cloud.securitycenter_v1.types.compliance import Compliance
@@ -113,6 +117,7 @@ __all__ = (
     "SecurityCenterAsyncClient",
     "Access",
     "Geolocation",
+    "ServiceAccountDelegationInfo",
     "Asset",
     "BigQueryExport",
     "Compliance",

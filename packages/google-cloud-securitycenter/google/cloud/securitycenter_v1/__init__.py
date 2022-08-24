@@ -15,7 +15,7 @@
 #
 
 from .services.security_center import SecurityCenterAsyncClient, SecurityCenterClient
-from .types.access import Access, Geolocation
+from .types.access import Access, Geolocation, ServiceAccountDelegationInfo
 from .types.asset import Asset
 from .types.bigquery_export import BigQueryExport
 from .types.compliance import Compliance
@@ -158,6 +158,7 @@ __all__ = (
     "RunAssetDiscoveryResponse",
     "SecurityCenterClient",
     "SecurityMarks",
+    "ServiceAccountDelegationInfo",
     "SetFindingStateRequest",
     "SetMuteRequest",
     "Source",

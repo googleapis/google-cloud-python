@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .access import Access, Geolocation
+from .access import Access, Geolocation, ServiceAccountDelegationInfo
 from .asset import Asset
 from .bigquery_export import BigQueryExport
 from .compliance import Compliance
@@ -90,6 +90,7 @@ from .vulnerability import Cve, Cvssv3, Reference, Vulnerability
 __all__ = (
     "Access",
     "Geolocation",
+    "ServiceAccountDelegationInfo",
     "Asset",
     "BigQueryExport",
     "Compliance",
