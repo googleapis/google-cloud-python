@@ -49,6 +49,7 @@ from google.cloud.securitycenter_v1.types import (
     compliance,
     connection,
     container,
+    database,
     exfiltration,
 )
 from google.cloud.securitycenter_v1.types import (

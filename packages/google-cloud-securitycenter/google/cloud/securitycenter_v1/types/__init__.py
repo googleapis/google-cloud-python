@@ -20,6 +20,7 @@ from .compliance import Compliance
 from .connection import Connection
 from .contact_details import Contact, ContactDetails
 from .container import Container
+from .database import Database
 from .exfiltration import ExfilResource, Exfiltration
 from .external_system import ExternalSystem
 from .file import File
@@ -96,6 +97,7 @@ __all__ = (
     "Contact",
     "ContactDetails",
     "Container",
+    "Database",
     "ExfilResource",
     "Exfiltration",
     "ExternalSystem",

@@ -27,6 +27,7 @@ from google.cloud.securitycenter_v1.types.compliance import Compliance
 from google.cloud.securitycenter_v1.types.connection import Connection
 from google.cloud.securitycenter_v1.types.contact_details import Contact, ContactDetails
 from google.cloud.securitycenter_v1.types.container import Container
+from google.cloud.securitycenter_v1.types.database import Database
 from google.cloud.securitycenter_v1.types.exfiltration import (
     ExfilResource,
     Exfiltration,
@@ -119,6 +120,7 @@ __all__ = (
     "Contact",
     "ContactDetails",
     "Container",
+    "Database",
     "ExfilResource",
     "Exfiltration",
     "ExternalSystem",

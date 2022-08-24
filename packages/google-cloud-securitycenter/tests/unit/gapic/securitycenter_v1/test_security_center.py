@@ -67,6 +67,7 @@ from google.cloud.securitycenter_v1.types import (
     connection,
     contact_details,
     container,
+    database,
     exfiltration,
 )
 from google.cloud.securitycenter_v1.types import (

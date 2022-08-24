@@ -28,6 +28,7 @@ from google.cloud.securitycenter_v1.types import mitre_attack as gcs_mitre_attac
 from google.cloud.securitycenter_v1.types import security_marks as gcs_security_marks
 from google.cloud.securitycenter_v1.types import vulnerability as gcs_vulnerability
 from google.cloud.securitycenter_v1.types import access as gcs_access
+from google.cloud.securitycenter_v1.types import database as gcs_database
 from google.cloud.securitycenter_v1.types import external_system, iam_binding
 from google.cloud.securitycenter_v1.types import indicator as gcs_indicator
 from google.cloud.securitycenter_v1.types import kubernetes as gcs_kubernetes
@@ -201,6 +202,8 @@ class Finding(proto.Message):
         kubernetes (google.cloud.securitycenter_v1.types.Kubernetes):
             Kubernetes resources associated with the
             finding.
+        database (google.cloud.securitycenter_v1.types.Database):
+            Database associated with the finding.
     """
 
     class State(proto.Enum):
@@ -381,6 +384,11 @@ class Finding(proto.Message):
         proto.MESSAGE,
         number=43,
         message=gcs_kubernetes.Kubernetes,
+    )
+    database = proto.Field(
+        proto.MESSAGE,
+        number=44,
+        message=gcs_database.Database,
     )
 
 
