@@ -78,7 +78,7 @@ def instance():
             default_storage_type=storage_type,
         )
         operation = instance.create(clusters=[cluster])
-        response = operation.result(60)
+        response = operation.result(240)
         print(f"Successfully created {response.name}")
 
         # Eventual consistency check
@@ -108,7 +108,7 @@ def dev_instance():
             cluster_id, location_id=BIGTABLE_ZONE, default_storage_type=storage_type
         )
         operation = instance.create(clusters=[cluster])
-        response = operation.result(60)
+        response = operation.result(240)
         print(f"Successfully created {response.name}")
 
         # Eventual consistency check
