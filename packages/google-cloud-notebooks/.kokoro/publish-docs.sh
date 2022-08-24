@@ -21,13 +21,11 @@ export PYTHONUNBUFFERED=1
 export PATH="${HOME}/.local/bin:${PATH}"
 
 # Install nox
-python3 -m pip install --user --upgrade --quiet nox
+python3 -m pip install --require-hashes -r .kokoro/requirements.txt
 python3 -m nox --version
 
 # build docs
 nox -s docs
-
-python3 -m pip install --user gcp-docuploader
 
 # create metadata
 python3 -m docuploader create-metadata \
