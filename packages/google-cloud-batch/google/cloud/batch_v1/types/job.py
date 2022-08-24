@@ -361,10 +361,16 @@ class AllocationPolicy(proto.Message):
         Attributes:
             allowed_locations (Sequence[str]):
                 A list of allowed location names represented by internal
-                URLs, First location in the list must be a region. for
-                example, ["regions/us-central1"] allow VMs in region
-                us-central1, ["regions/us-central1", "zones/us-central1-a"]
-                only allow VMs in zone us-central1-a.
+                URLs. Each location can be a region or a zone. Only one
+                region or multiple zones in one region is supported now. For
+                example, ["regions/us-central1"] allow VMs in any zones in
+                region us-central1. ["zones/us-central1-a",
+                "zones/us-central1-c"] only allow VMs in zones us-central1-a
+                and us-central1-c. All locations end up in different regions
+                would cause errors. For example, ["regions/us-central1",
+                "zones/us-central1-a", "zones/us-central1-b",
+                "zones/us-west1-a"] contains 2 regions "us-central1" and
+                "us-west1". An error is expected in this case.
         """
 
         allowed_locations = proto.RepeatedField(
@@ -373,7 +379,10 @@ class AllocationPolicy(proto.Message):
         )
 
     class Disk(proto.Message):
-        r"""A new persistent disk.
+        r"""A new persistent disk or a local ssd.
+        A VM can only have one local SSD setting but multiple local SSD
+        partitions. https://cloud.google.com/compute/docs/disks#pdspecs.
+        https://cloud.google.com/compute/docs/disks#localssds.
 
         This message has `oneof`_ fields (mutually exclusive fields).
         For each oneof, at most one member field can be set at the same time.
@@ -394,10 +403,18 @@ class AllocationPolicy(proto.Message):
                 This field is a member of `oneof`_ ``data_source``.
             type_ (str):
                 Disk type as shown in ``gcloud compute disk-types list`` For
-                example, "pd-ssd", "pd-standard", "pd-balanced".
+                example, "pd-ssd", "pd-standard", "pd-balanced",
+                "local-ssd".
             size_gb (int):
                 Disk size in GB. This field is ignored if ``data_source`` is
-                ``disk`` or ``image``.
+                ``disk`` or ``image``. If ``type`` is ``local-ssd``, size_gb
+                should be a multiple of 375GB, otherwise, the final size
+                will be the next greater multiple of 375 GB.
+            disk_interface (str):
+                Local SSDs are available through both "SCSI"
+                and "NVMe" interfaces. If not indicated, "NVMe"
+                will be the default one for local ssds. We only
+                support "SCSI" for persistent disks now.
         """
 
         image = proto.Field(
@@ -418,10 +435,14 @@ class AllocationPolicy(proto.Message):
             proto.INT64,
             number=2,
         )
+        disk_interface = proto.Field(
+            proto.STRING,
+            number=6,
+        )
 
     class AttachedDisk(proto.Message):
-        r"""A new or an existing persistent disk attached to a VM
-        instance.
+        r"""A new or an existing persistent disk or a local ssd attached
+        to a VM instance.
 
         This message has `oneof`_ fields (mutually exclusive fields).
         For each oneof, at most one member field can be set at the same time.
@@ -470,6 +491,10 @@ class AllocationPolicy(proto.Message):
                 ``gcloud compute accelerator-types list``.
             count (int):
                 The number of accelerators of this type.
+            install_gpu_drivers (bool):
+                When true, Batch will install the GPU
+                drivers. This field will be ignored if
+                specified.
         """
 
         type_ = proto.Field(
@@ -479,6 +504,10 @@ class AllocationPolicy(proto.Message):
         count = proto.Field(
             proto.INT64,
             number=2,
+        )
+        install_gpu_drivers = proto.Field(
+            proto.BOOL,
+            number=3,
         )
 
     class InstancePolicy(proto.Message):

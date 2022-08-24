@@ -190,6 +190,12 @@ class Runnable(proto.Message):
             max_run_duration. If the max_run_duration has expired then
             no further Runnables will execute, not even always_run
             Runnables.
+        environment (google.cloud.batch_v1.types.Environment):
+            Environment variables for this Runnable
+            (overrides variables set for the whole Task or
+            TaskGroup).
+        timeout (google.protobuf.duration_pb2.Duration):
+            Timeout for this Runnable.
     """
 
     class Container(proto.Message):
@@ -340,6 +346,16 @@ class Runnable(proto.Message):
         proto.BOOL,
         number=5,
     )
+    environment = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message="Environment",
+    )
+    timeout = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        message=duration_pb2.Duration,
+    )
 
 
 class TaskSpec(proto.Message):
@@ -385,6 +401,9 @@ class TaskSpec(proto.Message):
         volumes (Sequence[google.cloud.batch_v1.types.Volume]):
             Volumes to mount before running Tasks using
             this TaskSpec.
+        environment (google.cloud.batch_v1.types.Environment):
+            Environment variables to set before running
+            the Task.
     """
 
     runnables = proto.RepeatedField(
@@ -420,6 +439,11 @@ class TaskSpec(proto.Message):
         proto.MESSAGE,
         number=7,
         message=volume.Volume,
+    )
+    environment = proto.Field(
+        proto.MESSAGE,
+        number=10,
+        message="Environment",
     )
 
 
