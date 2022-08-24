@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.12.4](https://github.com/googleapis/python-secret-manager/compare/v2.12.3...v2.12.4) (2022-08-24)
+
+
+### Documentation
+
+* **samples:** Added sample for creating Secret with UserManaged replication ([#328](https://github.com/googleapis/python-secret-manager/issues/328)) ([c5fe7ff](https://github.com/googleapis/python-secret-manager/commit/c5fe7ff0f2914e97f653e28bd0c4a9e155a8942f))
+
 ## [2.12.3](https://github.com/googleapis/python-secret-manager/compare/v2.12.2...v2.12.3) (2022-08-11)
 
 
