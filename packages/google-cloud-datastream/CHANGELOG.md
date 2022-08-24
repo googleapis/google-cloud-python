@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.0](https://github.com/googleapis/python-datastream/compare/v1.1.1...v1.2.0) (2022-08-24)
+
+
+### Features
+
+* added support for BigQuery destination and PostgreSQL source types ([#124](https://github.com/googleapis/python-datastream/issues/124)) ([6eb26d1](https://github.com/googleapis/python-datastream/commit/6eb26d19f6c6098152885c46ea3cce29b199dae6))
+
 ## [1.1.1](https://github.com/googleapis/python-datastream/compare/v1.1.0...v1.1.1) (2022-08-11)
 
 
