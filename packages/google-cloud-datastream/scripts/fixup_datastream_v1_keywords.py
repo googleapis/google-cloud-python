@@ -47,7 +47,7 @@ class datastreamCallTransformer(cst.CSTTransformer):
         'delete_private_connection': ('name', 'request_id', 'force', ),
         'delete_route': ('name', 'request_id', ),
         'delete_stream': ('name', 'request_id', ),
-        'discover_connection_profile': ('parent', 'connection_profile', 'connection_profile_name', 'full_hierarchy', 'hierarchy_depth', 'oracle_rdbms', 'mysql_rdbms', ),
+        'discover_connection_profile': ('parent', 'connection_profile', 'connection_profile_name', 'full_hierarchy', 'hierarchy_depth', 'oracle_rdbms', 'mysql_rdbms', 'postgresql_rdbms', ),
         'fetch_static_ips': ('name', 'page_size', 'page_token', ),
         'get_connection_profile': ('name', ),
         'get_private_connection': ('name', ),

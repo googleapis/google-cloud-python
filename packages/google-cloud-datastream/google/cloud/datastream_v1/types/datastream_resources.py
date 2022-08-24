@@ -22,7 +22,9 @@ __protobuf__ = proto.module(
     manifest={
         "OracleProfile",
         "MysqlProfile",
+        "PostgresqlProfile",
         "GcsProfile",
+        "BigQueryProfile",
         "StaticServiceIpConnectivity",
         "ForwardSshTunnelConnectivity",
         "VpcPeeringConfig",
@@ -36,6 +38,11 @@ __protobuf__ = proto.module(
         "OracleSchema",
         "OracleRdbms",
         "OracleSourceConfig",
+        "PostgresqlColumn",
+        "PostgresqlTable",
+        "PostgresqlSchema",
+        "PostgresqlRdbms",
+        "PostgresqlSourceConfig",
         "MysqlColumn",
         "MysqlTable",
         "MysqlDatabase",
@@ -45,6 +52,7 @@ __protobuf__ = proto.module(
         "AvroFileFormat",
         "JsonFileFormat",
         "GcsDestinationConfig",
+        "BigQueryDestinationConfig",
         "DestinationConfig",
         "Stream",
         "StreamObject",
@@ -145,6 +153,49 @@ class MysqlProfile(proto.Message):
     )
 
 
+class PostgresqlProfile(proto.Message):
+    r"""PostgreSQL database profile.
+
+    Attributes:
+        hostname (str):
+            Required. Hostname for the PostgreSQL
+            connection.
+        port (int):
+            Port for the PostgreSQL connection, default
+            value is 5432.
+        username (str):
+            Required. Username for the PostgreSQL
+            connection.
+        password (str):
+            Required. Password for the PostgreSQL
+            connection.
+        database (str):
+            Required. Database for the PostgreSQL
+            connection.
+    """
+
+    hostname = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    port = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    username = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    password = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    database = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+
+
 class GcsProfile(proto.Message):
     r"""Cloud Storage bucket profile.
 
@@ -164,6 +215,10 @@ class GcsProfile(proto.Message):
         proto.STRING,
         number=2,
     )
+
+
+class BigQueryProfile(proto.Message):
+    r"""BigQuery warehouse profile."""
 
 
 class StaticServiceIpConnectivity(proto.Message):
@@ -478,6 +533,14 @@ class ConnectionProfile(proto.Message):
             MySQL ConnectionProfile configuration.
 
             This field is a member of `oneof`_ ``profile``.
+        bigquery_profile (google.cloud.datastream_v1.types.BigQueryProfile):
+            BigQuery Connection Profile configuration.
+
+            This field is a member of `oneof`_ ``profile``.
+        postgresql_profile (google.cloud.datastream_v1.types.PostgresqlProfile):
+            PostgreSQL Connection Profile configuration.
+
+            This field is a member of `oneof`_ ``profile``.
         static_service_ip_connectivity (google.cloud.datastream_v1.types.StaticServiceIpConnectivity):
             Static Service IP connectivity.
 
@@ -532,6 +595,18 @@ class ConnectionProfile(proto.Message):
         number=102,
         oneof="profile",
         message="MysqlProfile",
+    )
+    bigquery_profile = proto.Field(
+        proto.MESSAGE,
+        number=103,
+        oneof="profile",
+        message="BigQueryProfile",
+    )
+    postgresql_profile = proto.Field(
+        proto.MESSAGE,
+        number=104,
+        oneof="profile",
+        message="PostgresqlProfile",
     )
     static_service_ip_connectivity = proto.Field(
         proto.MESSAGE,
@@ -626,8 +701,8 @@ class OracleTable(proto.Message):
             Table name.
         oracle_columns (Sequence[google.cloud.datastream_v1.types.OracleColumn]):
             Oracle columns in the schema.
-            When unspecified as part of inclue/exclude
-            lists, includes/excludes everything.
+            When unspecified as part of include/exclude
+            objects, includes/excludes everything.
     """
 
     table = proto.Field(
@@ -681,12 +756,38 @@ class OracleRdbms(proto.Message):
 class OracleSourceConfig(proto.Message):
     r"""Oracle data source configuration
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         include_objects (google.cloud.datastream_v1.types.OracleRdbms):
             Oracle objects to include in the stream.
         exclude_objects (google.cloud.datastream_v1.types.OracleRdbms):
             Oracle objects to exclude from the stream.
+        max_concurrent_cdc_tasks (int):
+            Maximum number of concurrent CDC tasks. The
+            number should be non negative. If not set (or
+            set to 0), the system's default value will be
+            used.
+        drop_large_objects (google.cloud.datastream_v1.types.OracleSourceConfig.DropLargeObjects):
+            Drop large object values.
+
+            This field is a member of `oneof`_ ``large_objects_handling``.
+        stream_large_objects (google.cloud.datastream_v1.types.OracleSourceConfig.StreamLargeObjects):
+            Stream large object values.
+
+            This field is a member of `oneof`_ ``large_objects_handling``.
     """
+
+    class DropLargeObjects(proto.Message):
+        r"""Configuration to drop large object values."""
+
+    class StreamLargeObjects(proto.Message):
+        r"""Configuration to stream large object values."""
 
     include_objects = proto.Field(
         proto.MESSAGE,
@@ -697,6 +798,178 @@ class OracleSourceConfig(proto.Message):
         proto.MESSAGE,
         number=2,
         message="OracleRdbms",
+    )
+    max_concurrent_cdc_tasks = proto.Field(
+        proto.INT32,
+        number=3,
+    )
+    drop_large_objects = proto.Field(
+        proto.MESSAGE,
+        number=100,
+        oneof="large_objects_handling",
+        message=DropLargeObjects,
+    )
+    stream_large_objects = proto.Field(
+        proto.MESSAGE,
+        number=102,
+        oneof="large_objects_handling",
+        message=StreamLargeObjects,
+    )
+
+
+class PostgresqlColumn(proto.Message):
+    r"""PostgreSQL Column.
+
+    Attributes:
+        column (str):
+            Column name.
+        data_type (str):
+            The PostgreSQL data type.
+        length (int):
+            Column length.
+        precision (int):
+            Column precision.
+        scale (int):
+            Column scale.
+        primary_key (bool):
+            Whether or not the column represents a
+            primary key.
+        nullable (bool):
+            Whether or not the column can accept a null
+            value.
+        ordinal_position (int):
+            The ordinal position of the column in the
+            table.
+    """
+
+    column = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    data_type = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    length = proto.Field(
+        proto.INT32,
+        number=3,
+    )
+    precision = proto.Field(
+        proto.INT32,
+        number=4,
+    )
+    scale = proto.Field(
+        proto.INT32,
+        number=5,
+    )
+    primary_key = proto.Field(
+        proto.BOOL,
+        number=7,
+    )
+    nullable = proto.Field(
+        proto.BOOL,
+        number=8,
+    )
+    ordinal_position = proto.Field(
+        proto.INT32,
+        number=9,
+    )
+
+
+class PostgresqlTable(proto.Message):
+    r"""PostgreSQL table.
+
+    Attributes:
+        table (str):
+            Table name.
+        postgresql_columns (Sequence[google.cloud.datastream_v1.types.PostgresqlColumn]):
+            PostgreSQL columns in the schema.
+            When unspecified as part of include/exclude
+            objects, includes/excludes everything.
+    """
+
+    table = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    postgresql_columns = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message="PostgresqlColumn",
+    )
+
+
+class PostgresqlSchema(proto.Message):
+    r"""PostgreSQL schema.
+
+    Attributes:
+        schema (str):
+            Schema name.
+        postgresql_tables (Sequence[google.cloud.datastream_v1.types.PostgresqlTable]):
+            Tables in the schema.
+    """
+
+    schema = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    postgresql_tables = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message="PostgresqlTable",
+    )
+
+
+class PostgresqlRdbms(proto.Message):
+    r"""PostgreSQL database structure.
+
+    Attributes:
+        postgresql_schemas (Sequence[google.cloud.datastream_v1.types.PostgresqlSchema]):
+            PostgreSQL schemas in the database server.
+    """
+
+    postgresql_schemas = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="PostgresqlSchema",
+    )
+
+
+class PostgresqlSourceConfig(proto.Message):
+    r"""PostgreSQL data source configuration
+
+    Attributes:
+        include_objects (google.cloud.datastream_v1.types.PostgresqlRdbms):
+            PostgreSQL objects to include in the stream.
+        exclude_objects (google.cloud.datastream_v1.types.PostgresqlRdbms):
+            PostgreSQL objects to exclude from the
+            stream.
+        replication_slot (str):
+            Required. The name of the logical replication
+            slot that's configured with the pgoutput plugin.
+        publication (str):
+            Required. The name of the publication that includes the set
+            of all tables that are defined in the stream's
+            include_objects.
+    """
+
+    include_objects = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="PostgresqlRdbms",
+    )
+    exclude_objects = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="PostgresqlRdbms",
+    )
+    replication_slot = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    publication = proto.Field(
+        proto.STRING,
+        number=4,
     )
 
 
@@ -764,7 +1037,7 @@ class MysqlTable(proto.Message):
         mysql_columns (Sequence[google.cloud.datastream_v1.types.MysqlColumn]):
             MySQL columns in the database.
             When unspecified as part of include/exclude
-            lists, includes/excludes everything.
+            objects, includes/excludes everything.
     """
 
     table = proto.Field(
@@ -822,6 +1095,11 @@ class MysqlSourceConfig(proto.Message):
             MySQL objects to retrieve from the source.
         exclude_objects (google.cloud.datastream_v1.types.MysqlRdbms):
             MySQL objects to exclude from the stream.
+        max_concurrent_cdc_tasks (int):
+            Maximum number of concurrent CDC tasks. The
+            number should be non negative. If not set (or
+            set to 0), the system's default value will be
+            used.
     """
 
     include_objects = proto.Field(
@@ -833,6 +1111,10 @@ class MysqlSourceConfig(proto.Message):
         proto.MESSAGE,
         number=2,
         message="MysqlRdbms",
+    )
+    max_concurrent_cdc_tasks = proto.Field(
+        proto.INT32,
+        number=3,
     )
 
 
@@ -851,11 +1133,15 @@ class SourceConfig(proto.Message):
             Required. Source connection profile resoource. Format:
             ``projects/{project}/locations/{location}/connectionProfiles/{name}``
         oracle_source_config (google.cloud.datastream_v1.types.OracleSourceConfig):
-            Oracle data source configuration
+            Oracle data source configuration.
 
             This field is a member of `oneof`_ ``source_stream_config``.
         mysql_source_config (google.cloud.datastream_v1.types.MysqlSourceConfig):
-            MySQL data source configuration
+            MySQL data source configuration.
+
+            This field is a member of `oneof`_ ``source_stream_config``.
+        postgresql_source_config (google.cloud.datastream_v1.types.PostgresqlSourceConfig):
+            PostgreSQL data source configuration.
 
             This field is a member of `oneof`_ ``source_stream_config``.
     """
@@ -875,6 +1161,12 @@ class SourceConfig(proto.Message):
         number=101,
         oneof="source_stream_config",
         message="MysqlSourceConfig",
+    )
+    postgresql_source_config = proto.Field(
+        proto.MESSAGE,
+        number=102,
+        oneof="source_stream_config",
+        message="PostgresqlSourceConfig",
     )
 
 
@@ -974,8 +1266,126 @@ class GcsDestinationConfig(proto.Message):
     )
 
 
+class BigQueryDestinationConfig(proto.Message):
+    r"""
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        single_target_dataset (google.cloud.datastream_v1.types.BigQueryDestinationConfig.SingleTargetDataset):
+            Single destination dataset.
+
+            This field is a member of `oneof`_ ``dataset_config``.
+        source_hierarchy_datasets (google.cloud.datastream_v1.types.BigQueryDestinationConfig.SourceHierarchyDatasets):
+            Source hierarchy datasets.
+
+            This field is a member of `oneof`_ ``dataset_config``.
+        data_freshness (google.protobuf.duration_pb2.Duration):
+            The guaranteed data freshness (in seconds)
+            when querying tables created by the stream.
+            Editing this field will only affect new tables
+            created in the future, but existing tables will
+            not be impacted. Lower values mean that queries
+            will return fresher data, but may result in
+            higher cost.
+    """
+
+    class SingleTargetDataset(proto.Message):
+        r"""A single target dataset to which all data will be streamed.
+
+        Attributes:
+            dataset_id (str):
+
+        """
+
+        dataset_id = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+
+    class SourceHierarchyDatasets(proto.Message):
+        r"""Destination datasets are created so that hierarchy of the
+        destination data objects matches the source hierarchy.
+
+        Attributes:
+            dataset_template (google.cloud.datastream_v1.types.BigQueryDestinationConfig.SourceHierarchyDatasets.DatasetTemplate):
+
+        """
+
+        class DatasetTemplate(proto.Message):
+            r"""Dataset template used for dynamic dataset creation.
+
+            Attributes:
+                location (str):
+                    Required. The geographic location where the
+                    dataset should reside. See
+                    https://cloud.google.com/bigquery/docs/locations
+                    for supported locations.
+                dataset_id_prefix (str):
+                    If supplied, every created dataset will have its name
+                    prefixed by the provided value. The prefix and name will be
+                    separated by an underscore. i.e. \_<dataset_name>.
+                kms_key_name (str):
+                    Describes the Cloud KMS encryption key that will be used to
+                    protect destination BigQuery table. The BigQuery Service
+                    Account associated with your project requires access to this
+                    encryption key. i.e.
+                    projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{cryptoKey}.
+                    See
+                    https://cloud.google.com/bigquery/docs/customer-managed-encryption
+                    for more information.
+            """
+
+            location = proto.Field(
+                proto.STRING,
+                number=1,
+            )
+            dataset_id_prefix = proto.Field(
+                proto.STRING,
+                number=2,
+            )
+            kms_key_name = proto.Field(
+                proto.STRING,
+                number=3,
+            )
+
+        dataset_template = proto.Field(
+            proto.MESSAGE,
+            number=2,
+            message="BigQueryDestinationConfig.SourceHierarchyDatasets.DatasetTemplate",
+        )
+
+    single_target_dataset = proto.Field(
+        proto.MESSAGE,
+        number=201,
+        oneof="dataset_config",
+        message=SingleTargetDataset,
+    )
+    source_hierarchy_datasets = proto.Field(
+        proto.MESSAGE,
+        number=202,
+        oneof="dataset_config",
+        message=SourceHierarchyDatasets,
+    )
+    data_freshness = proto.Field(
+        proto.MESSAGE,
+        number=300,
+        message=duration_pb2.Duration,
+    )
+
+
 class DestinationConfig(proto.Message):
     r"""The configuration of the stream destination.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
@@ -986,6 +1396,10 @@ class DestinationConfig(proto.Message):
         gcs_destination_config (google.cloud.datastream_v1.types.GcsDestinationConfig):
             A configuration for how data should be loaded
             to Cloud Storage.
+
+            This field is a member of `oneof`_ ``destination_stream_config``.
+        bigquery_destination_config (google.cloud.datastream_v1.types.BigQueryDestinationConfig):
+            BigQuery destination configuration.
 
             This field is a member of `oneof`_ ``destination_stream_config``.
     """
@@ -999,6 +1413,12 @@ class DestinationConfig(proto.Message):
         number=100,
         oneof="destination_stream_config",
         message="GcsDestinationConfig",
+    )
+    bigquery_destination_config = proto.Field(
+        proto.MESSAGE,
+        number=101,
+        oneof="destination_stream_config",
+        message="BigQueryDestinationConfig",
     )
 
 
@@ -1089,6 +1509,11 @@ class Stream(proto.Message):
                 backfilling.
 
                 This field is a member of `oneof`_ ``excluded_objects``.
+            postgresql_excluded_objects (google.cloud.datastream_v1.types.PostgresqlRdbms):
+                PostgreSQL data source objects to avoid
+                backfilling.
+
+                This field is a member of `oneof`_ ``excluded_objects``.
         """
 
         oracle_excluded_objects = proto.Field(
@@ -1102,6 +1527,12 @@ class Stream(proto.Message):
             number=2,
             oneof="excluded_objects",
             message="MysqlRdbms",
+        )
+        postgresql_excluded_objects = proto.Field(
+            proto.MESSAGE,
+            number=3,
+            oneof="excluded_objects",
+            message="PostgresqlRdbms",
         )
 
     class BackfillNoneStrategy(proto.Message):
@@ -1248,10 +1679,33 @@ class SourceObjectIdentifier(proto.Message):
             Mysql data source object identifier.
 
             This field is a member of `oneof`_ ``source_identifier``.
+        postgresql_identifier (google.cloud.datastream_v1.types.SourceObjectIdentifier.PostgresqlObjectIdentifier):
+            PostgreSQL data source object identifier.
+
+            This field is a member of `oneof`_ ``source_identifier``.
     """
 
     class OracleObjectIdentifier(proto.Message):
         r"""Oracle data source object identifier.
+
+        Attributes:
+            schema (str):
+                Required. The schema name.
+            table (str):
+                Required. The table name.
+        """
+
+        schema = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        table = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+
+    class PostgresqlObjectIdentifier(proto.Message):
+        r"""PostgreSQL data source object identifier.
 
         Attributes:
             schema (str):
@@ -1299,6 +1753,12 @@ class SourceObjectIdentifier(proto.Message):
         number=2,
         oneof="source_identifier",
         message=MysqlObjectIdentifier,
+    )
+    postgresql_identifier = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        oneof="source_identifier",
+        message=PostgresqlObjectIdentifier,
     )
 
 

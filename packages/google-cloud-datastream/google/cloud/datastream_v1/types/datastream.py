@@ -105,6 +105,11 @@ class DiscoverConnectionProfileRequest(proto.Message):
             and metadata.
 
             This field is a member of `oneof`_ ``data_object``.
+        postgresql_rdbms (google.cloud.datastream_v1.types.PostgresqlRdbms):
+            PostgreSQL RDBMS to enrich with child data
+            objects and metadata.
+
+            This field is a member of `oneof`_ ``data_object``.
     """
 
     parent = proto.Field(
@@ -144,6 +149,12 @@ class DiscoverConnectionProfileRequest(proto.Message):
         oneof="data_object",
         message=datastream_resources.MysqlRdbms,
     )
+    postgresql_rdbms = proto.Field(
+        proto.MESSAGE,
+        number=102,
+        oneof="data_object",
+        message=datastream_resources.PostgresqlRdbms,
+    )
 
 
 class DiscoverConnectionProfileResponse(proto.Message):
@@ -165,6 +176,10 @@ class DiscoverConnectionProfileResponse(proto.Message):
             Enriched MySQL RDBMS object.
 
             This field is a member of `oneof`_ ``data_object``.
+        postgresql_rdbms (google.cloud.datastream_v1.types.PostgresqlRdbms):
+            Enriched PostgreSQL RDBMS object.
+
+            This field is a member of `oneof`_ ``data_object``.
     """
 
     oracle_rdbms = proto.Field(
@@ -178,6 +193,12 @@ class DiscoverConnectionProfileResponse(proto.Message):
         number=101,
         oneof="data_object",
         message=datastream_resources.MysqlRdbms,
+    )
+    postgresql_rdbms = proto.Field(
+        proto.MESSAGE,
+        number=102,
+        oneof="data_object",
+        message=datastream_resources.PostgresqlRdbms,
     )
 
 
