@@ -306,6 +306,13 @@ class Test_make_value_pb(unittest.TestCase):
         self.assertIsInstance(value_pb, Value)
         self.assertEqual(value_pb.string_value, value)
 
+    def test_w_json_None(self):
+        from google.cloud.spanner_v1 import JsonObject
+
+        value = JsonObject(None)
+        value_pb = self._callFUT(value)
+        self.assertTrue(value_pb.HasField("null_value"))
+
 
 class Test_make_list_value_pb(unittest.TestCase):
     def _callFUT(self, *args, **kw):

@@ -165,7 +165,11 @@ def _make_value_pb(value):
         _assert_numeric_precision_and_scale(value)
         return Value(string_value=str(value))
     if isinstance(value, JsonObject):
-        return Value(string_value=value.serialize())
+        value = value.serialize()
+        if value is None:
+            return Value(null_value="NULL_VALUE")
+        else:
+            return Value(string_value=value)
 
     raise ValueError("Unknown type: %s" % (value,))
 
