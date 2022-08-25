@@ -13,9 +13,3 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .document_wrappers import DocumentWrapper, PageWrapper
-
-__all__ = (
-    "DocumentWrapper",
-    "PageWrapper",
-)

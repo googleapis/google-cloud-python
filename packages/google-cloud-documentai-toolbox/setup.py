@@ -29,7 +29,7 @@ setuptools.setup(
     name="document-ai-sdk",
     author="Google LLC",
     author_email="googleapis-packages@google.com",
-    url="https://github.com/googlecloudplatform/document-ai-sdk",
+    url="https://github.com/googleapis/document-ai-sdk",
     version=version,
     long_description=readme,
     packages=setuptools.PEP420PackageFinder.find(),
