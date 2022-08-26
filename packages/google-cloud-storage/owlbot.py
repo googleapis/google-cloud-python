@@ -45,7 +45,6 @@ s.move(
     excludes=[
         "docs/multiprocessing.rst",
         "noxfile.py",
-        "renovate.json",  # do not bundle reports
         "CONTRIBUTING.rst",
         ".kokoro/samples/python3.6", # remove python 3.6 support
         ".github/workflows", # exclude gh actions as credentials are needed for tests
