@@ -161,22 +161,6 @@ async def test_create_document_w_subcollection(client, cleanup):
     assert sorted([child.id async for child in children]) == sorted(child_ids)
 
 
-@pytest.mark.skipif(FIRESTORE_EMULATOR, reason="Internal Issue b/137866686")
-async def test_cannot_use_foreign_key(client, cleanup):
-    document_id = "cannot" + UNIQUE_RESOURCE_ID
-    document = client.document("foreign-key", document_id)
-    # Add to clean-up before API request (in case ``create()`` fails).
-    cleanup(document.delete)
-
-    other_client = firestore.Client(
-        project="other-prahj", credentials=client._credentials, database="dee-bee"
-    )
-    assert other_client._database_string != client._database_string
-    fake_doc = other_client.document("foo", "bar")
-    with pytest.raises(InvalidArgument):
-        await document.create({"ref": fake_doc})
-
-
 def assert_timestamp_less(timestamp_pb1, timestamp_pb2):
     assert timestamp_pb1 < timestamp_pb2
 
