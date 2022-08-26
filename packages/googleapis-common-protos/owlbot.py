@@ -64,6 +64,7 @@ s.move(templated_files / ".kokoro", excludes=["docs/**/*", "publish-docs.sh"])
 s.move(templated_files / "setup.cfg")
 s.move(templated_files / "LICENSE")
 s.move(templated_files / "MANIFEST.in")
+s.move(templated_files / "renovate.json")
 s.move(templated_files / ".github", excludes=["workflows"])
 
 # Generate _pb2.py files and format them
