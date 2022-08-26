@@ -6,7 +6,8 @@
   ],
   "ignorePaths": [
     ".pre-commit-config.yaml",
-    "tests/unit/resources"
+    "tests/unit/resources",
+    ".kokoro/requirements.txt"
   ],
   "pip_requirements": {
     "fileMatch": [
