@@ -1,5 +1,12 @@
 {
   "extends": [
-    "config:base",  ":preserveSemverRanges"
-  ]
+    "config:base",
+    "group:all",
+    ":preserveSemverRanges",
+    ":disableDependencyDashboard"
+  ],
+  "ignorePaths": [".pre-commit-config.yaml"],
+  "pip_requirements": {
+    "fileMatch": ["requirements-test.txt", "samples/[\\S/]*constraints.txt", "samples/[\\S/]*constraints-test.txt"]
+  }
 }
