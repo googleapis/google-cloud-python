@@ -65,7 +65,14 @@ UPGRADE_CODE = """def upgrade():
         'account',
         'name',
         existing_type=sa.String(70),
-    )"""
+    )
+    op.alter_column(
+        'account',
+        'description',
+        existing_type=sa.Unicode(200),
+        nullable=False,
+    )
+    """
 
 
 BLACK_VERSION = "black==22.3.0"
@@ -254,14 +261,14 @@ def migration_test(session):
     files = glob.glob("test_migration/versions/*.py")
 
     # updating the upgrade-script code
-    with open(files[0], "r") as f:
-        script_code = f.read()
+    with open(files[0], "rb") as f:
+        script_code = f.read().decode()
 
     script_code = script_code.replace(
         """def upgrade() -> None:\n    pass""", UPGRADE_CODE
     )
-    with open(files[0], "w") as f:
-        f.write(script_code)
+    with open(files[0], "wb") as f:
+        f.write(script_code.encode())
 
     os.remove("test_migration/env.py")
     shutil.copyfile("test_migration_env.py", "test_migration/env.py")

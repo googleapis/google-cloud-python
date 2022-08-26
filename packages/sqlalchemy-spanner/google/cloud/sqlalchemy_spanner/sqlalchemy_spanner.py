@@ -1015,7 +1015,7 @@ LIMIT 1
 
 
 # Alembic ALTER operation override
-@compiles(ColumnNullable, "spanner")
+@compiles(ColumnNullable, "spanner+spanner")
 def visit_column_nullable(
     element: "ColumnNullable", compiler: "SpannerDDLCompiler", **kw
 ) -> str:
@@ -1028,7 +1028,7 @@ def visit_column_nullable(
 
 
 # Alembic ALTER operation override
-@compiles(ColumnType, "spanner")
+@compiles(ColumnType, "spanner+spanner")
 def visit_column_type(
     element: "ColumnType", compiler: "SpannerDDLCompiler", **kw
 ) -> str:
