@@ -183,7 +183,9 @@ def system(session):
         session.skip("System tests were not found")
 
     # Use pre-release gRPC for system tests.
-    session.install("--pre", "grpcio")
+    # Exclude version 1.49.0rc1 which has a known issue.
+    # See https://github.com/grpc/grpc/pull/30642.
+    session.install("--pre", "grpcio!=1.49.0rc1")
 
     # Install all test dependencies, then install this package into the
     # virtualenv's dist-packages.
