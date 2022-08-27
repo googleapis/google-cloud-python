@@ -56,6 +56,7 @@ s.move(templated_files / "LICENSE")
 s.move(templated_files / "CODE_OF_CONDUCT.md")
 s.move(templated_files / ".github", excludes=["workflows"])
 s.move(templated_files / ".gitignore")
+s.move(templated_files / "renovate.json")
 
 # Generate _pb2.py files and format them
 s.shell.run(["nox", "-s", "generate_protos"], hide_output=False)
