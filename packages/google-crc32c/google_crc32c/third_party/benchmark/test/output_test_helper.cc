@@ -4,6 +4,7 @@
 #include <iostream>
 #include <map>
 #include <memory>
+#include <random>
 #include <sstream>
 #include <streambuf>
 
@@ -38,22 +39,28 @@ SubMap& GetSubstitutions() {
   // Don't use 'dec_re' from header because it may not yet be initialized.
   // clang-format off
   static std::string safe_dec_re = "[0-9]*[.]?[0-9]+([eE][-+][0-9]+)?";
+  static std::string time_re = "([0-9]+[.])?[0-9]+";
   static SubMap map = {
       {"%float", "[0-9]*[.]?[0-9]+([eE][-+][0-9]+)?"},
       // human-readable float
       {"%hrfloat", "[0-9]*[.]?[0-9]+([eE][-+][0-9]+)?[kMGTPEZYmunpfazy]?"},
       {"%int", "[ ]*[0-9]+"},
       {" %s ", "[ ]+"},
-      {"%time", "[ ]*[0-9]+ ns"},
-      {"%console_report", "[ ]*[0-9]+ ns [ ]*[0-9]+ ns [ ]*[0-9]+"},
-      {"%console_time_only_report", "[ ]*[0-9]+ ns [ ]*[0-9]+ ns"},
-      {"%console_us_report", "[ ]*[0-9]+ us [ ]*[0-9]+ us [ ]*[0-9]+"},
-      {"%console_us_time_only_report", "[ ]*[0-9]+ us [ ]*[0-9]+ us"},
+      {"%time", "[ ]*" + time_re + "[ ]+ns"},
+      {"%console_report", "[ ]*" + time_re + "[ ]+ns [ ]*" + time_re + "[ ]+ns [ ]*[0-9]+"},
+      {"%console_us_report", "[ ]*" + time_re + "[ ]+us [ ]*" + time_re + "[ ]+us [ ]*[0-9]+"},
+      {"%console_ms_report", "[ ]*" + time_re + "[ ]+ms [ ]*" + time_re + "[ ]+ms [ ]*[0-9]+"},
+      {"%console_s_report", "[ ]*" + time_re + "[ ]+s [ ]*" + time_re + "[ ]+s [ ]*[0-9]+"},
+      {"%console_time_only_report", "[ ]*" + time_re + "[ ]+ns [ ]*" + time_re + "[ ]+ns"},
+      {"%console_us_report", "[ ]*" + time_re + "[ ]+us [ ]*" + time_re + "[ ]+us [ ]*[0-9]+"},
+      {"%console_us_time_only_report", "[ ]*" + time_re + "[ ]+us [ ]*" + time_re + "[ ]+us"},
       {"%csv_header",
        "name,iterations,real_time,cpu_time,time_unit,bytes_per_second,"
        "items_per_second,label,error_occurred,error_message"},
       {"%csv_report", "[0-9]+," + safe_dec_re + "," + safe_dec_re + ",ns,,,,,"},
       {"%csv_us_report", "[0-9]+," + safe_dec_re + "," + safe_dec_re + ",us,,,,,"},
+      {"%csv_ms_report", "[0-9]+," + safe_dec_re + "," + safe_dec_re + ",ms,,,,,"},
+      {"%csv_s_report", "[0-9]+," + safe_dec_re + "," + safe_dec_re + ",s,,,,,"},
       {"%csv_bytes_report",
        "[0-9]+," + safe_dec_re + "," + safe_dec_re + ",ns," + safe_dec_re + ",,,,"},
       {"%csv_items_report",
@@ -132,7 +139,7 @@ class TestReporter : public benchmark::BenchmarkReporter {
   TestReporter(std::vector<benchmark::BenchmarkReporter*> reps)
       : reporters_(reps) {}
 
-  virtual bool ReportContext(const Context& context) {
+  virtual bool ReportContext(const Context& context) BENCHMARK_OVERRIDE {
     bool last_ret = false;
     bool first = true;
     for (auto rep : reporters_) {
@@ -146,10 +153,10 @@ class TestReporter : public benchmark::BenchmarkReporter {
     return last_ret;
   }
 
-  void ReportRuns(const std::vector<Run>& report) {
+  void ReportRuns(const std::vector<Run>& report) BENCHMARK_OVERRIDE {
     for (auto rep : reporters_) rep->ReportRuns(report);
   }
-  void Finalize() {
+  void Finalize() BENCHMARK_OVERRIDE {
     for (auto rep : reporters_) rep->Finalize();
   }
 
@@ -207,7 +214,7 @@ void ResultsChecker::Add(const std::string& entry_pattern, ResultsCheckFn fn) {
 void ResultsChecker::CheckResults(std::stringstream& output) {
   // first reset the stream to the start
   {
-    auto start = std::ios::streampos(0);
+    auto start = std::stringstream::pos_type(0);
     // clear before calling tellg()
     output.clear();
     // seek to zero only when needed
@@ -371,6 +378,12 @@ int SetSubstitutions(
   return 0;
 }
 
+// Disable deprecated warnings temporarily because we need to reference
+// CSVReporter but don't want to trigger -Werror=-Wdeprecated-declarations
+#ifdef __GNUC__
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 void RunOutputTests(int argc, char* argv[]) {
   using internal::GetTestCaseList;
   benchmark::Initialize(&argc, argv);
@@ -429,6 +442,10 @@ void RunOutputTests(int argc, char* argv[]) {
   internal::GetResultsChecker().CheckResults(csv.out_stream);
 }
 
+#ifdef __GNUC__
+#pragma GCC diagnostic pop
+#endif
+
 int SubstrCnt(const std::string& haystack, const std::string& pat) {
   if (pat.length() == 0) return 0;
   int count = 0;
@@ -438,11 +455,50 @@ int SubstrCnt(const std::string& haystack, const std::string& pat) {
   return count;
 }
 
+static char ToHex(int ch) {
+  return ch < 10 ? static_cast<char>('0' + ch)
+                 : static_cast<char>('a' + (ch - 10));
+}
+
+static char RandomHexChar() {
+  static std::mt19937 rd{std::random_device{}()};
+  static std::uniform_int_distribution<int> mrand{0, 15};
+  return ToHex(mrand(rd));
+}
+
+static std::string GetRandomFileName() {
+  std::string model = "test.%%%%%%";
+  for (auto & ch :  model) {
+    if (ch == '%')
+      ch = RandomHexChar();
+  }
+  return model;
+}
+
+static bool FileExists(std::string const& name) {
+  std::ifstream in(name.c_str());
+  return in.good();
+}
+
+static std::string GetTempFileName() {
+  // This function attempts to avoid race conditions where two tests
+  // create the same file at the same time. However, it still introduces races
+  // similar to tmpnam.
+  int retries = 3;
+  while (--retries) {
+    std::string name = GetRandomFileName();
+    if (!FileExists(name))
+      return name;
+  }
+  std::cerr << "Failed to create unique temporary file name" << std::endl;
+  std::abort();
+}
+
 std::string GetFileReporterOutput(int argc, char* argv[]) {
   std::vector<char*> new_argv(argv, argv + argc);
   assert(static_cast<decltype(new_argv)::size_type>(argc) == new_argv.size());
 
-  std::string tmp_file_name = std::tmpnam(nullptr);
+  std::string tmp_file_name = GetTempFileName();
   std::cout << "Will be using this as the tmp file: " << tmp_file_name << '\n';
 
   std::string tmp = "--benchmark_out=";

@@ -1,7 +1,6 @@
 # CRC32C
 
-[![Build Status](https://travis-ci.org/google/crc32c.svg?branch=master)](https://travis-ci.org/google/crc32c)
-[![Build Status](https://ci.appveyor.com/api/projects/status/moiq7331pett4xuj/branch/master?svg=true)](https://ci.appveyor.com/project/pwnall/crc32c)
+[![Build Status](https://github.com/google/crc32c/actions/workflows/build.yml/badge.svg)](https://github.com/google/crc32c/actions/workflows/build.yml)
 
 New file format authors should consider
 [HighwayHash](https://github.com/google/highwayhash). The initial version of
@@ -65,7 +64,7 @@ apm install autocomplete-clang build build-cmake clang-format language-cmake \
 
 If you don't mind more setup in return for more speed, replace
 `autocomplete-clang` and `linter-clang` with `you-complete-me`. This requires
-[setting up ycmd](https://github.com/Valloric/ycmd#building).
+[setting up ycmd](https://github.com/ycm-core/ycmd#building).
 
 ```bash
 apm install autocomplete-plus build build-cmake clang-format language-cmake \

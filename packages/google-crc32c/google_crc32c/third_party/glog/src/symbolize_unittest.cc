@@ -31,15 +31,14 @@
 //
 // Unit tests for functions in symbolize.cc.
 
-#include "utilities.h"
-
-#include <signal.h>
+#include <csignal>
 #include <iostream>
 
-#include "glog/logging.h"
-#include "symbolize.h"
-#include "googletest.h"
 #include "config.h"
+#include <glog/logging.h>
+#include "googletest.h"
+#include "symbolize.h"
+#include "utilities.h"
 
 #ifdef HAVE_LIB_GFLAGS
 #include <gflags/gflags.h>
@@ -53,6 +52,7 @@ using namespace GOOGLE_NAMESPACE;
 
 #define always_inline
 
+#if defined(__ELF__) || defined(GLOG_OS_WINDOWS) || defined(GLOG_OS_CYGWIN)
 // A wrapper function for Symbolize() to make the unit test simple.
 static const char *TrySymbolize(void *pc) {
   static char symbol[4096];
@@ -62,6 +62,7 @@ static const char *TrySymbolize(void *pc) {
     return NULL;
   }
 }
+#endif
 
 # if defined(__ELF__)
 
@@ -152,9 +153,9 @@ static void *g_pc_to_symbolize;
 static char g_symbolize_buffer[4096];
 static char *g_symbolize_result;
 
-static void EmptySignalHandler(int signo) {}
+static void EmptySignalHandler(int /*signo*/) {}
 
-static void SymbolizeSignalHandler(int signo) {
+static void SymbolizeSignalHandler(int /*signo*/) {
   if (Symbolize(g_pc_to_symbolize, g_symbolize_buffer,
                 sizeof(g_symbolize_buffer))) {
     g_symbolize_result = g_symbolize_buffer;
@@ -311,7 +312,7 @@ TEST(Symbolize, SymbolizeWithDemanglingStackConsumption) {
 // x86 specific tests.  Uses some inline assembler.
 extern "C" {
 inline void* always_inline inline_func() {
-  register void *pc = NULL;
+  void *pc = NULL;
 #ifdef TEST_X86_32_AND_64
   __asm__ __volatile__("call 1f; 1: pop %0" : "=r"(pc));
 #endif
@@ -320,7 +321,7 @@ inline void* always_inline inline_func() {
 
 void* ATTRIBUTE_NOINLINE non_inline_func();
 void* ATTRIBUTE_NOINLINE non_inline_func() {
-  register void *pc = NULL;
+  void *pc = NULL;
 #ifdef TEST_X86_32_AND_64
   __asm__ __volatile__("call 1f; 1: pop %0" : "=r"(pc));
 #endif
@@ -359,7 +360,7 @@ static void ATTRIBUTE_NOINLINE TestWithReturnAddress() {
 #endif
 }
 
-# elif defined(OS_WINDOWS) || defined(OS_CYGWIN)
+# elif defined(GLOG_OS_WINDOWS) || defined(GLOG_OS_CYGWIN)
 
 #ifdef _MSC_VER
 #include <intrin.h>
@@ -401,7 +402,7 @@ int main(int argc, char **argv) {
   FLAGS_logtostderr = true;
   InitGoogleLogging(argv[0]);
   InitGoogleTest(&argc, argv);
-#if defined(HAVE_SYMBOLIZE)
+#if defined(HAVE_SYMBOLIZE) && defined(HAVE_STACKTRACE)
 # if defined(__ELF__)
   // We don't want to get affected by the callback interface, that may be
   // used to install some callback function at InitGoogle() time.
@@ -411,10 +412,10 @@ int main(int argc, char **argv) {
   TestWithPCInsideNonInlineFunction();
   TestWithReturnAddress();
   return RUN_ALL_TESTS();
-# elif defined(OS_WINDOWS) || defined(OS_CYGWIN)
+# elif defined(GLOG_OS_WINDOWS) || defined(GLOG_OS_CYGWIN)
   TestWithReturnAddress();
   return RUN_ALL_TESTS();
-# else  // OS_WINDOWS
+# else  // GLOG_OS_WINDOWS
   printf("PASS (no symbolize_unittest support)\n");
   return 0;
 # endif  // __ELF__

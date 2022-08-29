@@ -53,13 +53,13 @@ TEST(CxxExceptionDeathTest, ExceptionIsFailure) {
   } catch (...) {  // NOLINT
     FAIL() << "An exception escaped a death test macro invocation "
            << "with catch_exceptions "
-           << (testing::GTEST_FLAG(catch_exceptions) ? "enabled" : "disabled");
+           << (GTEST_FLAG_GET(catch_exceptions) ? "enabled" : "disabled");
   }
 }
 
 class TestException : public std::exception {
  public:
-  virtual const char* what() const throw() { return "exceptional message"; }
+  const char* what() const noexcept override { return "exceptional message"; }
 };
 
 TEST(CxxExceptionDeathTest, PrintsMessageForStdExceptions) {
@@ -68,7 +68,7 @@ TEST(CxxExceptionDeathTest, PrintsMessageForStdExceptions) {
                           "exceptional message");
   // Verifies that the location is mentioned in the failure text.
   EXPECT_NONFATAL_FAILURE(EXPECT_DEATH(throw TestException(), ""),
-                          "googletest-death-test_ex_test.cc");
+                          __FILE__);
 }
 # endif  // GTEST_HAS_EXCEPTIONS
 
@@ -79,7 +79,7 @@ TEST(CxxExceptionDeathTest, PrintsMessageForStdExceptions) {
 TEST(SehExceptionDeasTest, CatchExceptionsDoesNotInterfere) {
   EXPECT_DEATH(RaiseException(42, 0x0, 0, NULL), "")
       << "with catch_exceptions "
-      << (testing::GTEST_FLAG(catch_exceptions) ? "enabled" : "disabled");
+      << (GTEST_FLAG_GET(catch_exceptions) ? "enabled" : "disabled");
 }
 # endif
 
@@ -87,6 +87,6 @@ TEST(SehExceptionDeasTest, CatchExceptionsDoesNotInterfere) {
 
 int main(int argc, char** argv) {
   testing::InitGoogleTest(&argc, argv);
-  testing::GTEST_FLAG(catch_exceptions) = GTEST_ENABLE_CATCH_EXCEPTIONS_ != 0;
+  GTEST_FLAG_SET(catch_exceptions, GTEST_ENABLE_CATCH_EXCEPTIONS_ != 0);
   return RUN_ALL_TESTS();
 }

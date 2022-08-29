@@ -34,7 +34,6 @@
 // utilities for defining matchers.
 
 #include "gmock/gmock-matchers.h"
-#include "gmock/gmock-generated-matchers.h"
 
 #include <string.h>
 #include <iostream>
@@ -42,116 +41,6 @@
 #include <string>
 
 namespace testing {
-
-// Constructs a matcher that matches a const std::string& whose value is
-// equal to s.
-Matcher<const std::string&>::Matcher(const std::string& s) { *this = Eq(s); }
-
-#if GTEST_HAS_GLOBAL_STRING
-// Constructs a matcher that matches a const std::string& whose value is
-// equal to s.
-Matcher<const std::string&>::Matcher(const ::string& s) {
-  *this = Eq(static_cast<std::string>(s));
-}
-#endif  // GTEST_HAS_GLOBAL_STRING
-
-// Constructs a matcher that matches a const std::string& whose value is
-// equal to s.
-Matcher<const std::string&>::Matcher(const char* s) {
-  *this = Eq(std::string(s));
-}
-
-// Constructs a matcher that matches a std::string whose value is equal to
-// s.
-Matcher<std::string>::Matcher(const std::string& s) { *this = Eq(s); }
-
-#if GTEST_HAS_GLOBAL_STRING
-// Constructs a matcher that matches a std::string whose value is equal to
-// s.
-Matcher<std::string>::Matcher(const ::string& s) {
-  *this = Eq(static_cast<std::string>(s));
-}
-#endif  // GTEST_HAS_GLOBAL_STRING
-
-// Constructs a matcher that matches a std::string whose value is equal to
-// s.
-Matcher<std::string>::Matcher(const char* s) { *this = Eq(std::string(s)); }
-
-#if GTEST_HAS_GLOBAL_STRING
-// Constructs a matcher that matches a const ::string& whose value is
-// equal to s.
-Matcher<const ::string&>::Matcher(const std::string& s) {
-  *this = Eq(static_cast<::string>(s));
-}
-
-// Constructs a matcher that matches a const ::string& whose value is
-// equal to s.
-Matcher<const ::string&>::Matcher(const ::string& s) { *this = Eq(s); }
-
-// Constructs a matcher that matches a const ::string& whose value is
-// equal to s.
-Matcher<const ::string&>::Matcher(const char* s) { *this = Eq(::string(s)); }
-
-// Constructs a matcher that matches a ::string whose value is equal to s.
-Matcher<::string>::Matcher(const std::string& s) {
-  *this = Eq(static_cast<::string>(s));
-}
-
-// Constructs a matcher that matches a ::string whose value is equal to s.
-Matcher<::string>::Matcher(const ::string& s) { *this = Eq(s); }
-
-// Constructs a matcher that matches a string whose value is equal to s.
-Matcher<::string>::Matcher(const char* s) { *this = Eq(::string(s)); }
-#endif  // GTEST_HAS_GLOBAL_STRING
-
-#if GTEST_HAS_ABSL
-// Constructs a matcher that matches a const absl::string_view& whose value is
-// equal to s.
-Matcher<const absl::string_view&>::Matcher(const std::string& s) {
-  *this = Eq(s);
-}
-
-#if GTEST_HAS_GLOBAL_STRING
-// Constructs a matcher that matches a const absl::string_view& whose value is
-// equal to s.
-Matcher<const absl::string_view&>::Matcher(const ::string& s) { *this = Eq(s); }
-#endif  // GTEST_HAS_GLOBAL_STRING
-
-// Constructs a matcher that matches a const absl::string_view& whose value is
-// equal to s.
-Matcher<const absl::string_view&>::Matcher(const char* s) {
-  *this = Eq(std::string(s));
-}
-
-// Constructs a matcher that matches a const absl::string_view& whose value is
-// equal to s.
-Matcher<const absl::string_view&>::Matcher(absl::string_view s) {
-  *this = Eq(std::string(s));
-}
-
-// Constructs a matcher that matches a absl::string_view whose value is equal to
-// s.
-Matcher<absl::string_view>::Matcher(const std::string& s) { *this = Eq(s); }
-
-#if GTEST_HAS_GLOBAL_STRING
-// Constructs a matcher that matches a absl::string_view whose value is equal to
-// s.
-Matcher<absl::string_view>::Matcher(const ::string& s) { *this = Eq(s); }
-#endif  // GTEST_HAS_GLOBAL_STRING
-
-// Constructs a matcher that matches a absl::string_view whose value is equal to
-// s.
-Matcher<absl::string_view>::Matcher(const char* s) {
-  *this = Eq(std::string(s));
-}
-
-// Constructs a matcher that matches a absl::string_view whose value is equal to
-// s.
-Matcher<absl::string_view>::Matcher(absl::string_view s) {
-  *this = Eq(std::string(s));
-}
-#endif  // GTEST_HAS_ABSL
-
 namespace internal {
 
 // Returns the description for a matcher defined using the MATCHER*()
@@ -329,8 +218,6 @@ class MaxBipartiteMatchState {
   // right_[left_[i]] = i.
   ::std::vector<size_t> left_;
   ::std::vector<size_t> right_;
-
-  GTEST_DISALLOW_ASSIGN_(MaxBipartiteMatchState);
 };
 
 const size_t MaxBipartiteMatchState::kUnused;

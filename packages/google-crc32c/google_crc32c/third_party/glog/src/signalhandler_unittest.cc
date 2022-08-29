@@ -37,11 +37,11 @@
 #if defined(HAVE_PTHREAD)
 # include <pthread.h>
 #endif
-#include <signal.h>
-#include <stdio.h>
-#include <stdlib.h>
+#include <csignal>
+#include <cstdio>
+#include <cstdlib>
 #include <string>
-#include "glog/logging.h"
+#include <glog/logging.h>
 
 #ifdef HAVE_LIB_GFLAGS
 #include <gflags/gflags.h>
@@ -64,7 +64,7 @@ static void* DieInThread(void*) {
   return NULL;
 }
 
-static void WriteToStdout(const char* data, int size) {
+static void WriteToStdout(const char* data, size_t size) {
   if (write(STDOUT_FILENO, data, size) < 0) {
     // Ignore errors.
   }

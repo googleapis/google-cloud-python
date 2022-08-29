@@ -28,17 +28,30 @@
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
-# Author: misterg@google.com (Gennadiy Civil)
-#
 #   Bazel Build for Google C++ Testing Framework(Google Test)
 
 package(default_visibility = ["//visibility:public"])
 
 licenses(["notice"])
 
+exports_files(["LICENSE"])
+
+config_setting(
+    name = "qnx",
+    constraint_values = ["@platforms//os:qnx"],
+)
+
 config_setting(
     name = "windows",
-    constraint_values = ["@bazel_tools//platforms:windows"],
+    constraint_values = ["@platforms//os:windows"],
+)
+
+config_setting(
+    name = "msvc_compiler",
+    flag_values = {
+        "@bazel_tools//tools/cpp:compiler": "msvc-cl",
+    },
+    visibility = [":__subpackages__"],
 )
 
 config_setting(
@@ -76,11 +89,16 @@ cc_library(
         "googlemock/include/gmock/*.h",
     ]),
     copts = select({
+        ":qnx": [],
         ":windows": [],
         "//conditions:default": ["-pthread"],
     }),
     defines = select({
         ":has_absl": ["GTEST_HAS_ABSL=1"],
+        "//conditions:default": [],
+    }),
+    features = select({
+        ":windows": ["windows_export_all_symbols"],
         "//conditions:default": [],
     }),
     includes = [
@@ -90,6 +108,7 @@ cc_library(
         "googletest/include",
     ],
     linkopts = select({
+        ":qnx": ["-lregex"],
         ":windows": [],
         "//conditions:default": ["-pthread"],
     }),
@@ -99,6 +118,7 @@ cc_library(
             "@com_google_absl//absl/debugging:stacktrace",
             "@com_google_absl//absl/debugging:symbolize",
             "@com_google_absl//absl/strings",
+            "@com_google_absl//absl/types:any",
             "@com_google_absl//absl/types:optional",
             "@com_google_absl//absl/types:variant",
         ],
@@ -109,6 +129,10 @@ cc_library(
 cc_library(
     name = "gtest_main",
     srcs = ["googlemock/src/gmock_main.cc"],
+    features = select({
+        ":windows": ["windows_export_all_symbols"],
+        "//conditions:default": [],
+    }),
     deps = [":gtest"],
 )
 
@@ -127,6 +151,10 @@ cc_library(
         "googletest/samples/sample3-inl.h",
         "googletest/samples/sample4.h",
     ],
+    features = select({
+        ":windows": ["windows_export_all_symbols"],
+        "//conditions:default": [],
+    }),
 )
 
 cc_test(
@@ -145,6 +173,7 @@ cc_test(
         "googletest/samples/sample7_unittest.cc",
         "googletest/samples/sample8_unittest.cc",
     ],
+    linkstatic = 0,
     deps = [
         "gtest_sample_lib",
         ":gtest_main",

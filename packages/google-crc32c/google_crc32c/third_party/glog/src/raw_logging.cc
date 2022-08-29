@@ -34,16 +34,16 @@
 #include "utilities.h"
 
 #include <stdarg.h>
-#include <stdio.h>
-#include <errno.h>
+#include <cstdio>
+#include <cerrno>
 #ifdef HAVE_UNISTD_H
 # include <unistd.h>               // for close() and write()
 #endif
 #include <fcntl.h>                 // for open()
-#include <time.h>
+#include <ctime>
 #include "config.h"
-#include "glog/logging.h"          // To pick up flag settings etc.
-#include "glog/raw_logging.h"
+#include <glog/logging.h>          // To pick up flag settings etc.
+#include <glog/raw_logging.h>
 #include "base/commandlineflags.h"
 
 #ifdef HAVE_STACKTRACE
@@ -59,7 +59,7 @@
 # include <unistd.h>
 #endif
 
-#if defined(HAVE_SYSCALL_H) || defined(HAVE_SYS_SYSCALL_H)
+#if (defined(HAVE_SYSCALL_H) || defined(HAVE_SYS_SYSCALL_H)) && (!(defined(GLOG_OS_MACOSX)))
 # define safe_write(fd, s, len)  syscall(SYS_write, fd, s, len)
 #else
   // Not so safe, but what can you do?
@@ -67,17 +67,6 @@
 #endif
 
 _START_GOOGLE_NAMESPACE_
-
-// Data for RawLog__ below. We simply pick up the latest
-// time data created by a normal log message to avoid calling
-// localtime_r which can allocate memory.
-static struct ::tm last_tm_time_for_raw_log;
-static int last_usecs_for_raw_log;
-
-void RawLog__SetLastTime(const struct ::tm& t, int usecs) {
-  memcpy(&last_tm_time_for_raw_log, &t, sizeof(last_tm_time_for_raw_log));
-  last_usecs_for_raw_log = usecs;
-}
 
 // CAVEAT: vsnprintf called from *DoRawLog below has some (exotic) code paths
 // that invoke malloc() and getenv() that might acquire some locks.
@@ -87,23 +76,23 @@ void RawLog__SetLastTime(const struct ::tm& t, int usecs) {
 // Helper for RawLog__ below.
 // *DoRawLog writes to *buf of *size and move them past the written portion.
 // It returns true iff there was no overflow or error.
-static bool DoRawLog(char** buf, int* size, const char* format, ...) {
+static bool DoRawLog(char** buf, size_t* size, const char* format, ...) {
   va_list ap;
   va_start(ap, format);
   int n = vsnprintf(*buf, *size, format, ap);
   va_end(ap);
-  if (n < 0 || n > *size) return false;
-  *size -= n;
+  if (n < 0 || static_cast<size_t>(n) > *size) return false;
+  *size -= static_cast<size_t>(n);
   *buf += n;
   return true;
 }
 
 // Helper for RawLog__ below.
-inline static bool VADoRawLog(char** buf, int* size,
+inline static bool VADoRawLog(char** buf, size_t* size,
                               const char* format, va_list ap) {
   int n = vsnprintf(*buf, *size, format, ap);
-  if (n < 0 || n > *size) return false;
-  *size -= n;
+  if (n < 0 || static_cast<size_t>(n) > *size) return false;
+  *size -= static_cast<size_t>(n);
   *buf += n;
   return true;
 }
@@ -120,22 +109,19 @@ void RawLog__(LogSeverity severity, const char* file, int line,
     return;  // this stderr log message is suppressed
   }
   // can't call localtime_r here: it can allocate
-  struct ::tm& t = last_tm_time_for_raw_log;
   char buffer[kLogBufSize];
   char* buf = buffer;
-  int size = sizeof(buffer);
+  size_t size = sizeof(buffer);
 
   // NOTE: this format should match the specification in base/logging.h
-  DoRawLog(&buf, &size, "%c%02d%02d %02d:%02d:%02d.%06d %5u %s:%d] RAW: ",
+  DoRawLog(&buf, &size, "%c00000000 00:00:00.000000 %5u %s:%d] RAW: ",
            LogSeverityNames[severity][0],
-           1 + t.tm_mon, t.tm_mday, t.tm_hour, t.tm_min, t.tm_sec,
-           last_usecs_for_raw_log,
            static_cast<unsigned int>(GetTID()),
            const_basename(const_cast<char *>(file)), line);
 
   // Record the position and size of the buffer after the prefix
   const char* msg_start = buf;
-  const int msg_size = size;
+  const size_t msg_size = size;
 
   va_list ap;
   va_start(ap, format);

@@ -37,8 +37,14 @@
 #include "gmock/internal/gmock-internal-utils.h"
 
 #include <ctype.h>
+
+#include <array>
+#include <cctype>
+#include <cstdint>
+#include <cstring>
 #include <ostream>  // NOLINT
 #include <string>
+
 #include "gmock/gmock.h"
 #include "gmock/internal/gmock-port.h"
 #include "gtest/gtest.h"
@@ -93,8 +99,8 @@ GTEST_API_ std::string ConvertIdentifierNameToWords(const char* id_name) {
 // use Google Mock with a testing framework other than Google Test.
 class GoogleTestFailureReporter : public FailureReporterInterface {
  public:
-  virtual void ReportFailure(FailureType type, const char* file, int line,
-                             const std::string& message) {
+  void ReportFailure(FailureType type, const char* file, int line,
+                     const std::string& message) override {
     AssertHelper(type == kFatal ?
                  TestPartResult::kFatalFailure :
                  TestPartResult::kNonFatalFailure,
@@ -123,13 +129,13 @@ GTEST_API_ FailureReporterInterface* GetFailureReporter() {
 // Protects global resources (stdout in particular) used by Log().
 static GTEST_DEFINE_STATIC_MUTEX_(g_log_mutex);
 
-// Returns true iff a log with the given severity is visible according
-// to the --gmock_verbose flag.
+// Returns true if and only if a log with the given severity is visible
+// according to the --gmock_verbose flag.
 GTEST_API_ bool LogIsVisible(LogSeverity severity) {
-  if (GMOCK_FLAG(verbose) == kInfoVerbosity) {
+  if (GMOCK_FLAG_GET(verbose) == kInfoVerbosity) {
     // Always show the log if --gmock_verbose=info.
     return true;
-  } else if (GMOCK_FLAG(verbose) == kErrorVerbosity) {
+  } else if (GMOCK_FLAG_GET(verbose) == kErrorVerbosity) {
     // Always hide it if --gmock_verbose=error.
     return false;
   } else {
@@ -139,7 +145,7 @@ GTEST_API_ bool LogIsVisible(LogSeverity severity) {
   }
 }
 
-// Prints the given message to stdout iff 'severity' >= the level
+// Prints the given message to stdout if and only if 'severity' >= the level
 // specified by the --gmock_verbose flag.  If stack_frames_to_skip >=
 // 0, also prints the stack trace excluding the top
 // stack_frames_to_skip frames.  In opt mode, any positive
@@ -153,9 +159,6 @@ GTEST_API_ void Log(LogSeverity severity, const std::string& message,
 
   // Ensures that logs from different threads don't interleave.
   MutexLock l(&g_log_mutex);
-
-  // "using ::std::cout;" doesn't work with Symbian's STLport, where cout is a
-  // macro.
 
   if (severity == kWarning) {
     // Prints a GMOCK WARNING marker to make the warnings easily searchable.
@@ -197,6 +200,54 @@ GTEST_API_ void IllegalDoDefault(const char* file, int line) {
       "reasons.  Please instead spell out the default action, or "
       "assign the default action to an Action variable and use "
       "the variable in various places.");
+}
+
+constexpr char UnBase64Impl(char c, const char* const base64, char carry) {
+  return *base64 == 0   ? static_cast<char>(65)
+         : *base64 == c ? carry
+                        : UnBase64Impl(c, base64 + 1, carry + 1);
+}
+
+template <size_t... I>
+constexpr std::array<char, 256> UnBase64Impl(IndexSequence<I...>,
+                                             const char* const base64) {
+  return {{UnBase64Impl(static_cast<char>(I), base64, 0)...}};
+}
+
+constexpr std::array<char, 256> UnBase64(const char* const base64) {
+  return UnBase64Impl(MakeIndexSequence<256>{}, base64);
+}
+
+static constexpr char kBase64[] =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+static constexpr std::array<char, 256> kUnBase64 = UnBase64(kBase64);
+
+bool Base64Unescape(const std::string& encoded, std::string* decoded) {
+  decoded->clear();
+  size_t encoded_len = encoded.size();
+  decoded->reserve(3 * (encoded_len / 4) + (encoded_len % 4));
+  int bit_pos = 0;
+  char dst = 0;
+  for (int src : encoded) {
+    if (std::isspace(src) || src == '=') {
+      continue;
+    }
+    char src_bin = kUnBase64[static_cast<size_t>(src)];
+    if (src_bin >= 64) {
+      decoded->clear();
+      return false;
+    }
+    if (bit_pos == 0) {
+      dst |= src_bin << 2;
+      bit_pos = 6;
+    } else {
+      dst |= static_cast<char>(src_bin >> (bit_pos - 2));
+      decoded->push_back(dst);
+      dst = static_cast<char>(src_bin << (10 - bit_pos));
+      bit_pos = (bit_pos + 6) % 8;
+    }
+  }
+  return true;
 }
 
 }  // namespace internal
