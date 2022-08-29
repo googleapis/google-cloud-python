@@ -165,6 +165,32 @@ def test_default_job_attributes(setup):
 
 
 @pytest.mark.skipif(opentelemetry is None, reason="Require `opentelemetry`")
+def test_optional_job_attributes(setup):
+    # This test ensures we don't propagate unset values into span attributes
+    import google.cloud._helpers
+
+    time_created = datetime.datetime(
+        2010, 5, 19, 16, 0, 0, tzinfo=google.cloud._helpers.UTC
+    )
+
+    with mock.patch("google.cloud.bigquery.job._AsyncJob") as test_job_ref:
+        test_job_ref.job_id = "test_job_id"
+        test_job_ref.location = None
+        test_job_ref.project = "test_project_id"
+        test_job_ref.created = time_created
+        test_job_ref.state = "some_job_state"
+        test_job_ref.num_child_jobs = None
+        test_job_ref.parent_job_id = None
+
+        with opentelemetry_tracing.create_span(
+            TEST_SPAN_NAME, attributes=TEST_SPAN_ATTRIBUTES, job_ref=test_job_ref
+        ) as span:
+            assert span is not None
+            for val in span.attributes.values():
+                assert val is not None
+
+
+@pytest.mark.skipif(opentelemetry is None, reason="Require `opentelemetry`")
 def test_default_no_data_leakage(setup):
     import google.auth.credentials
     from google.cloud.bigquery import client
