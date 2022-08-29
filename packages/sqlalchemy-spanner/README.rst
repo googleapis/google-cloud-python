@@ -157,8 +157,8 @@ primary key:
            version_table_pk=False,  # don't use primary key in the versions table
        )
 
-As Spanner restricts changing a primary key value, not setting the flag
-to ``False`` can cause migration problems.  
+As Spanner restricts changing a primary key value, not setting the ``version_table_pk`` flag
+to ``False`` can cause migration problems. If ``alembic_versions`` table was already created with a primary key, setting the flag to ``False`` will not work, because the flag is only applied on table creation.    
 
 Also notice that DDL statements in Spanner are not transactional and will not be automatically reverted in case of a migration fail.
 
