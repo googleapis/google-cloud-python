@@ -28,6 +28,16 @@ def test_message_to_json():
     assert json == '{"massKg":100}'
 
 
+def test_message_to_json_no_indent():
+    class Squid(proto.Message):
+        mass_kg = proto.Field(proto.INT32, number=1)
+        name = proto.Field(proto.STRING, number=2)
+
+    s = Squid(mass_kg=100, name="no_new_lines_squid")
+    json = Squid.to_json(s, indent=None)
+    assert json == '{"massKg": 100, "name": "no_new_lines_squid"}'
+
+
 def test_message_from_json():
     class Squid(proto.Message):
         mass_kg = proto.Field(proto.INT32, number=1)
