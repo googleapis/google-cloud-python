@@ -30,22 +30,22 @@
 // Author: Satoru Takabayashi
 //
 // For reference check out:
-// http://www.codesourcery.com/public/cxx-abi/abi.html#mangling
+// http://itanium-cxx-abi.github.io/cxx-abi/abi.html#mangling
 //
 // Note that we only have partial C++0x support yet.
 
-#include <stdio.h>  // for NULL
-#include "utilities.h"
-#include "demangle.h"
+#include <cstdio>  // for NULL
 
-#if defined(OS_WINDOWS)
+#include "demangle.h"
+#include "utilities.h"
+
+#if defined(GLOG_OS_WINDOWS)
 #include <dbghelp.h>
-#pragma comment(lib, "dbghelp")
 #endif
 
 _START_GOOGLE_NAMESPACE_
 
-#if !defined(OS_WINDOWS)
+#if !defined(GLOG_OS_WINDOWS)
 typedef struct {
   const char *abbrev;
   const char *real_name;
@@ -192,7 +192,7 @@ static bool StrPrefix(const char *str, const char *prefix) {
 }
 
 static void InitState(State *state, const char *mangled,
-                      char *out, int out_size) {
+                      char *out, size_t out_size) {
   state->mangled_cur = mangled;
   state->out_cur = out;
   state->out_begin = out;
@@ -423,6 +423,8 @@ static bool ParseNumber(State *state, int *number_out);
 static bool ParseFloatNumber(State *state);
 static bool ParseSeqId(State *state);
 static bool ParseIdentifier(State *state, int length);
+static bool ParseAbiTags(State *state);
+static bool ParseAbiTag(State *state);
 static bool ParseOperatorName(State *state);
 static bool ParseSpecialName(State *state);
 static bool ParseCallOffset(State *state);
@@ -594,13 +596,13 @@ static bool ParsePrefix(State *state) {
 
 // <unqualified-name> ::= <operator-name>
 //                    ::= <ctor-dtor-name>
-//                    ::= <source-name>
-//                    ::= <local-source-name>
+//                    ::= <source-name> [<abi-tags>]
+//                    ::= <local-source-name> [<abi-tags>]
 static bool ParseUnqualifiedName(State *state) {
   return (ParseOperatorName(state) ||
           ParseCtorDtorName(state) ||
-          ParseSourceName(state) ||
-          ParseLocalSourceName(state));
+          (ParseSourceName(state) && Optional(ParseAbiTags(state))) ||
+          (ParseLocalSourceName(state) && Optional(ParseAbiTags(state))));
 }
 
 // <source-name> ::= <positive length number> <identifier>
@@ -701,6 +703,23 @@ static bool ParseIdentifier(State *state, int length) {
   }
   state->mangled_cur += length;
   return true;
+}
+
+// <abi-tags> ::= <abi-tag> [<abi-tags>]
+static bool ParseAbiTags(State *state) {
+  State copy = *state;
+  DisableAppend(state);
+  if (OneOrMore(ParseAbiTag, state)) {
+    RestoreAppend(state, copy.append);
+    return true;
+  }
+  *state = copy;
+  return false;
+}
+
+// <abi-tag> ::= B <source-name>
+static bool ParseAbiTag(State *state) {
+  return ParseOneCharToken(state, 'B') && ParseSourceName(state);
 }
 
 // <operator-name> ::= nw, and other two letters cases
@@ -1097,10 +1116,11 @@ static bool ParseTemplateArgs(State *state) {
 // <template-arg>  ::= <type>
 //                 ::= <expr-primary>
 //                 ::= I <template-arg>* E        # argument pack
+//                 ::= J <template-arg>* E        # argument pack
 //                 ::= X <expression> E
 static bool ParseTemplateArg(State *state) {
   State copy = *state;
-  if (ParseOneCharToken(state, 'I') &&
+  if ((ParseOneCharToken(state, 'I') || ParseOneCharToken(state, 'J')) &&
       ZeroOrMore(ParseTemplateArg, state) &&
       ParseOneCharToken(state, 'E')) {
     return true;
@@ -1303,8 +1323,8 @@ static bool ParseTopLevelMangledName(State *state) {
 #endif
 
 // The demangler entry point.
-bool Demangle(const char *mangled, char *out, int out_size) {
-#if defined(OS_WINDOWS)
+bool Demangle(const char *mangled, char *out, size_t out_size) {
+#if defined(GLOG_OS_WINDOWS)
   // When built with incremental linking, the Windows debugger
   // library provides a more complicated `Symbol->Name` with the
   // Incremental Linking Table offset, which looks like
@@ -1319,7 +1339,7 @@ bool Demangle(const char *mangled, char *out, int out_size) {
   if (lparen) {
     // Extract the string `(?...)`
     const char *rparen = strchr(lparen, ')');
-    size_t length = rparen - lparen - 1;
+    size_t length = static_cast<size_t>(rparen - lparen) - 1;
     strncpy(buffer, lparen + 1, length);
     buffer[length] = '\0';
     mangled = buffer;

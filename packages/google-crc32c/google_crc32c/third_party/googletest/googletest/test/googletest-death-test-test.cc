@@ -31,6 +31,7 @@
 // Tests for death tests.
 
 #include "gtest/gtest-death-test.h"
+
 #include "gtest/gtest.h"
 #include "gtest/internal/gtest-filepath.h"
 
@@ -40,7 +41,9 @@ using testing::internal::AlwaysTrue;
 #if GTEST_HAS_DEATH_TEST
 
 # if GTEST_OS_WINDOWS
+#  include <fcntl.h>           // For O_BINARY
 #  include <direct.h>          // For chdir().
+#  include <io.h>
 # else
 #  include <unistd.h>
 #  include <sys/wait.h>        // For waitpid.
@@ -59,6 +62,8 @@ using testing::internal::AlwaysTrue;
 
 namespace posix = ::testing::internal::posix;
 
+using testing::ContainsRegex;
+using testing::Matcher;
 using testing::Message;
 using testing::internal::DeathTest;
 using testing::internal::DeathTestFactory;
@@ -97,6 +102,8 @@ class ReplaceDeathTestFactory {
 }  // namespace internal
 }  // namespace testing
 
+namespace {
+
 void DieWithMessage(const ::std::string& message) {
   fprintf(stderr, "%s", message.c_str());
   fflush(stderr);  // Make sure the text is printed before the process exits.
@@ -123,9 +130,7 @@ class TestForDeathTest : public testing::Test {
  protected:
   TestForDeathTest() : original_dir_(FilePath::GetCurrentDir()) {}
 
-  virtual ~TestForDeathTest() {
-    posix::ChDir(original_dir_.c_str());
-  }
+  ~TestForDeathTest() override { posix::ChDir(original_dir_.c_str()); }
 
   // A static member function that's expected to die.
   static void StaticMemberFunction() { DieInside("StaticMemberFunction"); }
@@ -136,7 +141,7 @@ class TestForDeathTest : public testing::Test {
       DieInside("MemberFunction");
   }
 
-  // True iff MemberFunction() should die.
+  // True if and only if MemberFunction() should die.
   bool should_die_;
   const FilePath original_dir_;
 };
@@ -153,7 +158,7 @@ class MayDie {
   }
 
  private:
-  // True iff MemberFunction() should die.
+  // True if and only if MemberFunction() should die.
   bool should_die_;
 };
 
@@ -198,6 +203,26 @@ int DieInDebugElse12(int* sideeffect) {
 
   return 12;
 }
+
+# if GTEST_OS_WINDOWS
+
+// Death in dbg due to Windows CRT assertion failure, not opt.
+int DieInCRTDebugElse12(int* sideeffect) {
+  if (sideeffect) *sideeffect = 12;
+
+  // Create an invalid fd by closing a valid one
+  int fdpipe[2];
+  EXPECT_EQ(_pipe(fdpipe, 256, O_BINARY), 0);
+  EXPECT_EQ(_close(fdpipe[0]), 0);
+  EXPECT_EQ(_close(fdpipe[1]), 0);
+
+  // _dup() should crash in debug mode
+  EXPECT_EQ(_dup(fdpipe[0]), -1);
+
+  return 12;
+}
+
+#endif  // GTEST_OS_WINDOWS
 
 # if GTEST_OS_WINDOWS || GTEST_OS_FUCHSIA
 
@@ -273,6 +298,13 @@ TEST(ExitStatusPredicateTest, KilledBySignal) {
 
 # endif  // GTEST_OS_WINDOWS || GTEST_OS_FUCHSIA
 
+// The following code intentionally tests a suboptimal syntax.
+#ifdef __GNUC__
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdangling-else"
+#pragma GCC diagnostic ignored "-Wempty-body"
+#pragma GCC diagnostic ignored "-Wpragmas"
+#endif
 // Tests that the death test macros expand to code which may or may not
 // be followed by operator<<, and that in either case the complete text
 // comprises only a single C++ statement.
@@ -296,14 +328,17 @@ TEST_F(TestForDeathTest, SingleStatement) {
   else
     EXPECT_DEATH(_exit(1), "") << 1 << 2 << 3;
 }
+#ifdef __GNUC__
+#pragma GCC diagnostic pop
+#endif
+
+# if GTEST_USES_PCRE
 
 void DieWithEmbeddedNul() {
   fprintf(stderr, "Hello%cmy null world.\n", '\0');
   fflush(stderr);
   _exit(1);
 }
-
-# if GTEST_USES_PCRE
 
 // Tests that EXPECT_DEATH and ASSERT_DEATH work when the error
 // message has a NUL character in it.
@@ -335,14 +370,14 @@ TEST_F(TestForDeathTest, SwitchStatement) {
 // Tests that a static member function can be used in a "fast" style
 // death test.
 TEST_F(TestForDeathTest, StaticMemberFunctionFastStyle) {
-  testing::GTEST_FLAG(death_test_style) = "fast";
+  GTEST_FLAG_SET(death_test_style, "fast");
   ASSERT_DEATH(StaticMemberFunction(), "death.*StaticMember");
 }
 
 // Tests that a method of the test fixture can be used in a "fast"
 // style death test.
 TEST_F(TestForDeathTest, MemberFunctionFastStyle) {
-  testing::GTEST_FLAG(death_test_style) = "fast";
+  GTEST_FLAG_SET(death_test_style, "fast");
   should_die_ = true;
   EXPECT_DEATH(MemberFunction(), "inside.*MemberFunction");
 }
@@ -352,7 +387,7 @@ void ChangeToRootDir() { posix::ChDir(GTEST_PATH_SEP_); }
 // Tests that death tests work even if the current directory has been
 // changed.
 TEST_F(TestForDeathTest, FastDeathTestInChangedDir) {
-  testing::GTEST_FLAG(death_test_style) = "fast";
+  GTEST_FLAG_SET(death_test_style, "fast");
 
   ChangeToRootDir();
   EXPECT_EXIT(_exit(1), testing::ExitedWithCode(1), "");
@@ -366,17 +401,19 @@ void SigprofAction(int, siginfo_t*, void*) { /* no op */ }
 
 // Sets SIGPROF action and ITIMER_PROF timer (interval: 1ms).
 void SetSigprofActionAndTimer() {
-  struct itimerval timer;
-  timer.it_interval.tv_sec = 0;
-  timer.it_interval.tv_usec = 1;
-  timer.it_value = timer.it_interval;
-  ASSERT_EQ(0, setitimer(ITIMER_PROF, &timer, nullptr));
   struct sigaction signal_action;
   memset(&signal_action, 0, sizeof(signal_action));
   sigemptyset(&signal_action.sa_mask);
   signal_action.sa_sigaction = SigprofAction;
   signal_action.sa_flags = SA_RESTART | SA_SIGINFO;
   ASSERT_EQ(0, sigaction(SIGPROF, &signal_action, nullptr));
+  // timer comes second, to avoid SIGPROF premature delivery, as suggested at
+  // https://www.gnu.org/software/libc/manual/html_node/Setting-an-Alarm.html
+  struct itimerval timer;
+  timer.it_interval.tv_sec = 0;
+  timer.it_interval.tv_usec = 1;
+  timer.it_value = timer.it_interval;
+  ASSERT_EQ(0, setitimer(ITIMER_PROF, &timer, nullptr));
 }
 
 // Disables ITIMER_PROF timer and ignores SIGPROF signal.
@@ -395,7 +432,7 @@ void DisableSigprofActionAndTimer(struct sigaction* old_signal_action) {
 
 // Tests that death tests work when SIGPROF handler and timer are set.
 TEST_F(TestForDeathTest, FastSigprofActionSet) {
-  testing::GTEST_FLAG(death_test_style) = "fast";
+  GTEST_FLAG_SET(death_test_style, "fast");
   SetSigprofActionAndTimer();
   EXPECT_DEATH(_exit(1), "");
   struct sigaction old_signal_action;
@@ -404,7 +441,7 @@ TEST_F(TestForDeathTest, FastSigprofActionSet) {
 }
 
 TEST_F(TestForDeathTest, ThreadSafeSigprofActionSet) {
-  testing::GTEST_FLAG(death_test_style) = "threadsafe";
+  GTEST_FLAG_SET(death_test_style, "threadsafe");
   SetSigprofActionAndTimer();
   EXPECT_DEATH(_exit(1), "");
   struct sigaction old_signal_action;
@@ -416,25 +453,25 @@ TEST_F(TestForDeathTest, ThreadSafeSigprofActionSet) {
 // Repeats a representative sample of death tests in the "threadsafe" style:
 
 TEST_F(TestForDeathTest, StaticMemberFunctionThreadsafeStyle) {
-  testing::GTEST_FLAG(death_test_style) = "threadsafe";
+  GTEST_FLAG_SET(death_test_style, "threadsafe");
   ASSERT_DEATH(StaticMemberFunction(), "death.*StaticMember");
 }
 
 TEST_F(TestForDeathTest, MemberFunctionThreadsafeStyle) {
-  testing::GTEST_FLAG(death_test_style) = "threadsafe";
+  GTEST_FLAG_SET(death_test_style, "threadsafe");
   should_die_ = true;
   EXPECT_DEATH(MemberFunction(), "inside.*MemberFunction");
 }
 
 TEST_F(TestForDeathTest, ThreadsafeDeathTestInLoop) {
-  testing::GTEST_FLAG(death_test_style) = "threadsafe";
+  GTEST_FLAG_SET(death_test_style, "threadsafe");
 
   for (int i = 0; i < 3; ++i)
     EXPECT_EXIT(_exit(i), testing::ExitedWithCode(i), "") << ": i = " << i;
 }
 
 TEST_F(TestForDeathTest, ThreadsafeDeathTestInChangedDir) {
-  testing::GTEST_FLAG(death_test_style) = "threadsafe";
+  GTEST_FLAG_SET(death_test_style, "threadsafe");
 
   ChangeToRootDir();
   EXPECT_EXIT(_exit(1), testing::ExitedWithCode(1), "");
@@ -444,15 +481,13 @@ TEST_F(TestForDeathTest, ThreadsafeDeathTestInChangedDir) {
 }
 
 TEST_F(TestForDeathTest, MixedStyles) {
-  testing::GTEST_FLAG(death_test_style) = "threadsafe";
+  GTEST_FLAG_SET(death_test_style, "threadsafe");
   EXPECT_DEATH(_exit(1), "");
-  testing::GTEST_FLAG(death_test_style) = "fast";
+  GTEST_FLAG_SET(death_test_style, "fast");
   EXPECT_DEATH(_exit(1), "");
 }
 
 # if GTEST_HAS_CLONE && GTEST_HAS_PTHREAD
-
-namespace {
 
 bool pthread_flag;
 
@@ -460,11 +495,9 @@ void SetPthreadFlag() {
   pthread_flag = true;
 }
 
-}  // namespace
-
 TEST_F(TestForDeathTest, DoesNotExecuteAtforkHooks) {
-  if (!testing::GTEST_FLAG(death_test_use_fork)) {
-    testing::GTEST_FLAG(death_test_style) = "threadsafe";
+  if (!GTEST_FLAG_GET(death_test_use_fork)) {
+    GTEST_FLAG_SET(death_test_style, "threadsafe");
     pthread_flag = false;
     ASSERT_EQ(0, pthread_atfork(&SetPthreadFlag, nullptr, nullptr));
     ASSERT_DEATH(_exit(1), "");
@@ -494,17 +527,14 @@ TEST_F(TestForDeathTest, AcceptsAnythingConvertibleToRE) {
   const testing::internal::RE regex(regex_c_str);
   EXPECT_DEATH(GlobalFunction(), regex);
 
-# if GTEST_HAS_GLOBAL_STRING
-
-  const ::string regex_str(regex_c_str);
-  EXPECT_DEATH(GlobalFunction(), regex_str);
-
-# endif  // GTEST_HAS_GLOBAL_STRING
-
 # if !GTEST_USES_PCRE
 
   const ::std::string regex_std_str(regex_c_str);
   EXPECT_DEATH(GlobalFunction(), regex_std_str);
+
+  // This one is tricky; a temporary pointer into another temporary.  Reference
+  // lifetime extension of the pointer is not sufficient.
+  EXPECT_DEATH(GlobalFunction(), ::std::string(regex_c_str).c_str());
 
 # endif  // !GTEST_USES_PCRE
 }
@@ -555,8 +585,8 @@ TEST_F(TestForDeathTest, ErrorMessageMismatch) {
   }, "died but not with expected error");
 }
 
-// On exit, *aborted will be true iff the EXPECT_DEATH() statement
-// aborted the function.
+// On exit, *aborted will be true if and only if the EXPECT_DEATH()
+// statement aborted the function.
 void ExpectDeathTestHelper(bool* aborted) {
   *aborted = true;
   EXPECT_DEATH(DieIf(false), "DieIf");  // This assertion should fail.
@@ -636,6 +666,40 @@ TEST_F(TestForDeathTest, TestExpectDebugDeath) {
 # endif
 }
 
+# if GTEST_OS_WINDOWS
+
+// Tests that EXPECT_DEBUG_DEATH works as expected when in debug mode
+// the Windows CRT crashes the process with an assertion failure.
+// 1. Asserts on death.
+// 2. Has no side effect (doesn't pop up a window or wait for user input).
+//
+// And in opt mode, it:
+// 1.  Has side effects but does not assert.
+TEST_F(TestForDeathTest, CRTDebugDeath) {
+  int sideeffect = 0;
+
+  // Put the regex in a local variable to make sure we don't get an "unused"
+  // warning in opt mode.
+  const char* regex = "dup.* : Assertion failed";
+
+  EXPECT_DEBUG_DEATH(DieInCRTDebugElse12(&sideeffect), regex)
+      << "Must accept a streamed message";
+
+# ifdef NDEBUG
+
+  // Checks that the assignment occurs in opt mode (sideeffect).
+  EXPECT_EQ(12, sideeffect);
+
+# else
+
+  // Checks that the assignment does not occur in dbg mode (no sideeffect).
+  EXPECT_EQ(0, sideeffect);
+
+# endif
+}
+
+# endif  // GTEST_OS_WINDOWS
+
 // Tests that ASSERT_DEBUG_DEATH works as expected, that is, you can stream a
 // message to it, and in debug mode it:
 // 1. Asserts on death.
@@ -676,10 +740,12 @@ TEST(PopUpDeathTest, DoesNotShowPopUpOnAbort) {
          "any pop-up dialogs.\n");
   fflush(stdout);
 
-  EXPECT_DEATH({
-    testing::GTEST_FLAG(catch_exceptions) = false;
-    abort();
-  }, "");
+  EXPECT_DEATH(
+      {
+        GTEST_FLAG_SET(catch_exceptions, false);
+        abort();
+      },
+      "");
 }
 #  endif  // GTEST_OS_WINDOWS
 
@@ -810,19 +876,19 @@ TEST_F(TestForDeathTest, ExitMacros) {
 }
 
 TEST_F(TestForDeathTest, ExitMacrosUsingFork) {
-  testing::GTEST_FLAG(death_test_use_fork) = true;
+  GTEST_FLAG_SET(death_test_use_fork, true);
   TestExitMacros();
 }
 
 TEST_F(TestForDeathTest, InvalidStyle) {
-  testing::GTEST_FLAG(death_test_style) = "rococo";
+  GTEST_FLAG_SET(death_test_style, "rococo");
   EXPECT_NONFATAL_FAILURE({  // NOLINT
     EXPECT_DEATH(_exit(0), "") << "This failure is expected.";
   }, "This failure is expected.");
 }
 
 TEST_F(TestForDeathTest, DeathTestFailedOutput) {
-  testing::GTEST_FLAG(death_test_style) = "fast";
+  GTEST_FLAG_SET(death_test_style, "fast");
   EXPECT_NONFATAL_FAILURE(
       EXPECT_DEATH(DieWithMessage("death\n"),
                    "expected message"),
@@ -831,7 +897,7 @@ TEST_F(TestForDeathTest, DeathTestFailedOutput) {
 }
 
 TEST_F(TestForDeathTest, DeathTestUnexpectedReturnOutput) {
-  testing::GTEST_FLAG(death_test_style) = "fast";
+  GTEST_FLAG_SET(death_test_style, "fast");
   EXPECT_NONFATAL_FAILURE(
       EXPECT_DEATH({
           fprintf(stderr, "returning\n");
@@ -844,7 +910,7 @@ TEST_F(TestForDeathTest, DeathTestUnexpectedReturnOutput) {
 }
 
 TEST_F(TestForDeathTest, DeathTestBadExitCodeOutput) {
-  testing::GTEST_FLAG(death_test_style) = "fast";
+  GTEST_FLAG_SET(death_test_style, "fast");
   EXPECT_NONFATAL_FAILURE(
       EXPECT_EXIT(DieWithMessage("exiting with rc 1\n"),
                   testing::ExitedWithCode(3),
@@ -856,7 +922,7 @@ TEST_F(TestForDeathTest, DeathTestBadExitCodeOutput) {
 }
 
 TEST_F(TestForDeathTest, DeathTestMultiLineMatchFail) {
-  testing::GTEST_FLAG(death_test_style) = "fast";
+  GTEST_FLAG_SET(death_test_style, "fast");
   EXPECT_NONFATAL_FAILURE(
       EXPECT_DEATH(DieWithMessage("line 1\nline 2\nline 3\n"),
                    "line 1\nxyz\nline 3\n"),
@@ -867,7 +933,7 @@ TEST_F(TestForDeathTest, DeathTestMultiLineMatchFail) {
 }
 
 TEST_F(TestForDeathTest, DeathTestMultiLineMatchPass) {
-  testing::GTEST_FLAG(death_test_style) = "fast";
+  GTEST_FLAG_SET(death_test_style, "fast");
   EXPECT_DEATH(DieWithMessage("line 1\nline 2\nline 3\n"),
                "line 1\nline 2\nline 3\n");
 }
@@ -876,9 +942,9 @@ TEST_F(TestForDeathTest, DeathTestMultiLineMatchPass) {
 class MockDeathTestFactory : public DeathTestFactory {
  public:
   MockDeathTestFactory();
-  virtual bool Create(const char* statement,
-                      const ::testing::internal::RE* regex,
-                      const char* file, int line, DeathTest** test);
+  bool Create(const char* statement,
+              testing::Matcher<const std::string&> matcher, const char* file,
+              int line, DeathTest** test) override;
 
   // Sets the parameters for subsequent calls to Create.
   void SetParameters(bool create, DeathTest::TestRole role,
@@ -888,10 +954,12 @@ class MockDeathTestFactory : public DeathTestFactory {
   int AssumeRoleCalls() const { return assume_role_calls_; }
   int WaitCalls() const { return wait_calls_; }
   size_t PassedCalls() const { return passed_args_.size(); }
-  bool PassedArgument(int n) const { return passed_args_[n]; }
+  bool PassedArgument(int n) const {
+    return passed_args_[static_cast<size_t>(n)];
+  }
   size_t AbortCalls() const { return abort_args_.size(); }
   DeathTest::AbortReason AbortArgument(int n) const {
-    return abort_args_[n];
+    return abort_args_[static_cast<size_t>(n)];
   }
   bool TestDeleted() const { return test_deleted_; }
 
@@ -933,22 +1001,20 @@ class MockDeathTest : public DeathTest {
                 TestRole role, int status, bool passed) :
       parent_(parent), role_(role), status_(status), passed_(passed) {
   }
-  virtual ~MockDeathTest() {
-    parent_->test_deleted_ = true;
-  }
-  virtual TestRole AssumeRole() {
+  ~MockDeathTest() override { parent_->test_deleted_ = true; }
+  TestRole AssumeRole() override {
     ++parent_->assume_role_calls_;
     return role_;
   }
-  virtual int Wait() {
+  int Wait() override {
     ++parent_->wait_calls_;
     return status_;
   }
-  virtual bool Passed(bool exit_status_ok) {
+  bool Passed(bool exit_status_ok) override {
     parent_->passed_args_.push_back(exit_status_ok);
     return passed_;
   }
-  virtual void Abort(AbortReason reason) {
+  void Abort(AbortReason reason) override {
     parent_->abort_args_.push_back(reason);
   }
 
@@ -992,11 +1058,9 @@ void MockDeathTestFactory::SetParameters(bool create,
 // Sets test to NULL (if create_ is false) or to the address of a new
 // MockDeathTest object with parameters taken from the last call
 // to SetParameters (if create_ is true).  Always returns true.
-bool MockDeathTestFactory::Create(const char* /*statement*/,
-                                  const ::testing::internal::RE* /*regex*/,
-                                  const char* /*file*/,
-                                  int /*line*/,
-                                  DeathTest** test) {
+bool MockDeathTestFactory::Create(
+    const char* /*statement*/, testing::Matcher<const std::string&> /*matcher*/,
+    const char* /*file*/, int /*line*/, DeathTest** test) {
   test_deleted_ = false;
   if (create_) {
     *test = new MockDeathTest(this, role_, status_, passed_);
@@ -1014,12 +1078,12 @@ class MacroLogicDeathTest : public testing::Test {
   static testing::internal::ReplaceDeathTestFactory* replacer_;
   static MockDeathTestFactory* factory_;
 
-  static void SetUpTestCase() {
+  static void SetUpTestSuite() {
     factory_ = new MockDeathTestFactory;
     replacer_ = new testing::internal::ReplaceDeathTestFactory(factory_);
   }
 
-  static void TearDownTestCase() {
+  static void TearDownTestSuite() {
     delete replacer_;
     replacer_ = nullptr;
     delete factory_;
@@ -1278,9 +1342,6 @@ TEST(ParseNaturalNumberTest, WorksForShorterIntegers) {
 
 # if GTEST_OS_WINDOWS
 TEST(EnvironmentTest, HandleFitsIntoSizeT) {
-  // FIXME: Remove this test after this condition is verified
-  // in a static assertion in gtest-death-test.cc in the function
-  // GetStatusFileDescriptor.
   ASSERT_TRUE(sizeof(HANDLE) <= sizeof(size_t));
 }
 # endif  // GTEST_OS_WINDOWS
@@ -1299,7 +1360,7 @@ TEST(ConditionalDeathMacrosDeathTest, ExpectsDeathWhenDeathTestsAvailable) {
 }
 
 TEST(InDeathTestChildDeathTest, ReportsDeathTestCorrectlyInFastStyle) {
-  testing::GTEST_FLAG(death_test_style) = "fast";
+  GTEST_FLAG_SET(death_test_style, "fast");
   EXPECT_FALSE(InDeathTestChild());
   EXPECT_DEATH({
     fprintf(stderr, InDeathTestChild() ? "Inside" : "Outside");
@@ -1309,7 +1370,7 @@ TEST(InDeathTestChildDeathTest, ReportsDeathTestCorrectlyInFastStyle) {
 }
 
 TEST(InDeathTestChildDeathTest, ReportsDeathTestCorrectlyInThreadSafeStyle) {
-  testing::GTEST_FLAG(death_test_style) = "threadsafe";
+  GTEST_FLAG_SET(death_test_style, "threadsafe");
   EXPECT_FALSE(InDeathTestChild());
   EXPECT_DEATH({
     fprintf(stderr, InDeathTestChild() ? "Inside" : "Outside");
@@ -1318,7 +1379,52 @@ TEST(InDeathTestChildDeathTest, ReportsDeathTestCorrectlyInThreadSafeStyle) {
   }, "Inside");
 }
 
+void DieWithMessage(const char* message) {
+  fputs(message, stderr);
+  fflush(stderr);  // Make sure the text is printed before the process exits.
+  _exit(1);
+}
+
+TEST(MatcherDeathTest, DoesNotBreakBareRegexMatching) {
+  // googletest tests this, of course; here we ensure that including googlemock
+  // has not broken it.
+#if GTEST_USES_POSIX_RE
+  EXPECT_DEATH(DieWithMessage("O, I die, Horatio."), "I d[aeiou]e");
+#else
+  EXPECT_DEATH(DieWithMessage("O, I die, Horatio."), "I di?e");
+#endif
+}
+
+TEST(MatcherDeathTest, MonomorphicMatcherMatches) {
+  EXPECT_DEATH(DieWithMessage("Behind O, I am slain!"),
+               Matcher<const std::string&>(ContainsRegex("I am slain")));
+}
+
+TEST(MatcherDeathTest, MonomorphicMatcherDoesNotMatch) {
+  EXPECT_NONFATAL_FAILURE(
+      EXPECT_DEATH(
+          DieWithMessage("Behind O, I am slain!"),
+          Matcher<const std::string&>(ContainsRegex("Ow, I am slain"))),
+      "Expected: contains regular expression \"Ow, I am slain\"");
+}
+
+TEST(MatcherDeathTest, PolymorphicMatcherMatches) {
+  EXPECT_DEATH(DieWithMessage("The rest is silence."),
+               ContainsRegex("rest is silence"));
+}
+
+TEST(MatcherDeathTest, PolymorphicMatcherDoesNotMatch) {
+  EXPECT_NONFATAL_FAILURE(
+      EXPECT_DEATH(DieWithMessage("The rest is silence."),
+                   ContainsRegex("rest is science")),
+      "Expected: contains regular expression \"rest is science\"");
+}
+
+}  // namespace
+
 #else  // !GTEST_HAS_DEATH_TEST follows
+
+namespace {
 
 using testing::internal::CaptureStderr;
 using testing::internal::GetCapturedStderr;
@@ -1368,8 +1474,19 @@ TEST(ConditionalDeathMacrosTest, AssertDeatDoesNotReturnhIfUnsupported) {
   EXPECT_EQ(1, n);
 }
 
+}  // namespace
+
 #endif  // !GTEST_HAS_DEATH_TEST
 
+namespace {
+
+// The following code intentionally tests a suboptimal syntax.
+#ifdef __GNUC__
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdangling-else"
+#pragma GCC diagnostic ignored "-Wempty-body"
+#pragma GCC diagnostic ignored "-Wpragmas"
+#endif
 // Tests that the death test macros expand to code which may or may not
 // be followed by operator<<, and that in either case the complete text
 // comprises only a single C++ statement.
@@ -1395,6 +1512,9 @@ TEST(ConditionalDeathMacrosSyntaxDeathTest, SingleStatement) {
   else
     EXPECT_DEATH_IF_SUPPORTED(_exit(1), "") << 1 << 2 << 3;
 }
+#ifdef __GNUC__
+#pragma GCC diagnostic pop
+#endif
 
 // Tests that conditional death test macros expand to code which interacts
 // well with switch statements.
@@ -1420,3 +1540,5 @@ TEST(ConditionalDeathMacrosSyntaxDeathTest, SwitchStatement) {
 TEST(NotADeathTest, Test) {
   SUCCEED();
 }
+
+}  // namespace

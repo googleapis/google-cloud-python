@@ -1,11 +1,13 @@
 #!/usr/bin/env python
 
+import unittest
 """
 compare.py - versatile benchmark output compare tool
 """
 
 import argparse
 from argparse import ArgumentParser
+import json
 import sys
 import gbench
 from gbench import util, report
@@ -46,6 +48,20 @@ def create_parser():
              "desirable to only view the aggregates. E.g. when there are a lot "
              "of repetitions. Do note that only the display is affected. "
              "Internally, all the actual runs are still used, e.g. for U test.")
+
+    parser.add_argument(
+        '--no-color',
+        dest='color',
+        default=True,
+        action="store_false",
+        help="Do not use colors in the terminal output"
+    )
+
+    parser.add_argument(
+        '-d',
+        '--dump_to_json',
+        dest='dump_to_json',
+        help="Additionally, dump benchmark comparison output to this file in JSON format.")
 
     utest = parser.add_argument_group()
     utest.add_argument(
@@ -222,10 +238,10 @@ def main():
         options_contender = ['--benchmark_filter=%s' % filter_contender]
 
     # Run the benchmarks and report the results
-    json1 = json1_orig = gbench.util.run_or_load_benchmark(
-        test_baseline, benchmark_options + options_baseline)
-    json2 = json2_orig = gbench.util.run_or_load_benchmark(
-        test_contender, benchmark_options + options_contender)
+    json1 = json1_orig = gbench.util.sort_benchmark_results(gbench.util.run_or_load_benchmark(
+        test_baseline, benchmark_options + options_baseline))
+    json2 = json2_orig = gbench.util.sort_benchmark_results(gbench.util.run_or_load_benchmark(
+        test_contender, benchmark_options + options_contender))
 
     # Now, filter the benchmarks so that the difference report can work
     if filter_baseline and filter_contender:
@@ -235,17 +251,20 @@ def main():
         json2 = gbench.report.filter_benchmark(
             json2_orig, filter_contender, replacement)
 
-    # Diff and output
-    output_lines = gbench.report.generate_difference_report(
-        json1, json2, args.display_aggregates_only,
-        args.utest, args.utest_alpha)
+    diff_report = gbench.report.get_difference_report(
+        json1, json2, args.utest)
+    output_lines = gbench.report.print_difference_report(
+        diff_report,
+        args.display_aggregates_only,
+        args.utest, args.utest_alpha, args.color)
     print(description)
     for ln in output_lines:
         print(ln)
 
-
-import unittest
-
+    # Optionally, diff and output to JSON
+    if args.dump_to_json is not None:
+        with open(args.dump_to_json, 'w') as f_json:
+            json.dump(diff_report, f_json)
 
 class TestParser(unittest.TestCase):
     def setUp(self):
@@ -402,7 +421,7 @@ class TestParser(unittest.TestCase):
 
 
 if __name__ == '__main__':
-    #unittest.main()
+    # unittest.main()
     main()
 
 # vim: tabstop=4 expandtab shiftwidth=4 softtabstop=4

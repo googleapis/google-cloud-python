@@ -76,13 +76,13 @@ TEST(DISABLED_D, DISABLED_B) {}
 // iteration with a "----" marker.
 class TestNamePrinter : public EmptyTestEventListener {
  public:
-  virtual void OnTestIterationStart(const UnitTest& /* unit_test */,
-                                    int /* iteration */) {
+  void OnTestIterationStart(const UnitTest& /* unit_test */,
+                            int /* iteration */) override {
     printf("----\n");
   }
 
-  virtual void OnTestStart(const TestInfo& test_info) {
-    printf("%s.%s\n", test_info.test_case_name(), test_info.name());
+  void OnTestStart(const TestInfo& test_info) override {
+    printf("%s.%s\n", test_info.test_suite_name(), test_info.name());
   }
 };
 

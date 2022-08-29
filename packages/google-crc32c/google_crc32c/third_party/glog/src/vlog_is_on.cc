@@ -34,14 +34,14 @@
 
 #include "utilities.h"
 
-#include <string.h>
-#include <stdlib.h>
-#include <errno.h>
+#include <cstring>
+#include <cstdlib>
+#include <cerrno>
 #include <cstdio>
 #include <string>
 #include "base/commandlineflags.h"
-#include "glog/logging.h"
-#include "glog/raw_logging.h"
+#include <glog/logging.h>
+#include <glog/raw_logging.h>
 #include "base/googleinit.h"
 
 // glog doesn't have annotation
@@ -105,8 +105,6 @@ GOOGLE_GLOG_DLL_DECL bool SafeFNMatch_(const char* pattern,
 
 using glog_internal_namespace_::SafeFNMatch_;
 
-int32 kLogSiteUninitialized = 1000;
-
 // List of per-module log levels from FLAGS_vmodule.
 // Once created each element is never deleted/modified
 // except for the vlog_level: other threads will read VModuleInfo blobs
@@ -127,6 +125,8 @@ static Mutex vmodule_lock;
 // Pointer to head of the VModuleInfo list.
 // It's a map from module pattern to logging level for those module(s).
 static VModuleInfo* vmodule_list = 0;
+static SiteFlag* cached_site_list = 0;
+
 // Boolean initialization flag.
 static bool inited_vmodule = false;
 
@@ -141,7 +141,7 @@ static void VLOG2Initializer() {
   VModuleInfo* head = NULL;
   VModuleInfo* tail = NULL;
   while ((sep = strchr(vmodule, '=')) != NULL) {
-    string pattern(vmodule, sep - vmodule);
+    string pattern(vmodule, static_cast<size_t>(sep - vmodule));
     int module_level;
     if (sscanf(sep, "=%d", &module_level) == 1) {
       VModuleInfo* info = new VModuleInfo;
@@ -166,7 +166,7 @@ static void VLOG2Initializer() {
 // This can be called very early, so we use SpinLock and RAW_VLOG here.
 int SetVLOGLevel(const char* module_pattern, int log_level) {
   int result = FLAGS_v;
-  int const pattern_len = strlen(module_pattern);
+  size_t const pattern_len = strlen(module_pattern);
   bool found = false;
   {
     MutexLock l(&vmodule_lock);  // protect whole read-modify-write
@@ -192,6 +192,23 @@ int SetVLOGLevel(const char* module_pattern, int log_level) {
       info->vlog_level = log_level;
       info->next = vmodule_list;
       vmodule_list = info;
+
+      SiteFlag** item_ptr = &cached_site_list;
+      SiteFlag* item = cached_site_list;
+
+      // We traverse the list fully because the pattern can match several items
+      // from the list.
+      while (item) {
+        if (SafeFNMatch_(module_pattern, pattern_len, item->base_name,
+                         item->base_len)) {
+          // Redirect the cached value to its module override.
+          item->level = &info->vlog_level;
+          *item_ptr = item->next;  // Remove the item from the list.
+        } else {
+          item_ptr = &item->next;
+        }
+        item = *item_ptr;
+      }
     }
   }
   RAW_VLOG(1, "Set VLOG level for \"%s\" to %d", module_pattern, log_level);
@@ -200,7 +217,7 @@ int SetVLOGLevel(const char* module_pattern, int log_level) {
 
 // NOTE: Individual VLOG statements cache the integer log level pointers.
 // NOTE: This function must not allocate memory or require any locks.
-bool InitVLOG3__(int32** site_flag, int32* site_default,
+bool InitVLOG3__(SiteFlag* site_flag, int32* level_default,
                  const char* fname, int32 verbose_level) {
   MutexLock l(&vmodule_lock);
   bool read_vmodule_flag = inited_vmodule;
@@ -213,10 +230,17 @@ bool InitVLOG3__(int32** site_flag, int32* site_default,
   int old_errno = errno;
 
   // site_default normally points to FLAGS_v
-  int32* site_flag_value = site_default;
+  int32* site_flag_value = level_default;
 
   // Get basename for file
   const char* base = strrchr(fname, '/');
+
+#ifdef _WIN32
+  if (!base) {
+    base = strrchr(fname, '\\');
+  }
+#endif
+
   base = base ? (base+1) : fname;
   const char* base_end = strchr(base, '.');
   size_t base_length = base_end ? size_t(base_end - base) : strlen(base);
@@ -246,7 +270,20 @@ bool InitVLOG3__(int32** site_flag, int32* site_default,
   ANNOTATE_BENIGN_RACE(site_flag,
                        "*site_flag may be written by several threads,"
                        " but the value will be the same");
-  if (read_vmodule_flag) *site_flag = site_flag_value;
+  if (read_vmodule_flag) {
+    site_flag->level = site_flag_value;
+    // If VLOG flag has been cached to the default site pointer,
+    // we want to add to the cached list in order to invalidate in case
+    // SetVModule is called afterwards with new modules.
+    // The performance penalty here is neglible, because InitVLOG3__ is called
+    // once per site.
+    if (site_flag_value == level_default && !site_flag->base_name) {
+      site_flag->base_name = base;
+      site_flag->base_len = base_length;
+      site_flag->next = cached_site_list;
+      cached_site_list = site_flag;
+    }
+  }
 
   // restore the errno in case something recoverable went wrong during
   // the initialization of the VLOG mechanism (see above note "protect the..")

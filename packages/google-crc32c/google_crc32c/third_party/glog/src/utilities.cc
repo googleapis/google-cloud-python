@@ -29,16 +29,17 @@
 //
 // Author: Shinichiro Hamaji
 
+#include "config.h"
 #include "utilities.h"
 
-#include <stdio.h>
-#include <stdlib.h>
+#include <cstdio>
+#include <cstdlib>
 
-#include <signal.h>
+#include <csignal>
 #ifdef HAVE_SYS_TIME_H
 # include <sys/time.h>
 #endif
-#include <time.h>
+#include <ctime>
 #if defined(HAVE_SYSCALL_H)
 #include <syscall.h>                 // for syscall()
 #elif defined(HAVE_SYS_SYSCALL_H)
@@ -61,7 +62,10 @@ using std::string;
 _START_GOOGLE_NAMESPACE_
 
 static const char* g_program_invocation_short_name = NULL;
-static pthread_t g_main_thread_id;
+
+bool IsGoogleLoggingInitialized() {
+  return g_program_invocation_short_name != NULL;
+}
 
 _END_GOOGLE_NAMESPACE_
 
@@ -139,10 +143,15 @@ static void DumpStackTrace(int skip_count, DebugWriter *writerfn, void *arg) {
   }
 }
 
+#if defined(__GNUC__)
+__attribute__((noreturn))
+#elif defined(_MSC_VER)
+__declspec(noreturn)
+#endif
 static void DumpStackTraceAndExit() {
   DumpStackTrace(1, DebugWriteToStderr, NULL);
 
-  // TOOD(hamaji): Use signal instead of sigaction?
+  // TODO(hamaji): Use signal instead of sigaction?
   if (IsFailureSignalHandlerInstalled()) {
     // Set the default signal handler for SIGABRT, to avoid invoking our
     // own signal handler installed by InstallFailureSignalHandler().
@@ -152,7 +161,7 @@ static void DumpStackTraceAndExit() {
     sigemptyset(&sig_action.sa_mask);
     sig_action.sa_handler = SIG_DFL;
     sigaction(SIGABRT, &sig_action, NULL);
-#elif defined(OS_WINDOWS)
+#elif defined(GLOG_OS_WINDOWS)
     signal(SIGABRT, SIG_DFL);
 #endif  // HAVE_SIGACTION
   }
@@ -177,31 +186,21 @@ const char* ProgramInvocationShortName() {
   }
 }
 
-bool IsGoogleLoggingInitialized() {
-  return g_program_invocation_short_name != NULL;
-}
-
-bool is_default_thread() {
-  if (g_program_invocation_short_name == NULL) {
-    // InitGoogleLogging() not yet called, so unlikely to be in a different
-    // thread
-    return true;
-  } else {
-    return pthread_equal(pthread_self(), g_main_thread_id);
-  }
-}
-
-#ifdef OS_WINDOWS
+#ifdef GLOG_OS_WINDOWS
 struct timeval {
   long tv_sec, tv_usec;
 };
 
 // Based on: http://www.google.com/codesearch/p?hl=en#dR3YEbitojA/os_win32.c&q=GetSystemTimeAsFileTime%20license:bsd
 // See COPYING for copyright information.
-static int gettimeofday(struct timeval *tv, void* tz) {
+static int gettimeofday(struct timeval *tv, void* /*tz*/) {
+#ifdef __GNUC__
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wlong-long"
+#endif
 #define EPOCHFILETIME (116444736000000000ULL)
   FILETIME ft;
-  LARGE_INTEGER li;
+  ULARGE_INTEGER li;
   uint64 tt;
 
   GetSystemTimeAsFileTime(&ft);
@@ -210,6 +209,9 @@ static int gettimeofday(struct timeval *tv, void* tz) {
   tt = (li.QuadPart - EPOCHFILETIME) / 10;
   tv->tv_sec = tt / 1000000;
   tv->tv_usec = tt % 1000000;
+#ifdef __GNUC__
+#pragma GCC diagnostic pop
+#endif
 
   return 0;
 }
@@ -247,9 +249,9 @@ bool PidHasChanged() {
 
 pid_t GetTID() {
   // On Linux and MacOSX, we try to use gettid().
-#if defined OS_LINUX || defined OS_MACOSX
+#if defined GLOG_OS_LINUX || defined GLOG_OS_MACOSX
 #ifndef __NR_gettid
-#ifdef OS_MACOSX
+#ifdef GLOG_OS_MACOSX
 #define __NR_gettid SYS_gettid
 #elif ! defined __i386__
 #error "Must define __NR_gettid for non-x86 platforms"
@@ -259,7 +261,13 @@ pid_t GetTID() {
 #endif
   static bool lacks_gettid = false;
   if (!lacks_gettid) {
-    pid_t tid = syscall(__NR_gettid);
+#if (defined(GLOG_OS_MACOSX) && defined(HAVE_PTHREAD_THREADID_NP))
+    uint64_t tid64;
+    const int error = pthread_threadid_np(NULL, &tid64);
+    pid_t tid = error ? -1 : static_cast<pid_t>(tid64);
+#else
+    pid_t tid = static_cast<pid_t>(syscall(__NR_gettid));
+#endif
     if (tid != -1) {
       return tid;
     }
@@ -269,22 +277,24 @@ pid_t GetTID() {
     // the value change to "true".
     lacks_gettid = true;
   }
-#endif  // OS_LINUX || OS_MACOSX
+#endif  // GLOG_OS_LINUX || GLOG_OS_MACOSX
 
   // If gettid() could not be used, we use one of the following.
-#if defined OS_LINUX
+#if defined GLOG_OS_LINUX
   return getpid();  // Linux:  getpid returns thread ID when gettid is absent
-#elif defined OS_WINDOWS && !defined OS_CYGWIN
+#elif defined GLOG_OS_WINDOWS && !defined GLOG_OS_CYGWIN
   return GetCurrentThreadId();
-#else
+#elif defined(HAVE_PTHREAD)
   // If none of the techniques above worked, we use pthread_self().
   return (pid_t)(uintptr_t)pthread_self();
+#else
+  return -1;
 #endif
 }
 
 const char* const_basename(const char* filepath) {
   const char* base = strrchr(filepath, '/');
-#ifdef OS_WINDOWS  // Look for either path separator in Windows
+#ifdef GLOG_OS_WINDOWS  // Look for either path separator in Windows
   if (!base)
     base = strrchr(filepath, '\\');
 #endif
@@ -297,7 +307,7 @@ const string& MyUserName() {
 }
 static void MyUserNameInitializer() {
   // TODO(hamaji): Probably this is not portable.
-#if defined(OS_WINDOWS)
+#if defined(GLOG_OS_WINDOWS)
   const char* user = getenv("USERNAME");
 #else
   const char* user = getenv("USER");
@@ -311,7 +321,7 @@ static void MyUserNameInitializer() {
     char buffer[1024] = {'\0'};
     uid_t uid = geteuid();
     int pwuid_res = getpwuid_r(uid, &pwd, buffer, sizeof(buffer), &result);
-    if (pwuid_res == 0) {
+    if (pwuid_res == 0 && result) {
       g_my_user_name = pwd.pw_name;
     } else {
       snprintf(buffer, sizeof(buffer), "uid%d", uid);
@@ -324,7 +334,7 @@ static void MyUserNameInitializer() {
   }
 
 }
-REGISTER_MODULE_INITIALIZER(utilities, MyUserNameInitializer());
+REGISTER_MODULE_INITIALIZER(utilities, MyUserNameInitializer())
 
 #ifdef HAVE_STACKTRACE
 void DumpStackTraceToString(string* stacktrace) {
@@ -346,11 +356,10 @@ void InitGoogleLoggingUtilities(const char* argv0) {
   CHECK(!IsGoogleLoggingInitialized())
       << "You called InitGoogleLogging() twice!";
   const char* slash = strrchr(argv0, '/');
-#ifdef OS_WINDOWS
+#ifdef GLOG_OS_WINDOWS
   if (!slash)  slash = strrchr(argv0, '\\');
 #endif
   g_program_invocation_short_name = slash ? slash + 1 : argv0;
-  g_main_thread_id = pthread_self();
 
 #ifdef HAVE_STACKTRACE
   InstallFailureFunction(&DumpStackTraceAndExit);

@@ -27,8 +27,7 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-
-#include "gmock/gmock-generated-nice-strict.h"
+#include "gmock/gmock-nice-strict.h"
 
 #include <string>
 #include <utility>
@@ -51,7 +50,6 @@ class Mock {
 namespace testing {
 namespace gmock_nice_strict_test {
 
-using testing::GMOCK_FLAG(verbose);
 using testing::HasSubstr;
 using testing::NaggyMock;
 using testing::NiceMock;
@@ -66,6 +64,12 @@ using testing::internal::GetCapturedStdout;
 class NotDefaultConstructible {
  public:
   explicit NotDefaultConstructible(int) {}
+};
+
+class CallsMockMethodInDestructor {
+ public:
+  ~CallsMockMethodInDestructor() { OnDestroy(); }
+  MOCK_METHOD(void, OnDestroy, ());
 };
 
 // Defines some mock classes needed by the tests.
@@ -114,30 +118,29 @@ class MockBar {
   GTEST_DISALLOW_COPY_AND_ASSIGN_(MockBar);
 };
 
-#if GTEST_GTEST_LANG_CXX11
 
 class MockBaz {
  public:
   class MoveOnly {
+   public:
     MoveOnly() = default;
 
     MoveOnly(const MoveOnly&) = delete;
-    operator=(const MoveOnly&) = delete;
+    MoveOnly& operator=(const MoveOnly&) = delete;
 
     MoveOnly(MoveOnly&&) = default;
-    operator=(MoveOnly&&) = default;
+    MoveOnly& operator=(MoveOnly&&) = default;
   };
 
   MockBaz(MoveOnly) {}
-}
-#endif  // GTEST_GTEST_LANG_CXX11 && GTEST_HAS_STD_MOVE_
+};
 
 #if GTEST_HAS_STREAM_REDIRECTION
 
 // Tests that a raw mock generates warnings for uninteresting calls.
 TEST(RawMockTest, WarningForUninterestingCall) {
-  const std::string saved_flag = GMOCK_FLAG(verbose);
-  GMOCK_FLAG(verbose) = "warning";
+  const std::string saved_flag = GMOCK_FLAG_GET(verbose);
+  GMOCK_FLAG_SET(verbose, "warning");
 
   MockFoo raw_foo;
 
@@ -147,14 +150,14 @@ TEST(RawMockTest, WarningForUninterestingCall) {
   EXPECT_THAT(GetCapturedStdout(),
               HasSubstr("Uninteresting mock function call"));
 
-  GMOCK_FLAG(verbose) = saved_flag;
+  GMOCK_FLAG_SET(verbose, saved_flag);
 }
 
 // Tests that a raw mock generates warnings for uninteresting calls
 // that delete the mock object.
 TEST(RawMockTest, WarningForUninterestingCallAfterDeath) {
-  const std::string saved_flag = GMOCK_FLAG(verbose);
-  GMOCK_FLAG(verbose) = "warning";
+  const std::string saved_flag = GMOCK_FLAG_GET(verbose);
+  GMOCK_FLAG_SET(verbose, "warning");
 
   MockFoo* const raw_foo = new MockFoo;
 
@@ -166,7 +169,7 @@ TEST(RawMockTest, WarningForUninterestingCallAfterDeath) {
   EXPECT_THAT(GetCapturedStdout(),
               HasSubstr("Uninteresting mock function call"));
 
-  GMOCK_FLAG(verbose) = saved_flag;
+  GMOCK_FLAG_SET(verbose, saved_flag);
 }
 
 // Tests that a raw mock generates informational logs for
@@ -174,14 +177,14 @@ TEST(RawMockTest, WarningForUninterestingCallAfterDeath) {
 TEST(RawMockTest, InfoForUninterestingCall) {
   MockFoo raw_foo;
 
-  const std::string saved_flag = GMOCK_FLAG(verbose);
-  GMOCK_FLAG(verbose) = "info";
+  const std::string saved_flag = GMOCK_FLAG_GET(verbose);
+  GMOCK_FLAG_SET(verbose, "info");
   CaptureStdout();
   raw_foo.DoThis();
   EXPECT_THAT(GetCapturedStdout(),
               HasSubstr("Uninteresting mock function call"));
 
-  GMOCK_FLAG(verbose) = saved_flag;
+  GMOCK_FLAG_SET(verbose, saved_flag);
 }
 
 TEST(RawMockTest, IsNaggy_IsNice_IsStrict) {
@@ -219,14 +222,14 @@ TEST(NiceMockTest, NoWarningForUninterestingCallAfterDeath) {
 TEST(NiceMockTest, InfoForUninterestingCall) {
   NiceMock<MockFoo> nice_foo;
 
-  const std::string saved_flag = GMOCK_FLAG(verbose);
-  GMOCK_FLAG(verbose) = "info";
+  const std::string saved_flag = GMOCK_FLAG_GET(verbose);
+  GMOCK_FLAG_SET(verbose, "info");
   CaptureStdout();
   nice_foo.DoThis();
   EXPECT_THAT(GetCapturedStdout(),
               HasSubstr("Uninteresting mock function call"));
 
-  GMOCK_FLAG(verbose) = saved_flag;
+  GMOCK_FLAG_SET(verbose, saved_flag);
 }
 
 #endif  // GTEST_HAS_STREAM_REDIRECTION
@@ -292,29 +295,24 @@ TEST(NiceMockTest, AllowLeak) {
   leaked->DoThis();
 }
 
-#if GTEST_GTEST_LANG_CXX11 && GTEST_HAS_STD_MOVE_
-
 TEST(NiceMockTest, MoveOnlyConstructor) {
-  NiceMock<MockBaz> nice_baz(MockBaz::MoveOnly());
+  NiceMock<MockBaz> nice_baz(MockBaz::MoveOnly{});
 }
 
-#endif  // GTEST_LANG_CXX11 && GTEST_HAS_STD_MOVE_
-
-#if !GTEST_OS_SYMBIAN && !GTEST_OS_WINDOWS_MOBILE
 // Tests that NiceMock<Mock> compiles where Mock is a user-defined
-// class (as opposed to ::testing::Mock).  We had to work around an
-// MSVC 8.0 bug that caused the symbol Mock used in the definition of
-// NiceMock to be looked up in the wrong context, and this test
-// ensures that our fix works.
-//
-// We have to skip this test on Symbian and Windows Mobile, as it
-// causes the program to crash there, for reasons unclear to us yet.
+// class (as opposed to ::testing::Mock).
 TEST(NiceMockTest, AcceptsClassNamedMock) {
   NiceMock< ::Mock> nice;
   EXPECT_CALL(nice, DoThis());
   nice.DoThis();
 }
-#endif  // !GTEST_OS_SYMBIAN && !GTEST_OS_WINDOWS_MOBILE
+
+TEST(NiceMockTest, IsNiceInDestructor) {
+  {
+    NiceMock<CallsMockMethodInDestructor> nice_on_destroy;
+    // Don't add an expectation for the call before the mock goes out of scope.
+  }
+}
 
 TEST(NiceMockTest, IsNaggy_IsNice_IsStrict) {
   NiceMock<MockFoo> nice_foo;
@@ -327,8 +325,8 @@ TEST(NiceMockTest, IsNaggy_IsNice_IsStrict) {
 
 // Tests that a naggy mock generates warnings for uninteresting calls.
 TEST(NaggyMockTest, WarningForUninterestingCall) {
-  const std::string saved_flag = GMOCK_FLAG(verbose);
-  GMOCK_FLAG(verbose) = "warning";
+  const std::string saved_flag = GMOCK_FLAG_GET(verbose);
+  GMOCK_FLAG_SET(verbose, "warning");
 
   NaggyMock<MockFoo> naggy_foo;
 
@@ -338,14 +336,14 @@ TEST(NaggyMockTest, WarningForUninterestingCall) {
   EXPECT_THAT(GetCapturedStdout(),
               HasSubstr("Uninteresting mock function call"));
 
-  GMOCK_FLAG(verbose) = saved_flag;
+  GMOCK_FLAG_SET(verbose, saved_flag);
 }
 
 // Tests that a naggy mock generates a warning for an uninteresting call
 // that deletes the mock object.
 TEST(NaggyMockTest, WarningForUninterestingCallAfterDeath) {
-  const std::string saved_flag = GMOCK_FLAG(verbose);
-  GMOCK_FLAG(verbose) = "warning";
+  const std::string saved_flag = GMOCK_FLAG_GET(verbose);
+  GMOCK_FLAG_SET(verbose, "warning");
 
   NaggyMock<MockFoo>* const naggy_foo = new NaggyMock<MockFoo>;
 
@@ -357,7 +355,7 @@ TEST(NaggyMockTest, WarningForUninterestingCallAfterDeath) {
   EXPECT_THAT(GetCapturedStdout(),
               HasSubstr("Uninteresting mock function call"));
 
-  GMOCK_FLAG(verbose) = saved_flag;
+  GMOCK_FLAG_SET(verbose, saved_flag);
 }
 
 #endif  // GTEST_HAS_STREAM_REDIRECTION
@@ -407,29 +405,33 @@ TEST(NaggyMockTest, AllowLeak) {
   leaked->DoThis();
 }
 
-#if GTEST_GTEST_LANG_CXX11 && GTEST_HAS_STD_MOVE_
-
 TEST(NaggyMockTest, MoveOnlyConstructor) {
-  NaggyMock<MockBaz> naggy_baz(MockBaz::MoveOnly());
+  NaggyMock<MockBaz> naggy_baz(MockBaz::MoveOnly{});
 }
 
-#endif  // GTEST_LANG_CXX11 && GTEST_HAS_STD_MOVE_
-
-#if !GTEST_OS_SYMBIAN && !GTEST_OS_WINDOWS_MOBILE
 // Tests that NaggyMock<Mock> compiles where Mock is a user-defined
-// class (as opposed to ::testing::Mock).  We had to work around an
-// MSVC 8.0 bug that caused the symbol Mock used in the definition of
-// NaggyMock to be looked up in the wrong context, and this test
-// ensures that our fix works.
-//
-// We have to skip this test on Symbian and Windows Mobile, as it
-// causes the program to crash there, for reasons unclear to us yet.
+// class (as opposed to ::testing::Mock).
 TEST(NaggyMockTest, AcceptsClassNamedMock) {
   NaggyMock< ::Mock> naggy;
   EXPECT_CALL(naggy, DoThis());
   naggy.DoThis();
 }
-#endif  // !GTEST_OS_SYMBIAN && !GTEST_OS_WINDOWS_MOBILE
+
+TEST(NaggyMockTest, IsNaggyInDestructor) {
+  const std::string saved_flag = GMOCK_FLAG_GET(verbose);
+  GMOCK_FLAG_SET(verbose, "warning");
+  CaptureStdout();
+
+  {
+    NaggyMock<CallsMockMethodInDestructor> naggy_on_destroy;
+    // Don't add an expectation for the call before the mock goes out of scope.
+  }
+
+  EXPECT_THAT(GetCapturedStdout(),
+              HasSubstr("Uninteresting mock function call"));
+
+  GMOCK_FLAG_SET(verbose, saved_flag);
+}
 
 TEST(NaggyMockTest, IsNaggy_IsNice_IsStrict) {
   NaggyMock<MockFoo> naggy_foo;
@@ -503,29 +505,27 @@ TEST(StrictMockTest, AllowLeak) {
   leaked->DoThis();
 }
 
-#if GTEST_GTEST_LANG_CXX11 && GTEST_HAS_STD_MOVE_
-
 TEST(StrictMockTest, MoveOnlyConstructor) {
-  StrictMock<MockBaz> strict_baz(MockBaz::MoveOnly());
+  StrictMock<MockBaz> strict_baz(MockBaz::MoveOnly{});
 }
 
-#endif  // GTEST_LANG_CXX11 && GTEST_HAS_STD_MOVE_
-
-#if !GTEST_OS_SYMBIAN && !GTEST_OS_WINDOWS_MOBILE
 // Tests that StrictMock<Mock> compiles where Mock is a user-defined
-// class (as opposed to ::testing::Mock).  We had to work around an
-// MSVC 8.0 bug that caused the symbol Mock used in the definition of
-// StrictMock to be looked up in the wrong context, and this test
-// ensures that our fix works.
-//
-// We have to skip this test on Symbian and Windows Mobile, as it
-// causes the program to crash there, for reasons unclear to us yet.
+// class (as opposed to ::testing::Mock).
 TEST(StrictMockTest, AcceptsClassNamedMock) {
   StrictMock< ::Mock> strict;
   EXPECT_CALL(strict, DoThis());
   strict.DoThis();
 }
-#endif  // !GTEST_OS_SYMBIAN && !GTEST_OS_WINDOWS_MOBILE
+
+TEST(StrictMockTest, IsStrictInDestructor) {
+  EXPECT_NONFATAL_FAILURE(
+      {
+        StrictMock<CallsMockMethodInDestructor> strict_on_destroy;
+        // Don't add an expectation for the call before the mock goes out of
+        // scope.
+      },
+      "Uninteresting mock function call");
+}
 
 TEST(StrictMockTest, IsNaggy_IsNice_IsStrict) {
   StrictMock<MockFoo> strict_foo;

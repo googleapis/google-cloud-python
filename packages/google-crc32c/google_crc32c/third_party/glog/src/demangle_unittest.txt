@@ -43,6 +43,10 @@ _ZNcvT_IiEEv	operator ?<>()
 # "<< <" case.
 _ZlsI3fooE	operator<< <>
 
+# ABI tags.
+_Z1AB3barB3foo	A
+_ZN3fooL3barB5cxx11E	foo::bar
+
 # Random things we found interesting.
 _ZN3FooISt6vectorISsSaISsEEEclEv	Foo<>::operator()()
 _ZTI9Callback1IiE	Callback1<>
@@ -135,3 +139,7 @@ _ZlsRSoRKSs	operator<<()
 _ZngILi42EEvN1AIXplT_Li2EEE1TE	operator-<>()
 _ZplR1XS0_	operator+()
 _Zrm1XS_	operator%()
+
+# Template argument packs can start with I or J.
+_Z3addIIiEEvDpT_	add<>()
+_Z3addIJiEEvDpT_	add<>()

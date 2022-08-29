@@ -1,128 +1,140 @@
+# GoogleTest
 
-# Google Test #
+### Announcements
 
-[![Build Status](https://travis-ci.org/google/googletest.svg?branch=master)](https://travis-ci.org/google/googletest)
-[![Build status](https://ci.appveyor.com/api/projects/status/4o38plt0xbo1ubc8/branch/master?svg=true)](https://ci.appveyor.com/project/GoogleTestAppVeyor/googletest/branch/master)
+#### Live at Head
 
-**Future Plans**:
-* 1.8.x Release - [the 1.8.x](https://github.com/google/googletest/releases/tag/release-1.8.1) is the last release that works with pre-C++11 compilers. The 1.8.x will not accept any requests for any new features and any bugfix requests will only be accepted if proven "critical"
-* Post 1.8.x - work to improve/cleanup/pay technical debt. When this work is completed there will be a 1.9.x tagged release
-* Post 1.9.x googletest will follow [Abseil Live at Head philosophy](https://abseil.io/about/philosophy)
+GoogleTest now follows the
+[Abseil Live at Head philosophy](https://abseil.io/about/philosophy#upgrade-support).
+We recommend using the latest commit in the `master` branch in your projects.
 
+#### Documentation Updates
 
-Welcome to **Google Test**, Google's C++ test framework!
+Our documentation is now live on GitHub Pages at
+https://google.github.io/googletest/. We recommend browsing the documentation on
+GitHub Pages rather than directly in the repository.
 
-This repository is a merger of the formerly separate GoogleTest and
-GoogleMock projects. These were so closely related that it makes sense to
-maintain and release them together.
+#### Release 1.11.0
 
-Please the mailing list at googletestframework@googlegroups.com for questions, discussions, and development.  
-There is also an IRC channel on [OFTC](https://webchat.oftc.net/) (irc.oftc.net) #gtest available.  
+[Release 1.11.0](https://github.com/google/googletest/releases/tag/release-1.11.0)
+is now available.
 
-Getting started information for **Google Test** is available in the
-[Google Test Primer](googletest/docs/primer.md) documentation.
+#### Coming Soon
 
-**Google Mock** is an extension to Google Test for writing and using C++ mock
-classes.  See the separate [Google Mock documentation](googlemock/README.md).
+*   We are planning to take a dependency on
+    [Abseil](https://github.com/abseil/abseil-cpp).
+*   More documentation improvements are planned.
 
-More detailed documentation for googletest (including build instructions) are
-in its interior [googletest/README.md](googletest/README.md) file.
+## Welcome to **GoogleTest**, Google's C++ test framework!
 
-## Features ##
+This repository is a merger of the formerly separate GoogleTest and GoogleMock
+projects. These were so closely related that it makes sense to maintain and
+release them together.
 
-  * An [xUnit](https://en.wikipedia.org/wiki/XUnit) test framework.
-  * Test discovery.
-  * A rich set of assertions.
-  * User-defined assertions.
-  * Death tests.
-  * Fatal and non-fatal failures.
-  * Value-parameterized tests.
-  * Type-parameterized tests.
-  * Various options for running the tests.
-  * XML test report generation.
+### Getting Started
 
-## Platforms ##
+See the [GoogleTest User's Guide](https://google.github.io/googletest/) for
+documentation. We recommend starting with the
+[GoogleTest Primer](https://google.github.io/googletest/primer.html).
 
-Google test has been used on a variety of platforms:
+More information about building GoogleTest can be found at
+[googletest/README.md](googletest/README.md).
 
-  * Linux
-  * Mac OS X
-  * Windows
-  * Cygwin
-  * MinGW
-  * Windows Mobile
-  * Symbian
+## Features
 
-## Who Is Using Google Test? ##
+*   An [xUnit](https://en.wikipedia.org/wiki/XUnit) test framework.
+*   Test discovery.
+*   A rich set of assertions.
+*   User-defined assertions.
+*   Death tests.
+*   Fatal and non-fatal failures.
+*   Value-parameterized tests.
+*   Type-parameterized tests.
+*   Various options for running the tests.
+*   XML test report generation.
 
-In addition to many internal projects at Google, Google Test is also used by
-the following notable projects:
+## Supported Platforms
 
-  * The [Chromium projects](http://www.chromium.org/) (behind the Chrome
-    browser and Chrome OS).
-  * The [LLVM](http://llvm.org/) compiler.
-  * [Protocol Buffers](https://github.com/google/protobuf), Google's data
+GoogleTest requires a codebase and compiler compliant with the C++11 standard or
+newer.
+
+The GoogleTest code is officially supported on the following platforms.
+Operating systems or tools not listed below are community-supported. For
+community-supported platforms, patches that do not complicate the code may be
+considered.
+
+If you notice any problems on your platform, please file an issue on the
+[GoogleTest GitHub Issue Tracker](https://github.com/google/googletest/issues).
+Pull requests containing fixes are welcome!
+
+### Operating Systems
+
+*   Linux
+*   macOS
+*   Windows
+
+### Compilers
+
+*   gcc 5.0+
+*   clang 5.0+
+*   MSVC 2015+
+
+**macOS users:** Xcode 9.3+ provides clang 5.0+.
+
+### Build Systems
+
+*   [Bazel](https://bazel.build/)
+*   [CMake](https://cmake.org/)
+
+**Note:** Bazel is the build system used by the team internally and in tests.
+CMake is supported on a best-effort basis and by the community.
+
+## Who Is Using GoogleTest?
+
+In addition to many internal projects at Google, GoogleTest is also used by the
+following notable projects:
+
+*   The [Chromium projects](http://www.chromium.org/) (behind the Chrome browser
+    and Chrome OS).
+*   The [LLVM](http://llvm.org/) compiler.
+*   [Protocol Buffers](https://github.com/google/protobuf), Google's data
     interchange format.
-  * The [OpenCV](http://opencv.org/) computer vision library.
-  * [tiny-dnn](https://github.com/tiny-dnn/tiny-dnn): header only, dependency-free deep learning framework in C++11.
+*   The [OpenCV](http://opencv.org/) computer vision library.
 
-## Related Open Source Projects ##
+## Related Open Source Projects
 
-[GTest Runner](https://github.com/nholthaus/gtest-runner) is a Qt5 based automated test-runner and Graphical User Interface with powerful features for Windows and Linux platforms.
+[GTest Runner](https://github.com/nholthaus/gtest-runner) is a Qt5 based
+automated test-runner and Graphical User Interface with powerful features for
+Windows and Linux platforms.
 
-[Google Test UI](https://github.com/ospector/gtest-gbar) is test runner that runs
-your test binary, allows you to track its progress via a progress bar, and
-displays a list of test failures. Clicking on one shows failure text. Google
-Test UI is written in C#.
+[GoogleTest UI](https://github.com/ospector/gtest-gbar) is a test runner that
+runs your test binary, allows you to track its progress via a progress bar, and
+displays a list of test failures. Clicking on one shows failure text. GoogleTest
+UI is written in C#.
 
 [GTest TAP Listener](https://github.com/kinow/gtest-tap-listener) is an event
-listener for Google Test that implements the
+listener for GoogleTest that implements the
 [TAP protocol](https://en.wikipedia.org/wiki/Test_Anything_Protocol) for test
 result output. If your test runner understands TAP, you may find it useful.
 
 [gtest-parallel](https://github.com/google/gtest-parallel) is a test runner that
 runs tests from your binary in parallel to provide significant speed-up.
 
-[GoogleTest Adapter](https://marketplace.visualstudio.com/items?itemName=DavidSchuldenfrei.gtest-adapter) is a VS Code extension allowing to view Google Tests in a tree view, and run/debug your tests.
+[GoogleTest Adapter](https://marketplace.visualstudio.com/items?itemName=DavidSchuldenfrei.gtest-adapter)
+is a VS Code extension allowing to view GoogleTest in a tree view, and run/debug
+your tests.
 
-## Requirements ##
+[C++ TestMate](https://github.com/matepek/vscode-catch2-test-adapter) is a VS
+Code extension allowing to view GoogleTest in a tree view, and run/debug your
+tests.
 
-Google Test is designed to have fairly minimal requirements to build
-and use with your projects, but there are some.  Currently, we support
-Linux, Windows, Mac OS X, and Cygwin.  We will also make our best
-effort to support other platforms (e.g. Solaris, AIX, and z/OS).
-However, since core members of the Google Test project have no access
-to these platforms, Google Test may have outstanding issues there.  If
-you notice any problems on your platform, please notify
-[googletestframework@googlegroups.com](https://groups.google.com/forum/#!forum/googletestframework). Patches for fixing them are
-even more welcome!
+[Cornichon](https://pypi.org/project/cornichon/) is a small Gherkin DSL parser
+that generates stub code for GoogleTest.
 
-### Linux Requirements ###
+## Contributing Changes
 
-These are the base requirements to build and use Google Test from a source
-package (as described below):
-
-  * GNU-compatible Make or gmake
-  * POSIX-standard shell
-  * POSIX(-2) Regular Expressions (regex.h)
-  * A C++11-standard-compliant compiler
-
-### Windows Requirements ###
-
-  * Microsoft Visual C++ 2015 or newer
-
-### Cygwin Requirements ###
-
-  * Cygwin v1.5.25-14 or newer
-
-### Mac OS X Requirements ###
-
-  * Mac OS X v10.4 Tiger or newer
-  * Xcode Developer Tools
-
-## Contributing change
-
-Please read the [`CONTRIBUTING.md`](CONTRIBUTING.md) for details on
-how to contribute to this project.
+Please read
+[`CONTRIBUTING.md`](https://github.com/google/googletest/blob/master/CONTRIBUTING.md)
+for details on how to contribute to this project.
 
 Happy testing!

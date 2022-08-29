@@ -1,10 +1,10 @@
 /* Copyright (c) 2008, Google Inc.
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  *     * Redistributions of source code must retain the above copyright
  * notice, this list of conditions and the following disclaimer.
  *     * Redistributions in binary form must reproduce the above
@@ -14,7 +14,7 @@
  *     * Neither the name of Google Inc. nor the names of its
  * contributors may be used to endorse or promote products derived from
  * this software without specific prior written permission.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
  * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
@@ -37,7 +37,7 @@
 #endif
 
 #include "config.h"
-#include <stdarg.h>    // for va_list, va_start, va_end
+#include <cstdarg>    // for va_list, va_start, va_end
 #include "port.h"
 
 // These call the windows _vsnprintf, but always NUL-terminate.
@@ -54,6 +54,12 @@ struct tm* localtime_r(const time_t* timep, struct tm* result) {
   return result;
 }
 #endif // not HAVE_LOCALTIME_R
+#ifndef HAVE_GMTIME_R
+struct tm* gmtime_r(const time_t* timep, struct tm* result) {
+    gmtime_s(result, timep);
+    return result;
+}
+#endif // not HAVE_GMTIME_R
 #ifndef HAVE_SNPRINTF
 int snprintf(char *str, size_t size, const char *format, ...) {
   va_list ap;
