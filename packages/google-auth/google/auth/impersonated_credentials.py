@@ -288,9 +288,12 @@ class Credentials(
 
         authed_session = AuthorizedSession(self._source_credentials)
 
-        response = authed_session.post(
-            url=iam_sign_endpoint, headers=headers, json=body
-        )
+        try:
+            response = authed_session.post(
+                url=iam_sign_endpoint, headers=headers, json=body
+            )
+        finally:
+            authed_session.close()
 
         if response.status_code != http_client.OK:
             raise exceptions.TransportError(
