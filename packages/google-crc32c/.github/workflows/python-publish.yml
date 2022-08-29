@@ -41,7 +41,7 @@ jobs:
       env:
         CIBW_ARCHS_LINUX: x86_64
         CIBW_MANYLINUX_X86_64_IMAGE: manylinux1
-        CIBW_SKIP: "cp310-*"  # manylinux1 has no support for 3.10.x Python
+        CIBW_BUILD: "cp3[6-9]-manylinux*"  # manylinux1 has no support for 3.10+ Python or PyPy
         CIBW_ENVIRONMENT: >
             CRC32C_PURE_PYTHON="0"
             CRC32C_INSTALL_PREFIX="$(pwd)/usr"
@@ -51,7 +51,7 @@ jobs:
         # be able to link with it.
         CIBW_BEFORE_BUILD: >
             python -m pip install --upgrade setuptools pip wheel &&
-            python -m pip install cmake &&
+            python -m pip install --only-binary cmake cmake &&
             cmake -S google_crc32c -B build \
                 -DCMAKE_BUILD_TYPE=Release \
                 -DCRC32C_BUILD_TESTS=no \
