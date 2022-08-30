@@ -66,7 +66,7 @@ class TestTranslate(unittest.TestCase):
         values = ["takoy", "s'il vous plait"]
         detections = Config.CLIENT_V2.detect_language(values)
         self.assertEqual(len(values), len(detections))
-        self.assertEqual(detections[0]["language"], "ru")
+        self.assertEqual(detections[0]["language"], "ru-Latn")
         self.assertEqual(detections[1]["language"], "fr")
 
     @skip_for_mtls
