@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.22.1](https://github.com/googleapis/proto-plus-python/compare/v1.22.0...v1.22.1) (2022-08-29)
+
+
+### Bug Fixes
+
+* Add no-pretty print option ([#336](https://github.com/googleapis/proto-plus-python/issues/336)) ([1bb228a](https://github.com/googleapis/proto-plus-python/commit/1bb228ac93543d28871645a22e5ac7fb20a0a55c))
+
 ## [1.22.0](https://github.com/googleapis/proto-plus-python/compare/v1.21.0...v1.22.0) (2022-08-10)
 
 ### Features
