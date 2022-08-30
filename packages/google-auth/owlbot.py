@@ -22,6 +22,9 @@ s.move(
     # needed by samples kokoro jobs
     templated_files / ".trampolinerc"
 )
+s.move(
+    templated_files / "renovate.json",
+)
 
 
 assert 1 == s.replace(
