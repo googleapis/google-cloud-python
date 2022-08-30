@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-websecurityscanner/#history
 
+## [1.8.3](https://github.com/googleapis/python-websecurityscanner/compare/v1.8.2...v1.8.3) (2022-08-30)
+
+
+### Documentation
+
+* Publish Scan Run logging proto for documentation ([#230](https://github.com/googleapis/python-websecurityscanner/issues/230)) ([07288a0](https://github.com/googleapis/python-websecurityscanner/commit/07288a0abcafa4a90d382403c627b5da45af0b92))
+
 ## [1.8.2](https://github.com/googleapis/python-websecurityscanner/compare/v1.8.1...v1.8.2) (2022-08-11)
 
 
