@@ -409,6 +409,9 @@ Libraries
    * - `reCAPTCHA Enterprise <https://github.com/googleapis/python-recaptcha-enterprise>`_
      - |stable|
      - |PyPI-google-cloud-recaptcha-enterprise|
+   * - `API Keys <https://github.com/googleapis/python-api-keys>`_
+     - |preview|
+     - |PyPI-google-cloud-api-keys|
    * - `Analytics Admin <https://github.com/googleapis/python-analytics-admin>`_
      - |preview|
      - |PyPI-google-analytics-admin|
@@ -741,6 +744,8 @@ Libraries
      :target: https://pypi.org/project/google-cloud-workflows
 .. |PyPI-google-cloud-recaptcha-enterprise| image:: https://img.shields.io/pypi/v/google-cloud-recaptcha-enterprise.svg
      :target: https://pypi.org/project/google-cloud-recaptcha-enterprise
+.. |PyPI-google-cloud-api-keys| image:: https://img.shields.io/pypi/v/google-cloud-api-keys.svg
+     :target: https://pypi.org/project/google-cloud-api-keys
 .. |PyPI-google-analytics-admin| image:: https://img.shields.io/pypi/v/google-analytics-admin.svg
      :target: https://pypi.org/project/google-analytics-admin
 .. |PyPI-google-analytics-data| image:: https://img.shields.io/pypi/v/google-analytics-data.svg
