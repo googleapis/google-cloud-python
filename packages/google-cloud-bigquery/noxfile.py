@@ -160,7 +160,9 @@ def system(session):
         session.skip("Credentials must be set via environment variable.")
 
     # Use pre-release gRPC for system tests.
-    session.install("--pre", "grpcio", "-c", constraints_path)
+    # Exclude version 1.49.0rc1 which has a known issue.
+    # See https://github.com/grpc/grpc/pull/30642
+    session.install("--pre", "grpcio!=1.49.0rc1", "-c", constraints_path)
 
     # Install all test dependencies, then install local packages in place.
     session.install(
@@ -288,7 +290,8 @@ def prerelease_deps(session):
         "google-cloud-bigquery-storage",
         "google-cloud-core",
         "google-resumable-media",
-        "grpcio",
+        # Exclude version 1.49.0rc1 which has a known issue. See https://github.com/grpc/grpc/pull/30642
+        "grpcio!=1.49.0rc1",
     )
     session.install(
         "freezegun",
