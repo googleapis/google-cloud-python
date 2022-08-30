@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-spanner/#history
 
+## [3.20.0](https://github.com/googleapis/python-spanner/compare/v3.19.0...v3.20.0) (2022-08-30)
+
+
+### Features
+
+* Adds TypeAnnotationCode PG_JSONB ([#792](https://github.com/googleapis/python-spanner/issues/792)) ([6a661d4](https://github.com/googleapis/python-spanner/commit/6a661d4492bcb77abee60095ffc2cfdc06b48124))
+
+
+### Bug Fixes
+
+* if JsonObject serialized to None then return `null_value` instead of `string_value` ([#771](https://github.com/googleapis/python-spanner/issues/771)) ([82170b5](https://github.com/googleapis/python-spanner/commit/82170b521f0da1ba5aaf064ba9ee50c74fe21a86))
+
 ## [3.19.0](https://github.com/googleapis/python-spanner/compare/v3.18.0...v3.19.0) (2022-08-17)
 
 
