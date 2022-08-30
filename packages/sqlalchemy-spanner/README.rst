@@ -160,7 +160,7 @@ primary key:
 As Spanner restricts changing a primary key value, not setting the ``version_table_pk`` flag
 to ``False`` can cause migration problems. If ``alembic_versions`` table was already created with a primary key, setting the flag to ``False`` will not work, because the flag is only applied on table creation.    
 
-Also notice that DDL statements in Spanner are not transactional and will not be automatically reverted in case of a migration fail.
+Notice that DDL statements in Spanner are not transactional. They will not be automatically reverted in case of a migration fail. Also Spanner encourage use of the `autocommit_block() <https://alembic.sqlalchemy.org/en/latest/api/runtime.html#alembic.runtime.migration.MigrationContext.autocommit_block>`__ for migrations in order to prevent DDLs from aborting migration transactions with schema modifications.
 
 | **Warning!**
 | A migration script can produce a lot of DDL statements. If each of the
