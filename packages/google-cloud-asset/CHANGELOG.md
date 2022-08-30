@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-asset/#history
 
+## [3.13.1](https://github.com/googleapis/python-asset/compare/v3.13.0...v3.13.1) (2022-08-29)
+
+
+### Documentation
+
+* **samples:** add batch_get_effective_iam_policies sample code ([#480](https://github.com/googleapis/python-asset/issues/480)) ([b171684](https://github.com/googleapis/python-asset/commit/b171684a1edce93d358b308ff818627281f0809f))
+
 ## [3.13.0](https://github.com/googleapis/python-asset/compare/v3.12.0...v3.13.0) (2022-08-17)
 
 
