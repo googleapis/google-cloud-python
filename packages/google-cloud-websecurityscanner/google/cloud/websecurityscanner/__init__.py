@@ -37,6 +37,7 @@ from google.cloud.websecurityscanner_v1.types.scan_run import ScanRun
 from google.cloud.websecurityscanner_v1.types.scan_run_error_trace import (
     ScanRunErrorTrace,
 )
+from google.cloud.websecurityscanner_v1.types.scan_run_log import ScanRunLog
 from google.cloud.websecurityscanner_v1.types.scan_run_warning_trace import (
     ScanRunWarningTrace,
 )
@@ -77,6 +78,7 @@ __all__ = (
     "ScanConfigError",
     "ScanRun",
     "ScanRunErrorTrace",
+    "ScanRunLog",
     "ScanRunWarningTrace",
     "CreateScanConfigRequest",
     "DeleteScanConfigRequest",

@@ -28,6 +28,7 @@ from .scan_config import ScanConfig
 from .scan_config_error import ScanConfigError
 from .scan_run import ScanRun
 from .scan_run_error_trace import ScanRunErrorTrace
+from .scan_run_log import ScanRunLog
 from .scan_run_warning_trace import ScanRunWarningTrace
 from .web_security_scanner import (
     CreateScanConfigRequest,
@@ -64,6 +65,7 @@ __all__ = (
     "ScanConfigError",
     "ScanRun",
     "ScanRunErrorTrace",
+    "ScanRunLog",
     "ScanRunWarningTrace",
     "CreateScanConfigRequest",
     "DeleteScanConfigRequest",
