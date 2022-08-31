@@ -4,6 +4,23 @@
 
 [1]: https://pypi.org/project/google-crc32c/#history
 
+## [1.5.0](https://github.com/googleapis/python-crc32c/compare/v1.4.0...v1.5.0) (2022-08-31)
+
+
+### Features
+
+* add support for Python 3.11 ([#144](https://github.com/googleapis/python-crc32c/issues/144)) ([63f5166](https://github.com/googleapis/python-crc32c/commit/63f5166815682d3430a771c51c7fd5a81d2fd259))
+
+
+### Bug Fixes
+
+* drop support for python 3.6 ([#145](https://github.com/googleapis/python-crc32c/issues/145)) ([f9745b8](https://github.com/googleapis/python-crc32c/commit/f9745b8089fa2645be7b8823c979f5192df3eec7))
+
+
+### Documentation
+
+* fix changelog header to consistent size ([#136](https://github.com/googleapis/python-crc32c/issues/136)) ([0fb3b88](https://github.com/googleapis/python-crc32c/commit/0fb3b88131aeee316e6d6f607fa32ec4767e4386))
+
 ## [1.4.0](https://github.com/googleapis/python-crc32c/compare/v1.3.0...v1.4.0) (2022-03-10)
 
 
