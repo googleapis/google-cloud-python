@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -11,15 +12,11 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+#
+from .client import BatchServiceClient
+from .async_client import BatchServiceAsyncClient
 
-docker:
-  image: gcr.io/cloud-devrel-public-resources/owlbot-python:latest
-
-deep-remove-regex:
-  - /owl-bot-staging
-
-deep-copy-regex:
-  - source: /google/cloud/batch/(v.*)/.*-py/(.*)
-    dest: /owl-bot-staging/$1/$2
-
-begin-after-commit-hash: 70f7f0525414fe4dfeb2fc2e81546b073f83a621
+__all__ = (
+    "BatchServiceClient",
+    "BatchServiceAsyncClient",
+)
