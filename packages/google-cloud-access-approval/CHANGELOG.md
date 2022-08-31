@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.7.3](https://github.com/googleapis/python-access-approval/compare/v1.7.2...v1.7.3) (2022-08-29)
+
+
+### Documentation
+
+* added Cloud Dataproc and Secret Manager to the list of supported services ([#233](https://github.com/googleapis/python-access-approval/issues/233)) ([ece1b9c](https://github.com/googleapis/python-access-approval/commit/ece1b9cb19567974efcca477bc5a3c554801e681))
+
 ## [1.7.2](https://github.com/googleapis/python-access-approval/compare/v1.7.1...v1.7.2) (2022-08-11)
 
 
