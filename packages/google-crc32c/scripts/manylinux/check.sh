@@ -21,11 +21,11 @@ echo "CHECKING ON LINUX"
 VERSION=$(awk "/version \= ([0-9.]+)/" setup.cfg)
 PACKAGE_VERSION=${VERSION:10}
 WHEEL_FILE="wheels/google_crc32c-${PACKAGE_VERSION}-cp36-cp36m-manylinux1_x86_64.whl"
-PYTHON=python3.6
+PYTHON=python3.7
 
-# Using pyenv, set 3.6.1 as a local python version.
+# Using pyenv, set 3.7.13 as a local python version.
 # pyenv versions
-pyenv local 3.6.1
+pyenv local 3.7.13
 
 # Make sure we can create a virtual environment.
 ${PYTHON} -m pip install --upgrade setuptools pip wheel

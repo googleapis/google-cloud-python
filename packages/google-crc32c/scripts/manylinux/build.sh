@@ -27,8 +27,8 @@ git submodule update --init --recursive
 
 # Note:  PyPA's support for the 'manylinux1' image ends on 2022-01-01.
 #        See: https://github.com/pypa/manylinux/issues/994
-#        No 3.10 support for 'manylinux1'.
-if [[ "${BUILD_PYTHON}" != "3.10"* ]]; then
+#        No 3.1* support for 'manylinux1'.
+if [[ "${BUILD_PYTHON}" != "3.1"* ]]; then
     docker pull quay.io/pypa/manylinux1_x86_64
     docker run \
         --rm \
