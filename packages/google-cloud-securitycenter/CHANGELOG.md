@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-securitycenter/#history
 
+## [1.15.0](https://github.com/googleapis/python-securitycenter/compare/v1.14.0...v1.15.0) (2022-08-29)
+
+
+### Features
+
+* Adding database access information, such as queries field to a finding ([#370](https://github.com/googleapis/python-securitycenter/issues/370)) ([1ff2b13](https://github.com/googleapis/python-securitycenter/commit/1ff2b13d957525922dc79dcb3c3490455ee37ecd))
+* serviceAccountKeyName, serviceAccountDelegationInfo, and principalSubject attributes added to the existing access attribute ([#375](https://github.com/googleapis/python-securitycenter/issues/375)) ([ab477e0](https://github.com/googleapis/python-securitycenter/commit/ab477e0886cf837800878857f4acb74ae81f055c))
+
 ## [1.14.0](https://github.com/googleapis/python-securitycenter/compare/v1.13.0...v1.14.0) (2022-08-22)
 
 
