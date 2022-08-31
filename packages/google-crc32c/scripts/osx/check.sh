@@ -28,13 +28,11 @@ export REPO_ROOT=$(dirname ${SCRIPTS_DIR})
 ls ${REPO_ROOT}/wheels
 
 # NOTE: These are the Python.org versions of Python.
-PYTHON36="/Library/Frameworks/Python.framework/Versions/3.6/bin"
 PYTHON37="/Library/Frameworks/Python.framework/Versions/3.7/bin"
 PYTHON38="/Library/Frameworks/Python.framework/Versions/3.8/bin"
-
-# PYTHON37="/users/crwilcox/.pyenv/versions/3.7.2/bin"
-# PYTHON36="/users/crwilcox/.pyenv/versions/3.6.6/bin"
-# PYTHON35="/users/crwilcox/.pyenv/versions/3.5.6/bin"
+PYTHON39="/Library/Frameworks/Python.framework/Versions/3.9/bin"
+PYTHON310="/Library/Frameworks/Python.framework/Versions/3.10/bin"
+PYTHON311="/Library/Frameworks/Python.framework/Versions/3.11/bin"
 
 # Make sure we have an updated `pip`.
 curl https://bootstrap.pypa.io/get-pip.py | ${PYTHON37}/python3
@@ -43,17 +41,6 @@ curl https://bootstrap.pypa.io/get-pip.py | ${PYTHON37}/python3
 ${PYTHON37}/python3 -m pip install --upgrade delocate
 LISTDEPS_CMD="${PYTHON37}/delocate-listdeps --all --depending"
 VIRTUALENV_CMD="${PYTHON37}/python3 -m venv"
-
-
-${PYTHON36}/python3 -m venv venv36
-curl https://bootstrap.pypa.io/get-pip.py | venv36/bin/python3
-WHL=${REPO_ROOT}/wheels/google_crc32c-${PACKAGE_VERSION}-cp36-cp36m-macosx_10_9_x86_64.whl
-venv36/bin/pip install ${WHL}
-venv36/bin/python ${REPO_ROOT}/scripts/check_crc32c_extension.py
-venv36/bin/pip install pytest
-venv36/bin/py.test ${REPO_ROOT}/tests
-${LISTDEPS_CMD} ${WHL}
-rm -fr venv36
 
 ${PYTHON37}/python3 -m venv venv37
 curl https://bootstrap.pypa.io/get-pip.py | venv37/bin/python3
@@ -75,11 +62,26 @@ venv38/bin/python ${REPO_ROOT}/scripts/check_crc32c_extension.py
 ${LISTDEPS_CMD} ${WHL}
 rm -fr venv38
 
-# TODO: As of 2020-12-11, 3.9 is not available on our CI
-# ${PYTHON39}/python3 -m venv venv39
-# curl https://bootstrap.pypa.io/get-pip.py | venv39/bin/python3
-# WHL=${REPO_ROOT}/wheels/google_crc32c-${PACKAGE_VERSION}-cp39-cp39-macosx_10_9_x86_64.whl
-# venv37/bin/pip install ${WHL}
-# venv37/bin/python ${REPO_ROOT}/scripts/check_crc32c_extension.py
-# ${LISTDEPS_CMD} ${WHL}
-# rm -fr venv39
+${PYTHON39}/python3 -m venv venv39
+curl https://bootstrap.pypa.io/get-pip.py | venv39/bin/python3
+WHL=${REPO_ROOT}/wheels/google_crc32c-${PACKAGE_VERSION}-cp39-cp39-macosx_10_9_x86_64.whl
+venv39/bin/pip install ${WHL}
+venv39/bin/python ${REPO_ROOT}/scripts/check_crc32c_extension.py
+${LISTDEPS_CMD} ${WHL}
+rm -fr venv39
+
+${PYTHON310}/python3 -m venv venv310
+curl https://bootstrap.pypa.io/get-pip.py | venv310/bin/python3
+WHL=${REPO_ROOT}/wheels/google_crc32c-${PACKAGE_VERSION}-cp310-cp310-macosx_10_9_x86_64.whl
+venv310/bin/pip install ${WHL}
+venv310/bin/python ${REPO_ROOT}/scripts/check_crc32c_extension.py
+${LISTDEPS_CMD} ${WHL}
+rm -fr venv310
+
+${PYTHON311}/python3 -m venv venv311
+curl https://bootstrap.pypa.io/get-pip.py | venv311/bin/python3
+WHL=${REPO_ROOT}/wheels/google_crc32c-${PACKAGE_VERSION}-cp311-cp311-macosx_10_9_x86_64.whl
+venv311/bin/pip install ${WHL}
+venv311/bin/python ${REPO_ROOT}/scripts/check_crc32c_extension.py
+${LISTDEPS_CMD} ${WHL}
+rm -fr venv311

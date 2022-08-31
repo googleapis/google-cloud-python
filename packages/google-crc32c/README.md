@@ -9,7 +9,7 @@ C toolchain.
 
 # Currently Published Wheels
 
-Wheels are currently published for Python 3.6, 3.7, 3.8, 3.9, 3.10, and
+Wheels are currently published for Python 3.7, 3.8, 3.9, 3.10, 3.11 and
 pypy-3.7 for multiple architectures. For information on building your own,
 please view [BUILDING.md](BUILDING.md).
 
