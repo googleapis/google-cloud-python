@@ -15,7 +15,6 @@
 #
 import proto  # type: ignore
 
-from google.cloud.bigquery_data_exchange_v1beta1 import common  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import wrappers_pb2  # type: ignore
 
@@ -50,9 +49,9 @@ __protobuf__ = proto.module(
 
 
 class DataExchange(proto.Message):
-    r"""A data exchange is a container that enables data sharing.
-    It contains a set of listings of the data sources along with
-    descriptive information of the data exchange.
+    r"""A data exchange is a container that lets you share data.
+    Along with the descriptive information about the data exchange,
+    it contains listings that reference shared datasets.
 
     Attributes:
         name (str):
@@ -61,22 +60,21 @@ class DataExchange(proto.Message):
         display_name (str):
             Required. Human-readable display name of the data exchange.
             The display name must contain only Unicode letters, numbers
-            (0-9), underscores (_), dashes (-), spaces ( ), and can't
-            start or end with spaces. Default value is an empty string.
-            Max length: 63 bytes.
+            (0-9), underscores (_), dashes (-), spaces ( ), ampersands
+            (&) and must not start or end with spaces. Default value is
+            an empty string. Max length: 63 bytes.
         description (str):
-            Optional. Short description of the data
-            exchange that can consist of sentences or
-            paragraphs. The description must not contain
-            Unicode non-characters as well as C0 and C1
-            control codes except tabs (HT), new lines (LF),
-            carriage returns (CR), and page breaks (FF).
-            Default value is an empty string.
+            Optional. Description of the data exchange.
+            The description must not contain Unicode
+            non-characters as well as C0 and C1 control
+            codes except tabs (HT), new lines (LF), carriage
+            returns (CR), and page breaks (FF). Default
+            value is an empty string.
             Max length: 2000 bytes.
         primary_contact (str):
-            Optional. Email, URL or other reference of
-            the primary point of contact of the data
-            exchange Max Length: 1000 bytes.
+            Optional. Email or URL of the primary point
+            of contact of the data exchange. Max Length:
+            1000 bytes.
         documentation (str):
             Optional. Documentation describing the data
             exchange.
@@ -88,8 +86,8 @@ class DataExchange(proto.Message):
             the data exchange. Max Size: 3.0MiB Expected
             image dimensions are 512x512 pixels, however the
             API only performs validation on size of the
-            encoded data. Note: For byte fields, the
-            contents of the field are base64-encoded (which
+            encoded data. Note: For byte fields, the content
+            of the fields are base64-encoded (which
             increases the size of the data by 33-36%) when
             using JSON on the wire.
     """
@@ -125,13 +123,13 @@ class DataExchange(proto.Message):
 
 
 class DataProvider(proto.Message):
-    r"""Contains details of the Data Provider.
+    r"""Contains details of the data provider.
 
     Attributes:
         name (str):
-            Optional. Name of the Data Provider.
+            Optional. Name of the data provider.
         primary_contact (str):
-            Optional. Email or URL of the Data Provider.
+            Optional. Email or URL of the data provider.
             Max Length: 1000 bytes.
     """
 
@@ -146,14 +144,14 @@ class DataProvider(proto.Message):
 
 
 class Publisher(proto.Message):
-    r"""Contains details of the Publisher.
+    r"""Contains details of the listing publisher.
 
     Attributes:
         name (str):
-            Optional. Name of the listing Publisher.
+            Optional. Name of the listing publisher.
         primary_contact (str):
             Optional. Email or URL of the listing
-            Publisher. Max Length: 1000 bytes.
+            publisher. Max Length: 1000 bytes.
     """
 
     name = proto.Field(
@@ -167,7 +165,8 @@ class Publisher(proto.Message):
 
 
 class DestinationDatasetReference(proto.Message):
-    r"""Defines the Destination BigQuery Dataset Reference.
+    r"""Contains the reference that identifies a destination bigquery
+    dataset.
 
     Attributes:
         dataset_id (str):
@@ -191,7 +190,7 @@ class DestinationDatasetReference(proto.Message):
 
 
 class DestinationDataset(proto.Message):
-    r"""Defines the Destination BigQuery Dataset.
+    r"""Defines the destination bigquery dataset.
 
     Attributes:
         dataset_reference (google.cloud.bigquery_data_exchange_v1beta1.types.DestinationDatasetReference):
@@ -252,23 +251,27 @@ class Listing(proto.Message):
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
+        bigquery_dataset (google.cloud.bigquery_data_exchange_v1beta1.types.Listing.BigQueryDatasetSource):
+            Required. Shared dataset i.e. BigQuery
+            dataset source.
+
+            This field is a member of `oneof`_ ``source``.
         name (str):
             Output only. The resource name of the listing. e.g.
             ``projects/myproject/locations/US/dataExchanges/123/listings/456``
         display_name (str):
             Required. Human-readable display name of the listing. The
             display name must contain only Unicode letters, numbers
-            (0-9), underscores (_), dashes (-), spaces ( ), and can't
-            start or end with spaces. Default value is an empty string.
-            Max length: 63 bytes.
+            (0-9), underscores (_), dashes (-), spaces ( ), ampersands
+            (&) and can't start or end with spaces. Default value is an
+            empty string. Max length: 63 bytes.
         description (str):
-            Optional. Short description of the listing
-            that can consist of sentences or paragraphs. The
-            description must not contain Unicode
-            non-characters as well as C0 and C1 control
-            codes except tabs (HT), new lines (LF), carriage
-            returns (CR), and page breaks (FF).
-            Default value is an empty string.
+            Optional. Short description of the listing.
+            The description must not contain Unicode
+            non-characters and C0 and C1 control codes
+            except tabs (HT), new lines (LF), carriage
+            returns (CR), and page breaks (FF). Default
+            value is an empty string.
             Max length: 2000 bytes.
         primary_contact (str):
             Optional. Email or URL of the primary point
@@ -277,13 +280,8 @@ class Listing(proto.Message):
         documentation (str):
             Optional. Documentation describing the
             listing.
-        bigquery_dataset (google.cloud.bigquery_data_exchange_v1beta1.types.Listing.BigQueryDatasetSource):
-            Required. Shared dataset i.e. BigQuery
-            dataset source.
-
-            This field is a member of `oneof`_ ``source``.
         state (google.cloud.bigquery_data_exchange_v1beta1.types.Listing.State):
-            Output only. Current state of the Listing.
+            Output only. Current state of the listing.
         icon (bytes):
             Optional. Base64 encoded image representing
             the listing. Max Size: 3.0MiB Expected image
@@ -294,15 +292,14 @@ class Listing(proto.Message):
             size of the data by 33-36%) when using JSON on
             the wire.
         data_provider (google.cloud.bigquery_data_exchange_v1beta1.types.DataProvider):
-            Optional. The details of the Data Provider
-            who owns the source data.
-        categories (Sequence[google.cloud.bigquery_data_exchange_v1beta1.common.Category]):
-            Optional. Categories of the Listing. Up to
+            Optional. Details of the data provider who
+            owns the source data.
+        categories (Sequence[google.cloud.bigquery_data_exchange_v1beta1.types.Listing.Category]):
+            Optional. Categories of the listing. Up to
             two categories are allowed.
         publisher (google.cloud.bigquery_data_exchange_v1beta1.types.Publisher):
-            Optional. The details of the Publisher who
-            owns the listing and has rights to share the
-            source data.
+            Optional. Details of the publisher who owns
+            the listing and who can share the source data.
         request_access (str):
             Optional. Email or URL of the request access
             of the listing. Subscribers can use this
@@ -311,18 +308,40 @@ class Listing(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""State of the Listing"""
+        r"""State of the listing."""
         STATE_UNSPECIFIED = 0
         ACTIVE = 1
 
+    class Category(proto.Enum):
+        r"""Listing categories."""
+        CATEGORY_UNSPECIFIED = 0
+        CATEGORY_OTHERS = 1
+        CATEGORY_ADVERTISING_AND_MARKETING = 2
+        CATEGORY_COMMERCE = 3
+        CATEGORY_CLIMATE_AND_ENVIRONMENT = 4
+        CATEGORY_DEMOGRAPHICS = 5
+        CATEGORY_ECONOMICS = 6
+        CATEGORY_EDUCATION = 7
+        CATEGORY_ENERGY = 8
+        CATEGORY_FINANCIAL = 9
+        CATEGORY_GAMING = 10
+        CATEGORY_GEOSPATIAL = 11
+        CATEGORY_HEALTHCARE_AND_LIFE_SCIENCE = 12
+        CATEGORY_MEDIA = 13
+        CATEGORY_PUBLIC_SECTOR = 14
+        CATEGORY_RETAIL = 15
+        CATEGORY_SPORTS = 16
+        CATEGORY_SCIENCE_AND_RESEARCH = 17
+        CATEGORY_TRANSPORTATION_AND_LOGISTICS = 18
+        CATEGORY_TRAVEL_AND_TOURISM = 19
+
     class BigQueryDatasetSource(proto.Message):
-        r"""A reference to a Shared dataset. It's an existing BigQuery
-        dataset with a collection of objects, such as tables and views,
-        that you want to share with subscribers.
-        Upon subscription to a Listing, Data Exchange creates a Linked
-        dataset in the subscriber's project. A Linked dataset is an
-        opaque, read-only BigQuery dataset that serves as a "symbolic
-        link" to a shared dataset.
+        r"""A reference to a shared dataset. It is an existing BigQuery dataset
+        with a collection of objects such as tables and views that you want
+        to share with subscribers. When subscriber's subscribe to a listing,
+        Analytics Hub creates a linked dataset in the subscriber's project.
+        A Linked dataset is an opaque, read-only BigQuery dataset that
+        serves as a *symbolic link* to a shared dataset.
 
         Attributes:
             dataset (str):
@@ -335,6 +354,12 @@ class Listing(proto.Message):
             number=1,
         )
 
+    bigquery_dataset = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        oneof="source",
+        message=BigQueryDatasetSource,
+    )
     name = proto.Field(
         proto.STRING,
         number=1,
@@ -355,12 +380,6 @@ class Listing(proto.Message):
         proto.STRING,
         number=5,
     )
-    bigquery_dataset = proto.Field(
-        proto.MESSAGE,
-        number=6,
-        oneof="source",
-        message=BigQueryDatasetSource,
-    )
     state = proto.Field(
         proto.ENUM,
         number=7,
@@ -378,7 +397,7 @@ class Listing(proto.Message):
     categories = proto.RepeatedField(
         proto.ENUM,
         number=10,
-        enum=common.Category,
+        enum=Category,
     )
     publisher = proto.Field(
         proto.MESSAGE,
@@ -392,11 +411,11 @@ class Listing(proto.Message):
 
 
 class ListDataExchangesRequest(proto.Message):
-    r"""Message for requesting list of DataExchanges.
+    r"""Message for requesting the list of data exchanges.
 
     Attributes:
         parent (str):
-            Required. The parent resource path of the DataExchanges.
+            Required. The parent resource path of the data exchanges.
             e.g. ``projects/myproject/locations/US``.
         page_size (int):
             The maximum number of results to return in a
@@ -422,11 +441,11 @@ class ListDataExchangesRequest(proto.Message):
 
 
 class ListDataExchangesResponse(proto.Message):
-    r"""Message for response to listing DataExchanges.
+    r"""Message for response to the list of data exchanges.
 
     Attributes:
         data_exchanges (Sequence[google.cloud.bigquery_data_exchange_v1beta1.types.DataExchange]):
-            The list of DataExchange.
+            The list of data exchanges.
         next_page_token (str):
             A token to request the next page of results.
     """
@@ -447,8 +466,8 @@ class ListDataExchangesResponse(proto.Message):
 
 
 class ListOrgDataExchangesRequest(proto.Message):
-    r"""Message for requesting list of DataExchanges from projects in
-    an organization and location.
+    r"""Message for requesting the list of data exchanges from
+    projects in an organization and location.
 
     Attributes:
         organization (str):
@@ -479,12 +498,12 @@ class ListOrgDataExchangesRequest(proto.Message):
 
 
 class ListOrgDataExchangesResponse(proto.Message):
-    r"""Message for response to listing DataExchanges in an
+    r"""Message for response to listing data exchanges in an
     organization and location.
 
     Attributes:
         data_exchanges (Sequence[google.cloud.bigquery_data_exchange_v1beta1.types.DataExchange]):
-            The list of DataExchange.
+            The list of data exchanges.
         next_page_token (str):
             A token to request the next page of results.
     """
@@ -505,11 +524,11 @@ class ListOrgDataExchangesResponse(proto.Message):
 
 
 class GetDataExchangeRequest(proto.Message):
-    r"""Message for getting a DataExchange.
+    r"""Message for getting a data exchange.
 
     Attributes:
         name (str):
-            Required. The resource name of the DataExchange. e.g.
+            Required. The resource name of the data exchange. e.g.
             ``projects/myproject/locations/US/dataExchanges/123``.
     """
 
@@ -520,19 +539,19 @@ class GetDataExchangeRequest(proto.Message):
 
 
 class CreateDataExchangeRequest(proto.Message):
-    r"""Message for creating a DataExchange.
+    r"""Message for creating a data exchange.
 
     Attributes:
         parent (str):
-            Required. The parent resource path of the DataExchange. e.g.
-            ``projects/myproject/locations/US``.
+            Required. The parent resource path of the data exchange.
+            e.g. ``projects/myproject/locations/US``.
         data_exchange_id (str):
-            Required. The ID of the DataExchange to create. Must contain
-            only Unicode letters, numbers (0-9), underscores (_). Should
-            not use characters that require URL-escaping, or characters
+            Required. The ID of the data exchange. Must contain only
+            Unicode letters, numbers (0-9), underscores (_). Should not
+            use characters that require URL-escaping, or characters
             outside of ASCII, spaces. Max length: 100 bytes.
         data_exchange (google.cloud.bigquery_data_exchange_v1beta1.types.DataExchange):
-            Required. The DataExchange to create.
+            Required. The data exchange to create.
     """
 
     parent = proto.Field(
@@ -551,16 +570,16 @@ class CreateDataExchangeRequest(proto.Message):
 
 
 class UpdateDataExchangeRequest(proto.Message):
-    r"""Message for updating a DataExchange.
+    r"""Message for updating a data exchange.
 
     Attributes:
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Required. Field mask is used to specify the fields to be
-            overwritten in the DataExchange resource by the update. The
-            fields specified in the update_mask are relative to the
-            resource, not the full request.
+            Required. Field mask specifies the fields to update in the
+            data exchange resource. The fields specified in the
+            ``updateMask`` are relative to the resource and are not a
+            full request.
         data_exchange (google.cloud.bigquery_data_exchange_v1beta1.types.DataExchange):
-            Required. The DataExchange to update.
+            Required. The data exchange to update.
     """
 
     update_mask = proto.Field(
@@ -576,11 +595,12 @@ class UpdateDataExchangeRequest(proto.Message):
 
 
 class DeleteDataExchangeRequest(proto.Message):
-    r"""Message for deleting a DataExchange.
+    r"""Message for deleting a data exchange.
 
     Attributes:
         name (str):
-            Required. Resource name of the DataExchange to delete. e.g.
+            Required. The full name of the data exchange resource that
+            you want to delete. For example,
             ``projects/myproject/locations/US/dataExchanges/123``.
     """
 
@@ -591,7 +611,7 @@ class DeleteDataExchangeRequest(proto.Message):
 
 
 class ListListingsRequest(proto.Message):
-    r"""Message for requesting list of Listings.
+    r"""Message for requesting the list of listings.
 
     Attributes:
         parent (str):
@@ -621,7 +641,7 @@ class ListListingsRequest(proto.Message):
 
 
 class ListListingsResponse(proto.Message):
-    r"""Message for response to listing Listings.
+    r"""Message for response to the list of Listings.
 
     Attributes:
         listings (Sequence[google.cloud.bigquery_data_exchange_v1beta1.types.Listing]):
@@ -646,7 +666,7 @@ class ListListingsResponse(proto.Message):
 
 
 class GetListingRequest(proto.Message):
-    r"""Message for getting a Listing.
+    r"""Message for getting a listing.
 
     Attributes:
         name (str):
@@ -661,14 +681,14 @@ class GetListingRequest(proto.Message):
 
 
 class CreateListingRequest(proto.Message):
-    r"""Message for creating a Listing.
+    r"""Message for creating a listing.
 
     Attributes:
         parent (str):
             Required. The parent resource path of the listing. e.g.
             ``projects/myproject/locations/US/dataExchanges/123``.
         listing_id (str):
-            Required. The ID of the Listing to create. Must contain only
+            Required. The ID of the listing to create. Must contain only
             Unicode letters, numbers (0-9), underscores (_). Should not
             use characters that require URL-escaping, or characters
             outside of ASCII, spaces. Max length: 100 bytes.
@@ -696,10 +716,9 @@ class UpdateListingRequest(proto.Message):
 
     Attributes:
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Required. Field mask is used to specify the fields to be
-            overwritten in the Listing resource by the update. The
-            fields specified in the update_mask are relative to the
-            resource, not the full request.
+            Required. Field mask specifies the fields to update in the
+            listing resource. The fields specified in the ``updateMask``
+            are relative to the resource and are not a full request.
         listing (google.cloud.bigquery_data_exchange_v1beta1.types.Listing):
             Required. The listing to update.
     """
@@ -717,7 +736,7 @@ class UpdateListingRequest(proto.Message):
 
 
 class DeleteListingRequest(proto.Message):
-    r"""Message for deleting a Listing.
+    r"""Message for deleting a listing.
 
     Attributes:
         name (str):
@@ -732,38 +751,36 @@ class DeleteListingRequest(proto.Message):
 
 
 class SubscribeListingRequest(proto.Message):
-    r"""Message for subscribing a Listing.
+    r"""Message for subscribing to a listing.
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
-        name (str):
-            Required. Resource name of the listing to subscribe to. e.g.
-            ``projects/myproject/locations/US/dataExchanges/123/listings/456``.
         destination_dataset (google.cloud.bigquery_data_exchange_v1beta1.types.DestinationDataset):
             BigQuery destination dataset to create for
             the subscriber.
 
             This field is a member of `oneof`_ ``destination``.
+        name (str):
+            Required. Resource name of the listing that you want to
+            subscribe to. e.g.
+            ``projects/myproject/locations/US/dataExchanges/123/listings/456``.
     """
 
-    name = proto.Field(
-        proto.STRING,
-        number=1,
-    )
     destination_dataset = proto.Field(
         proto.MESSAGE,
         number=3,
         oneof="destination",
         message="DestinationDataset",
     )
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class SubscribeListingResponse(proto.Message):
-    r"""Message for response to subscribing a Listing.
-    Empty for now.
-
-    """
+    r"""Message for response when you subscribe to a listing."""
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

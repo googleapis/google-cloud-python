@@ -25,6 +25,7 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 import grpc  # type: ignore
 
 from google.cloud.bigquery_data_exchange_v1beta1.types import dataexchange
+from google.cloud.location import locations_pb2  # type: ignore
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
@@ -34,12 +35,13 @@ from .base import AnalyticsHubServiceTransport, DEFAULT_CLIENT_INFO
 class AnalyticsHubServiceGrpcTransport(AnalyticsHubServiceTransport):
     """gRPC backend transport for AnalyticsHubService.
 
-    The AnalyticsHubService API facilitates data sharing within
-    and across organizations. It allows data providers to publish
-    Listings --- a discoverable and searchable SKU representing a
-    dataset. Data consumers can subscribe to Listings. Upon
-    subscription, AnalyticsHub provisions a "Linked Datasets"
-    surfacing the data in the consumer's project.
+    The ``AnalyticsHubService`` API facilitates data sharing within and
+    across organizations. It allows data providers to publish listings
+    that reference shared datasets. With Analytics Hub, users can
+    discover and search for listings that they have access to.
+    Subscribers can view and subscribe to listings. When you subscribe
+    to a listing, Analytics Hub creates a linked dataset in your
+    project.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -245,7 +247,8 @@ class AnalyticsHubServiceGrpcTransport(AnalyticsHubServiceTransport):
     ]:
         r"""Return a callable for the list data exchanges method over gRPC.
 
-        Lists DataExchanges in a given project and location.
+        Lists all data exchanges in a given project and
+        location.
 
         Returns:
             Callable[[~.ListDataExchangesRequest],
@@ -274,7 +277,7 @@ class AnalyticsHubServiceGrpcTransport(AnalyticsHubServiceTransport):
     ]:
         r"""Return a callable for the list org data exchanges method over gRPC.
 
-        Lists DataExchanges from projects in a given
+        Lists all data exchanges from projects in a given
         organization and location.
 
         Returns:
@@ -301,7 +304,7 @@ class AnalyticsHubServiceGrpcTransport(AnalyticsHubServiceTransport):
     ) -> Callable[[dataexchange.GetDataExchangeRequest], dataexchange.DataExchange]:
         r"""Return a callable for the get data exchange method over gRPC.
 
-        Gets details of a single DataExchange.
+        Gets the details of a data exchange.
 
         Returns:
             Callable[[~.GetDataExchangeRequest],
@@ -327,8 +330,7 @@ class AnalyticsHubServiceGrpcTransport(AnalyticsHubServiceTransport):
     ) -> Callable[[dataexchange.CreateDataExchangeRequest], dataexchange.DataExchange]:
         r"""Return a callable for the create data exchange method over gRPC.
 
-        Creates a new DataExchange in a given project and
-        location.
+        Creates a new data exchange.
 
         Returns:
             Callable[[~.CreateDataExchangeRequest],
@@ -354,7 +356,7 @@ class AnalyticsHubServiceGrpcTransport(AnalyticsHubServiceTransport):
     ) -> Callable[[dataexchange.UpdateDataExchangeRequest], dataexchange.DataExchange]:
         r"""Return a callable for the update data exchange method over gRPC.
 
-        Updates the parameters of a single DataExchange.
+        Updates an existing data exchange.
 
         Returns:
             Callable[[~.UpdateDataExchangeRequest],
@@ -380,7 +382,7 @@ class AnalyticsHubServiceGrpcTransport(AnalyticsHubServiceTransport):
     ) -> Callable[[dataexchange.DeleteDataExchangeRequest], empty_pb2.Empty]:
         r"""Return a callable for the delete data exchange method over gRPC.
 
-        Deletes a single DataExchange.
+        Deletes an existing data exchange.
 
         Returns:
             Callable[[~.DeleteDataExchangeRequest],
@@ -408,7 +410,7 @@ class AnalyticsHubServiceGrpcTransport(AnalyticsHubServiceTransport):
     ]:
         r"""Return a callable for the list listings method over gRPC.
 
-        Lists Listings in a given project and location.
+        Lists all listings in a given project and location.
 
         Returns:
             Callable[[~.ListListingsRequest],
@@ -434,7 +436,7 @@ class AnalyticsHubServiceGrpcTransport(AnalyticsHubServiceTransport):
     ) -> Callable[[dataexchange.GetListingRequest], dataexchange.Listing]:
         r"""Return a callable for the get listing method over gRPC.
 
-        Gets details of a single Listing.
+        Gets the details of a listing.
 
         Returns:
             Callable[[~.GetListingRequest],
@@ -460,8 +462,7 @@ class AnalyticsHubServiceGrpcTransport(AnalyticsHubServiceTransport):
     ) -> Callable[[dataexchange.CreateListingRequest], dataexchange.Listing]:
         r"""Return a callable for the create listing method over gRPC.
 
-        Creates a new Listing in a given project and
-        location.
+        Creates a new listing.
 
         Returns:
             Callable[[~.CreateListingRequest],
@@ -487,7 +488,7 @@ class AnalyticsHubServiceGrpcTransport(AnalyticsHubServiceTransport):
     ) -> Callable[[dataexchange.UpdateListingRequest], dataexchange.Listing]:
         r"""Return a callable for the update listing method over gRPC.
 
-        Updates the parameters of a single Listing.
+        Updates an existing listing.
 
         Returns:
             Callable[[~.UpdateListingRequest],
@@ -513,9 +514,7 @@ class AnalyticsHubServiceGrpcTransport(AnalyticsHubServiceTransport):
     ) -> Callable[[dataexchange.DeleteListingRequest], empty_pb2.Empty]:
         r"""Return a callable for the delete listing method over gRPC.
 
-        Deletes a single Listing, as long as there are no
-        subscriptions associated with the source of this
-        Listing.
+        Deletes a listing.
 
         Returns:
             Callable[[~.DeleteListingRequest],
@@ -543,11 +542,12 @@ class AnalyticsHubServiceGrpcTransport(AnalyticsHubServiceTransport):
     ]:
         r"""Return a callable for the subscribe listing method over gRPC.
 
-        Subscribes to a single Listing.
-        Data Exchange currently supports one type of Listing: a
-        BigQuery dataset. Upon subscription to a Listing for a
-        BigQuery dataset, Data Exchange creates a linked dataset
-        in the subscriber's project.
+        Subscribes to a listing.
+        Currently, with Analytics Hub, you can create listings
+        that reference only BigQuery datasets.
+        Upon subscription to a listing for a BigQuery dataset,
+        Analytics Hub creates a linked dataset in the
+        subscriber's project.
 
         Returns:
             Callable[[~.SubscribeListingRequest],
@@ -573,7 +573,7 @@ class AnalyticsHubServiceGrpcTransport(AnalyticsHubServiceTransport):
     ) -> Callable[[iam_policy_pb2.GetIamPolicyRequest], policy_pb2.Policy]:
         r"""Return a callable for the get iam policy method over gRPC.
 
-        Gets the IAM policy for a dataExchange or a listing.
+        Gets the IAM policy.
 
         Returns:
             Callable[[~.GetIamPolicyRequest],
@@ -599,7 +599,7 @@ class AnalyticsHubServiceGrpcTransport(AnalyticsHubServiceTransport):
     ) -> Callable[[iam_policy_pb2.SetIamPolicyRequest], policy_pb2.Policy]:
         r"""Return a callable for the set iam policy method over gRPC.
 
-        Sets the IAM policy for a dataExchange or a listing.
+        Sets the IAM policy.
 
         Returns:
             Callable[[~.SetIamPolicyRequest],
@@ -628,8 +628,7 @@ class AnalyticsHubServiceGrpcTransport(AnalyticsHubServiceTransport):
     ]:
         r"""Return a callable for the test iam permissions method over gRPC.
 
-        Returns the permissions that a caller has on a
-        specified dataExchange or listing.
+        Returns the permissions that a caller has.
 
         Returns:
             Callable[[~.TestIamPermissionsRequest],
@@ -651,6 +650,42 @@ class AnalyticsHubServiceGrpcTransport(AnalyticsHubServiceTransport):
 
     def close(self):
         self.grpc_channel.close()
+
+    @property
+    def list_locations(
+        self,
+    ) -> Callable[
+        [locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse
+    ]:
+        r"""Return a callable for the list locations method over gRPC."""
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_locations" not in self._stubs:
+            self._stubs["list_locations"] = self.grpc_channel.unary_unary(
+                "/google.cloud.location.Locations/ListLocations",
+                request_serializer=locations_pb2.ListLocationsRequest.SerializeToString,
+                response_deserializer=locations_pb2.ListLocationsResponse.FromString,
+            )
+        return self._stubs["list_locations"]
+
+    @property
+    def get_location(
+        self,
+    ) -> Callable[[locations_pb2.GetLocationRequest], locations_pb2.Location]:
+        r"""Return a callable for the list locations method over gRPC."""
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_location" not in self._stubs:
+            self._stubs["get_location"] = self.grpc_channel.unary_unary(
+                "/google.cloud.location.Locations/GetLocation",
+                request_serializer=locations_pb2.GetLocationRequest.SerializeToString,
+                response_deserializer=locations_pb2.Location.FromString,
+            )
+        return self._stubs["get_location"]
 
     @property
     def kind(self) -> str:

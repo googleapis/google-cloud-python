@@ -31,11 +31,11 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object]  # type: ignore
 
-from google.cloud.bigquery_data_exchange_v1beta1 import common  # type: ignore
 from google.cloud.bigquery_data_exchange_v1beta1.services.analytics_hub_service import (
     pagers,
 )
 from google.cloud.bigquery_data_exchange_v1beta1.types import dataexchange
+from google.cloud.location import locations_pb2  # type: ignore
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
@@ -45,12 +45,13 @@ from .client import AnalyticsHubServiceClient
 
 
 class AnalyticsHubServiceAsyncClient:
-    """The AnalyticsHubService API facilitates data sharing within
-    and across organizations. It allows data providers to publish
-    Listings --- a discoverable and searchable SKU representing a
-    dataset. Data consumers can subscribe to Listings. Upon
-    subscription, AnalyticsHub provisions a "Linked Datasets"
-    surfacing the data in the consumer's project.
+    """The ``AnalyticsHubService`` API facilitates data sharing within and
+    across organizations. It allows data providers to publish listings
+    that reference shared datasets. With Analytics Hub, users can
+    discover and search for listings that they have access to.
+    Subscribers can view and subscribe to listings. When you subscribe
+    to a listing, Analytics Hub creates a linked dataset in your
+    project.
     """
 
     _client: AnalyticsHubServiceClient
@@ -230,7 +231,8 @@ class AnalyticsHubServiceAsyncClient:
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListDataExchangesAsyncPager:
-        r"""Lists DataExchanges in a given project and location.
+        r"""Lists all data exchanges in a given project and
+        location.
 
         .. code-block:: python
 
@@ -254,11 +256,11 @@ class AnalyticsHubServiceAsyncClient:
 
         Args:
             request (Union[google.cloud.bigquery_data_exchange_v1beta1.types.ListDataExchangesRequest, dict]):
-                The request object. Message for requesting list of
-                DataExchanges.
+                The request object. Message for requesting the list of
+                data exchanges.
             parent (:class:`str`):
-                Required. The parent resource path of the DataExchanges.
-                e.g. ``projects/myproject/locations/US``.
+                Required. The parent resource path of the data
+                exchanges. e.g. ``projects/myproject/locations/US``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -271,8 +273,8 @@ class AnalyticsHubServiceAsyncClient:
 
         Returns:
             google.cloud.bigquery_data_exchange_v1beta1.services.analytics_hub_service.pagers.ListDataExchangesAsyncPager:
-                Message for response to listing
-                DataExchanges.
+                Message for response to the list of
+                data exchanges.
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.
@@ -338,7 +340,7 @@ class AnalyticsHubServiceAsyncClient:
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListOrgDataExchangesAsyncPager:
-        r"""Lists DataExchanges from projects in a given
+        r"""Lists all data exchanges from projects in a given
         organization and location.
 
         .. code-block:: python
@@ -363,8 +365,8 @@ class AnalyticsHubServiceAsyncClient:
 
         Args:
             request (Union[google.cloud.bigquery_data_exchange_v1beta1.types.ListOrgDataExchangesRequest, dict]):
-                The request object. Message for requesting list of
-                DataExchanges from projects in an organization and
+                The request object. Message for requesting the list of
+                data exchanges from projects in an organization and
                 location.
             organization (:class:`str`):
                 Required. The organization resource path of the projects
@@ -382,8 +384,8 @@ class AnalyticsHubServiceAsyncClient:
 
         Returns:
             google.cloud.bigquery_data_exchange_v1beta1.services.analytics_hub_service.pagers.ListOrgDataExchangesAsyncPager:
-                Message for response to listing
-                DataExchanges in an organization and
+                Message for response to listing data
+                exchanges in an organization and
                 location.
                 Iterating over this object will yield
                 results and resolve additional pages
@@ -452,7 +454,7 @@ class AnalyticsHubServiceAsyncClient:
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> dataexchange.DataExchange:
-        r"""Gets details of a single DataExchange.
+        r"""Gets the details of a data exchange.
 
         .. code-block:: python
 
@@ -475,9 +477,9 @@ class AnalyticsHubServiceAsyncClient:
 
         Args:
             request (Union[google.cloud.bigquery_data_exchange_v1beta1.types.GetDataExchangeRequest, dict]):
-                The request object. Message for getting a DataExchange.
+                The request object. Message for getting a data exchange.
             name (:class:`str`):
-                Required. The resource name of the DataExchange. e.g.
+                Required. The resource name of the data exchange. e.g.
                 ``projects/myproject/locations/US/dataExchanges/123``.
 
                 This corresponds to the ``name`` field
@@ -492,10 +494,10 @@ class AnalyticsHubServiceAsyncClient:
         Returns:
             google.cloud.bigquery_data_exchange_v1beta1.types.DataExchange:
                 A data exchange is a container that
-                enables data sharing. It contains a set
-                of listings of the data sources along
-                with descriptive information of the data
-                exchange.
+                lets you share data. Along with the
+                descriptive information about the data
+                exchange, it contains listings that
+                reference shared datasets.
 
         """
         # Create or coerce a protobuf request object.
@@ -550,8 +552,7 @@ class AnalyticsHubServiceAsyncClient:
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> dataexchange.DataExchange:
-        r"""Creates a new DataExchange in a given project and
-        location.
+        r"""Creates a new data exchange.
 
         .. code-block:: python
 
@@ -579,16 +580,19 @@ class AnalyticsHubServiceAsyncClient:
 
         Args:
             request (Union[google.cloud.bigquery_data_exchange_v1beta1.types.CreateDataExchangeRequest, dict]):
-                The request object. Message for creating a DataExchange.
+                The request object. Message for creating a data
+                exchange.
             parent (:class:`str`):
-                Required. The parent resource path of the DataExchange.
+                Required. The parent resource path of the data exchange.
                 e.g. ``projects/myproject/locations/US``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             data_exchange (:class:`google.cloud.bigquery_data_exchange_v1beta1.types.DataExchange`):
-                Required. The DataExchange to create.
+                Required. The data exchange to
+                create.
+
                 This corresponds to the ``data_exchange`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -601,10 +605,10 @@ class AnalyticsHubServiceAsyncClient:
         Returns:
             google.cloud.bigquery_data_exchange_v1beta1.types.DataExchange:
                 A data exchange is a container that
-                enables data sharing. It contains a set
-                of listings of the data sources along
-                with descriptive information of the data
-                exchange.
+                lets you share data. Along with the
+                descriptive information about the data
+                exchange, it contains listings that
+                reference shared datasets.
 
         """
         # Create or coerce a protobuf request object.
@@ -661,7 +665,7 @@ class AnalyticsHubServiceAsyncClient:
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> dataexchange.DataExchange:
-        r"""Updates the parameters of a single DataExchange.
+        r"""Updates an existing data exchange.
 
         .. code-block:: python
 
@@ -687,17 +691,20 @@ class AnalyticsHubServiceAsyncClient:
 
         Args:
             request (Union[google.cloud.bigquery_data_exchange_v1beta1.types.UpdateDataExchangeRequest, dict]):
-                The request object. Message for updating a DataExchange.
+                The request object. Message for updating a data
+                exchange.
             data_exchange (:class:`google.cloud.bigquery_data_exchange_v1beta1.types.DataExchange`):
-                Required. The DataExchange to update.
+                Required. The data exchange to
+                update.
+
                 This corresponds to the ``data_exchange`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
-                Required. Field mask is used to specify the fields to be
-                overwritten in the DataExchange resource by the update.
-                The fields specified in the update_mask are relative to
-                the resource, not the full request.
+                Required. Field mask specifies the fields to update in
+                the data exchange resource. The fields specified in the
+                ``updateMask`` are relative to the resource and are not
+                a full request.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -711,10 +718,10 @@ class AnalyticsHubServiceAsyncClient:
         Returns:
             google.cloud.bigquery_data_exchange_v1beta1.types.DataExchange:
                 A data exchange is a container that
-                enables data sharing. It contains a set
-                of listings of the data sources along
-                with descriptive information of the data
-                exchange.
+                lets you share data. Along with the
+                descriptive information about the data
+                exchange, it contains listings that
+                reference shared datasets.
 
         """
         # Create or coerce a protobuf request object.
@@ -772,7 +779,7 @@ class AnalyticsHubServiceAsyncClient:
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
-        r"""Deletes a single DataExchange.
+        r"""Deletes an existing data exchange.
 
         .. code-block:: python
 
@@ -792,10 +799,11 @@ class AnalyticsHubServiceAsyncClient:
 
         Args:
             request (Union[google.cloud.bigquery_data_exchange_v1beta1.types.DeleteDataExchangeRequest, dict]):
-                The request object. Message for deleting a DataExchange.
+                The request object. Message for deleting a data
+                exchange.
             name (:class:`str`):
-                Required. Resource name of the DataExchange to delete.
-                e.g.
+                Required. The full name of the data exchange resource
+                that you want to delete. For example,
                 ``projects/myproject/locations/US/dataExchanges/123``.
 
                 This corresponds to the ``name`` field
@@ -855,7 +863,7 @@ class AnalyticsHubServiceAsyncClient:
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListListingsAsyncPager:
-        r"""Lists Listings in a given project and location.
+        r"""Lists all listings in a given project and location.
 
         .. code-block:: python
 
@@ -879,8 +887,8 @@ class AnalyticsHubServiceAsyncClient:
 
         Args:
             request (Union[google.cloud.bigquery_data_exchange_v1beta1.types.ListListingsRequest, dict]):
-                The request object. Message for requesting list of
-                Listings.
+                The request object. Message for requesting the list of
+                listings.
             parent (:class:`str`):
                 Required. The parent resource path of the listing. e.g.
                 ``projects/myproject/locations/US/dataExchanges/123``.
@@ -896,7 +904,7 @@ class AnalyticsHubServiceAsyncClient:
 
         Returns:
             google.cloud.bigquery_data_exchange_v1beta1.services.analytics_hub_service.pagers.ListListingsAsyncPager:
-                Message for response to listing
+                Message for response to the list of
                 Listings.
                 Iterating over this object will yield
                 results and resolve additional pages
@@ -963,7 +971,7 @@ class AnalyticsHubServiceAsyncClient:
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> dataexchange.Listing:
-        r"""Gets details of a single Listing.
+        r"""Gets the details of a listing.
 
         .. code-block:: python
 
@@ -986,7 +994,7 @@ class AnalyticsHubServiceAsyncClient:
 
         Args:
             request (Union[google.cloud.bigquery_data_exchange_v1beta1.types.GetListingRequest, dict]):
-                The request object. Message for getting a Listing.
+                The request object. Message for getting a listing.
             name (:class:`str`):
                 Required. The resource name of the listing. e.g.
                 ``projects/myproject/locations/US/dataExchanges/123/listings/456``.
@@ -1062,8 +1070,7 @@ class AnalyticsHubServiceAsyncClient:
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> dataexchange.Listing:
-        r"""Creates a new Listing in a given project and
-        location.
+        r"""Creates a new listing.
 
         .. code-block:: python
 
@@ -1091,7 +1098,7 @@ class AnalyticsHubServiceAsyncClient:
 
         Args:
             request (Union[google.cloud.bigquery_data_exchange_v1beta1.types.CreateListingRequest, dict]):
-                The request object. Message for creating a Listing.
+                The request object. Message for creating a listing.
             parent (:class:`str`):
                 Required. The parent resource path of the listing. e.g.
                 ``projects/myproject/locations/US/dataExchanges/123``.
@@ -1174,7 +1181,7 @@ class AnalyticsHubServiceAsyncClient:
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> dataexchange.Listing:
-        r"""Updates the parameters of a single Listing.
+        r"""Updates an existing listing.
 
         .. code-block:: python
 
@@ -1207,10 +1214,10 @@ class AnalyticsHubServiceAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
-                Required. Field mask is used to specify the fields to be
-                overwritten in the Listing resource by the update. The
-                fields specified in the update_mask are relative to the
-                resource, not the full request.
+                Required. Field mask specifies the fields to update in
+                the listing resource. The fields specified in the
+                ``updateMask`` are relative to the resource and are not
+                a full request.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1286,9 +1293,7 @@ class AnalyticsHubServiceAsyncClient:
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
-        r"""Deletes a single Listing, as long as there are no
-        subscriptions associated with the source of this
-        Listing.
+        r"""Deletes a listing.
 
         .. code-block:: python
 
@@ -1308,7 +1313,7 @@ class AnalyticsHubServiceAsyncClient:
 
         Args:
             request (Union[google.cloud.bigquery_data_exchange_v1beta1.types.DeleteListingRequest, dict]):
-                The request object. Message for deleting a Listing.
+                The request object. Message for deleting a listing.
             name (:class:`str`):
                 Required. Resource name of the listing to delete. e.g.
                 ``projects/myproject/locations/US/dataExchanges/123/listings/456``.
@@ -1370,11 +1375,12 @@ class AnalyticsHubServiceAsyncClient:
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> dataexchange.SubscribeListingResponse:
-        r"""Subscribes to a single Listing.
-        Data Exchange currently supports one type of Listing: a
-        BigQuery dataset. Upon subscription to a Listing for a
-        BigQuery dataset, Data Exchange creates a linked dataset
-        in the subscriber's project.
+        r"""Subscribes to a listing.
+        Currently, with Analytics Hub, you can create listings
+        that reference only BigQuery datasets.
+        Upon subscription to a listing for a BigQuery dataset,
+        Analytics Hub creates a linked dataset in the
+        subscriber's project.
 
         .. code-block:: python
 
@@ -1403,10 +1409,11 @@ class AnalyticsHubServiceAsyncClient:
 
         Args:
             request (Union[google.cloud.bigquery_data_exchange_v1beta1.types.SubscribeListingRequest, dict]):
-                The request object. Message for subscribing a Listing.
+                The request object. Message for subscribing to a
+                listing.
             name (:class:`str`):
-                Required. Resource name of the listing to subscribe to.
-                e.g.
+                Required. Resource name of the listing that you want to
+                subscribe to. e.g.
                 ``projects/myproject/locations/US/dataExchanges/123/listings/456``.
 
                 This corresponds to the ``name`` field
@@ -1420,8 +1427,8 @@ class AnalyticsHubServiceAsyncClient:
 
         Returns:
             google.cloud.bigquery_data_exchange_v1beta1.types.SubscribeListingResponse:
-                Message for response to subscribing a
-                Listing. Empty for now.
+                Message for response when you
+                subscribe to a listing.
 
         """
         # Create or coerce a protobuf request object.
@@ -1474,7 +1481,7 @@ class AnalyticsHubServiceAsyncClient:
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> policy_pb2.Policy:
-        r"""Gets the IAM policy for a dataExchange or a listing.
+        r"""Gets the IAM policy.
 
         .. code-block:: python
 
@@ -1610,7 +1617,7 @@ class AnalyticsHubServiceAsyncClient:
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> policy_pb2.Policy:
-        r"""Sets the IAM policy for a dataExchange or a listing.
+        r"""Sets the IAM policy.
 
         .. code-block:: python
 
@@ -1746,8 +1753,7 @@ class AnalyticsHubServiceAsyncClient:
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> iam_policy_pb2.TestIamPermissionsResponse:
-        r"""Returns the permissions that a caller has on a
-        specified dataExchange or listing.
+        r"""Returns the permissions that a caller has.
 
         .. code-block:: python
 
@@ -1802,6 +1808,114 @@ class AnalyticsHubServiceAsyncClient:
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def get_location(
+        self,
+        request: locations_pb2.GetLocationRequest = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> locations_pb2.Location:
+        r"""Gets information about a location.
+
+        Args:
+            request (:class:`~.location_pb2.GetLocationRequest`):
+                The request object. Request message for
+                `GetLocation` method.
+            retry (google.api_core.retry.Retry): Designation of what errors,
+                 if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        Returns:
+            ~.location_pb2.Location:
+                Location object.
+        """
+        # Create or coerce a protobuf request object.
+        # The request isn't a proto-plus wrapped type,
+        # so it must be constructed via keyword expansion.
+        if isinstance(request, dict):
+            request = locations_pb2.GetLocationRequest(**request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method.wrap_method(
+            self._client._transport.get_location,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def list_locations(
+        self,
+        request: locations_pb2.ListLocationsRequest = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> locations_pb2.ListLocationsResponse:
+        r"""Lists information about the supported locations for this service.
+
+        Args:
+            request (:class:`~.location_pb2.ListLocationsRequest`):
+                The request object. Request message for
+                `ListLocations` method.
+            retry (google.api_core.retry.Retry): Designation of what errors,
+                 if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        Returns:
+            ~.location_pb2.ListLocationsResponse:
+                Response message for ``ListLocations`` method.
+        """
+        # Create or coerce a protobuf request object.
+        # The request isn't a proto-plus wrapped type,
+        # so it must be constructed via keyword expansion.
+        if isinstance(request, dict):
+            request = locations_pb2.ListLocationsRequest(**request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method.wrap_method(
+            self._client._transport.list_locations,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
         )
 
         # Send the request.

@@ -37,7 +37,6 @@ from google.api_core import grpc_helpers_async
 from google.api_core import path_template
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
-from google.cloud.bigquery_data_exchange_v1beta1 import common  # type: ignore
 from google.cloud.bigquery_data_exchange_v1beta1.services.analytics_hub_service import (
     AnalyticsHubServiceAsyncClient,
 )
@@ -51,6 +50,7 @@ from google.cloud.bigquery_data_exchange_v1beta1.services.analytics_hub_service 
     transports,
 )
 from google.cloud.bigquery_data_exchange_v1beta1.types import dataexchange
+from google.cloud.location import locations_pb2
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import options_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
@@ -3118,7 +3118,7 @@ def test_get_listing(request_type, transport: str = "grpc"):
             documentation="documentation_value",
             state=dataexchange.Listing.State.ACTIVE,
             icon=b"icon_blob",
-            categories=[common.Category.CATEGORY_OTHERS],
+            categories=[dataexchange.Listing.Category.CATEGORY_OTHERS],
             request_access="request_access_value",
             bigquery_dataset=dataexchange.Listing.BigQueryDatasetSource(
                 dataset="dataset_value"
@@ -3140,7 +3140,7 @@ def test_get_listing(request_type, transport: str = "grpc"):
     assert response.documentation == "documentation_value"
     assert response.state == dataexchange.Listing.State.ACTIVE
     assert response.icon == b"icon_blob"
-    assert response.categories == [common.Category.CATEGORY_OTHERS]
+    assert response.categories == [dataexchange.Listing.Category.CATEGORY_OTHERS]
     assert response.request_access == "request_access_value"
 
 
@@ -3185,7 +3185,7 @@ async def test_get_listing_async(
                 documentation="documentation_value",
                 state=dataexchange.Listing.State.ACTIVE,
                 icon=b"icon_blob",
-                categories=[common.Category.CATEGORY_OTHERS],
+                categories=[dataexchange.Listing.Category.CATEGORY_OTHERS],
                 request_access="request_access_value",
             )
         )
@@ -3205,7 +3205,7 @@ async def test_get_listing_async(
     assert response.documentation == "documentation_value"
     assert response.state == dataexchange.Listing.State.ACTIVE
     assert response.icon == b"icon_blob"
-    assert response.categories == [common.Category.CATEGORY_OTHERS]
+    assert response.categories == [dataexchange.Listing.Category.CATEGORY_OTHERS]
     assert response.request_access == "request_access_value"
 
 
@@ -3385,7 +3385,7 @@ def test_create_listing(request_type, transport: str = "grpc"):
             documentation="documentation_value",
             state=dataexchange.Listing.State.ACTIVE,
             icon=b"icon_blob",
-            categories=[common.Category.CATEGORY_OTHERS],
+            categories=[dataexchange.Listing.Category.CATEGORY_OTHERS],
             request_access="request_access_value",
             bigquery_dataset=dataexchange.Listing.BigQueryDatasetSource(
                 dataset="dataset_value"
@@ -3407,7 +3407,7 @@ def test_create_listing(request_type, transport: str = "grpc"):
     assert response.documentation == "documentation_value"
     assert response.state == dataexchange.Listing.State.ACTIVE
     assert response.icon == b"icon_blob"
-    assert response.categories == [common.Category.CATEGORY_OTHERS]
+    assert response.categories == [dataexchange.Listing.Category.CATEGORY_OTHERS]
     assert response.request_access == "request_access_value"
 
 
@@ -3452,7 +3452,7 @@ async def test_create_listing_async(
                 documentation="documentation_value",
                 state=dataexchange.Listing.State.ACTIVE,
                 icon=b"icon_blob",
-                categories=[common.Category.CATEGORY_OTHERS],
+                categories=[dataexchange.Listing.Category.CATEGORY_OTHERS],
                 request_access="request_access_value",
             )
         )
@@ -3472,7 +3472,7 @@ async def test_create_listing_async(
     assert response.documentation == "documentation_value"
     assert response.state == dataexchange.Listing.State.ACTIVE
     assert response.icon == b"icon_blob"
-    assert response.categories == [common.Category.CATEGORY_OTHERS]
+    assert response.categories == [dataexchange.Listing.Category.CATEGORY_OTHERS]
     assert response.request_access == "request_access_value"
 
 
@@ -3555,7 +3555,11 @@ def test_create_listing_flattened():
         # using the keyword arguments to the method.
         client.create_listing(
             parent="parent_value",
-            listing=dataexchange.Listing(name="name_value"),
+            listing=dataexchange.Listing(
+                bigquery_dataset=dataexchange.Listing.BigQueryDatasetSource(
+                    dataset="dataset_value"
+                )
+            ),
         )
 
         # Establish that the underlying call was made with the expected
@@ -3566,7 +3570,11 @@ def test_create_listing_flattened():
         mock_val = "parent_value"
         assert arg == mock_val
         arg = args[0].listing
-        mock_val = dataexchange.Listing(name="name_value")
+        mock_val = dataexchange.Listing(
+            bigquery_dataset=dataexchange.Listing.BigQueryDatasetSource(
+                dataset="dataset_value"
+            )
+        )
         assert arg == mock_val
 
 
@@ -3581,7 +3589,11 @@ def test_create_listing_flattened_error():
         client.create_listing(
             dataexchange.CreateListingRequest(),
             parent="parent_value",
-            listing=dataexchange.Listing(name="name_value"),
+            listing=dataexchange.Listing(
+                bigquery_dataset=dataexchange.Listing.BigQueryDatasetSource(
+                    dataset="dataset_value"
+                )
+            ),
         )
 
 
@@ -3603,7 +3615,11 @@ async def test_create_listing_flattened_async():
         # using the keyword arguments to the method.
         response = await client.create_listing(
             parent="parent_value",
-            listing=dataexchange.Listing(name="name_value"),
+            listing=dataexchange.Listing(
+                bigquery_dataset=dataexchange.Listing.BigQueryDatasetSource(
+                    dataset="dataset_value"
+                )
+            ),
         )
 
         # Establish that the underlying call was made with the expected
@@ -3614,7 +3630,11 @@ async def test_create_listing_flattened_async():
         mock_val = "parent_value"
         assert arg == mock_val
         arg = args[0].listing
-        mock_val = dataexchange.Listing(name="name_value")
+        mock_val = dataexchange.Listing(
+            bigquery_dataset=dataexchange.Listing.BigQueryDatasetSource(
+                dataset="dataset_value"
+            )
+        )
         assert arg == mock_val
 
 
@@ -3630,7 +3650,11 @@ async def test_create_listing_flattened_error_async():
         await client.create_listing(
             dataexchange.CreateListingRequest(),
             parent="parent_value",
-            listing=dataexchange.Listing(name="name_value"),
+            listing=dataexchange.Listing(
+                bigquery_dataset=dataexchange.Listing.BigQueryDatasetSource(
+                    dataset="dataset_value"
+                )
+            ),
         )
 
 
@@ -3662,7 +3686,7 @@ def test_update_listing(request_type, transport: str = "grpc"):
             documentation="documentation_value",
             state=dataexchange.Listing.State.ACTIVE,
             icon=b"icon_blob",
-            categories=[common.Category.CATEGORY_OTHERS],
+            categories=[dataexchange.Listing.Category.CATEGORY_OTHERS],
             request_access="request_access_value",
             bigquery_dataset=dataexchange.Listing.BigQueryDatasetSource(
                 dataset="dataset_value"
@@ -3684,7 +3708,7 @@ def test_update_listing(request_type, transport: str = "grpc"):
     assert response.documentation == "documentation_value"
     assert response.state == dataexchange.Listing.State.ACTIVE
     assert response.icon == b"icon_blob"
-    assert response.categories == [common.Category.CATEGORY_OTHERS]
+    assert response.categories == [dataexchange.Listing.Category.CATEGORY_OTHERS]
     assert response.request_access == "request_access_value"
 
 
@@ -3729,7 +3753,7 @@ async def test_update_listing_async(
                 documentation="documentation_value",
                 state=dataexchange.Listing.State.ACTIVE,
                 icon=b"icon_blob",
-                categories=[common.Category.CATEGORY_OTHERS],
+                categories=[dataexchange.Listing.Category.CATEGORY_OTHERS],
                 request_access="request_access_value",
             )
         )
@@ -3749,7 +3773,7 @@ async def test_update_listing_async(
     assert response.documentation == "documentation_value"
     assert response.state == dataexchange.Listing.State.ACTIVE
     assert response.icon == b"icon_blob"
-    assert response.categories == [common.Category.CATEGORY_OTHERS]
+    assert response.categories == [dataexchange.Listing.Category.CATEGORY_OTHERS]
     assert response.request_access == "request_access_value"
 
 
@@ -3831,7 +3855,11 @@ def test_update_listing_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.update_listing(
-            listing=dataexchange.Listing(name="name_value"),
+            listing=dataexchange.Listing(
+                bigquery_dataset=dataexchange.Listing.BigQueryDatasetSource(
+                    dataset="dataset_value"
+                )
+            ),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
@@ -3840,7 +3868,11 @@ def test_update_listing_flattened():
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
         arg = args[0].listing
-        mock_val = dataexchange.Listing(name="name_value")
+        mock_val = dataexchange.Listing(
+            bigquery_dataset=dataexchange.Listing.BigQueryDatasetSource(
+                dataset="dataset_value"
+            )
+        )
         assert arg == mock_val
         arg = args[0].update_mask
         mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
@@ -3857,7 +3889,11 @@ def test_update_listing_flattened_error():
     with pytest.raises(ValueError):
         client.update_listing(
             dataexchange.UpdateListingRequest(),
-            listing=dataexchange.Listing(name="name_value"),
+            listing=dataexchange.Listing(
+                bigquery_dataset=dataexchange.Listing.BigQueryDatasetSource(
+                    dataset="dataset_value"
+                )
+            ),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
@@ -3879,7 +3915,11 @@ async def test_update_listing_flattened_async():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.update_listing(
-            listing=dataexchange.Listing(name="name_value"),
+            listing=dataexchange.Listing(
+                bigquery_dataset=dataexchange.Listing.BigQueryDatasetSource(
+                    dataset="dataset_value"
+                )
+            ),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
@@ -3888,7 +3928,11 @@ async def test_update_listing_flattened_async():
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
         arg = args[0].listing
-        mock_val = dataexchange.Listing(name="name_value")
+        mock_val = dataexchange.Listing(
+            bigquery_dataset=dataexchange.Listing.BigQueryDatasetSource(
+                dataset="dataset_value"
+            )
+        )
         assert arg == mock_val
         arg = args[0].update_mask
         mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
@@ -3906,7 +3950,11 @@ async def test_update_listing_flattened_error_async():
     with pytest.raises(ValueError):
         await client.update_listing(
             dataexchange.UpdateListingRequest(),
-            listing=dataexchange.Listing(name="name_value"),
+            listing=dataexchange.Listing(
+                bigquery_dataset=dataexchange.Listing.BigQueryDatasetSource(
+                    dataset="dataset_value"
+                )
+            ),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
@@ -5042,6 +5090,8 @@ def test_analytics_hub_service_base_transport():
         "get_iam_policy",
         "set_iam_policy",
         "test_iam_permissions",
+        "get_location",
+        "list_locations",
     )
     for method in methods:
         with pytest.raises(NotImplementedError):
@@ -5623,6 +5673,296 @@ async def test_transport_close_async():
         async with client:
             close.assert_not_called()
         close.assert_called_once()
+
+
+def test_list_locations(transport: str = "grpc"):
+    client = AnalyticsHubServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = locations_pb2.ListLocationsRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = locations_pb2.ListLocationsResponse()
+        response = client.list_locations(request)
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, locations_pb2.ListLocationsResponse)
+
+
+@pytest.mark.asyncio
+async def test_list_locations_async(transport: str = "grpc"):
+    client = AnalyticsHubServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = locations_pb2.ListLocationsRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            locations_pb2.ListLocationsResponse()
+        )
+        response = await client.list_locations(request)
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, locations_pb2.ListLocationsResponse)
+
+
+def test_list_locations_field_headers():
+    client = AnalyticsHubServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = locations_pb2.ListLocationsRequest()
+    request.name = "locations"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
+        call.return_value = locations_pb2.ListLocationsResponse()
+
+        client.list_locations(request)
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=locations",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_list_locations_field_headers_async():
+    client = AnalyticsHubServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = locations_pb2.ListLocationsRequest()
+    request.name = "locations"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            locations_pb2.ListLocationsResponse()
+        )
+        await client.list_locations(request)
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=locations",
+    ) in kw["metadata"]
+
+
+def test_list_locations_from_dict():
+    client = AnalyticsHubServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = locations_pb2.ListLocationsResponse()
+
+        response = client.list_locations(
+            request={
+                "name": "locations",
+            }
+        )
+        call.assert_called()
+
+
+@pytest.mark.asyncio
+async def test_list_locations_from_dict_async():
+    client = AnalyticsHubServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            locations_pb2.ListLocationsResponse()
+        )
+        response = await client.list_locations(
+            request={
+                "name": "locations",
+            }
+        )
+        call.assert_called()
+
+
+def test_get_location(transport: str = "grpc"):
+    client = AnalyticsHubServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = locations_pb2.GetLocationRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_location), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = locations_pb2.Location()
+        response = client.get_location(request)
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, locations_pb2.Location)
+
+
+@pytest.mark.asyncio
+async def test_get_location_async(transport: str = "grpc_asyncio"):
+    client = AnalyticsHubServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = locations_pb2.GetLocationRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_location), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            locations_pb2.Location()
+        )
+        response = await client.get_location(request)
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, locations_pb2.Location)
+
+
+def test_get_location_field_headers():
+    client = AnalyticsHubServiceClient(
+        credentials=ga_credentials.AnonymousCredentials()
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = locations_pb2.GetLocationRequest()
+    request.name = "locations/abc"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_location), "__call__") as call:
+        call.return_value = locations_pb2.Location()
+
+        client.get_location(request)
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=locations/abc",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_get_location_field_headers_async():
+    client = AnalyticsHubServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials()
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = locations_pb2.GetLocationRequest()
+    request.name = "locations/abc"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_location), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            locations_pb2.Location()
+        )
+        await client.get_location(request)
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=locations/abc",
+    ) in kw["metadata"]
+
+
+def test_get_location_from_dict():
+    client = AnalyticsHubServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = locations_pb2.Location()
+
+        response = client.get_location(
+            request={
+                "name": "locations/abc",
+            }
+        )
+        call.assert_called()
+
+
+@pytest.mark.asyncio
+async def test_get_location_from_dict_async():
+    client = AnalyticsHubServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            locations_pb2.Location()
+        )
+        response = await client.get_location(
+            request={
+                "name": "locations",
+            }
+        )
+        call.assert_called()
 
 
 def test_transport_close():
