@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.1](https://github.com/googleapis/python-apigee-registry/compare/v0.2.0...v0.2.1) (2022-09-01)
+
+
+### Bug Fixes
+
+* Additional error codes added to service configuration for retry ([#22](https://github.com/googleapis/python-apigee-registry/issues/22)) ([72e8d3e](https://github.com/googleapis/python-apigee-registry/commit/72e8d3e2d1f48e8347b68aa4a281a504246a5d1e))
+
 ## [0.2.0](https://github.com/googleapis/python-apigee-registry/compare/v0.1.2...v0.2.0) (2022-08-21)
 
 
