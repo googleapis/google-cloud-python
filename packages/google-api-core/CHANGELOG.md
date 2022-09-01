@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-api-core/#history
 
+## [2.9.0](https://github.com/googleapis/python-api-core/compare/v2.8.2...v2.9.0) (2022-09-01)
+
+
+### Features
+
+* Make grpc transcode logic work in terms of protobuf python objects ([#428](https://github.com/googleapis/python-api-core/issues/428)) ([c3ad8ea](https://github.com/googleapis/python-api-core/commit/c3ad8ea67447e3d8a1154d7a9221e116f60d425a))
+
+
+### Bug Fixes
+
+* Require python 3.7+ ([#410](https://github.com/googleapis/python-api-core/issues/410)) ([7ddb8c0](https://github.com/googleapis/python-api-core/commit/7ddb8c00e6be7ab6905a9a802ad1c3063fbfa46c))
+* Restore support for grpcio-gcp ([#418](https://github.com/googleapis/python-api-core/issues/418)) ([8c19609](https://github.com/googleapis/python-api-core/commit/8c19609d6244930bd91fd5f40ef9b5b65584c4a5))
+
 ## [2.8.2](https://github.com/googleapis/python-api-core/compare/v2.8.1...v2.8.2) (2022-06-13)
 
 
