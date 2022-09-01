@@ -290,10 +290,13 @@ class RegistryAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.list_apis,
             default_retry=retries.Retry(
-                initial=1.0,
+                initial=0.2,
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
+                    core_exceptions.Aborted,
+                    core_exceptions.Cancelled,
+                    core_exceptions.DeadlineExceeded,
                     core_exceptions.ServiceUnavailable,
                 ),
                 deadline=60.0,
@@ -403,10 +406,13 @@ class RegistryAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.get_api,
             default_retry=retries.Retry(
-                initial=1.0,
+                initial=0.2,
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
+                    core_exceptions.Aborted,
+                    core_exceptions.Cancelled,
+                    core_exceptions.DeadlineExceeded,
                     core_exceptions.ServiceUnavailable,
                 ),
                 deadline=60.0,
@@ -531,10 +537,13 @@ class RegistryAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.create_api,
             default_retry=retries.Retry(
-                initial=1.0,
+                initial=0.2,
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
+                    core_exceptions.Aborted,
+                    core_exceptions.Cancelled,
+                    core_exceptions.DeadlineExceeded,
                     core_exceptions.ServiceUnavailable,
                 ),
                 deadline=60.0,
@@ -649,10 +658,13 @@ class RegistryAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.update_api,
             default_retry=retries.Retry(
-                initial=1.0,
+                initial=0.2,
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
+                    core_exceptions.Aborted,
+                    core_exceptions.Cancelled,
+                    core_exceptions.DeadlineExceeded,
                     core_exceptions.ServiceUnavailable,
                 ),
                 deadline=60.0,
@@ -744,10 +756,13 @@ class RegistryAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.delete_api,
             default_retry=retries.Retry(
-                initial=1.0,
+                initial=0.2,
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
+                    core_exceptions.Aborted,
+                    core_exceptions.Cancelled,
+                    core_exceptions.DeadlineExceeded,
                     core_exceptions.ServiceUnavailable,
                 ),
                 deadline=60.0,
@@ -847,10 +862,13 @@ class RegistryAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.list_api_versions,
             default_retry=retries.Retry(
-                initial=1.0,
+                initial=0.2,
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
+                    core_exceptions.Aborted,
+                    core_exceptions.Cancelled,
+                    core_exceptions.DeadlineExceeded,
                     core_exceptions.ServiceUnavailable,
                 ),
                 deadline=60.0,
@@ -960,10 +978,13 @@ class RegistryAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.get_api_version,
             default_retry=retries.Retry(
-                initial=1.0,
+                initial=0.2,
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
+                    core_exceptions.Aborted,
+                    core_exceptions.Cancelled,
+                    core_exceptions.DeadlineExceeded,
                     core_exceptions.ServiceUnavailable,
                 ),
                 deadline=60.0,
@@ -1090,10 +1111,13 @@ class RegistryAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.create_api_version,
             default_retry=retries.Retry(
-                initial=1.0,
+                initial=0.2,
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
+                    core_exceptions.Aborted,
+                    core_exceptions.Cancelled,
+                    core_exceptions.DeadlineExceeded,
                     core_exceptions.ServiceUnavailable,
                 ),
                 deadline=60.0,
@@ -1210,10 +1234,13 @@ class RegistryAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.update_api_version,
             default_retry=retries.Retry(
-                initial=1.0,
+                initial=0.2,
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
+                    core_exceptions.Aborted,
+                    core_exceptions.Cancelled,
+                    core_exceptions.DeadlineExceeded,
                     core_exceptions.ServiceUnavailable,
                 ),
                 deadline=60.0,
@@ -1308,10 +1335,13 @@ class RegistryAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.delete_api_version,
             default_retry=retries.Retry(
-                initial=1.0,
+                initial=0.2,
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
+                    core_exceptions.Aborted,
+                    core_exceptions.Cancelled,
+                    core_exceptions.DeadlineExceeded,
                     core_exceptions.ServiceUnavailable,
                 ),
                 deadline=60.0,
@@ -1412,10 +1442,13 @@ class RegistryAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.list_api_specs,
             default_retry=retries.Retry(
-                initial=1.0,
+                initial=0.2,
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
+                    core_exceptions.Aborted,
+                    core_exceptions.Cancelled,
+                    core_exceptions.DeadlineExceeded,
                     core_exceptions.ServiceUnavailable,
                 ),
                 deadline=60.0,
@@ -1536,10 +1569,13 @@ class RegistryAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.get_api_spec,
             default_retry=retries.Retry(
-                initial=1.0,
+                initial=0.2,
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
+                    core_exceptions.Aborted,
+                    core_exceptions.Cancelled,
+                    core_exceptions.DeadlineExceeded,
                     core_exceptions.ServiceUnavailable,
                 ),
                 deadline=60.0,
@@ -1688,10 +1724,13 @@ class RegistryAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.get_api_spec_contents,
             default_retry=retries.Retry(
-                initial=1.0,
+                initial=0.2,
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
+                    core_exceptions.Aborted,
+                    core_exceptions.Cancelled,
+                    core_exceptions.DeadlineExceeded,
                     core_exceptions.ServiceUnavailable,
                 ),
                 deadline=60.0,
@@ -1828,10 +1867,13 @@ class RegistryAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.create_api_spec,
             default_retry=retries.Retry(
-                initial=1.0,
+                initial=0.2,
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
+                    core_exceptions.Aborted,
+                    core_exceptions.Cancelled,
+                    core_exceptions.DeadlineExceeded,
                     core_exceptions.ServiceUnavailable,
                 ),
                 deadline=60.0,
@@ -1958,10 +2000,13 @@ class RegistryAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.update_api_spec,
             default_retry=retries.Retry(
-                initial=1.0,
+                initial=0.2,
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
+                    core_exceptions.Aborted,
+                    core_exceptions.Cancelled,
+                    core_exceptions.DeadlineExceeded,
                     core_exceptions.ServiceUnavailable,
                 ),
                 deadline=60.0,
@@ -2055,10 +2100,13 @@ class RegistryAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.delete_api_spec,
             default_retry=retries.Retry(
-                initial=1.0,
+                initial=0.2,
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
+                    core_exceptions.Aborted,
+                    core_exceptions.Cancelled,
+                    core_exceptions.DeadlineExceeded,
                     core_exceptions.ServiceUnavailable,
                 ),
                 deadline=60.0,
@@ -2147,10 +2195,13 @@ class RegistryAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.tag_api_spec_revision,
             default_retry=retries.Retry(
-                initial=1.0,
+                initial=0.2,
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
+                    core_exceptions.Aborted,
+                    core_exceptions.Cancelled,
+                    core_exceptions.DeadlineExceeded,
                     core_exceptions.ServiceUnavailable,
                 ),
                 deadline=60.0,
@@ -2235,10 +2286,13 @@ class RegistryAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.list_api_spec_revisions,
             default_retry=retries.Retry(
-                initial=1.0,
+                initial=0.2,
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
+                    core_exceptions.Aborted,
+                    core_exceptions.Cancelled,
+                    core_exceptions.DeadlineExceeded,
                     core_exceptions.ServiceUnavailable,
                 ),
                 deadline=60.0,
@@ -2450,10 +2504,13 @@ class RegistryAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.delete_api_spec_revision,
             default_retry=retries.Retry(
-                initial=1.0,
+                initial=0.2,
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
+                    core_exceptions.Aborted,
+                    core_exceptions.Cancelled,
+                    core_exceptions.DeadlineExceeded,
                     core_exceptions.ServiceUnavailable,
                 ),
                 deadline=60.0,
@@ -2558,10 +2615,13 @@ class RegistryAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.list_api_deployments,
             default_retry=retries.Retry(
-                initial=1.0,
+                initial=0.2,
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
+                    core_exceptions.Aborted,
+                    core_exceptions.Cancelled,
+                    core_exceptions.DeadlineExceeded,
                     core_exceptions.ServiceUnavailable,
                 ),
                 deadline=60.0,
@@ -2678,10 +2738,13 @@ class RegistryAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.get_api_deployment,
             default_retry=retries.Retry(
-                initial=1.0,
+                initial=0.2,
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
+                    core_exceptions.Aborted,
+                    core_exceptions.Cancelled,
+                    core_exceptions.DeadlineExceeded,
                     core_exceptions.ServiceUnavailable,
                 ),
                 deadline=60.0,
@@ -2814,10 +2877,13 @@ class RegistryAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.create_api_deployment,
             default_retry=retries.Retry(
-                initial=1.0,
+                initial=0.2,
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
+                    core_exceptions.Aborted,
+                    core_exceptions.Cancelled,
+                    core_exceptions.DeadlineExceeded,
                     core_exceptions.ServiceUnavailable,
                 ),
                 deadline=60.0,
@@ -2940,10 +3006,13 @@ class RegistryAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.update_api_deployment,
             default_retry=retries.Retry(
-                initial=1.0,
+                initial=0.2,
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
+                    core_exceptions.Aborted,
+                    core_exceptions.Cancelled,
+                    core_exceptions.DeadlineExceeded,
                     core_exceptions.ServiceUnavailable,
                 ),
                 deadline=60.0,
@@ -3038,10 +3107,13 @@ class RegistryAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.delete_api_deployment,
             default_retry=retries.Retry(
-                initial=1.0,
+                initial=0.2,
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
+                    core_exceptions.Aborted,
+                    core_exceptions.Cancelled,
+                    core_exceptions.DeadlineExceeded,
                     core_exceptions.ServiceUnavailable,
                 ),
                 deadline=60.0,
@@ -3126,10 +3198,13 @@ class RegistryAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.tag_api_deployment_revision,
             default_retry=retries.Retry(
-                initial=1.0,
+                initial=0.2,
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
+                    core_exceptions.Aborted,
+                    core_exceptions.Cancelled,
+                    core_exceptions.DeadlineExceeded,
                     core_exceptions.ServiceUnavailable,
                 ),
                 deadline=60.0,
@@ -3214,10 +3289,13 @@ class RegistryAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.list_api_deployment_revisions,
             default_retry=retries.Retry(
-                initial=1.0,
+                initial=0.2,
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
+                    core_exceptions.Aborted,
+                    core_exceptions.Cancelled,
+                    core_exceptions.DeadlineExceeded,
                     core_exceptions.ServiceUnavailable,
                 ),
                 deadline=60.0,
@@ -3422,10 +3500,13 @@ class RegistryAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.delete_api_deployment_revision,
             default_retry=retries.Retry(
-                initial=1.0,
+                initial=0.2,
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
+                    core_exceptions.Aborted,
+                    core_exceptions.Cancelled,
+                    core_exceptions.DeadlineExceeded,
                     core_exceptions.ServiceUnavailable,
                 ),
                 deadline=60.0,
@@ -3528,10 +3609,13 @@ class RegistryAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.list_artifacts,
             default_retry=retries.Retry(
-                initial=1.0,
+                initial=0.2,
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
+                    core_exceptions.Aborted,
+                    core_exceptions.Cancelled,
+                    core_exceptions.DeadlineExceeded,
                     core_exceptions.ServiceUnavailable,
                 ),
                 deadline=60.0,
@@ -3649,10 +3733,13 @@ class RegistryAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.get_artifact,
             default_retry=retries.Retry(
-                initial=1.0,
+                initial=0.2,
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
+                    core_exceptions.Aborted,
+                    core_exceptions.Cancelled,
+                    core_exceptions.DeadlineExceeded,
                     core_exceptions.ServiceUnavailable,
                 ),
                 deadline=60.0,
@@ -3800,10 +3887,13 @@ class RegistryAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.get_artifact_contents,
             default_retry=retries.Retry(
-                initial=1.0,
+                initial=0.2,
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
+                    core_exceptions.Aborted,
+                    core_exceptions.Cancelled,
+                    core_exceptions.DeadlineExceeded,
                     core_exceptions.ServiceUnavailable,
                 ),
                 deadline=60.0,
@@ -3937,10 +4027,13 @@ class RegistryAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.create_artifact,
             default_retry=retries.Retry(
-                initial=1.0,
+                initial=0.2,
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
+                    core_exceptions.Aborted,
+                    core_exceptions.Cancelled,
+                    core_exceptions.DeadlineExceeded,
                     core_exceptions.ServiceUnavailable,
                 ),
                 deadline=60.0,
@@ -4050,10 +4143,13 @@ class RegistryAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.replace_artifact,
             default_retry=retries.Retry(
-                initial=1.0,
+                initial=0.2,
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
+                    core_exceptions.Aborted,
+                    core_exceptions.Cancelled,
+                    core_exceptions.DeadlineExceeded,
                     core_exceptions.ServiceUnavailable,
                 ),
                 deadline=60.0,
@@ -4146,10 +4242,13 @@ class RegistryAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.delete_artifact,
             default_retry=retries.Retry(
-                initial=1.0,
+                initial=0.2,
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
+                    core_exceptions.Aborted,
+                    core_exceptions.Cancelled,
+                    core_exceptions.DeadlineExceeded,
                     core_exceptions.ServiceUnavailable,
                 ),
                 deadline=60.0,

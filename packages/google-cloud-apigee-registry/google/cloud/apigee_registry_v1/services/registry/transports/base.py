@@ -137,10 +137,13 @@ class RegistryTransport(abc.ABC):
             self.list_apis: gapic_v1.method.wrap_method(
                 self.list_apis,
                 default_retry=retries.Retry(
-                    initial=1.0,
+                    initial=0.2,
                     maximum=60.0,
                     multiplier=1.3,
                     predicate=retries.if_exception_type(
+                        core_exceptions.Aborted,
+                        core_exceptions.Cancelled,
+                        core_exceptions.DeadlineExceeded,
                         core_exceptions.ServiceUnavailable,
                     ),
                     deadline=60.0,
@@ -151,10 +154,13 @@ class RegistryTransport(abc.ABC):
             self.get_api: gapic_v1.method.wrap_method(
                 self.get_api,
                 default_retry=retries.Retry(
-                    initial=1.0,
+                    initial=0.2,
                     maximum=60.0,
                     multiplier=1.3,
                     predicate=retries.if_exception_type(
+                        core_exceptions.Aborted,
+                        core_exceptions.Cancelled,
+                        core_exceptions.DeadlineExceeded,
                         core_exceptions.ServiceUnavailable,
                     ),
                     deadline=60.0,
@@ -165,10 +171,13 @@ class RegistryTransport(abc.ABC):
             self.create_api: gapic_v1.method.wrap_method(
                 self.create_api,
                 default_retry=retries.Retry(
-                    initial=1.0,
+                    initial=0.2,
                     maximum=60.0,
                     multiplier=1.3,
                     predicate=retries.if_exception_type(
+                        core_exceptions.Aborted,
+                        core_exceptions.Cancelled,
+                        core_exceptions.DeadlineExceeded,
                         core_exceptions.ServiceUnavailable,
                     ),
                     deadline=60.0,
@@ -179,10 +188,13 @@ class RegistryTransport(abc.ABC):
             self.update_api: gapic_v1.method.wrap_method(
                 self.update_api,
                 default_retry=retries.Retry(
-                    initial=1.0,
+                    initial=0.2,
                     maximum=60.0,
                     multiplier=1.3,
                     predicate=retries.if_exception_type(
+                        core_exceptions.Aborted,
+                        core_exceptions.Cancelled,
+                        core_exceptions.DeadlineExceeded,
                         core_exceptions.ServiceUnavailable,
                     ),
                     deadline=60.0,
@@ -193,10 +205,13 @@ class RegistryTransport(abc.ABC):
             self.delete_api: gapic_v1.method.wrap_method(
                 self.delete_api,
                 default_retry=retries.Retry(
-                    initial=1.0,
+                    initial=0.2,
                     maximum=60.0,
                     multiplier=1.3,
                     predicate=retries.if_exception_type(
+                        core_exceptions.Aborted,
+                        core_exceptions.Cancelled,
+                        core_exceptions.DeadlineExceeded,
                         core_exceptions.ServiceUnavailable,
                     ),
                     deadline=60.0,
@@ -207,10 +222,13 @@ class RegistryTransport(abc.ABC):
             self.list_api_versions: gapic_v1.method.wrap_method(
                 self.list_api_versions,
                 default_retry=retries.Retry(
-                    initial=1.0,
+                    initial=0.2,
                     maximum=60.0,
                     multiplier=1.3,
                     predicate=retries.if_exception_type(
+                        core_exceptions.Aborted,
+                        core_exceptions.Cancelled,
+                        core_exceptions.DeadlineExceeded,
                         core_exceptions.ServiceUnavailable,
                     ),
                     deadline=60.0,
@@ -221,10 +239,13 @@ class RegistryTransport(abc.ABC):
             self.get_api_version: gapic_v1.method.wrap_method(
                 self.get_api_version,
                 default_retry=retries.Retry(
-                    initial=1.0,
+                    initial=0.2,
                     maximum=60.0,
                     multiplier=1.3,
                     predicate=retries.if_exception_type(
+                        core_exceptions.Aborted,
+                        core_exceptions.Cancelled,
+                        core_exceptions.DeadlineExceeded,
                         core_exceptions.ServiceUnavailable,
                     ),
                     deadline=60.0,
@@ -235,10 +256,13 @@ class RegistryTransport(abc.ABC):
             self.create_api_version: gapic_v1.method.wrap_method(
                 self.create_api_version,
                 default_retry=retries.Retry(
-                    initial=1.0,
+                    initial=0.2,
                     maximum=60.0,
                     multiplier=1.3,
                     predicate=retries.if_exception_type(
+                        core_exceptions.Aborted,
+                        core_exceptions.Cancelled,
+                        core_exceptions.DeadlineExceeded,
                         core_exceptions.ServiceUnavailable,
                     ),
                     deadline=60.0,
@@ -249,10 +273,13 @@ class RegistryTransport(abc.ABC):
             self.update_api_version: gapic_v1.method.wrap_method(
                 self.update_api_version,
                 default_retry=retries.Retry(
-                    initial=1.0,
+                    initial=0.2,
                     maximum=60.0,
                     multiplier=1.3,
                     predicate=retries.if_exception_type(
+                        core_exceptions.Aborted,
+                        core_exceptions.Cancelled,
+                        core_exceptions.DeadlineExceeded,
                         core_exceptions.ServiceUnavailable,
                     ),
                     deadline=60.0,
@@ -263,10 +290,13 @@ class RegistryTransport(abc.ABC):
             self.delete_api_version: gapic_v1.method.wrap_method(
                 self.delete_api_version,
                 default_retry=retries.Retry(
-                    initial=1.0,
+                    initial=0.2,
                     maximum=60.0,
                     multiplier=1.3,
                     predicate=retries.if_exception_type(
+                        core_exceptions.Aborted,
+                        core_exceptions.Cancelled,
+                        core_exceptions.DeadlineExceeded,
                         core_exceptions.ServiceUnavailable,
                     ),
                     deadline=60.0,
@@ -277,10 +307,13 @@ class RegistryTransport(abc.ABC):
             self.list_api_specs: gapic_v1.method.wrap_method(
                 self.list_api_specs,
                 default_retry=retries.Retry(
-                    initial=1.0,
+                    initial=0.2,
                     maximum=60.0,
                     multiplier=1.3,
                     predicate=retries.if_exception_type(
+                        core_exceptions.Aborted,
+                        core_exceptions.Cancelled,
+                        core_exceptions.DeadlineExceeded,
                         core_exceptions.ServiceUnavailable,
                     ),
                     deadline=60.0,
@@ -291,10 +324,13 @@ class RegistryTransport(abc.ABC):
             self.get_api_spec: gapic_v1.method.wrap_method(
                 self.get_api_spec,
                 default_retry=retries.Retry(
-                    initial=1.0,
+                    initial=0.2,
                     maximum=60.0,
                     multiplier=1.3,
                     predicate=retries.if_exception_type(
+                        core_exceptions.Aborted,
+                        core_exceptions.Cancelled,
+                        core_exceptions.DeadlineExceeded,
                         core_exceptions.ServiceUnavailable,
                     ),
                     deadline=60.0,
@@ -305,10 +341,13 @@ class RegistryTransport(abc.ABC):
             self.get_api_spec_contents: gapic_v1.method.wrap_method(
                 self.get_api_spec_contents,
                 default_retry=retries.Retry(
-                    initial=1.0,
+                    initial=0.2,
                     maximum=60.0,
                     multiplier=1.3,
                     predicate=retries.if_exception_type(
+                        core_exceptions.Aborted,
+                        core_exceptions.Cancelled,
+                        core_exceptions.DeadlineExceeded,
                         core_exceptions.ServiceUnavailable,
                     ),
                     deadline=60.0,
@@ -319,10 +358,13 @@ class RegistryTransport(abc.ABC):
             self.create_api_spec: gapic_v1.method.wrap_method(
                 self.create_api_spec,
                 default_retry=retries.Retry(
-                    initial=1.0,
+                    initial=0.2,
                     maximum=60.0,
                     multiplier=1.3,
                     predicate=retries.if_exception_type(
+                        core_exceptions.Aborted,
+                        core_exceptions.Cancelled,
+                        core_exceptions.DeadlineExceeded,
                         core_exceptions.ServiceUnavailable,
                     ),
                     deadline=60.0,
@@ -333,10 +375,13 @@ class RegistryTransport(abc.ABC):
             self.update_api_spec: gapic_v1.method.wrap_method(
                 self.update_api_spec,
                 default_retry=retries.Retry(
-                    initial=1.0,
+                    initial=0.2,
                     maximum=60.0,
                     multiplier=1.3,
                     predicate=retries.if_exception_type(
+                        core_exceptions.Aborted,
+                        core_exceptions.Cancelled,
+                        core_exceptions.DeadlineExceeded,
                         core_exceptions.ServiceUnavailable,
                     ),
                     deadline=60.0,
@@ -347,10 +392,13 @@ class RegistryTransport(abc.ABC):
             self.delete_api_spec: gapic_v1.method.wrap_method(
                 self.delete_api_spec,
                 default_retry=retries.Retry(
-                    initial=1.0,
+                    initial=0.2,
                     maximum=60.0,
                     multiplier=1.3,
                     predicate=retries.if_exception_type(
+                        core_exceptions.Aborted,
+                        core_exceptions.Cancelled,
+                        core_exceptions.DeadlineExceeded,
                         core_exceptions.ServiceUnavailable,
                     ),
                     deadline=60.0,
@@ -361,10 +409,13 @@ class RegistryTransport(abc.ABC):
             self.tag_api_spec_revision: gapic_v1.method.wrap_method(
                 self.tag_api_spec_revision,
                 default_retry=retries.Retry(
-                    initial=1.0,
+                    initial=0.2,
                     maximum=60.0,
                     multiplier=1.3,
                     predicate=retries.if_exception_type(
+                        core_exceptions.Aborted,
+                        core_exceptions.Cancelled,
+                        core_exceptions.DeadlineExceeded,
                         core_exceptions.ServiceUnavailable,
                     ),
                     deadline=60.0,
@@ -375,10 +426,13 @@ class RegistryTransport(abc.ABC):
             self.list_api_spec_revisions: gapic_v1.method.wrap_method(
                 self.list_api_spec_revisions,
                 default_retry=retries.Retry(
-                    initial=1.0,
+                    initial=0.2,
                     maximum=60.0,
                     multiplier=1.3,
                     predicate=retries.if_exception_type(
+                        core_exceptions.Aborted,
+                        core_exceptions.Cancelled,
+                        core_exceptions.DeadlineExceeded,
                         core_exceptions.ServiceUnavailable,
                     ),
                     deadline=60.0,
@@ -394,10 +448,13 @@ class RegistryTransport(abc.ABC):
             self.delete_api_spec_revision: gapic_v1.method.wrap_method(
                 self.delete_api_spec_revision,
                 default_retry=retries.Retry(
-                    initial=1.0,
+                    initial=0.2,
                     maximum=60.0,
                     multiplier=1.3,
                     predicate=retries.if_exception_type(
+                        core_exceptions.Aborted,
+                        core_exceptions.Cancelled,
+                        core_exceptions.DeadlineExceeded,
                         core_exceptions.ServiceUnavailable,
                     ),
                     deadline=60.0,
@@ -408,10 +465,13 @@ class RegistryTransport(abc.ABC):
             self.list_api_deployments: gapic_v1.method.wrap_method(
                 self.list_api_deployments,
                 default_retry=retries.Retry(
-                    initial=1.0,
+                    initial=0.2,
                     maximum=60.0,
                     multiplier=1.3,
                     predicate=retries.if_exception_type(
+                        core_exceptions.Aborted,
+                        core_exceptions.Cancelled,
+                        core_exceptions.DeadlineExceeded,
                         core_exceptions.ServiceUnavailable,
                     ),
                     deadline=60.0,
@@ -422,10 +482,13 @@ class RegistryTransport(abc.ABC):
             self.get_api_deployment: gapic_v1.method.wrap_method(
                 self.get_api_deployment,
                 default_retry=retries.Retry(
-                    initial=1.0,
+                    initial=0.2,
                     maximum=60.0,
                     multiplier=1.3,
                     predicate=retries.if_exception_type(
+                        core_exceptions.Aborted,
+                        core_exceptions.Cancelled,
+                        core_exceptions.DeadlineExceeded,
                         core_exceptions.ServiceUnavailable,
                     ),
                     deadline=60.0,
@@ -436,10 +499,13 @@ class RegistryTransport(abc.ABC):
             self.create_api_deployment: gapic_v1.method.wrap_method(
                 self.create_api_deployment,
                 default_retry=retries.Retry(
-                    initial=1.0,
+                    initial=0.2,
                     maximum=60.0,
                     multiplier=1.3,
                     predicate=retries.if_exception_type(
+                        core_exceptions.Aborted,
+                        core_exceptions.Cancelled,
+                        core_exceptions.DeadlineExceeded,
                         core_exceptions.ServiceUnavailable,
                     ),
                     deadline=60.0,
@@ -450,10 +516,13 @@ class RegistryTransport(abc.ABC):
             self.update_api_deployment: gapic_v1.method.wrap_method(
                 self.update_api_deployment,
                 default_retry=retries.Retry(
-                    initial=1.0,
+                    initial=0.2,
                     maximum=60.0,
                     multiplier=1.3,
                     predicate=retries.if_exception_type(
+                        core_exceptions.Aborted,
+                        core_exceptions.Cancelled,
+                        core_exceptions.DeadlineExceeded,
                         core_exceptions.ServiceUnavailable,
                     ),
                     deadline=60.0,
@@ -464,10 +533,13 @@ class RegistryTransport(abc.ABC):
             self.delete_api_deployment: gapic_v1.method.wrap_method(
                 self.delete_api_deployment,
                 default_retry=retries.Retry(
-                    initial=1.0,
+                    initial=0.2,
                     maximum=60.0,
                     multiplier=1.3,
                     predicate=retries.if_exception_type(
+                        core_exceptions.Aborted,
+                        core_exceptions.Cancelled,
+                        core_exceptions.DeadlineExceeded,
                         core_exceptions.ServiceUnavailable,
                     ),
                     deadline=60.0,
@@ -478,10 +550,13 @@ class RegistryTransport(abc.ABC):
             self.tag_api_deployment_revision: gapic_v1.method.wrap_method(
                 self.tag_api_deployment_revision,
                 default_retry=retries.Retry(
-                    initial=1.0,
+                    initial=0.2,
                     maximum=60.0,
                     multiplier=1.3,
                     predicate=retries.if_exception_type(
+                        core_exceptions.Aborted,
+                        core_exceptions.Cancelled,
+                        core_exceptions.DeadlineExceeded,
                         core_exceptions.ServiceUnavailable,
                     ),
                     deadline=60.0,
@@ -492,10 +567,13 @@ class RegistryTransport(abc.ABC):
             self.list_api_deployment_revisions: gapic_v1.method.wrap_method(
                 self.list_api_deployment_revisions,
                 default_retry=retries.Retry(
-                    initial=1.0,
+                    initial=0.2,
                     maximum=60.0,
                     multiplier=1.3,
                     predicate=retries.if_exception_type(
+                        core_exceptions.Aborted,
+                        core_exceptions.Cancelled,
+                        core_exceptions.DeadlineExceeded,
                         core_exceptions.ServiceUnavailable,
                     ),
                     deadline=60.0,
@@ -511,10 +589,13 @@ class RegistryTransport(abc.ABC):
             self.delete_api_deployment_revision: gapic_v1.method.wrap_method(
                 self.delete_api_deployment_revision,
                 default_retry=retries.Retry(
-                    initial=1.0,
+                    initial=0.2,
                     maximum=60.0,
                     multiplier=1.3,
                     predicate=retries.if_exception_type(
+                        core_exceptions.Aborted,
+                        core_exceptions.Cancelled,
+                        core_exceptions.DeadlineExceeded,
                         core_exceptions.ServiceUnavailable,
                     ),
                     deadline=60.0,
@@ -525,10 +606,13 @@ class RegistryTransport(abc.ABC):
             self.list_artifacts: gapic_v1.method.wrap_method(
                 self.list_artifacts,
                 default_retry=retries.Retry(
-                    initial=1.0,
+                    initial=0.2,
                     maximum=60.0,
                     multiplier=1.3,
                     predicate=retries.if_exception_type(
+                        core_exceptions.Aborted,
+                        core_exceptions.Cancelled,
+                        core_exceptions.DeadlineExceeded,
                         core_exceptions.ServiceUnavailable,
                     ),
                     deadline=60.0,
@@ -539,10 +623,13 @@ class RegistryTransport(abc.ABC):
             self.get_artifact: gapic_v1.method.wrap_method(
                 self.get_artifact,
                 default_retry=retries.Retry(
-                    initial=1.0,
+                    initial=0.2,
                     maximum=60.0,
                     multiplier=1.3,
                     predicate=retries.if_exception_type(
+                        core_exceptions.Aborted,
+                        core_exceptions.Cancelled,
+                        core_exceptions.DeadlineExceeded,
                         core_exceptions.ServiceUnavailable,
                     ),
                     deadline=60.0,
@@ -553,10 +640,13 @@ class RegistryTransport(abc.ABC):
             self.get_artifact_contents: gapic_v1.method.wrap_method(
                 self.get_artifact_contents,
                 default_retry=retries.Retry(
-                    initial=1.0,
+                    initial=0.2,
                     maximum=60.0,
                     multiplier=1.3,
                     predicate=retries.if_exception_type(
+                        core_exceptions.Aborted,
+                        core_exceptions.Cancelled,
+                        core_exceptions.DeadlineExceeded,
                         core_exceptions.ServiceUnavailable,
                     ),
                     deadline=60.0,
@@ -567,10 +657,13 @@ class RegistryTransport(abc.ABC):
             self.create_artifact: gapic_v1.method.wrap_method(
                 self.create_artifact,
                 default_retry=retries.Retry(
-                    initial=1.0,
+                    initial=0.2,
                     maximum=60.0,
                     multiplier=1.3,
                     predicate=retries.if_exception_type(
+                        core_exceptions.Aborted,
+                        core_exceptions.Cancelled,
+                        core_exceptions.DeadlineExceeded,
                         core_exceptions.ServiceUnavailable,
                     ),
                     deadline=60.0,
@@ -581,10 +674,13 @@ class RegistryTransport(abc.ABC):
             self.replace_artifact: gapic_v1.method.wrap_method(
                 self.replace_artifact,
                 default_retry=retries.Retry(
-                    initial=1.0,
+                    initial=0.2,
                     maximum=60.0,
                     multiplier=1.3,
                     predicate=retries.if_exception_type(
+                        core_exceptions.Aborted,
+                        core_exceptions.Cancelled,
+                        core_exceptions.DeadlineExceeded,
                         core_exceptions.ServiceUnavailable,
                     ),
                     deadline=60.0,
@@ -595,10 +691,13 @@ class RegistryTransport(abc.ABC):
             self.delete_artifact: gapic_v1.method.wrap_method(
                 self.delete_artifact,
                 default_retry=retries.Retry(
-                    initial=1.0,
+                    initial=0.2,
                     maximum=60.0,
                     multiplier=1.3,
                     predicate=retries.if_exception_type(
+                        core_exceptions.Aborted,
+                        core_exceptions.Cancelled,
+                        core_exceptions.DeadlineExceeded,
                         core_exceptions.ServiceUnavailable,
                     ),
                     deadline=60.0,
