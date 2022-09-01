@@ -6,9 +6,10 @@
 # e.g., if setup.py has "foo >= 1.14.0, < 2.0.0dev",
 # Then this file should have foo==1.14.0
 googleapis-common-protos==1.56.2
-protobuf==3.15.0
+protobuf==3.20.1
 google-auth==1.25.0
 requests==2.18.0
 packaging==14.3
 grpcio==1.33.2
 grpcio-status==1.33.2
+grpcio-gcp==0.2.2

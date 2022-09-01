@@ -16,6 +16,7 @@
 
 import collections
 import functools
+import warnings
 
 import grpc
 
@@ -24,6 +25,27 @@ import google.auth
 import google.auth.credentials
 import google.auth.transport.grpc
 import google.auth.transport.requests
+import google.protobuf
+
+PROTOBUF_VERSION = google.protobuf.__version__
+
+# The grpcio-gcp package only has support for protobuf < 4
+if PROTOBUF_VERSION[0:2] == "3.":
+    try:
+        import grpc_gcp
+
+        warnings.warn(
+            """Support for grpcio-gcp is deprecated. This feature will be
+            removed from `google-api-core` after January 1, 2024. If you need to
+            continue to use this feature, please pin to a specific version of
+            `google-api-core`.""",
+            DeprecationWarning,
+        )
+        HAS_GRPC_GCP = True
+    except ImportError:
+        HAS_GRPC_GCP = False
+else:
+    HAS_GRPC_GCP = False
 
 
 # The list of gRPC Callable interfaces that return iterators.
@@ -275,7 +297,9 @@ def create_channel(
         default_scopes (Sequence[str]): Default scopes passed by a Google client
             library. Use 'scopes' for user-defined scopes.
         default_host (str): The default endpoint. e.g., "pubsub.googleapis.com".
-        kwargs: Additional key-word args passed to :func:`grpc.secure_channel`.
+        kwargs: Additional key-word args passed to
+            :func:`grpc_gcp.secure_channel` or :func:`grpc.secure_channel`.
+            Note: `grpc_gcp` is only supported in environments with protobuf < 4.0.0.
 
     Returns:
         grpc.Channel: The created channel.
@@ -294,6 +318,8 @@ def create_channel(
         default_host=default_host,
     )
 
+    if HAS_GRPC_GCP:
+        return grpc_gcp.secure_channel(target, composite_credentials, **kwargs)
     return grpc.secure_channel(target, composite_credentials, **kwargs)
 
 

@@ -32,6 +32,7 @@ CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
 # 'docfx' is excluded since it only needs to run in 'docs-presubmit'
 nox.options.sessions = [
     "unit",
+    "unit_grpc_gcp",
     "unit_wo_grpc",
     "cover",
     "pytype",
@@ -139,6 +140,20 @@ def default(session, install_grpc=True):
 @nox.session(python=["3.7", "3.8", "3.9", "3.10"])
 def unit(session):
     """Run the unit test suite."""
+    default(session)
+
+
+@nox.session(python=["3.6", "3.7", "3.8", "3.9", "3.10"])
+def unit_grpc_gcp(session):
+    """Run the unit test suite with grpcio-gcp installed."""
+    constraints_path = str(
+        CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
+    )
+    # Install grpcio-gcp
+    session.install("-e", ".[grpcgcp]", "-c", constraints_path)
+    # Install protobuf < 4.0.0
+    session.install("protobuf<4.0.0")
+
     default(session)
 
 
