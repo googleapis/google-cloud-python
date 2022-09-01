@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.3.0](https://github.com/googleapis/python-bigquery-data-exchange/compare/v0.2.1...v0.3.0) (2022-09-01)
+
+
+### Features
+
+* update BigQuery Analytics Hub API v1beta1 client ([#32](https://github.com/googleapis/python-bigquery-data-exchange/issues/32)) ([7c34320](https://github.com/googleapis/python-bigquery-data-exchange/commit/7c343209613ae0e303d5beb2b9aae526dc9069c8))
+
+
+### Bug Fixes
+
+* refactor references to Category message ([7c34320](https://github.com/googleapis/python-bigquery-data-exchange/commit/7c343209613ae0e303d5beb2b9aae526dc9069c8))
+
+
+### Documentation
+
+* improve proto documentation. ([7c34320](https://github.com/googleapis/python-bigquery-data-exchange/commit/7c343209613ae0e303d5beb2b9aae526dc9069c8))
+
 ## [0.2.1](https://github.com/googleapis/python-bigquery-data-exchange/compare/v0.2.0...v0.2.1) (2022-08-11)
 
 
