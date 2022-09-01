@@ -17,11 +17,18 @@ import os
 import sys
 
 import mock
-import oauth2client.client  # type: ignore
-import oauth2client.contrib.gce  # type: ignore
-import oauth2client.service_account  # type: ignore
 import pytest  # type: ignore
 from six.moves import reload_module
+
+try:
+    import oauth2client.client  # type: ignore
+    import oauth2client.contrib.gce  # type: ignore
+    import oauth2client.service_account  # type: ignore
+except ImportError:  # pragma: NO COVER
+    pytest.skip(
+        "Skipping oauth2client tests since oauth2client is not installed.",
+        allow_module_level=True,
+    )
 
 from google.auth import _oauth2client
 
