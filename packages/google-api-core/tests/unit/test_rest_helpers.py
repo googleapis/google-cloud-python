@@ -36,9 +36,26 @@ def test_flatten_empty_dict():
 
 
 def test_flatten_simple_dict():
-    assert rest_helpers.flatten_query_params({"a": "abc", "b": "def"}) == [
+    obj = {"a": "abc", "b": "def", "c": True, "d": False, "e": 10, "f": -3.76}
+    assert rest_helpers.flatten_query_params(obj) == [
         ("a", "abc"),
         ("b", "def"),
+        ("c", True),
+        ("d", False),
+        ("e", 10),
+        ("f", -3.76),
+    ]
+
+
+def test_flatten_simple_dict_strict():
+    obj = {"a": "abc", "b": "def", "c": True, "d": False, "e": 10, "f": -3.76}
+    assert rest_helpers.flatten_query_params(obj, strict=True) == [
+        ("a", "abc"),
+        ("b", "def"),
+        ("c", "true"),
+        ("d", "false"),
+        ("e", "10"),
+        ("f", "-3.76"),
     ]
 
 
