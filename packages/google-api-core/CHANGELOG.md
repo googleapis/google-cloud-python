@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-api-core/#history
 
+## [2.10.0](https://github.com/googleapis/python-api-core/compare/v2.9.0...v2.10.0) (2022-09-02)
+
+
+### Features
+
+* Add 'strict' to flatten_query_params to lower-case bools ([#433](https://github.com/googleapis/python-api-core/issues/433)) ([83678e9](https://github.com/googleapis/python-api-core/commit/83678e94e1081f9087b19c43f26fad4774184d66))
+
 ## [2.9.0](https://github.com/googleapis/python-api-core/compare/v2.8.2...v2.9.0) (2022-09-01)
 
 
