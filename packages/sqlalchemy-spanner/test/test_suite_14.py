@@ -701,6 +701,13 @@ class ComponentReflectionTest(_ComponentReflectionTest):
     def test_get_temp_table_columns(self):
         pass
 
+    def _assert_insp_indexes(self, indexes, expected_indexes):
+        expected_indexes.sort(key=lambda item: item["name"])
+
+        index_names = [d["name"] for d in indexes]
+        exp_index_names = [d["name"] for d in expected_indexes]
+        assert sorted(index_names) == sorted(exp_index_names)
+
 
 class CompositeKeyReflectionTest(_CompositeKeyReflectionTest):
     @testing.requires.foreign_key_constraint_reflection
