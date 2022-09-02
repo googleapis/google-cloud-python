@@ -27,7 +27,7 @@ export PYTHONUNBUFFERED=1
 env | grep KOKORO
 
 # Install nox
-python3.6 -m pip install --upgrade --quiet nox
+python3.9 -m pip install --upgrade --quiet nox
 
 # Use secrets acessor service account to get secrets
 if [[ -f "${KOKORO_GFILE_DIR}/secrets_viewer_service_account.json" ]]; then
