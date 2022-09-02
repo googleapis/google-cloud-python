@@ -405,9 +405,8 @@ class AssuredWorkloadsServiceGrpcTransport(AssuredWorkloadsServiceTransport):
     ]:
         r"""Return a callable for the analyze workload move method over gRPC.
 
-        A request to analyze a hypothetical move of a source
-        project or project-based workload to a target
-        (destination) folder-based workload.
+        Analyze if the source Assured Workloads can be moved
+        to the target Assured Workload
 
         Returns:
             Callable[[~.AnalyzeWorkloadMoveRequest],

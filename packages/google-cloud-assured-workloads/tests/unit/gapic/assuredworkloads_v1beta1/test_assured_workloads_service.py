@@ -986,6 +986,9 @@ def test_update_workload(request_type, transport: str = "grpc"):
             provisioned_resources_parent="provisioned_resources_parent_value",
             kaj_enrollment_state=assuredworkloads.Workload.KajEnrollmentState.KAJ_ENROLLMENT_STATE_PENDING,
             enable_sovereign_controls=True,
+            compliant_but_disallowed_services=[
+                "compliant_but_disallowed_services_value"
+            ],
             il4_settings=assuredworkloads.Workload.IL4Settings(
                 kms_settings=assuredworkloads.Workload.KMSSettings(
                     next_rotation_time=timestamp_pb2.Timestamp(seconds=751)
@@ -1012,6 +1015,9 @@ def test_update_workload(request_type, transport: str = "grpc"):
         == assuredworkloads.Workload.KajEnrollmentState.KAJ_ENROLLMENT_STATE_PENDING
     )
     assert response.enable_sovereign_controls is True
+    assert response.compliant_but_disallowed_services == [
+        "compliant_but_disallowed_services_value"
+    ]
 
 
 def test_update_workload_empty_call():
@@ -1056,6 +1062,9 @@ async def test_update_workload_async(
                 provisioned_resources_parent="provisioned_resources_parent_value",
                 kaj_enrollment_state=assuredworkloads.Workload.KajEnrollmentState.KAJ_ENROLLMENT_STATE_PENDING,
                 enable_sovereign_controls=True,
+                compliant_but_disallowed_services=[
+                    "compliant_but_disallowed_services_value"
+                ],
             )
         )
         response = await client.update_workload(request)
@@ -1078,6 +1087,9 @@ async def test_update_workload_async(
         == assuredworkloads.Workload.KajEnrollmentState.KAJ_ENROLLMENT_STATE_PENDING
     )
     assert response.enable_sovereign_controls is True
+    assert response.compliant_but_disallowed_services == [
+        "compliant_but_disallowed_services_value"
+    ]
 
 
 @pytest.mark.asyncio
@@ -1581,6 +1593,9 @@ def test_get_workload(request_type, transport: str = "grpc"):
             provisioned_resources_parent="provisioned_resources_parent_value",
             kaj_enrollment_state=assuredworkloads.Workload.KajEnrollmentState.KAJ_ENROLLMENT_STATE_PENDING,
             enable_sovereign_controls=True,
+            compliant_but_disallowed_services=[
+                "compliant_but_disallowed_services_value"
+            ],
             il4_settings=assuredworkloads.Workload.IL4Settings(
                 kms_settings=assuredworkloads.Workload.KMSSettings(
                     next_rotation_time=timestamp_pb2.Timestamp(seconds=751)
@@ -1607,6 +1622,9 @@ def test_get_workload(request_type, transport: str = "grpc"):
         == assuredworkloads.Workload.KajEnrollmentState.KAJ_ENROLLMENT_STATE_PENDING
     )
     assert response.enable_sovereign_controls is True
+    assert response.compliant_but_disallowed_services == [
+        "compliant_but_disallowed_services_value"
+    ]
 
 
 def test_get_workload_empty_call():
@@ -1651,6 +1669,9 @@ async def test_get_workload_async(
                 provisioned_resources_parent="provisioned_resources_parent_value",
                 kaj_enrollment_state=assuredworkloads.Workload.KajEnrollmentState.KAJ_ENROLLMENT_STATE_PENDING,
                 enable_sovereign_controls=True,
+                compliant_but_disallowed_services=[
+                    "compliant_but_disallowed_services_value"
+                ],
             )
         )
         response = await client.get_workload(request)
@@ -1673,6 +1694,9 @@ async def test_get_workload_async(
         == assuredworkloads.Workload.KajEnrollmentState.KAJ_ENROLLMENT_STATE_PENDING
     )
     assert response.enable_sovereign_controls is True
+    assert response.compliant_but_disallowed_services == [
+        "compliant_but_disallowed_services_value"
+    ]
 
 
 @pytest.mark.asyncio

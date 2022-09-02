@@ -939,9 +939,8 @@ class AssuredWorkloadsServiceClient(metaclass=AssuredWorkloadsServiceClientMeta)
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> assuredworkloads.AnalyzeWorkloadMoveResponse:
-        r"""A request to analyze a hypothetical move of a source
-        project or project-based workload to a target
-        (destination) folder-based workload.
+        r"""Analyze if the source Assured Workloads can be moved
+        to the target Assured Workload
 
         .. code-block:: python
 

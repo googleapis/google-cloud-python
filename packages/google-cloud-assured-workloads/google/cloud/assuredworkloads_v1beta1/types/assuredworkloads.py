@@ -419,6 +419,14 @@ class Workload(proto.Message):
             response is queried during GetWorkload call. In
             failure cases, user friendly error message is
             shown in SAA details page.
+        compliant_but_disallowed_services (Sequence[str]):
+            Output only. Urls for services which are
+            compliant for this Assured Workload, but which
+            are currently disallowed by the
+            ResourceUsageRestriction org policy. Invoke
+            RestrictAllowedResources endpoint to allow your
+            project developers to use these services in
+            their environment.".
     """
 
     class ComplianceRegime(proto.Enum):
@@ -721,6 +729,10 @@ class Workload(proto.Message):
         proto.MESSAGE,
         number=20,
         message=SaaEnrollmentResponse,
+    )
+    compliant_but_disallowed_services = proto.RepeatedField(
+        proto.STRING,
+        number=24,
     )
 
 
