@@ -582,9 +582,7 @@ class AllocationPolicy(proto.Message):
             count (int):
                 The number of accelerators of this type.
             install_gpu_drivers (bool):
-                When true, Batch will install the GPU
-                drivers. This field will be ignored if
-                specified.
+
         """
 
         type_ = proto.Field(
