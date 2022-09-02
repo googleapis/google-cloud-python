@@ -50,7 +50,7 @@ def test_large_results(random_dataset, method_under_test):
           total_amount,
           passenger_count,
           trip_distance
-        FROM `bigquery-public-data.new_york_taxi_trips.tlc_green_trips_2014`
+        FROM `bigquery-public-data.new_york.tlc_green_trips_2014`
         -- Select non-null rows for no-copy conversion from Arrow to pandas.
         WHERE total_amount IS NOT NULL
           AND passenger_count IS NOT NULL
