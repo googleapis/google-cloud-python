@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.13.2](https://github.com/googleapis/python-dialogflow-cx/compare/v1.13.1...v1.13.2) (2022-09-02)
+
+
+### Documentation
+
+* **samples:** Add prebuilt telecom agent webhook code in python ([#434](https://github.com/googleapis/python-dialogflow-cx/issues/434)) ([45926d2](https://github.com/googleapis/python-dialogflow-cx/commit/45926d2fd7bcfb49785ad339e7141349e31f91b4))
+
 ## [1.13.1](https://github.com/googleapis/python-dialogflow-cx/compare/v1.13.0...v1.13.1) (2022-08-15)
 
 
