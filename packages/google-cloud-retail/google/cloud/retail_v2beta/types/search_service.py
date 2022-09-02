@@ -262,7 +262,7 @@ class SearchRequest(proto.Message):
 
             To represent full path of category, use '>' sign to separate
             different hierarchies. If '>' is part of the category name,
-            please replace it with other character(s).
+            replace it with other character(s).
 
             Category pages include special pages such as sales or
             promotions. For instance, a special sale page may have the
@@ -274,6 +274,15 @@ class SearchRequest(proto.Message):
             product search and faceted search.
         personalization_spec (google.cloud.retail_v2beta.types.SearchRequest.PersonalizationSpec):
             The specification for personalization.
+
+            Notice that if both
+            [ServingConfig.personalization_spec][google.cloud.retail.v2beta.ServingConfig.personalization_spec]
+            and
+            [SearchRequest.personalization_spec][google.cloud.retail.v2beta.SearchRequest.personalization_spec]
+            are set.
+            [SearchRequest.personalization_spec][google.cloud.retail.v2beta.SearchRequest.personalization_spec]
+            will override
+            [ServingConfig.personalization_spec][google.cloud.retail.v2beta.ServingConfig.personalization_spec].
         labels (Mapping[str, str]):
             The labels applied to a resource must meet the following
             requirements:
@@ -1013,6 +1022,23 @@ class SearchResponse(proto.Message):
                 ``{key: "pickupInStore.store1" value { number_value: 10 }}``
                 means a there are 10 variants in this product are available
                 in the store "store1".
+            personal_labels (Sequence[str]):
+                Specifies previous events related to this product for this
+                user based on
+                [UserEvent][google.cloud.retail.v2beta.UserEvent] with same
+                [SearchRequest.visitor_id][google.cloud.retail.v2beta.SearchRequest.visitor_id]
+                or
+                [UserInfo.user_id][google.cloud.retail.v2beta.UserInfo.user_id].
+
+                This is set only when
+                [SearchRequest.PersonalizationSpec.mode][google.cloud.retail.v2beta.SearchRequest.PersonalizationSpec.mode]
+                is
+                [SearchRequest.PersonalizationSpec.Mode.AUTO][google.cloud.retail.v2beta.SearchRequest.PersonalizationSpec.Mode.AUTO].
+
+                Possible values:
+
+                -  ``purchased``: Indicates that this product has been
+                   purchased before.
         """
 
         id = proto.Field(
@@ -1039,6 +1065,10 @@ class SearchResponse(proto.Message):
             proto.MESSAGE,
             number=5,
             message=struct_pb2.Value,
+        )
+        personal_labels = proto.RepeatedField(
+            proto.STRING,
+            number=7,
         )
 
     class Facet(proto.Message):

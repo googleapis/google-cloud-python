@@ -533,10 +533,10 @@ class ControlServiceClient(metaclass=ControlServiceClientMeta):
 
         Returns:
             google.cloud.retail_v2beta.types.Control:
-                Configures dynamic serving time
-                metadata that is used to pre and post
-                process search/recommendation model
-                results.
+                Configures dynamic metadata that can be linked to a
+                   [ServingConfig][google.cloud.retail.v2beta.ServingConfig]
+                   and affect search or recommendation results at
+                   serving time.
 
         """
         # Create or coerce a protobuf request object.
@@ -685,7 +685,7 @@ class ControlServiceClient(metaclass=ControlServiceClientMeta):
 
         [Control][google.cloud.retail.v2beta.Control] cannot be set to a
         different oneof field, if so an INVALID_ARGUMENT is returned. If
-        the [Control][google.cloud.retail.v2beta.Control] to delete does
+        the [Control][google.cloud.retail.v2beta.Control] to update does
         not exist, a NOT_FOUND error is returned.
 
         .. code-block:: python
@@ -740,10 +740,10 @@ class ControlServiceClient(metaclass=ControlServiceClientMeta):
 
         Returns:
             google.cloud.retail_v2beta.types.Control:
-                Configures dynamic serving time
-                metadata that is used to pre and post
-                process search/recommendation model
-                results.
+                Configures dynamic metadata that can be linked to a
+                   [ServingConfig][google.cloud.retail.v2beta.ServingConfig]
+                   and affect search or recommendation results at
+                   serving time.
 
         """
         # Create or coerce a protobuf request object.
@@ -826,7 +826,7 @@ class ControlServiceClient(metaclass=ControlServiceClientMeta):
             request (Union[google.cloud.retail_v2beta.types.GetControlRequest, dict]):
                 The request object. Request for GetControl method.
             name (str):
-                Required. The resource name of the Control to delete.
+                Required. The resource name of the Control to get.
                 Format:
                 ``projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}/controls/{control_id}``
 
@@ -841,10 +841,10 @@ class ControlServiceClient(metaclass=ControlServiceClientMeta):
 
         Returns:
             google.cloud.retail_v2beta.types.Control:
-                Configures dynamic serving time
-                metadata that is used to pre and post
-                process search/recommendation model
-                results.
+                Configures dynamic metadata that can be linked to a
+                   [ServingConfig][google.cloud.retail.v2beta.ServingConfig]
+                   and affect search or recommendation results at
+                   serving time.
 
         """
         # Create or coerce a protobuf request object.
@@ -898,7 +898,8 @@ class ControlServiceClient(metaclass=ControlServiceClientMeta):
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListControlsPager:
-        r"""Lists all Controls linked to this catalog.
+        r"""Lists all Controls by their parent
+        [Catalog][google.cloud.retail.v2beta.Catalog].
 
         .. code-block:: python
 

@@ -3297,6 +3297,171 @@ async def test_remove_catalog_attribute_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
+        catalog_service.BatchRemoveCatalogAttributesRequest,
+        dict,
+    ],
+)
+def test_batch_remove_catalog_attributes(request_type, transport: str = "grpc"):
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.batch_remove_catalog_attributes), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = catalog_service.BatchRemoveCatalogAttributesResponse(
+            deleted_catalog_attributes=["deleted_catalog_attributes_value"],
+            reset_catalog_attributes=["reset_catalog_attributes_value"],
+        )
+        response = client.batch_remove_catalog_attributes(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == catalog_service.BatchRemoveCatalogAttributesRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, catalog_service.BatchRemoveCatalogAttributesResponse)
+    assert response.deleted_catalog_attributes == ["deleted_catalog_attributes_value"]
+    assert response.reset_catalog_attributes == ["reset_catalog_attributes_value"]
+
+
+def test_batch_remove_catalog_attributes_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.batch_remove_catalog_attributes), "__call__"
+    ) as call:
+        client.batch_remove_catalog_attributes()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == catalog_service.BatchRemoveCatalogAttributesRequest()
+
+
+@pytest.mark.asyncio
+async def test_batch_remove_catalog_attributes_async(
+    transport: str = "grpc_asyncio",
+    request_type=catalog_service.BatchRemoveCatalogAttributesRequest,
+):
+    client = CatalogServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.batch_remove_catalog_attributes), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            catalog_service.BatchRemoveCatalogAttributesResponse(
+                deleted_catalog_attributes=["deleted_catalog_attributes_value"],
+                reset_catalog_attributes=["reset_catalog_attributes_value"],
+            )
+        )
+        response = await client.batch_remove_catalog_attributes(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == catalog_service.BatchRemoveCatalogAttributesRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, catalog_service.BatchRemoveCatalogAttributesResponse)
+    assert response.deleted_catalog_attributes == ["deleted_catalog_attributes_value"]
+    assert response.reset_catalog_attributes == ["reset_catalog_attributes_value"]
+
+
+@pytest.mark.asyncio
+async def test_batch_remove_catalog_attributes_async_from_dict():
+    await test_batch_remove_catalog_attributes_async(request_type=dict)
+
+
+def test_batch_remove_catalog_attributes_field_headers():
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = catalog_service.BatchRemoveCatalogAttributesRequest()
+
+    request.attributes_config = "attributes_config_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.batch_remove_catalog_attributes), "__call__"
+    ) as call:
+        call.return_value = catalog_service.BatchRemoveCatalogAttributesResponse()
+        client.batch_remove_catalog_attributes(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "attributes_config=attributes_config_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_batch_remove_catalog_attributes_field_headers_async():
+    client = CatalogServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = catalog_service.BatchRemoveCatalogAttributesRequest()
+
+    request.attributes_config = "attributes_config_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.batch_remove_catalog_attributes), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            catalog_service.BatchRemoveCatalogAttributesResponse()
+        )
+        await client.batch_remove_catalog_attributes(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "attributes_config=attributes_config_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
         catalog_service.ReplaceCatalogAttributeRequest,
         dict,
     ],
@@ -3612,6 +3777,7 @@ def test_catalog_service_base_transport():
         "update_attributes_config",
         "add_catalog_attribute",
         "remove_catalog_attribute",
+        "batch_remove_catalog_attributes",
         "replace_catalog_attribute",
     )
     for method in methods:

@@ -705,7 +705,7 @@ class CatalogServiceAsyncClient:
                 method.
             name (:class:`str`):
                 Required. Full CompletionConfig resource name. Format:
-                projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}/completionConfig
+                ``projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}/completionConfig``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1259,6 +1259,88 @@ class CatalogServiceAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.remove_catalog_attribute,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("attributes_config", request.attributes_config),)
+            ),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def batch_remove_catalog_attributes(
+        self,
+        request: Union[
+            catalog_service.BatchRemoveCatalogAttributesRequest, dict
+        ] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> catalog_service.BatchRemoveCatalogAttributesResponse:
+        r"""Removes all specified
+        [CatalogAttribute][google.cloud.retail.v2beta.CatalogAttribute]s
+        from the
+        [AttributesConfig][google.cloud.retail.v2beta.AttributesConfig].
+
+        .. code-block:: python
+
+            from google.cloud import retail_v2beta
+
+            async def sample_batch_remove_catalog_attributes():
+                # Create a client
+                client = retail_v2beta.CatalogServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = retail_v2beta.BatchRemoveCatalogAttributesRequest(
+                    attributes_config="attributes_config_value",
+                    attribute_keys=['attribute_keys_value_1', 'attribute_keys_value_2'],
+                )
+
+                # Make the request
+                response = await client.batch_remove_catalog_attributes(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.retail_v2beta.types.BatchRemoveCatalogAttributesRequest, dict]):
+                The request object. Request for
+                [CatalogService.BatchRemoveCatalogAttributes][google.cloud.retail.v2beta.CatalogService.BatchRemoveCatalogAttributes]
+                method.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.retail_v2beta.types.BatchRemoveCatalogAttributesResponse:
+                Response of the
+                   [CatalogService.BatchRemoveCatalogAttributes][google.cloud.retail.v2beta.CatalogService.BatchRemoveCatalogAttributes].
+
+        """
+        # Create or coerce a protobuf request object.
+        request = catalog_service.BatchRemoveCatalogAttributesRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.batch_remove_catalog_attributes,
             default_timeout=None,
             client_info=DEFAULT_CLIENT_INFO,
         )

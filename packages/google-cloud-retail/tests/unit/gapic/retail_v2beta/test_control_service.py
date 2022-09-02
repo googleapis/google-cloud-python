@@ -709,6 +709,9 @@ def test_create_control(request_type, transport: str = "grpc"):
             display_name="display_name_value",
             associated_serving_config_ids=["associated_serving_config_ids_value"],
             solution_types=[common.SolutionType.SOLUTION_TYPE_RECOMMENDATION],
+            search_solution_use_case=[
+                common.SearchSolutionUseCase.SEARCH_SOLUTION_USE_CASE_SEARCH
+            ],
             facet_spec=search_service.SearchRequest.FacetSpec(
                 facet_key=search_service.SearchRequest.FacetSpec.FacetKey(
                     key="key_value"
@@ -730,6 +733,9 @@ def test_create_control(request_type, transport: str = "grpc"):
         "associated_serving_config_ids_value"
     ]
     assert response.solution_types == [common.SolutionType.SOLUTION_TYPE_RECOMMENDATION]
+    assert response.search_solution_use_case == [
+        common.SearchSolutionUseCase.SEARCH_SOLUTION_USE_CASE_SEARCH
+    ]
 
 
 def test_create_control_empty_call():
@@ -770,6 +776,9 @@ async def test_create_control_async(
                 display_name="display_name_value",
                 associated_serving_config_ids=["associated_serving_config_ids_value"],
                 solution_types=[common.SolutionType.SOLUTION_TYPE_RECOMMENDATION],
+                search_solution_use_case=[
+                    common.SearchSolutionUseCase.SEARCH_SOLUTION_USE_CASE_SEARCH
+                ],
             )
         )
         response = await client.create_control(request)
@@ -787,6 +796,9 @@ async def test_create_control_async(
         "associated_serving_config_ids_value"
     ]
     assert response.solution_types == [common.SolutionType.SOLUTION_TYPE_RECOMMENDATION]
+    assert response.search_solution_use_case == [
+        common.SearchSolutionUseCase.SEARCH_SOLUTION_USE_CASE_SEARCH
+    ]
 
 
 @pytest.mark.asyncio
@@ -1234,6 +1246,9 @@ def test_update_control(request_type, transport: str = "grpc"):
             display_name="display_name_value",
             associated_serving_config_ids=["associated_serving_config_ids_value"],
             solution_types=[common.SolutionType.SOLUTION_TYPE_RECOMMENDATION],
+            search_solution_use_case=[
+                common.SearchSolutionUseCase.SEARCH_SOLUTION_USE_CASE_SEARCH
+            ],
             facet_spec=search_service.SearchRequest.FacetSpec(
                 facet_key=search_service.SearchRequest.FacetSpec.FacetKey(
                     key="key_value"
@@ -1255,6 +1270,9 @@ def test_update_control(request_type, transport: str = "grpc"):
         "associated_serving_config_ids_value"
     ]
     assert response.solution_types == [common.SolutionType.SOLUTION_TYPE_RECOMMENDATION]
+    assert response.search_solution_use_case == [
+        common.SearchSolutionUseCase.SEARCH_SOLUTION_USE_CASE_SEARCH
+    ]
 
 
 def test_update_control_empty_call():
@@ -1295,6 +1313,9 @@ async def test_update_control_async(
                 display_name="display_name_value",
                 associated_serving_config_ids=["associated_serving_config_ids_value"],
                 solution_types=[common.SolutionType.SOLUTION_TYPE_RECOMMENDATION],
+                search_solution_use_case=[
+                    common.SearchSolutionUseCase.SEARCH_SOLUTION_USE_CASE_SEARCH
+                ],
             )
         )
         response = await client.update_control(request)
@@ -1312,6 +1333,9 @@ async def test_update_control_async(
         "associated_serving_config_ids_value"
     ]
     assert response.solution_types == [common.SolutionType.SOLUTION_TYPE_RECOMMENDATION]
+    assert response.search_solution_use_case == [
+        common.SearchSolutionUseCase.SEARCH_SOLUTION_USE_CASE_SEARCH
+    ]
 
 
 @pytest.mark.asyncio
@@ -1529,6 +1553,9 @@ def test_get_control(request_type, transport: str = "grpc"):
             display_name="display_name_value",
             associated_serving_config_ids=["associated_serving_config_ids_value"],
             solution_types=[common.SolutionType.SOLUTION_TYPE_RECOMMENDATION],
+            search_solution_use_case=[
+                common.SearchSolutionUseCase.SEARCH_SOLUTION_USE_CASE_SEARCH
+            ],
             facet_spec=search_service.SearchRequest.FacetSpec(
                 facet_key=search_service.SearchRequest.FacetSpec.FacetKey(
                     key="key_value"
@@ -1550,6 +1577,9 @@ def test_get_control(request_type, transport: str = "grpc"):
         "associated_serving_config_ids_value"
     ]
     assert response.solution_types == [common.SolutionType.SOLUTION_TYPE_RECOMMENDATION]
+    assert response.search_solution_use_case == [
+        common.SearchSolutionUseCase.SEARCH_SOLUTION_USE_CASE_SEARCH
+    ]
 
 
 def test_get_control_empty_call():
@@ -1590,6 +1620,9 @@ async def test_get_control_async(
                 display_name="display_name_value",
                 associated_serving_config_ids=["associated_serving_config_ids_value"],
                 solution_types=[common.SolutionType.SOLUTION_TYPE_RECOMMENDATION],
+                search_solution_use_case=[
+                    common.SearchSolutionUseCase.SEARCH_SOLUTION_USE_CASE_SEARCH
+                ],
             )
         )
         response = await client.get_control(request)
@@ -1607,6 +1640,9 @@ async def test_get_control_async(
         "associated_serving_config_ids_value"
     ]
     assert response.solution_types == [common.SolutionType.SOLUTION_TYPE_RECOMMENDATION]
+    assert response.search_solution_use_case == [
+        common.SearchSolutionUseCase.SEARCH_SOLUTION_USE_CASE_SEARCH
+    ]
 
 
 @pytest.mark.asyncio

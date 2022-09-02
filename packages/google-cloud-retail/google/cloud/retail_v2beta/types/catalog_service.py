@@ -34,6 +34,8 @@ __protobuf__ = proto.module(
         "UpdateAttributesConfigRequest",
         "AddCatalogAttributeRequest",
         "RemoveCatalogAttributeRequest",
+        "BatchRemoveCatalogAttributesRequest",
+        "BatchRemoveCatalogAttributesResponse",
         "ReplaceCatalogAttributeRequest",
     },
 )
@@ -259,7 +261,7 @@ class GetCompletionConfigRequest(proto.Message):
     Attributes:
         name (str):
             Required. Full CompletionConfig resource name. Format:
-            projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}/completionConfig
+            ``projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}/completionConfig``
     """
 
     name = proto.Field(
@@ -406,6 +408,59 @@ class RemoveCatalogAttributeRequest(proto.Message):
         number=1,
     )
     key = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class BatchRemoveCatalogAttributesRequest(proto.Message):
+    r"""Request for
+    [CatalogService.BatchRemoveCatalogAttributes][google.cloud.retail.v2beta.CatalogService.BatchRemoveCatalogAttributes]
+    method.
+
+    Attributes:
+        attributes_config (str):
+            Required. The attributes config resource shared by all
+            catalog attributes being deleted. Format:
+            ``projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}/attributesConfig``
+        attribute_keys (Sequence[str]):
+            Required. The attribute name keys of the
+            [CatalogAttribute][google.cloud.retail.v2beta.CatalogAttribute]s
+            to delete. A maximum of 1000 catalog attributes can be
+            deleted in a batch.
+    """
+
+    attributes_config = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    attribute_keys = proto.RepeatedField(
+        proto.STRING,
+        number=2,
+    )
+
+
+class BatchRemoveCatalogAttributesResponse(proto.Message):
+    r"""Response of the
+    [CatalogService.BatchRemoveCatalogAttributes][google.cloud.retail.v2beta.CatalogService.BatchRemoveCatalogAttributes].
+
+    Attributes:
+        deleted_catalog_attributes (Sequence[str]):
+            Catalog attributes that were deleted. Only attributes that
+            are not [in use][CatalogAttribute.in_use] by products can be
+            deleted.
+        reset_catalog_attributes (Sequence[str]):
+            Catalog attributes that were reset. Attributes that are [in
+            use][CatalogAttribute.in_use] by products cannot be deleted,
+            however their configuration properties will reset to default
+            values upon removal request.
+    """
+
+    deleted_catalog_attributes = proto.RepeatedField(
+        proto.STRING,
+        number=1,
+    )
+    reset_catalog_attributes = proto.RepeatedField(
         proto.STRING,
         number=2,
     )

@@ -24,6 +24,8 @@ from .catalog import (
 )
 from .catalog_service import (
     AddCatalogAttributeRequest,
+    BatchRemoveCatalogAttributesRequest,
+    BatchRemoveCatalogAttributesResponse,
     GetAttributesConfigRequest,
     GetCompletionConfigRequest,
     GetDefaultBranchRequest,
@@ -91,6 +93,20 @@ from .import_config import (
     UserEventInlineSource,
     UserEventInputConfig,
 )
+from .model import Model
+from .model_service import (
+    CreateModelMetadata,
+    CreateModelRequest,
+    DeleteModelRequest,
+    ListModelsRequest,
+    ListModelsResponse,
+    PauseModelRequest,
+    ResumeModelRequest,
+    TuneModelMetadata,
+    TuneModelRequest,
+    TuneModelResponse,
+    UpdateModelRequest,
+)
 from .prediction_service import PredictRequest, PredictResponse
 from .product import Product
 from .product_service import (
@@ -148,6 +164,8 @@ __all__ = (
     "MerchantCenterLinkingConfig",
     "ProductLevelConfig",
     "AddCatalogAttributeRequest",
+    "BatchRemoveCatalogAttributesRequest",
+    "BatchRemoveCatalogAttributesResponse",
     "GetAttributesConfigRequest",
     "GetCompletionConfigRequest",
     "GetDefaultBranchRequest",
@@ -207,6 +225,18 @@ __all__ = (
     "UserEventImportSummary",
     "UserEventInlineSource",
     "UserEventInputConfig",
+    "Model",
+    "CreateModelMetadata",
+    "CreateModelRequest",
+    "DeleteModelRequest",
+    "ListModelsRequest",
+    "ListModelsResponse",
+    "PauseModelRequest",
+    "ResumeModelRequest",
+    "TuneModelMetadata",
+    "TuneModelRequest",
+    "TuneModelResponse",
+    "UpdateModelRequest",
     "PredictRequest",
     "PredictResponse",
     "Product",

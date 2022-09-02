@@ -20,6 +20,7 @@ from .services.completion_service import (
     CompletionServiceClient,
 )
 from .services.control_service import ControlServiceAsyncClient, ControlServiceClient
+from .services.model_service import ModelServiceAsyncClient, ModelServiceClient
 from .services.prediction_service import (
     PredictionServiceAsyncClient,
     PredictionServiceClient,
@@ -45,6 +46,8 @@ from .types.catalog import (
 )
 from .types.catalog_service import (
     AddCatalogAttributeRequest,
+    BatchRemoveCatalogAttributesRequest,
+    BatchRemoveCatalogAttributesResponse,
     GetAttributesConfigRequest,
     GetCompletionConfigRequest,
     GetDefaultBranchRequest,
@@ -112,6 +115,20 @@ from .types.import_config import (
     UserEventInlineSource,
     UserEventInputConfig,
 )
+from .types.model import Model
+from .types.model_service import (
+    CreateModelMetadata,
+    CreateModelRequest,
+    DeleteModelRequest,
+    ListModelsRequest,
+    ListModelsResponse,
+    PauseModelRequest,
+    ResumeModelRequest,
+    TuneModelMetadata,
+    TuneModelRequest,
+    TuneModelResponse,
+    UpdateModelRequest,
+)
 from .types.prediction_service import PredictRequest, PredictResponse
 from .types.product import Product
 from .types.product_service import (
@@ -173,6 +190,7 @@ __all__ = (
     "CatalogServiceAsyncClient",
     "CompletionServiceAsyncClient",
     "ControlServiceAsyncClient",
+    "ModelServiceAsyncClient",
     "PredictionServiceAsyncClient",
     "ProductServiceAsyncClient",
     "SearchServiceAsyncClient",
@@ -189,6 +207,8 @@ __all__ = (
     "AttributeConfigLevel",
     "AttributesConfig",
     "Audience",
+    "BatchRemoveCatalogAttributesRequest",
+    "BatchRemoveCatalogAttributesResponse",
     "BigQueryOutputResult",
     "BigQuerySource",
     "Catalog",
@@ -206,10 +226,13 @@ __all__ = (
     "Control",
     "ControlServiceClient",
     "CreateControlRequest",
+    "CreateModelMetadata",
+    "CreateModelRequest",
     "CreateProductRequest",
     "CreateServingConfigRequest",
     "CustomAttribute",
     "DeleteControlRequest",
+    "DeleteModelRequest",
     "DeleteProductRequest",
     "DeleteServingConfigRequest",
     "ExportErrorsConfig",
@@ -239,6 +262,8 @@ __all__ = (
     "ListCatalogsResponse",
     "ListControlsRequest",
     "ListControlsResponse",
+    "ListModelsRequest",
+    "ListModelsResponse",
     "ListProductsRequest",
     "ListProductsResponse",
     "ListServingConfigsRequest",
@@ -246,7 +271,10 @@ __all__ = (
     "LocalInventory",
     "MerchantCenterLink",
     "MerchantCenterLinkingConfig",
+    "Model",
+    "ModelServiceClient",
     "OutputResult",
+    "PauseModelRequest",
     "PredictRequest",
     "PredictResponse",
     "PredictionServiceClient",
@@ -276,6 +304,7 @@ __all__ = (
     "RemoveLocalInventoriesRequest",
     "RemoveLocalInventoriesResponse",
     "ReplaceCatalogAttributeRequest",
+    "ResumeModelRequest",
     "Rule",
     "SearchRequest",
     "SearchResponse",
@@ -288,10 +317,14 @@ __all__ = (
     "SetInventoryRequest",
     "SetInventoryResponse",
     "SolutionType",
+    "TuneModelMetadata",
+    "TuneModelRequest",
+    "TuneModelResponse",
     "UpdateAttributesConfigRequest",
     "UpdateCatalogRequest",
     "UpdateCompletionConfigRequest",
     "UpdateControlRequest",
+    "UpdateModelRequest",
     "UpdateProductRequest",
     "UpdateServingConfigRequest",
     "UserEvent",

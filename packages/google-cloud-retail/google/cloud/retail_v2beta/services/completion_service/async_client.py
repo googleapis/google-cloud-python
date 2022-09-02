@@ -44,8 +44,8 @@ from .transports.grpc_asyncio import CompletionServiceGrpcAsyncIOTransport
 class CompletionServiceAsyncClient:
     """Auto-completion service for retail.
     This feature is only available for users who have Retail Search
-    enabled. Please enable Retail Search on Cloud Console before
-    using this feature.
+    enabled. Enable Retail Search on Cloud Console before using this
+    feature.
     """
 
     _client: CompletionServiceClient
@@ -220,8 +220,8 @@ class CompletionServiceAsyncClient:
         r"""Completes the specified prefix with keyword
         suggestions.
         This feature is only available for users who have Retail
-        Search enabled. Please enable Retail Search on Cloud
-        Console before using this feature.
+        Search enabled. Enable Retail Search on Cloud Console
+        before using this feature.
 
         .. code-block:: python
 
@@ -299,8 +299,8 @@ class CompletionServiceAsyncClient:
         imported suggestions are indexed successfully and ready
         for serving. The process takes hours.
         This feature is only available for users who have Retail
-        Search enabled. Please enable Retail Search on Cloud
-        Console before using this feature.
+        Search enabled. Enable Retail Search on Cloud Console
+        before using this feature.
 
         .. code-block:: python
 

@@ -573,6 +573,41 @@ class CatalogServiceGrpcTransport(CatalogServiceTransport):
         return self._stubs["remove_catalog_attribute"]
 
     @property
+    def batch_remove_catalog_attributes(
+        self,
+    ) -> Callable[
+        [catalog_service.BatchRemoveCatalogAttributesRequest],
+        catalog_service.BatchRemoveCatalogAttributesResponse,
+    ]:
+        r"""Return a callable for the batch remove catalog
+        attributes method over gRPC.
+
+        Removes all specified
+        [CatalogAttribute][google.cloud.retail.v2beta.CatalogAttribute]s
+        from the
+        [AttributesConfig][google.cloud.retail.v2beta.AttributesConfig].
+
+        Returns:
+            Callable[[~.BatchRemoveCatalogAttributesRequest],
+                    ~.BatchRemoveCatalogAttributesResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "batch_remove_catalog_attributes" not in self._stubs:
+            self._stubs[
+                "batch_remove_catalog_attributes"
+            ] = self.grpc_channel.unary_unary(
+                "/google.cloud.retail.v2beta.CatalogService/BatchRemoveCatalogAttributes",
+                request_serializer=catalog_service.BatchRemoveCatalogAttributesRequest.serialize,
+                response_deserializer=catalog_service.BatchRemoveCatalogAttributesResponse.deserialize,
+            )
+        return self._stubs["batch_remove_catalog_attributes"]
+
+    @property
     def replace_catalog_attribute(
         self,
     ) -> Callable[

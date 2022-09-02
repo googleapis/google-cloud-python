@@ -83,8 +83,8 @@ class CompletionServiceClientMeta(type):
 class CompletionServiceClient(metaclass=CompletionServiceClientMeta):
     """Auto-completion service for retail.
     This feature is only available for users who have Retail Search
-    enabled. Please enable Retail Search on Cloud Console before
-    using this feature.
+    enabled. Enable Retail Search on Cloud Console before using this
+    feature.
     """
 
     @staticmethod
@@ -445,8 +445,8 @@ class CompletionServiceClient(metaclass=CompletionServiceClientMeta):
         r"""Completes the specified prefix with keyword
         suggestions.
         This feature is only available for users who have Retail
-        Search enabled. Please enable Retail Search on Cloud
-        Console before using this feature.
+        Search enabled. Enable Retail Search on Cloud Console
+        before using this feature.
 
         .. code-block:: python
 
@@ -525,8 +525,8 @@ class CompletionServiceClient(metaclass=CompletionServiceClientMeta):
         imported suggestions are indexed successfully and ready
         for serving. The process takes hours.
         This feature is only available for users who have Retail
-        Search enabled. Please enable Retail Search on Cloud
-        Console before using this feature.
+        Search enabled. Enable Retail Search on Cloud Console
+        before using this feature.
 
         .. code-block:: python
 

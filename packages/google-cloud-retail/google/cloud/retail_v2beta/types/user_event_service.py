@@ -103,18 +103,18 @@ class RejoinUserEventsRequest(proto.Message):
             The type of the user event rejoin to define the scope and
             range of the user events to be rejoined with the latest
             product catalog. Defaults to
-            USER_EVENT_REJOIN_SCOPE_UNSPECIFIED if this field is not
+            ``USER_EVENT_REJOIN_SCOPE_UNSPECIFIED`` if this field is not
             set, or set to an invalid integer value.
     """
 
     class UserEventRejoinScope(proto.Enum):
         r"""The scope of user events to be rejoined with the latest product
         catalog. If the rejoining aims at reducing number of unjoined
-        events, set UserEventRejoinScope to UNJOINED_EVENTS. If the
+        events, set ``UserEventRejoinScope`` to ``UNJOINED_EVENTS``. If the
         rejoining aims at correcting product catalog information in joined
-        events, set UserEventRejoinScope to JOINED_EVENTS. If all events
-        needs to be rejoined, set UserEventRejoinScope to
-        USER_EVENT_REJOIN_SCOPE_UNSPECIFIED.
+        events, set ``UserEventRejoinScope`` to ``JOINED_EVENTS``. If all
+        events needs to be rejoined, set ``UserEventRejoinScope`` to
+        ``USER_EVENT_REJOIN_SCOPE_UNSPECIFIED``.
         """
         USER_EVENT_REJOIN_SCOPE_UNSPECIFIED = 0
         JOINED_EVENTS = 1
@@ -132,7 +132,7 @@ class RejoinUserEventsRequest(proto.Message):
 
 
 class RejoinUserEventsResponse(proto.Message):
-    r"""Response message for RejoinUserEvents method.
+    r"""Response message for ``RejoinUserEvents`` method.
 
     Attributes:
         rejoined_user_events_count (int):
@@ -147,7 +147,7 @@ class RejoinUserEventsResponse(proto.Message):
 
 
 class RejoinUserEventsMetadata(proto.Message):
-    r"""Metadata for RejoinUserEvents method."""
+    r"""Metadata for ``RejoinUserEvents`` method."""
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

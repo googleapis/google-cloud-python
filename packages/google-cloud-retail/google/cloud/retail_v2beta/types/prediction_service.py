@@ -66,14 +66,13 @@ class PredictRequest(proto.Message):
             [UserInfo.user_id][google.cloud.retail.v2beta.UserInfo.user_id]
             unset.
         page_size (int):
-            Maximum number of results to return per page.
-            Set this property to the number of prediction
-            results needed. If zero, the service will choose
-            a reasonable default. The maximum allowed value
-            is 100. Values above 100 will be coerced to 100.
+            Maximum number of results to return. Set this
+            property to the number of prediction results
+            needed. If zero, the service will choose a
+            reasonable default. The maximum allowed value is
+            100. Values above 100 will be coerced to 100.
         page_token (str):
-            This field is not used for now; leave it
-            unset.
+            This field is not used; leave it unset.
         filter (str):
             Filter for restricting prediction results with a length
             limit of 5,000 characters. Accepts values for tags and the

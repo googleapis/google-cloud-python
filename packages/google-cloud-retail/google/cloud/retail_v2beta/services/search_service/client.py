@@ -79,8 +79,8 @@ class SearchServiceClientMeta(type):
 class SearchServiceClient(metaclass=SearchServiceClientMeta):
     """Service for search.
     This feature is only available for users who have Retail Search
-    enabled. Please enable Retail Search on Cloud Console before
-    using this feature.
+    enabled. Enable Retail Search on Cloud Console before using this
+    feature.
     """
 
     @staticmethod
@@ -468,8 +468,8 @@ class SearchServiceClient(metaclass=SearchServiceClientMeta):
     ) -> pagers.SearchPager:
         r"""Performs a search.
         This feature is only available for users who have Retail
-        Search enabled. Please enable Retail Search on Cloud
-        Console before using this feature.
+        Search enabled. Enable Retail Search on Cloud Console
+        before using this feature.
 
         .. code-block:: python
 

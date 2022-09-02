@@ -98,9 +98,9 @@ class Condition(proto.Message):
                 Value cannot be empty.
                 Value can have at most 3 terms if specified as a
                 partial match. Each space separated string is
-                considered as one term. Example) "a b c" is 3
-                terms and allowed, " a b c d" is 4 terms and not
-                allowed for partial match.
+                considered as one term. For example, "a b c" is
+                3 terms and allowed, but " a b c d" is 4 terms
+                and not allowed for a partial match.
             full_match (bool):
                 Whether this is supposed to be a full or
                 partial match.
@@ -153,9 +153,9 @@ class Rule(proto.Message):
     r"""A rule is a condition-action pair
 
     -  A condition defines when a rule is to be triggered.
-    -  An action specifies what occurs on that trigger. Currently only
-       boost rules are supported. Currently only supported by the search
-       endpoint.
+    -  An action specifies what occurs on that trigger. Currently rules
+       only work for [controls][google.cloud.retail.v2beta.Control] with
+       [SOLUTION_TYPE_SEARCH][google.cloud.retail.v2beta.SolutionType.SOLUTION_TYPE_SEARCH].
 
     This message has `oneof`_ fields (mutually exclusive fields).
     For each oneof, at most one member field can be set at the same time.

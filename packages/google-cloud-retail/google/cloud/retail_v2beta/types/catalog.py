@@ -182,6 +182,11 @@ class CatalogAttribute(proto.Message):
             filterable for recommendations. This option works for
             categorical features only, does not work for numerical
             features, inventory filtering.
+        exact_searchable_option (google.cloud.retail_v2beta.types.CatalogAttribute.ExactSearchableOption):
+            If EXACT_SEARCHABLE_ENABLED, attribute values will be exact
+            searchable. This property only applies to textual custom
+            attributes and requires indexable set to enabled to enable
+            exact-searchable.
     """
 
     class AttributeType(proto.Enum):
@@ -209,6 +214,14 @@ class CatalogAttribute(proto.Message):
         SEARCHABLE_OPTION_UNSPECIFIED = 0
         SEARCHABLE_ENABLED = 1
         SEARCHABLE_DISABLED = 2
+
+    class ExactSearchableOption(proto.Enum):
+        r"""The status of the exact-searchable option of a catalog
+        attribute.
+        """
+        EXACT_SEARCHABLE_OPTION_UNSPECIFIED = 0
+        EXACT_SEARCHABLE_ENABLED = 1
+        EXACT_SEARCHABLE_DISABLED = 2
 
     key = proto.Field(
         proto.STRING,
@@ -242,6 +255,11 @@ class CatalogAttribute(proto.Message):
         proto.ENUM,
         number=8,
         enum=common.RecommendationsFilteringOption,
+    )
+    exact_searchable_option = proto.Field(
+        proto.ENUM,
+        number=11,
+        enum=ExactSearchableOption,
     )
 
 
@@ -432,9 +450,9 @@ class MerchantCenterLink(proto.Message):
             account id.
         destinations (Sequence[str]):
             String representing the destination to import for, all if
-            left empty. List of possible values can be found here.
-            [https://support.google.com/merchants/answer/7501026] List
-            of allowed string values: "Shopping_ads",
+            left empty. List of possible values is given in `Included
+            destination <https://support.google.com/merchants/answer/7501026>`__.
+            List of allowed string values: "Shopping_ads",
             "Buy_on_google_listings", "Display_ads", "Local_inventory
             \_ads", "Free_listings", "Free_local_listings" NOTE: The
             string values are case sensitive.

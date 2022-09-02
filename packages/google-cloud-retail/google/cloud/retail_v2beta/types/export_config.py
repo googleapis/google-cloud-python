@@ -54,8 +54,8 @@ class ExportErrorsConfig(proto.Message):
 
 class ExportMetadata(proto.Message):
     r"""Metadata related to the progress of the Export operation.
-    This will be returned by the
-    google.longrunning.Operation.metadata field.
+    This is returned by the google.longrunning.Operation.metadata
+    field.
 
     Attributes:
         create_time (google.protobuf.timestamp_pb2.Timestamp):

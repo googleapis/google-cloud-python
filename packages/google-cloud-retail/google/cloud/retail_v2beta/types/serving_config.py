@@ -26,10 +26,8 @@ __protobuf__ = proto.module(
 
 
 class ServingConfig(proto.Message):
-    r"""Configures metadata that is used to generate serving time results
-    (e.g. search results or recommendation predictions). The
-    ServingConfig is passed in the search and predict request and
-    together with the Catalog.default_branch, generates results.
+    r"""Configures metadata that is used to generate serving time
+    results (e.g. search results or recommendation predictions).
 
     Attributes:
         name (str):
@@ -43,8 +41,10 @@ class ServingConfig(proto.Message):
             limit of 128 characters. Otherwise, an INVALID_ARGUMENT
             error is returned.
         model_id (str):
-            The id of the model to use at serving time. Currently only
-            RecommendationModels are supported:
+            The id of the model in the same
+            [Catalog][google.cloud.retail.v2beta.Catalog] to use at
+            serving time. Currently only RecommendationModels are
+            supported:
             https://cloud.google.com/retail/recommendations-ai/docs/create-models
             Can be changed but only to a compatible model (e.g.
             others-you-may-like CTR to others-you-may-like CVR).
@@ -60,13 +60,13 @@ class ServingConfig(proto.Message):
             items first. This setting could result in a decrease in
             click-through and conversion rates. Allowed values are:
 
-            -  'no-price-reranking'
-            -  'low-price-raranking'
-            -  'medium-price-reranking'
-            -  'high-price-reranking'
+            -  ``no-price-reranking``
+            -  ``low-price-raranking``
+            -  ``medium-price-reranking``
+            -  ``high-price-reranking``
 
             If not specified, we choose default based on model type.
-            Default value: 'no-price-reranking'.
+            Default value: ``no-price-reranking``.
 
             Can only be set if
             [solution_types][google.cloud.retail.v2beta.ServingConfig.solution_types]
@@ -191,30 +191,34 @@ class ServingConfig(proto.Message):
             [SOLUTION_TYPE_SEARCH][google.cloud.retail.v2main.SolutionType.SOLUTION_TYPE_SEARCH].
         diversity_level (str):
             How much diversity to use in recommendation model results
-            e.g. 'medium-diversity' or 'high-diversity'. Currently
+            e.g. ``medium-diversity`` or ``high-diversity``. Currently
             supported values:
 
-            -  'no-diversity'
-            -  'low-diversity'
-            -  'medium-diversity'
-            -  'high-diversity'
-            -  'auto-diversity'
+            -  ``no-diversity``
+            -  ``low-diversity``
+            -  ``medium-diversity``
+            -  ``high-diversity``
+            -  ``auto-diversity``
 
             If not specified, we choose default based on recommendation
-            model type. Default value: 'no-diversity'.
+            model type. Default value: ``no-diversity``.
 
             Can only be set if
             [solution_types][google.cloud.retail.v2beta.ServingConfig.solution_types]
             is
             [SOLUTION_TYPE_RECOMMENDATION][google.cloud.retail.v2main.SolutionType.SOLUTION_TYPE_RECOMMENDATION].
+        diversity_type (google.cloud.retail_v2beta.types.ServingConfig.DiversityType):
+            What kind of diversity to use - data driven
+            or rule based.
         enable_category_filter_level (str):
             Whether to add additional category filters on the
-            'similar-items' model. If not specified, we enable it by
+            ``similar-items`` model. If not specified, we enable it by
             default. Allowed values are:
 
-            -  'no-category-match': No additional filtering of original
-               results from the model and the customer's filters.
-            -  'relaxed-category-match': Only keep results with
+            -  ``no-category-match``: No additional filtering of
+               original results from the model and the customer's
+               filters.
+            -  ``relaxed-category-match``: Only keep results with
                categories that match at least one item categories in the
                PredictRequests's context item.
 
@@ -226,12 +230,36 @@ class ServingConfig(proto.Message):
             [solution_types][google.cloud.retail.v2beta.ServingConfig.solution_types]
             is
             [SOLUTION_TYPE_RECOMMENDATION][google.cloud.retail.v2main.SolutionType.SOLUTION_TYPE_RECOMMENDATION].
+        personalization_spec (google.cloud.retail_v2beta.types.SearchRequest.PersonalizationSpec):
+            The specification for personalization spec.
+
+            Can only be set if
+            [solution_types][google.cloud.retail.v2beta.ServingConfig.solution_types]
+            is
+            [SOLUTION_TYPE_SEARCH][google.cloud.retail.v2main.SolutionType.SOLUTION_TYPE_SEARCH].
+
+            Notice that if both
+            [ServingConfig.personalization_spec][google.cloud.retail.v2beta.ServingConfig.personalization_spec]
+            and
+            [SearchRequest.personalization_spec][google.cloud.retail.v2beta.SearchRequest.personalization_spec]
+            are set.
+            [SearchRequest.personalization_spec][google.cloud.retail.v2beta.SearchRequest.personalization_spec]
+            will override
+            [ServingConfig.personalization_spec][google.cloud.retail.v2beta.ServingConfig.personalization_spec].
         solution_types (Sequence[google.cloud.retail_v2beta.types.SolutionType]):
             Required. Immutable. Specifies the solution
             types that a serving config can be associated
             with. Currently we support setting only one type
             of solution.
     """
+
+    class DiversityType(proto.Enum):
+        r"""What type of diversity - data or rule based.
+        If none is specified, default to rule based.
+        """
+        DIVERSITY_TYPE_UNSPECIFIED = 0
+        RULE_BASED_DIVERSITY = 2
+        DATA_DRIVEN_DIVERSITY = 3
 
     name = proto.Field(
         proto.STRING,
@@ -294,9 +322,19 @@ class ServingConfig(proto.Message):
         proto.STRING,
         number=8,
     )
+    diversity_type = proto.Field(
+        proto.ENUM,
+        number=20,
+        enum=DiversityType,
+    )
     enable_category_filter_level = proto.Field(
         proto.STRING,
         number=16,
+    )
+    personalization_spec = proto.Field(
+        proto.MESSAGE,
+        number=21,
+        message=search_service.SearchRequest.PersonalizationSpec,
     )
     solution_types = proto.RepeatedField(
         proto.ENUM,

@@ -537,11 +537,10 @@ class ServingConfigServiceClient(metaclass=ServingConfigServiceClientMeta):
 
         Returns:
             google.cloud.retail_v2beta.types.ServingConfig:
-                Configures metadata that is used to generate serving time results (e.g.
-                   search results or recommendation predictions). The
-                   ServingConfig is passed in the search and predict
-                   request and together with the Catalog.default_branch,
-                   generates results.
+                Configures metadata that is used to
+                generate serving time results (e.g.
+                search results or recommendation
+                predictions).
 
         """
         # Create or coerce a protobuf request object.
@@ -626,7 +625,7 @@ class ServingConfigServiceClient(metaclass=ServingConfigServiceClientMeta):
             name (str):
                 Required. The resource name of the ServingConfig to
                 delete. Format:
-                projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}/servingConfigs/{serving_config_id}
+                ``projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}/servingConfigs/{serving_config_id}``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -742,11 +741,10 @@ class ServingConfigServiceClient(metaclass=ServingConfigServiceClientMeta):
 
         Returns:
             google.cloud.retail_v2beta.types.ServingConfig:
-                Configures metadata that is used to generate serving time results (e.g.
-                   search results or recommendation predictions). The
-                   ServingConfig is passed in the search and predict
-                   request and together with the Catalog.default_branch,
-                   generates results.
+                Configures metadata that is used to
+                generate serving time results (e.g.
+                search results or recommendation
+                predictions).
 
         """
         # Create or coerce a protobuf request object.
@@ -833,7 +831,7 @@ class ServingConfigServiceClient(metaclass=ServingConfigServiceClientMeta):
             name (str):
                 Required. The resource name of the ServingConfig to get.
                 Format:
-                projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}/servingConfigs/{serving_config_id}
+                ``projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}/servingConfigs/{serving_config_id}``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -846,11 +844,10 @@ class ServingConfigServiceClient(metaclass=ServingConfigServiceClientMeta):
 
         Returns:
             google.cloud.retail_v2beta.types.ServingConfig:
-                Configures metadata that is used to generate serving time results (e.g.
-                   search results or recommendation predictions). The
-                   ServingConfig is passed in the search and predict
-                   request and together with the Catalog.default_branch,
-                   generates results.
+                Configures metadata that is used to
+                generate serving time results (e.g.
+                search results or recommendation
+                predictions).
 
         """
         # Create or coerce a protobuf request object.
@@ -932,7 +929,7 @@ class ServingConfigServiceClient(metaclass=ServingConfigServiceClientMeta):
                 method.
             parent (str):
                 Required. The catalog resource name. Format:
-                projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}
+                ``projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1046,7 +1043,7 @@ class ServingConfigServiceClient(metaclass=ServingConfigServiceClientMeta):
             serving_config (str):
                 Required. The source ServingConfig resource name .
                 Format:
-                projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}/servingConfigs/{serving_config_id}
+                ``projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}/servingConfigs/{serving_config_id}``
 
                 This corresponds to the ``serving_config`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1059,11 +1056,10 @@ class ServingConfigServiceClient(metaclass=ServingConfigServiceClientMeta):
 
         Returns:
             google.cloud.retail_v2beta.types.ServingConfig:
-                Configures metadata that is used to generate serving time results (e.g.
-                   search results or recommendation predictions). The
-                   ServingConfig is passed in the search and predict
-                   request and together with the Catalog.default_branch,
-                   generates results.
+                Configures metadata that is used to
+                generate serving time results (e.g.
+                search results or recommendation
+                predictions).
 
         """
         # Create or coerce a protobuf request object.
@@ -1149,7 +1145,7 @@ class ServingConfigServiceClient(metaclass=ServingConfigServiceClientMeta):
             serving_config (str):
                 Required. The source ServingConfig resource name .
                 Format:
-                projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}/servingConfigs/{serving_config_id}
+                ``projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}/servingConfigs/{serving_config_id}``
 
                 This corresponds to the ``serving_config`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1162,11 +1158,10 @@ class ServingConfigServiceClient(metaclass=ServingConfigServiceClientMeta):
 
         Returns:
             google.cloud.retail_v2beta.types.ServingConfig:
-                Configures metadata that is used to generate serving time results (e.g.
-                   search results or recommendation predictions). The
-                   ServingConfig is passed in the search and predict
-                   request and together with the Catalog.default_branch,
-                   generates results.
+                Configures metadata that is used to
+                generate serving time results (e.g.
+                search results or recommendation
+                predictions).
 
         """
         # Create or coerce a protobuf request object.
