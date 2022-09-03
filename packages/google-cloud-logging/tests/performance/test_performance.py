@@ -196,7 +196,7 @@ class TestPerformance(unittest.TestCase):
         total_time = self._print_results(pr, results, time_limit, "Client Init")
         self.assertLessEqual(total_time, time_limit)
 
-    def test_structured_logging_performance(self, time_limit=10):
+    def test_structured_logging_performance(self, time_limit=12):
         """
         Test the performance of StructuredLoggingHandler
 
@@ -278,7 +278,7 @@ class TestPerformance(unittest.TestCase):
         total_time = self._print_results(pr, results, time_limit, "CloudLoggingHandler")
         self.assertLessEqual(total_time, time_limit)
 
-    def test_logging_performance(self, time_limit=15):
+    def test_logging_performance(self, time_limit=20):
         """
         Test the performance of logger
 
@@ -312,7 +312,7 @@ class TestPerformance(unittest.TestCase):
         total_time = self._print_results(pr, results, time_limit, "Logger.Log")
         self.assertLessEqual(total_time, time_limit)
 
-    def test_batch_performance(self, time_limit=10):
+    def test_batch_performance(self, time_limit=12):
         """
         Test the performance of logger
 
