@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery-storage/#history
 
+## [2.15.0](https://github.com/googleapis/python-bigquery-storage/compare/v2.14.2...v2.15.0) (2022-09-06)
+
+
+### Features
+
+* Allow users to set Apache Avro output format options through avro_serialization_options param in TableReadOptions message ([#490](https://github.com/googleapis/python-bigquery-storage/issues/490)) ([0c1264d](https://github.com/googleapis/python-bigquery-storage/commit/0c1264d47b6d412b11524fee484cff6473480890))
+
 ## [2.14.2](https://github.com/googleapis/python-bigquery-storage/compare/v2.14.1...v2.14.2) (2022-08-12)
 
 
