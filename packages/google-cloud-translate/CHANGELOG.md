@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-translate/#history
 
+## [3.8.2](https://github.com/googleapis/python-translate/compare/v3.8.1...v3.8.2) (2022-09-06)
+
+
+### Documentation
+
+* **samples:** Fixing file saving for local documents translation ([#419](https://github.com/googleapis/python-translate/issues/419)) ([49bd707](https://github.com/googleapis/python-translate/commit/49bd707614d28fb3f18ef725edee4c10debe0bd6))
+
 ## [3.8.1](https://github.com/googleapis/python-translate/compare/v3.8.0...v3.8.1) (2022-08-11)
 
 
