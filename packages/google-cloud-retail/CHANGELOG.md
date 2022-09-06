@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.10.0](https://github.com/googleapis/python-retail/compare/v1.9.0...v1.10.0) (2022-09-02)
+
+
+### Features
+
+* Release Model Services to v2beta version ([#333](https://github.com/googleapis/python-retail/issues/333)) ([ec20834](https://github.com/googleapis/python-retail/commit/ec208343314664cd5e61f67cd8b464d96aac901a))
+
 ## [1.9.0](https://github.com/googleapis/python-retail/compare/v1.8.1...v1.9.0) (2022-08-23)
 
 
