@@ -293,7 +293,7 @@ def test_table_backup(
 
     # Testing `Backup.create()` method
     backup_op = temp_backup.create()
-    backup_op.result(timeout=30)
+    backup_op.result(timeout=240)
 
     # Implicit testing of `Backup.delete()` method
     backups_to_delete.append(temp_backup)
@@ -346,11 +346,11 @@ def test_table_backup(
     )
     create_op = alt_instance.create(clusters=[alt_cluster])
     instances_to_delete.append(alt_instance)
-    create_op.result(timeout=30)
+    create_op.result(timeout=240)
 
     # Testing `restore()`...
     restore_op = temp_backup.restore(restored_table_id, alt_instance_id)
-    restore_op.result(timeout=30)
+    restore_op.result(timeout=240)
     restored_table = alt_instance.table(restored_table_id)
     assert restored_table in alt_instance.list_tables()
     restored_table.delete()

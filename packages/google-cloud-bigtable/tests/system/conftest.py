@@ -133,7 +133,7 @@ def admin_instance_populated(admin_instance, admin_cluster, in_emulator):
     # See: https://cloud.google.com/bigtable/docs/emulator
     if not in_emulator:
         operation = admin_instance.create(clusters=[admin_cluster])
-        operation.result(timeout=30)
+        operation.result(timeout=120)
 
     yield admin_instance
 
@@ -176,7 +176,7 @@ def data_instance_populated(
             serve_nodes=serve_nodes,
         )
         operation = instance.create(clusters=[cluster])
-        operation.result(timeout=30)
+        operation.result(timeout=120)
 
     yield instance
 
