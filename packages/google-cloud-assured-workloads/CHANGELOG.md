@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.0](https://github.com/googleapis/python-assured-workloads/compare/v1.4.2...v1.5.0) (2022-09-02)
+
+
+### Features
+
+* Add compliant_but_disallowed_services field to the v1beta1 Workload proto ([#201](https://github.com/googleapis/python-assured-workloads/issues/201)) ([a8c4a1a](https://github.com/googleapis/python-assured-workloads/commit/a8c4a1a11b2c51786fb1fd6ab6e7e99696c92646))
+
 ## [1.4.2](https://github.com/googleapis/python-assured-workloads/compare/v1.4.1...v1.4.2) (2022-08-24)
 
 
