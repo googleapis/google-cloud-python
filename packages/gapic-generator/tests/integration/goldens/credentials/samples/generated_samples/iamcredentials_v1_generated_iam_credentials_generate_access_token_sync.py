@@ -34,7 +34,7 @@ def sample_generate_access_token():
     # Initialize request argument(s)
     request = credentials_v1.GenerateAccessTokenRequest(
         name="name_value",
-        scope=['scope_value_1', 'scope_value_2'],
+        scope=['scope_value1', 'scope_value2'],
     )
 
     # Make the request

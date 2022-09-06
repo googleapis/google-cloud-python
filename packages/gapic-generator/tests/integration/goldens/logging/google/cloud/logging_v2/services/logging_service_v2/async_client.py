@@ -506,7 +506,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
 
                 # Initialize request argument(s)
                 request = logging_v2.ListLogEntriesRequest(
-                    resource_names=['resource_names_value_1', 'resource_names_value_2'],
+                    resource_names=['resource_names_value1', 'resource_names_value2'],
                 )
 
                 # Make the request
@@ -867,7 +867,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
 
                 # Initialize request argument(s)
                 request = logging_v2.TailLogEntriesRequest(
-                    resource_names=['resource_names_value_1', 'resource_names_value_2'],
+                    resource_names=['resource_names_value1', 'resource_names_value2'],
                 )
 
                 # This method expects an iterator which contains

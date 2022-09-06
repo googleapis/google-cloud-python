@@ -33,7 +33,7 @@ def sample_list_log_entries():
 
     # Initialize request argument(s)
     request = logging_v2.ListLogEntriesRequest(
-        resource_names=['resource_names_value_1', 'resource_names_value_2'],
+        resource_names=['resource_names_value1', 'resource_names_value2'],
     )
 
     # Make the request

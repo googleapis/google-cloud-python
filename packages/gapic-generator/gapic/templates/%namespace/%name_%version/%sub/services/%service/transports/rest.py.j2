@@ -15,9 +15,9 @@ from google.api_core import rest_streaming
 from google.api_core import path_template
 from google.api_core import gapic_v1
 
+from google.protobuf import json_format
 {% if service.has_lro %}
 from google.api_core import operations_v1
-from google.protobuf import json_format
 {% endif %}
 from requests import __version__ as requests_version
 import dataclasses
@@ -328,20 +328,19 @@ class {{service.name}}RestTransport({{service.name}}Transport):
             {% endfor %}{# rule in method.http_options #}
             ]
             request, metadata = self._interceptor.pre_{{ method.name|snake_case }}(request, metadata)
-            request_kwargs = {{method.input.ident}}.to_dict(request)
-            transcoded_request = path_template.transcode(
-                http_options, **request_kwargs)
+            {% if method.input.ident.is_external_type %}
+            pb_request = request
+            {% else %}
+            pb_request = {{method.input.ident}}.pb(request)
+            {% endif %}
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             {% set body_spec = method.http_options[0].body %}
             {%- if body_spec %}
             # Jsonify the request body
-            body = {% if body_spec == '*' -%}
-                {{method.input.ident}}.to_json(
-                {{method.input.ident}}(transcoded_request['body']),
-            {% else -%}
-                {{method.input.fields[body_spec].type.ident}}.to_json(
-                {{method.input.fields[body_spec].type.ident}}(transcoded_request['body']),
-            {% endif %}{# body_spec == "*" #}
+
+            body = json_format.MessageToJson(
+                transcoded_request['body'],
                 including_default_value_fields=False,
                 use_integers_for_enums={{ opts.rest_numeric_enums }}
             )
@@ -351,12 +350,11 @@ class {{service.name}}RestTransport({{service.name}}Transport):
             method = transcoded_request['method']
 
             # Jsonify the query params
-            query_params = json.loads({{method.input.ident}}.to_json(
-                {{method.input.ident}}(transcoded_request['query_params']),
+            query_params = json.loads(json_format.MessageToJson(
+                transcoded_request['query_params'],
                 including_default_value_fields=False,
-                use_integers_for_enums={{ opts.rest_numeric_enums }}
+                use_integers_for_enums={{ opts.rest_numeric_enums }},
             ))
-
             {% if method.input.required_fields %}
             query_params.update(self._get_unset_required_fields(query_params))
             {% endif %}{# required fields #}
@@ -391,10 +389,14 @@ class {{service.name}}RestTransport({{service.name}}Transport):
             {% elif method.server_streaming %}
             resp = rest_streaming.ResponseIterator(response, {{method.output.ident}})
             {% else %}
-            resp = {{method.output.ident}}.from_json(
-                response.content,
-                ignore_unknown_fields=True
-            )
+            resp = {{method.output.ident}}()
+            {% if method.output.ident.is_external_type %}
+            pb_resp = resp
+            {% else %}
+            pb_resp = {{method.output.ident}}.pb(resp)
+            {% endif %}
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             {% endif %}{# method.lro #}
             resp = self._interceptor.post_{{ method.name|snake_case }}(resp)
             return resp

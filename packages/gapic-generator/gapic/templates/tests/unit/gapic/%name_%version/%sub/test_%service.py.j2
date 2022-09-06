@@ -15,6 +15,7 @@ import grpc
 from grpc.experimental import aio
 {% if "rest" in opts.transport %}
 from collections.abc import Iterable
+from google.protobuf import json_format
 import json
 {% endif %}
 import math
@@ -51,9 +52,6 @@ from google.api_core import future
 from google.api_core import operation
 from google.api_core import operations_v1
 from google.longrunning import operations_pb2
-{% if "rest" in opts.transport %}
-from google.protobuf import json_format
-{% endif %}{# rest transport #}
 {% endif %}{# lro #}
 {% if api.has_location_mixin %}
 from google.cloud.location import locations_pb2

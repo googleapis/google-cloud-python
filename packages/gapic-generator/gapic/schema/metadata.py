@@ -92,7 +92,7 @@ class Address(BaseAddress):
             # This module is from a different proto package
             # Most commonly happens for a common proto
             # https://pypi.org/project/googleapis-common-protos/
-            if not self.proto_package.startswith(self.api_naming.proto_package):
+            if self.is_external_type:
                 module_name = f'{self.module}_pb2'
 
             # Return the dot-separated Python identifier.
@@ -101,6 +101,10 @@ class Address(BaseAddress):
         # This type does not have a module (most common for PythonType).
         # Return the Python identifier.
         return '.'.join(self.parent + (self.name,))
+
+    @property
+    def is_external_type(self):
+        return not self.proto_package.startswith(self.api_naming.proto_package)
 
     @cached_property
     def __cached_string_repr(self):

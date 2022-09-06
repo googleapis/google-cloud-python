@@ -855,7 +855,7 @@ def test_{{ method_name }}_rest(request_type):
     request_init["{{ field.name }}"] = {{ field.merged_mock_value(method.http_options[0].sample_request(method).get(field.name)) }}
     {% endif %}
     {% endfor %}
-    request = request_type(request_init)
+    request = request_type(**request_init)
     {% if method.client_streaming %}
     requests = [request]
     {% endif %}
@@ -902,11 +902,19 @@ def test_{{ method_name }}_rest(request_type):
         json_return_value = ''
         {% elif method.lro %}
         json_return_value = json_format.MessageToJson(return_value)
-        {% elif method.server_streaming %}
-        json_return_value = "[{}]".format({{ method.output.ident }}.to_json(return_value))
         {% else %}
-        json_return_value = {{ method.output.ident }}.to_json(return_value)
+        {% if method.output.ident.is_external_type %}
+        pb_return_value = return_value
+        {% else %}
+        pb_return_value = {{ method.output.ident }}.pb(return_value)
         {% endif %}
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        {% endif %}
+
+        {% if method.server_streaming %}
+        json_return_value = "[{}]".format(json_return_value)
+        {% endif %}
+
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
         {% if method.client_streaming %}
@@ -965,12 +973,17 @@ def test_{{ method_name }}_rest_required_fields(request_type={{ method.input.ide
     request_init["{{ req_field.name }}"] = {{ req_field.type.python_type(req_field.field_pb.default_value or 0) }}
     {% endif %}{# default is str #}
     {% endfor %}
-    request = request_type(request_init)
-    jsonified_request = json.loads(request_type.to_json(
-        request,
+    request = request_type(**request_init)
+    {% if method.input.ident.is_external_type %}
+    pb_request = request
+    {% else %}
+    pb_request = request_type.pb(request)
+    {% endif %}
+    jsonified_request = json.loads(json_format.MessageToJson(
+        pb_request,
         including_default_value_fields=False,
         use_integers_for_enums=False
-        ))
+    ))
 
     # verify fields with default values are dropped
     {% for req_field in method.input.required_fields if req_field.is_primitive and req_field.name in method.query_params %}
@@ -978,7 +991,7 @@ def test_{{ method_name }}_rest_required_fields(request_type={{ method.input.ide
     assert "{{ field_name }}" not in jsonified_request
     {% endfor %}
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).{{ method.name | snake_case }}._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).{{ method.transport_safe_name | snake_case }}._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
@@ -994,7 +1007,7 @@ def test_{{ method_name }}_rest_required_fields(request_type={{ method.input.ide
     jsonified_request["{{ field_name }}"] = {{ mock_value }}
     {% endfor %}
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).{{ method.name | snake_case }}._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).{{ method.transport_safe_name | snake_case }}._get_unset_required_fields(jsonified_request)
     {% if method.query_params %}
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(({% for param in method.query_params|sort %}"{{param}}", {% endfor %}))
@@ -1014,7 +1027,7 @@ def test_{{ method_name }}_rest_required_fields(request_type={{ method.input.ide
         credentials=ga_credentials.AnonymousCredentials(),
         transport='rest',
     )
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
     {% if method.void %}
@@ -1032,13 +1045,18 @@ def test_{{ method_name }}_rest_required_fields(request_type={{ method.input.ide
         with mock.patch.object(path_template, 'transcode') as transcode:
             # A uri without fields and an empty body will force all the
             # request fields to show up in the query_params.
+            {% if method.input.ident.is_external_type %}
+            pb_request = request
+            {% else %}
+            pb_request = request_type.pb(request)
+            {% endif %}
             transcode_result = {
                 'uri': 'v1/sample_method',
                 'method': "{{ method.http_options[0].method }}",
-                'query_params': request_init,
+                'query_params': pb_request,
             }
             {% if method.http_options[0].body %}
-            transcode_result['body'] = {}
+            transcode_result['body'] = pb_request
             {% endif %}
             transcode.return_value = transcode_result
 
@@ -1048,11 +1066,19 @@ def test_{{ method_name }}_rest_required_fields(request_type={{ method.input.ide
             json_return_value = ''
             {% elif method.lro %}
             json_return_value = json_format.MessageToJson(return_value)
-            {% elif method.server_streaming %}
-            json_return_value = "[{}]".format({{ method.output.ident }}.to_json(return_value))
             {% else %}
-            json_return_value = {{ method.output.ident }}.to_json(return_value)
+
+            {% if method.output.ident.is_external_type %}
+            pb_return_value = return_value
+            {% else %}
+            pb_return_value = {{ method.output.ident }}.pb(return_value)
             {% endif %}
+            json_return_value = json_format.MessageToJson(pb_return_value)
+            {% endif %}
+            {% if method.server_streaming %}
+            json_return_value = "[{}]".format(json_return_value)
+            {% endif %}
+
             response_value._content = json_return_value.encode('UTF-8')
             req.return_value = response_value
 
@@ -1115,8 +1141,17 @@ def test_{{ method_name }}_rest_interceptors(null_interceptor):
         {% if not method.void %}
         post.assert_not_called()
         {% endif %}
-
-        transcode.return_value = {"method": "post", "uri": "my_uri", "body": None, "query_params": {},}
+        {% if method.input.ident.is_external_type %}
+        pb_message = {{ method.input.ident }}()
+        {% else %}
+        pb_message = {{ method.input.ident }}.pb({{ method.input.ident }}())
+        {% endif %}
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
 
         req.return_value = Response()
         req.return_value.status_code = 200
@@ -1164,7 +1199,7 @@ def test_{{ method_name }}_rest_bad_request(transport: str = 'rest', request_typ
     request_init["{{ field.name }}"] = {{ field.merged_mock_value(method.http_options[0].sample_request(method).get(field.name)) }}
     {% endif %}
     {% endfor %}
-    request = request_type(request_init)
+    request = request_type(**request_init)
     {% if method.client_streaming %}
     requests = [request]
     {% endif %}
@@ -1222,12 +1257,17 @@ def test_{{ method_name }}_rest_flattened():
         json_return_value = ''
         {% elif method.lro %}
         json_return_value = json_format.MessageToJson(return_value)
-        {% elif method.server_streaming %}
-        json_return_value = "[{}]".format({{ method.output.ident }}.to_json(return_value))
         {% else %}
-        json_return_value = {{ method.output.ident }}.to_json(return_value)
+        {% if method.output.ident.is_external_type %}
+        pb_return_value = return_value
+        {% else %}
+        pb_return_value = {{ method.output.ident }}.pb(return_value)
         {% endif %}
-
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        {% endif %}
+        {% if method.server_streaming %}
+        json_return_value = "[{}]".format(json_return_value)
+        {% endif %}
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
 
@@ -1342,7 +1382,7 @@ def test_{{ method_name }}_rest_pager(transport: str = 'rest'):
         return_values = tuple(Response() for i in response)
         for return_val, response_val in zip(return_values, response):
             {% if method.server_streaming %}
-            response_val = "[{}]".format({{ method.output.ident }}.to_json(response_val))
+            response_val = "[{}]".format(response_val)
             {% endif %}
             return_val._content = response_val.encode('UTF-8')
             return_val.status_code = 200

@@ -128,10 +128,19 @@ class Field:
                     # Not worth the hassle, just return an empty map.
                     return {}
 
-                msg_dict = {
-                    f.name: recursive_mock_original_type(f)
-                    for f in field.message.fields.values()
-                }
+                adr = field.type.meta.address
+                if adr.name == "Any" and adr.package == ("google", "protobuf"):
+                    # If it is Any type pack a random but validly encoded type,
+                    # Duration in this specific case.
+                    msg_dict = {
+                        "type_url": "type.googleapis.com/google.protobuf.Duration",
+                        "value": b'\x08\x0c\x10\xdb\x07',
+                    }
+                else:
+                    msg_dict = {
+                        f.name: recursive_mock_original_type(f)
+                        for f in field.message.fields.values()
+                    }
 
                 return [msg_dict] if field.repeated else msg_dict
 
@@ -237,9 +246,16 @@ class Field:
             if self.type.python_type == bool:
                 answer = True
             elif self.type.python_type == str:
-                answer = f"{self.name}_value_{suffix}" if suffix else f"{self.name}_value"
+                if self.name == "type_url":
+                    # It is most likely a mock for Any type. We don't really care
+                    # which mock value to put, so lets put a value which makes
+                    # Any deserializer happy, which will wtill work even if it
+                    # is not Any.
+                    answer = "type.googleapis.com/google.protobuf.Empty"
+                else:
+                    answer = f"{self.name}_value{suffix}" if suffix else f"{self.name}_value"
             elif self.type.python_type == bytes:
-                answer_str = f"{self.name}_blob_{suffix}" if suffix else f"{self.name}_blob"
+                answer_str = f"{self.name}_blob{suffix}" if suffix else f"{self.name}_blob"
                 answer = bytes(answer_str, encoding="utf-8")
             elif self.type.python_type == int:
                 answer = sum([ord(i) for i in self.name]) + suffix

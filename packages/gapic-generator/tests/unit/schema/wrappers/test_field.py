@@ -283,7 +283,7 @@ def test_mock_value_repeated():
 def test_mock_value_original_type_repeated():
     field = make_field(name='foo_bar', type='TYPE_STRING', label=3)
     assert field.mock_value_original_type == [
-        "foo_bar_value_1", "foo_bar_value_2"]
+        "foo_bar_value1", "foo_bar_value2"]
 
 
 def test_mock_value_map():
@@ -353,10 +353,38 @@ def test_mock_value_message():
 
 
 def test_mock_value_original_type_message():
+    any_message_subfields = collections.OrderedDict((
+        ('type_url', make_field(name='type_url', number=1, type='TYPE_STRING')),
+        ('value', make_field(name='value', number=2, type='TYPE_BYTES')),
+    ))
+
+    any_message = wrappers.MessageType(
+        fields=any_message_subfields,
+        message_pb=descriptor_pb2.DescriptorProto(name='Any', field=[
+            i.field_pb for i in any_message_subfields.values()
+        ]),
+        meta=metadata.Metadata(address=metadata.Address(
+            module='bogus',
+            name='Any',
+            package=('google', 'protobuf')
+        )),
+        nested_enums={},
+        nested_messages={},
+    )
+
+    any_field = make_field(
+        name='surprise',
+        type='TYPE_MESSAGE',
+        type_name='google.protobuf.Any',
+        message=any_message
+    )
+
     subfields = collections.OrderedDict((
         ('foo', make_field(name='foo', type='TYPE_INT32')),
-        ('bar', make_field(name='bar', type='TYPE_STRING'))
+        ('bar', make_field(name='bar', type='TYPE_STRING')),
+        ('surprise', any_field),
     ))
+
     message = wrappers.MessageType(
         fields=subfields,
         message_pb=descriptor_pb2.DescriptorProto(name='Message', field=[
@@ -378,7 +406,9 @@ def test_mock_value_original_type_message():
 
     mock = field.mock_value_original_type
 
-    assert mock == {"foo": 324, "bar": "bar_value"}
+    assert mock == {"foo": 324, "bar": "bar_value", "surprise": {
+        "type_url": "type.googleapis.com/google.protobuf.Duration",
+        "value": b"\x08\x0c\x10\xdb\x07"}}
 
     # Messages by definition aren't primitive
     with pytest.raises(TypeError):
@@ -402,6 +432,9 @@ def test_mock_value_original_type_message():
     )
 
     assert entry_field.mock_value_original_type == {}
+
+    assert any_message.fields['type_url'].primitive_mock(
+    ) == "type.googleapis.com/google.protobuf.Empty"
 
 
 def test_merged_mock_value_message():
