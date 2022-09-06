@@ -23,6 +23,8 @@
 {{ frags.sample_header(sample, calling_form) }}
 
 # [START {{ sample.id }}]
+{% include "examples/_generated_sample_comment.j2" %}
+
 {# python code is responsible for all transformations: all we do here is render #}
 {% for import_statement in imports %}
 {{ import_statement }}
