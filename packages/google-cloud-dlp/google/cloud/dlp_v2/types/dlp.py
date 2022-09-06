@@ -28,6 +28,9 @@ from google.cloud.dlp_v2.types import storage
 __protobuf__ = proto.module(
     package="google.privacy.dlp.v2",
     manifest={
+        "TransformationResultStatusType",
+        "TransformationContainerType",
+        "TransformationType",
         "RelationalOperator",
         "MatchingType",
         "ContentOption",
@@ -73,6 +76,7 @@ __protobuf__ = proto.module(
         "HybridInspectStatistics",
         "InfoTypeDescription",
         "InfoTypeCategory",
+        "VersionDescription",
         "ListInfoTypesRequest",
         "ListInfoTypesResponse",
         "RiskAnalysisJobConfig",
@@ -85,6 +89,7 @@ __protobuf__ = proto.module(
         "QuoteInfo",
         "DateTime",
         "DeidentifyConfig",
+        "ImageTransformations",
         "TransformationErrorHandling",
         "PrimitiveTransformation",
         "TimePartConfig",
@@ -111,6 +116,12 @@ __protobuf__ = proto.module(
         "RecordCondition",
         "TransformationOverview",
         "TransformationSummary",
+        "TransformationDescription",
+        "TransformationDetails",
+        "TransformationLocation",
+        "RecordTransformation",
+        "TransformationResultStatus",
+        "TransformationDetailsStorageConfig",
         "Schedule",
         "Manual",
         "InspectTemplate",
@@ -118,6 +129,7 @@ __protobuf__ = proto.module(
         "Error",
         "JobTrigger",
         "Action",
+        "TransformationConfig",
         "CreateInspectTemplateRequest",
         "UpdateInspectTemplateRequest",
         "GetInspectTemplateRequest",
@@ -166,7 +178,6 @@ __protobuf__ = proto.module(
         "HybridContentItem",
         "HybridFindingDetails",
         "HybridInspectResponse",
-        "SensitivityScore",
         "DataRiskLevel",
         "DataProfileConfigSnapshot",
         "TableDataProfile",
@@ -177,6 +188,50 @@ __protobuf__ = proto.module(
         "DataProfilePubSubMessage",
     },
 )
+
+
+class TransformationResultStatusType(proto.Enum):
+    r"""Enum of possible outcomes of transformations. SUCCESS if
+    transformation and storing of transformation was successful,
+    otherwise, reason for not transforming.
+    """
+    STATE_TYPE_UNSPECIFIED = 0
+    INVALID_TRANSFORM = 1
+    BIGQUERY_MAX_ROW_SIZE_EXCEEDED = 2
+    METADATA_UNRETRIEVABLE = 3
+    SUCCESS = 4
+
+
+class TransformationContainerType(proto.Enum):
+    r"""Describes functionality of a given container in its original
+    format.
+    """
+    TRANSFORM_UNKNOWN_CONTAINER = 0
+    TRANSFORM_BODY = 1
+    TRANSFORM_METADATA = 2
+    TRANSFORM_TABLE = 3
+
+
+class TransformationType(proto.Enum):
+    r"""An enum of rules that can be used to transform a value. Can be a
+    record suppression, or one of the transformation rules specified
+    under ``PrimitiveTransformation``.
+    """
+    TRANSFORMATION_TYPE_UNSPECIFIED = 0
+    RECORD_SUPPRESSION = 1
+    REPLACE_VALUE = 2
+    REPLACE_DICTIONARY = 15
+    REDACT = 3
+    CHARACTER_MASK = 4
+    CRYPTO_REPLACE_FFX_FPE = 5
+    FIXED_SIZE_BUCKETING = 6
+    BUCKETING = 7
+    REPLACE_WITH_INFO_TYPE = 8
+    TIME_PART = 9
+    CRYPTO_HASH = 10
+    DATE_SHIFT = 12
+    CRYPTO_DETERMINISTIC_CONFIG = 13
+    REDACT_IMAGE = 14
 
 
 class RelationalOperator(proto.Enum):
@@ -255,7 +310,7 @@ class EncryptionStatus(proto.Enum):
 
 
 class ExcludeInfoTypes(proto.Message):
-    r"""List of exclude infoTypes.
+    r"""List of excluded infoTypes.
 
     Attributes:
         info_types (Sequence[google.cloud.dlp_v2.types.InfoType]):
@@ -420,9 +475,15 @@ class InspectConfig(proto.Message):
             See https://cloud.google.com/dlp/docs/likelihood
             to learn more.
         limits (google.cloud.dlp_v2.types.InspectConfig.FindingLimits):
-            Configuration to control the number of
-            findings returned. This is not used for data
-            profiling.
+            Configuration to control the number of findings returned.
+            This is not used for data profiling.
+
+            When redacting sensitive data from images, finding limits
+            don't apply. They can cause unexpected or inconsistent
+            results, where only some data is redacted. Don't include
+            finding limits in
+            [RedactImage][google.privacy.dlp.v2.DlpService.RedactImage]
+            requests. Otherwise, Cloud DLP returns an error.
         include_quote (bool):
             When true, a contextual quote from the data that triggered a
             finding is included in the response; see
@@ -449,6 +510,12 @@ class InspectConfig(proto.Message):
         r"""Configuration to control the number of findings returned for
         inspection. This is not used for de-identification or data
         profiling.
+
+        When redacting sensitive data from images, finding limits don't
+        apply. They can cause unexpected or inconsistent results, where only
+        some data is redacted. Don't include finding limits in
+        [RedactImage][google.privacy.dlp.v2.DlpService.RedactImage]
+        requests. Otherwise, Cloud DLP returns an error.
 
         Attributes:
             max_findings_per_item (int):
@@ -892,8 +959,8 @@ class ContentLocation(proto.Message):
             -  Datastore namespace: {namespace}
 
             Nested names could be absent if the embedded object has no
-            string identifier (for an example an image contained within
-            a document).
+            string identifier (for example, an image contained within a
+            document).
         record_location (google.cloud.dlp_v2.types.RecordLocation):
             Location within a row or record of a database
             table.
@@ -913,13 +980,14 @@ class ContentLocation(proto.Message):
 
             This field is a member of `oneof`_ ``location``.
         container_timestamp (google.protobuf.timestamp_pb2.Timestamp):
-            Findings container modification timestamp, if applicable.
-            For Google Cloud Storage contains last file modification
-            timestamp. For BigQuery table contains last_modified_time
-            property. For Datastore - not populated.
+            Finding container modification timestamp, if applicable. For
+            Cloud Storage, this field contains the last file
+            modification timestamp. For a BigQuery table, this field
+            contains the last_modified_time property. For Datastore,
+            this field isn't populated.
         container_version (str):
-            Findings container version, if available
-            ("generation" for Google Cloud Storage).
+            Finding container version, if available
+            ("generation" for Cloud Storage).
     """
 
     container_name = proto.Field(
@@ -1074,8 +1142,8 @@ class Container(proto.Message):
 
     Attributes:
         type_ (str):
-            Container type, for example BigQuery or
-            Google Cloud Storage.
+            Container type, for example BigQuery or Cloud
+            Storage.
         project_id (str):
             Project where the finding was found.
             Can be different from the project that owns the
@@ -1084,14 +1152,14 @@ class Container(proto.Message):
             A string representation of the full container
             name. Examples:
             - BigQuery: 'Project:DataSetId.TableId'
-            - Google Cloud Storage:
+            - Cloud Storage:
             'gs://Bucket/folders/filename.txt'
         root_path (str):
             The root of the container. Examples:
 
             -  For BigQuery table ``project_id:dataset_id.table_id``,
                the root is ``dataset_id``
-            -  For Google Cloud Storage file
+            -  For Cloud Storage file
                ``gs://bucket/folder/filename.txt``, the root is
                ``gs://bucket``
         relative_path (str):
@@ -1099,17 +1167,18 @@ class Container(proto.Message):
 
             -  For BigQuery table ``project_id:dataset_id.table_id``,
                the relative path is ``table_id``
-            -  Google Cloud Storage file
+            -  For Cloud Storage file
                ``gs://bucket/folder/filename.txt``, the relative path is
                ``folder/filename.txt``
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             Findings container modification timestamp, if applicable.
-            For Google Cloud Storage contains last file modification
-            timestamp. For BigQuery table contains last_modified_time
-            property. For Datastore - not populated.
+            For Cloud Storage, this field contains the last file
+            modification timestamp. For a BigQuery table, this field
+            contains the last_modified_time property. For Datastore,
+            this field isn't populated.
         version (str):
             Findings container version, if available
-            ("generation" for Google Cloud Storage).
+            ("generation" for Cloud Storage).
     """
 
     type_ = proto.Field(
@@ -1392,7 +1461,7 @@ class RedactImageResponse(proto.Message):
 
 
 class DeidentifyContentRequest(proto.Message):
-    r"""Request to de-identify a list of items.
+    r"""Request to de-identify a ContentItem.
 
     Attributes:
         parent (str):
@@ -1594,7 +1663,7 @@ class ReidentifyContentRequest(proto.Message):
 
 
 class ReidentifyContentResponse(proto.Message):
-    r"""Results of re-identifying a item.
+    r"""Results of re-identifying an item.
 
     Attributes:
         item (google.cloud.dlp_v2.types.ContentItem):
@@ -1705,7 +1774,7 @@ class OutputStorageConfig(proto.Message):
             Store findings in an existing table or a new table in an
             existing dataset. If table_id is not set a new one will be
             generated for you with the following format:
-            dlp_googleapis_yyyy_mm_dd_[dlp_job_id]. Pacific timezone
+            dlp_googleapis_yyyy_mm_dd_[dlp_job_id]. Pacific time zone
             will be used for generating the date details.
 
             For Inspect, each column in an existing output table must
@@ -1908,6 +1977,9 @@ class InfoTypeDescription(proto.Message):
         description (str):
             Description of the infotype. Translated when
             language is provided in the request.
+        versions (Sequence[google.cloud.dlp_v2.types.VersionDescription]):
+            A list of available versions for the
+            infotype.
         categories (Sequence[google.cloud.dlp_v2.types.InfoTypeCategory]):
             The category of the infoType.
     """
@@ -1928,6 +2000,11 @@ class InfoTypeDescription(proto.Message):
     description = proto.Field(
         proto.STRING,
         number=4,
+    )
+    versions = proto.RepeatedField(
+        proto.MESSAGE,
+        number=9,
+        message="VersionDescription",
     )
     categories = proto.RepeatedField(
         proto.MESSAGE,
@@ -2050,6 +2127,26 @@ class InfoTypeCategory(proto.Message):
         number=3,
         oneof="category",
         enum=TypeCategory,
+    )
+
+
+class VersionDescription(proto.Message):
+    r"""Details about each available version for an infotype.
+
+    Attributes:
+        version (str):
+            Name of the version
+        description (str):
+            Description of the version.
+    """
+
+    version = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    description = proto.Field(
+        proto.STRING,
+        number=2,
     )
 
 
@@ -3417,6 +3514,10 @@ class DeidentifyConfig(proto.Message):
             transforming a column within a table.
 
             This field is a member of `oneof`_ ``transformation``.
+        image_transformations (google.cloud.dlp_v2.types.ImageTransformations):
+            Treat the dataset as an image and redact.
+
+            This field is a member of `oneof`_ ``transformation``.
         transformation_error_handling (google.cloud.dlp_v2.types.TransformationErrorHandling):
             Mode for handling transformation errors. If left
             unspecified, the default mode is
@@ -3435,10 +3536,112 @@ class DeidentifyConfig(proto.Message):
         oneof="transformation",
         message="RecordTransformations",
     )
+    image_transformations = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        oneof="transformation",
+        message="ImageTransformations",
+    )
     transformation_error_handling = proto.Field(
         proto.MESSAGE,
         number=3,
         message="TransformationErrorHandling",
+    )
+
+
+class ImageTransformations(proto.Message):
+    r"""A type of transformation that is applied over images.
+
+    Attributes:
+        transforms (Sequence[google.cloud.dlp_v2.types.ImageTransformations.ImageTransformation]):
+
+    """
+
+    class ImageTransformation(proto.Message):
+        r"""Configuration for determining how redaction of images should
+        occur.
+
+        This message has `oneof`_ fields (mutually exclusive fields).
+        For each oneof, at most one member field can be set at the same time.
+        Setting any member of the oneof automatically clears all other
+        members.
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+        Attributes:
+            selected_info_types (google.cloud.dlp_v2.types.ImageTransformations.ImageTransformation.SelectedInfoTypes):
+                Apply transformation to the selected info_types.
+
+                This field is a member of `oneof`_ ``target``.
+            all_info_types (google.cloud.dlp_v2.types.ImageTransformations.ImageTransformation.AllInfoTypes):
+                Apply transformation to all findings not specified in other
+                ImageTransformation's selected_info_types. Only one instance
+                is allowed within the ImageTransformations message.
+
+                This field is a member of `oneof`_ ``target``.
+            all_text (google.cloud.dlp_v2.types.ImageTransformations.ImageTransformation.AllText):
+                Apply transformation to all text that doesn't
+                match an infoType. Only one instance is allowed
+                within the ImageTransformations message.
+
+                This field is a member of `oneof`_ ``target``.
+            redaction_color (google.cloud.dlp_v2.types.Color):
+                The color to use when redacting content from
+                an image. If not specified, the default is
+                black.
+        """
+
+        class SelectedInfoTypes(proto.Message):
+            r"""Apply transformation to the selected info_types.
+
+            Attributes:
+                info_types (Sequence[google.cloud.dlp_v2.types.InfoType]):
+                    Required. InfoTypes to apply the
+                    transformation to. Required. Provided InfoType
+                    must be unique within the ImageTransformations
+                    message.
+            """
+
+            info_types = proto.RepeatedField(
+                proto.MESSAGE,
+                number=5,
+                message=storage.InfoType,
+            )
+
+        class AllInfoTypes(proto.Message):
+            r"""Apply transformation to all findings."""
+
+        class AllText(proto.Message):
+            r"""Apply to all text."""
+
+        selected_info_types = proto.Field(
+            proto.MESSAGE,
+            number=4,
+            oneof="target",
+            message="ImageTransformations.ImageTransformation.SelectedInfoTypes",
+        )
+        all_info_types = proto.Field(
+            proto.MESSAGE,
+            number=5,
+            oneof="target",
+            message="ImageTransformations.ImageTransformation.AllInfoTypes",
+        )
+        all_text = proto.Field(
+            proto.MESSAGE,
+            number=6,
+            oneof="target",
+            message="ImageTransformations.ImageTransformation.AllText",
+        )
+        redaction_color = proto.Field(
+            proto.MESSAGE,
+            number=3,
+            message="Color",
+        )
+
+    transforms = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message=ImageTransformation,
     )
 
 
@@ -3753,7 +3956,7 @@ class CryptoDeterministicConfig(proto.Message):
 
             Note that case (1) is expected when an
             ``InfoTypeTransformation`` is applied to both structured and
-            non-structured ``ContentItem``\ s.
+            unstructured ``ContentItem``\ s.
     """
 
     crypto_key = proto.Field(
@@ -3849,7 +4052,7 @@ class CharsToIgnore(proto.Message):
     """
 
     class CommonCharsToIgnore(proto.Enum):
-        r"""Convenience enum for indication common characters to not
+        r"""Convenience enum for indicating common characters to not
         transform.
         """
         COMMON_CHARS_TO_IGNORE_UNSPECIFIED = 0
@@ -3888,9 +4091,25 @@ class CharacterMaskConfig(proto.Message):
             This string must have a length of 1. If not supplied, this
             value defaults to ``*`` for strings, and ``0`` for digits.
         number_to_mask (int):
-            Number of characters to mask. If not set, all
-            matching chars will be masked. Skipped
-            characters do not count towards this tally.
+            Number of characters to mask. If not set, all matching chars
+            will be masked. Skipped characters do not count towards this
+            tally.
+
+            If ``number_to_mask`` is negative, this denotes inverse
+            masking. Cloud DLP masks all but a number of characters. For
+            example, suppose you have the following values:
+
+            -  ``masking_character`` is ``*``
+            -  ``number_to_mask`` is ``-4``
+            -  ``reverse_order`` is ``false``
+            -  ``CharsToIgnore`` includes ``-``
+            -  Input string is ``1234-5678-9012-3456``
+
+            The resulting de-identified string is
+            ``****-****-****-3456``. Cloud DLP masks all but the last
+            four characters. If ``reverse_order`` is ``true``, all but
+            the first four characters are masked as
+            ``1234-****-****-****``.
         reverse_order (bool):
             Mask characters in reverse order. For example, if
             ``masking_character`` is ``0``, ``number_to_mask`` is
@@ -4080,7 +4299,7 @@ class CryptoReplaceFfxFpeConfig(proto.Message):
 
             Note that case (1) is expected when an
             ``InfoTypeTransformation`` is applied to both structured and
-            non-structured ``ContentItem``\ s. Currently, the referenced
+            unstructured ``ContentItem``\ s. Currently, the referenced
             field may be of value type integer or string.
 
             The tweak is constructed as a sequence of bytes in big
@@ -4145,7 +4364,7 @@ class CryptoReplaceFfxFpeConfig(proto.Message):
     class FfxCommonNativeAlphabet(proto.Enum):
         r"""These are commonly used subsets of the alphabet that the FFX
         mode natively supports. In the algorithm, the alphabet is
-        selected using the "radix". Therefore each corresponds to
+        selected using the "radix". Therefore each corresponds to a
         particular radix.
         """
         FFX_COMMON_NATIVE_ALPHABET_UNSPECIFIED = 0
@@ -4588,7 +4807,7 @@ class RecordCondition(proto.Message):
         )
 
     class Expressions(proto.Message):
-        r"""An expression, consisting or an operator and conditions.
+        r"""An expression, consisting of an operator and conditions.
 
         .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
@@ -4749,6 +4968,251 @@ class TransformationSummary(proto.Message):
     )
 
 
+class TransformationDescription(proto.Message):
+    r"""A flattened description of a ``PrimitiveTransformation`` or
+    ``RecordSuppression``.
+
+    Attributes:
+        type_ (google.cloud.dlp_v2.types.TransformationType):
+            The transformation type.
+        description (str):
+            A description of the transformation. This is empty for a
+            RECORD_SUPPRESSION, or is the output of calling toString()
+            on the ``PrimitiveTransformation`` protocol buffer message
+            for any other type of transformation.
+        condition (str):
+            A human-readable string representation of the
+            ``RecordCondition`` corresponding to this transformation.
+            Set if a ``RecordCondition`` was used to determine whether
+            or not to apply this transformation.
+
+            Examples: \* (age_field > 85) \* (age_field <= 18) \*
+            (zip_field exists) \* (zip_field == 01234) && (city_field !=
+            "Springville") \* (zip_field == 01234) && (age_field <= 18)
+            && (city_field exists)
+        info_type (google.cloud.dlp_v2.types.InfoType):
+            Set if the transformation was limited to a specific
+            ``InfoType``.
+    """
+
+    type_ = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum="TransformationType",
+    )
+    description = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    condition = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    info_type = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=storage.InfoType,
+    )
+
+
+class TransformationDetails(proto.Message):
+    r"""Details about a single transformation. This object contains a
+    description of the transformation, information about whether the
+    transformation was successfully applied, and the precise
+    location where the transformation occurred. These details are
+    stored in a user-specified BigQuery table.
+
+    Attributes:
+        resource_name (str):
+            The name of the job that completed the
+            transformation.
+        container_name (str):
+            The top level name of the container where the
+            transformation is located (this will be the
+            source file name or table name).
+        transformation (Sequence[google.cloud.dlp_v2.types.TransformationDescription]):
+            Description of transformation. This would only contain more
+            than one element if there were multiple matching
+            transformations and which one to apply was ambiguous. Not
+            set for states that contain no transformation, currently
+            only state that contains no transformation is
+            TransformationResultStateType.METADATA_UNRETRIEVABLE.
+        status_details (google.cloud.dlp_v2.types.TransformationResultStatus):
+            Status of the transformation, if
+            transformation was not successful, this will
+            specify what caused it to fail, otherwise it
+            will show that the transformation was
+            successful.
+        transformed_bytes (int):
+            The number of bytes that were transformed. If
+            transformation was unsuccessful or did not take
+            place because there was no content to transform,
+            this will be zero.
+        transformation_location (google.cloud.dlp_v2.types.TransformationLocation):
+            The precise location of the transformed
+            content in the original container.
+    """
+
+    resource_name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    container_name = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    transformation = proto.RepeatedField(
+        proto.MESSAGE,
+        number=3,
+        message="TransformationDescription",
+    )
+    status_details = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message="TransformationResultStatus",
+    )
+    transformed_bytes = proto.Field(
+        proto.INT64,
+        number=5,
+    )
+    transformation_location = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message="TransformationLocation",
+    )
+
+
+class TransformationLocation(proto.Message):
+    r"""Specifies the location of a transformation.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        finding_id (str):
+            For infotype transformations, link to the
+            corresponding findings ID so that location
+            information does not need to be duplicated. Each
+            findings ID correlates to an entry in the
+            findings output table, this table only gets
+            created when users specify to save findings (add
+            the save findings action to the request).
+
+            This field is a member of `oneof`_ ``location_type``.
+        record_transformation (google.cloud.dlp_v2.types.RecordTransformation):
+            For record transformations, provide a field
+            and container information.
+
+            This field is a member of `oneof`_ ``location_type``.
+        container_type (google.cloud.dlp_v2.types.TransformationContainerType):
+            Information about the functionality of the
+            container where this finding occurred, if
+            available.
+    """
+
+    finding_id = proto.Field(
+        proto.STRING,
+        number=1,
+        oneof="location_type",
+    )
+    record_transformation = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        oneof="location_type",
+        message="RecordTransformation",
+    )
+    container_type = proto.Field(
+        proto.ENUM,
+        number=3,
+        enum="TransformationContainerType",
+    )
+
+
+class RecordTransformation(proto.Message):
+    r"""
+
+    Attributes:
+        field_id (google.cloud.dlp_v2.types.FieldId):
+            For record transformations, provide a field.
+        container_timestamp (google.protobuf.timestamp_pb2.Timestamp):
+            Findings container modification timestamp, if
+            applicable.
+        container_version (str):
+            Container version, if available ("generation"
+            for Cloud Storage).
+    """
+
+    field_id = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=storage.FieldId,
+    )
+    container_timestamp = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+    container_version = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class TransformationResultStatus(proto.Message):
+    r"""
+
+    Attributes:
+        result_status_type (google.cloud.dlp_v2.types.TransformationResultStatusType):
+            Transformation result status type, this will
+            be either SUCCESS, or it will be the reason for
+            why the transformation was not completely
+            successful.
+        details (google.rpc.status_pb2.Status):
+            Detailed error codes and messages
+    """
+
+    result_status_type = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum="TransformationResultStatusType",
+    )
+    details = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=status_pb2.Status,
+    )
+
+
+class TransformationDetailsStorageConfig(proto.Message):
+    r"""Config for storing transformation details.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        table (google.cloud.dlp_v2.types.BigQueryTable):
+            The BigQuery table in which to store the output. This may be
+            an existing table or in a new table in an existing dataset.
+            If table_id is not set a new one will be generated for you
+            with the following format:
+            dlp_googleapis_transformation_details_yyyy_mm_dd_[dlp_job_id].
+            Pacific time zone will be used for generating the date
+            details.
+
+            This field is a member of `oneof`_ ``type``.
+    """
+
+    table = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        oneof="type",
+        message=storage.BigQueryTable,
+    )
+
+
 class Schedule(proto.Message):
     r"""Schedule for inspect job triggers.
 
@@ -4756,9 +5220,9 @@ class Schedule(proto.Message):
 
     Attributes:
         recurrence_period_duration (google.protobuf.duration_pb2.Duration):
-            With this option a job is started a regular
-            periodic basis. For example: every day (86400
-            seconds).
+            With this option a job is started on a
+            regular periodic basis. For example: every day
+            (86400 seconds).
             A scheduled start time will be skipped if the
             previous execution has not ended when its
             scheduled time occurs.
@@ -5088,7 +5552,7 @@ class Action(proto.Message):
 
             This field is a member of `oneof`_ ``action``.
         pub_sub (google.cloud.dlp_v2.types.Action.PublishToPubSub):
-            Publish a notification to a pubsub topic.
+            Publish a notification to a Pub/Sub topic.
 
             This field is a member of `oneof`_ ``action``.
         publish_summary_to_cscc (google.cloud.dlp_v2.types.Action.PublishSummaryToCscc):
@@ -5098,6 +5562,11 @@ class Action(proto.Message):
             This field is a member of `oneof`_ ``action``.
         publish_findings_to_cloud_data_catalog (google.cloud.dlp_v2.types.Action.PublishFindingsToCloudDataCatalog):
             Publish findings to Cloud Datahub.
+
+            This field is a member of `oneof`_ ``action``.
+        deidentify (google.cloud.dlp_v2.types.Action.Deidentify):
+            Create a de-identified copy of the input
+            data.
 
             This field is a member of `oneof`_ ``action``.
         job_notification_emails (google.cloud.dlp_v2.types.Action.JobNotificationEmails):
@@ -5129,7 +5598,7 @@ class Action(proto.Message):
         )
 
     class PublishToPubSub(proto.Message):
-        r"""Publish a message into given Pub/Sub topic when DlpJob has
+        r"""Publish a message into a given Pub/Sub topic when DlpJob has
         completed. The message contains a single field, ``DlpJobName``,
         which is equal to the finished job's
         ```DlpJob.name`` <https://cloud.google.com/dlp/docs/reference/rest/v2/projects.dlpJobs#DlpJob>`__.
@@ -5156,7 +5625,7 @@ class Action(proto.Message):
         This action is only available for projects which are parts of an
         organization and whitelisted for the alpha Cloud Security
         Command Center.
-        The action will publish count of finding instances and their
+        The action will publish the count of finding instances and their
         info types. The summary of findings will be persisted in CSCC
         and are governed by CSCC service-specific policy, see
         https://cloud.google.com/terms/service-terms Only a single
@@ -5166,23 +5635,109 @@ class Action(proto.Message):
         """
 
     class PublishFindingsToCloudDataCatalog(proto.Message):
-        r"""Publish findings of a DlpJob to Data Catalog. Labels
-        summarizing the results of the DlpJob will be applied to the
-        entry for the resource scanned in Data Catalog. Any labels
-        previously written by another DlpJob will be deleted. InfoType
-        naming patterns are strictly enforced when using this feature.
-        Note that the findings will be persisted in Data Catalog storage
-        and are governed by Data Catalog service-specific policy, see
-        https://cloud.google.com/terms/service-terms
-        Only a single instance of this action can be specified and only
-        allowed if all resources being scanned are BigQuery tables.
+        r"""Publish findings of a DlpJob to Data Catalog. In Data Catalog, tag
+        templates are applied to the resource that Cloud DLP scanned. Data
+        Catalog tag templates are stored in the same project and region
+        where the BigQuery table exists. For Cloud DLP to create and apply
+        the tag template, the Cloud DLP service agent must have the
+        ``roles/datacatalog.tagTemplateOwner`` permission on the project.
+        The tag template contains fields summarizing the results of the
+        DlpJob. Any field values previously written by another DlpJob are
+        deleted. [InfoType naming patterns][google.privacy.dlp.v2.InfoType]
+        are strictly enforced when using this feature.
+
+        Findings are persisted in Data Catalog storage and are governed by
+        service-specific policies for Data Catalog. For more information,
+        see `Service Specific
+        Terms <https://cloud.google.com/terms/service-terms>`__.
+
+        Only a single instance of this action can be specified. This action
+        is allowed only if all resources being scanned are BigQuery tables.
         Compatible with: Inspect
 
         """
 
+    class Deidentify(proto.Message):
+        r"""Create a de-identified copy of the requested table or files.
+
+        A TransformationDetail will be created for each transformation.
+
+        If any rows in BigQuery are skipped during de-identification
+        (transformation errors or row size exceeds BigQuery insert API
+        limits) they are placed in the failure output table. If the original
+        row exceeds the BigQuery insert API limit it will be truncated when
+        written to the failure output table. The failure output table can be
+        set in the
+        action.deidentify.output.big_query_output.deidentified_failure_output_table
+        field, if no table is set, a table will be automatically created in
+        the same project and dataset as the original table.
+
+        Compatible with: Inspect
+
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+        Attributes:
+            transformation_config (google.cloud.dlp_v2.types.TransformationConfig):
+                User specified deidentify templates and
+                configs for structured, unstructured, and image
+                files.
+            transformation_details_storage_config (google.cloud.dlp_v2.types.TransformationDetailsStorageConfig):
+                Config for storing transformation details. This is separate
+                from the de-identified content, and contains metadata about
+                the successful transformations and/or failures that occurred
+                while de-identifying. This needs to be set in order for
+                users to access information about the status of each
+                transformation (see
+                [TransformationDetails][google.privacy.dlp.v2.TransformationDetails]
+                message for more information about what is noted).
+            cloud_storage_output (str):
+                Required. User settable Cloud Storage bucket
+                and folders to store de-identified files. This
+                field must be set for cloud storage
+                deidentification. The output Cloud Storage
+                bucket must be different from the input bucket.
+                De-identified files will overwrite files in the
+                output path.
+                Form of: gs://bucket/folder/ or gs://bucket
+
+                This field is a member of `oneof`_ ``output``.
+            file_types_to_transform (Sequence[google.cloud.dlp_v2.types.FileType]):
+                List of user-specified file type groups to transform. If
+                specified, only the files with these filetypes will be
+                transformed. If empty, all supported files will be
+                transformed. Supported types may be automatically added over
+                time. If a file type is set in this field that isn't
+                supported by the Deidentify action then the job will fail
+                and will not be successfully created/started. Currently the
+                only filetypes supported are: IMAGES, TEXT_FILES, CSV, TSV.
+        """
+
+        transformation_config = proto.Field(
+            proto.MESSAGE,
+            number=7,
+            message="TransformationConfig",
+        )
+        transformation_details_storage_config = proto.Field(
+            proto.MESSAGE,
+            number=3,
+            message="TransformationDetailsStorageConfig",
+        )
+        cloud_storage_output = proto.Field(
+            proto.STRING,
+            number=9,
+            oneof="output",
+        )
+        file_types_to_transform = proto.RepeatedField(
+            proto.ENUM,
+            number=8,
+            enum=storage.FileType,
+        )
+
     class JobNotificationEmails(proto.Message):
-        r"""Enable email notification to project owners and editors on
-        jobs's completion/failure.
+        r"""Sends an email when the job completes. The email goes to IAM project
+        owners and technical `Essential
+        Contacts <https://cloud.google.com/resource-manager/docs/managing-notification-contacts>`__.
 
         """
 
@@ -5218,6 +5773,12 @@ class Action(proto.Message):
         oneof="action",
         message=PublishFindingsToCloudDataCatalog,
     )
+    deidentify = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        oneof="action",
+        message=Deidentify,
+    )
     job_notification_emails = proto.Field(
         proto.MESSAGE,
         number=8,
@@ -5229,6 +5790,52 @@ class Action(proto.Message):
         number=9,
         oneof="action",
         message=PublishToStackdriver,
+    )
+
+
+class TransformationConfig(proto.Message):
+    r"""User specified templates and configs for how to deidentify
+    structured, unstructures, and image files. User must provide
+    either a unstructured deidentify template or at least one redact
+    image config.
+
+    Attributes:
+        deidentify_template (str):
+            De-identify template. If this template is specified, it will
+            serve as the default de-identify template. This template
+            cannot contain ``record_transformations`` since it can be
+            used for unstructured content such as free-form text files.
+            If this template is not set, a default
+            ``ReplaceWithInfoTypeConfig`` will be used to de-identify
+            unstructured content.
+        structured_deidentify_template (str):
+            Structured de-identify template. If this template is
+            specified, it will serve as the de-identify template for
+            structured content such as delimited files and tables. If
+            this template is not set but the ``deidentify_template`` is
+            set, then ``deidentify_template`` will also apply to the
+            structured content. If neither template is set, a default
+            ``ReplaceWithInfoTypeConfig`` will be used to de-identify
+            structured content.
+        image_redact_template (str):
+            Image redact template.
+            If this template is specified, it will serve as
+            the de-identify template for images. If this
+            template is not set, all findings in the image
+            will be redacted with a black box.
+    """
+
+    deidentify_template = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    structured_deidentify_template = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    image_redact_template = proto.Field(
+        proto.STRING,
+        number=4,
     )
 
 
@@ -5371,8 +5978,9 @@ class ListInspectTemplatesRequest(proto.Message):
             Page token to continue retrieval. Comes from previous call
             to ``ListInspectTemplates``.
         page_size (int):
-            Size of the page, can be limited by server.
-            If zero server returns a page of max size 100.
+            Size of the page, can be limited by the
+            server. If zero server returns a page of max
+            size 100.
         order_by (str):
             Comma separated list of fields to order by, followed by
             ``asc`` or ``desc`` postfix. This list is case-insensitive,
@@ -5383,12 +5991,13 @@ class ListInspectTemplatesRequest(proto.Message):
 
             Supported fields are:
 
-            -  ``create_time``: corresponds to time the template was
+            -  ``create_time``: corresponds to the time the template was
                created.
-            -  ``update_time``: corresponds to time the template was
+            -  ``update_time``: corresponds to the time the template was
                last updated.
-            -  ``name``: corresponds to template's name.
-            -  ``display_name``: corresponds to template's display name.
+            -  ``name``: corresponds to the template's name.
+            -  ``display_name``: corresponds to the template's display
+               name.
         location_id (str):
             Deprecated. This field has no effect.
     """
@@ -5693,14 +6302,14 @@ class ListJobTriggersRequest(proto.Message):
 
             Supported fields are:
 
-            -  ``create_time``: corresponds to time the JobTrigger was
-               created.
-            -  ``update_time``: corresponds to time the JobTrigger was
-               last updated.
+            -  ``create_time``: corresponds to the time the JobTrigger
+               was created.
+            -  ``update_time``: corresponds to the time the JobTrigger
+               was last updated.
             -  ``last_run_time``: corresponds to the last time the
                JobTrigger ran.
-            -  ``name``: corresponds to JobTrigger's name.
-            -  ``display_name``: corresponds to JobTrigger's display
+            -  ``name``: corresponds to the JobTrigger's name.
+            -  ``display_name``: corresponds to the JobTrigger's display
                name.
             -  ``status``: corresponds to JobTrigger's status.
         filter (str):
@@ -6221,16 +6830,20 @@ class ListDlpJobsRequest(proto.Message):
                -  ``state`` - PENDING|RUNNING|CANCELED|FINISHED|FAILED
                -  ``inspected_storage`` -
                   DATASTORE|CLOUD_STORAGE|BIGQUERY
-               -  ``trigger_name`` - The resource name of the trigger
-                  that created job.
-               -  'end_time\` - Corresponds to time the job finished.
-               -  'start_time\` - Corresponds to time the job finished.
+               -  ``trigger_name`` - The name of the trigger that
+                  created the job.
+               -  'end_time\` - Corresponds to the time the job
+                  finished.
+               -  'start_time\` - Corresponds to the time the job
+                  finished.
 
             -  Supported fields for risk analysis jobs:
 
                -  ``state`` - RUNNING|CANCELED|FINISHED|FAILED
-               -  'end_time\` - Corresponds to time the job finished.
-               -  'start_time\` - Corresponds to time the job finished.
+               -  'end_time\` - Corresponds to the time the job
+                  finished.
+               -  'start_time\` - Corresponds to the time the job
+                  finished.
 
             -  The operator must be ``=`` or ``!=``.
 
@@ -6261,9 +6874,10 @@ class ListDlpJobsRequest(proto.Message):
 
             Supported fields are:
 
-            -  ``create_time``: corresponds to time the job was created.
-            -  ``end_time``: corresponds to time the job ended.
-            -  ``name``: corresponds to job's name.
+            -  ``create_time``: corresponds to the time the job was
+               created.
+            -  ``end_time``: corresponds to the time the job ended.
+            -  ``name``: corresponds to the job's name.
             -  ``state``: corresponds to ``state``
         location_id (str):
             Deprecated. This field has no effect.
@@ -6510,8 +7124,9 @@ class ListDeidentifyTemplatesRequest(proto.Message):
             Page token to continue retrieval. Comes from previous call
             to ``ListDeidentifyTemplates``.
         page_size (int):
-            Size of the page, can be limited by server.
-            If zero server returns a page of max size 100.
+            Size of the page, can be limited by the
+            server. If zero server returns a page of max
+            size 100.
         order_by (str):
             Comma separated list of fields to order by, followed by
             ``asc`` or ``desc`` postfix. This list is case-insensitive,
@@ -6522,12 +7137,13 @@ class ListDeidentifyTemplatesRequest(proto.Message):
 
             Supported fields are:
 
-            -  ``create_time``: corresponds to time the template was
+            -  ``create_time``: corresponds to the time the template was
                created.
-            -  ``update_time``: corresponds to time the template was
+            -  ``update_time``: corresponds to the time the template was
                last updated.
-            -  ``name``: corresponds to template's name.
-            -  ``display_name``: corresponds to template's display name.
+            -  ``name``: corresponds to the template's name.
+            -  ``display_name``: corresponds to the template's display
+               name.
         location_id (str):
             Deprecated. This field has no effect.
     """
@@ -6603,9 +7219,9 @@ class LargeCustomDictionaryConfig(proto.Message):
     r"""Configuration for a custom dictionary created from a data source of
     any size up to the maximum size defined in the
     `limits <https://cloud.google.com/dlp/limits>`__ page. The artifacts
-    of dictionary creation are stored in the specified Google Cloud
-    Storage location. Consider using ``CustomInfoType.Dictionary`` for
-    smaller dictionaries that satisfy the size requirements.
+    of dictionary creation are stored in the specified Cloud Storage
+    location. Consider using ``CustomInfoType.Dictionary`` for smaller
+    dictionaries that satisfy the size requirements.
 
     This message has `oneof`_ fields (mutually exclusive fields).
     For each oneof, at most one member field can be set at the same time.
@@ -6617,7 +7233,7 @@ class LargeCustomDictionaryConfig(proto.Message):
     Attributes:
         output_path (google.cloud.dlp_v2.types.CloudStoragePath):
             Location to store dictionary artifacts in
-            Google Cloud Storage. These files will only be
+            Cloud Storage. These files will only be
             accessible by project owners and the DLP API. If
             any of these artifacts are modified, the
             dictionary is considered invalid and can no
@@ -6775,9 +7391,9 @@ class StoredInfoTypeVersion(proto.Message):
             first.
 
             For example, some of the data for stored custom dictionaries
-            is put in the user's Google Cloud Storage bucket, and if
-            this data is modified or deleted by the user or another
-            system, the dictionary becomes invalid.
+            is put in the user's Cloud Storage bucket, and if this data
+            is modified or deleted by the user or another system, the
+            dictionary becomes invalid.
 
             If any errors occur, fix the problem indicated by the error
             message and use the UpdateStoredInfoType API method to
@@ -6972,10 +7588,6 @@ class ListStoredInfoTypesRequest(proto.Message):
                ``projects/``\ PROJECT_ID\ ``/locations/``\ LOCATION_ID
             -  Projects scope, no location specified (defaults to
                global): ``projects/``\ PROJECT_ID
-            -  Organizations scope, location specified:
-               ``organizations/``\ ORG_ID\ ``/locations/``\ LOCATION_ID
-            -  Organizations scope, no location specified (defaults to
-               global): ``organizations/``\ ORG_ID
 
             The following example ``parent`` string specifies a parent
             project with the identifier ``example-project``, and
@@ -6988,8 +7600,9 @@ class ListStoredInfoTypesRequest(proto.Message):
             Page token to continue retrieval. Comes from previous call
             to ``ListStoredInfoTypes``.
         page_size (int):
-            Size of the page, can be limited by server.
-            If zero server returns a page of max size 100.
+            Size of the page, can be limited by the
+            server. If zero server returns a page of max
+            size 100.
         order_by (str):
             Comma separated list of fields to order by, followed by
             ``asc`` or ``desc`` postfix. This list is case-insensitive,
@@ -7000,7 +7613,7 @@ class ListStoredInfoTypesRequest(proto.Message):
 
             Supported fields are:
 
-            -  ``create_time``: corresponds to time the most recent
+            -  ``create_time``: corresponds to the time the most recent
                version of the resource was created.
             -  ``state``: corresponds to the state of the resource.
             -  ``name``: corresponds to resource name.
@@ -7227,32 +7840,9 @@ class HybridInspectResponse(proto.Message):
     r"""Quota exceeded errors will be thrown once quota has been met."""
 
 
-class SensitivityScore(proto.Message):
-    r"""Score is a summary of all elements in the data profile.
-    A higher number means more sensitive.
-
-    Attributes:
-        score (google.cloud.dlp_v2.types.SensitivityScore.SensitivityScoreLevel):
-            The score applied to the resource.
-    """
-
-    class SensitivityScoreLevel(proto.Enum):
-        r"""Various score levels for resources."""
-        SENSITIVITY_SCORE_UNSPECIFIED = 0
-        SENSITIVITY_LOW = 10
-        SENSITIVITY_MODERATE = 20
-        SENSITIVITY_HIGH = 30
-
-    score = proto.Field(
-        proto.ENUM,
-        number=1,
-        enum=SensitivityScoreLevel,
-    )
-
-
 class DataRiskLevel(proto.Message):
     r"""Score is a summary of all elements in the data profile.
-    A higher number means more risky.
+    A higher number means more risk.
 
     Attributes:
         score (google.cloud.dlp_v2.types.DataRiskLevel.DataRiskLevelScore):
@@ -7415,7 +8005,7 @@ class TableDataProfile(proto.Message):
     sensitivity_score = proto.Field(
         proto.MESSAGE,
         number=5,
-        message="SensitivityScore",
+        message=storage.SensitivityScore,
     )
     data_risk_level = proto.Field(
         proto.MESSAGE,
@@ -7519,12 +8109,19 @@ class InfoTypeSummary(proto.Message):
     Attributes:
         info_type (google.cloud.dlp_v2.types.InfoType):
             The infoType.
+        estimated_prevalence (int):
+            Approximate percentage of non-null rows that
+            contained data detected by this infotype.
     """
 
     info_type = proto.Field(
         proto.MESSAGE,
         number=1,
         message=storage.InfoType,
+    )
+    estimated_prevalence = proto.Field(
+        proto.INT32,
+        number=2,
     )
 
 
@@ -7534,6 +8131,9 @@ class OtherInfoTypeSummary(proto.Message):
     Attributes:
         info_type (google.cloud.dlp_v2.types.InfoType):
             The other infoType.
+        estimated_prevalence (int):
+            Approximate percentage of non-null rows that
+            contained data detected by this infotype.
     """
 
     info_type = proto.Field(
@@ -7541,10 +8141,14 @@ class OtherInfoTypeSummary(proto.Message):
         number=1,
         message=storage.InfoType,
     )
+    estimated_prevalence = proto.Field(
+        proto.INT32,
+        number=2,
+    )
 
 
 class DataProfilePubSubCondition(proto.Message):
-    r"""A condition for determining whether a PubSub should be
+    r"""A condition for determining whether a Pub/Sub should be
     triggered.
 
     Attributes:
@@ -7630,10 +8234,10 @@ class DataProfilePubSubCondition(proto.Message):
 
 
 class DataProfilePubSubMessage(proto.Message):
-    r"""The message that will be published to a Pub/Sub topic.
-    To receive a message of protocol buffer schema type, convert the
-    message data to an object of this proto class.
-    https://cloud.google.com/pubsub/docs/samples/pubsub-subscribe-proto-messages
+    r"""Pub/Sub topic message for a
+    DataProfileAction.PubSubNotification event. To receive a message
+    of protocol buffer schema type, convert the message data to an
+    object of this proto class.
 
     Attributes:
         profile (google.cloud.dlp_v2.types.TableDataProfile):

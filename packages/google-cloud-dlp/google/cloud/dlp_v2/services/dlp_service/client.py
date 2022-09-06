@@ -752,8 +752,8 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
 
         Args:
             request (Union[google.cloud.dlp_v2.types.DeidentifyContentRequest, dict]):
-                The request object. Request to de-identify a list of
-                items.
+                The request object. Request to de-identify a
+                ContentItem.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -837,7 +837,7 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
 
         Returns:
             google.cloud.dlp_v2.types.ReidentifyContentResponse:
-                Results of re-identifying a item.
+                Results of re-identifying an item.
         """
         # Create or coerce a protobuf request object.
         # Minor optimization to avoid making a copy if the user passes
@@ -878,7 +878,7 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> dlp.ListInfoTypesResponse:
         r"""Returns a list of the sensitive information types
-        that the DLP API supports. See
+        that DLP API supports. See
         https://cloud.google.com/dlp/docs/infotypes-reference to
         learn more.
 
@@ -973,7 +973,7 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> dlp.InspectTemplate:
-        r"""Creates an InspectTemplate for re-using frequently
+        r"""Creates an InspectTemplate for reusing frequently
         used configuration for inspecting content, images, and
         storage. See
         https://cloud.google.com/dlp/docs/creating-templates to
@@ -1554,7 +1554,7 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> dlp.DeidentifyTemplate:
-        r"""Creates a DeidentifyTemplate for re-using frequently
+        r"""Creates a DeidentifyTemplate for reusing frequently
         used configuration for de-identifying content, images,
         and storage. See
         https://cloud.google.com/dlp/docs/creating-templates-deid
@@ -3252,7 +3252,7 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
     ) -> None:
         r"""Deletes a long-running DlpJob. This method indicates
         that the client is no longer interested in the DlpJob
-        result. The job will be cancelled if possible.
+        result. The job will be canceled if possible.
         See https://cloud.google.com/dlp/docs/inspecting-storage
         and
         https://cloud.google.com/dlp/docs/compute-risk-analysis
@@ -3804,10 +3804,6 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
                    ``projects/``\ PROJECT_ID\ ``/locations/``\ LOCATION_ID
                 -  Projects scope, no location specified (defaults to
                    global): ``projects/``\ PROJECT_ID
-                -  Organizations scope, location specified:
-                   ``organizations/``\ ORG_ID\ ``/locations/``\ LOCATION_ID
-                -  Organizations scope, no location specified (defaults
-                   to global): ``organizations/``\ ORG_ID
 
                 The following example ``parent`` string specifies a
                 parent project with the identifier ``example-project``,

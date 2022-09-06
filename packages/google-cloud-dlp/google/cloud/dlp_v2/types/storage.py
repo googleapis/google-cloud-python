@@ -22,6 +22,7 @@ __protobuf__ = proto.module(
         "Likelihood",
         "FileType",
         "InfoType",
+        "SensitivityScore",
         "StoredType",
         "CustomInfoType",
         "FieldId",
@@ -99,6 +100,29 @@ class InfoType(proto.Message):
     version = proto.Field(
         proto.STRING,
         number=2,
+    )
+
+
+class SensitivityScore(proto.Message):
+    r"""Score is a summary of all elements in the data profile.
+    A higher number means more sensitive.
+
+    Attributes:
+        score (google.cloud.dlp_v2.types.SensitivityScore.SensitivityScoreLevel):
+            The score applied to the resource.
+    """
+
+    class SensitivityScoreLevel(proto.Enum):
+        r"""Various score levels for resources."""
+        SENSITIVITY_SCORE_UNSPECIFIED = 0
+        SENSITIVITY_LOW = 10
+        SENSITIVITY_MODERATE = 20
+        SENSITIVITY_HIGH = 30
+
+    score = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=SensitivityScoreLevel,
     )
 
 
@@ -641,8 +665,8 @@ class CloudStorageRegexFileSet(proto.Message):
 
 
 class CloudStorageOptions(proto.Message):
-    r"""Options defining a file or a set of files within a Google
-    Cloud Storage bucket.
+    r"""Options defining a file or a set of files within a Cloud
+    Storage bucket.
 
     Attributes:
         file_set (google.cloud.dlp_v2.types.CloudStorageOptions.FileSet):
@@ -875,7 +899,7 @@ class StorageConfig(proto.Message):
 
             This field is a member of `oneof`_ ``type``.
         cloud_storage_options (google.cloud.dlp_v2.types.CloudStorageOptions):
-            Google Cloud Storage options.
+            Cloud Storage options.
 
             This field is a member of `oneof`_ ``type``.
         big_query_options (google.cloud.dlp_v2.types.BigQueryOptions):
@@ -892,8 +916,8 @@ class StorageConfig(proto.Message):
 
     class TimespanConfig(proto.Message):
         r"""Configuration of the timespan of the items to include in
-        scanning. Currently only supported when inspecting Google Cloud
-        Storage and BigQuery.
+        scanning. Currently only supported when inspecting Cloud Storage
+        and BigQuery.
 
         Attributes:
             start_time (google.protobuf.timestamp_pb2.Timestamp):
@@ -909,27 +933,48 @@ class StorageConfig(proto.Message):
                 scanned items. Used for data sources like Datastore and
                 BigQuery.
 
-                For BigQuery: If this value is not specified and the table
-                was modified between the given start and end times, the
-                entire table will be scanned. If this value is specified,
-                then rows are filtered based on the given start and end
-                times. Rows with a ``NULL`` value in the provided BigQuery
-                column are skipped. Valid data types of the provided
-                BigQuery column are: ``INTEGER``, ``DATE``, ``TIMESTAMP``,
-                and ``DATETIME``.
+                For BigQuery
 
-                For Datastore: If this value is specified, then entities are
-                filtered based on the given start and end times. If an
-                entity does not contain the provided timestamp property or
-                contains empty or invalid values, then it is included. Valid
-                data types of the provided timestamp property are:
-                ``TIMESTAMP``.
+                If this value is not specified and the table was modified
+                between the given start and end times, the entire table will
+                be scanned. If this value is specified, then rows are
+                filtered based on the given start and end times. Rows with a
+                ``NULL`` value in the provided BigQuery column are skipped.
+                Valid data types of the provided BigQuery column are:
+                ``INTEGER``, ``DATE``, ``TIMESTAMP``, and ``DATETIME``.
+
+                If your BigQuery table is `partitioned at ingestion
+                time <https://cloud.google.com/bigquery/docs/partitioned-tables#ingestion_time>`__,
+                you can use any of the following pseudo-columns as your
+                timestamp field. When used with Cloud DLP, these
+                pseudo-column names are case sensitive.
+
+                .. raw:: html
+
+                    <ul>
+                    <li><code>_PARTITIONTIME</code></li>
+                    <li><code>_PARTITIONDATE</code></li>
+                    <li><code>_PARTITION_LOAD_TIME</code></li>
+                    </ul>
+
+                For Datastore
+
+                If this value is specified, then entities are filtered based
+                on the given start and end times. If an entity does not
+                contain the provided timestamp property or contains empty or
+                invalid values, then it is included. Valid data types of the
+                provided timestamp property are: ``TIMESTAMP``.
+
+                See the `known
+                issue <https://cloud.google.com/dlp/docs/known-issues#bq-timespan>`__
+                related to this operation.
             enable_auto_population_of_timespan_config (bool):
                 When the job is started by a JobTrigger we will
                 automatically figure out a valid start_time to avoid
                 scanning files that have not been modified since the last
                 time the JobTrigger executed. This will be based on the time
-                of the execution of the last run of the JobTrigger.
+                of the execution of the last run of the JobTrigger or the
+                timespan end_time used in the last run of the JobTrigger.
         """
 
         start_time = proto.Field(

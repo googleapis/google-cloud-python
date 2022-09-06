@@ -378,7 +378,7 @@ class DlpServiceGrpcTransport(DlpServiceTransport):
         r"""Return a callable for the list info types method over gRPC.
 
         Returns a list of the sensitive information types
-        that the DLP API supports. See
+        that DLP API supports. See
         https://cloud.google.com/dlp/docs/infotypes-reference to
         learn more.
 
@@ -406,7 +406,7 @@ class DlpServiceGrpcTransport(DlpServiceTransport):
     ) -> Callable[[dlp.CreateInspectTemplateRequest], dlp.InspectTemplate]:
         r"""Return a callable for the create inspect template method over gRPC.
 
-        Creates an InspectTemplate for re-using frequently
+        Creates an InspectTemplate for reusing frequently
         used configuration for inspecting content, images, and
         storage. See
         https://cloud.google.com/dlp/docs/creating-templates to
@@ -548,7 +548,7 @@ class DlpServiceGrpcTransport(DlpServiceTransport):
     ) -> Callable[[dlp.CreateDeidentifyTemplateRequest], dlp.DeidentifyTemplate]:
         r"""Return a callable for the create deidentify template method over gRPC.
 
-        Creates a DeidentifyTemplate for re-using frequently
+        Creates a DeidentifyTemplate for reusing frequently
         used configuration for de-identifying content, images,
         and storage. See
         https://cloud.google.com/dlp/docs/creating-templates-deid
@@ -987,7 +987,7 @@ class DlpServiceGrpcTransport(DlpServiceTransport):
 
         Deletes a long-running DlpJob. This method indicates
         that the client is no longer interested in the DlpJob
-        result. The job will be cancelled if possible.
+        result. The job will be canceled if possible.
         See https://cloud.google.com/dlp/docs/inspecting-storage
         and
         https://cloud.google.com/dlp/docs/compute-risk-analysis
