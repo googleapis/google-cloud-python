@@ -2,7 +2,7 @@ Getting Started
 ---------------
 
 This code generator is implemented as a plugin to ``protoc``, the compiler
-for `protocol buffers`_, and will run in any environment that Python 3.6+ and
+for `protocol buffers`_, and will run in any environment that Python 3.7+ and
 protocol buffers do.
 
 Because dependency management and such can be a significant undertaking, we

@@ -6,7 +6,6 @@ MarkupSafe==2.1.1
 protobuf==3.20.1
 pypandoc==1.8.1
 PyYAML==6.0
-dataclasses==0.6  # TODO(busunkim) remove when 3.6 support is dropped
 setuptools==65.3.0
 grpc-google-iam-v1==0.12.4
 proto-plus==1.22.1

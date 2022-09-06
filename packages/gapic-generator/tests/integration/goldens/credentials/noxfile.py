@@ -23,7 +23,6 @@ import sys
 import nox  # type: ignore
 
 ALL_PYTHON = [
-    "3.6",
     "3.7",
     "3.8",
     "3.9",

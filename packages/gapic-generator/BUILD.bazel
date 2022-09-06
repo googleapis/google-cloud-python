@@ -27,11 +27,6 @@ pandoc_binary(
     name = "pandoc_binary",
 )
 
-config_setting(
-    name = "gapic_gen_python_3_6",
-    values = {"define": "gapic_gen_python=3.6"},
-)
-
 py_runtime(
     name = "pyenv3_runtime",
     interpreter = ":pyenv3wrapper.sh",
@@ -69,9 +64,7 @@ py_binary(
         requirement("MarkupSafe"),
         requirement("pypandoc"),
         requirement("PyYAML"),
-	requirement("grpc-google-iam-v1"),
-    ] + select({
-        ":gapic_gen_python_3_6": [requirement("dataclasses")],
-        "//conditions:default": [],
-    }),
+        requirement("grpc-google-iam-v1"),
+    ]
 )
+
