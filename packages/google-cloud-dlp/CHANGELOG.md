@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-dlp/#history
 
+## [3.9.0](https://github.com/googleapis/python-dlp/compare/v3.8.1...v3.9.0) (2022-09-06)
+
+
+### Features
+
+* Add Deidentify action ([#438](https://github.com/googleapis/python-dlp/issues/438)) ([c28073b](https://github.com/googleapis/python-dlp/commit/c28073b945d5539518bedaaf3903fa71d4ddb0d4))
+
 ## [3.8.1](https://github.com/googleapis/python-dlp/compare/v3.8.0...v3.8.1) (2022-08-12)
 
 
