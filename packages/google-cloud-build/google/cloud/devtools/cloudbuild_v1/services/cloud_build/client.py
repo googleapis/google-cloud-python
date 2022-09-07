@@ -614,6 +614,13 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud.devtools import cloudbuild_v1
 
             def sample_create_build():
@@ -757,6 +764,13 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud.devtools import cloudbuild_v1
 
             def sample_get_build():
@@ -886,6 +900,13 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud.devtools import cloudbuild_v1
 
             def sample_list_builds():
@@ -1002,6 +1023,13 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud.devtools import cloudbuild_v1
 
             def sample_cancel_build():
@@ -1158,6 +1186,13 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud.devtools import cloudbuild_v1
 
             def sample_retry_build():
@@ -1307,6 +1342,13 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud.devtools import cloudbuild_v1
 
             def sample_approve_build():
@@ -1449,6 +1491,13 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud.devtools import cloudbuild_v1
 
             def sample_create_build_trigger():
@@ -1561,6 +1610,13 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud.devtools import cloudbuild_v1
 
             def sample_get_build_trigger():
@@ -1674,6 +1730,13 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud.devtools import cloudbuild_v1
 
             def sample_list_build_triggers():
@@ -1786,6 +1849,13 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud.devtools import cloudbuild_v1
 
             def sample_delete_build_trigger():
@@ -1885,6 +1955,13 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud.devtools import cloudbuild_v1
 
             def sample_update_build_trigger():
@@ -2007,6 +2084,13 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud.devtools import cloudbuild_v1
 
             def sample_run_build_trigger():
@@ -2157,6 +2241,13 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud.devtools import cloudbuild_v1
 
             def sample_receive_trigger_webhook():
@@ -2239,6 +2330,13 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud.devtools import cloudbuild_v1
 
             def sample_create_worker_pool():
@@ -2385,6 +2483,13 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud.devtools import cloudbuild_v1
 
             def sample_get_worker_pool():
@@ -2494,6 +2599,13 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud.devtools import cloudbuild_v1
 
             def sample_delete_worker_pool():
@@ -2612,6 +2724,13 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud.devtools import cloudbuild_v1
 
             def sample_update_worker_pool():
@@ -2748,6 +2867,13 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud.devtools import cloudbuild_v1
 
             def sample_list_worker_pools():
