@@ -262,6 +262,13 @@ class PredictionServiceAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import automl_v1
 
             async def sample_predict():
@@ -431,6 +438,13 @@ class PredictionServiceAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import automl_v1
 
             async def sample_batch_predict():
@@ -439,7 +453,7 @@ class PredictionServiceAsyncClient:
 
                 # Initialize request argument(s)
                 input_config = automl_v1.BatchPredictInputConfig()
-                input_config.gcs_source.input_uris = ['input_uris_value_1', 'input_uris_value_2']
+                input_config.gcs_source.input_uris = ['input_uris_value1', 'input_uris_value2']
 
                 output_config = automl_v1.BatchPredictOutputConfig()
                 output_config.gcs_destination.output_uri_prefix = "output_uri_prefix_value"
