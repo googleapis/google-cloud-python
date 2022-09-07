@@ -1,6 +1,13 @@
 # Changelog
 
 
+## [1.3.1](https://github.com/googleapis/gapic-generator-python/compare/v1.3.0...v1.3.1) (2022-09-07)
+
+
+### Bug Fixes
+
+* Fix LRO method test and rest test coverage ([#1433](https://github.com/googleapis/gapic-generator-python/issues/1433)) ([c57a93f](https://github.com/googleapis/gapic-generator-python/commit/c57a93fee8b7861e6396c0e34586ffa00478ce25))
+
 ## [1.3.0](https://github.com/googleapis/gapic-generator-python/compare/v1.2.0...v1.3.0) (2022-09-06)
 
 
