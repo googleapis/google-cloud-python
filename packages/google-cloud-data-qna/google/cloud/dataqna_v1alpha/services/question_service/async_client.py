@@ -244,6 +244,13 @@ class QuestionServiceAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import dataqna_v1alpha
 
             async def sample_get_question():
@@ -343,6 +350,13 @@ class QuestionServiceAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import dataqna_v1alpha
 
             async def sample_create_question():
@@ -351,7 +365,7 @@ class QuestionServiceAsyncClient:
 
                 # Initialize request argument(s)
                 question = dataqna_v1alpha.Question()
-                question.scopes = ['scopes_value_1', 'scopes_value_2']
+                question.scopes = ['scopes_value1', 'scopes_value2']
                 question.query = "query_value"
 
                 request = dataqna_v1alpha.CreateQuestionRequest(
@@ -455,6 +469,13 @@ class QuestionServiceAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import dataqna_v1alpha
 
             async def sample_execute_question():
@@ -563,6 +584,13 @@ class QuestionServiceAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import dataqna_v1alpha
 
             async def sample_get_user_feedback():
@@ -659,6 +687,13 @@ class QuestionServiceAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import dataqna_v1alpha
 
             async def sample_update_user_feedback():
