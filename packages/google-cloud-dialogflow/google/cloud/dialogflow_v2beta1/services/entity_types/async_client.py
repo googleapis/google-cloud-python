@@ -223,6 +223,13 @@ class EntityTypesAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import dialogflow_v2beta1
 
             async def sample_list_entity_types():
@@ -347,6 +354,13 @@ class EntityTypesAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import dialogflow_v2beta1
 
             async def sample_get_entity_type():
@@ -476,6 +490,13 @@ class EntityTypesAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import dialogflow_v2beta1
 
             async def sample_create_entity_type():
@@ -617,6 +638,13 @@ class EntityTypesAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import dialogflow_v2beta1
 
             async def sample_update_entity_type():
@@ -754,6 +782,13 @@ class EntityTypesAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import dialogflow_v2beta1
 
             async def sample_delete_entity_type():
@@ -853,6 +888,13 @@ class EntityTypesAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import dialogflow_v2beta1
 
             async def sample_batch_update_entity_types():
@@ -959,6 +1001,13 @@ class EntityTypesAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import dialogflow_v2beta1
 
             async def sample_batch_delete_entity_types():
@@ -968,7 +1017,7 @@ class EntityTypesAsyncClient:
                 # Initialize request argument(s)
                 request = dialogflow_v2beta1.BatchDeleteEntityTypesRequest(
                     parent="parent_value",
-                    entity_type_names=['entity_type_names_value_1', 'entity_type_names_value_2'],
+                    entity_type_names=['entity_type_names_value1', 'entity_type_names_value2'],
                 )
 
                 # Make the request
@@ -1105,6 +1154,13 @@ class EntityTypesAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import dialogflow_v2beta1
 
             async def sample_batch_create_entities():
@@ -1266,6 +1322,13 @@ class EntityTypesAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import dialogflow_v2beta1
 
             async def sample_batch_update_entities():
@@ -1427,6 +1490,13 @@ class EntityTypesAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import dialogflow_v2beta1
 
             async def sample_batch_delete_entities():
@@ -1436,7 +1506,7 @@ class EntityTypesAsyncClient:
                 # Initialize request argument(s)
                 request = dialogflow_v2beta1.BatchDeleteEntitiesRequest(
                     parent="parent_value",
-                    entity_values=['entity_values_value_1', 'entity_values_value_2'],
+                    entity_values=['entity_values_value1', 'entity_values_value2'],
                 )
 
                 # Make the request

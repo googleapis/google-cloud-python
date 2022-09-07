@@ -222,6 +222,13 @@ class DocumentsAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import dialogflow_v2beta1
 
             async def sample_list_documents():
@@ -334,6 +341,13 @@ class DocumentsAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import dialogflow_v2beta1
 
             async def sample_get_document():
@@ -450,6 +464,13 @@ class DocumentsAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import dialogflow_v2beta1
 
             async def sample_create_document():
@@ -594,6 +615,13 @@ class DocumentsAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import dialogflow_v2beta1
 
             async def sample_import_documents():
@@ -602,7 +630,7 @@ class DocumentsAsyncClient:
 
                 # Initialize request argument(s)
                 gcs_source = dialogflow_v2beta1.GcsSources()
-                gcs_source.uris = ['uris_value_1', 'uris_value_2']
+                gcs_source.uris = ['uris_value1', 'uris_value2']
 
                 document_template = dialogflow_v2beta1.ImportDocumentTemplate()
                 document_template.mime_type = "mime_type_value"
@@ -706,6 +734,13 @@ class DocumentsAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import dialogflow_v2beta1
 
             async def sample_delete_document():
@@ -837,6 +872,13 @@ class DocumentsAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import dialogflow_v2beta1
 
             async def sample_update_document():
@@ -993,6 +1035,13 @@ class DocumentsAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import dialogflow_v2beta1
 
             async def sample_reload_document():

@@ -24,6 +24,13 @@
 
 
 # [START dialogflow_v2beta1_generated_EntityTypes_BatchDeleteEntities_async]
+# This snippet has been automatically generated and should be regarded as a
+# code template only.
+# It will require modifications to work:
+# - It may require correct/in-range values for request initialization.
+# - It may require specifying regional endpoints when creating the service
+#   client as shown in:
+#   https://googleapis.dev/python/google-api-core/latest/client_options.html
 from google.cloud import dialogflow_v2beta1
 
 
@@ -34,7 +41,7 @@ async def sample_batch_delete_entities():
     # Initialize request argument(s)
     request = dialogflow_v2beta1.BatchDeleteEntitiesRequest(
         parent="parent_value",
-        entity_values=['entity_values_value_1', 'entity_values_value_2'],
+        entity_values=['entity_values_value1', 'entity_values_value2'],
     )
 
     # Make the request
