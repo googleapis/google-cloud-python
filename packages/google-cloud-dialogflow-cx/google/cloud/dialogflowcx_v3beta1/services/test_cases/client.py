@@ -670,6 +670,13 @@ class TestCasesClient(metaclass=TestCasesClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import dialogflowcx_v3beta1
 
             def sample_list_test_cases():
@@ -778,6 +785,13 @@ class TestCasesClient(metaclass=TestCasesClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import dialogflowcx_v3beta1
 
             def sample_batch_delete_test_cases():
@@ -787,7 +801,7 @@ class TestCasesClient(metaclass=TestCasesClientMeta):
                 # Initialize request argument(s)
                 request = dialogflowcx_v3beta1.BatchDeleteTestCasesRequest(
                     parent="parent_value",
-                    names=['names_value_1', 'names_value_2'],
+                    names=['names_value1', 'names_value2'],
                 )
 
                 # Make the request
@@ -862,6 +876,13 @@ class TestCasesClient(metaclass=TestCasesClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import dialogflowcx_v3beta1
 
             def sample_get_test_case():
@@ -956,6 +977,13 @@ class TestCasesClient(metaclass=TestCasesClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import dialogflowcx_v3beta1
 
             def sample_create_test_case():
@@ -1061,6 +1089,13 @@ class TestCasesClient(metaclass=TestCasesClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import dialogflowcx_v3beta1
 
             def sample_update_test_case():
@@ -1179,6 +1214,13 @@ class TestCasesClient(metaclass=TestCasesClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import dialogflowcx_v3beta1
 
             def sample_run_test_case():
@@ -1279,6 +1321,13 @@ class TestCasesClient(metaclass=TestCasesClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import dialogflowcx_v3beta1
 
             def sample_batch_run_test_cases():
@@ -1288,7 +1337,7 @@ class TestCasesClient(metaclass=TestCasesClientMeta):
                 # Initialize request argument(s)
                 request = dialogflowcx_v3beta1.BatchRunTestCasesRequest(
                     parent="parent_value",
-                    test_cases=['test_cases_value_1', 'test_cases_value_2'],
+                    test_cases=['test_cases_value1', 'test_cases_value2'],
                 )
 
                 # Make the request
@@ -1370,6 +1419,13 @@ class TestCasesClient(metaclass=TestCasesClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import dialogflowcx_v3beta1
 
             def sample_calculate_coverage():
@@ -1458,6 +1514,13 @@ class TestCasesClient(metaclass=TestCasesClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import dialogflowcx_v3beta1
 
             def sample_import_test_cases():
@@ -1561,6 +1624,13 @@ class TestCasesClient(metaclass=TestCasesClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import dialogflowcx_v3beta1
 
             def sample_export_test_cases():
@@ -1653,6 +1723,13 @@ class TestCasesClient(metaclass=TestCasesClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import dialogflowcx_v3beta1
 
             def sample_list_test_case_results():
@@ -1763,6 +1840,13 @@ class TestCasesClient(metaclass=TestCasesClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import dialogflowcx_v3beta1
 
             def sample_get_test_case_result():

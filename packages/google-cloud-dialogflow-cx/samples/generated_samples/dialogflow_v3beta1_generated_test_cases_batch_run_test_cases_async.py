@@ -24,6 +24,13 @@
 
 
 # [START dialogflow_v3beta1_generated_TestCases_BatchRunTestCases_async]
+# This snippet has been automatically generated and should be regarded as a
+# code template only.
+# It will require modifications to work:
+# - It may require correct/in-range values for request initialization.
+# - It may require specifying regional endpoints when creating the service
+#   client as shown in:
+#   https://googleapis.dev/python/google-api-core/latest/client_options.html
 from google.cloud import dialogflowcx_v3beta1
 
 
@@ -34,7 +41,7 @@ async def sample_batch_run_test_cases():
     # Initialize request argument(s)
     request = dialogflowcx_v3beta1.BatchRunTestCasesRequest(
         parent="parent_value",
-        test_cases=['test_cases_value_1', 'test_cases_value_2'],
+        test_cases=['test_cases_value1', 'test_cases_value2'],
     )
 
     # Make the request

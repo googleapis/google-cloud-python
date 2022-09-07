@@ -454,6 +454,13 @@ class SessionEntityTypesClient(metaclass=SessionEntityTypesClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import dialogflowcx_v3beta1
 
             def sample_list_session_entity_types():
@@ -569,6 +576,13 @@ class SessionEntityTypesClient(metaclass=SessionEntityTypesClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import dialogflowcx_v3beta1
 
             def sample_get_session_entity_type():
@@ -686,6 +700,13 @@ class SessionEntityTypesClient(metaclass=SessionEntityTypesClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import dialogflowcx_v3beta1
 
             def sample_create_session_entity_type():
@@ -697,7 +718,7 @@ class SessionEntityTypesClient(metaclass=SessionEntityTypesClientMeta):
                 session_entity_type.name = "name_value"
                 session_entity_type.entity_override_mode = "ENTITY_OVERRIDE_MODE_SUPPLEMENT"
                 session_entity_type.entities.value = "value_value"
-                session_entity_type.entities.synonyms = ['synonyms_value_1', 'synonyms_value_2']
+                session_entity_type.entities.synonyms = ['synonyms_value1', 'synonyms_value2']
 
                 request = dialogflowcx_v3beta1.CreateSessionEntityTypeRequest(
                     parent="parent_value",
@@ -824,6 +845,13 @@ class SessionEntityTypesClient(metaclass=SessionEntityTypesClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import dialogflowcx_v3beta1
 
             def sample_update_session_entity_type():
@@ -835,7 +863,7 @@ class SessionEntityTypesClient(metaclass=SessionEntityTypesClientMeta):
                 session_entity_type.name = "name_value"
                 session_entity_type.entity_override_mode = "ENTITY_OVERRIDE_MODE_SUPPLEMENT"
                 session_entity_type.entities.value = "value_value"
-                session_entity_type.entities.synonyms = ['synonyms_value_1', 'synonyms_value_2']
+                session_entity_type.entities.synonyms = ['synonyms_value1', 'synonyms_value2']
 
                 request = dialogflowcx_v3beta1.UpdateSessionEntityTypeRequest(
                     session_entity_type=session_entity_type,
@@ -959,6 +987,13 @@ class SessionEntityTypesClient(metaclass=SessionEntityTypesClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import dialogflowcx_v3beta1
 
             def sample_delete_session_entity_type():
