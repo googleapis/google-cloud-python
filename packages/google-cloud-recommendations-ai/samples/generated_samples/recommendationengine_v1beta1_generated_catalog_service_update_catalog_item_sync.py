@@ -24,6 +24,13 @@
 
 
 # [START recommendationengine_v1beta1_generated_CatalogService_UpdateCatalogItem_sync]
+# This snippet has been automatically generated and should be regarded as a
+# code template only.
+# It will require modifications to work:
+# - It may require correct/in-range values for request initialization.
+# - It may require specifying regional endpoints when creating the service
+#   client as shown in:
+#   https://googleapis.dev/python/google-api-core/latest/client_options.html
 from google.cloud import recommendationengine_v1beta1
 
 
@@ -34,7 +41,7 @@ def sample_update_catalog_item():
     # Initialize request argument(s)
     catalog_item = recommendationengine_v1beta1.CatalogItem()
     catalog_item.id = "id_value"
-    catalog_item.category_hierarchies.categories = ['categories_value_1', 'categories_value_2']
+    catalog_item.category_hierarchies.categories = ['categories_value1', 'categories_value2']
     catalog_item.title = "title_value"
 
     request = recommendationengine_v1beta1.UpdateCatalogItemRequest(
