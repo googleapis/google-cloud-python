@@ -26,6 +26,7 @@ from google.api_core import rest_streaming
 from google.api_core import path_template
 from google.api_core import gapic_v1
 
+from google.protobuf import json_format
 from requests import __version__ as requests_version
 import dataclasses
 import re
@@ -401,6 +402,10 @@ class TargetPoolsRestTransport(TargetPoolsTransport):
     and call it.
 
     It sends JSON representations of protocol buffers over HTTP/1.1
+
+    NOTE: This REST transport functionality is currently in a beta
+    state (preview). We welcome your feedback via an issue in this
+    library's source repository. Thank you!
     """
 
     def __init__(
@@ -420,35 +425,39 @@ class TargetPoolsRestTransport(TargetPoolsTransport):
     ) -> None:
         """Instantiate the transport.
 
-        Args:
-            host (Optional[str]):
-                 The hostname to connect to.
-            credentials (Optional[google.auth.credentials.Credentials]): The
-                authorization credentials to attach to requests. These
-                credentials identify the application to the service; if none
-                are specified, the client will attempt to ascertain the
-                credentials from the environment.
+        NOTE: This REST transport functionality is currently in a beta
+        state (preview). We welcome your feedback via a GitHub issue in
+        this library's repository. Thank you!
 
-            credentials_file (Optional[str]): A file with credentials that can
-                be loaded with :func:`google.auth.load_credentials_from_file`.
-                This argument is ignored if ``channel`` is provided.
-            scopes (Optional(Sequence[str])): A list of scopes. This argument is
-                ignored if ``channel`` is provided.
-            client_cert_source_for_mtls (Callable[[], Tuple[bytes, bytes]]): Client
-                certificate to configure mutual TLS HTTP channel. It is ignored
-                if ``channel`` is provided.
-            quota_project_id (Optional[str]): An optional project to use for billing
-                and quota.
-            client_info (google.api_core.gapic_v1.client_info.ClientInfo):
-                The client info used to send a user-agent string along with
-                API requests. If ``None``, then default info will be used.
-                Generally, you only need to set this if you are developing
-                your own client library.
-            always_use_jwt_access (Optional[bool]): Whether self signed JWT should
-                be used for service account credentials.
-            url_scheme: the protocol scheme for the API endpoint.  Normally
-                "https", but for testing or local servers,
-                "http" can be specified.
+         Args:
+             host (Optional[str]):
+                  The hostname to connect to.
+             credentials (Optional[google.auth.credentials.Credentials]): The
+                 authorization credentials to attach to requests. These
+                 credentials identify the application to the service; if none
+                 are specified, the client will attempt to ascertain the
+                 credentials from the environment.
+
+             credentials_file (Optional[str]): A file with credentials that can
+                 be loaded with :func:`google.auth.load_credentials_from_file`.
+                 This argument is ignored if ``channel`` is provided.
+             scopes (Optional(Sequence[str])): A list of scopes. This argument is
+                 ignored if ``channel`` is provided.
+             client_cert_source_for_mtls (Callable[[], Tuple[bytes, bytes]]): Client
+                 certificate to configure mutual TLS HTTP channel. It is ignored
+                 if ``channel`` is provided.
+             quota_project_id (Optional[str]): An optional project to use for billing
+                 and quota.
+             client_info (google.api_core.gapic_v1.client_info.ClientInfo):
+                 The client info used to send a user-agent string along with
+                 API requests. If ``None``, then default info will be used.
+                 Generally, you only need to set this if you are developing
+                 your own client library.
+             always_use_jwt_access (Optional[bool]): Whether self signed JWT should
+                 be used for service account credentials.
+             url_scheme: the protocol scheme for the API endpoint.  Normally
+                 "https", but for testing or local servers,
+                 "http" can be specified.
         """
         # Run the base constructor
         # TODO(yon-mg): resolve other ctor params i.e. scopes, quota, etc.
@@ -545,12 +554,13 @@ class TargetPoolsRestTransport(TargetPoolsTransport):
             request, metadata = self._interceptor.pre_add_health_check(
                 request, metadata
             )
-            request_kwargs = compute.AddHealthCheckTargetPoolRequest.to_dict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            pb_request = compute.AddHealthCheckTargetPoolRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             # Jsonify the request body
-            body = compute.TargetPoolsAddHealthCheckRequest.to_json(
-                compute.TargetPoolsAddHealthCheckRequest(transcoded_request["body"]),
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
                 including_default_value_fields=False,
                 use_integers_for_enums=False,
             )
@@ -559,15 +569,12 @@ class TargetPoolsRestTransport(TargetPoolsTransport):
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.AddHealthCheckTargetPoolRequest.to_json(
-                    compute.AddHealthCheckTargetPoolRequest(
-                        transcoded_request["query_params"]
-                    ),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -587,9 +594,10 @@ class TargetPoolsRestTransport(TargetPoolsTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.Operation.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.Operation()
+            pb_resp = compute.Operation.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_add_health_check(resp)
             return resp
 
@@ -657,12 +665,13 @@ class TargetPoolsRestTransport(TargetPoolsTransport):
                 },
             ]
             request, metadata = self._interceptor.pre_add_instance(request, metadata)
-            request_kwargs = compute.AddInstanceTargetPoolRequest.to_dict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            pb_request = compute.AddInstanceTargetPoolRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             # Jsonify the request body
-            body = compute.TargetPoolsAddInstanceRequest.to_json(
-                compute.TargetPoolsAddInstanceRequest(transcoded_request["body"]),
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
                 including_default_value_fields=False,
                 use_integers_for_enums=False,
             )
@@ -671,15 +680,12 @@ class TargetPoolsRestTransport(TargetPoolsTransport):
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.AddInstanceTargetPoolRequest.to_json(
-                    compute.AddInstanceTargetPoolRequest(
-                        transcoded_request["query_params"]
-                    ),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -699,9 +705,10 @@ class TargetPoolsRestTransport(TargetPoolsTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.Operation.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.Operation()
+            pb_resp = compute.Operation.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_add_instance(resp)
             return resp
 
@@ -753,23 +760,20 @@ class TargetPoolsRestTransport(TargetPoolsTransport):
                 },
             ]
             request, metadata = self._interceptor.pre_aggregated_list(request, metadata)
-            request_kwargs = compute.AggregatedListTargetPoolsRequest.to_dict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            pb_request = compute.AggregatedListTargetPoolsRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.AggregatedListTargetPoolsRequest.to_json(
-                    compute.AggregatedListTargetPoolsRequest(
-                        transcoded_request["query_params"]
-                    ),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -788,9 +792,10 @@ class TargetPoolsRestTransport(TargetPoolsTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.TargetPoolAggregatedList.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.TargetPoolAggregatedList()
+            pb_resp = compute.TargetPoolAggregatedList.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_aggregated_list(resp)
             return resp
 
@@ -857,21 +862,20 @@ class TargetPoolsRestTransport(TargetPoolsTransport):
                 },
             ]
             request, metadata = self._interceptor.pre_delete(request, metadata)
-            request_kwargs = compute.DeleteTargetPoolRequest.to_dict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            pb_request = compute.DeleteTargetPoolRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.DeleteTargetPoolRequest.to_json(
-                    compute.DeleteTargetPoolRequest(transcoded_request["query_params"]),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -890,9 +894,10 @@ class TargetPoolsRestTransport(TargetPoolsTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.Operation.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.Operation()
+            pb_resp = compute.Operation.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_delete(resp)
             return resp
 
@@ -952,21 +957,20 @@ class TargetPoolsRestTransport(TargetPoolsTransport):
                 },
             ]
             request, metadata = self._interceptor.pre_get(request, metadata)
-            request_kwargs = compute.GetTargetPoolRequest.to_dict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            pb_request = compute.GetTargetPoolRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.GetTargetPoolRequest.to_json(
-                    compute.GetTargetPoolRequest(transcoded_request["query_params"]),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -985,9 +989,10 @@ class TargetPoolsRestTransport(TargetPoolsTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.TargetPool.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.TargetPool()
+            pb_resp = compute.TargetPool.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_get(resp)
             return resp
 
@@ -1040,12 +1045,13 @@ class TargetPoolsRestTransport(TargetPoolsTransport):
                 },
             ]
             request, metadata = self._interceptor.pre_get_health(request, metadata)
-            request_kwargs = compute.GetHealthTargetPoolRequest.to_dict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            pb_request = compute.GetHealthTargetPoolRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             # Jsonify the request body
-            body = compute.InstanceReference.to_json(
-                compute.InstanceReference(transcoded_request["body"]),
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
                 including_default_value_fields=False,
                 use_integers_for_enums=False,
             )
@@ -1054,15 +1060,12 @@ class TargetPoolsRestTransport(TargetPoolsTransport):
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.GetHealthTargetPoolRequest.to_json(
-                    compute.GetHealthTargetPoolRequest(
-                        transcoded_request["query_params"]
-                    ),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -1082,9 +1085,10 @@ class TargetPoolsRestTransport(TargetPoolsTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.TargetPoolInstanceHealth.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.TargetPoolInstanceHealth()
+            pb_resp = compute.TargetPoolInstanceHealth.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_get_health(resp)
             return resp
 
@@ -1152,12 +1156,13 @@ class TargetPoolsRestTransport(TargetPoolsTransport):
                 },
             ]
             request, metadata = self._interceptor.pre_insert(request, metadata)
-            request_kwargs = compute.InsertTargetPoolRequest.to_dict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            pb_request = compute.InsertTargetPoolRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             # Jsonify the request body
-            body = compute.TargetPool.to_json(
-                compute.TargetPool(transcoded_request["body"]),
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
                 including_default_value_fields=False,
                 use_integers_for_enums=False,
             )
@@ -1166,13 +1171,12 @@ class TargetPoolsRestTransport(TargetPoolsTransport):
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.InsertTargetPoolRequest.to_json(
-                    compute.InsertTargetPoolRequest(transcoded_request["query_params"]),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -1192,9 +1196,10 @@ class TargetPoolsRestTransport(TargetPoolsTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.Operation.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.Operation()
+            pb_resp = compute.Operation.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_insert(resp)
             return resp
 
@@ -1248,21 +1253,20 @@ class TargetPoolsRestTransport(TargetPoolsTransport):
                 },
             ]
             request, metadata = self._interceptor.pre_list(request, metadata)
-            request_kwargs = compute.ListTargetPoolsRequest.to_dict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            pb_request = compute.ListTargetPoolsRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.ListTargetPoolsRequest.to_json(
-                    compute.ListTargetPoolsRequest(transcoded_request["query_params"]),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -1281,9 +1285,10 @@ class TargetPoolsRestTransport(TargetPoolsTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.TargetPoolList.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.TargetPoolList()
+            pb_resp = compute.TargetPoolList.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_list(resp)
             return resp
 
@@ -1353,12 +1358,13 @@ class TargetPoolsRestTransport(TargetPoolsTransport):
             request, metadata = self._interceptor.pre_remove_health_check(
                 request, metadata
             )
-            request_kwargs = compute.RemoveHealthCheckTargetPoolRequest.to_dict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            pb_request = compute.RemoveHealthCheckTargetPoolRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             # Jsonify the request body
-            body = compute.TargetPoolsRemoveHealthCheckRequest.to_json(
-                compute.TargetPoolsRemoveHealthCheckRequest(transcoded_request["body"]),
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
                 including_default_value_fields=False,
                 use_integers_for_enums=False,
             )
@@ -1367,15 +1373,12 @@ class TargetPoolsRestTransport(TargetPoolsTransport):
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.RemoveHealthCheckTargetPoolRequest.to_json(
-                    compute.RemoveHealthCheckTargetPoolRequest(
-                        transcoded_request["query_params"]
-                    ),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -1395,9 +1398,10 @@ class TargetPoolsRestTransport(TargetPoolsTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.Operation.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.Operation()
+            pb_resp = compute.Operation.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_remove_health_check(resp)
             return resp
 
@@ -1465,12 +1469,13 @@ class TargetPoolsRestTransport(TargetPoolsTransport):
                 },
             ]
             request, metadata = self._interceptor.pre_remove_instance(request, metadata)
-            request_kwargs = compute.RemoveInstanceTargetPoolRequest.to_dict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            pb_request = compute.RemoveInstanceTargetPoolRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             # Jsonify the request body
-            body = compute.TargetPoolsRemoveInstanceRequest.to_json(
-                compute.TargetPoolsRemoveInstanceRequest(transcoded_request["body"]),
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
                 including_default_value_fields=False,
                 use_integers_for_enums=False,
             )
@@ -1479,15 +1484,12 @@ class TargetPoolsRestTransport(TargetPoolsTransport):
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.RemoveInstanceTargetPoolRequest.to_json(
-                    compute.RemoveInstanceTargetPoolRequest(
-                        transcoded_request["query_params"]
-                    ),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -1507,9 +1509,10 @@ class TargetPoolsRestTransport(TargetPoolsTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.Operation.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.Operation()
+            pb_resp = compute.Operation.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_remove_instance(resp)
             return resp
 
@@ -1577,12 +1580,13 @@ class TargetPoolsRestTransport(TargetPoolsTransport):
                 },
             ]
             request, metadata = self._interceptor.pre_set_backup(request, metadata)
-            request_kwargs = compute.SetBackupTargetPoolRequest.to_dict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            pb_request = compute.SetBackupTargetPoolRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             # Jsonify the request body
-            body = compute.TargetReference.to_json(
-                compute.TargetReference(transcoded_request["body"]),
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
                 including_default_value_fields=False,
                 use_integers_for_enums=False,
             )
@@ -1591,15 +1595,12 @@ class TargetPoolsRestTransport(TargetPoolsTransport):
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.SetBackupTargetPoolRequest.to_json(
-                    compute.SetBackupTargetPoolRequest(
-                        transcoded_request["query_params"]
-                    ),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -1619,9 +1620,10 @@ class TargetPoolsRestTransport(TargetPoolsTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.Operation.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.Operation()
+            pb_resp = compute.Operation.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_set_backup(resp)
             return resp
 

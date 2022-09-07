@@ -25,6 +25,7 @@ except ImportError:
 import grpc
 from grpc.experimental import aio
 from collections.abc import Iterable
+from google.protobuf import json_format
 import json
 import math
 import pytest
@@ -615,12 +616,12 @@ def test_bulk_insert_rest(request_type):
                         "disk_size_gb": 1261,
                         "disk_type": "disk_type_value",
                         "labels": {},
-                        "licenses": ["licenses_value_1", "licenses_value_2"],
+                        "licenses": ["licenses_value1", "licenses_value2"],
                         "on_update_action": "on_update_action_value",
                         "provisioned_iops": 1740,
                         "resource_policies": [
-                            "resource_policies_value_1",
-                            "resource_policies_value_2",
+                            "resource_policies_value1",
+                            "resource_policies_value2",
                         ],
                         "source_image": "source_image_value",
                         "source_image_encryption_key": {},
@@ -629,7 +630,7 @@ def test_bulk_insert_rest(request_type):
                     },
                     "interface": "interface_value",
                     "kind": "kind_value",
-                    "licenses": ["licenses_value_1", "licenses_value_2"],
+                    "licenses": ["licenses_value1", "licenses_value2"],
                     "mode": "mode_value",
                     "shielded_instance_initial_state": {
                         "dbs": [
@@ -701,12 +702,12 @@ def test_bulk_insert_rest(request_type):
             "reservation_affinity": {
                 "consume_reservation_type": "consume_reservation_type_value",
                 "key": "key_value",
-                "values": ["values_value_1", "values_value_2"],
+                "values": ["values_value1", "values_value2"],
             },
             "resource_manager_tags": {},
             "resource_policies": [
-                "resource_policies_value_1",
-                "resource_policies_value_2",
+                "resource_policies_value1",
+                "resource_policies_value2",
             ],
             "scheduling": {
                 "automatic_restart": True,
@@ -717,7 +718,7 @@ def test_bulk_insert_rest(request_type):
                     {
                         "key": "key_value",
                         "operator": "operator_value",
-                        "values": ["values_value_1", "values_value_2"],
+                        "values": ["values_value1", "values_value2"],
                     }
                 ],
                 "on_host_maintenance": "on_host_maintenance_value",
@@ -725,7 +726,7 @@ def test_bulk_insert_rest(request_type):
                 "provisioning_model": "provisioning_model_value",
             },
             "service_accounts": [
-                {"email": "email_value", "scopes": ["scopes_value_1", "scopes_value_2"]}
+                {"email": "email_value", "scopes": ["scopes_value1", "scopes_value2"]}
             ],
             "shielded_instance_config": {
                 "enable_integrity_monitoring": True,
@@ -734,7 +735,7 @@ def test_bulk_insert_rest(request_type):
             },
             "tags": {
                 "fingerprint": "fingerprint_value",
-                "items": ["items_value_1", "items_value_2"],
+                "items": ["items_value1", "items_value2"],
             },
         },
         "location_policy": {"locations": {}, "target_shape": "target_shape_value"},
@@ -743,7 +744,7 @@ def test_bulk_insert_rest(request_type):
         "per_instance_properties": {},
         "source_instance_template": "source_instance_template_value",
     }
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
@@ -776,7 +777,9 @@ def test_bulk_insert_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.bulk_insert(request)
@@ -815,10 +818,13 @@ def test_bulk_insert_rest_required_fields(
     request_init = {}
     request_init["project"] = ""
     request_init["region"] = ""
-    request = request_type(request_init)
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        request_type.to_json(
-            request, including_default_value_fields=False, use_integers_for_enums=False
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
     )
 
@@ -851,7 +857,7 @@ def test_bulk_insert_rest_required_fields(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
     return_value = compute.Operation()
@@ -863,17 +869,21 @@ def test_bulk_insert_rest_required_fields(
         with mock.patch.object(path_template, "transcode") as transcode:
             # A uri without fields and an empty body will force all the
             # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
             transcode_result = {
                 "uri": "v1/sample_method",
                 "method": "post",
-                "query_params": request_init,
+                "query_params": pb_request,
             }
-            transcode_result["body"] = {}
+            transcode_result["body"] = pb_request
             transcode.return_value = transcode_result
 
             response_value = Response()
             response_value.status_code = 200
-            json_return_value = compute.Operation.to_json(return_value)
+
+            pb_return_value = compute.Operation.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
 
@@ -922,12 +932,14 @@ def test_bulk_insert_rest_interceptors(null_interceptor):
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
-
+        pb_message = compute.BulkInsertRegionInstanceRequest.pb(
+            compute.BulkInsertRegionInstanceRequest()
+        )
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
-            "body": None,
-            "query_params": {},
+            "body": pb_message,
+            "query_params": pb_message,
         }
 
         req.return_value = Response()
@@ -999,12 +1011,12 @@ def test_bulk_insert_rest_bad_request(
                         "disk_size_gb": 1261,
                         "disk_type": "disk_type_value",
                         "labels": {},
-                        "licenses": ["licenses_value_1", "licenses_value_2"],
+                        "licenses": ["licenses_value1", "licenses_value2"],
                         "on_update_action": "on_update_action_value",
                         "provisioned_iops": 1740,
                         "resource_policies": [
-                            "resource_policies_value_1",
-                            "resource_policies_value_2",
+                            "resource_policies_value1",
+                            "resource_policies_value2",
                         ],
                         "source_image": "source_image_value",
                         "source_image_encryption_key": {},
@@ -1013,7 +1025,7 @@ def test_bulk_insert_rest_bad_request(
                     },
                     "interface": "interface_value",
                     "kind": "kind_value",
-                    "licenses": ["licenses_value_1", "licenses_value_2"],
+                    "licenses": ["licenses_value1", "licenses_value2"],
                     "mode": "mode_value",
                     "shielded_instance_initial_state": {
                         "dbs": [
@@ -1085,12 +1097,12 @@ def test_bulk_insert_rest_bad_request(
             "reservation_affinity": {
                 "consume_reservation_type": "consume_reservation_type_value",
                 "key": "key_value",
-                "values": ["values_value_1", "values_value_2"],
+                "values": ["values_value1", "values_value2"],
             },
             "resource_manager_tags": {},
             "resource_policies": [
-                "resource_policies_value_1",
-                "resource_policies_value_2",
+                "resource_policies_value1",
+                "resource_policies_value2",
             ],
             "scheduling": {
                 "automatic_restart": True,
@@ -1101,7 +1113,7 @@ def test_bulk_insert_rest_bad_request(
                     {
                         "key": "key_value",
                         "operator": "operator_value",
-                        "values": ["values_value_1", "values_value_2"],
+                        "values": ["values_value1", "values_value2"],
                     }
                 ],
                 "on_host_maintenance": "on_host_maintenance_value",
@@ -1109,7 +1121,7 @@ def test_bulk_insert_rest_bad_request(
                 "provisioning_model": "provisioning_model_value",
             },
             "service_accounts": [
-                {"email": "email_value", "scopes": ["scopes_value_1", "scopes_value_2"]}
+                {"email": "email_value", "scopes": ["scopes_value1", "scopes_value2"]}
             ],
             "shielded_instance_config": {
                 "enable_integrity_monitoring": True,
@@ -1118,7 +1130,7 @@ def test_bulk_insert_rest_bad_request(
             },
             "tags": {
                 "fingerprint": "fingerprint_value",
-                "items": ["items_value_1", "items_value_2"],
+                "items": ["items_value1", "items_value2"],
             },
         },
         "location_policy": {"locations": {}, "target_shape": "target_shape_value"},
@@ -1127,7 +1139,7 @@ def test_bulk_insert_rest_bad_request(
         "per_instance_properties": {},
         "source_instance_template": "source_instance_template_value",
     }
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
     with mock.patch.object(Session, "request") as req, pytest.raises(
@@ -1168,8 +1180,8 @@ def test_bulk_insert_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
-
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -1260,12 +1272,12 @@ def test_bulk_insert_unary_rest(request_type):
                         "disk_size_gb": 1261,
                         "disk_type": "disk_type_value",
                         "labels": {},
-                        "licenses": ["licenses_value_1", "licenses_value_2"],
+                        "licenses": ["licenses_value1", "licenses_value2"],
                         "on_update_action": "on_update_action_value",
                         "provisioned_iops": 1740,
                         "resource_policies": [
-                            "resource_policies_value_1",
-                            "resource_policies_value_2",
+                            "resource_policies_value1",
+                            "resource_policies_value2",
                         ],
                         "source_image": "source_image_value",
                         "source_image_encryption_key": {},
@@ -1274,7 +1286,7 @@ def test_bulk_insert_unary_rest(request_type):
                     },
                     "interface": "interface_value",
                     "kind": "kind_value",
-                    "licenses": ["licenses_value_1", "licenses_value_2"],
+                    "licenses": ["licenses_value1", "licenses_value2"],
                     "mode": "mode_value",
                     "shielded_instance_initial_state": {
                         "dbs": [
@@ -1346,12 +1358,12 @@ def test_bulk_insert_unary_rest(request_type):
             "reservation_affinity": {
                 "consume_reservation_type": "consume_reservation_type_value",
                 "key": "key_value",
-                "values": ["values_value_1", "values_value_2"],
+                "values": ["values_value1", "values_value2"],
             },
             "resource_manager_tags": {},
             "resource_policies": [
-                "resource_policies_value_1",
-                "resource_policies_value_2",
+                "resource_policies_value1",
+                "resource_policies_value2",
             ],
             "scheduling": {
                 "automatic_restart": True,
@@ -1362,7 +1374,7 @@ def test_bulk_insert_unary_rest(request_type):
                     {
                         "key": "key_value",
                         "operator": "operator_value",
-                        "values": ["values_value_1", "values_value_2"],
+                        "values": ["values_value1", "values_value2"],
                     }
                 ],
                 "on_host_maintenance": "on_host_maintenance_value",
@@ -1370,7 +1382,7 @@ def test_bulk_insert_unary_rest(request_type):
                 "provisioning_model": "provisioning_model_value",
             },
             "service_accounts": [
-                {"email": "email_value", "scopes": ["scopes_value_1", "scopes_value_2"]}
+                {"email": "email_value", "scopes": ["scopes_value1", "scopes_value2"]}
             ],
             "shielded_instance_config": {
                 "enable_integrity_monitoring": True,
@@ -1379,7 +1391,7 @@ def test_bulk_insert_unary_rest(request_type):
             },
             "tags": {
                 "fingerprint": "fingerprint_value",
-                "items": ["items_value_1", "items_value_2"],
+                "items": ["items_value1", "items_value2"],
             },
         },
         "location_policy": {"locations": {}, "target_shape": "target_shape_value"},
@@ -1388,7 +1400,7 @@ def test_bulk_insert_unary_rest(request_type):
         "per_instance_properties": {},
         "source_instance_template": "source_instance_template_value",
     }
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
@@ -1421,7 +1433,9 @@ def test_bulk_insert_unary_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.bulk_insert_unary(request)
@@ -1438,10 +1452,13 @@ def test_bulk_insert_unary_rest_required_fields(
     request_init = {}
     request_init["project"] = ""
     request_init["region"] = ""
-    request = request_type(request_init)
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        request_type.to_json(
-            request, including_default_value_fields=False, use_integers_for_enums=False
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
     )
 
@@ -1474,7 +1491,7 @@ def test_bulk_insert_unary_rest_required_fields(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
     return_value = compute.Operation()
@@ -1486,17 +1503,21 @@ def test_bulk_insert_unary_rest_required_fields(
         with mock.patch.object(path_template, "transcode") as transcode:
             # A uri without fields and an empty body will force all the
             # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
             transcode_result = {
                 "uri": "v1/sample_method",
                 "method": "post",
-                "query_params": request_init,
+                "query_params": pb_request,
             }
-            transcode_result["body"] = {}
+            transcode_result["body"] = pb_request
             transcode.return_value = transcode_result
 
             response_value = Response()
             response_value.status_code = 200
-            json_return_value = compute.Operation.to_json(return_value)
+
+            pb_return_value = compute.Operation.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
 
@@ -1545,12 +1566,14 @@ def test_bulk_insert_unary_rest_interceptors(null_interceptor):
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
-
+        pb_message = compute.BulkInsertRegionInstanceRequest.pb(
+            compute.BulkInsertRegionInstanceRequest()
+        )
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
-            "body": None,
-            "query_params": {},
+            "body": pb_message,
+            "query_params": pb_message,
         }
 
         req.return_value = Response()
@@ -1622,12 +1645,12 @@ def test_bulk_insert_unary_rest_bad_request(
                         "disk_size_gb": 1261,
                         "disk_type": "disk_type_value",
                         "labels": {},
-                        "licenses": ["licenses_value_1", "licenses_value_2"],
+                        "licenses": ["licenses_value1", "licenses_value2"],
                         "on_update_action": "on_update_action_value",
                         "provisioned_iops": 1740,
                         "resource_policies": [
-                            "resource_policies_value_1",
-                            "resource_policies_value_2",
+                            "resource_policies_value1",
+                            "resource_policies_value2",
                         ],
                         "source_image": "source_image_value",
                         "source_image_encryption_key": {},
@@ -1636,7 +1659,7 @@ def test_bulk_insert_unary_rest_bad_request(
                     },
                     "interface": "interface_value",
                     "kind": "kind_value",
-                    "licenses": ["licenses_value_1", "licenses_value_2"],
+                    "licenses": ["licenses_value1", "licenses_value2"],
                     "mode": "mode_value",
                     "shielded_instance_initial_state": {
                         "dbs": [
@@ -1708,12 +1731,12 @@ def test_bulk_insert_unary_rest_bad_request(
             "reservation_affinity": {
                 "consume_reservation_type": "consume_reservation_type_value",
                 "key": "key_value",
-                "values": ["values_value_1", "values_value_2"],
+                "values": ["values_value1", "values_value2"],
             },
             "resource_manager_tags": {},
             "resource_policies": [
-                "resource_policies_value_1",
-                "resource_policies_value_2",
+                "resource_policies_value1",
+                "resource_policies_value2",
             ],
             "scheduling": {
                 "automatic_restart": True,
@@ -1724,7 +1747,7 @@ def test_bulk_insert_unary_rest_bad_request(
                     {
                         "key": "key_value",
                         "operator": "operator_value",
-                        "values": ["values_value_1", "values_value_2"],
+                        "values": ["values_value1", "values_value2"],
                     }
                 ],
                 "on_host_maintenance": "on_host_maintenance_value",
@@ -1732,7 +1755,7 @@ def test_bulk_insert_unary_rest_bad_request(
                 "provisioning_model": "provisioning_model_value",
             },
             "service_accounts": [
-                {"email": "email_value", "scopes": ["scopes_value_1", "scopes_value_2"]}
+                {"email": "email_value", "scopes": ["scopes_value1", "scopes_value2"]}
             ],
             "shielded_instance_config": {
                 "enable_integrity_monitoring": True,
@@ -1741,7 +1764,7 @@ def test_bulk_insert_unary_rest_bad_request(
             },
             "tags": {
                 "fingerprint": "fingerprint_value",
-                "items": ["items_value_1", "items_value_2"],
+                "items": ["items_value1", "items_value2"],
             },
         },
         "location_policy": {"locations": {}, "target_shape": "target_shape_value"},
@@ -1750,7 +1773,7 @@ def test_bulk_insert_unary_rest_bad_request(
         "per_instance_properties": {},
         "source_instance_template": "source_instance_template_value",
     }
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
     with mock.patch.object(Session, "request") as req, pytest.raises(
@@ -1791,8 +1814,8 @@ def test_bulk_insert_unary_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
-
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 

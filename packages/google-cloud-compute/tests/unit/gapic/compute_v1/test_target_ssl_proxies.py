@@ -25,6 +25,7 @@ except ImportError:
 import grpc
 from grpc.experimental import aio
 from collections.abc import Iterable
+from google.protobuf import json_format
 import json
 import math
 import pytest
@@ -588,7 +589,7 @@ def test_delete_rest(request_type):
 
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "target_ssl_proxy": "sample2"}
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
@@ -621,7 +622,9 @@ def test_delete_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.delete(request)
@@ -658,10 +661,13 @@ def test_delete_rest_required_fields(request_type=compute.DeleteTargetSslProxyRe
     request_init = {}
     request_init["project"] = ""
     request_init["target_ssl_proxy"] = ""
-    request = request_type(request_init)
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        request_type.to_json(
-            request, including_default_value_fields=False, use_integers_for_enums=False
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
     )
 
@@ -694,7 +700,7 @@ def test_delete_rest_required_fields(request_type=compute.DeleteTargetSslProxyRe
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
     return_value = compute.Operation()
@@ -706,16 +712,20 @@ def test_delete_rest_required_fields(request_type=compute.DeleteTargetSslProxyRe
         with mock.patch.object(path_template, "transcode") as transcode:
             # A uri without fields and an empty body will force all the
             # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
             transcode_result = {
                 "uri": "v1/sample_method",
                 "method": "delete",
-                "query_params": request_init,
+                "query_params": pb_request,
             }
             transcode.return_value = transcode_result
 
             response_value = Response()
             response_value.status_code = 200
-            json_return_value = compute.Operation.to_json(return_value)
+
+            pb_return_value = compute.Operation.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
 
@@ -763,12 +773,14 @@ def test_delete_rest_interceptors(null_interceptor):
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
-
+        pb_message = compute.DeleteTargetSslProxyRequest.pb(
+            compute.DeleteTargetSslProxyRequest()
+        )
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
-            "body": None,
-            "query_params": {},
+            "body": pb_message,
+            "query_params": pb_message,
         }
 
         req.return_value = Response()
@@ -806,7 +818,7 @@ def test_delete_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "target_ssl_proxy": "sample2"}
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
     with mock.patch.object(Session, "request") as req, pytest.raises(
@@ -844,8 +856,8 @@ def test_delete_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
-
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -899,7 +911,7 @@ def test_delete_unary_rest(request_type):
 
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "target_ssl_proxy": "sample2"}
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
@@ -932,7 +944,9 @@ def test_delete_unary_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.delete_unary(request)
@@ -949,10 +963,13 @@ def test_delete_unary_rest_required_fields(
     request_init = {}
     request_init["project"] = ""
     request_init["target_ssl_proxy"] = ""
-    request = request_type(request_init)
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        request_type.to_json(
-            request, including_default_value_fields=False, use_integers_for_enums=False
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
     )
 
@@ -985,7 +1002,7 @@ def test_delete_unary_rest_required_fields(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
     return_value = compute.Operation()
@@ -997,16 +1014,20 @@ def test_delete_unary_rest_required_fields(
         with mock.patch.object(path_template, "transcode") as transcode:
             # A uri without fields and an empty body will force all the
             # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
             transcode_result = {
                 "uri": "v1/sample_method",
                 "method": "delete",
-                "query_params": request_init,
+                "query_params": pb_request,
             }
             transcode.return_value = transcode_result
 
             response_value = Response()
             response_value.status_code = 200
-            json_return_value = compute.Operation.to_json(return_value)
+
+            pb_return_value = compute.Operation.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
 
@@ -1054,12 +1075,14 @@ def test_delete_unary_rest_interceptors(null_interceptor):
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
-
+        pb_message = compute.DeleteTargetSslProxyRequest.pb(
+            compute.DeleteTargetSslProxyRequest()
+        )
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
-            "body": None,
-            "query_params": {},
+            "body": pb_message,
+            "query_params": pb_message,
         }
 
         req.return_value = Response()
@@ -1097,7 +1120,7 @@ def test_delete_unary_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "target_ssl_proxy": "sample2"}
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
     with mock.patch.object(Session, "request") as req, pytest.raises(
@@ -1135,8 +1158,8 @@ def test_delete_unary_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
-
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -1190,7 +1213,7 @@ def test_get_rest(request_type):
 
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "target_ssl_proxy": "sample2"}
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
@@ -1212,7 +1235,9 @@ def test_get_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.TargetSslProxy.to_json(return_value)
+        pb_return_value = compute.TargetSslProxy.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.get(request)
@@ -1238,10 +1263,13 @@ def test_get_rest_required_fields(request_type=compute.GetTargetSslProxyRequest)
     request_init = {}
     request_init["project"] = ""
     request_init["target_ssl_proxy"] = ""
-    request = request_type(request_init)
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        request_type.to_json(
-            request, including_default_value_fields=False, use_integers_for_enums=False
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
     )
 
@@ -1272,7 +1300,7 @@ def test_get_rest_required_fields(request_type=compute.GetTargetSslProxyRequest)
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
     return_value = compute.TargetSslProxy()
@@ -1284,16 +1312,20 @@ def test_get_rest_required_fields(request_type=compute.GetTargetSslProxyRequest)
         with mock.patch.object(path_template, "transcode") as transcode:
             # A uri without fields and an empty body will force all the
             # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
             transcode_result = {
                 "uri": "v1/sample_method",
                 "method": "get",
-                "query_params": request_init,
+                "query_params": pb_request,
             }
             transcode.return_value = transcode_result
 
             response_value = Response()
             response_value.status_code = 200
-            json_return_value = compute.TargetSslProxy.to_json(return_value)
+
+            pb_return_value = compute.TargetSslProxy.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
 
@@ -1341,12 +1373,14 @@ def test_get_rest_interceptors(null_interceptor):
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
-
+        pb_message = compute.GetTargetSslProxyRequest.pb(
+            compute.GetTargetSslProxyRequest()
+        )
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
-            "body": None,
-            "query_params": {},
+            "body": pb_message,
+            "query_params": pb_message,
         }
 
         req.return_value = Response()
@@ -1386,7 +1420,7 @@ def test_get_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "target_ssl_proxy": "sample2"}
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
     with mock.patch.object(Session, "request") as req, pytest.raises(
@@ -1424,8 +1458,8 @@ def test_get_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.TargetSslProxy.to_json(return_value)
-
+        pb_return_value = compute.TargetSslProxy.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -1489,10 +1523,10 @@ def test_insert_rest(request_type):
         "proxy_header": "proxy_header_value",
         "self_link": "self_link_value",
         "service": "service_value",
-        "ssl_certificates": ["ssl_certificates_value_1", "ssl_certificates_value_2"],
+        "ssl_certificates": ["ssl_certificates_value1", "ssl_certificates_value2"],
         "ssl_policy": "ssl_policy_value",
     }
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
@@ -1525,7 +1559,9 @@ def test_insert_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.insert(request)
@@ -1561,10 +1597,13 @@ def test_insert_rest_required_fields(request_type=compute.InsertTargetSslProxyRe
 
     request_init = {}
     request_init["project"] = ""
-    request = request_type(request_init)
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        request_type.to_json(
-            request, including_default_value_fields=False, use_integers_for_enums=False
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
     )
 
@@ -1594,7 +1633,7 @@ def test_insert_rest_required_fields(request_type=compute.InsertTargetSslProxyRe
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
     return_value = compute.Operation()
@@ -1606,17 +1645,21 @@ def test_insert_rest_required_fields(request_type=compute.InsertTargetSslProxyRe
         with mock.patch.object(path_template, "transcode") as transcode:
             # A uri without fields and an empty body will force all the
             # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
             transcode_result = {
                 "uri": "v1/sample_method",
                 "method": "post",
-                "query_params": request_init,
+                "query_params": pb_request,
             }
-            transcode_result["body"] = {}
+            transcode_result["body"] = pb_request
             transcode.return_value = transcode_result
 
             response_value = Response()
             response_value.status_code = 200
-            json_return_value = compute.Operation.to_json(return_value)
+
+            pb_return_value = compute.Operation.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
 
@@ -1664,12 +1707,14 @@ def test_insert_rest_interceptors(null_interceptor):
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
-
+        pb_message = compute.InsertTargetSslProxyRequest.pb(
+            compute.InsertTargetSslProxyRequest()
+        )
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
-            "body": None,
-            "query_params": {},
+            "body": pb_message,
+            "query_params": pb_message,
         }
 
         req.return_value = Response()
@@ -1717,10 +1762,10 @@ def test_insert_rest_bad_request(
         "proxy_header": "proxy_header_value",
         "self_link": "self_link_value",
         "service": "service_value",
-        "ssl_certificates": ["ssl_certificates_value_1", "ssl_certificates_value_2"],
+        "ssl_certificates": ["ssl_certificates_value1", "ssl_certificates_value2"],
         "ssl_policy": "ssl_policy_value",
     }
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
     with mock.patch.object(Session, "request") as req, pytest.raises(
@@ -1760,8 +1805,8 @@ def test_insert_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
-
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -1827,10 +1872,10 @@ def test_insert_unary_rest(request_type):
         "proxy_header": "proxy_header_value",
         "self_link": "self_link_value",
         "service": "service_value",
-        "ssl_certificates": ["ssl_certificates_value_1", "ssl_certificates_value_2"],
+        "ssl_certificates": ["ssl_certificates_value1", "ssl_certificates_value2"],
         "ssl_policy": "ssl_policy_value",
     }
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
@@ -1863,7 +1908,9 @@ def test_insert_unary_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.insert_unary(request)
@@ -1879,10 +1926,13 @@ def test_insert_unary_rest_required_fields(
 
     request_init = {}
     request_init["project"] = ""
-    request = request_type(request_init)
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        request_type.to_json(
-            request, including_default_value_fields=False, use_integers_for_enums=False
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
     )
 
@@ -1912,7 +1962,7 @@ def test_insert_unary_rest_required_fields(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
     return_value = compute.Operation()
@@ -1924,17 +1974,21 @@ def test_insert_unary_rest_required_fields(
         with mock.patch.object(path_template, "transcode") as transcode:
             # A uri without fields and an empty body will force all the
             # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
             transcode_result = {
                 "uri": "v1/sample_method",
                 "method": "post",
-                "query_params": request_init,
+                "query_params": pb_request,
             }
-            transcode_result["body"] = {}
+            transcode_result["body"] = pb_request
             transcode.return_value = transcode_result
 
             response_value = Response()
             response_value.status_code = 200
-            json_return_value = compute.Operation.to_json(return_value)
+
+            pb_return_value = compute.Operation.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
 
@@ -1982,12 +2036,14 @@ def test_insert_unary_rest_interceptors(null_interceptor):
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
-
+        pb_message = compute.InsertTargetSslProxyRequest.pb(
+            compute.InsertTargetSslProxyRequest()
+        )
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
-            "body": None,
-            "query_params": {},
+            "body": pb_message,
+            "query_params": pb_message,
         }
 
         req.return_value = Response()
@@ -2035,10 +2091,10 @@ def test_insert_unary_rest_bad_request(
         "proxy_header": "proxy_header_value",
         "self_link": "self_link_value",
         "service": "service_value",
-        "ssl_certificates": ["ssl_certificates_value_1", "ssl_certificates_value_2"],
+        "ssl_certificates": ["ssl_certificates_value1", "ssl_certificates_value2"],
         "ssl_policy": "ssl_policy_value",
     }
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
     with mock.patch.object(Session, "request") as req, pytest.raises(
@@ -2078,8 +2134,8 @@ def test_insert_unary_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
-
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -2135,7 +2191,7 @@ def test_list_rest(request_type):
 
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1"}
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
@@ -2150,7 +2206,9 @@ def test_list_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.TargetSslProxyList.to_json(return_value)
+        pb_return_value = compute.TargetSslProxyList.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.list(request)
@@ -2168,10 +2226,13 @@ def test_list_rest_required_fields(request_type=compute.ListTargetSslProxiesRequ
 
     request_init = {}
     request_init["project"] = ""
-    request = request_type(request_init)
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        request_type.to_json(
-            request, including_default_value_fields=False, use_integers_for_enums=False
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
     )
 
@@ -2209,7 +2270,7 @@ def test_list_rest_required_fields(request_type=compute.ListTargetSslProxiesRequ
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
     return_value = compute.TargetSslProxyList()
@@ -2221,16 +2282,20 @@ def test_list_rest_required_fields(request_type=compute.ListTargetSslProxiesRequ
         with mock.patch.object(path_template, "transcode") as transcode:
             # A uri without fields and an empty body will force all the
             # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
             transcode_result = {
                 "uri": "v1/sample_method",
                 "method": "get",
-                "query_params": request_init,
+                "query_params": pb_request,
             }
             transcode.return_value = transcode_result
 
             response_value = Response()
             response_value.status_code = 200
-            json_return_value = compute.TargetSslProxyList.to_json(return_value)
+
+            pb_return_value = compute.TargetSslProxyList.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
 
@@ -2281,12 +2346,14 @@ def test_list_rest_interceptors(null_interceptor):
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
-
+        pb_message = compute.ListTargetSslProxiesRequest.pb(
+            compute.ListTargetSslProxiesRequest()
+        )
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
-            "body": None,
-            "query_params": {},
+            "body": pb_message,
+            "query_params": pb_message,
         }
 
         req.return_value = Response()
@@ -2326,7 +2393,7 @@ def test_list_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1"}
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
     with mock.patch.object(Session, "request") as req, pytest.raises(
@@ -2363,8 +2430,8 @@ def test_list_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.TargetSslProxyList.to_json(return_value)
-
+        pb_return_value = compute.TargetSslProxyList.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -2475,7 +2542,7 @@ def test_set_backend_service_rest(request_type):
     request_init["target_ssl_proxies_set_backend_service_request_resource"] = {
         "service": "service_value"
     }
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
@@ -2508,7 +2575,9 @@ def test_set_backend_service_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.set_backend_service(request)
@@ -2547,10 +2616,13 @@ def test_set_backend_service_rest_required_fields(
     request_init = {}
     request_init["project"] = ""
     request_init["target_ssl_proxy"] = ""
-    request = request_type(request_init)
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        request_type.to_json(
-            request, including_default_value_fields=False, use_integers_for_enums=False
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
     )
 
@@ -2583,7 +2655,7 @@ def test_set_backend_service_rest_required_fields(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
     return_value = compute.Operation()
@@ -2595,17 +2667,21 @@ def test_set_backend_service_rest_required_fields(
         with mock.patch.object(path_template, "transcode") as transcode:
             # A uri without fields and an empty body will force all the
             # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
             transcode_result = {
                 "uri": "v1/sample_method",
                 "method": "post",
-                "query_params": request_init,
+                "query_params": pb_request,
             }
-            transcode_result["body"] = {}
+            transcode_result["body"] = pb_request
             transcode.return_value = transcode_result
 
             response_value = Response()
             response_value.status_code = 200
-            json_return_value = compute.Operation.to_json(return_value)
+
+            pb_return_value = compute.Operation.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
 
@@ -2654,12 +2730,14 @@ def test_set_backend_service_rest_interceptors(null_interceptor):
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
-
+        pb_message = compute.SetBackendServiceTargetSslProxyRequest.pb(
+            compute.SetBackendServiceTargetSslProxyRequest()
+        )
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
-            "body": None,
-            "query_params": {},
+            "body": pb_message,
+            "query_params": pb_message,
         }
 
         req.return_value = Response()
@@ -2700,7 +2778,7 @@ def test_set_backend_service_rest_bad_request(
     request_init["target_ssl_proxies_set_backend_service_request_resource"] = {
         "service": "service_value"
     }
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
     with mock.patch.object(Session, "request") as req, pytest.raises(
@@ -2741,8 +2819,8 @@ def test_set_backend_service_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
-
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -2802,7 +2880,7 @@ def test_set_backend_service_unary_rest(request_type):
     request_init["target_ssl_proxies_set_backend_service_request_resource"] = {
         "service": "service_value"
     }
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
@@ -2835,7 +2913,9 @@ def test_set_backend_service_unary_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.set_backend_service_unary(request)
@@ -2852,10 +2932,13 @@ def test_set_backend_service_unary_rest_required_fields(
     request_init = {}
     request_init["project"] = ""
     request_init["target_ssl_proxy"] = ""
-    request = request_type(request_init)
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        request_type.to_json(
-            request, including_default_value_fields=False, use_integers_for_enums=False
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
     )
 
@@ -2888,7 +2971,7 @@ def test_set_backend_service_unary_rest_required_fields(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
     return_value = compute.Operation()
@@ -2900,17 +2983,21 @@ def test_set_backend_service_unary_rest_required_fields(
         with mock.patch.object(path_template, "transcode") as transcode:
             # A uri without fields and an empty body will force all the
             # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
             transcode_result = {
                 "uri": "v1/sample_method",
                 "method": "post",
-                "query_params": request_init,
+                "query_params": pb_request,
             }
-            transcode_result["body"] = {}
+            transcode_result["body"] = pb_request
             transcode.return_value = transcode_result
 
             response_value = Response()
             response_value.status_code = 200
-            json_return_value = compute.Operation.to_json(return_value)
+
+            pb_return_value = compute.Operation.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
 
@@ -2959,12 +3046,14 @@ def test_set_backend_service_unary_rest_interceptors(null_interceptor):
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
-
+        pb_message = compute.SetBackendServiceTargetSslProxyRequest.pb(
+            compute.SetBackendServiceTargetSslProxyRequest()
+        )
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
-            "body": None,
-            "query_params": {},
+            "body": pb_message,
+            "query_params": pb_message,
         }
 
         req.return_value = Response()
@@ -3005,7 +3094,7 @@ def test_set_backend_service_unary_rest_bad_request(
     request_init["target_ssl_proxies_set_backend_service_request_resource"] = {
         "service": "service_value"
     }
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
     with mock.patch.object(Session, "request") as req, pytest.raises(
@@ -3046,8 +3135,8 @@ def test_set_backend_service_unary_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
-
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -3107,7 +3196,7 @@ def test_set_certificate_map_rest(request_type):
     request_init["target_ssl_proxies_set_certificate_map_request_resource"] = {
         "certificate_map": "certificate_map_value"
     }
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
@@ -3140,7 +3229,9 @@ def test_set_certificate_map_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.set_certificate_map(request)
@@ -3179,10 +3270,13 @@ def test_set_certificate_map_rest_required_fields(
     request_init = {}
     request_init["project"] = ""
     request_init["target_ssl_proxy"] = ""
-    request = request_type(request_init)
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        request_type.to_json(
-            request, including_default_value_fields=False, use_integers_for_enums=False
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
     )
 
@@ -3215,7 +3309,7 @@ def test_set_certificate_map_rest_required_fields(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
     return_value = compute.Operation()
@@ -3227,17 +3321,21 @@ def test_set_certificate_map_rest_required_fields(
         with mock.patch.object(path_template, "transcode") as transcode:
             # A uri without fields and an empty body will force all the
             # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
             transcode_result = {
                 "uri": "v1/sample_method",
                 "method": "post",
-                "query_params": request_init,
+                "query_params": pb_request,
             }
-            transcode_result["body"] = {}
+            transcode_result["body"] = pb_request
             transcode.return_value = transcode_result
 
             response_value = Response()
             response_value.status_code = 200
-            json_return_value = compute.Operation.to_json(return_value)
+
+            pb_return_value = compute.Operation.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
 
@@ -3286,12 +3384,14 @@ def test_set_certificate_map_rest_interceptors(null_interceptor):
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
-
+        pb_message = compute.SetCertificateMapTargetSslProxyRequest.pb(
+            compute.SetCertificateMapTargetSslProxyRequest()
+        )
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
-            "body": None,
-            "query_params": {},
+            "body": pb_message,
+            "query_params": pb_message,
         }
 
         req.return_value = Response()
@@ -3332,7 +3432,7 @@ def test_set_certificate_map_rest_bad_request(
     request_init["target_ssl_proxies_set_certificate_map_request_resource"] = {
         "certificate_map": "certificate_map_value"
     }
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
     with mock.patch.object(Session, "request") as req, pytest.raises(
@@ -3373,8 +3473,8 @@ def test_set_certificate_map_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
-
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -3434,7 +3534,7 @@ def test_set_certificate_map_unary_rest(request_type):
     request_init["target_ssl_proxies_set_certificate_map_request_resource"] = {
         "certificate_map": "certificate_map_value"
     }
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
@@ -3467,7 +3567,9 @@ def test_set_certificate_map_unary_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.set_certificate_map_unary(request)
@@ -3484,10 +3586,13 @@ def test_set_certificate_map_unary_rest_required_fields(
     request_init = {}
     request_init["project"] = ""
     request_init["target_ssl_proxy"] = ""
-    request = request_type(request_init)
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        request_type.to_json(
-            request, including_default_value_fields=False, use_integers_for_enums=False
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
     )
 
@@ -3520,7 +3625,7 @@ def test_set_certificate_map_unary_rest_required_fields(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
     return_value = compute.Operation()
@@ -3532,17 +3637,21 @@ def test_set_certificate_map_unary_rest_required_fields(
         with mock.patch.object(path_template, "transcode") as transcode:
             # A uri without fields and an empty body will force all the
             # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
             transcode_result = {
                 "uri": "v1/sample_method",
                 "method": "post",
-                "query_params": request_init,
+                "query_params": pb_request,
             }
-            transcode_result["body"] = {}
+            transcode_result["body"] = pb_request
             transcode.return_value = transcode_result
 
             response_value = Response()
             response_value.status_code = 200
-            json_return_value = compute.Operation.to_json(return_value)
+
+            pb_return_value = compute.Operation.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
 
@@ -3591,12 +3700,14 @@ def test_set_certificate_map_unary_rest_interceptors(null_interceptor):
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
-
+        pb_message = compute.SetCertificateMapTargetSslProxyRequest.pb(
+            compute.SetCertificateMapTargetSslProxyRequest()
+        )
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
-            "body": None,
-            "query_params": {},
+            "body": pb_message,
+            "query_params": pb_message,
         }
 
         req.return_value = Response()
@@ -3637,7 +3748,7 @@ def test_set_certificate_map_unary_rest_bad_request(
     request_init["target_ssl_proxies_set_certificate_map_request_resource"] = {
         "certificate_map": "certificate_map_value"
     }
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
     with mock.patch.object(Session, "request") as req, pytest.raises(
@@ -3678,8 +3789,8 @@ def test_set_certificate_map_unary_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
-
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -3739,7 +3850,7 @@ def test_set_proxy_header_rest(request_type):
     request_init["target_ssl_proxies_set_proxy_header_request_resource"] = {
         "proxy_header": "proxy_header_value"
     }
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
@@ -3772,7 +3883,9 @@ def test_set_proxy_header_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.set_proxy_header(request)
@@ -3811,10 +3924,13 @@ def test_set_proxy_header_rest_required_fields(
     request_init = {}
     request_init["project"] = ""
     request_init["target_ssl_proxy"] = ""
-    request = request_type(request_init)
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        request_type.to_json(
-            request, including_default_value_fields=False, use_integers_for_enums=False
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
     )
 
@@ -3847,7 +3963,7 @@ def test_set_proxy_header_rest_required_fields(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
     return_value = compute.Operation()
@@ -3859,17 +3975,21 @@ def test_set_proxy_header_rest_required_fields(
         with mock.patch.object(path_template, "transcode") as transcode:
             # A uri without fields and an empty body will force all the
             # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
             transcode_result = {
                 "uri": "v1/sample_method",
                 "method": "post",
-                "query_params": request_init,
+                "query_params": pb_request,
             }
-            transcode_result["body"] = {}
+            transcode_result["body"] = pb_request
             transcode.return_value = transcode_result
 
             response_value = Response()
             response_value.status_code = 200
-            json_return_value = compute.Operation.to_json(return_value)
+
+            pb_return_value = compute.Operation.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
 
@@ -3918,12 +4038,14 @@ def test_set_proxy_header_rest_interceptors(null_interceptor):
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
-
+        pb_message = compute.SetProxyHeaderTargetSslProxyRequest.pb(
+            compute.SetProxyHeaderTargetSslProxyRequest()
+        )
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
-            "body": None,
-            "query_params": {},
+            "body": pb_message,
+            "query_params": pb_message,
         }
 
         req.return_value = Response()
@@ -3964,7 +4086,7 @@ def test_set_proxy_header_rest_bad_request(
     request_init["target_ssl_proxies_set_proxy_header_request_resource"] = {
         "proxy_header": "proxy_header_value"
     }
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
     with mock.patch.object(Session, "request") as req, pytest.raises(
@@ -4005,8 +4127,8 @@ def test_set_proxy_header_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
-
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -4066,7 +4188,7 @@ def test_set_proxy_header_unary_rest(request_type):
     request_init["target_ssl_proxies_set_proxy_header_request_resource"] = {
         "proxy_header": "proxy_header_value"
     }
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
@@ -4099,7 +4221,9 @@ def test_set_proxy_header_unary_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.set_proxy_header_unary(request)
@@ -4116,10 +4240,13 @@ def test_set_proxy_header_unary_rest_required_fields(
     request_init = {}
     request_init["project"] = ""
     request_init["target_ssl_proxy"] = ""
-    request = request_type(request_init)
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        request_type.to_json(
-            request, including_default_value_fields=False, use_integers_for_enums=False
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
     )
 
@@ -4152,7 +4279,7 @@ def test_set_proxy_header_unary_rest_required_fields(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
     return_value = compute.Operation()
@@ -4164,17 +4291,21 @@ def test_set_proxy_header_unary_rest_required_fields(
         with mock.patch.object(path_template, "transcode") as transcode:
             # A uri without fields and an empty body will force all the
             # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
             transcode_result = {
                 "uri": "v1/sample_method",
                 "method": "post",
-                "query_params": request_init,
+                "query_params": pb_request,
             }
-            transcode_result["body"] = {}
+            transcode_result["body"] = pb_request
             transcode.return_value = transcode_result
 
             response_value = Response()
             response_value.status_code = 200
-            json_return_value = compute.Operation.to_json(return_value)
+
+            pb_return_value = compute.Operation.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
 
@@ -4223,12 +4354,14 @@ def test_set_proxy_header_unary_rest_interceptors(null_interceptor):
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
-
+        pb_message = compute.SetProxyHeaderTargetSslProxyRequest.pb(
+            compute.SetProxyHeaderTargetSslProxyRequest()
+        )
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
-            "body": None,
-            "query_params": {},
+            "body": pb_message,
+            "query_params": pb_message,
         }
 
         req.return_value = Response()
@@ -4269,7 +4402,7 @@ def test_set_proxy_header_unary_rest_bad_request(
     request_init["target_ssl_proxies_set_proxy_header_request_resource"] = {
         "proxy_header": "proxy_header_value"
     }
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
     with mock.patch.object(Session, "request") as req, pytest.raises(
@@ -4310,8 +4443,8 @@ def test_set_proxy_header_unary_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
-
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -4369,9 +4502,9 @@ def test_set_ssl_certificates_rest(request_type):
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "target_ssl_proxy": "sample2"}
     request_init["target_ssl_proxies_set_ssl_certificates_request_resource"] = {
-        "ssl_certificates": ["ssl_certificates_value_1", "ssl_certificates_value_2"]
+        "ssl_certificates": ["ssl_certificates_value1", "ssl_certificates_value2"]
     }
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
@@ -4404,7 +4537,9 @@ def test_set_ssl_certificates_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.set_ssl_certificates(request)
@@ -4443,10 +4578,13 @@ def test_set_ssl_certificates_rest_required_fields(
     request_init = {}
     request_init["project"] = ""
     request_init["target_ssl_proxy"] = ""
-    request = request_type(request_init)
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        request_type.to_json(
-            request, including_default_value_fields=False, use_integers_for_enums=False
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
     )
 
@@ -4479,7 +4617,7 @@ def test_set_ssl_certificates_rest_required_fields(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
     return_value = compute.Operation()
@@ -4491,17 +4629,21 @@ def test_set_ssl_certificates_rest_required_fields(
         with mock.patch.object(path_template, "transcode") as transcode:
             # A uri without fields and an empty body will force all the
             # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
             transcode_result = {
                 "uri": "v1/sample_method",
                 "method": "post",
-                "query_params": request_init,
+                "query_params": pb_request,
             }
-            transcode_result["body"] = {}
+            transcode_result["body"] = pb_request
             transcode.return_value = transcode_result
 
             response_value = Response()
             response_value.status_code = 200
-            json_return_value = compute.Operation.to_json(return_value)
+
+            pb_return_value = compute.Operation.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
 
@@ -4550,12 +4692,14 @@ def test_set_ssl_certificates_rest_interceptors(null_interceptor):
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
-
+        pb_message = compute.SetSslCertificatesTargetSslProxyRequest.pb(
+            compute.SetSslCertificatesTargetSslProxyRequest()
+        )
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
-            "body": None,
-            "query_params": {},
+            "body": pb_message,
+            "query_params": pb_message,
         }
 
         req.return_value = Response()
@@ -4595,9 +4739,9 @@ def test_set_ssl_certificates_rest_bad_request(
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "target_ssl_proxy": "sample2"}
     request_init["target_ssl_proxies_set_ssl_certificates_request_resource"] = {
-        "ssl_certificates": ["ssl_certificates_value_1", "ssl_certificates_value_2"]
+        "ssl_certificates": ["ssl_certificates_value1", "ssl_certificates_value2"]
     }
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
     with mock.patch.object(Session, "request") as req, pytest.raises(
@@ -4638,8 +4782,8 @@ def test_set_ssl_certificates_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
-
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -4697,9 +4841,9 @@ def test_set_ssl_certificates_unary_rest(request_type):
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "target_ssl_proxy": "sample2"}
     request_init["target_ssl_proxies_set_ssl_certificates_request_resource"] = {
-        "ssl_certificates": ["ssl_certificates_value_1", "ssl_certificates_value_2"]
+        "ssl_certificates": ["ssl_certificates_value1", "ssl_certificates_value2"]
     }
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
@@ -4732,7 +4876,9 @@ def test_set_ssl_certificates_unary_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.set_ssl_certificates_unary(request)
@@ -4749,10 +4895,13 @@ def test_set_ssl_certificates_unary_rest_required_fields(
     request_init = {}
     request_init["project"] = ""
     request_init["target_ssl_proxy"] = ""
-    request = request_type(request_init)
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        request_type.to_json(
-            request, including_default_value_fields=False, use_integers_for_enums=False
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
     )
 
@@ -4785,7 +4934,7 @@ def test_set_ssl_certificates_unary_rest_required_fields(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
     return_value = compute.Operation()
@@ -4797,17 +4946,21 @@ def test_set_ssl_certificates_unary_rest_required_fields(
         with mock.patch.object(path_template, "transcode") as transcode:
             # A uri without fields and an empty body will force all the
             # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
             transcode_result = {
                 "uri": "v1/sample_method",
                 "method": "post",
-                "query_params": request_init,
+                "query_params": pb_request,
             }
-            transcode_result["body"] = {}
+            transcode_result["body"] = pb_request
             transcode.return_value = transcode_result
 
             response_value = Response()
             response_value.status_code = 200
-            json_return_value = compute.Operation.to_json(return_value)
+
+            pb_return_value = compute.Operation.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
 
@@ -4856,12 +5009,14 @@ def test_set_ssl_certificates_unary_rest_interceptors(null_interceptor):
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
-
+        pb_message = compute.SetSslCertificatesTargetSslProxyRequest.pb(
+            compute.SetSslCertificatesTargetSslProxyRequest()
+        )
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
-            "body": None,
-            "query_params": {},
+            "body": pb_message,
+            "query_params": pb_message,
         }
 
         req.return_value = Response()
@@ -4901,9 +5056,9 @@ def test_set_ssl_certificates_unary_rest_bad_request(
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "target_ssl_proxy": "sample2"}
     request_init["target_ssl_proxies_set_ssl_certificates_request_resource"] = {
-        "ssl_certificates": ["ssl_certificates_value_1", "ssl_certificates_value_2"]
+        "ssl_certificates": ["ssl_certificates_value1", "ssl_certificates_value2"]
     }
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
     with mock.patch.object(Session, "request") as req, pytest.raises(
@@ -4944,8 +5099,8 @@ def test_set_ssl_certificates_unary_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
-
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -5003,7 +5158,7 @@ def test_set_ssl_policy_rest(request_type):
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "target_ssl_proxy": "sample2"}
     request_init["ssl_policy_reference_resource"] = {"ssl_policy": "ssl_policy_value"}
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
@@ -5036,7 +5191,9 @@ def test_set_ssl_policy_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.set_ssl_policy(request)
@@ -5075,10 +5232,13 @@ def test_set_ssl_policy_rest_required_fields(
     request_init = {}
     request_init["project"] = ""
     request_init["target_ssl_proxy"] = ""
-    request = request_type(request_init)
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        request_type.to_json(
-            request, including_default_value_fields=False, use_integers_for_enums=False
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
     )
 
@@ -5111,7 +5271,7 @@ def test_set_ssl_policy_rest_required_fields(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
     return_value = compute.Operation()
@@ -5123,17 +5283,21 @@ def test_set_ssl_policy_rest_required_fields(
         with mock.patch.object(path_template, "transcode") as transcode:
             # A uri without fields and an empty body will force all the
             # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
             transcode_result = {
                 "uri": "v1/sample_method",
                 "method": "post",
-                "query_params": request_init,
+                "query_params": pb_request,
             }
-            transcode_result["body"] = {}
+            transcode_result["body"] = pb_request
             transcode.return_value = transcode_result
 
             response_value = Response()
             response_value.status_code = 200
-            json_return_value = compute.Operation.to_json(return_value)
+
+            pb_return_value = compute.Operation.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
 
@@ -5182,12 +5346,14 @@ def test_set_ssl_policy_rest_interceptors(null_interceptor):
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
-
+        pb_message = compute.SetSslPolicyTargetSslProxyRequest.pb(
+            compute.SetSslPolicyTargetSslProxyRequest()
+        )
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
-            "body": None,
-            "query_params": {},
+            "body": pb_message,
+            "query_params": pb_message,
         }
 
         req.return_value = Response()
@@ -5226,7 +5392,7 @@ def test_set_ssl_policy_rest_bad_request(
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "target_ssl_proxy": "sample2"}
     request_init["ssl_policy_reference_resource"] = {"ssl_policy": "ssl_policy_value"}
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
     with mock.patch.object(Session, "request") as req, pytest.raises(
@@ -5267,8 +5433,8 @@ def test_set_ssl_policy_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
-
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -5326,7 +5492,7 @@ def test_set_ssl_policy_unary_rest(request_type):
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "target_ssl_proxy": "sample2"}
     request_init["ssl_policy_reference_resource"] = {"ssl_policy": "ssl_policy_value"}
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
@@ -5359,7 +5525,9 @@ def test_set_ssl_policy_unary_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.set_ssl_policy_unary(request)
@@ -5376,10 +5544,13 @@ def test_set_ssl_policy_unary_rest_required_fields(
     request_init = {}
     request_init["project"] = ""
     request_init["target_ssl_proxy"] = ""
-    request = request_type(request_init)
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        request_type.to_json(
-            request, including_default_value_fields=False, use_integers_for_enums=False
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
     )
 
@@ -5412,7 +5583,7 @@ def test_set_ssl_policy_unary_rest_required_fields(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
     return_value = compute.Operation()
@@ -5424,17 +5595,21 @@ def test_set_ssl_policy_unary_rest_required_fields(
         with mock.patch.object(path_template, "transcode") as transcode:
             # A uri without fields and an empty body will force all the
             # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
             transcode_result = {
                 "uri": "v1/sample_method",
                 "method": "post",
-                "query_params": request_init,
+                "query_params": pb_request,
             }
-            transcode_result["body"] = {}
+            transcode_result["body"] = pb_request
             transcode.return_value = transcode_result
 
             response_value = Response()
             response_value.status_code = 200
-            json_return_value = compute.Operation.to_json(return_value)
+
+            pb_return_value = compute.Operation.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
 
@@ -5483,12 +5658,14 @@ def test_set_ssl_policy_unary_rest_interceptors(null_interceptor):
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
-
+        pb_message = compute.SetSslPolicyTargetSslProxyRequest.pb(
+            compute.SetSslPolicyTargetSslProxyRequest()
+        )
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
-            "body": None,
-            "query_params": {},
+            "body": pb_message,
+            "query_params": pb_message,
         }
 
         req.return_value = Response()
@@ -5527,7 +5704,7 @@ def test_set_ssl_policy_unary_rest_bad_request(
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "target_ssl_proxy": "sample2"}
     request_init["ssl_policy_reference_resource"] = {"ssl_policy": "ssl_policy_value"}
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
     with mock.patch.object(Session, "request") as req, pytest.raises(
@@ -5568,8 +5745,8 @@ def test_set_ssl_policy_unary_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
-
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 

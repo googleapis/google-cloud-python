@@ -25,6 +25,7 @@ except ImportError:
 import grpc
 from grpc.experimental import aio
 from collections.abc import Iterable
+from google.protobuf import json_format
 import json
 import math
 import pytest
@@ -600,7 +601,7 @@ def test_aggregated_list_rest(request_type):
 
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1"}
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
@@ -616,9 +617,9 @@ def test_aggregated_list_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.InterconnectAttachmentAggregatedList.to_json(
-            return_value
-        )
+        pb_return_value = compute.InterconnectAttachmentAggregatedList.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.aggregated_list(request)
@@ -639,10 +640,13 @@ def test_aggregated_list_rest_required_fields(
 
     request_init = {}
     request_init["project"] = ""
-    request = request_type(request_init)
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        request_type.to_json(
-            request, including_default_value_fields=False, use_integers_for_enums=False
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
     )
 
@@ -681,7 +685,7 @@ def test_aggregated_list_rest_required_fields(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
     return_value = compute.InterconnectAttachmentAggregatedList()
@@ -693,18 +697,22 @@ def test_aggregated_list_rest_required_fields(
         with mock.patch.object(path_template, "transcode") as transcode:
             # A uri without fields and an empty body will force all the
             # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
             transcode_result = {
                 "uri": "v1/sample_method",
                 "method": "get",
-                "query_params": request_init,
+                "query_params": pb_request,
             }
             transcode.return_value = transcode_result
 
             response_value = Response()
             response_value.status_code = 200
-            json_return_value = compute.InterconnectAttachmentAggregatedList.to_json(
+
+            pb_return_value = compute.InterconnectAttachmentAggregatedList.pb(
                 return_value
             )
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
 
@@ -756,12 +764,14 @@ def test_aggregated_list_rest_interceptors(null_interceptor):
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
-
+        pb_message = compute.AggregatedListInterconnectAttachmentsRequest.pb(
+            compute.AggregatedListInterconnectAttachmentsRequest()
+        )
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
-            "body": None,
-            "query_params": {},
+            "body": pb_message,
+            "query_params": pb_message,
         }
 
         req.return_value = Response()
@@ -804,7 +814,7 @@ def test_aggregated_list_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1"}
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
     with mock.patch.object(Session, "request") as req, pytest.raises(
@@ -841,10 +851,8 @@ def test_aggregated_list_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.InterconnectAttachmentAggregatedList.to_json(
-            return_value
-        )
-
+        pb_return_value = compute.InterconnectAttachmentAggregatedList.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -970,7 +978,7 @@ def test_delete_rest(request_type):
         "region": "sample2",
         "interconnect_attachment": "sample3",
     }
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
@@ -1003,7 +1011,9 @@ def test_delete_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.delete(request)
@@ -1043,10 +1053,13 @@ def test_delete_rest_required_fields(
     request_init["interconnect_attachment"] = ""
     request_init["project"] = ""
     request_init["region"] = ""
-    request = request_type(request_init)
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        request_type.to_json(
-            request, including_default_value_fields=False, use_integers_for_enums=False
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
     )
 
@@ -1084,7 +1097,7 @@ def test_delete_rest_required_fields(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
     return_value = compute.Operation()
@@ -1096,16 +1109,20 @@ def test_delete_rest_required_fields(
         with mock.patch.object(path_template, "transcode") as transcode:
             # A uri without fields and an empty body will force all the
             # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
             transcode_result = {
                 "uri": "v1/sample_method",
                 "method": "delete",
-                "query_params": request_init,
+                "query_params": pb_request,
             }
             transcode.return_value = transcode_result
 
             response_value = Response()
             response_value.status_code = 200
-            json_return_value = compute.Operation.to_json(return_value)
+
+            pb_return_value = compute.Operation.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
 
@@ -1154,12 +1171,14 @@ def test_delete_rest_interceptors(null_interceptor):
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
-
+        pb_message = compute.DeleteInterconnectAttachmentRequest.pb(
+            compute.DeleteInterconnectAttachmentRequest()
+        )
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
-            "body": None,
-            "query_params": {},
+            "body": pb_message,
+            "query_params": pb_message,
         }
 
         req.return_value = Response()
@@ -1201,7 +1220,7 @@ def test_delete_rest_bad_request(
         "region": "sample2",
         "interconnect_attachment": "sample3",
     }
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
     with mock.patch.object(Session, "request") as req, pytest.raises(
@@ -1244,8 +1263,8 @@ def test_delete_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
-
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -1304,7 +1323,7 @@ def test_delete_unary_rest(request_type):
         "region": "sample2",
         "interconnect_attachment": "sample3",
     }
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
@@ -1337,7 +1356,9 @@ def test_delete_unary_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.delete_unary(request)
@@ -1355,10 +1376,13 @@ def test_delete_unary_rest_required_fields(
     request_init["interconnect_attachment"] = ""
     request_init["project"] = ""
     request_init["region"] = ""
-    request = request_type(request_init)
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        request_type.to_json(
-            request, including_default_value_fields=False, use_integers_for_enums=False
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
     )
 
@@ -1396,7 +1420,7 @@ def test_delete_unary_rest_required_fields(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
     return_value = compute.Operation()
@@ -1408,16 +1432,20 @@ def test_delete_unary_rest_required_fields(
         with mock.patch.object(path_template, "transcode") as transcode:
             # A uri without fields and an empty body will force all the
             # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
             transcode_result = {
                 "uri": "v1/sample_method",
                 "method": "delete",
-                "query_params": request_init,
+                "query_params": pb_request,
             }
             transcode.return_value = transcode_result
 
             response_value = Response()
             response_value.status_code = 200
-            json_return_value = compute.Operation.to_json(return_value)
+
+            pb_return_value = compute.Operation.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
 
@@ -1466,12 +1494,14 @@ def test_delete_unary_rest_interceptors(null_interceptor):
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
-
+        pb_message = compute.DeleteInterconnectAttachmentRequest.pb(
+            compute.DeleteInterconnectAttachmentRequest()
+        )
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
-            "body": None,
-            "query_params": {},
+            "body": pb_message,
+            "query_params": pb_message,
         }
 
         req.return_value = Response()
@@ -1513,7 +1543,7 @@ def test_delete_unary_rest_bad_request(
         "region": "sample2",
         "interconnect_attachment": "sample3",
     }
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
     with mock.patch.object(Session, "request") as req, pytest.raises(
@@ -1556,8 +1586,8 @@ def test_delete_unary_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
-
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -1616,7 +1646,7 @@ def test_get_rest(request_type):
         "region": "sample2",
         "interconnect_attachment": "sample3",
     }
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
@@ -1660,7 +1690,9 @@ def test_get_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.InterconnectAttachment.to_json(return_value)
+        pb_return_value = compute.InterconnectAttachment.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.get(request)
@@ -1717,10 +1749,13 @@ def test_get_rest_required_fields(
     request_init["interconnect_attachment"] = ""
     request_init["project"] = ""
     request_init["region"] = ""
-    request = request_type(request_init)
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        request_type.to_json(
-            request, including_default_value_fields=False, use_integers_for_enums=False
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
     )
 
@@ -1756,7 +1791,7 @@ def test_get_rest_required_fields(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
     return_value = compute.InterconnectAttachment()
@@ -1768,16 +1803,20 @@ def test_get_rest_required_fields(
         with mock.patch.object(path_template, "transcode") as transcode:
             # A uri without fields and an empty body will force all the
             # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
             transcode_result = {
                 "uri": "v1/sample_method",
                 "method": "get",
-                "query_params": request_init,
+                "query_params": pb_request,
             }
             transcode.return_value = transcode_result
 
             response_value = Response()
             response_value.status_code = 200
-            json_return_value = compute.InterconnectAttachment.to_json(return_value)
+
+            pb_return_value = compute.InterconnectAttachment.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
 
@@ -1826,12 +1865,14 @@ def test_get_rest_interceptors(null_interceptor):
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
-
+        pb_message = compute.GetInterconnectAttachmentRequest.pb(
+            compute.GetInterconnectAttachmentRequest()
+        )
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
-            "body": None,
-            "query_params": {},
+            "body": pb_message,
+            "query_params": pb_message,
         }
 
         req.return_value = Response()
@@ -1875,7 +1916,7 @@ def test_get_rest_bad_request(
         "region": "sample2",
         "interconnect_attachment": "sample3",
     }
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
     with mock.patch.object(Session, "request") as req, pytest.raises(
@@ -1918,8 +1959,8 @@ def test_get_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.InterconnectAttachment.to_json(return_value)
-
+        pb_return_value = compute.InterconnectAttachment.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -1978,10 +2019,10 @@ def test_insert_rest(request_type):
         "admin_enabled": True,
         "bandwidth": "bandwidth_value",
         "candidate_ipv6_subnets": [
-            "candidate_ipv6_subnets_value_1",
-            "candidate_ipv6_subnets_value_2",
+            "candidate_ipv6_subnets_value1",
+            "candidate_ipv6_subnets_value2",
         ],
-        "candidate_subnets": ["candidate_subnets_value_1", "candidate_subnets_value_2"],
+        "candidate_subnets": ["candidate_subnets_value1", "candidate_subnets_value2"],
         "cloud_router_ip_address": "cloud_router_ip_address_value",
         "cloud_router_ipv6_address": "cloud_router_ipv6_address_value",
         "cloud_router_ipv6_interface_id": "cloud_router_ipv6_interface_id_value",
@@ -1997,8 +2038,8 @@ def test_insert_rest(request_type):
         "id": 205,
         "interconnect": "interconnect_value",
         "ipsec_internal_addresses": [
-            "ipsec_internal_addresses_value_1",
-            "ipsec_internal_addresses_value_2",
+            "ipsec_internal_addresses_value1",
+            "ipsec_internal_addresses_value2",
         ],
         "kind": "kind_value",
         "mtu": 342,
@@ -2021,7 +2062,7 @@ def test_insert_rest(request_type):
         "type_": "type__value",
         "vlan_tag8021q": 1160,
     }
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
@@ -2054,7 +2095,9 @@ def test_insert_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.insert(request)
@@ -2093,10 +2136,13 @@ def test_insert_rest_required_fields(
     request_init = {}
     request_init["project"] = ""
     request_init["region"] = ""
-    request = request_type(request_init)
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        request_type.to_json(
-            request, including_default_value_fields=False, use_integers_for_enums=False
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
     )
 
@@ -2134,7 +2180,7 @@ def test_insert_rest_required_fields(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
     return_value = compute.Operation()
@@ -2146,17 +2192,21 @@ def test_insert_rest_required_fields(
         with mock.patch.object(path_template, "transcode") as transcode:
             # A uri without fields and an empty body will force all the
             # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
             transcode_result = {
                 "uri": "v1/sample_method",
                 "method": "post",
-                "query_params": request_init,
+                "query_params": pb_request,
             }
-            transcode_result["body"] = {}
+            transcode_result["body"] = pb_request
             transcode.return_value = transcode_result
 
             response_value = Response()
             response_value.status_code = 200
-            json_return_value = compute.Operation.to_json(return_value)
+
+            pb_return_value = compute.Operation.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
 
@@ -2210,12 +2260,14 @@ def test_insert_rest_interceptors(null_interceptor):
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
-
+        pb_message = compute.InsertInterconnectAttachmentRequest.pb(
+            compute.InsertInterconnectAttachmentRequest()
+        )
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
-            "body": None,
-            "query_params": {},
+            "body": pb_message,
+            "query_params": pb_message,
         }
 
         req.return_value = Response()
@@ -2257,10 +2309,10 @@ def test_insert_rest_bad_request(
         "admin_enabled": True,
         "bandwidth": "bandwidth_value",
         "candidate_ipv6_subnets": [
-            "candidate_ipv6_subnets_value_1",
-            "candidate_ipv6_subnets_value_2",
+            "candidate_ipv6_subnets_value1",
+            "candidate_ipv6_subnets_value2",
         ],
-        "candidate_subnets": ["candidate_subnets_value_1", "candidate_subnets_value_2"],
+        "candidate_subnets": ["candidate_subnets_value1", "candidate_subnets_value2"],
         "cloud_router_ip_address": "cloud_router_ip_address_value",
         "cloud_router_ipv6_address": "cloud_router_ipv6_address_value",
         "cloud_router_ipv6_interface_id": "cloud_router_ipv6_interface_id_value",
@@ -2276,8 +2328,8 @@ def test_insert_rest_bad_request(
         "id": 205,
         "interconnect": "interconnect_value",
         "ipsec_internal_addresses": [
-            "ipsec_internal_addresses_value_1",
-            "ipsec_internal_addresses_value_2",
+            "ipsec_internal_addresses_value1",
+            "ipsec_internal_addresses_value2",
         ],
         "kind": "kind_value",
         "mtu": 342,
@@ -2300,7 +2352,7 @@ def test_insert_rest_bad_request(
         "type_": "type__value",
         "vlan_tag8021q": 1160,
     }
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
     with mock.patch.object(Session, "request") as req, pytest.raises(
@@ -2341,8 +2393,8 @@ def test_insert_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
-
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -2403,10 +2455,10 @@ def test_insert_unary_rest(request_type):
         "admin_enabled": True,
         "bandwidth": "bandwidth_value",
         "candidate_ipv6_subnets": [
-            "candidate_ipv6_subnets_value_1",
-            "candidate_ipv6_subnets_value_2",
+            "candidate_ipv6_subnets_value1",
+            "candidate_ipv6_subnets_value2",
         ],
-        "candidate_subnets": ["candidate_subnets_value_1", "candidate_subnets_value_2"],
+        "candidate_subnets": ["candidate_subnets_value1", "candidate_subnets_value2"],
         "cloud_router_ip_address": "cloud_router_ip_address_value",
         "cloud_router_ipv6_address": "cloud_router_ipv6_address_value",
         "cloud_router_ipv6_interface_id": "cloud_router_ipv6_interface_id_value",
@@ -2422,8 +2474,8 @@ def test_insert_unary_rest(request_type):
         "id": 205,
         "interconnect": "interconnect_value",
         "ipsec_internal_addresses": [
-            "ipsec_internal_addresses_value_1",
-            "ipsec_internal_addresses_value_2",
+            "ipsec_internal_addresses_value1",
+            "ipsec_internal_addresses_value2",
         ],
         "kind": "kind_value",
         "mtu": 342,
@@ -2446,7 +2498,7 @@ def test_insert_unary_rest(request_type):
         "type_": "type__value",
         "vlan_tag8021q": 1160,
     }
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
@@ -2479,7 +2531,9 @@ def test_insert_unary_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.insert_unary(request)
@@ -2496,10 +2550,13 @@ def test_insert_unary_rest_required_fields(
     request_init = {}
     request_init["project"] = ""
     request_init["region"] = ""
-    request = request_type(request_init)
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        request_type.to_json(
-            request, including_default_value_fields=False, use_integers_for_enums=False
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
     )
 
@@ -2537,7 +2594,7 @@ def test_insert_unary_rest_required_fields(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
     return_value = compute.Operation()
@@ -2549,17 +2606,21 @@ def test_insert_unary_rest_required_fields(
         with mock.patch.object(path_template, "transcode") as transcode:
             # A uri without fields and an empty body will force all the
             # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
             transcode_result = {
                 "uri": "v1/sample_method",
                 "method": "post",
-                "query_params": request_init,
+                "query_params": pb_request,
             }
-            transcode_result["body"] = {}
+            transcode_result["body"] = pb_request
             transcode.return_value = transcode_result
 
             response_value = Response()
             response_value.status_code = 200
-            json_return_value = compute.Operation.to_json(return_value)
+
+            pb_return_value = compute.Operation.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
 
@@ -2613,12 +2674,14 @@ def test_insert_unary_rest_interceptors(null_interceptor):
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
-
+        pb_message = compute.InsertInterconnectAttachmentRequest.pb(
+            compute.InsertInterconnectAttachmentRequest()
+        )
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
-            "body": None,
-            "query_params": {},
+            "body": pb_message,
+            "query_params": pb_message,
         }
 
         req.return_value = Response()
@@ -2660,10 +2723,10 @@ def test_insert_unary_rest_bad_request(
         "admin_enabled": True,
         "bandwidth": "bandwidth_value",
         "candidate_ipv6_subnets": [
-            "candidate_ipv6_subnets_value_1",
-            "candidate_ipv6_subnets_value_2",
+            "candidate_ipv6_subnets_value1",
+            "candidate_ipv6_subnets_value2",
         ],
-        "candidate_subnets": ["candidate_subnets_value_1", "candidate_subnets_value_2"],
+        "candidate_subnets": ["candidate_subnets_value1", "candidate_subnets_value2"],
         "cloud_router_ip_address": "cloud_router_ip_address_value",
         "cloud_router_ipv6_address": "cloud_router_ipv6_address_value",
         "cloud_router_ipv6_interface_id": "cloud_router_ipv6_interface_id_value",
@@ -2679,8 +2742,8 @@ def test_insert_unary_rest_bad_request(
         "id": 205,
         "interconnect": "interconnect_value",
         "ipsec_internal_addresses": [
-            "ipsec_internal_addresses_value_1",
-            "ipsec_internal_addresses_value_2",
+            "ipsec_internal_addresses_value1",
+            "ipsec_internal_addresses_value2",
         ],
         "kind": "kind_value",
         "mtu": 342,
@@ -2703,7 +2766,7 @@ def test_insert_unary_rest_bad_request(
         "type_": "type__value",
         "vlan_tag8021q": 1160,
     }
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
     with mock.patch.object(Session, "request") as req, pytest.raises(
@@ -2744,8 +2807,8 @@ def test_insert_unary_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
-
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -2802,7 +2865,7 @@ def test_list_rest(request_type):
 
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "region": "sample2"}
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
@@ -2817,7 +2880,9 @@ def test_list_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.InterconnectAttachmentList.to_json(return_value)
+        pb_return_value = compute.InterconnectAttachmentList.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.list(request)
@@ -2838,10 +2903,13 @@ def test_list_rest_required_fields(
     request_init = {}
     request_init["project"] = ""
     request_init["region"] = ""
-    request = request_type(request_init)
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        request_type.to_json(
-            request, including_default_value_fields=False, use_integers_for_enums=False
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
     )
 
@@ -2882,7 +2950,7 @@ def test_list_rest_required_fields(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
     return_value = compute.InterconnectAttachmentList()
@@ -2894,16 +2962,20 @@ def test_list_rest_required_fields(
         with mock.patch.object(path_template, "transcode") as transcode:
             # A uri without fields and an empty body will force all the
             # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
             transcode_result = {
                 "uri": "v1/sample_method",
                 "method": "get",
-                "query_params": request_init,
+                "query_params": pb_request,
             }
             transcode.return_value = transcode_result
 
             response_value = Response()
             response_value.status_code = 200
-            json_return_value = compute.InterconnectAttachmentList.to_json(return_value)
+
+            pb_return_value = compute.InterconnectAttachmentList.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
 
@@ -2959,12 +3031,14 @@ def test_list_rest_interceptors(null_interceptor):
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
-
+        pb_message = compute.ListInterconnectAttachmentsRequest.pb(
+            compute.ListInterconnectAttachmentsRequest()
+        )
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
-            "body": None,
-            "query_params": {},
+            "body": pb_message,
+            "query_params": pb_message,
         }
 
         req.return_value = Response()
@@ -3004,7 +3078,7 @@ def test_list_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "region": "sample2"}
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
     with mock.patch.object(Session, "request") as req, pytest.raises(
@@ -3042,8 +3116,8 @@ def test_list_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.InterconnectAttachmentList.to_json(return_value)
-
+        pb_return_value = compute.InterconnectAttachmentList.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -3162,10 +3236,10 @@ def test_patch_rest(request_type):
         "admin_enabled": True,
         "bandwidth": "bandwidth_value",
         "candidate_ipv6_subnets": [
-            "candidate_ipv6_subnets_value_1",
-            "candidate_ipv6_subnets_value_2",
+            "candidate_ipv6_subnets_value1",
+            "candidate_ipv6_subnets_value2",
         ],
-        "candidate_subnets": ["candidate_subnets_value_1", "candidate_subnets_value_2"],
+        "candidate_subnets": ["candidate_subnets_value1", "candidate_subnets_value2"],
         "cloud_router_ip_address": "cloud_router_ip_address_value",
         "cloud_router_ipv6_address": "cloud_router_ipv6_address_value",
         "cloud_router_ipv6_interface_id": "cloud_router_ipv6_interface_id_value",
@@ -3181,8 +3255,8 @@ def test_patch_rest(request_type):
         "id": 205,
         "interconnect": "interconnect_value",
         "ipsec_internal_addresses": [
-            "ipsec_internal_addresses_value_1",
-            "ipsec_internal_addresses_value_2",
+            "ipsec_internal_addresses_value1",
+            "ipsec_internal_addresses_value2",
         ],
         "kind": "kind_value",
         "mtu": 342,
@@ -3205,7 +3279,7 @@ def test_patch_rest(request_type):
         "type_": "type__value",
         "vlan_tag8021q": 1160,
     }
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
@@ -3238,7 +3312,9 @@ def test_patch_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.patch(request)
@@ -3278,10 +3354,13 @@ def test_patch_rest_required_fields(
     request_init["interconnect_attachment"] = ""
     request_init["project"] = ""
     request_init["region"] = ""
-    request = request_type(request_init)
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        request_type.to_json(
-            request, including_default_value_fields=False, use_integers_for_enums=False
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
     )
 
@@ -3319,7 +3398,7 @@ def test_patch_rest_required_fields(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
     return_value = compute.Operation()
@@ -3331,17 +3410,21 @@ def test_patch_rest_required_fields(
         with mock.patch.object(path_template, "transcode") as transcode:
             # A uri without fields and an empty body will force all the
             # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
             transcode_result = {
                 "uri": "v1/sample_method",
                 "method": "patch",
-                "query_params": request_init,
+                "query_params": pb_request,
             }
-            transcode_result["body"] = {}
+            transcode_result["body"] = pb_request
             transcode.return_value = transcode_result
 
             response_value = Response()
             response_value.status_code = 200
-            json_return_value = compute.Operation.to_json(return_value)
+
+            pb_return_value = compute.Operation.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
 
@@ -3391,12 +3474,14 @@ def test_patch_rest_interceptors(null_interceptor):
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
-
+        pb_message = compute.PatchInterconnectAttachmentRequest.pb(
+            compute.PatchInterconnectAttachmentRequest()
+        )
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
-            "body": None,
-            "query_params": {},
+            "body": pb_message,
+            "query_params": pb_message,
         }
 
         req.return_value = Response()
@@ -3442,10 +3527,10 @@ def test_patch_rest_bad_request(
         "admin_enabled": True,
         "bandwidth": "bandwidth_value",
         "candidate_ipv6_subnets": [
-            "candidate_ipv6_subnets_value_1",
-            "candidate_ipv6_subnets_value_2",
+            "candidate_ipv6_subnets_value1",
+            "candidate_ipv6_subnets_value2",
         ],
-        "candidate_subnets": ["candidate_subnets_value_1", "candidate_subnets_value_2"],
+        "candidate_subnets": ["candidate_subnets_value1", "candidate_subnets_value2"],
         "cloud_router_ip_address": "cloud_router_ip_address_value",
         "cloud_router_ipv6_address": "cloud_router_ipv6_address_value",
         "cloud_router_ipv6_interface_id": "cloud_router_ipv6_interface_id_value",
@@ -3461,8 +3546,8 @@ def test_patch_rest_bad_request(
         "id": 205,
         "interconnect": "interconnect_value",
         "ipsec_internal_addresses": [
-            "ipsec_internal_addresses_value_1",
-            "ipsec_internal_addresses_value_2",
+            "ipsec_internal_addresses_value1",
+            "ipsec_internal_addresses_value2",
         ],
         "kind": "kind_value",
         "mtu": 342,
@@ -3485,7 +3570,7 @@ def test_patch_rest_bad_request(
         "type_": "type__value",
         "vlan_tag8021q": 1160,
     }
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
     with mock.patch.object(Session, "request") as req, pytest.raises(
@@ -3531,8 +3616,8 @@ def test_patch_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
-
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -3598,10 +3683,10 @@ def test_patch_unary_rest(request_type):
         "admin_enabled": True,
         "bandwidth": "bandwidth_value",
         "candidate_ipv6_subnets": [
-            "candidate_ipv6_subnets_value_1",
-            "candidate_ipv6_subnets_value_2",
+            "candidate_ipv6_subnets_value1",
+            "candidate_ipv6_subnets_value2",
         ],
-        "candidate_subnets": ["candidate_subnets_value_1", "candidate_subnets_value_2"],
+        "candidate_subnets": ["candidate_subnets_value1", "candidate_subnets_value2"],
         "cloud_router_ip_address": "cloud_router_ip_address_value",
         "cloud_router_ipv6_address": "cloud_router_ipv6_address_value",
         "cloud_router_ipv6_interface_id": "cloud_router_ipv6_interface_id_value",
@@ -3617,8 +3702,8 @@ def test_patch_unary_rest(request_type):
         "id": 205,
         "interconnect": "interconnect_value",
         "ipsec_internal_addresses": [
-            "ipsec_internal_addresses_value_1",
-            "ipsec_internal_addresses_value_2",
+            "ipsec_internal_addresses_value1",
+            "ipsec_internal_addresses_value2",
         ],
         "kind": "kind_value",
         "mtu": 342,
@@ -3641,7 +3726,7 @@ def test_patch_unary_rest(request_type):
         "type_": "type__value",
         "vlan_tag8021q": 1160,
     }
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
@@ -3674,7 +3759,9 @@ def test_patch_unary_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.patch_unary(request)
@@ -3692,10 +3779,13 @@ def test_patch_unary_rest_required_fields(
     request_init["interconnect_attachment"] = ""
     request_init["project"] = ""
     request_init["region"] = ""
-    request = request_type(request_init)
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        request_type.to_json(
-            request, including_default_value_fields=False, use_integers_for_enums=False
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
     )
 
@@ -3733,7 +3823,7 @@ def test_patch_unary_rest_required_fields(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
     return_value = compute.Operation()
@@ -3745,17 +3835,21 @@ def test_patch_unary_rest_required_fields(
         with mock.patch.object(path_template, "transcode") as transcode:
             # A uri without fields and an empty body will force all the
             # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
             transcode_result = {
                 "uri": "v1/sample_method",
                 "method": "patch",
-                "query_params": request_init,
+                "query_params": pb_request,
             }
-            transcode_result["body"] = {}
+            transcode_result["body"] = pb_request
             transcode.return_value = transcode_result
 
             response_value = Response()
             response_value.status_code = 200
-            json_return_value = compute.Operation.to_json(return_value)
+
+            pb_return_value = compute.Operation.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
 
@@ -3805,12 +3899,14 @@ def test_patch_unary_rest_interceptors(null_interceptor):
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
-
+        pb_message = compute.PatchInterconnectAttachmentRequest.pb(
+            compute.PatchInterconnectAttachmentRequest()
+        )
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
-            "body": None,
-            "query_params": {},
+            "body": pb_message,
+            "query_params": pb_message,
         }
 
         req.return_value = Response()
@@ -3856,10 +3952,10 @@ def test_patch_unary_rest_bad_request(
         "admin_enabled": True,
         "bandwidth": "bandwidth_value",
         "candidate_ipv6_subnets": [
-            "candidate_ipv6_subnets_value_1",
-            "candidate_ipv6_subnets_value_2",
+            "candidate_ipv6_subnets_value1",
+            "candidate_ipv6_subnets_value2",
         ],
-        "candidate_subnets": ["candidate_subnets_value_1", "candidate_subnets_value_2"],
+        "candidate_subnets": ["candidate_subnets_value1", "candidate_subnets_value2"],
         "cloud_router_ip_address": "cloud_router_ip_address_value",
         "cloud_router_ipv6_address": "cloud_router_ipv6_address_value",
         "cloud_router_ipv6_interface_id": "cloud_router_ipv6_interface_id_value",
@@ -3875,8 +3971,8 @@ def test_patch_unary_rest_bad_request(
         "id": 205,
         "interconnect": "interconnect_value",
         "ipsec_internal_addresses": [
-            "ipsec_internal_addresses_value_1",
-            "ipsec_internal_addresses_value_2",
+            "ipsec_internal_addresses_value1",
+            "ipsec_internal_addresses_value2",
         ],
         "kind": "kind_value",
         "mtu": 342,
@@ -3899,7 +3995,7 @@ def test_patch_unary_rest_bad_request(
         "type_": "type__value",
         "vlan_tag8021q": 1160,
     }
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
     with mock.patch.object(Session, "request") as req, pytest.raises(
@@ -3945,8 +4041,8 @@ def test_patch_unary_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
-
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 

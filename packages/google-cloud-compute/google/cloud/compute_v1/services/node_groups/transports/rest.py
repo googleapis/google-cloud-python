@@ -26,6 +26,7 @@ from google.api_core import rest_streaming
 from google.api_core import path_template
 from google.api_core import gapic_v1
 
+from google.protobuf import json_format
 from requests import __version__ as requests_version
 import dataclasses
 import re
@@ -457,6 +458,10 @@ class NodeGroupsRestTransport(NodeGroupsTransport):
     and call it.
 
     It sends JSON representations of protocol buffers over HTTP/1.1
+
+    NOTE: This REST transport functionality is currently in a beta
+    state (preview). We welcome your feedback via an issue in this
+    library's source repository. Thank you!
     """
 
     def __init__(
@@ -476,35 +481,39 @@ class NodeGroupsRestTransport(NodeGroupsTransport):
     ) -> None:
         """Instantiate the transport.
 
-        Args:
-            host (Optional[str]):
-                 The hostname to connect to.
-            credentials (Optional[google.auth.credentials.Credentials]): The
-                authorization credentials to attach to requests. These
-                credentials identify the application to the service; if none
-                are specified, the client will attempt to ascertain the
-                credentials from the environment.
+        NOTE: This REST transport functionality is currently in a beta
+        state (preview). We welcome your feedback via a GitHub issue in
+        this library's repository. Thank you!
 
-            credentials_file (Optional[str]): A file with credentials that can
-                be loaded with :func:`google.auth.load_credentials_from_file`.
-                This argument is ignored if ``channel`` is provided.
-            scopes (Optional(Sequence[str])): A list of scopes. This argument is
-                ignored if ``channel`` is provided.
-            client_cert_source_for_mtls (Callable[[], Tuple[bytes, bytes]]): Client
-                certificate to configure mutual TLS HTTP channel. It is ignored
-                if ``channel`` is provided.
-            quota_project_id (Optional[str]): An optional project to use for billing
-                and quota.
-            client_info (google.api_core.gapic_v1.client_info.ClientInfo):
-                The client info used to send a user-agent string along with
-                API requests. If ``None``, then default info will be used.
-                Generally, you only need to set this if you are developing
-                your own client library.
-            always_use_jwt_access (Optional[bool]): Whether self signed JWT should
-                be used for service account credentials.
-            url_scheme: the protocol scheme for the API endpoint.  Normally
-                "https", but for testing or local servers,
-                "http" can be specified.
+         Args:
+             host (Optional[str]):
+                  The hostname to connect to.
+             credentials (Optional[google.auth.credentials.Credentials]): The
+                 authorization credentials to attach to requests. These
+                 credentials identify the application to the service; if none
+                 are specified, the client will attempt to ascertain the
+                 credentials from the environment.
+
+             credentials_file (Optional[str]): A file with credentials that can
+                 be loaded with :func:`google.auth.load_credentials_from_file`.
+                 This argument is ignored if ``channel`` is provided.
+             scopes (Optional(Sequence[str])): A list of scopes. This argument is
+                 ignored if ``channel`` is provided.
+             client_cert_source_for_mtls (Callable[[], Tuple[bytes, bytes]]): Client
+                 certificate to configure mutual TLS HTTP channel. It is ignored
+                 if ``channel`` is provided.
+             quota_project_id (Optional[str]): An optional project to use for billing
+                 and quota.
+             client_info (google.api_core.gapic_v1.client_info.ClientInfo):
+                 The client info used to send a user-agent string along with
+                 API requests. If ``None``, then default info will be used.
+                 Generally, you only need to set this if you are developing
+                 your own client library.
+             always_use_jwt_access (Optional[bool]): Whether self signed JWT should
+                 be used for service account credentials.
+             url_scheme: the protocol scheme for the API endpoint.  Normally
+                 "https", but for testing or local servers,
+                 "http" can be specified.
         """
         # Run the base constructor
         # TODO(yon-mg): resolve other ctor params i.e. scopes, quota, etc.
@@ -599,12 +608,13 @@ class NodeGroupsRestTransport(NodeGroupsTransport):
                 },
             ]
             request, metadata = self._interceptor.pre_add_nodes(request, metadata)
-            request_kwargs = compute.AddNodesNodeGroupRequest.to_dict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            pb_request = compute.AddNodesNodeGroupRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             # Jsonify the request body
-            body = compute.NodeGroupsAddNodesRequest.to_json(
-                compute.NodeGroupsAddNodesRequest(transcoded_request["body"]),
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
                 including_default_value_fields=False,
                 use_integers_for_enums=False,
             )
@@ -613,15 +623,12 @@ class NodeGroupsRestTransport(NodeGroupsTransport):
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.AddNodesNodeGroupRequest.to_json(
-                    compute.AddNodesNodeGroupRequest(
-                        transcoded_request["query_params"]
-                    ),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -641,9 +648,10 @@ class NodeGroupsRestTransport(NodeGroupsTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.Operation.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.Operation()
+            pb_resp = compute.Operation.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_add_nodes(resp)
             return resp
 
@@ -695,23 +703,20 @@ class NodeGroupsRestTransport(NodeGroupsTransport):
                 },
             ]
             request, metadata = self._interceptor.pre_aggregated_list(request, metadata)
-            request_kwargs = compute.AggregatedListNodeGroupsRequest.to_dict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            pb_request = compute.AggregatedListNodeGroupsRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.AggregatedListNodeGroupsRequest.to_json(
-                    compute.AggregatedListNodeGroupsRequest(
-                        transcoded_request["query_params"]
-                    ),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -730,9 +735,10 @@ class NodeGroupsRestTransport(NodeGroupsTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.NodeGroupAggregatedList.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.NodeGroupAggregatedList()
+            pb_resp = compute.NodeGroupAggregatedList.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_aggregated_list(resp)
             return resp
 
@@ -799,21 +805,20 @@ class NodeGroupsRestTransport(NodeGroupsTransport):
                 },
             ]
             request, metadata = self._interceptor.pre_delete(request, metadata)
-            request_kwargs = compute.DeleteNodeGroupRequest.to_dict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            pb_request = compute.DeleteNodeGroupRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.DeleteNodeGroupRequest.to_json(
-                    compute.DeleteNodeGroupRequest(transcoded_request["query_params"]),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -832,9 +837,10 @@ class NodeGroupsRestTransport(NodeGroupsTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.Operation.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.Operation()
+            pb_resp = compute.Operation.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_delete(resp)
             return resp
 
@@ -902,12 +908,13 @@ class NodeGroupsRestTransport(NodeGroupsTransport):
                 },
             ]
             request, metadata = self._interceptor.pre_delete_nodes(request, metadata)
-            request_kwargs = compute.DeleteNodesNodeGroupRequest.to_dict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            pb_request = compute.DeleteNodesNodeGroupRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             # Jsonify the request body
-            body = compute.NodeGroupsDeleteNodesRequest.to_json(
-                compute.NodeGroupsDeleteNodesRequest(transcoded_request["body"]),
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
                 including_default_value_fields=False,
                 use_integers_for_enums=False,
             )
@@ -916,15 +923,12 @@ class NodeGroupsRestTransport(NodeGroupsTransport):
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.DeleteNodesNodeGroupRequest.to_json(
-                    compute.DeleteNodesNodeGroupRequest(
-                        transcoded_request["query_params"]
-                    ),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -944,9 +948,10 @@ class NodeGroupsRestTransport(NodeGroupsTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.Operation.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.Operation()
+            pb_resp = compute.Operation.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_delete_nodes(resp)
             return resp
 
@@ -1008,21 +1013,20 @@ class NodeGroupsRestTransport(NodeGroupsTransport):
                 },
             ]
             request, metadata = self._interceptor.pre_get(request, metadata)
-            request_kwargs = compute.GetNodeGroupRequest.to_dict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            pb_request = compute.GetNodeGroupRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.GetNodeGroupRequest.to_json(
-                    compute.GetNodeGroupRequest(transcoded_request["query_params"]),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -1041,9 +1045,10 @@ class NodeGroupsRestTransport(NodeGroupsTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.NodeGroup.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.NodeGroup()
+            pb_resp = compute.NodeGroup.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_get(resp)
             return resp
 
@@ -1136,23 +1141,20 @@ class NodeGroupsRestTransport(NodeGroupsTransport):
                 },
             ]
             request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
-            request_kwargs = compute.GetIamPolicyNodeGroupRequest.to_dict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            pb_request = compute.GetIamPolicyNodeGroupRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.GetIamPolicyNodeGroupRequest.to_json(
-                    compute.GetIamPolicyNodeGroupRequest(
-                        transcoded_request["query_params"]
-                    ),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -1171,9 +1173,10 @@ class NodeGroupsRestTransport(NodeGroupsTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.Policy.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.Policy()
+            pb_resp = compute.Policy.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_get_iam_policy(resp)
             return resp
 
@@ -1243,12 +1246,13 @@ class NodeGroupsRestTransport(NodeGroupsTransport):
                 },
             ]
             request, metadata = self._interceptor.pre_insert(request, metadata)
-            request_kwargs = compute.InsertNodeGroupRequest.to_dict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            pb_request = compute.InsertNodeGroupRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             # Jsonify the request body
-            body = compute.NodeGroup.to_json(
-                compute.NodeGroup(transcoded_request["body"]),
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
                 including_default_value_fields=False,
                 use_integers_for_enums=False,
             )
@@ -1257,13 +1261,12 @@ class NodeGroupsRestTransport(NodeGroupsTransport):
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.InsertNodeGroupRequest.to_json(
-                    compute.InsertNodeGroupRequest(transcoded_request["query_params"]),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -1283,9 +1286,10 @@ class NodeGroupsRestTransport(NodeGroupsTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.Operation.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.Operation()
+            pb_resp = compute.Operation.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_insert(resp)
             return resp
 
@@ -1337,21 +1341,20 @@ class NodeGroupsRestTransport(NodeGroupsTransport):
                 },
             ]
             request, metadata = self._interceptor.pre_list(request, metadata)
-            request_kwargs = compute.ListNodeGroupsRequest.to_dict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            pb_request = compute.ListNodeGroupsRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.ListNodeGroupsRequest.to_json(
-                    compute.ListNodeGroupsRequest(transcoded_request["query_params"]),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -1370,9 +1373,10 @@ class NodeGroupsRestTransport(NodeGroupsTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.NodeGroupList.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.NodeGroupList()
+            pb_resp = compute.NodeGroupList.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_list(resp)
             return resp
 
@@ -1424,23 +1428,20 @@ class NodeGroupsRestTransport(NodeGroupsTransport):
                 },
             ]
             request, metadata = self._interceptor.pre_list_nodes(request, metadata)
-            request_kwargs = compute.ListNodesNodeGroupsRequest.to_dict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            pb_request = compute.ListNodesNodeGroupsRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.ListNodesNodeGroupsRequest.to_json(
-                    compute.ListNodesNodeGroupsRequest(
-                        transcoded_request["query_params"]
-                    ),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -1459,9 +1460,10 @@ class NodeGroupsRestTransport(NodeGroupsTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.NodeGroupsListNodes.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.NodeGroupsListNodes()
+            pb_resp = compute.NodeGroupsListNodes.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_list_nodes(resp)
             return resp
 
@@ -1529,12 +1531,13 @@ class NodeGroupsRestTransport(NodeGroupsTransport):
                 },
             ]
             request, metadata = self._interceptor.pre_patch(request, metadata)
-            request_kwargs = compute.PatchNodeGroupRequest.to_dict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            pb_request = compute.PatchNodeGroupRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             # Jsonify the request body
-            body = compute.NodeGroup.to_json(
-                compute.NodeGroup(transcoded_request["body"]),
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
                 including_default_value_fields=False,
                 use_integers_for_enums=False,
             )
@@ -1543,13 +1546,12 @@ class NodeGroupsRestTransport(NodeGroupsTransport):
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.PatchNodeGroupRequest.to_json(
-                    compute.PatchNodeGroupRequest(transcoded_request["query_params"]),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -1569,9 +1571,10 @@ class NodeGroupsRestTransport(NodeGroupsTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.Operation.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.Operation()
+            pb_resp = compute.Operation.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_patch(resp)
             return resp
 
@@ -1665,12 +1668,13 @@ class NodeGroupsRestTransport(NodeGroupsTransport):
                 },
             ]
             request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
-            request_kwargs = compute.SetIamPolicyNodeGroupRequest.to_dict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            pb_request = compute.SetIamPolicyNodeGroupRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             # Jsonify the request body
-            body = compute.ZoneSetPolicyRequest.to_json(
-                compute.ZoneSetPolicyRequest(transcoded_request["body"]),
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
                 including_default_value_fields=False,
                 use_integers_for_enums=False,
             )
@@ -1679,15 +1683,12 @@ class NodeGroupsRestTransport(NodeGroupsTransport):
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.SetIamPolicyNodeGroupRequest.to_json(
-                    compute.SetIamPolicyNodeGroupRequest(
-                        transcoded_request["query_params"]
-                    ),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -1707,9 +1708,10 @@ class NodeGroupsRestTransport(NodeGroupsTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.Policy.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.Policy()
+            pb_resp = compute.Policy.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_set_iam_policy(resp)
             return resp
 
@@ -1779,12 +1781,13 @@ class NodeGroupsRestTransport(NodeGroupsTransport):
             request, metadata = self._interceptor.pre_set_node_template(
                 request, metadata
             )
-            request_kwargs = compute.SetNodeTemplateNodeGroupRequest.to_dict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            pb_request = compute.SetNodeTemplateNodeGroupRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             # Jsonify the request body
-            body = compute.NodeGroupsSetNodeTemplateRequest.to_json(
-                compute.NodeGroupsSetNodeTemplateRequest(transcoded_request["body"]),
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
                 including_default_value_fields=False,
                 use_integers_for_enums=False,
             )
@@ -1793,15 +1796,12 @@ class NodeGroupsRestTransport(NodeGroupsTransport):
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.SetNodeTemplateNodeGroupRequest.to_json(
-                    compute.SetNodeTemplateNodeGroupRequest(
-                        transcoded_request["query_params"]
-                    ),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -1821,9 +1821,10 @@ class NodeGroupsRestTransport(NodeGroupsTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.Operation.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.Operation()
+            pb_resp = compute.Operation.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_set_node_template(resp)
             return resp
 
@@ -1878,12 +1879,13 @@ class NodeGroupsRestTransport(NodeGroupsTransport):
             request, metadata = self._interceptor.pre_test_iam_permissions(
                 request, metadata
             )
-            request_kwargs = compute.TestIamPermissionsNodeGroupRequest.to_dict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            pb_request = compute.TestIamPermissionsNodeGroupRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             # Jsonify the request body
-            body = compute.TestPermissionsRequest.to_json(
-                compute.TestPermissionsRequest(transcoded_request["body"]),
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
                 including_default_value_fields=False,
                 use_integers_for_enums=False,
             )
@@ -1892,15 +1894,12 @@ class NodeGroupsRestTransport(NodeGroupsTransport):
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.TestIamPermissionsNodeGroupRequest.to_json(
-                    compute.TestIamPermissionsNodeGroupRequest(
-                        transcoded_request["query_params"]
-                    ),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -1920,9 +1919,10 @@ class NodeGroupsRestTransport(NodeGroupsTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.TestPermissionsResponse.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.TestPermissionsResponse()
+            pb_resp = compute.TestPermissionsResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_test_iam_permissions(resp)
             return resp
 

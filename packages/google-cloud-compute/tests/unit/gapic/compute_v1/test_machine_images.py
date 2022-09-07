@@ -25,6 +25,7 @@ except ImportError:
 import grpc
 from grpc.experimental import aio
 from collections.abc import Iterable
+from google.protobuf import json_format
 import json
 import math
 import pytest
@@ -568,7 +569,7 @@ def test_delete_rest(request_type):
 
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "machine_image": "sample2"}
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
@@ -601,7 +602,9 @@ def test_delete_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.delete(request)
@@ -638,10 +641,13 @@ def test_delete_rest_required_fields(request_type=compute.DeleteMachineImageRequ
     request_init = {}
     request_init["machine_image"] = ""
     request_init["project"] = ""
-    request = request_type(request_init)
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        request_type.to_json(
-            request, including_default_value_fields=False, use_integers_for_enums=False
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
     )
 
@@ -674,7 +680,7 @@ def test_delete_rest_required_fields(request_type=compute.DeleteMachineImageRequ
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
     return_value = compute.Operation()
@@ -686,16 +692,20 @@ def test_delete_rest_required_fields(request_type=compute.DeleteMachineImageRequ
         with mock.patch.object(path_template, "transcode") as transcode:
             # A uri without fields and an empty body will force all the
             # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
             transcode_result = {
                 "uri": "v1/sample_method",
                 "method": "delete",
-                "query_params": request_init,
+                "query_params": pb_request,
             }
             transcode.return_value = transcode_result
 
             response_value = Response()
             response_value.status_code = 200
-            json_return_value = compute.Operation.to_json(return_value)
+
+            pb_return_value = compute.Operation.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
 
@@ -743,12 +753,14 @@ def test_delete_rest_interceptors(null_interceptor):
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
-
+        pb_message = compute.DeleteMachineImageRequest.pb(
+            compute.DeleteMachineImageRequest()
+        )
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
-            "body": None,
-            "query_params": {},
+            "body": pb_message,
+            "query_params": pb_message,
         }
 
         req.return_value = Response()
@@ -786,7 +798,7 @@ def test_delete_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "machine_image": "sample2"}
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
     with mock.patch.object(Session, "request") as req, pytest.raises(
@@ -824,8 +836,8 @@ def test_delete_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
-
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -879,7 +891,7 @@ def test_delete_unary_rest(request_type):
 
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "machine_image": "sample2"}
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
@@ -912,7 +924,9 @@ def test_delete_unary_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.delete_unary(request)
@@ -929,10 +943,13 @@ def test_delete_unary_rest_required_fields(
     request_init = {}
     request_init["machine_image"] = ""
     request_init["project"] = ""
-    request = request_type(request_init)
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        request_type.to_json(
-            request, including_default_value_fields=False, use_integers_for_enums=False
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
     )
 
@@ -965,7 +982,7 @@ def test_delete_unary_rest_required_fields(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
     return_value = compute.Operation()
@@ -977,16 +994,20 @@ def test_delete_unary_rest_required_fields(
         with mock.patch.object(path_template, "transcode") as transcode:
             # A uri without fields and an empty body will force all the
             # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
             transcode_result = {
                 "uri": "v1/sample_method",
                 "method": "delete",
-                "query_params": request_init,
+                "query_params": pb_request,
             }
             transcode.return_value = transcode_result
 
             response_value = Response()
             response_value.status_code = 200
-            json_return_value = compute.Operation.to_json(return_value)
+
+            pb_return_value = compute.Operation.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
 
@@ -1034,12 +1055,14 @@ def test_delete_unary_rest_interceptors(null_interceptor):
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
-
+        pb_message = compute.DeleteMachineImageRequest.pb(
+            compute.DeleteMachineImageRequest()
+        )
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
-            "body": None,
-            "query_params": {},
+            "body": pb_message,
+            "query_params": pb_message,
         }
 
         req.return_value = Response()
@@ -1077,7 +1100,7 @@ def test_delete_unary_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "machine_image": "sample2"}
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
     with mock.patch.object(Session, "request") as req, pytest.raises(
@@ -1115,8 +1138,8 @@ def test_delete_unary_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
-
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -1170,7 +1193,7 @@ def test_get_rest(request_type):
 
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "machine_image": "sample2"}
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
@@ -1193,7 +1216,9 @@ def test_get_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.MachineImage.to_json(return_value)
+        pb_return_value = compute.MachineImage.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.get(request)
@@ -1220,10 +1245,13 @@ def test_get_rest_required_fields(request_type=compute.GetMachineImageRequest):
     request_init = {}
     request_init["machine_image"] = ""
     request_init["project"] = ""
-    request = request_type(request_init)
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        request_type.to_json(
-            request, including_default_value_fields=False, use_integers_for_enums=False
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
     )
 
@@ -1254,7 +1282,7 @@ def test_get_rest_required_fields(request_type=compute.GetMachineImageRequest):
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
     return_value = compute.MachineImage()
@@ -1266,16 +1294,20 @@ def test_get_rest_required_fields(request_type=compute.GetMachineImageRequest):
         with mock.patch.object(path_template, "transcode") as transcode:
             # A uri without fields and an empty body will force all the
             # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
             transcode_result = {
                 "uri": "v1/sample_method",
                 "method": "get",
-                "query_params": request_init,
+                "query_params": pb_request,
             }
             transcode.return_value = transcode_result
 
             response_value = Response()
             response_value.status_code = 200
-            json_return_value = compute.MachineImage.to_json(return_value)
+
+            pb_return_value = compute.MachineImage.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
 
@@ -1323,12 +1355,12 @@ def test_get_rest_interceptors(null_interceptor):
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
-
+        pb_message = compute.GetMachineImageRequest.pb(compute.GetMachineImageRequest())
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
-            "body": None,
-            "query_params": {},
+            "body": pb_message,
+            "query_params": pb_message,
         }
 
         req.return_value = Response()
@@ -1366,7 +1398,7 @@ def test_get_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "machine_image": "sample2"}
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
     with mock.patch.object(Session, "request") as req, pytest.raises(
@@ -1404,8 +1436,8 @@ def test_get_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.MachineImage.to_json(return_value)
-
+        pb_return_value = compute.MachineImage.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -1459,7 +1491,7 @@ def test_get_iam_policy_rest(request_type):
 
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "resource": "sample2"}
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
@@ -1473,7 +1505,9 @@ def test_get_iam_policy_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.Policy.to_json(return_value)
+        pb_return_value = compute.Policy.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.get_iam_policy(request)
@@ -1493,10 +1527,13 @@ def test_get_iam_policy_rest_required_fields(
     request_init = {}
     request_init["project"] = ""
     request_init["resource"] = ""
-    request = request_type(request_init)
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        request_type.to_json(
-            request, including_default_value_fields=False, use_integers_for_enums=False
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
     )
 
@@ -1529,7 +1566,7 @@ def test_get_iam_policy_rest_required_fields(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
     return_value = compute.Policy()
@@ -1541,16 +1578,20 @@ def test_get_iam_policy_rest_required_fields(
         with mock.patch.object(path_template, "transcode") as transcode:
             # A uri without fields and an empty body will force all the
             # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
             transcode_result = {
                 "uri": "v1/sample_method",
                 "method": "get",
-                "query_params": request_init,
+                "query_params": pb_request,
             }
             transcode.return_value = transcode_result
 
             response_value = Response()
             response_value.status_code = 200
-            json_return_value = compute.Policy.to_json(return_value)
+
+            pb_return_value = compute.Policy.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
 
@@ -1598,12 +1639,14 @@ def test_get_iam_policy_rest_interceptors(null_interceptor):
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
-
+        pb_message = compute.GetIamPolicyMachineImageRequest.pb(
+            compute.GetIamPolicyMachineImageRequest()
+        )
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
-            "body": None,
-            "query_params": {},
+            "body": pb_message,
+            "query_params": pb_message,
         }
 
         req.return_value = Response()
@@ -1641,7 +1684,7 @@ def test_get_iam_policy_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "resource": "sample2"}
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
     with mock.patch.object(Session, "request") as req, pytest.raises(
@@ -1679,8 +1722,8 @@ def test_get_iam_policy_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.Policy.to_json(return_value)
-
+        pb_return_value = compute.Policy.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -1771,12 +1814,12 @@ def test_insert_rest(request_type):
                         "disk_size_gb": 1261,
                         "disk_type": "disk_type_value",
                         "labels": {},
-                        "licenses": ["licenses_value_1", "licenses_value_2"],
+                        "licenses": ["licenses_value1", "licenses_value2"],
                         "on_update_action": "on_update_action_value",
                         "provisioned_iops": 1740,
                         "resource_policies": [
-                            "resource_policies_value_1",
-                            "resource_policies_value_2",
+                            "resource_policies_value1",
+                            "resource_policies_value2",
                         ],
                         "source_image": "source_image_value",
                         "source_image_encryption_key": {},
@@ -1785,7 +1828,7 @@ def test_insert_rest(request_type):
                     },
                     "interface": "interface_value",
                     "kind": "kind_value",
-                    "licenses": ["licenses_value_1", "licenses_value_2"],
+                    "licenses": ["licenses_value1", "licenses_value2"],
                     "mode": "mode_value",
                     "shielded_instance_initial_state": {
                         "dbs": [
@@ -1857,12 +1900,12 @@ def test_insert_rest(request_type):
             "reservation_affinity": {
                 "consume_reservation_type": "consume_reservation_type_value",
                 "key": "key_value",
-                "values": ["values_value_1", "values_value_2"],
+                "values": ["values_value1", "values_value2"],
             },
             "resource_manager_tags": {},
             "resource_policies": [
-                "resource_policies_value_1",
-                "resource_policies_value_2",
+                "resource_policies_value1",
+                "resource_policies_value2",
             ],
             "scheduling": {
                 "automatic_restart": True,
@@ -1873,7 +1916,7 @@ def test_insert_rest(request_type):
                     {
                         "key": "key_value",
                         "operator": "operator_value",
-                        "values": ["values_value_1", "values_value_2"],
+                        "values": ["values_value1", "values_value2"],
                     }
                 ],
                 "on_host_maintenance": "on_host_maintenance_value",
@@ -1881,7 +1924,7 @@ def test_insert_rest(request_type):
                 "provisioning_model": "provisioning_model_value",
             },
             "service_accounts": [
-                {"email": "email_value", "scopes": ["scopes_value_1", "scopes_value_2"]}
+                {"email": "email_value", "scopes": ["scopes_value1", "scopes_value2"]}
             ],
             "shielded_instance_config": {
                 "enable_integrity_monitoring": True,
@@ -1890,7 +1933,7 @@ def test_insert_rest(request_type):
             },
             "tags": {
                 "fingerprint": "fingerprint_value",
-                "items": ["items_value_1", "items_value_2"],
+                "items": ["items_value1", "items_value2"],
             },
         },
         "kind": "kind_value",
@@ -1927,7 +1970,7 @@ def test_insert_rest(request_type):
                     "index": 536,
                     "interface": "interface_value",
                     "kind": "kind_value",
-                    "licenses": ["licenses_value_1", "licenses_value_2"],
+                    "licenses": ["licenses_value1", "licenses_value2"],
                     "mode": "mode_value",
                     "source": "source_value",
                     "storage_bytes": 1403,
@@ -1947,10 +1990,10 @@ def test_insert_rest(request_type):
             "tags": {},
         },
         "status": "status_value",
-        "storage_locations": ["storage_locations_value_1", "storage_locations_value_2"],
+        "storage_locations": ["storage_locations_value1", "storage_locations_value2"],
         "total_storage_bytes": 2046,
     }
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
@@ -1983,7 +2026,9 @@ def test_insert_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.insert(request)
@@ -2019,10 +2064,13 @@ def test_insert_rest_required_fields(request_type=compute.InsertMachineImageRequ
 
     request_init = {}
     request_init["project"] = ""
-    request = request_type(request_init)
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        request_type.to_json(
-            request, including_default_value_fields=False, use_integers_for_enums=False
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
     )
 
@@ -2057,7 +2105,7 @@ def test_insert_rest_required_fields(request_type=compute.InsertMachineImageRequ
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
     return_value = compute.Operation()
@@ -2069,17 +2117,21 @@ def test_insert_rest_required_fields(request_type=compute.InsertMachineImageRequ
         with mock.patch.object(path_template, "transcode") as transcode:
             # A uri without fields and an empty body will force all the
             # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
             transcode_result = {
                 "uri": "v1/sample_method",
                 "method": "post",
-                "query_params": request_init,
+                "query_params": pb_request,
             }
-            transcode_result["body"] = {}
+            transcode_result["body"] = pb_request
             transcode.return_value = transcode_result
 
             response_value = Response()
             response_value.status_code = 200
-            json_return_value = compute.Operation.to_json(return_value)
+
+            pb_return_value = compute.Operation.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
 
@@ -2132,12 +2184,14 @@ def test_insert_rest_interceptors(null_interceptor):
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
-
+        pb_message = compute.InsertMachineImageRequest.pb(
+            compute.InsertMachineImageRequest()
+        )
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
-            "body": None,
-            "query_params": {},
+            "body": pb_message,
+            "query_params": pb_message,
         }
 
         req.return_value = Response()
@@ -2212,12 +2266,12 @@ def test_insert_rest_bad_request(
                         "disk_size_gb": 1261,
                         "disk_type": "disk_type_value",
                         "labels": {},
-                        "licenses": ["licenses_value_1", "licenses_value_2"],
+                        "licenses": ["licenses_value1", "licenses_value2"],
                         "on_update_action": "on_update_action_value",
                         "provisioned_iops": 1740,
                         "resource_policies": [
-                            "resource_policies_value_1",
-                            "resource_policies_value_2",
+                            "resource_policies_value1",
+                            "resource_policies_value2",
                         ],
                         "source_image": "source_image_value",
                         "source_image_encryption_key": {},
@@ -2226,7 +2280,7 @@ def test_insert_rest_bad_request(
                     },
                     "interface": "interface_value",
                     "kind": "kind_value",
-                    "licenses": ["licenses_value_1", "licenses_value_2"],
+                    "licenses": ["licenses_value1", "licenses_value2"],
                     "mode": "mode_value",
                     "shielded_instance_initial_state": {
                         "dbs": [
@@ -2298,12 +2352,12 @@ def test_insert_rest_bad_request(
             "reservation_affinity": {
                 "consume_reservation_type": "consume_reservation_type_value",
                 "key": "key_value",
-                "values": ["values_value_1", "values_value_2"],
+                "values": ["values_value1", "values_value2"],
             },
             "resource_manager_tags": {},
             "resource_policies": [
-                "resource_policies_value_1",
-                "resource_policies_value_2",
+                "resource_policies_value1",
+                "resource_policies_value2",
             ],
             "scheduling": {
                 "automatic_restart": True,
@@ -2314,7 +2368,7 @@ def test_insert_rest_bad_request(
                     {
                         "key": "key_value",
                         "operator": "operator_value",
-                        "values": ["values_value_1", "values_value_2"],
+                        "values": ["values_value1", "values_value2"],
                     }
                 ],
                 "on_host_maintenance": "on_host_maintenance_value",
@@ -2322,7 +2376,7 @@ def test_insert_rest_bad_request(
                 "provisioning_model": "provisioning_model_value",
             },
             "service_accounts": [
-                {"email": "email_value", "scopes": ["scopes_value_1", "scopes_value_2"]}
+                {"email": "email_value", "scopes": ["scopes_value1", "scopes_value2"]}
             ],
             "shielded_instance_config": {
                 "enable_integrity_monitoring": True,
@@ -2331,7 +2385,7 @@ def test_insert_rest_bad_request(
             },
             "tags": {
                 "fingerprint": "fingerprint_value",
-                "items": ["items_value_1", "items_value_2"],
+                "items": ["items_value1", "items_value2"],
             },
         },
         "kind": "kind_value",
@@ -2368,7 +2422,7 @@ def test_insert_rest_bad_request(
                     "index": 536,
                     "interface": "interface_value",
                     "kind": "kind_value",
-                    "licenses": ["licenses_value_1", "licenses_value_2"],
+                    "licenses": ["licenses_value1", "licenses_value2"],
                     "mode": "mode_value",
                     "source": "source_value",
                     "storage_bytes": 1403,
@@ -2388,10 +2442,10 @@ def test_insert_rest_bad_request(
             "tags": {},
         },
         "status": "status_value",
-        "storage_locations": ["storage_locations_value_1", "storage_locations_value_2"],
+        "storage_locations": ["storage_locations_value1", "storage_locations_value2"],
         "total_storage_bytes": 2046,
     }
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
     with mock.patch.object(Session, "request") as req, pytest.raises(
@@ -2431,8 +2485,8 @@ def test_insert_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
-
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -2525,12 +2579,12 @@ def test_insert_unary_rest(request_type):
                         "disk_size_gb": 1261,
                         "disk_type": "disk_type_value",
                         "labels": {},
-                        "licenses": ["licenses_value_1", "licenses_value_2"],
+                        "licenses": ["licenses_value1", "licenses_value2"],
                         "on_update_action": "on_update_action_value",
                         "provisioned_iops": 1740,
                         "resource_policies": [
-                            "resource_policies_value_1",
-                            "resource_policies_value_2",
+                            "resource_policies_value1",
+                            "resource_policies_value2",
                         ],
                         "source_image": "source_image_value",
                         "source_image_encryption_key": {},
@@ -2539,7 +2593,7 @@ def test_insert_unary_rest(request_type):
                     },
                     "interface": "interface_value",
                     "kind": "kind_value",
-                    "licenses": ["licenses_value_1", "licenses_value_2"],
+                    "licenses": ["licenses_value1", "licenses_value2"],
                     "mode": "mode_value",
                     "shielded_instance_initial_state": {
                         "dbs": [
@@ -2611,12 +2665,12 @@ def test_insert_unary_rest(request_type):
             "reservation_affinity": {
                 "consume_reservation_type": "consume_reservation_type_value",
                 "key": "key_value",
-                "values": ["values_value_1", "values_value_2"],
+                "values": ["values_value1", "values_value2"],
             },
             "resource_manager_tags": {},
             "resource_policies": [
-                "resource_policies_value_1",
-                "resource_policies_value_2",
+                "resource_policies_value1",
+                "resource_policies_value2",
             ],
             "scheduling": {
                 "automatic_restart": True,
@@ -2627,7 +2681,7 @@ def test_insert_unary_rest(request_type):
                     {
                         "key": "key_value",
                         "operator": "operator_value",
-                        "values": ["values_value_1", "values_value_2"],
+                        "values": ["values_value1", "values_value2"],
                     }
                 ],
                 "on_host_maintenance": "on_host_maintenance_value",
@@ -2635,7 +2689,7 @@ def test_insert_unary_rest(request_type):
                 "provisioning_model": "provisioning_model_value",
             },
             "service_accounts": [
-                {"email": "email_value", "scopes": ["scopes_value_1", "scopes_value_2"]}
+                {"email": "email_value", "scopes": ["scopes_value1", "scopes_value2"]}
             ],
             "shielded_instance_config": {
                 "enable_integrity_monitoring": True,
@@ -2644,7 +2698,7 @@ def test_insert_unary_rest(request_type):
             },
             "tags": {
                 "fingerprint": "fingerprint_value",
-                "items": ["items_value_1", "items_value_2"],
+                "items": ["items_value1", "items_value2"],
             },
         },
         "kind": "kind_value",
@@ -2681,7 +2735,7 @@ def test_insert_unary_rest(request_type):
                     "index": 536,
                     "interface": "interface_value",
                     "kind": "kind_value",
-                    "licenses": ["licenses_value_1", "licenses_value_2"],
+                    "licenses": ["licenses_value1", "licenses_value2"],
                     "mode": "mode_value",
                     "source": "source_value",
                     "storage_bytes": 1403,
@@ -2701,10 +2755,10 @@ def test_insert_unary_rest(request_type):
             "tags": {},
         },
         "status": "status_value",
-        "storage_locations": ["storage_locations_value_1", "storage_locations_value_2"],
+        "storage_locations": ["storage_locations_value1", "storage_locations_value2"],
         "total_storage_bytes": 2046,
     }
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
@@ -2737,7 +2791,9 @@ def test_insert_unary_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.insert_unary(request)
@@ -2753,10 +2809,13 @@ def test_insert_unary_rest_required_fields(
 
     request_init = {}
     request_init["project"] = ""
-    request = request_type(request_init)
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        request_type.to_json(
-            request, including_default_value_fields=False, use_integers_for_enums=False
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
     )
 
@@ -2791,7 +2850,7 @@ def test_insert_unary_rest_required_fields(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
     return_value = compute.Operation()
@@ -2803,17 +2862,21 @@ def test_insert_unary_rest_required_fields(
         with mock.patch.object(path_template, "transcode") as transcode:
             # A uri without fields and an empty body will force all the
             # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
             transcode_result = {
                 "uri": "v1/sample_method",
                 "method": "post",
-                "query_params": request_init,
+                "query_params": pb_request,
             }
-            transcode_result["body"] = {}
+            transcode_result["body"] = pb_request
             transcode.return_value = transcode_result
 
             response_value = Response()
             response_value.status_code = 200
-            json_return_value = compute.Operation.to_json(return_value)
+
+            pb_return_value = compute.Operation.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
 
@@ -2866,12 +2929,14 @@ def test_insert_unary_rest_interceptors(null_interceptor):
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
-
+        pb_message = compute.InsertMachineImageRequest.pb(
+            compute.InsertMachineImageRequest()
+        )
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
-            "body": None,
-            "query_params": {},
+            "body": pb_message,
+            "query_params": pb_message,
         }
 
         req.return_value = Response()
@@ -2946,12 +3011,12 @@ def test_insert_unary_rest_bad_request(
                         "disk_size_gb": 1261,
                         "disk_type": "disk_type_value",
                         "labels": {},
-                        "licenses": ["licenses_value_1", "licenses_value_2"],
+                        "licenses": ["licenses_value1", "licenses_value2"],
                         "on_update_action": "on_update_action_value",
                         "provisioned_iops": 1740,
                         "resource_policies": [
-                            "resource_policies_value_1",
-                            "resource_policies_value_2",
+                            "resource_policies_value1",
+                            "resource_policies_value2",
                         ],
                         "source_image": "source_image_value",
                         "source_image_encryption_key": {},
@@ -2960,7 +3025,7 @@ def test_insert_unary_rest_bad_request(
                     },
                     "interface": "interface_value",
                     "kind": "kind_value",
-                    "licenses": ["licenses_value_1", "licenses_value_2"],
+                    "licenses": ["licenses_value1", "licenses_value2"],
                     "mode": "mode_value",
                     "shielded_instance_initial_state": {
                         "dbs": [
@@ -3032,12 +3097,12 @@ def test_insert_unary_rest_bad_request(
             "reservation_affinity": {
                 "consume_reservation_type": "consume_reservation_type_value",
                 "key": "key_value",
-                "values": ["values_value_1", "values_value_2"],
+                "values": ["values_value1", "values_value2"],
             },
             "resource_manager_tags": {},
             "resource_policies": [
-                "resource_policies_value_1",
-                "resource_policies_value_2",
+                "resource_policies_value1",
+                "resource_policies_value2",
             ],
             "scheduling": {
                 "automatic_restart": True,
@@ -3048,7 +3113,7 @@ def test_insert_unary_rest_bad_request(
                     {
                         "key": "key_value",
                         "operator": "operator_value",
-                        "values": ["values_value_1", "values_value_2"],
+                        "values": ["values_value1", "values_value2"],
                     }
                 ],
                 "on_host_maintenance": "on_host_maintenance_value",
@@ -3056,7 +3121,7 @@ def test_insert_unary_rest_bad_request(
                 "provisioning_model": "provisioning_model_value",
             },
             "service_accounts": [
-                {"email": "email_value", "scopes": ["scopes_value_1", "scopes_value_2"]}
+                {"email": "email_value", "scopes": ["scopes_value1", "scopes_value2"]}
             ],
             "shielded_instance_config": {
                 "enable_integrity_monitoring": True,
@@ -3065,7 +3130,7 @@ def test_insert_unary_rest_bad_request(
             },
             "tags": {
                 "fingerprint": "fingerprint_value",
-                "items": ["items_value_1", "items_value_2"],
+                "items": ["items_value1", "items_value2"],
             },
         },
         "kind": "kind_value",
@@ -3102,7 +3167,7 @@ def test_insert_unary_rest_bad_request(
                     "index": 536,
                     "interface": "interface_value",
                     "kind": "kind_value",
-                    "licenses": ["licenses_value_1", "licenses_value_2"],
+                    "licenses": ["licenses_value1", "licenses_value2"],
                     "mode": "mode_value",
                     "source": "source_value",
                     "storage_bytes": 1403,
@@ -3122,10 +3187,10 @@ def test_insert_unary_rest_bad_request(
             "tags": {},
         },
         "status": "status_value",
-        "storage_locations": ["storage_locations_value_1", "storage_locations_value_2"],
+        "storage_locations": ["storage_locations_value1", "storage_locations_value2"],
         "total_storage_bytes": 2046,
     }
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
     with mock.patch.object(Session, "request") as req, pytest.raises(
@@ -3165,8 +3230,8 @@ def test_insert_unary_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
-
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -3222,7 +3287,7 @@ def test_list_rest(request_type):
 
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1"}
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
@@ -3237,7 +3302,9 @@ def test_list_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.MachineImageList.to_json(return_value)
+        pb_return_value = compute.MachineImageList.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.list(request)
@@ -3255,10 +3322,13 @@ def test_list_rest_required_fields(request_type=compute.ListMachineImagesRequest
 
     request_init = {}
     request_init["project"] = ""
-    request = request_type(request_init)
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        request_type.to_json(
-            request, including_default_value_fields=False, use_integers_for_enums=False
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
     )
 
@@ -3296,7 +3366,7 @@ def test_list_rest_required_fields(request_type=compute.ListMachineImagesRequest
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
     return_value = compute.MachineImageList()
@@ -3308,16 +3378,20 @@ def test_list_rest_required_fields(request_type=compute.ListMachineImagesRequest
         with mock.patch.object(path_template, "transcode") as transcode:
             # A uri without fields and an empty body will force all the
             # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
             transcode_result = {
                 "uri": "v1/sample_method",
                 "method": "get",
-                "query_params": request_init,
+                "query_params": pb_request,
             }
             transcode.return_value = transcode_result
 
             response_value = Response()
             response_value.status_code = 200
-            json_return_value = compute.MachineImageList.to_json(return_value)
+
+            pb_return_value = compute.MachineImageList.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
 
@@ -3368,12 +3442,14 @@ def test_list_rest_interceptors(null_interceptor):
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
-
+        pb_message = compute.ListMachineImagesRequest.pb(
+            compute.ListMachineImagesRequest()
+        )
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
-            "body": None,
-            "query_params": {},
+            "body": pb_message,
+            "query_params": pb_message,
         }
 
         req.return_value = Response()
@@ -3413,7 +3489,7 @@ def test_list_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1"}
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
     with mock.patch.object(Session, "request") as req, pytest.raises(
@@ -3450,8 +3526,8 @@ def test_list_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.MachineImageList.to_json(return_value)
-
+        pb_return_value = compute.MachineImageList.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -3569,7 +3645,7 @@ def test_set_iam_policy_rest(request_type):
                     "location": "location_value",
                     "title": "title_value",
                 },
-                "members": ["members_value_1", "members_value_2"],
+                "members": ["members_value1", "members_value2"],
                 "role": "role_value",
             }
         ],
@@ -3580,16 +3656,16 @@ def test_set_iam_policy_rest(request_type):
                     "audit_log_configs": [
                         {
                             "exempted_members": [
-                                "exempted_members_value_1",
-                                "exempted_members_value_2",
+                                "exempted_members_value1",
+                                "exempted_members_value2",
                             ],
                             "ignore_child_exemptions": True,
                             "log_type": "log_type_value",
                         }
                     ],
                     "exempted_members": [
-                        "exempted_members_value_1",
-                        "exempted_members_value_2",
+                        "exempted_members_value1",
+                        "exempted_members_value2",
                     ],
                     "service": "service_value",
                 }
@@ -3606,11 +3682,11 @@ def test_set_iam_policy_rest(request_type):
                             "op": "op_value",
                             "svc": "svc_value",
                             "sys": "sys_value",
-                            "values": ["values_value_1", "values_value_2"],
+                            "values": ["values_value1", "values_value2"],
                         }
                     ],
                     "description": "description_value",
-                    "ins": ["ins_value_1", "ins_value_2"],
+                    "ins": ["ins_value1", "ins_value2"],
                     "log_configs": [
                         {
                             "cloud_audit": {
@@ -3629,14 +3705,14 @@ def test_set_iam_policy_rest(request_type):
                             "data_access": {"log_mode": "log_mode_value"},
                         }
                     ],
-                    "not_ins": ["not_ins_value_1", "not_ins_value_2"],
-                    "permissions": ["permissions_value_1", "permissions_value_2"],
+                    "not_ins": ["not_ins_value1", "not_ins_value2"],
+                    "permissions": ["permissions_value1", "permissions_value2"],
                 }
             ],
             "version": 774,
         },
     }
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
@@ -3650,7 +3726,9 @@ def test_set_iam_policy_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.Policy.to_json(return_value)
+        pb_return_value = compute.Policy.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.set_iam_policy(request)
@@ -3670,10 +3748,13 @@ def test_set_iam_policy_rest_required_fields(
     request_init = {}
     request_init["project"] = ""
     request_init["resource"] = ""
-    request = request_type(request_init)
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        request_type.to_json(
-            request, including_default_value_fields=False, use_integers_for_enums=False
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
     )
 
@@ -3704,7 +3785,7 @@ def test_set_iam_policy_rest_required_fields(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
     return_value = compute.Policy()
@@ -3716,17 +3797,21 @@ def test_set_iam_policy_rest_required_fields(
         with mock.patch.object(path_template, "transcode") as transcode:
             # A uri without fields and an empty body will force all the
             # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
             transcode_result = {
                 "uri": "v1/sample_method",
                 "method": "post",
-                "query_params": request_init,
+                "query_params": pb_request,
             }
-            transcode_result["body"] = {}
+            transcode_result["body"] = pb_request
             transcode.return_value = transcode_result
 
             response_value = Response()
             response_value.status_code = 200
-            json_return_value = compute.Policy.to_json(return_value)
+
+            pb_return_value = compute.Policy.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
 
@@ -3775,12 +3860,14 @@ def test_set_iam_policy_rest_interceptors(null_interceptor):
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
-
+        pb_message = compute.SetIamPolicyMachineImageRequest.pb(
+            compute.SetIamPolicyMachineImageRequest()
+        )
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
-            "body": None,
-            "query_params": {},
+            "body": pb_message,
+            "query_params": pb_message,
         }
 
         req.return_value = Response()
@@ -3828,7 +3915,7 @@ def test_set_iam_policy_rest_bad_request(
                     "location": "location_value",
                     "title": "title_value",
                 },
-                "members": ["members_value_1", "members_value_2"],
+                "members": ["members_value1", "members_value2"],
                 "role": "role_value",
             }
         ],
@@ -3839,16 +3926,16 @@ def test_set_iam_policy_rest_bad_request(
                     "audit_log_configs": [
                         {
                             "exempted_members": [
-                                "exempted_members_value_1",
-                                "exempted_members_value_2",
+                                "exempted_members_value1",
+                                "exempted_members_value2",
                             ],
                             "ignore_child_exemptions": True,
                             "log_type": "log_type_value",
                         }
                     ],
                     "exempted_members": [
-                        "exempted_members_value_1",
-                        "exempted_members_value_2",
+                        "exempted_members_value1",
+                        "exempted_members_value2",
                     ],
                     "service": "service_value",
                 }
@@ -3865,11 +3952,11 @@ def test_set_iam_policy_rest_bad_request(
                             "op": "op_value",
                             "svc": "svc_value",
                             "sys": "sys_value",
-                            "values": ["values_value_1", "values_value_2"],
+                            "values": ["values_value1", "values_value2"],
                         }
                     ],
                     "description": "description_value",
-                    "ins": ["ins_value_1", "ins_value_2"],
+                    "ins": ["ins_value1", "ins_value2"],
                     "log_configs": [
                         {
                             "cloud_audit": {
@@ -3888,14 +3975,14 @@ def test_set_iam_policy_rest_bad_request(
                             "data_access": {"log_mode": "log_mode_value"},
                         }
                     ],
-                    "not_ins": ["not_ins_value_1", "not_ins_value_2"],
-                    "permissions": ["permissions_value_1", "permissions_value_2"],
+                    "not_ins": ["not_ins_value1", "not_ins_value2"],
+                    "permissions": ["permissions_value1", "permissions_value2"],
                 }
             ],
             "version": 774,
         },
     }
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
     with mock.patch.object(Session, "request") as req, pytest.raises(
@@ -3936,8 +4023,8 @@ def test_set_iam_policy_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.Policy.to_json(return_value)
-
+        pb_return_value = compute.Policy.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -3995,9 +4082,9 @@ def test_test_iam_permissions_rest(request_type):
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "resource": "sample2"}
     request_init["test_permissions_request_resource"] = {
-        "permissions": ["permissions_value_1", "permissions_value_2"]
+        "permissions": ["permissions_value1", "permissions_value2"]
     }
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
@@ -4009,7 +4096,9 @@ def test_test_iam_permissions_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.TestPermissionsResponse.to_json(return_value)
+        pb_return_value = compute.TestPermissionsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.test_iam_permissions(request)
@@ -4027,10 +4116,13 @@ def test_test_iam_permissions_rest_required_fields(
     request_init = {}
     request_init["project"] = ""
     request_init["resource"] = ""
-    request = request_type(request_init)
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        request_type.to_json(
-            request, including_default_value_fields=False, use_integers_for_enums=False
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
     )
 
@@ -4061,7 +4153,7 @@ def test_test_iam_permissions_rest_required_fields(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
     return_value = compute.TestPermissionsResponse()
@@ -4073,17 +4165,21 @@ def test_test_iam_permissions_rest_required_fields(
         with mock.patch.object(path_template, "transcode") as transcode:
             # A uri without fields and an empty body will force all the
             # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
             transcode_result = {
                 "uri": "v1/sample_method",
                 "method": "post",
-                "query_params": request_init,
+                "query_params": pb_request,
             }
-            transcode_result["body"] = {}
+            transcode_result["body"] = pb_request
             transcode.return_value = transcode_result
 
             response_value = Response()
             response_value.status_code = 200
-            json_return_value = compute.TestPermissionsResponse.to_json(return_value)
+
+            pb_return_value = compute.TestPermissionsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
 
@@ -4132,12 +4228,14 @@ def test_test_iam_permissions_rest_interceptors(null_interceptor):
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
-
+        pb_message = compute.TestIamPermissionsMachineImageRequest.pb(
+            compute.TestIamPermissionsMachineImageRequest()
+        )
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
-            "body": None,
-            "query_params": {},
+            "body": pb_message,
+            "query_params": pb_message,
         }
 
         req.return_value = Response()
@@ -4178,9 +4276,9 @@ def test_test_iam_permissions_rest_bad_request(
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "resource": "sample2"}
     request_init["test_permissions_request_resource"] = {
-        "permissions": ["permissions_value_1", "permissions_value_2"]
+        "permissions": ["permissions_value1", "permissions_value2"]
     }
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
     with mock.patch.object(Session, "request") as req, pytest.raises(
@@ -4221,8 +4319,8 @@ def test_test_iam_permissions_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.TestPermissionsResponse.to_json(return_value)
-
+        pb_return_value = compute.TestPermissionsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 

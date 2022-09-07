@@ -25,6 +25,7 @@ except ImportError:
 import grpc
 from grpc.experimental import aio
 from collections.abc import Iterable
+from google.protobuf import json_format
 import json
 import math
 import pytest
@@ -552,7 +553,7 @@ def test_aggregated_list_rest(request_type):
 
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1"}
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
@@ -568,7 +569,9 @@ def test_aggregated_list_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.RouterAggregatedList.to_json(return_value)
+        pb_return_value = compute.RouterAggregatedList.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.aggregated_list(request)
@@ -589,10 +592,13 @@ def test_aggregated_list_rest_required_fields(
 
     request_init = {}
     request_init["project"] = ""
-    request = request_type(request_init)
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        request_type.to_json(
-            request, including_default_value_fields=False, use_integers_for_enums=False
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
     )
 
@@ -631,7 +637,7 @@ def test_aggregated_list_rest_required_fields(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
     return_value = compute.RouterAggregatedList()
@@ -643,16 +649,20 @@ def test_aggregated_list_rest_required_fields(
         with mock.patch.object(path_template, "transcode") as transcode:
             # A uri without fields and an empty body will force all the
             # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
             transcode_result = {
                 "uri": "v1/sample_method",
                 "method": "get",
-                "query_params": request_init,
+                "query_params": pb_request,
             }
             transcode.return_value = transcode_result
 
             response_value = Response()
             response_value.status_code = 200
-            json_return_value = compute.RouterAggregatedList.to_json(return_value)
+
+            pb_return_value = compute.RouterAggregatedList.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
 
@@ -702,12 +712,14 @@ def test_aggregated_list_rest_interceptors(null_interceptor):
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
-
+        pb_message = compute.AggregatedListRoutersRequest.pb(
+            compute.AggregatedListRoutersRequest()
+        )
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
-            "body": None,
-            "query_params": {},
+            "body": pb_message,
+            "query_params": pb_message,
         }
 
         req.return_value = Response()
@@ -747,7 +759,7 @@ def test_aggregated_list_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1"}
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
     with mock.patch.object(Session, "request") as req, pytest.raises(
@@ -784,8 +796,8 @@ def test_aggregated_list_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.RouterAggregatedList.to_json(return_value)
-
+        pb_return_value = compute.RouterAggregatedList.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -902,7 +914,7 @@ def test_delete_rest(request_type):
 
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "region": "sample2", "router": "sample3"}
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
@@ -935,7 +947,9 @@ def test_delete_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.delete(request)
@@ -973,10 +987,13 @@ def test_delete_rest_required_fields(request_type=compute.DeleteRouterRequest):
     request_init["project"] = ""
     request_init["region"] = ""
     request_init["router"] = ""
-    request = request_type(request_init)
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        request_type.to_json(
-            request, including_default_value_fields=False, use_integers_for_enums=False
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
     )
 
@@ -1012,7 +1029,7 @@ def test_delete_rest_required_fields(request_type=compute.DeleteRouterRequest):
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
     return_value = compute.Operation()
@@ -1024,16 +1041,20 @@ def test_delete_rest_required_fields(request_type=compute.DeleteRouterRequest):
         with mock.patch.object(path_template, "transcode") as transcode:
             # A uri without fields and an empty body will force all the
             # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
             transcode_result = {
                 "uri": "v1/sample_method",
                 "method": "delete",
-                "query_params": request_init,
+                "query_params": pb_request,
             }
             transcode.return_value = transcode_result
 
             response_value = Response()
             response_value.status_code = 200
-            json_return_value = compute.Operation.to_json(return_value)
+
+            pb_return_value = compute.Operation.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
 
@@ -1080,12 +1101,12 @@ def test_delete_rest_interceptors(null_interceptor):
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
-
+        pb_message = compute.DeleteRouterRequest.pb(compute.DeleteRouterRequest())
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
-            "body": None,
-            "query_params": {},
+            "body": pb_message,
+            "query_params": pb_message,
         }
 
         req.return_value = Response()
@@ -1123,7 +1144,7 @@ def test_delete_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "region": "sample2", "router": "sample3"}
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
     with mock.patch.object(Session, "request") as req, pytest.raises(
@@ -1166,8 +1187,8 @@ def test_delete_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
-
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -1222,7 +1243,7 @@ def test_delete_unary_rest(request_type):
 
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "region": "sample2", "router": "sample3"}
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
@@ -1255,7 +1276,9 @@ def test_delete_unary_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.delete_unary(request)
@@ -1271,10 +1294,13 @@ def test_delete_unary_rest_required_fields(request_type=compute.DeleteRouterRequ
     request_init["project"] = ""
     request_init["region"] = ""
     request_init["router"] = ""
-    request = request_type(request_init)
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        request_type.to_json(
-            request, including_default_value_fields=False, use_integers_for_enums=False
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
     )
 
@@ -1310,7 +1336,7 @@ def test_delete_unary_rest_required_fields(request_type=compute.DeleteRouterRequ
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
     return_value = compute.Operation()
@@ -1322,16 +1348,20 @@ def test_delete_unary_rest_required_fields(request_type=compute.DeleteRouterRequ
         with mock.patch.object(path_template, "transcode") as transcode:
             # A uri without fields and an empty body will force all the
             # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
             transcode_result = {
                 "uri": "v1/sample_method",
                 "method": "delete",
-                "query_params": request_init,
+                "query_params": pb_request,
             }
             transcode.return_value = transcode_result
 
             response_value = Response()
             response_value.status_code = 200
-            json_return_value = compute.Operation.to_json(return_value)
+
+            pb_return_value = compute.Operation.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
 
@@ -1378,12 +1408,12 @@ def test_delete_unary_rest_interceptors(null_interceptor):
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
-
+        pb_message = compute.DeleteRouterRequest.pb(compute.DeleteRouterRequest())
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
-            "body": None,
-            "query_params": {},
+            "body": pb_message,
+            "query_params": pb_message,
         }
 
         req.return_value = Response()
@@ -1421,7 +1451,7 @@ def test_delete_unary_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "region": "sample2", "router": "sample3"}
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
     with mock.patch.object(Session, "request") as req, pytest.raises(
@@ -1464,8 +1494,8 @@ def test_delete_unary_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
-
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -1520,7 +1550,7 @@ def test_get_rest(request_type):
 
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "region": "sample2", "router": "sample3"}
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
@@ -1540,7 +1570,9 @@ def test_get_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.Router.to_json(return_value)
+        pb_return_value = compute.Router.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.get(request)
@@ -1565,10 +1597,13 @@ def test_get_rest_required_fields(request_type=compute.GetRouterRequest):
     request_init["project"] = ""
     request_init["region"] = ""
     request_init["router"] = ""
-    request = request_type(request_init)
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        request_type.to_json(
-            request, including_default_value_fields=False, use_integers_for_enums=False
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
     )
 
@@ -1602,7 +1637,7 @@ def test_get_rest_required_fields(request_type=compute.GetRouterRequest):
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
     return_value = compute.Router()
@@ -1614,16 +1649,20 @@ def test_get_rest_required_fields(request_type=compute.GetRouterRequest):
         with mock.patch.object(path_template, "transcode") as transcode:
             # A uri without fields and an empty body will force all the
             # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
             transcode_result = {
                 "uri": "v1/sample_method",
                 "method": "get",
-                "query_params": request_init,
+                "query_params": pb_request,
             }
             transcode.return_value = transcode_result
 
             response_value = Response()
             response_value.status_code = 200
-            json_return_value = compute.Router.to_json(return_value)
+
+            pb_return_value = compute.Router.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
 
@@ -1670,12 +1709,12 @@ def test_get_rest_interceptors(null_interceptor):
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
-
+        pb_message = compute.GetRouterRequest.pb(compute.GetRouterRequest())
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
-            "body": None,
-            "query_params": {},
+            "body": pb_message,
+            "query_params": pb_message,
         }
 
         req.return_value = Response()
@@ -1713,7 +1752,7 @@ def test_get_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "region": "sample2", "router": "sample3"}
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
     with mock.patch.object(Session, "request") as req, pytest.raises(
@@ -1756,8 +1795,8 @@ def test_get_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.Router.to_json(return_value)
-
+        pb_return_value = compute.Router.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -1812,7 +1851,7 @@ def test_get_nat_mapping_info_rest(request_type):
 
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "region": "sample2", "router": "sample3"}
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
@@ -1827,7 +1866,9 @@ def test_get_nat_mapping_info_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.VmEndpointNatMappingsList.to_json(return_value)
+        pb_return_value = compute.VmEndpointNatMappingsList.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.get_nat_mapping_info(request)
@@ -1849,10 +1890,13 @@ def test_get_nat_mapping_info_rest_required_fields(
     request_init["project"] = ""
     request_init["region"] = ""
     request_init["router"] = ""
-    request = request_type(request_init)
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        request_type.to_json(
-            request, including_default_value_fields=False, use_integers_for_enums=False
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
     )
 
@@ -1896,7 +1940,7 @@ def test_get_nat_mapping_info_rest_required_fields(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
     return_value = compute.VmEndpointNatMappingsList()
@@ -1908,16 +1952,20 @@ def test_get_nat_mapping_info_rest_required_fields(
         with mock.patch.object(path_template, "transcode") as transcode:
             # A uri without fields and an empty body will force all the
             # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
             transcode_result = {
                 "uri": "v1/sample_method",
                 "method": "get",
-                "query_params": request_init,
+                "query_params": pb_request,
             }
             transcode.return_value = transcode_result
 
             response_value = Response()
             response_value.status_code = 200
-            json_return_value = compute.VmEndpointNatMappingsList.to_json(return_value)
+
+            pb_return_value = compute.VmEndpointNatMappingsList.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
 
@@ -1972,12 +2020,14 @@ def test_get_nat_mapping_info_rest_interceptors(null_interceptor):
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
-
+        pb_message = compute.GetNatMappingInfoRoutersRequest.pb(
+            compute.GetNatMappingInfoRoutersRequest()
+        )
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
-            "body": None,
-            "query_params": {},
+            "body": pb_message,
+            "query_params": pb_message,
         }
 
         req.return_value = Response()
@@ -2017,7 +2067,7 @@ def test_get_nat_mapping_info_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "region": "sample2", "router": "sample3"}
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
     with mock.patch.object(Session, "request") as req, pytest.raises(
@@ -2060,8 +2110,8 @@ def test_get_nat_mapping_info_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.VmEndpointNatMappingsList.to_json(return_value)
-
+        pb_return_value = compute.VmEndpointNatMappingsList.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -2175,7 +2225,7 @@ def test_get_router_status_rest(request_type):
 
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "region": "sample2", "router": "sample3"}
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
@@ -2187,7 +2237,9 @@ def test_get_router_status_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.RouterStatusResponse.to_json(return_value)
+        pb_return_value = compute.RouterStatusResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.get_router_status(request)
@@ -2206,10 +2258,13 @@ def test_get_router_status_rest_required_fields(
     request_init["project"] = ""
     request_init["region"] = ""
     request_init["router"] = ""
-    request = request_type(request_init)
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        request_type.to_json(
-            request, including_default_value_fields=False, use_integers_for_enums=False
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
     )
 
@@ -2243,7 +2298,7 @@ def test_get_router_status_rest_required_fields(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
     return_value = compute.RouterStatusResponse()
@@ -2255,16 +2310,20 @@ def test_get_router_status_rest_required_fields(
         with mock.patch.object(path_template, "transcode") as transcode:
             # A uri without fields and an empty body will force all the
             # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
             transcode_result = {
                 "uri": "v1/sample_method",
                 "method": "get",
-                "query_params": request_init,
+                "query_params": pb_request,
             }
             transcode.return_value = transcode_result
 
             response_value = Response()
             response_value.status_code = 200
-            json_return_value = compute.RouterStatusResponse.to_json(return_value)
+
+            pb_return_value = compute.RouterStatusResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
 
@@ -2311,12 +2370,14 @@ def test_get_router_status_rest_interceptors(null_interceptor):
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
-
+        pb_message = compute.GetRouterStatusRouterRequest.pb(
+            compute.GetRouterStatusRouterRequest()
+        )
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
-            "body": None,
-            "query_params": {},
+            "body": pb_message,
+            "query_params": pb_message,
         }
 
         req.return_value = Response()
@@ -2356,7 +2417,7 @@ def test_get_router_status_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "region": "sample2", "router": "sample3"}
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
     with mock.patch.object(Session, "request") as req, pytest.raises(
@@ -2399,8 +2460,8 @@ def test_get_router_status_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.RouterStatusResponse.to_json(return_value)
-
+        pb_return_value = compute.RouterStatusResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -2459,8 +2520,8 @@ def test_insert_rest(request_type):
         "bgp": {
             "advertise_mode": "advertise_mode_value",
             "advertised_groups": [
-                "advertised_groups_value_1",
-                "advertised_groups_value_2",
+                "advertised_groups_value1",
+                "advertised_groups_value2",
             ],
             "advertised_ip_ranges": [
                 {"description": "description_value", "range_": "range__value"}
@@ -2472,8 +2533,8 @@ def test_insert_rest(request_type):
             {
                 "advertise_mode": "advertise_mode_value",
                 "advertised_groups": [
-                    "advertised_groups_value_1",
-                    "advertised_groups_value_2",
+                    "advertised_groups_value1",
+                    "advertised_groups_value2",
                 ],
                 "advertised_ip_ranges": {},
                 "advertised_route_priority": 2714,
@@ -2516,27 +2577,27 @@ def test_insert_rest(request_type):
         "name": "name_value",
         "nats": [
             {
-                "drain_nat_ips": ["drain_nat_ips_value_1", "drain_nat_ips_value_2"],
+                "drain_nat_ips": ["drain_nat_ips_value1", "drain_nat_ips_value2"],
                 "enable_dynamic_port_allocation": True,
                 "enable_endpoint_independent_mapping": True,
-                "endpoint_types": ["endpoint_types_value_1", "endpoint_types_value_2"],
+                "endpoint_types": ["endpoint_types_value1", "endpoint_types_value2"],
                 "icmp_idle_timeout_sec": 2214,
                 "log_config": {"enable": True, "filter": "filter_value"},
                 "max_ports_per_vm": 1733,
                 "min_ports_per_vm": 1731,
                 "name": "name_value",
                 "nat_ip_allocate_option": "nat_ip_allocate_option_value",
-                "nat_ips": ["nat_ips_value_1", "nat_ips_value_2"],
+                "nat_ips": ["nat_ips_value1", "nat_ips_value2"],
                 "rules": [
                     {
                         "action": {
                             "source_nat_active_ips": [
-                                "source_nat_active_ips_value_1",
-                                "source_nat_active_ips_value_2",
+                                "source_nat_active_ips_value1",
+                                "source_nat_active_ips_value2",
                             ],
                             "source_nat_drain_ips": [
-                                "source_nat_drain_ips_value_1",
-                                "source_nat_drain_ips_value_2",
+                                "source_nat_drain_ips_value1",
+                                "source_nat_drain_ips_value2",
                             ],
                         },
                         "description": "description_value",
@@ -2549,12 +2610,12 @@ def test_insert_rest(request_type):
                     {
                         "name": "name_value",
                         "secondary_ip_range_names": [
-                            "secondary_ip_range_names_value_1",
-                            "secondary_ip_range_names_value_2",
+                            "secondary_ip_range_names_value1",
+                            "secondary_ip_range_names_value2",
                         ],
                         "source_ip_ranges_to_nat": [
-                            "source_ip_ranges_to_nat_value_1",
-                            "source_ip_ranges_to_nat_value_2",
+                            "source_ip_ranges_to_nat_value1",
+                            "source_ip_ranges_to_nat_value2",
                         ],
                     }
                 ],
@@ -2568,7 +2629,7 @@ def test_insert_rest(request_type):
         "region": "region_value",
         "self_link": "self_link_value",
     }
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
@@ -2601,7 +2662,9 @@ def test_insert_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.insert(request)
@@ -2638,10 +2701,13 @@ def test_insert_rest_required_fields(request_type=compute.InsertRouterRequest):
     request_init = {}
     request_init["project"] = ""
     request_init["region"] = ""
-    request = request_type(request_init)
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        request_type.to_json(
-            request, including_default_value_fields=False, use_integers_for_enums=False
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
     )
 
@@ -2674,7 +2740,7 @@ def test_insert_rest_required_fields(request_type=compute.InsertRouterRequest):
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
     return_value = compute.Operation()
@@ -2686,17 +2752,21 @@ def test_insert_rest_required_fields(request_type=compute.InsertRouterRequest):
         with mock.patch.object(path_template, "transcode") as transcode:
             # A uri without fields and an empty body will force all the
             # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
             transcode_result = {
                 "uri": "v1/sample_method",
                 "method": "post",
-                "query_params": request_init,
+                "query_params": pb_request,
             }
-            transcode_result["body"] = {}
+            transcode_result["body"] = pb_request
             transcode.return_value = transcode_result
 
             response_value = Response()
             response_value.status_code = 200
-            json_return_value = compute.Operation.to_json(return_value)
+
+            pb_return_value = compute.Operation.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
 
@@ -2743,12 +2813,12 @@ def test_insert_rest_interceptors(null_interceptor):
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
-
+        pb_message = compute.InsertRouterRequest.pb(compute.InsertRouterRequest())
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
-            "body": None,
-            "query_params": {},
+            "body": pb_message,
+            "query_params": pb_message,
         }
 
         req.return_value = Response()
@@ -2790,8 +2860,8 @@ def test_insert_rest_bad_request(
         "bgp": {
             "advertise_mode": "advertise_mode_value",
             "advertised_groups": [
-                "advertised_groups_value_1",
-                "advertised_groups_value_2",
+                "advertised_groups_value1",
+                "advertised_groups_value2",
             ],
             "advertised_ip_ranges": [
                 {"description": "description_value", "range_": "range__value"}
@@ -2803,8 +2873,8 @@ def test_insert_rest_bad_request(
             {
                 "advertise_mode": "advertise_mode_value",
                 "advertised_groups": [
-                    "advertised_groups_value_1",
-                    "advertised_groups_value_2",
+                    "advertised_groups_value1",
+                    "advertised_groups_value2",
                 ],
                 "advertised_ip_ranges": {},
                 "advertised_route_priority": 2714,
@@ -2847,27 +2917,27 @@ def test_insert_rest_bad_request(
         "name": "name_value",
         "nats": [
             {
-                "drain_nat_ips": ["drain_nat_ips_value_1", "drain_nat_ips_value_2"],
+                "drain_nat_ips": ["drain_nat_ips_value1", "drain_nat_ips_value2"],
                 "enable_dynamic_port_allocation": True,
                 "enable_endpoint_independent_mapping": True,
-                "endpoint_types": ["endpoint_types_value_1", "endpoint_types_value_2"],
+                "endpoint_types": ["endpoint_types_value1", "endpoint_types_value2"],
                 "icmp_idle_timeout_sec": 2214,
                 "log_config": {"enable": True, "filter": "filter_value"},
                 "max_ports_per_vm": 1733,
                 "min_ports_per_vm": 1731,
                 "name": "name_value",
                 "nat_ip_allocate_option": "nat_ip_allocate_option_value",
-                "nat_ips": ["nat_ips_value_1", "nat_ips_value_2"],
+                "nat_ips": ["nat_ips_value1", "nat_ips_value2"],
                 "rules": [
                     {
                         "action": {
                             "source_nat_active_ips": [
-                                "source_nat_active_ips_value_1",
-                                "source_nat_active_ips_value_2",
+                                "source_nat_active_ips_value1",
+                                "source_nat_active_ips_value2",
                             ],
                             "source_nat_drain_ips": [
-                                "source_nat_drain_ips_value_1",
-                                "source_nat_drain_ips_value_2",
+                                "source_nat_drain_ips_value1",
+                                "source_nat_drain_ips_value2",
                             ],
                         },
                         "description": "description_value",
@@ -2880,12 +2950,12 @@ def test_insert_rest_bad_request(
                     {
                         "name": "name_value",
                         "secondary_ip_range_names": [
-                            "secondary_ip_range_names_value_1",
-                            "secondary_ip_range_names_value_2",
+                            "secondary_ip_range_names_value1",
+                            "secondary_ip_range_names_value2",
                         ],
                         "source_ip_ranges_to_nat": [
-                            "source_ip_ranges_to_nat_value_1",
-                            "source_ip_ranges_to_nat_value_2",
+                            "source_ip_ranges_to_nat_value1",
+                            "source_ip_ranges_to_nat_value2",
                         ],
                     }
                 ],
@@ -2899,7 +2969,7 @@ def test_insert_rest_bad_request(
         "region": "region_value",
         "self_link": "self_link_value",
     }
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
     with mock.patch.object(Session, "request") as req, pytest.raises(
@@ -2940,8 +3010,8 @@ def test_insert_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
-
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -3002,8 +3072,8 @@ def test_insert_unary_rest(request_type):
         "bgp": {
             "advertise_mode": "advertise_mode_value",
             "advertised_groups": [
-                "advertised_groups_value_1",
-                "advertised_groups_value_2",
+                "advertised_groups_value1",
+                "advertised_groups_value2",
             ],
             "advertised_ip_ranges": [
                 {"description": "description_value", "range_": "range__value"}
@@ -3015,8 +3085,8 @@ def test_insert_unary_rest(request_type):
             {
                 "advertise_mode": "advertise_mode_value",
                 "advertised_groups": [
-                    "advertised_groups_value_1",
-                    "advertised_groups_value_2",
+                    "advertised_groups_value1",
+                    "advertised_groups_value2",
                 ],
                 "advertised_ip_ranges": {},
                 "advertised_route_priority": 2714,
@@ -3059,27 +3129,27 @@ def test_insert_unary_rest(request_type):
         "name": "name_value",
         "nats": [
             {
-                "drain_nat_ips": ["drain_nat_ips_value_1", "drain_nat_ips_value_2"],
+                "drain_nat_ips": ["drain_nat_ips_value1", "drain_nat_ips_value2"],
                 "enable_dynamic_port_allocation": True,
                 "enable_endpoint_independent_mapping": True,
-                "endpoint_types": ["endpoint_types_value_1", "endpoint_types_value_2"],
+                "endpoint_types": ["endpoint_types_value1", "endpoint_types_value2"],
                 "icmp_idle_timeout_sec": 2214,
                 "log_config": {"enable": True, "filter": "filter_value"},
                 "max_ports_per_vm": 1733,
                 "min_ports_per_vm": 1731,
                 "name": "name_value",
                 "nat_ip_allocate_option": "nat_ip_allocate_option_value",
-                "nat_ips": ["nat_ips_value_1", "nat_ips_value_2"],
+                "nat_ips": ["nat_ips_value1", "nat_ips_value2"],
                 "rules": [
                     {
                         "action": {
                             "source_nat_active_ips": [
-                                "source_nat_active_ips_value_1",
-                                "source_nat_active_ips_value_2",
+                                "source_nat_active_ips_value1",
+                                "source_nat_active_ips_value2",
                             ],
                             "source_nat_drain_ips": [
-                                "source_nat_drain_ips_value_1",
-                                "source_nat_drain_ips_value_2",
+                                "source_nat_drain_ips_value1",
+                                "source_nat_drain_ips_value2",
                             ],
                         },
                         "description": "description_value",
@@ -3092,12 +3162,12 @@ def test_insert_unary_rest(request_type):
                     {
                         "name": "name_value",
                         "secondary_ip_range_names": [
-                            "secondary_ip_range_names_value_1",
-                            "secondary_ip_range_names_value_2",
+                            "secondary_ip_range_names_value1",
+                            "secondary_ip_range_names_value2",
                         ],
                         "source_ip_ranges_to_nat": [
-                            "source_ip_ranges_to_nat_value_1",
-                            "source_ip_ranges_to_nat_value_2",
+                            "source_ip_ranges_to_nat_value1",
+                            "source_ip_ranges_to_nat_value2",
                         ],
                     }
                 ],
@@ -3111,7 +3181,7 @@ def test_insert_unary_rest(request_type):
         "region": "region_value",
         "self_link": "self_link_value",
     }
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
@@ -3144,7 +3214,9 @@ def test_insert_unary_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.insert_unary(request)
@@ -3159,10 +3231,13 @@ def test_insert_unary_rest_required_fields(request_type=compute.InsertRouterRequ
     request_init = {}
     request_init["project"] = ""
     request_init["region"] = ""
-    request = request_type(request_init)
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        request_type.to_json(
-            request, including_default_value_fields=False, use_integers_for_enums=False
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
     )
 
@@ -3195,7 +3270,7 @@ def test_insert_unary_rest_required_fields(request_type=compute.InsertRouterRequ
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
     return_value = compute.Operation()
@@ -3207,17 +3282,21 @@ def test_insert_unary_rest_required_fields(request_type=compute.InsertRouterRequ
         with mock.patch.object(path_template, "transcode") as transcode:
             # A uri without fields and an empty body will force all the
             # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
             transcode_result = {
                 "uri": "v1/sample_method",
                 "method": "post",
-                "query_params": request_init,
+                "query_params": pb_request,
             }
-            transcode_result["body"] = {}
+            transcode_result["body"] = pb_request
             transcode.return_value = transcode_result
 
             response_value = Response()
             response_value.status_code = 200
-            json_return_value = compute.Operation.to_json(return_value)
+
+            pb_return_value = compute.Operation.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
 
@@ -3264,12 +3343,12 @@ def test_insert_unary_rest_interceptors(null_interceptor):
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
-
+        pb_message = compute.InsertRouterRequest.pb(compute.InsertRouterRequest())
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
-            "body": None,
-            "query_params": {},
+            "body": pb_message,
+            "query_params": pb_message,
         }
 
         req.return_value = Response()
@@ -3311,8 +3390,8 @@ def test_insert_unary_rest_bad_request(
         "bgp": {
             "advertise_mode": "advertise_mode_value",
             "advertised_groups": [
-                "advertised_groups_value_1",
-                "advertised_groups_value_2",
+                "advertised_groups_value1",
+                "advertised_groups_value2",
             ],
             "advertised_ip_ranges": [
                 {"description": "description_value", "range_": "range__value"}
@@ -3324,8 +3403,8 @@ def test_insert_unary_rest_bad_request(
             {
                 "advertise_mode": "advertise_mode_value",
                 "advertised_groups": [
-                    "advertised_groups_value_1",
-                    "advertised_groups_value_2",
+                    "advertised_groups_value1",
+                    "advertised_groups_value2",
                 ],
                 "advertised_ip_ranges": {},
                 "advertised_route_priority": 2714,
@@ -3368,27 +3447,27 @@ def test_insert_unary_rest_bad_request(
         "name": "name_value",
         "nats": [
             {
-                "drain_nat_ips": ["drain_nat_ips_value_1", "drain_nat_ips_value_2"],
+                "drain_nat_ips": ["drain_nat_ips_value1", "drain_nat_ips_value2"],
                 "enable_dynamic_port_allocation": True,
                 "enable_endpoint_independent_mapping": True,
-                "endpoint_types": ["endpoint_types_value_1", "endpoint_types_value_2"],
+                "endpoint_types": ["endpoint_types_value1", "endpoint_types_value2"],
                 "icmp_idle_timeout_sec": 2214,
                 "log_config": {"enable": True, "filter": "filter_value"},
                 "max_ports_per_vm": 1733,
                 "min_ports_per_vm": 1731,
                 "name": "name_value",
                 "nat_ip_allocate_option": "nat_ip_allocate_option_value",
-                "nat_ips": ["nat_ips_value_1", "nat_ips_value_2"],
+                "nat_ips": ["nat_ips_value1", "nat_ips_value2"],
                 "rules": [
                     {
                         "action": {
                             "source_nat_active_ips": [
-                                "source_nat_active_ips_value_1",
-                                "source_nat_active_ips_value_2",
+                                "source_nat_active_ips_value1",
+                                "source_nat_active_ips_value2",
                             ],
                             "source_nat_drain_ips": [
-                                "source_nat_drain_ips_value_1",
-                                "source_nat_drain_ips_value_2",
+                                "source_nat_drain_ips_value1",
+                                "source_nat_drain_ips_value2",
                             ],
                         },
                         "description": "description_value",
@@ -3401,12 +3480,12 @@ def test_insert_unary_rest_bad_request(
                     {
                         "name": "name_value",
                         "secondary_ip_range_names": [
-                            "secondary_ip_range_names_value_1",
-                            "secondary_ip_range_names_value_2",
+                            "secondary_ip_range_names_value1",
+                            "secondary_ip_range_names_value2",
                         ],
                         "source_ip_ranges_to_nat": [
-                            "source_ip_ranges_to_nat_value_1",
-                            "source_ip_ranges_to_nat_value_2",
+                            "source_ip_ranges_to_nat_value1",
+                            "source_ip_ranges_to_nat_value2",
                         ],
                     }
                 ],
@@ -3420,7 +3499,7 @@ def test_insert_unary_rest_bad_request(
         "region": "region_value",
         "self_link": "self_link_value",
     }
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
     with mock.patch.object(Session, "request") as req, pytest.raises(
@@ -3461,8 +3540,8 @@ def test_insert_unary_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
-
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -3519,7 +3598,7 @@ def test_list_rest(request_type):
 
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "region": "sample2"}
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
@@ -3534,7 +3613,9 @@ def test_list_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.RouterList.to_json(return_value)
+        pb_return_value = compute.RouterList.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.list(request)
@@ -3553,10 +3634,13 @@ def test_list_rest_required_fields(request_type=compute.ListRoutersRequest):
     request_init = {}
     request_init["project"] = ""
     request_init["region"] = ""
-    request = request_type(request_init)
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        request_type.to_json(
-            request, including_default_value_fields=False, use_integers_for_enums=False
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
     )
 
@@ -3597,7 +3681,7 @@ def test_list_rest_required_fields(request_type=compute.ListRoutersRequest):
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
     return_value = compute.RouterList()
@@ -3609,16 +3693,20 @@ def test_list_rest_required_fields(request_type=compute.ListRoutersRequest):
         with mock.patch.object(path_template, "transcode") as transcode:
             # A uri without fields and an empty body will force all the
             # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
             transcode_result = {
                 "uri": "v1/sample_method",
                 "method": "get",
-                "query_params": request_init,
+                "query_params": pb_request,
             }
             transcode.return_value = transcode_result
 
             response_value = Response()
             response_value.status_code = 200
-            json_return_value = compute.RouterList.to_json(return_value)
+
+            pb_return_value = compute.RouterList.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
 
@@ -3672,12 +3760,12 @@ def test_list_rest_interceptors(null_interceptor):
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
-
+        pb_message = compute.ListRoutersRequest.pb(compute.ListRoutersRequest())
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
-            "body": None,
-            "query_params": {},
+            "body": pb_message,
+            "query_params": pb_message,
         }
 
         req.return_value = Response()
@@ -3715,7 +3803,7 @@ def test_list_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "region": "sample2"}
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
     with mock.patch.object(Session, "request") as req, pytest.raises(
@@ -3753,8 +3841,8 @@ def test_list_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.RouterList.to_json(return_value)
-
+        pb_return_value = compute.RouterList.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -3867,8 +3955,8 @@ def test_patch_rest(request_type):
         "bgp": {
             "advertise_mode": "advertise_mode_value",
             "advertised_groups": [
-                "advertised_groups_value_1",
-                "advertised_groups_value_2",
+                "advertised_groups_value1",
+                "advertised_groups_value2",
             ],
             "advertised_ip_ranges": [
                 {"description": "description_value", "range_": "range__value"}
@@ -3880,8 +3968,8 @@ def test_patch_rest(request_type):
             {
                 "advertise_mode": "advertise_mode_value",
                 "advertised_groups": [
-                    "advertised_groups_value_1",
-                    "advertised_groups_value_2",
+                    "advertised_groups_value1",
+                    "advertised_groups_value2",
                 ],
                 "advertised_ip_ranges": {},
                 "advertised_route_priority": 2714,
@@ -3924,27 +4012,27 @@ def test_patch_rest(request_type):
         "name": "name_value",
         "nats": [
             {
-                "drain_nat_ips": ["drain_nat_ips_value_1", "drain_nat_ips_value_2"],
+                "drain_nat_ips": ["drain_nat_ips_value1", "drain_nat_ips_value2"],
                 "enable_dynamic_port_allocation": True,
                 "enable_endpoint_independent_mapping": True,
-                "endpoint_types": ["endpoint_types_value_1", "endpoint_types_value_2"],
+                "endpoint_types": ["endpoint_types_value1", "endpoint_types_value2"],
                 "icmp_idle_timeout_sec": 2214,
                 "log_config": {"enable": True, "filter": "filter_value"},
                 "max_ports_per_vm": 1733,
                 "min_ports_per_vm": 1731,
                 "name": "name_value",
                 "nat_ip_allocate_option": "nat_ip_allocate_option_value",
-                "nat_ips": ["nat_ips_value_1", "nat_ips_value_2"],
+                "nat_ips": ["nat_ips_value1", "nat_ips_value2"],
                 "rules": [
                     {
                         "action": {
                             "source_nat_active_ips": [
-                                "source_nat_active_ips_value_1",
-                                "source_nat_active_ips_value_2",
+                                "source_nat_active_ips_value1",
+                                "source_nat_active_ips_value2",
                             ],
                             "source_nat_drain_ips": [
-                                "source_nat_drain_ips_value_1",
-                                "source_nat_drain_ips_value_2",
+                                "source_nat_drain_ips_value1",
+                                "source_nat_drain_ips_value2",
                             ],
                         },
                         "description": "description_value",
@@ -3957,12 +4045,12 @@ def test_patch_rest(request_type):
                     {
                         "name": "name_value",
                         "secondary_ip_range_names": [
-                            "secondary_ip_range_names_value_1",
-                            "secondary_ip_range_names_value_2",
+                            "secondary_ip_range_names_value1",
+                            "secondary_ip_range_names_value2",
                         ],
                         "source_ip_ranges_to_nat": [
-                            "source_ip_ranges_to_nat_value_1",
-                            "source_ip_ranges_to_nat_value_2",
+                            "source_ip_ranges_to_nat_value1",
+                            "source_ip_ranges_to_nat_value2",
                         ],
                     }
                 ],
@@ -3976,7 +4064,7 @@ def test_patch_rest(request_type):
         "region": "region_value",
         "self_link": "self_link_value",
     }
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
@@ -4009,7 +4097,9 @@ def test_patch_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.patch(request)
@@ -4047,10 +4137,13 @@ def test_patch_rest_required_fields(request_type=compute.PatchRouterRequest):
     request_init["project"] = ""
     request_init["region"] = ""
     request_init["router"] = ""
-    request = request_type(request_init)
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        request_type.to_json(
-            request, including_default_value_fields=False, use_integers_for_enums=False
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
     )
 
@@ -4086,7 +4179,7 @@ def test_patch_rest_required_fields(request_type=compute.PatchRouterRequest):
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
     return_value = compute.Operation()
@@ -4098,17 +4191,21 @@ def test_patch_rest_required_fields(request_type=compute.PatchRouterRequest):
         with mock.patch.object(path_template, "transcode") as transcode:
             # A uri without fields and an empty body will force all the
             # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
             transcode_result = {
                 "uri": "v1/sample_method",
                 "method": "patch",
-                "query_params": request_init,
+                "query_params": pb_request,
             }
-            transcode_result["body"] = {}
+            transcode_result["body"] = pb_request
             transcode.return_value = transcode_result
 
             response_value = Response()
             response_value.status_code = 200
-            json_return_value = compute.Operation.to_json(return_value)
+
+            pb_return_value = compute.Operation.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
 
@@ -4156,12 +4253,12 @@ def test_patch_rest_interceptors(null_interceptor):
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
-
+        pb_message = compute.PatchRouterRequest.pb(compute.PatchRouterRequest())
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
-            "body": None,
-            "query_params": {},
+            "body": pb_message,
+            "query_params": pb_message,
         }
 
         req.return_value = Response()
@@ -4203,8 +4300,8 @@ def test_patch_rest_bad_request(
         "bgp": {
             "advertise_mode": "advertise_mode_value",
             "advertised_groups": [
-                "advertised_groups_value_1",
-                "advertised_groups_value_2",
+                "advertised_groups_value1",
+                "advertised_groups_value2",
             ],
             "advertised_ip_ranges": [
                 {"description": "description_value", "range_": "range__value"}
@@ -4216,8 +4313,8 @@ def test_patch_rest_bad_request(
             {
                 "advertise_mode": "advertise_mode_value",
                 "advertised_groups": [
-                    "advertised_groups_value_1",
-                    "advertised_groups_value_2",
+                    "advertised_groups_value1",
+                    "advertised_groups_value2",
                 ],
                 "advertised_ip_ranges": {},
                 "advertised_route_priority": 2714,
@@ -4260,27 +4357,27 @@ def test_patch_rest_bad_request(
         "name": "name_value",
         "nats": [
             {
-                "drain_nat_ips": ["drain_nat_ips_value_1", "drain_nat_ips_value_2"],
+                "drain_nat_ips": ["drain_nat_ips_value1", "drain_nat_ips_value2"],
                 "enable_dynamic_port_allocation": True,
                 "enable_endpoint_independent_mapping": True,
-                "endpoint_types": ["endpoint_types_value_1", "endpoint_types_value_2"],
+                "endpoint_types": ["endpoint_types_value1", "endpoint_types_value2"],
                 "icmp_idle_timeout_sec": 2214,
                 "log_config": {"enable": True, "filter": "filter_value"},
                 "max_ports_per_vm": 1733,
                 "min_ports_per_vm": 1731,
                 "name": "name_value",
                 "nat_ip_allocate_option": "nat_ip_allocate_option_value",
-                "nat_ips": ["nat_ips_value_1", "nat_ips_value_2"],
+                "nat_ips": ["nat_ips_value1", "nat_ips_value2"],
                 "rules": [
                     {
                         "action": {
                             "source_nat_active_ips": [
-                                "source_nat_active_ips_value_1",
-                                "source_nat_active_ips_value_2",
+                                "source_nat_active_ips_value1",
+                                "source_nat_active_ips_value2",
                             ],
                             "source_nat_drain_ips": [
-                                "source_nat_drain_ips_value_1",
-                                "source_nat_drain_ips_value_2",
+                                "source_nat_drain_ips_value1",
+                                "source_nat_drain_ips_value2",
                             ],
                         },
                         "description": "description_value",
@@ -4293,12 +4390,12 @@ def test_patch_rest_bad_request(
                     {
                         "name": "name_value",
                         "secondary_ip_range_names": [
-                            "secondary_ip_range_names_value_1",
-                            "secondary_ip_range_names_value_2",
+                            "secondary_ip_range_names_value1",
+                            "secondary_ip_range_names_value2",
                         ],
                         "source_ip_ranges_to_nat": [
-                            "source_ip_ranges_to_nat_value_1",
-                            "source_ip_ranges_to_nat_value_2",
+                            "source_ip_ranges_to_nat_value1",
+                            "source_ip_ranges_to_nat_value2",
                         ],
                     }
                 ],
@@ -4312,7 +4409,7 @@ def test_patch_rest_bad_request(
         "region": "region_value",
         "self_link": "self_link_value",
     }
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
     with mock.patch.object(Session, "request") as req, pytest.raises(
@@ -4358,8 +4455,8 @@ def test_patch_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
-
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -4421,8 +4518,8 @@ def test_patch_unary_rest(request_type):
         "bgp": {
             "advertise_mode": "advertise_mode_value",
             "advertised_groups": [
-                "advertised_groups_value_1",
-                "advertised_groups_value_2",
+                "advertised_groups_value1",
+                "advertised_groups_value2",
             ],
             "advertised_ip_ranges": [
                 {"description": "description_value", "range_": "range__value"}
@@ -4434,8 +4531,8 @@ def test_patch_unary_rest(request_type):
             {
                 "advertise_mode": "advertise_mode_value",
                 "advertised_groups": [
-                    "advertised_groups_value_1",
-                    "advertised_groups_value_2",
+                    "advertised_groups_value1",
+                    "advertised_groups_value2",
                 ],
                 "advertised_ip_ranges": {},
                 "advertised_route_priority": 2714,
@@ -4478,27 +4575,27 @@ def test_patch_unary_rest(request_type):
         "name": "name_value",
         "nats": [
             {
-                "drain_nat_ips": ["drain_nat_ips_value_1", "drain_nat_ips_value_2"],
+                "drain_nat_ips": ["drain_nat_ips_value1", "drain_nat_ips_value2"],
                 "enable_dynamic_port_allocation": True,
                 "enable_endpoint_independent_mapping": True,
-                "endpoint_types": ["endpoint_types_value_1", "endpoint_types_value_2"],
+                "endpoint_types": ["endpoint_types_value1", "endpoint_types_value2"],
                 "icmp_idle_timeout_sec": 2214,
                 "log_config": {"enable": True, "filter": "filter_value"},
                 "max_ports_per_vm": 1733,
                 "min_ports_per_vm": 1731,
                 "name": "name_value",
                 "nat_ip_allocate_option": "nat_ip_allocate_option_value",
-                "nat_ips": ["nat_ips_value_1", "nat_ips_value_2"],
+                "nat_ips": ["nat_ips_value1", "nat_ips_value2"],
                 "rules": [
                     {
                         "action": {
                             "source_nat_active_ips": [
-                                "source_nat_active_ips_value_1",
-                                "source_nat_active_ips_value_2",
+                                "source_nat_active_ips_value1",
+                                "source_nat_active_ips_value2",
                             ],
                             "source_nat_drain_ips": [
-                                "source_nat_drain_ips_value_1",
-                                "source_nat_drain_ips_value_2",
+                                "source_nat_drain_ips_value1",
+                                "source_nat_drain_ips_value2",
                             ],
                         },
                         "description": "description_value",
@@ -4511,12 +4608,12 @@ def test_patch_unary_rest(request_type):
                     {
                         "name": "name_value",
                         "secondary_ip_range_names": [
-                            "secondary_ip_range_names_value_1",
-                            "secondary_ip_range_names_value_2",
+                            "secondary_ip_range_names_value1",
+                            "secondary_ip_range_names_value2",
                         ],
                         "source_ip_ranges_to_nat": [
-                            "source_ip_ranges_to_nat_value_1",
-                            "source_ip_ranges_to_nat_value_2",
+                            "source_ip_ranges_to_nat_value1",
+                            "source_ip_ranges_to_nat_value2",
                         ],
                     }
                 ],
@@ -4530,7 +4627,7 @@ def test_patch_unary_rest(request_type):
         "region": "region_value",
         "self_link": "self_link_value",
     }
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
@@ -4563,7 +4660,9 @@ def test_patch_unary_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.patch_unary(request)
@@ -4579,10 +4678,13 @@ def test_patch_unary_rest_required_fields(request_type=compute.PatchRouterReques
     request_init["project"] = ""
     request_init["region"] = ""
     request_init["router"] = ""
-    request = request_type(request_init)
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        request_type.to_json(
-            request, including_default_value_fields=False, use_integers_for_enums=False
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
     )
 
@@ -4618,7 +4720,7 @@ def test_patch_unary_rest_required_fields(request_type=compute.PatchRouterReques
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
     return_value = compute.Operation()
@@ -4630,17 +4732,21 @@ def test_patch_unary_rest_required_fields(request_type=compute.PatchRouterReques
         with mock.patch.object(path_template, "transcode") as transcode:
             # A uri without fields and an empty body will force all the
             # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
             transcode_result = {
                 "uri": "v1/sample_method",
                 "method": "patch",
-                "query_params": request_init,
+                "query_params": pb_request,
             }
-            transcode_result["body"] = {}
+            transcode_result["body"] = pb_request
             transcode.return_value = transcode_result
 
             response_value = Response()
             response_value.status_code = 200
-            json_return_value = compute.Operation.to_json(return_value)
+
+            pb_return_value = compute.Operation.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
 
@@ -4688,12 +4794,12 @@ def test_patch_unary_rest_interceptors(null_interceptor):
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
-
+        pb_message = compute.PatchRouterRequest.pb(compute.PatchRouterRequest())
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
-            "body": None,
-            "query_params": {},
+            "body": pb_message,
+            "query_params": pb_message,
         }
 
         req.return_value = Response()
@@ -4735,8 +4841,8 @@ def test_patch_unary_rest_bad_request(
         "bgp": {
             "advertise_mode": "advertise_mode_value",
             "advertised_groups": [
-                "advertised_groups_value_1",
-                "advertised_groups_value_2",
+                "advertised_groups_value1",
+                "advertised_groups_value2",
             ],
             "advertised_ip_ranges": [
                 {"description": "description_value", "range_": "range__value"}
@@ -4748,8 +4854,8 @@ def test_patch_unary_rest_bad_request(
             {
                 "advertise_mode": "advertise_mode_value",
                 "advertised_groups": [
-                    "advertised_groups_value_1",
-                    "advertised_groups_value_2",
+                    "advertised_groups_value1",
+                    "advertised_groups_value2",
                 ],
                 "advertised_ip_ranges": {},
                 "advertised_route_priority": 2714,
@@ -4792,27 +4898,27 @@ def test_patch_unary_rest_bad_request(
         "name": "name_value",
         "nats": [
             {
-                "drain_nat_ips": ["drain_nat_ips_value_1", "drain_nat_ips_value_2"],
+                "drain_nat_ips": ["drain_nat_ips_value1", "drain_nat_ips_value2"],
                 "enable_dynamic_port_allocation": True,
                 "enable_endpoint_independent_mapping": True,
-                "endpoint_types": ["endpoint_types_value_1", "endpoint_types_value_2"],
+                "endpoint_types": ["endpoint_types_value1", "endpoint_types_value2"],
                 "icmp_idle_timeout_sec": 2214,
                 "log_config": {"enable": True, "filter": "filter_value"},
                 "max_ports_per_vm": 1733,
                 "min_ports_per_vm": 1731,
                 "name": "name_value",
                 "nat_ip_allocate_option": "nat_ip_allocate_option_value",
-                "nat_ips": ["nat_ips_value_1", "nat_ips_value_2"],
+                "nat_ips": ["nat_ips_value1", "nat_ips_value2"],
                 "rules": [
                     {
                         "action": {
                             "source_nat_active_ips": [
-                                "source_nat_active_ips_value_1",
-                                "source_nat_active_ips_value_2",
+                                "source_nat_active_ips_value1",
+                                "source_nat_active_ips_value2",
                             ],
                             "source_nat_drain_ips": [
-                                "source_nat_drain_ips_value_1",
-                                "source_nat_drain_ips_value_2",
+                                "source_nat_drain_ips_value1",
+                                "source_nat_drain_ips_value2",
                             ],
                         },
                         "description": "description_value",
@@ -4825,12 +4931,12 @@ def test_patch_unary_rest_bad_request(
                     {
                         "name": "name_value",
                         "secondary_ip_range_names": [
-                            "secondary_ip_range_names_value_1",
-                            "secondary_ip_range_names_value_2",
+                            "secondary_ip_range_names_value1",
+                            "secondary_ip_range_names_value2",
                         ],
                         "source_ip_ranges_to_nat": [
-                            "source_ip_ranges_to_nat_value_1",
-                            "source_ip_ranges_to_nat_value_2",
+                            "source_ip_ranges_to_nat_value1",
+                            "source_ip_ranges_to_nat_value2",
                         ],
                     }
                 ],
@@ -4844,7 +4950,7 @@ def test_patch_unary_rest_bad_request(
         "region": "region_value",
         "self_link": "self_link_value",
     }
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
     with mock.patch.object(Session, "request") as req, pytest.raises(
@@ -4890,8 +4996,8 @@ def test_patch_unary_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
-
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -4953,8 +5059,8 @@ def test_preview_rest(request_type):
         "bgp": {
             "advertise_mode": "advertise_mode_value",
             "advertised_groups": [
-                "advertised_groups_value_1",
-                "advertised_groups_value_2",
+                "advertised_groups_value1",
+                "advertised_groups_value2",
             ],
             "advertised_ip_ranges": [
                 {"description": "description_value", "range_": "range__value"}
@@ -4966,8 +5072,8 @@ def test_preview_rest(request_type):
             {
                 "advertise_mode": "advertise_mode_value",
                 "advertised_groups": [
-                    "advertised_groups_value_1",
-                    "advertised_groups_value_2",
+                    "advertised_groups_value1",
+                    "advertised_groups_value2",
                 ],
                 "advertised_ip_ranges": {},
                 "advertised_route_priority": 2714,
@@ -5010,27 +5116,27 @@ def test_preview_rest(request_type):
         "name": "name_value",
         "nats": [
             {
-                "drain_nat_ips": ["drain_nat_ips_value_1", "drain_nat_ips_value_2"],
+                "drain_nat_ips": ["drain_nat_ips_value1", "drain_nat_ips_value2"],
                 "enable_dynamic_port_allocation": True,
                 "enable_endpoint_independent_mapping": True,
-                "endpoint_types": ["endpoint_types_value_1", "endpoint_types_value_2"],
+                "endpoint_types": ["endpoint_types_value1", "endpoint_types_value2"],
                 "icmp_idle_timeout_sec": 2214,
                 "log_config": {"enable": True, "filter": "filter_value"},
                 "max_ports_per_vm": 1733,
                 "min_ports_per_vm": 1731,
                 "name": "name_value",
                 "nat_ip_allocate_option": "nat_ip_allocate_option_value",
-                "nat_ips": ["nat_ips_value_1", "nat_ips_value_2"],
+                "nat_ips": ["nat_ips_value1", "nat_ips_value2"],
                 "rules": [
                     {
                         "action": {
                             "source_nat_active_ips": [
-                                "source_nat_active_ips_value_1",
-                                "source_nat_active_ips_value_2",
+                                "source_nat_active_ips_value1",
+                                "source_nat_active_ips_value2",
                             ],
                             "source_nat_drain_ips": [
-                                "source_nat_drain_ips_value_1",
-                                "source_nat_drain_ips_value_2",
+                                "source_nat_drain_ips_value1",
+                                "source_nat_drain_ips_value2",
                             ],
                         },
                         "description": "description_value",
@@ -5043,12 +5149,12 @@ def test_preview_rest(request_type):
                     {
                         "name": "name_value",
                         "secondary_ip_range_names": [
-                            "secondary_ip_range_names_value_1",
-                            "secondary_ip_range_names_value_2",
+                            "secondary_ip_range_names_value1",
+                            "secondary_ip_range_names_value2",
                         ],
                         "source_ip_ranges_to_nat": [
-                            "source_ip_ranges_to_nat_value_1",
-                            "source_ip_ranges_to_nat_value_2",
+                            "source_ip_ranges_to_nat_value1",
+                            "source_ip_ranges_to_nat_value2",
                         ],
                     }
                 ],
@@ -5062,7 +5168,7 @@ def test_preview_rest(request_type):
         "region": "region_value",
         "self_link": "self_link_value",
     }
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
@@ -5072,7 +5178,9 @@ def test_preview_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.RoutersPreviewResponse.to_json(return_value)
+        pb_return_value = compute.RoutersPreviewResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.preview(request)
@@ -5088,10 +5196,13 @@ def test_preview_rest_required_fields(request_type=compute.PreviewRouterRequest)
     request_init["project"] = ""
     request_init["region"] = ""
     request_init["router"] = ""
-    request = request_type(request_init)
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        request_type.to_json(
-            request, including_default_value_fields=False, use_integers_for_enums=False
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
     )
 
@@ -5125,7 +5236,7 @@ def test_preview_rest_required_fields(request_type=compute.PreviewRouterRequest)
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
     return_value = compute.RoutersPreviewResponse()
@@ -5137,17 +5248,21 @@ def test_preview_rest_required_fields(request_type=compute.PreviewRouterRequest)
         with mock.patch.object(path_template, "transcode") as transcode:
             # A uri without fields and an empty body will force all the
             # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
             transcode_result = {
                 "uri": "v1/sample_method",
                 "method": "post",
-                "query_params": request_init,
+                "query_params": pb_request,
             }
-            transcode_result["body"] = {}
+            transcode_result["body"] = pb_request
             transcode.return_value = transcode_result
 
             response_value = Response()
             response_value.status_code = 200
-            json_return_value = compute.RoutersPreviewResponse.to_json(return_value)
+
+            pb_return_value = compute.RoutersPreviewResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
 
@@ -5195,12 +5310,12 @@ def test_preview_rest_interceptors(null_interceptor):
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
-
+        pb_message = compute.PreviewRouterRequest.pb(compute.PreviewRouterRequest())
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
-            "body": None,
-            "query_params": {},
+            "body": pb_message,
+            "query_params": pb_message,
         }
 
         req.return_value = Response()
@@ -5244,8 +5359,8 @@ def test_preview_rest_bad_request(
         "bgp": {
             "advertise_mode": "advertise_mode_value",
             "advertised_groups": [
-                "advertised_groups_value_1",
-                "advertised_groups_value_2",
+                "advertised_groups_value1",
+                "advertised_groups_value2",
             ],
             "advertised_ip_ranges": [
                 {"description": "description_value", "range_": "range__value"}
@@ -5257,8 +5372,8 @@ def test_preview_rest_bad_request(
             {
                 "advertise_mode": "advertise_mode_value",
                 "advertised_groups": [
-                    "advertised_groups_value_1",
-                    "advertised_groups_value_2",
+                    "advertised_groups_value1",
+                    "advertised_groups_value2",
                 ],
                 "advertised_ip_ranges": {},
                 "advertised_route_priority": 2714,
@@ -5301,27 +5416,27 @@ def test_preview_rest_bad_request(
         "name": "name_value",
         "nats": [
             {
-                "drain_nat_ips": ["drain_nat_ips_value_1", "drain_nat_ips_value_2"],
+                "drain_nat_ips": ["drain_nat_ips_value1", "drain_nat_ips_value2"],
                 "enable_dynamic_port_allocation": True,
                 "enable_endpoint_independent_mapping": True,
-                "endpoint_types": ["endpoint_types_value_1", "endpoint_types_value_2"],
+                "endpoint_types": ["endpoint_types_value1", "endpoint_types_value2"],
                 "icmp_idle_timeout_sec": 2214,
                 "log_config": {"enable": True, "filter": "filter_value"},
                 "max_ports_per_vm": 1733,
                 "min_ports_per_vm": 1731,
                 "name": "name_value",
                 "nat_ip_allocate_option": "nat_ip_allocate_option_value",
-                "nat_ips": ["nat_ips_value_1", "nat_ips_value_2"],
+                "nat_ips": ["nat_ips_value1", "nat_ips_value2"],
                 "rules": [
                     {
                         "action": {
                             "source_nat_active_ips": [
-                                "source_nat_active_ips_value_1",
-                                "source_nat_active_ips_value_2",
+                                "source_nat_active_ips_value1",
+                                "source_nat_active_ips_value2",
                             ],
                             "source_nat_drain_ips": [
-                                "source_nat_drain_ips_value_1",
-                                "source_nat_drain_ips_value_2",
+                                "source_nat_drain_ips_value1",
+                                "source_nat_drain_ips_value2",
                             ],
                         },
                         "description": "description_value",
@@ -5334,12 +5449,12 @@ def test_preview_rest_bad_request(
                     {
                         "name": "name_value",
                         "secondary_ip_range_names": [
-                            "secondary_ip_range_names_value_1",
-                            "secondary_ip_range_names_value_2",
+                            "secondary_ip_range_names_value1",
+                            "secondary_ip_range_names_value2",
                         ],
                         "source_ip_ranges_to_nat": [
-                            "source_ip_ranges_to_nat_value_1",
-                            "source_ip_ranges_to_nat_value_2",
+                            "source_ip_ranges_to_nat_value1",
+                            "source_ip_ranges_to_nat_value2",
                         ],
                     }
                 ],
@@ -5353,7 +5468,7 @@ def test_preview_rest_bad_request(
         "region": "region_value",
         "self_link": "self_link_value",
     }
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
     with mock.patch.object(Session, "request") as req, pytest.raises(
@@ -5399,8 +5514,8 @@ def test_preview_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.RoutersPreviewResponse.to_json(return_value)
-
+        pb_return_value = compute.RoutersPreviewResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -5462,8 +5577,8 @@ def test_update_rest(request_type):
         "bgp": {
             "advertise_mode": "advertise_mode_value",
             "advertised_groups": [
-                "advertised_groups_value_1",
-                "advertised_groups_value_2",
+                "advertised_groups_value1",
+                "advertised_groups_value2",
             ],
             "advertised_ip_ranges": [
                 {"description": "description_value", "range_": "range__value"}
@@ -5475,8 +5590,8 @@ def test_update_rest(request_type):
             {
                 "advertise_mode": "advertise_mode_value",
                 "advertised_groups": [
-                    "advertised_groups_value_1",
-                    "advertised_groups_value_2",
+                    "advertised_groups_value1",
+                    "advertised_groups_value2",
                 ],
                 "advertised_ip_ranges": {},
                 "advertised_route_priority": 2714,
@@ -5519,27 +5634,27 @@ def test_update_rest(request_type):
         "name": "name_value",
         "nats": [
             {
-                "drain_nat_ips": ["drain_nat_ips_value_1", "drain_nat_ips_value_2"],
+                "drain_nat_ips": ["drain_nat_ips_value1", "drain_nat_ips_value2"],
                 "enable_dynamic_port_allocation": True,
                 "enable_endpoint_independent_mapping": True,
-                "endpoint_types": ["endpoint_types_value_1", "endpoint_types_value_2"],
+                "endpoint_types": ["endpoint_types_value1", "endpoint_types_value2"],
                 "icmp_idle_timeout_sec": 2214,
                 "log_config": {"enable": True, "filter": "filter_value"},
                 "max_ports_per_vm": 1733,
                 "min_ports_per_vm": 1731,
                 "name": "name_value",
                 "nat_ip_allocate_option": "nat_ip_allocate_option_value",
-                "nat_ips": ["nat_ips_value_1", "nat_ips_value_2"],
+                "nat_ips": ["nat_ips_value1", "nat_ips_value2"],
                 "rules": [
                     {
                         "action": {
                             "source_nat_active_ips": [
-                                "source_nat_active_ips_value_1",
-                                "source_nat_active_ips_value_2",
+                                "source_nat_active_ips_value1",
+                                "source_nat_active_ips_value2",
                             ],
                             "source_nat_drain_ips": [
-                                "source_nat_drain_ips_value_1",
-                                "source_nat_drain_ips_value_2",
+                                "source_nat_drain_ips_value1",
+                                "source_nat_drain_ips_value2",
                             ],
                         },
                         "description": "description_value",
@@ -5552,12 +5667,12 @@ def test_update_rest(request_type):
                     {
                         "name": "name_value",
                         "secondary_ip_range_names": [
-                            "secondary_ip_range_names_value_1",
-                            "secondary_ip_range_names_value_2",
+                            "secondary_ip_range_names_value1",
+                            "secondary_ip_range_names_value2",
                         ],
                         "source_ip_ranges_to_nat": [
-                            "source_ip_ranges_to_nat_value_1",
-                            "source_ip_ranges_to_nat_value_2",
+                            "source_ip_ranges_to_nat_value1",
+                            "source_ip_ranges_to_nat_value2",
                         ],
                     }
                 ],
@@ -5571,7 +5686,7 @@ def test_update_rest(request_type):
         "region": "region_value",
         "self_link": "self_link_value",
     }
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
@@ -5604,7 +5719,9 @@ def test_update_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.update(request)
@@ -5642,10 +5759,13 @@ def test_update_rest_required_fields(request_type=compute.UpdateRouterRequest):
     request_init["project"] = ""
     request_init["region"] = ""
     request_init["router"] = ""
-    request = request_type(request_init)
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        request_type.to_json(
-            request, including_default_value_fields=False, use_integers_for_enums=False
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
     )
 
@@ -5681,7 +5801,7 @@ def test_update_rest_required_fields(request_type=compute.UpdateRouterRequest):
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
     return_value = compute.Operation()
@@ -5693,17 +5813,21 @@ def test_update_rest_required_fields(request_type=compute.UpdateRouterRequest):
         with mock.patch.object(path_template, "transcode") as transcode:
             # A uri without fields and an empty body will force all the
             # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
             transcode_result = {
                 "uri": "v1/sample_method",
                 "method": "put",
-                "query_params": request_init,
+                "query_params": pb_request,
             }
-            transcode_result["body"] = {}
+            transcode_result["body"] = pb_request
             transcode.return_value = transcode_result
 
             response_value = Response()
             response_value.status_code = 200
-            json_return_value = compute.Operation.to_json(return_value)
+
+            pb_return_value = compute.Operation.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
 
@@ -5751,12 +5875,12 @@ def test_update_rest_interceptors(null_interceptor):
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
-
+        pb_message = compute.UpdateRouterRequest.pb(compute.UpdateRouterRequest())
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
-            "body": None,
-            "query_params": {},
+            "body": pb_message,
+            "query_params": pb_message,
         }
 
         req.return_value = Response()
@@ -5798,8 +5922,8 @@ def test_update_rest_bad_request(
         "bgp": {
             "advertise_mode": "advertise_mode_value",
             "advertised_groups": [
-                "advertised_groups_value_1",
-                "advertised_groups_value_2",
+                "advertised_groups_value1",
+                "advertised_groups_value2",
             ],
             "advertised_ip_ranges": [
                 {"description": "description_value", "range_": "range__value"}
@@ -5811,8 +5935,8 @@ def test_update_rest_bad_request(
             {
                 "advertise_mode": "advertise_mode_value",
                 "advertised_groups": [
-                    "advertised_groups_value_1",
-                    "advertised_groups_value_2",
+                    "advertised_groups_value1",
+                    "advertised_groups_value2",
                 ],
                 "advertised_ip_ranges": {},
                 "advertised_route_priority": 2714,
@@ -5855,27 +5979,27 @@ def test_update_rest_bad_request(
         "name": "name_value",
         "nats": [
             {
-                "drain_nat_ips": ["drain_nat_ips_value_1", "drain_nat_ips_value_2"],
+                "drain_nat_ips": ["drain_nat_ips_value1", "drain_nat_ips_value2"],
                 "enable_dynamic_port_allocation": True,
                 "enable_endpoint_independent_mapping": True,
-                "endpoint_types": ["endpoint_types_value_1", "endpoint_types_value_2"],
+                "endpoint_types": ["endpoint_types_value1", "endpoint_types_value2"],
                 "icmp_idle_timeout_sec": 2214,
                 "log_config": {"enable": True, "filter": "filter_value"},
                 "max_ports_per_vm": 1733,
                 "min_ports_per_vm": 1731,
                 "name": "name_value",
                 "nat_ip_allocate_option": "nat_ip_allocate_option_value",
-                "nat_ips": ["nat_ips_value_1", "nat_ips_value_2"],
+                "nat_ips": ["nat_ips_value1", "nat_ips_value2"],
                 "rules": [
                     {
                         "action": {
                             "source_nat_active_ips": [
-                                "source_nat_active_ips_value_1",
-                                "source_nat_active_ips_value_2",
+                                "source_nat_active_ips_value1",
+                                "source_nat_active_ips_value2",
                             ],
                             "source_nat_drain_ips": [
-                                "source_nat_drain_ips_value_1",
-                                "source_nat_drain_ips_value_2",
+                                "source_nat_drain_ips_value1",
+                                "source_nat_drain_ips_value2",
                             ],
                         },
                         "description": "description_value",
@@ -5888,12 +6012,12 @@ def test_update_rest_bad_request(
                     {
                         "name": "name_value",
                         "secondary_ip_range_names": [
-                            "secondary_ip_range_names_value_1",
-                            "secondary_ip_range_names_value_2",
+                            "secondary_ip_range_names_value1",
+                            "secondary_ip_range_names_value2",
                         ],
                         "source_ip_ranges_to_nat": [
-                            "source_ip_ranges_to_nat_value_1",
-                            "source_ip_ranges_to_nat_value_2",
+                            "source_ip_ranges_to_nat_value1",
+                            "source_ip_ranges_to_nat_value2",
                         ],
                     }
                 ],
@@ -5907,7 +6031,7 @@ def test_update_rest_bad_request(
         "region": "region_value",
         "self_link": "self_link_value",
     }
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
     with mock.patch.object(Session, "request") as req, pytest.raises(
@@ -5953,8 +6077,8 @@ def test_update_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
-
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -6016,8 +6140,8 @@ def test_update_unary_rest(request_type):
         "bgp": {
             "advertise_mode": "advertise_mode_value",
             "advertised_groups": [
-                "advertised_groups_value_1",
-                "advertised_groups_value_2",
+                "advertised_groups_value1",
+                "advertised_groups_value2",
             ],
             "advertised_ip_ranges": [
                 {"description": "description_value", "range_": "range__value"}
@@ -6029,8 +6153,8 @@ def test_update_unary_rest(request_type):
             {
                 "advertise_mode": "advertise_mode_value",
                 "advertised_groups": [
-                    "advertised_groups_value_1",
-                    "advertised_groups_value_2",
+                    "advertised_groups_value1",
+                    "advertised_groups_value2",
                 ],
                 "advertised_ip_ranges": {},
                 "advertised_route_priority": 2714,
@@ -6073,27 +6197,27 @@ def test_update_unary_rest(request_type):
         "name": "name_value",
         "nats": [
             {
-                "drain_nat_ips": ["drain_nat_ips_value_1", "drain_nat_ips_value_2"],
+                "drain_nat_ips": ["drain_nat_ips_value1", "drain_nat_ips_value2"],
                 "enable_dynamic_port_allocation": True,
                 "enable_endpoint_independent_mapping": True,
-                "endpoint_types": ["endpoint_types_value_1", "endpoint_types_value_2"],
+                "endpoint_types": ["endpoint_types_value1", "endpoint_types_value2"],
                 "icmp_idle_timeout_sec": 2214,
                 "log_config": {"enable": True, "filter": "filter_value"},
                 "max_ports_per_vm": 1733,
                 "min_ports_per_vm": 1731,
                 "name": "name_value",
                 "nat_ip_allocate_option": "nat_ip_allocate_option_value",
-                "nat_ips": ["nat_ips_value_1", "nat_ips_value_2"],
+                "nat_ips": ["nat_ips_value1", "nat_ips_value2"],
                 "rules": [
                     {
                         "action": {
                             "source_nat_active_ips": [
-                                "source_nat_active_ips_value_1",
-                                "source_nat_active_ips_value_2",
+                                "source_nat_active_ips_value1",
+                                "source_nat_active_ips_value2",
                             ],
                             "source_nat_drain_ips": [
-                                "source_nat_drain_ips_value_1",
-                                "source_nat_drain_ips_value_2",
+                                "source_nat_drain_ips_value1",
+                                "source_nat_drain_ips_value2",
                             ],
                         },
                         "description": "description_value",
@@ -6106,12 +6230,12 @@ def test_update_unary_rest(request_type):
                     {
                         "name": "name_value",
                         "secondary_ip_range_names": [
-                            "secondary_ip_range_names_value_1",
-                            "secondary_ip_range_names_value_2",
+                            "secondary_ip_range_names_value1",
+                            "secondary_ip_range_names_value2",
                         ],
                         "source_ip_ranges_to_nat": [
-                            "source_ip_ranges_to_nat_value_1",
-                            "source_ip_ranges_to_nat_value_2",
+                            "source_ip_ranges_to_nat_value1",
+                            "source_ip_ranges_to_nat_value2",
                         ],
                     }
                 ],
@@ -6125,7 +6249,7 @@ def test_update_unary_rest(request_type):
         "region": "region_value",
         "self_link": "self_link_value",
     }
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
@@ -6158,7 +6282,9 @@ def test_update_unary_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.update_unary(request)
@@ -6174,10 +6300,13 @@ def test_update_unary_rest_required_fields(request_type=compute.UpdateRouterRequ
     request_init["project"] = ""
     request_init["region"] = ""
     request_init["router"] = ""
-    request = request_type(request_init)
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        request_type.to_json(
-            request, including_default_value_fields=False, use_integers_for_enums=False
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
     )
 
@@ -6213,7 +6342,7 @@ def test_update_unary_rest_required_fields(request_type=compute.UpdateRouterRequ
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
     return_value = compute.Operation()
@@ -6225,17 +6354,21 @@ def test_update_unary_rest_required_fields(request_type=compute.UpdateRouterRequ
         with mock.patch.object(path_template, "transcode") as transcode:
             # A uri without fields and an empty body will force all the
             # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
             transcode_result = {
                 "uri": "v1/sample_method",
                 "method": "put",
-                "query_params": request_init,
+                "query_params": pb_request,
             }
-            transcode_result["body"] = {}
+            transcode_result["body"] = pb_request
             transcode.return_value = transcode_result
 
             response_value = Response()
             response_value.status_code = 200
-            json_return_value = compute.Operation.to_json(return_value)
+
+            pb_return_value = compute.Operation.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
 
@@ -6283,12 +6416,12 @@ def test_update_unary_rest_interceptors(null_interceptor):
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
-
+        pb_message = compute.UpdateRouterRequest.pb(compute.UpdateRouterRequest())
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
-            "body": None,
-            "query_params": {},
+            "body": pb_message,
+            "query_params": pb_message,
         }
 
         req.return_value = Response()
@@ -6330,8 +6463,8 @@ def test_update_unary_rest_bad_request(
         "bgp": {
             "advertise_mode": "advertise_mode_value",
             "advertised_groups": [
-                "advertised_groups_value_1",
-                "advertised_groups_value_2",
+                "advertised_groups_value1",
+                "advertised_groups_value2",
             ],
             "advertised_ip_ranges": [
                 {"description": "description_value", "range_": "range__value"}
@@ -6343,8 +6476,8 @@ def test_update_unary_rest_bad_request(
             {
                 "advertise_mode": "advertise_mode_value",
                 "advertised_groups": [
-                    "advertised_groups_value_1",
-                    "advertised_groups_value_2",
+                    "advertised_groups_value1",
+                    "advertised_groups_value2",
                 ],
                 "advertised_ip_ranges": {},
                 "advertised_route_priority": 2714,
@@ -6387,27 +6520,27 @@ def test_update_unary_rest_bad_request(
         "name": "name_value",
         "nats": [
             {
-                "drain_nat_ips": ["drain_nat_ips_value_1", "drain_nat_ips_value_2"],
+                "drain_nat_ips": ["drain_nat_ips_value1", "drain_nat_ips_value2"],
                 "enable_dynamic_port_allocation": True,
                 "enable_endpoint_independent_mapping": True,
-                "endpoint_types": ["endpoint_types_value_1", "endpoint_types_value_2"],
+                "endpoint_types": ["endpoint_types_value1", "endpoint_types_value2"],
                 "icmp_idle_timeout_sec": 2214,
                 "log_config": {"enable": True, "filter": "filter_value"},
                 "max_ports_per_vm": 1733,
                 "min_ports_per_vm": 1731,
                 "name": "name_value",
                 "nat_ip_allocate_option": "nat_ip_allocate_option_value",
-                "nat_ips": ["nat_ips_value_1", "nat_ips_value_2"],
+                "nat_ips": ["nat_ips_value1", "nat_ips_value2"],
                 "rules": [
                     {
                         "action": {
                             "source_nat_active_ips": [
-                                "source_nat_active_ips_value_1",
-                                "source_nat_active_ips_value_2",
+                                "source_nat_active_ips_value1",
+                                "source_nat_active_ips_value2",
                             ],
                             "source_nat_drain_ips": [
-                                "source_nat_drain_ips_value_1",
-                                "source_nat_drain_ips_value_2",
+                                "source_nat_drain_ips_value1",
+                                "source_nat_drain_ips_value2",
                             ],
                         },
                         "description": "description_value",
@@ -6420,12 +6553,12 @@ def test_update_unary_rest_bad_request(
                     {
                         "name": "name_value",
                         "secondary_ip_range_names": [
-                            "secondary_ip_range_names_value_1",
-                            "secondary_ip_range_names_value_2",
+                            "secondary_ip_range_names_value1",
+                            "secondary_ip_range_names_value2",
                         ],
                         "source_ip_ranges_to_nat": [
-                            "source_ip_ranges_to_nat_value_1",
-                            "source_ip_ranges_to_nat_value_2",
+                            "source_ip_ranges_to_nat_value1",
+                            "source_ip_ranges_to_nat_value2",
                         ],
                     }
                 ],
@@ -6439,7 +6572,7 @@ def test_update_unary_rest_bad_request(
         "region": "region_value",
         "self_link": "self_link_value",
     }
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
     with mock.patch.object(Session, "request") as req, pytest.raises(
@@ -6485,8 +6618,8 @@ def test_update_unary_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
-
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 

@@ -25,6 +25,7 @@ except ImportError:
 import grpc
 from grpc.experimental import aio
 from collections.abc import Iterable
+from google.protobuf import json_format
 import json
 import math
 import pytest
@@ -568,7 +569,7 @@ def test_delete_rest(request_type):
 
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "region": "sample2", "url_map": "sample3"}
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
@@ -601,7 +602,9 @@ def test_delete_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.delete(request)
@@ -639,10 +642,13 @@ def test_delete_rest_required_fields(request_type=compute.DeleteRegionUrlMapRequ
     request_init["project"] = ""
     request_init["region"] = ""
     request_init["url_map"] = ""
-    request = request_type(request_init)
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        request_type.to_json(
-            request, including_default_value_fields=False, use_integers_for_enums=False
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
     )
 
@@ -678,7 +684,7 @@ def test_delete_rest_required_fields(request_type=compute.DeleteRegionUrlMapRequ
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
     return_value = compute.Operation()
@@ -690,16 +696,20 @@ def test_delete_rest_required_fields(request_type=compute.DeleteRegionUrlMapRequ
         with mock.patch.object(path_template, "transcode") as transcode:
             # A uri without fields and an empty body will force all the
             # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
             transcode_result = {
                 "uri": "v1/sample_method",
                 "method": "delete",
-                "query_params": request_init,
+                "query_params": pb_request,
             }
             transcode.return_value = transcode_result
 
             response_value = Response()
             response_value.status_code = 200
-            json_return_value = compute.Operation.to_json(return_value)
+
+            pb_return_value = compute.Operation.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
 
@@ -748,12 +758,14 @@ def test_delete_rest_interceptors(null_interceptor):
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
-
+        pb_message = compute.DeleteRegionUrlMapRequest.pb(
+            compute.DeleteRegionUrlMapRequest()
+        )
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
-            "body": None,
-            "query_params": {},
+            "body": pb_message,
+            "query_params": pb_message,
         }
 
         req.return_value = Response()
@@ -791,7 +803,7 @@ def test_delete_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "region": "sample2", "url_map": "sample3"}
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
     with mock.patch.object(Session, "request") as req, pytest.raises(
@@ -834,8 +846,8 @@ def test_delete_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
-
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -890,7 +902,7 @@ def test_delete_unary_rest(request_type):
 
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "region": "sample2", "url_map": "sample3"}
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
@@ -923,7 +935,9 @@ def test_delete_unary_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.delete_unary(request)
@@ -941,10 +955,13 @@ def test_delete_unary_rest_required_fields(
     request_init["project"] = ""
     request_init["region"] = ""
     request_init["url_map"] = ""
-    request = request_type(request_init)
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        request_type.to_json(
-            request, including_default_value_fields=False, use_integers_for_enums=False
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
     )
 
@@ -980,7 +997,7 @@ def test_delete_unary_rest_required_fields(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
     return_value = compute.Operation()
@@ -992,16 +1009,20 @@ def test_delete_unary_rest_required_fields(
         with mock.patch.object(path_template, "transcode") as transcode:
             # A uri without fields and an empty body will force all the
             # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
             transcode_result = {
                 "uri": "v1/sample_method",
                 "method": "delete",
-                "query_params": request_init,
+                "query_params": pb_request,
             }
             transcode.return_value = transcode_result
 
             response_value = Response()
             response_value.status_code = 200
-            json_return_value = compute.Operation.to_json(return_value)
+
+            pb_return_value = compute.Operation.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
 
@@ -1050,12 +1071,14 @@ def test_delete_unary_rest_interceptors(null_interceptor):
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
-
+        pb_message = compute.DeleteRegionUrlMapRequest.pb(
+            compute.DeleteRegionUrlMapRequest()
+        )
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
-            "body": None,
-            "query_params": {},
+            "body": pb_message,
+            "query_params": pb_message,
         }
 
         req.return_value = Response()
@@ -1093,7 +1116,7 @@ def test_delete_unary_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "region": "sample2", "url_map": "sample3"}
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
     with mock.patch.object(Session, "request") as req, pytest.raises(
@@ -1136,8 +1159,8 @@ def test_delete_unary_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
-
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -1192,7 +1215,7 @@ def test_get_rest(request_type):
 
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "region": "sample2", "url_map": "sample3"}
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
@@ -1212,7 +1235,9 @@ def test_get_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.UrlMap.to_json(return_value)
+        pb_return_value = compute.UrlMap.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.get(request)
@@ -1237,10 +1262,13 @@ def test_get_rest_required_fields(request_type=compute.GetRegionUrlMapRequest):
     request_init["project"] = ""
     request_init["region"] = ""
     request_init["url_map"] = ""
-    request = request_type(request_init)
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        request_type.to_json(
-            request, including_default_value_fields=False, use_integers_for_enums=False
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
     )
 
@@ -1274,7 +1302,7 @@ def test_get_rest_required_fields(request_type=compute.GetRegionUrlMapRequest):
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
     return_value = compute.UrlMap()
@@ -1286,16 +1314,20 @@ def test_get_rest_required_fields(request_type=compute.GetRegionUrlMapRequest):
         with mock.patch.object(path_template, "transcode") as transcode:
             # A uri without fields and an empty body will force all the
             # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
             transcode_result = {
                 "uri": "v1/sample_method",
                 "method": "get",
-                "query_params": request_init,
+                "query_params": pb_request,
             }
             transcode.return_value = transcode_result
 
             response_value = Response()
             response_value.status_code = 200
-            json_return_value = compute.UrlMap.to_json(return_value)
+
+            pb_return_value = compute.UrlMap.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
 
@@ -1344,12 +1376,12 @@ def test_get_rest_interceptors(null_interceptor):
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
-
+        pb_message = compute.GetRegionUrlMapRequest.pb(compute.GetRegionUrlMapRequest())
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
-            "body": None,
-            "query_params": {},
+            "body": pb_message,
+            "query_params": pb_message,
         }
 
         req.return_value = Response()
@@ -1387,7 +1419,7 @@ def test_get_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "region": "sample2", "url_map": "sample3"}
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
     with mock.patch.object(Session, "request") as req, pytest.raises(
@@ -1430,8 +1462,8 @@ def test_get_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.UrlMap.to_json(return_value)
-
+        pb_return_value = compute.UrlMap.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -1491,15 +1523,15 @@ def test_insert_rest(request_type):
         "default_route_action": {
             "cors_policy": {
                 "allow_credentials": True,
-                "allow_headers": ["allow_headers_value_1", "allow_headers_value_2"],
-                "allow_methods": ["allow_methods_value_1", "allow_methods_value_2"],
+                "allow_headers": ["allow_headers_value1", "allow_headers_value2"],
+                "allow_methods": ["allow_methods_value1", "allow_methods_value2"],
                 "allow_origin_regexes": [
-                    "allow_origin_regexes_value_1",
-                    "allow_origin_regexes_value_2",
+                    "allow_origin_regexes_value1",
+                    "allow_origin_regexes_value2",
                 ],
-                "allow_origins": ["allow_origins_value_1", "allow_origins_value_2"],
+                "allow_origins": ["allow_origins_value1", "allow_origins_value2"],
                 "disabled": True,
-                "expose_headers": ["expose_headers_value_1", "expose_headers_value_2"],
+                "expose_headers": ["expose_headers_value1", "expose_headers_value2"],
                 "max_age": 722,
             },
             "fault_injection_policy": {
@@ -1515,8 +1547,8 @@ def test_insert_rest(request_type):
                 "num_retries": 1197,
                 "per_try_timeout": {},
                 "retry_conditions": [
-                    "retry_conditions_value_1",
-                    "retry_conditions_value_2",
+                    "retry_conditions_value1",
+                    "retry_conditions_value2",
                 ],
             },
             "timeout": {},
@@ -1536,13 +1568,13 @@ def test_insert_rest(request_type):
                             }
                         ],
                         "request_headers_to_remove": [
-                            "request_headers_to_remove_value_1",
-                            "request_headers_to_remove_value_2",
+                            "request_headers_to_remove_value1",
+                            "request_headers_to_remove_value2",
                         ],
                         "response_headers_to_add": {},
                         "response_headers_to_remove": [
-                            "response_headers_to_remove_value_1",
-                            "response_headers_to_remove_value_2",
+                            "response_headers_to_remove_value1",
+                            "response_headers_to_remove_value2",
                         ],
                     },
                     "weight": 648,
@@ -1564,7 +1596,7 @@ def test_insert_rest(request_type):
         "host_rules": [
             {
                 "description": "description_value",
-                "hosts": ["hosts_value_1", "hosts_value_2"],
+                "hosts": ["hosts_value1", "hosts_value2"],
                 "path_matcher": "path_matcher_value",
             }
         ],
@@ -1581,7 +1613,7 @@ def test_insert_rest(request_type):
                 "name": "name_value",
                 "path_rules": [
                     {
-                        "paths": ["paths_value_1", "paths_value_2"],
+                        "paths": ["paths_value1", "paths_value2"],
                         "route_action": {},
                         "service": "service_value",
                         "url_redirect": {},
@@ -1655,7 +1687,7 @@ def test_insert_rest(request_type):
             }
         ],
     }
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
@@ -1688,7 +1720,9 @@ def test_insert_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.insert(request)
@@ -1725,10 +1759,13 @@ def test_insert_rest_required_fields(request_type=compute.InsertRegionUrlMapRequ
     request_init = {}
     request_init["project"] = ""
     request_init["region"] = ""
-    request = request_type(request_init)
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        request_type.to_json(
-            request, including_default_value_fields=False, use_integers_for_enums=False
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
     )
 
@@ -1761,7 +1798,7 @@ def test_insert_rest_required_fields(request_type=compute.InsertRegionUrlMapRequ
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
     return_value = compute.Operation()
@@ -1773,17 +1810,21 @@ def test_insert_rest_required_fields(request_type=compute.InsertRegionUrlMapRequ
         with mock.patch.object(path_template, "transcode") as transcode:
             # A uri without fields and an empty body will force all the
             # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
             transcode_result = {
                 "uri": "v1/sample_method",
                 "method": "post",
-                "query_params": request_init,
+                "query_params": pb_request,
             }
-            transcode_result["body"] = {}
+            transcode_result["body"] = pb_request
             transcode.return_value = transcode_result
 
             response_value = Response()
             response_value.status_code = 200
-            json_return_value = compute.Operation.to_json(return_value)
+
+            pb_return_value = compute.Operation.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
 
@@ -1832,12 +1873,14 @@ def test_insert_rest_interceptors(null_interceptor):
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
-
+        pb_message = compute.InsertRegionUrlMapRequest.pb(
+            compute.InsertRegionUrlMapRequest()
+        )
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
-            "body": None,
-            "query_params": {},
+            "body": pb_message,
+            "query_params": pb_message,
         }
 
         req.return_value = Response()
@@ -1880,15 +1923,15 @@ def test_insert_rest_bad_request(
         "default_route_action": {
             "cors_policy": {
                 "allow_credentials": True,
-                "allow_headers": ["allow_headers_value_1", "allow_headers_value_2"],
-                "allow_methods": ["allow_methods_value_1", "allow_methods_value_2"],
+                "allow_headers": ["allow_headers_value1", "allow_headers_value2"],
+                "allow_methods": ["allow_methods_value1", "allow_methods_value2"],
                 "allow_origin_regexes": [
-                    "allow_origin_regexes_value_1",
-                    "allow_origin_regexes_value_2",
+                    "allow_origin_regexes_value1",
+                    "allow_origin_regexes_value2",
                 ],
-                "allow_origins": ["allow_origins_value_1", "allow_origins_value_2"],
+                "allow_origins": ["allow_origins_value1", "allow_origins_value2"],
                 "disabled": True,
-                "expose_headers": ["expose_headers_value_1", "expose_headers_value_2"],
+                "expose_headers": ["expose_headers_value1", "expose_headers_value2"],
                 "max_age": 722,
             },
             "fault_injection_policy": {
@@ -1904,8 +1947,8 @@ def test_insert_rest_bad_request(
                 "num_retries": 1197,
                 "per_try_timeout": {},
                 "retry_conditions": [
-                    "retry_conditions_value_1",
-                    "retry_conditions_value_2",
+                    "retry_conditions_value1",
+                    "retry_conditions_value2",
                 ],
             },
             "timeout": {},
@@ -1925,13 +1968,13 @@ def test_insert_rest_bad_request(
                             }
                         ],
                         "request_headers_to_remove": [
-                            "request_headers_to_remove_value_1",
-                            "request_headers_to_remove_value_2",
+                            "request_headers_to_remove_value1",
+                            "request_headers_to_remove_value2",
                         ],
                         "response_headers_to_add": {},
                         "response_headers_to_remove": [
-                            "response_headers_to_remove_value_1",
-                            "response_headers_to_remove_value_2",
+                            "response_headers_to_remove_value1",
+                            "response_headers_to_remove_value2",
                         ],
                     },
                     "weight": 648,
@@ -1953,7 +1996,7 @@ def test_insert_rest_bad_request(
         "host_rules": [
             {
                 "description": "description_value",
-                "hosts": ["hosts_value_1", "hosts_value_2"],
+                "hosts": ["hosts_value1", "hosts_value2"],
                 "path_matcher": "path_matcher_value",
             }
         ],
@@ -1970,7 +2013,7 @@ def test_insert_rest_bad_request(
                 "name": "name_value",
                 "path_rules": [
                     {
-                        "paths": ["paths_value_1", "paths_value_2"],
+                        "paths": ["paths_value1", "paths_value2"],
                         "route_action": {},
                         "service": "service_value",
                         "url_redirect": {},
@@ -2044,7 +2087,7 @@ def test_insert_rest_bad_request(
             }
         ],
     }
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
     with mock.patch.object(Session, "request") as req, pytest.raises(
@@ -2085,8 +2128,8 @@ def test_insert_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
-
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -2148,15 +2191,15 @@ def test_insert_unary_rest(request_type):
         "default_route_action": {
             "cors_policy": {
                 "allow_credentials": True,
-                "allow_headers": ["allow_headers_value_1", "allow_headers_value_2"],
-                "allow_methods": ["allow_methods_value_1", "allow_methods_value_2"],
+                "allow_headers": ["allow_headers_value1", "allow_headers_value2"],
+                "allow_methods": ["allow_methods_value1", "allow_methods_value2"],
                 "allow_origin_regexes": [
-                    "allow_origin_regexes_value_1",
-                    "allow_origin_regexes_value_2",
+                    "allow_origin_regexes_value1",
+                    "allow_origin_regexes_value2",
                 ],
-                "allow_origins": ["allow_origins_value_1", "allow_origins_value_2"],
+                "allow_origins": ["allow_origins_value1", "allow_origins_value2"],
                 "disabled": True,
-                "expose_headers": ["expose_headers_value_1", "expose_headers_value_2"],
+                "expose_headers": ["expose_headers_value1", "expose_headers_value2"],
                 "max_age": 722,
             },
             "fault_injection_policy": {
@@ -2172,8 +2215,8 @@ def test_insert_unary_rest(request_type):
                 "num_retries": 1197,
                 "per_try_timeout": {},
                 "retry_conditions": [
-                    "retry_conditions_value_1",
-                    "retry_conditions_value_2",
+                    "retry_conditions_value1",
+                    "retry_conditions_value2",
                 ],
             },
             "timeout": {},
@@ -2193,13 +2236,13 @@ def test_insert_unary_rest(request_type):
                             }
                         ],
                         "request_headers_to_remove": [
-                            "request_headers_to_remove_value_1",
-                            "request_headers_to_remove_value_2",
+                            "request_headers_to_remove_value1",
+                            "request_headers_to_remove_value2",
                         ],
                         "response_headers_to_add": {},
                         "response_headers_to_remove": [
-                            "response_headers_to_remove_value_1",
-                            "response_headers_to_remove_value_2",
+                            "response_headers_to_remove_value1",
+                            "response_headers_to_remove_value2",
                         ],
                     },
                     "weight": 648,
@@ -2221,7 +2264,7 @@ def test_insert_unary_rest(request_type):
         "host_rules": [
             {
                 "description": "description_value",
-                "hosts": ["hosts_value_1", "hosts_value_2"],
+                "hosts": ["hosts_value1", "hosts_value2"],
                 "path_matcher": "path_matcher_value",
             }
         ],
@@ -2238,7 +2281,7 @@ def test_insert_unary_rest(request_type):
                 "name": "name_value",
                 "path_rules": [
                     {
-                        "paths": ["paths_value_1", "paths_value_2"],
+                        "paths": ["paths_value1", "paths_value2"],
                         "route_action": {},
                         "service": "service_value",
                         "url_redirect": {},
@@ -2312,7 +2355,7 @@ def test_insert_unary_rest(request_type):
             }
         ],
     }
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
@@ -2345,7 +2388,9 @@ def test_insert_unary_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.insert_unary(request)
@@ -2362,10 +2407,13 @@ def test_insert_unary_rest_required_fields(
     request_init = {}
     request_init["project"] = ""
     request_init["region"] = ""
-    request = request_type(request_init)
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        request_type.to_json(
-            request, including_default_value_fields=False, use_integers_for_enums=False
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
     )
 
@@ -2398,7 +2446,7 @@ def test_insert_unary_rest_required_fields(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
     return_value = compute.Operation()
@@ -2410,17 +2458,21 @@ def test_insert_unary_rest_required_fields(
         with mock.patch.object(path_template, "transcode") as transcode:
             # A uri without fields and an empty body will force all the
             # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
             transcode_result = {
                 "uri": "v1/sample_method",
                 "method": "post",
-                "query_params": request_init,
+                "query_params": pb_request,
             }
-            transcode_result["body"] = {}
+            transcode_result["body"] = pb_request
             transcode.return_value = transcode_result
 
             response_value = Response()
             response_value.status_code = 200
-            json_return_value = compute.Operation.to_json(return_value)
+
+            pb_return_value = compute.Operation.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
 
@@ -2469,12 +2521,14 @@ def test_insert_unary_rest_interceptors(null_interceptor):
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
-
+        pb_message = compute.InsertRegionUrlMapRequest.pb(
+            compute.InsertRegionUrlMapRequest()
+        )
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
-            "body": None,
-            "query_params": {},
+            "body": pb_message,
+            "query_params": pb_message,
         }
 
         req.return_value = Response()
@@ -2517,15 +2571,15 @@ def test_insert_unary_rest_bad_request(
         "default_route_action": {
             "cors_policy": {
                 "allow_credentials": True,
-                "allow_headers": ["allow_headers_value_1", "allow_headers_value_2"],
-                "allow_methods": ["allow_methods_value_1", "allow_methods_value_2"],
+                "allow_headers": ["allow_headers_value1", "allow_headers_value2"],
+                "allow_methods": ["allow_methods_value1", "allow_methods_value2"],
                 "allow_origin_regexes": [
-                    "allow_origin_regexes_value_1",
-                    "allow_origin_regexes_value_2",
+                    "allow_origin_regexes_value1",
+                    "allow_origin_regexes_value2",
                 ],
-                "allow_origins": ["allow_origins_value_1", "allow_origins_value_2"],
+                "allow_origins": ["allow_origins_value1", "allow_origins_value2"],
                 "disabled": True,
-                "expose_headers": ["expose_headers_value_1", "expose_headers_value_2"],
+                "expose_headers": ["expose_headers_value1", "expose_headers_value2"],
                 "max_age": 722,
             },
             "fault_injection_policy": {
@@ -2541,8 +2595,8 @@ def test_insert_unary_rest_bad_request(
                 "num_retries": 1197,
                 "per_try_timeout": {},
                 "retry_conditions": [
-                    "retry_conditions_value_1",
-                    "retry_conditions_value_2",
+                    "retry_conditions_value1",
+                    "retry_conditions_value2",
                 ],
             },
             "timeout": {},
@@ -2562,13 +2616,13 @@ def test_insert_unary_rest_bad_request(
                             }
                         ],
                         "request_headers_to_remove": [
-                            "request_headers_to_remove_value_1",
-                            "request_headers_to_remove_value_2",
+                            "request_headers_to_remove_value1",
+                            "request_headers_to_remove_value2",
                         ],
                         "response_headers_to_add": {},
                         "response_headers_to_remove": [
-                            "response_headers_to_remove_value_1",
-                            "response_headers_to_remove_value_2",
+                            "response_headers_to_remove_value1",
+                            "response_headers_to_remove_value2",
                         ],
                     },
                     "weight": 648,
@@ -2590,7 +2644,7 @@ def test_insert_unary_rest_bad_request(
         "host_rules": [
             {
                 "description": "description_value",
-                "hosts": ["hosts_value_1", "hosts_value_2"],
+                "hosts": ["hosts_value1", "hosts_value2"],
                 "path_matcher": "path_matcher_value",
             }
         ],
@@ -2607,7 +2661,7 @@ def test_insert_unary_rest_bad_request(
                 "name": "name_value",
                 "path_rules": [
                     {
-                        "paths": ["paths_value_1", "paths_value_2"],
+                        "paths": ["paths_value1", "paths_value2"],
                         "route_action": {},
                         "service": "service_value",
                         "url_redirect": {},
@@ -2681,7 +2735,7 @@ def test_insert_unary_rest_bad_request(
             }
         ],
     }
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
     with mock.patch.object(Session, "request") as req, pytest.raises(
@@ -2722,8 +2776,8 @@ def test_insert_unary_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
-
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -2780,7 +2834,7 @@ def test_list_rest(request_type):
 
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "region": "sample2"}
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
@@ -2795,7 +2849,9 @@ def test_list_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.UrlMapList.to_json(return_value)
+        pb_return_value = compute.UrlMapList.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.list(request)
@@ -2814,10 +2870,13 @@ def test_list_rest_required_fields(request_type=compute.ListRegionUrlMapsRequest
     request_init = {}
     request_init["project"] = ""
     request_init["region"] = ""
-    request = request_type(request_init)
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        request_type.to_json(
-            request, including_default_value_fields=False, use_integers_for_enums=False
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
     )
 
@@ -2858,7 +2917,7 @@ def test_list_rest_required_fields(request_type=compute.ListRegionUrlMapsRequest
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
     return_value = compute.UrlMapList()
@@ -2870,16 +2929,20 @@ def test_list_rest_required_fields(request_type=compute.ListRegionUrlMapsRequest
         with mock.patch.object(path_template, "transcode") as transcode:
             # A uri without fields and an empty body will force all the
             # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
             transcode_result = {
                 "uri": "v1/sample_method",
                 "method": "get",
-                "query_params": request_init,
+                "query_params": pb_request,
             }
             transcode.return_value = transcode_result
 
             response_value = Response()
             response_value.status_code = 200
-            json_return_value = compute.UrlMapList.to_json(return_value)
+
+            pb_return_value = compute.UrlMapList.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
 
@@ -2935,12 +2998,14 @@ def test_list_rest_interceptors(null_interceptor):
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
-
+        pb_message = compute.ListRegionUrlMapsRequest.pb(
+            compute.ListRegionUrlMapsRequest()
+        )
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
-            "body": None,
-            "query_params": {},
+            "body": pb_message,
+            "query_params": pb_message,
         }
 
         req.return_value = Response()
@@ -2978,7 +3043,7 @@ def test_list_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "region": "sample2"}
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
     with mock.patch.object(Session, "request") as req, pytest.raises(
@@ -3016,8 +3081,8 @@ def test_list_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.UrlMapList.to_json(return_value)
-
+        pb_return_value = compute.UrlMapList.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -3131,15 +3196,15 @@ def test_patch_rest(request_type):
         "default_route_action": {
             "cors_policy": {
                 "allow_credentials": True,
-                "allow_headers": ["allow_headers_value_1", "allow_headers_value_2"],
-                "allow_methods": ["allow_methods_value_1", "allow_methods_value_2"],
+                "allow_headers": ["allow_headers_value1", "allow_headers_value2"],
+                "allow_methods": ["allow_methods_value1", "allow_methods_value2"],
                 "allow_origin_regexes": [
-                    "allow_origin_regexes_value_1",
-                    "allow_origin_regexes_value_2",
+                    "allow_origin_regexes_value1",
+                    "allow_origin_regexes_value2",
                 ],
-                "allow_origins": ["allow_origins_value_1", "allow_origins_value_2"],
+                "allow_origins": ["allow_origins_value1", "allow_origins_value2"],
                 "disabled": True,
-                "expose_headers": ["expose_headers_value_1", "expose_headers_value_2"],
+                "expose_headers": ["expose_headers_value1", "expose_headers_value2"],
                 "max_age": 722,
             },
             "fault_injection_policy": {
@@ -3155,8 +3220,8 @@ def test_patch_rest(request_type):
                 "num_retries": 1197,
                 "per_try_timeout": {},
                 "retry_conditions": [
-                    "retry_conditions_value_1",
-                    "retry_conditions_value_2",
+                    "retry_conditions_value1",
+                    "retry_conditions_value2",
                 ],
             },
             "timeout": {},
@@ -3176,13 +3241,13 @@ def test_patch_rest(request_type):
                             }
                         ],
                         "request_headers_to_remove": [
-                            "request_headers_to_remove_value_1",
-                            "request_headers_to_remove_value_2",
+                            "request_headers_to_remove_value1",
+                            "request_headers_to_remove_value2",
                         ],
                         "response_headers_to_add": {},
                         "response_headers_to_remove": [
-                            "response_headers_to_remove_value_1",
-                            "response_headers_to_remove_value_2",
+                            "response_headers_to_remove_value1",
+                            "response_headers_to_remove_value2",
                         ],
                     },
                     "weight": 648,
@@ -3204,7 +3269,7 @@ def test_patch_rest(request_type):
         "host_rules": [
             {
                 "description": "description_value",
-                "hosts": ["hosts_value_1", "hosts_value_2"],
+                "hosts": ["hosts_value1", "hosts_value2"],
                 "path_matcher": "path_matcher_value",
             }
         ],
@@ -3221,7 +3286,7 @@ def test_patch_rest(request_type):
                 "name": "name_value",
                 "path_rules": [
                     {
-                        "paths": ["paths_value_1", "paths_value_2"],
+                        "paths": ["paths_value1", "paths_value2"],
                         "route_action": {},
                         "service": "service_value",
                         "url_redirect": {},
@@ -3295,7 +3360,7 @@ def test_patch_rest(request_type):
             }
         ],
     }
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
@@ -3328,7 +3393,9 @@ def test_patch_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.patch(request)
@@ -3366,10 +3433,13 @@ def test_patch_rest_required_fields(request_type=compute.PatchRegionUrlMapReques
     request_init["project"] = ""
     request_init["region"] = ""
     request_init["url_map"] = ""
-    request = request_type(request_init)
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        request_type.to_json(
-            request, including_default_value_fields=False, use_integers_for_enums=False
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
     )
 
@@ -3405,7 +3475,7 @@ def test_patch_rest_required_fields(request_type=compute.PatchRegionUrlMapReques
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
     return_value = compute.Operation()
@@ -3417,17 +3487,21 @@ def test_patch_rest_required_fields(request_type=compute.PatchRegionUrlMapReques
         with mock.patch.object(path_template, "transcode") as transcode:
             # A uri without fields and an empty body will force all the
             # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
             transcode_result = {
                 "uri": "v1/sample_method",
                 "method": "patch",
-                "query_params": request_init,
+                "query_params": pb_request,
             }
-            transcode_result["body"] = {}
+            transcode_result["body"] = pb_request
             transcode.return_value = transcode_result
 
             response_value = Response()
             response_value.status_code = 200
-            json_return_value = compute.Operation.to_json(return_value)
+
+            pb_return_value = compute.Operation.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
 
@@ -3477,12 +3551,14 @@ def test_patch_rest_interceptors(null_interceptor):
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
-
+        pb_message = compute.PatchRegionUrlMapRequest.pb(
+            compute.PatchRegionUrlMapRequest()
+        )
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
-            "body": None,
-            "query_params": {},
+            "body": pb_message,
+            "query_params": pb_message,
         }
 
         req.return_value = Response()
@@ -3525,15 +3601,15 @@ def test_patch_rest_bad_request(
         "default_route_action": {
             "cors_policy": {
                 "allow_credentials": True,
-                "allow_headers": ["allow_headers_value_1", "allow_headers_value_2"],
-                "allow_methods": ["allow_methods_value_1", "allow_methods_value_2"],
+                "allow_headers": ["allow_headers_value1", "allow_headers_value2"],
+                "allow_methods": ["allow_methods_value1", "allow_methods_value2"],
                 "allow_origin_regexes": [
-                    "allow_origin_regexes_value_1",
-                    "allow_origin_regexes_value_2",
+                    "allow_origin_regexes_value1",
+                    "allow_origin_regexes_value2",
                 ],
-                "allow_origins": ["allow_origins_value_1", "allow_origins_value_2"],
+                "allow_origins": ["allow_origins_value1", "allow_origins_value2"],
                 "disabled": True,
-                "expose_headers": ["expose_headers_value_1", "expose_headers_value_2"],
+                "expose_headers": ["expose_headers_value1", "expose_headers_value2"],
                 "max_age": 722,
             },
             "fault_injection_policy": {
@@ -3549,8 +3625,8 @@ def test_patch_rest_bad_request(
                 "num_retries": 1197,
                 "per_try_timeout": {},
                 "retry_conditions": [
-                    "retry_conditions_value_1",
-                    "retry_conditions_value_2",
+                    "retry_conditions_value1",
+                    "retry_conditions_value2",
                 ],
             },
             "timeout": {},
@@ -3570,13 +3646,13 @@ def test_patch_rest_bad_request(
                             }
                         ],
                         "request_headers_to_remove": [
-                            "request_headers_to_remove_value_1",
-                            "request_headers_to_remove_value_2",
+                            "request_headers_to_remove_value1",
+                            "request_headers_to_remove_value2",
                         ],
                         "response_headers_to_add": {},
                         "response_headers_to_remove": [
-                            "response_headers_to_remove_value_1",
-                            "response_headers_to_remove_value_2",
+                            "response_headers_to_remove_value1",
+                            "response_headers_to_remove_value2",
                         ],
                     },
                     "weight": 648,
@@ -3598,7 +3674,7 @@ def test_patch_rest_bad_request(
         "host_rules": [
             {
                 "description": "description_value",
-                "hosts": ["hosts_value_1", "hosts_value_2"],
+                "hosts": ["hosts_value1", "hosts_value2"],
                 "path_matcher": "path_matcher_value",
             }
         ],
@@ -3615,7 +3691,7 @@ def test_patch_rest_bad_request(
                 "name": "name_value",
                 "path_rules": [
                     {
-                        "paths": ["paths_value_1", "paths_value_2"],
+                        "paths": ["paths_value1", "paths_value2"],
                         "route_action": {},
                         "service": "service_value",
                         "url_redirect": {},
@@ -3689,7 +3765,7 @@ def test_patch_rest_bad_request(
             }
         ],
     }
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
     with mock.patch.object(Session, "request") as req, pytest.raises(
@@ -3735,8 +3811,8 @@ def test_patch_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
-
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -3799,15 +3875,15 @@ def test_patch_unary_rest(request_type):
         "default_route_action": {
             "cors_policy": {
                 "allow_credentials": True,
-                "allow_headers": ["allow_headers_value_1", "allow_headers_value_2"],
-                "allow_methods": ["allow_methods_value_1", "allow_methods_value_2"],
+                "allow_headers": ["allow_headers_value1", "allow_headers_value2"],
+                "allow_methods": ["allow_methods_value1", "allow_methods_value2"],
                 "allow_origin_regexes": [
-                    "allow_origin_regexes_value_1",
-                    "allow_origin_regexes_value_2",
+                    "allow_origin_regexes_value1",
+                    "allow_origin_regexes_value2",
                 ],
-                "allow_origins": ["allow_origins_value_1", "allow_origins_value_2"],
+                "allow_origins": ["allow_origins_value1", "allow_origins_value2"],
                 "disabled": True,
-                "expose_headers": ["expose_headers_value_1", "expose_headers_value_2"],
+                "expose_headers": ["expose_headers_value1", "expose_headers_value2"],
                 "max_age": 722,
             },
             "fault_injection_policy": {
@@ -3823,8 +3899,8 @@ def test_patch_unary_rest(request_type):
                 "num_retries": 1197,
                 "per_try_timeout": {},
                 "retry_conditions": [
-                    "retry_conditions_value_1",
-                    "retry_conditions_value_2",
+                    "retry_conditions_value1",
+                    "retry_conditions_value2",
                 ],
             },
             "timeout": {},
@@ -3844,13 +3920,13 @@ def test_patch_unary_rest(request_type):
                             }
                         ],
                         "request_headers_to_remove": [
-                            "request_headers_to_remove_value_1",
-                            "request_headers_to_remove_value_2",
+                            "request_headers_to_remove_value1",
+                            "request_headers_to_remove_value2",
                         ],
                         "response_headers_to_add": {},
                         "response_headers_to_remove": [
-                            "response_headers_to_remove_value_1",
-                            "response_headers_to_remove_value_2",
+                            "response_headers_to_remove_value1",
+                            "response_headers_to_remove_value2",
                         ],
                     },
                     "weight": 648,
@@ -3872,7 +3948,7 @@ def test_patch_unary_rest(request_type):
         "host_rules": [
             {
                 "description": "description_value",
-                "hosts": ["hosts_value_1", "hosts_value_2"],
+                "hosts": ["hosts_value1", "hosts_value2"],
                 "path_matcher": "path_matcher_value",
             }
         ],
@@ -3889,7 +3965,7 @@ def test_patch_unary_rest(request_type):
                 "name": "name_value",
                 "path_rules": [
                     {
-                        "paths": ["paths_value_1", "paths_value_2"],
+                        "paths": ["paths_value1", "paths_value2"],
                         "route_action": {},
                         "service": "service_value",
                         "url_redirect": {},
@@ -3963,7 +4039,7 @@ def test_patch_unary_rest(request_type):
             }
         ],
     }
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
@@ -3996,7 +4072,9 @@ def test_patch_unary_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.patch_unary(request)
@@ -4014,10 +4092,13 @@ def test_patch_unary_rest_required_fields(
     request_init["project"] = ""
     request_init["region"] = ""
     request_init["url_map"] = ""
-    request = request_type(request_init)
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        request_type.to_json(
-            request, including_default_value_fields=False, use_integers_for_enums=False
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
     )
 
@@ -4053,7 +4134,7 @@ def test_patch_unary_rest_required_fields(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
     return_value = compute.Operation()
@@ -4065,17 +4146,21 @@ def test_patch_unary_rest_required_fields(
         with mock.patch.object(path_template, "transcode") as transcode:
             # A uri without fields and an empty body will force all the
             # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
             transcode_result = {
                 "uri": "v1/sample_method",
                 "method": "patch",
-                "query_params": request_init,
+                "query_params": pb_request,
             }
-            transcode_result["body"] = {}
+            transcode_result["body"] = pb_request
             transcode.return_value = transcode_result
 
             response_value = Response()
             response_value.status_code = 200
-            json_return_value = compute.Operation.to_json(return_value)
+
+            pb_return_value = compute.Operation.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
 
@@ -4125,12 +4210,14 @@ def test_patch_unary_rest_interceptors(null_interceptor):
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
-
+        pb_message = compute.PatchRegionUrlMapRequest.pb(
+            compute.PatchRegionUrlMapRequest()
+        )
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
-            "body": None,
-            "query_params": {},
+            "body": pb_message,
+            "query_params": pb_message,
         }
 
         req.return_value = Response()
@@ -4173,15 +4260,15 @@ def test_patch_unary_rest_bad_request(
         "default_route_action": {
             "cors_policy": {
                 "allow_credentials": True,
-                "allow_headers": ["allow_headers_value_1", "allow_headers_value_2"],
-                "allow_methods": ["allow_methods_value_1", "allow_methods_value_2"],
+                "allow_headers": ["allow_headers_value1", "allow_headers_value2"],
+                "allow_methods": ["allow_methods_value1", "allow_methods_value2"],
                 "allow_origin_regexes": [
-                    "allow_origin_regexes_value_1",
-                    "allow_origin_regexes_value_2",
+                    "allow_origin_regexes_value1",
+                    "allow_origin_regexes_value2",
                 ],
-                "allow_origins": ["allow_origins_value_1", "allow_origins_value_2"],
+                "allow_origins": ["allow_origins_value1", "allow_origins_value2"],
                 "disabled": True,
-                "expose_headers": ["expose_headers_value_1", "expose_headers_value_2"],
+                "expose_headers": ["expose_headers_value1", "expose_headers_value2"],
                 "max_age": 722,
             },
             "fault_injection_policy": {
@@ -4197,8 +4284,8 @@ def test_patch_unary_rest_bad_request(
                 "num_retries": 1197,
                 "per_try_timeout": {},
                 "retry_conditions": [
-                    "retry_conditions_value_1",
-                    "retry_conditions_value_2",
+                    "retry_conditions_value1",
+                    "retry_conditions_value2",
                 ],
             },
             "timeout": {},
@@ -4218,13 +4305,13 @@ def test_patch_unary_rest_bad_request(
                             }
                         ],
                         "request_headers_to_remove": [
-                            "request_headers_to_remove_value_1",
-                            "request_headers_to_remove_value_2",
+                            "request_headers_to_remove_value1",
+                            "request_headers_to_remove_value2",
                         ],
                         "response_headers_to_add": {},
                         "response_headers_to_remove": [
-                            "response_headers_to_remove_value_1",
-                            "response_headers_to_remove_value_2",
+                            "response_headers_to_remove_value1",
+                            "response_headers_to_remove_value2",
                         ],
                     },
                     "weight": 648,
@@ -4246,7 +4333,7 @@ def test_patch_unary_rest_bad_request(
         "host_rules": [
             {
                 "description": "description_value",
-                "hosts": ["hosts_value_1", "hosts_value_2"],
+                "hosts": ["hosts_value1", "hosts_value2"],
                 "path_matcher": "path_matcher_value",
             }
         ],
@@ -4263,7 +4350,7 @@ def test_patch_unary_rest_bad_request(
                 "name": "name_value",
                 "path_rules": [
                     {
-                        "paths": ["paths_value_1", "paths_value_2"],
+                        "paths": ["paths_value1", "paths_value2"],
                         "route_action": {},
                         "service": "service_value",
                         "url_redirect": {},
@@ -4337,7 +4424,7 @@ def test_patch_unary_rest_bad_request(
             }
         ],
     }
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
     with mock.patch.object(Session, "request") as req, pytest.raises(
@@ -4383,8 +4470,8 @@ def test_patch_unary_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
-
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -4447,15 +4534,15 @@ def test_update_rest(request_type):
         "default_route_action": {
             "cors_policy": {
                 "allow_credentials": True,
-                "allow_headers": ["allow_headers_value_1", "allow_headers_value_2"],
-                "allow_methods": ["allow_methods_value_1", "allow_methods_value_2"],
+                "allow_headers": ["allow_headers_value1", "allow_headers_value2"],
+                "allow_methods": ["allow_methods_value1", "allow_methods_value2"],
                 "allow_origin_regexes": [
-                    "allow_origin_regexes_value_1",
-                    "allow_origin_regexes_value_2",
+                    "allow_origin_regexes_value1",
+                    "allow_origin_regexes_value2",
                 ],
-                "allow_origins": ["allow_origins_value_1", "allow_origins_value_2"],
+                "allow_origins": ["allow_origins_value1", "allow_origins_value2"],
                 "disabled": True,
-                "expose_headers": ["expose_headers_value_1", "expose_headers_value_2"],
+                "expose_headers": ["expose_headers_value1", "expose_headers_value2"],
                 "max_age": 722,
             },
             "fault_injection_policy": {
@@ -4471,8 +4558,8 @@ def test_update_rest(request_type):
                 "num_retries": 1197,
                 "per_try_timeout": {},
                 "retry_conditions": [
-                    "retry_conditions_value_1",
-                    "retry_conditions_value_2",
+                    "retry_conditions_value1",
+                    "retry_conditions_value2",
                 ],
             },
             "timeout": {},
@@ -4492,13 +4579,13 @@ def test_update_rest(request_type):
                             }
                         ],
                         "request_headers_to_remove": [
-                            "request_headers_to_remove_value_1",
-                            "request_headers_to_remove_value_2",
+                            "request_headers_to_remove_value1",
+                            "request_headers_to_remove_value2",
                         ],
                         "response_headers_to_add": {},
                         "response_headers_to_remove": [
-                            "response_headers_to_remove_value_1",
-                            "response_headers_to_remove_value_2",
+                            "response_headers_to_remove_value1",
+                            "response_headers_to_remove_value2",
                         ],
                     },
                     "weight": 648,
@@ -4520,7 +4607,7 @@ def test_update_rest(request_type):
         "host_rules": [
             {
                 "description": "description_value",
-                "hosts": ["hosts_value_1", "hosts_value_2"],
+                "hosts": ["hosts_value1", "hosts_value2"],
                 "path_matcher": "path_matcher_value",
             }
         ],
@@ -4537,7 +4624,7 @@ def test_update_rest(request_type):
                 "name": "name_value",
                 "path_rules": [
                     {
-                        "paths": ["paths_value_1", "paths_value_2"],
+                        "paths": ["paths_value1", "paths_value2"],
                         "route_action": {},
                         "service": "service_value",
                         "url_redirect": {},
@@ -4611,7 +4698,7 @@ def test_update_rest(request_type):
             }
         ],
     }
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
@@ -4644,7 +4731,9 @@ def test_update_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.update(request)
@@ -4682,10 +4771,13 @@ def test_update_rest_required_fields(request_type=compute.UpdateRegionUrlMapRequ
     request_init["project"] = ""
     request_init["region"] = ""
     request_init["url_map"] = ""
-    request = request_type(request_init)
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        request_type.to_json(
-            request, including_default_value_fields=False, use_integers_for_enums=False
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
     )
 
@@ -4721,7 +4813,7 @@ def test_update_rest_required_fields(request_type=compute.UpdateRegionUrlMapRequ
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
     return_value = compute.Operation()
@@ -4733,17 +4825,21 @@ def test_update_rest_required_fields(request_type=compute.UpdateRegionUrlMapRequ
         with mock.patch.object(path_template, "transcode") as transcode:
             # A uri without fields and an empty body will force all the
             # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
             transcode_result = {
                 "uri": "v1/sample_method",
                 "method": "put",
-                "query_params": request_init,
+                "query_params": pb_request,
             }
-            transcode_result["body"] = {}
+            transcode_result["body"] = pb_request
             transcode.return_value = transcode_result
 
             response_value = Response()
             response_value.status_code = 200
-            json_return_value = compute.Operation.to_json(return_value)
+
+            pb_return_value = compute.Operation.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
 
@@ -4793,12 +4889,14 @@ def test_update_rest_interceptors(null_interceptor):
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
-
+        pb_message = compute.UpdateRegionUrlMapRequest.pb(
+            compute.UpdateRegionUrlMapRequest()
+        )
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
-            "body": None,
-            "query_params": {},
+            "body": pb_message,
+            "query_params": pb_message,
         }
 
         req.return_value = Response()
@@ -4841,15 +4939,15 @@ def test_update_rest_bad_request(
         "default_route_action": {
             "cors_policy": {
                 "allow_credentials": True,
-                "allow_headers": ["allow_headers_value_1", "allow_headers_value_2"],
-                "allow_methods": ["allow_methods_value_1", "allow_methods_value_2"],
+                "allow_headers": ["allow_headers_value1", "allow_headers_value2"],
+                "allow_methods": ["allow_methods_value1", "allow_methods_value2"],
                 "allow_origin_regexes": [
-                    "allow_origin_regexes_value_1",
-                    "allow_origin_regexes_value_2",
+                    "allow_origin_regexes_value1",
+                    "allow_origin_regexes_value2",
                 ],
-                "allow_origins": ["allow_origins_value_1", "allow_origins_value_2"],
+                "allow_origins": ["allow_origins_value1", "allow_origins_value2"],
                 "disabled": True,
-                "expose_headers": ["expose_headers_value_1", "expose_headers_value_2"],
+                "expose_headers": ["expose_headers_value1", "expose_headers_value2"],
                 "max_age": 722,
             },
             "fault_injection_policy": {
@@ -4865,8 +4963,8 @@ def test_update_rest_bad_request(
                 "num_retries": 1197,
                 "per_try_timeout": {},
                 "retry_conditions": [
-                    "retry_conditions_value_1",
-                    "retry_conditions_value_2",
+                    "retry_conditions_value1",
+                    "retry_conditions_value2",
                 ],
             },
             "timeout": {},
@@ -4886,13 +4984,13 @@ def test_update_rest_bad_request(
                             }
                         ],
                         "request_headers_to_remove": [
-                            "request_headers_to_remove_value_1",
-                            "request_headers_to_remove_value_2",
+                            "request_headers_to_remove_value1",
+                            "request_headers_to_remove_value2",
                         ],
                         "response_headers_to_add": {},
                         "response_headers_to_remove": [
-                            "response_headers_to_remove_value_1",
-                            "response_headers_to_remove_value_2",
+                            "response_headers_to_remove_value1",
+                            "response_headers_to_remove_value2",
                         ],
                     },
                     "weight": 648,
@@ -4914,7 +5012,7 @@ def test_update_rest_bad_request(
         "host_rules": [
             {
                 "description": "description_value",
-                "hosts": ["hosts_value_1", "hosts_value_2"],
+                "hosts": ["hosts_value1", "hosts_value2"],
                 "path_matcher": "path_matcher_value",
             }
         ],
@@ -4931,7 +5029,7 @@ def test_update_rest_bad_request(
                 "name": "name_value",
                 "path_rules": [
                     {
-                        "paths": ["paths_value_1", "paths_value_2"],
+                        "paths": ["paths_value1", "paths_value2"],
                         "route_action": {},
                         "service": "service_value",
                         "url_redirect": {},
@@ -5005,7 +5103,7 @@ def test_update_rest_bad_request(
             }
         ],
     }
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
     with mock.patch.object(Session, "request") as req, pytest.raises(
@@ -5051,8 +5149,8 @@ def test_update_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
-
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -5115,15 +5213,15 @@ def test_update_unary_rest(request_type):
         "default_route_action": {
             "cors_policy": {
                 "allow_credentials": True,
-                "allow_headers": ["allow_headers_value_1", "allow_headers_value_2"],
-                "allow_methods": ["allow_methods_value_1", "allow_methods_value_2"],
+                "allow_headers": ["allow_headers_value1", "allow_headers_value2"],
+                "allow_methods": ["allow_methods_value1", "allow_methods_value2"],
                 "allow_origin_regexes": [
-                    "allow_origin_regexes_value_1",
-                    "allow_origin_regexes_value_2",
+                    "allow_origin_regexes_value1",
+                    "allow_origin_regexes_value2",
                 ],
-                "allow_origins": ["allow_origins_value_1", "allow_origins_value_2"],
+                "allow_origins": ["allow_origins_value1", "allow_origins_value2"],
                 "disabled": True,
-                "expose_headers": ["expose_headers_value_1", "expose_headers_value_2"],
+                "expose_headers": ["expose_headers_value1", "expose_headers_value2"],
                 "max_age": 722,
             },
             "fault_injection_policy": {
@@ -5139,8 +5237,8 @@ def test_update_unary_rest(request_type):
                 "num_retries": 1197,
                 "per_try_timeout": {},
                 "retry_conditions": [
-                    "retry_conditions_value_1",
-                    "retry_conditions_value_2",
+                    "retry_conditions_value1",
+                    "retry_conditions_value2",
                 ],
             },
             "timeout": {},
@@ -5160,13 +5258,13 @@ def test_update_unary_rest(request_type):
                             }
                         ],
                         "request_headers_to_remove": [
-                            "request_headers_to_remove_value_1",
-                            "request_headers_to_remove_value_2",
+                            "request_headers_to_remove_value1",
+                            "request_headers_to_remove_value2",
                         ],
                         "response_headers_to_add": {},
                         "response_headers_to_remove": [
-                            "response_headers_to_remove_value_1",
-                            "response_headers_to_remove_value_2",
+                            "response_headers_to_remove_value1",
+                            "response_headers_to_remove_value2",
                         ],
                     },
                     "weight": 648,
@@ -5188,7 +5286,7 @@ def test_update_unary_rest(request_type):
         "host_rules": [
             {
                 "description": "description_value",
-                "hosts": ["hosts_value_1", "hosts_value_2"],
+                "hosts": ["hosts_value1", "hosts_value2"],
                 "path_matcher": "path_matcher_value",
             }
         ],
@@ -5205,7 +5303,7 @@ def test_update_unary_rest(request_type):
                 "name": "name_value",
                 "path_rules": [
                     {
-                        "paths": ["paths_value_1", "paths_value_2"],
+                        "paths": ["paths_value1", "paths_value2"],
                         "route_action": {},
                         "service": "service_value",
                         "url_redirect": {},
@@ -5279,7 +5377,7 @@ def test_update_unary_rest(request_type):
             }
         ],
     }
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
@@ -5312,7 +5410,9 @@ def test_update_unary_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.update_unary(request)
@@ -5330,10 +5430,13 @@ def test_update_unary_rest_required_fields(
     request_init["project"] = ""
     request_init["region"] = ""
     request_init["url_map"] = ""
-    request = request_type(request_init)
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        request_type.to_json(
-            request, including_default_value_fields=False, use_integers_for_enums=False
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
     )
 
@@ -5369,7 +5472,7 @@ def test_update_unary_rest_required_fields(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
     return_value = compute.Operation()
@@ -5381,17 +5484,21 @@ def test_update_unary_rest_required_fields(
         with mock.patch.object(path_template, "transcode") as transcode:
             # A uri without fields and an empty body will force all the
             # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
             transcode_result = {
                 "uri": "v1/sample_method",
                 "method": "put",
-                "query_params": request_init,
+                "query_params": pb_request,
             }
-            transcode_result["body"] = {}
+            transcode_result["body"] = pb_request
             transcode.return_value = transcode_result
 
             response_value = Response()
             response_value.status_code = 200
-            json_return_value = compute.Operation.to_json(return_value)
+
+            pb_return_value = compute.Operation.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
 
@@ -5441,12 +5548,14 @@ def test_update_unary_rest_interceptors(null_interceptor):
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
-
+        pb_message = compute.UpdateRegionUrlMapRequest.pb(
+            compute.UpdateRegionUrlMapRequest()
+        )
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
-            "body": None,
-            "query_params": {},
+            "body": pb_message,
+            "query_params": pb_message,
         }
 
         req.return_value = Response()
@@ -5489,15 +5598,15 @@ def test_update_unary_rest_bad_request(
         "default_route_action": {
             "cors_policy": {
                 "allow_credentials": True,
-                "allow_headers": ["allow_headers_value_1", "allow_headers_value_2"],
-                "allow_methods": ["allow_methods_value_1", "allow_methods_value_2"],
+                "allow_headers": ["allow_headers_value1", "allow_headers_value2"],
+                "allow_methods": ["allow_methods_value1", "allow_methods_value2"],
                 "allow_origin_regexes": [
-                    "allow_origin_regexes_value_1",
-                    "allow_origin_regexes_value_2",
+                    "allow_origin_regexes_value1",
+                    "allow_origin_regexes_value2",
                 ],
-                "allow_origins": ["allow_origins_value_1", "allow_origins_value_2"],
+                "allow_origins": ["allow_origins_value1", "allow_origins_value2"],
                 "disabled": True,
-                "expose_headers": ["expose_headers_value_1", "expose_headers_value_2"],
+                "expose_headers": ["expose_headers_value1", "expose_headers_value2"],
                 "max_age": 722,
             },
             "fault_injection_policy": {
@@ -5513,8 +5622,8 @@ def test_update_unary_rest_bad_request(
                 "num_retries": 1197,
                 "per_try_timeout": {},
                 "retry_conditions": [
-                    "retry_conditions_value_1",
-                    "retry_conditions_value_2",
+                    "retry_conditions_value1",
+                    "retry_conditions_value2",
                 ],
             },
             "timeout": {},
@@ -5534,13 +5643,13 @@ def test_update_unary_rest_bad_request(
                             }
                         ],
                         "request_headers_to_remove": [
-                            "request_headers_to_remove_value_1",
-                            "request_headers_to_remove_value_2",
+                            "request_headers_to_remove_value1",
+                            "request_headers_to_remove_value2",
                         ],
                         "response_headers_to_add": {},
                         "response_headers_to_remove": [
-                            "response_headers_to_remove_value_1",
-                            "response_headers_to_remove_value_2",
+                            "response_headers_to_remove_value1",
+                            "response_headers_to_remove_value2",
                         ],
                     },
                     "weight": 648,
@@ -5562,7 +5671,7 @@ def test_update_unary_rest_bad_request(
         "host_rules": [
             {
                 "description": "description_value",
-                "hosts": ["hosts_value_1", "hosts_value_2"],
+                "hosts": ["hosts_value1", "hosts_value2"],
                 "path_matcher": "path_matcher_value",
             }
         ],
@@ -5579,7 +5688,7 @@ def test_update_unary_rest_bad_request(
                 "name": "name_value",
                 "path_rules": [
                     {
-                        "paths": ["paths_value_1", "paths_value_2"],
+                        "paths": ["paths_value1", "paths_value2"],
                         "route_action": {},
                         "service": "service_value",
                         "url_redirect": {},
@@ -5653,7 +5762,7 @@ def test_update_unary_rest_bad_request(
             }
         ],
     }
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
     with mock.patch.object(Session, "request") as req, pytest.raises(
@@ -5699,8 +5808,8 @@ def test_update_unary_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
-
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -5764,17 +5873,17 @@ def test_validate_rest(request_type):
             "default_route_action": {
                 "cors_policy": {
                     "allow_credentials": True,
-                    "allow_headers": ["allow_headers_value_1", "allow_headers_value_2"],
-                    "allow_methods": ["allow_methods_value_1", "allow_methods_value_2"],
+                    "allow_headers": ["allow_headers_value1", "allow_headers_value2"],
+                    "allow_methods": ["allow_methods_value1", "allow_methods_value2"],
                     "allow_origin_regexes": [
-                        "allow_origin_regexes_value_1",
-                        "allow_origin_regexes_value_2",
+                        "allow_origin_regexes_value1",
+                        "allow_origin_regexes_value2",
                     ],
-                    "allow_origins": ["allow_origins_value_1", "allow_origins_value_2"],
+                    "allow_origins": ["allow_origins_value1", "allow_origins_value2"],
                     "disabled": True,
                     "expose_headers": [
-                        "expose_headers_value_1",
-                        "expose_headers_value_2",
+                        "expose_headers_value1",
+                        "expose_headers_value2",
                     ],
                     "max_age": 722,
                 },
@@ -5791,8 +5900,8 @@ def test_validate_rest(request_type):
                     "num_retries": 1197,
                     "per_try_timeout": {},
                     "retry_conditions": [
-                        "retry_conditions_value_1",
-                        "retry_conditions_value_2",
+                        "retry_conditions_value1",
+                        "retry_conditions_value2",
                     ],
                 },
                 "timeout": {},
@@ -5812,13 +5921,13 @@ def test_validate_rest(request_type):
                                 }
                             ],
                             "request_headers_to_remove": [
-                                "request_headers_to_remove_value_1",
-                                "request_headers_to_remove_value_2",
+                                "request_headers_to_remove_value1",
+                                "request_headers_to_remove_value2",
                             ],
                             "response_headers_to_add": {},
                             "response_headers_to_remove": [
-                                "response_headers_to_remove_value_1",
-                                "response_headers_to_remove_value_2",
+                                "response_headers_to_remove_value1",
+                                "response_headers_to_remove_value2",
                             ],
                         },
                         "weight": 648,
@@ -5840,7 +5949,7 @@ def test_validate_rest(request_type):
             "host_rules": [
                 {
                     "description": "description_value",
-                    "hosts": ["hosts_value_1", "hosts_value_2"],
+                    "hosts": ["hosts_value1", "hosts_value2"],
                     "path_matcher": "path_matcher_value",
                 }
             ],
@@ -5857,7 +5966,7 @@ def test_validate_rest(request_type):
                     "name": "name_value",
                     "path_rules": [
                         {
-                            "paths": ["paths_value_1", "paths_value_2"],
+                            "paths": ["paths_value1", "paths_value2"],
                             "route_action": {},
                             "service": "service_value",
                             "url_redirect": {},
@@ -5932,7 +6041,7 @@ def test_validate_rest(request_type):
             ],
         }
     }
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
@@ -5942,7 +6051,9 @@ def test_validate_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.UrlMapsValidateResponse.to_json(return_value)
+        pb_return_value = compute.UrlMapsValidateResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.validate(request)
@@ -5960,10 +6071,13 @@ def test_validate_rest_required_fields(
     request_init["project"] = ""
     request_init["region"] = ""
     request_init["url_map"] = ""
-    request = request_type(request_init)
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        request_type.to_json(
-            request, including_default_value_fields=False, use_integers_for_enums=False
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
     )
 
@@ -5997,7 +6111,7 @@ def test_validate_rest_required_fields(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
     return_value = compute.UrlMapsValidateResponse()
@@ -6009,17 +6123,21 @@ def test_validate_rest_required_fields(
         with mock.patch.object(path_template, "transcode") as transcode:
             # A uri without fields and an empty body will force all the
             # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
             transcode_result = {
                 "uri": "v1/sample_method",
                 "method": "post",
-                "query_params": request_init,
+                "query_params": pb_request,
             }
-            transcode_result["body"] = {}
+            transcode_result["body"] = pb_request
             transcode.return_value = transcode_result
 
             response_value = Response()
             response_value.status_code = 200
-            json_return_value = compute.UrlMapsValidateResponse.to_json(return_value)
+
+            pb_return_value = compute.UrlMapsValidateResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
 
@@ -6069,12 +6187,14 @@ def test_validate_rest_interceptors(null_interceptor):
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
-
+        pb_message = compute.ValidateRegionUrlMapRequest.pb(
+            compute.ValidateRegionUrlMapRequest()
+        )
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
-            "body": None,
-            "query_params": {},
+            "body": pb_message,
+            "query_params": pb_message,
         }
 
         req.return_value = Response()
@@ -6120,17 +6240,17 @@ def test_validate_rest_bad_request(
             "default_route_action": {
                 "cors_policy": {
                     "allow_credentials": True,
-                    "allow_headers": ["allow_headers_value_1", "allow_headers_value_2"],
-                    "allow_methods": ["allow_methods_value_1", "allow_methods_value_2"],
+                    "allow_headers": ["allow_headers_value1", "allow_headers_value2"],
+                    "allow_methods": ["allow_methods_value1", "allow_methods_value2"],
                     "allow_origin_regexes": [
-                        "allow_origin_regexes_value_1",
-                        "allow_origin_regexes_value_2",
+                        "allow_origin_regexes_value1",
+                        "allow_origin_regexes_value2",
                     ],
-                    "allow_origins": ["allow_origins_value_1", "allow_origins_value_2"],
+                    "allow_origins": ["allow_origins_value1", "allow_origins_value2"],
                     "disabled": True,
                     "expose_headers": [
-                        "expose_headers_value_1",
-                        "expose_headers_value_2",
+                        "expose_headers_value1",
+                        "expose_headers_value2",
                     ],
                     "max_age": 722,
                 },
@@ -6147,8 +6267,8 @@ def test_validate_rest_bad_request(
                     "num_retries": 1197,
                     "per_try_timeout": {},
                     "retry_conditions": [
-                        "retry_conditions_value_1",
-                        "retry_conditions_value_2",
+                        "retry_conditions_value1",
+                        "retry_conditions_value2",
                     ],
                 },
                 "timeout": {},
@@ -6168,13 +6288,13 @@ def test_validate_rest_bad_request(
                                 }
                             ],
                             "request_headers_to_remove": [
-                                "request_headers_to_remove_value_1",
-                                "request_headers_to_remove_value_2",
+                                "request_headers_to_remove_value1",
+                                "request_headers_to_remove_value2",
                             ],
                             "response_headers_to_add": {},
                             "response_headers_to_remove": [
-                                "response_headers_to_remove_value_1",
-                                "response_headers_to_remove_value_2",
+                                "response_headers_to_remove_value1",
+                                "response_headers_to_remove_value2",
                             ],
                         },
                         "weight": 648,
@@ -6196,7 +6316,7 @@ def test_validate_rest_bad_request(
             "host_rules": [
                 {
                     "description": "description_value",
-                    "hosts": ["hosts_value_1", "hosts_value_2"],
+                    "hosts": ["hosts_value1", "hosts_value2"],
                     "path_matcher": "path_matcher_value",
                 }
             ],
@@ -6213,7 +6333,7 @@ def test_validate_rest_bad_request(
                     "name": "name_value",
                     "path_rules": [
                         {
-                            "paths": ["paths_value_1", "paths_value_2"],
+                            "paths": ["paths_value1", "paths_value2"],
                             "route_action": {},
                             "service": "service_value",
                             "url_redirect": {},
@@ -6288,7 +6408,7 @@ def test_validate_rest_bad_request(
             ],
         }
     }
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
     with mock.patch.object(Session, "request") as req, pytest.raises(
@@ -6334,8 +6454,8 @@ def test_validate_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.UrlMapsValidateResponse.to_json(return_value)
-
+        pb_return_value = compute.UrlMapsValidateResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 

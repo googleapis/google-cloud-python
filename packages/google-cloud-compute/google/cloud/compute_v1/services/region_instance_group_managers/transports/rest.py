@@ -26,6 +26,7 @@ from google.api_core import rest_streaming
 from google.api_core import path_template
 from google.api_core import gapic_v1
 
+from google.protobuf import json_format
 from requests import __version__ as requests_version
 import dataclasses
 import re
@@ -692,6 +693,10 @@ class RegionInstanceGroupManagersRestTransport(RegionInstanceGroupManagersTransp
     and call it.
 
     It sends JSON representations of protocol buffers over HTTP/1.1
+
+    NOTE: This REST transport functionality is currently in a beta
+    state (preview). We welcome your feedback via an issue in this
+    library's source repository. Thank you!
     """
 
     def __init__(
@@ -711,35 +716,39 @@ class RegionInstanceGroupManagersRestTransport(RegionInstanceGroupManagersTransp
     ) -> None:
         """Instantiate the transport.
 
-        Args:
-            host (Optional[str]):
-                 The hostname to connect to.
-            credentials (Optional[google.auth.credentials.Credentials]): The
-                authorization credentials to attach to requests. These
-                credentials identify the application to the service; if none
-                are specified, the client will attempt to ascertain the
-                credentials from the environment.
+        NOTE: This REST transport functionality is currently in a beta
+        state (preview). We welcome your feedback via a GitHub issue in
+        this library's repository. Thank you!
 
-            credentials_file (Optional[str]): A file with credentials that can
-                be loaded with :func:`google.auth.load_credentials_from_file`.
-                This argument is ignored if ``channel`` is provided.
-            scopes (Optional(Sequence[str])): A list of scopes. This argument is
-                ignored if ``channel`` is provided.
-            client_cert_source_for_mtls (Callable[[], Tuple[bytes, bytes]]): Client
-                certificate to configure mutual TLS HTTP channel. It is ignored
-                if ``channel`` is provided.
-            quota_project_id (Optional[str]): An optional project to use for billing
-                and quota.
-            client_info (google.api_core.gapic_v1.client_info.ClientInfo):
-                The client info used to send a user-agent string along with
-                API requests. If ``None``, then default info will be used.
-                Generally, you only need to set this if you are developing
-                your own client library.
-            always_use_jwt_access (Optional[bool]): Whether self signed JWT should
-                be used for service account credentials.
-            url_scheme: the protocol scheme for the API endpoint.  Normally
-                "https", but for testing or local servers,
-                "http" can be specified.
+         Args:
+             host (Optional[str]):
+                  The hostname to connect to.
+             credentials (Optional[google.auth.credentials.Credentials]): The
+                 authorization credentials to attach to requests. These
+                 credentials identify the application to the service; if none
+                 are specified, the client will attempt to ascertain the
+                 credentials from the environment.
+
+             credentials_file (Optional[str]): A file with credentials that can
+                 be loaded with :func:`google.auth.load_credentials_from_file`.
+                 This argument is ignored if ``channel`` is provided.
+             scopes (Optional(Sequence[str])): A list of scopes. This argument is
+                 ignored if ``channel`` is provided.
+             client_cert_source_for_mtls (Callable[[], Tuple[bytes, bytes]]): Client
+                 certificate to configure mutual TLS HTTP channel. It is ignored
+                 if ``channel`` is provided.
+             quota_project_id (Optional[str]): An optional project to use for billing
+                 and quota.
+             client_info (google.api_core.gapic_v1.client_info.ClientInfo):
+                 The client info used to send a user-agent string along with
+                 API requests. If ``None``, then default info will be used.
+                 Generally, you only need to set this if you are developing
+                 your own client library.
+             always_use_jwt_access (Optional[bool]): Whether self signed JWT should
+                 be used for service account credentials.
+             url_scheme: the protocol scheme for the API endpoint.  Normally
+                 "https", but for testing or local servers,
+                 "http" can be specified.
         """
         # Run the base constructor
         # TODO(yon-mg): resolve other ctor params i.e. scopes, quota, etc.
@@ -836,18 +845,15 @@ class RegionInstanceGroupManagersRestTransport(RegionInstanceGroupManagersTransp
             request, metadata = self._interceptor.pre_abandon_instances(
                 request, metadata
             )
-            request_kwargs = (
-                compute.AbandonInstancesRegionInstanceGroupManagerRequest.to_dict(
-                    request
-                )
+            pb_request = compute.AbandonInstancesRegionInstanceGroupManagerRequest.pb(
+                request
             )
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             # Jsonify the request body
-            body = compute.RegionInstanceGroupManagersAbandonInstancesRequest.to_json(
-                compute.RegionInstanceGroupManagersAbandonInstancesRequest(
-                    transcoded_request["body"]
-                ),
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
                 including_default_value_fields=False,
                 use_integers_for_enums=False,
             )
@@ -856,15 +862,12 @@ class RegionInstanceGroupManagersRestTransport(RegionInstanceGroupManagersTransp
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.AbandonInstancesRegionInstanceGroupManagerRequest.to_json(
-                    compute.AbandonInstancesRegionInstanceGroupManagerRequest(
-                        transcoded_request["query_params"]
-                    ),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -884,9 +887,10 @@ class RegionInstanceGroupManagersRestTransport(RegionInstanceGroupManagersTransp
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.Operation.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.Operation()
+            pb_resp = compute.Operation.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_abandon_instances(resp)
             return resp
 
@@ -957,16 +961,17 @@ class RegionInstanceGroupManagersRestTransport(RegionInstanceGroupManagersTransp
             request, metadata = self._interceptor.pre_apply_updates_to_instances(
                 request, metadata
             )
-            request_kwargs = compute.ApplyUpdatesToInstancesRegionInstanceGroupManagerRequest.to_dict(
-                request
+            pb_request = (
+                compute.ApplyUpdatesToInstancesRegionInstanceGroupManagerRequest.pb(
+                    request
+                )
             )
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             # Jsonify the request body
-            body = compute.RegionInstanceGroupManagersApplyUpdatesRequest.to_json(
-                compute.RegionInstanceGroupManagersApplyUpdatesRequest(
-                    transcoded_request["body"]
-                ),
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
                 including_default_value_fields=False,
                 use_integers_for_enums=False,
             )
@@ -975,15 +980,12 @@ class RegionInstanceGroupManagersRestTransport(RegionInstanceGroupManagersTransp
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.ApplyUpdatesToInstancesRegionInstanceGroupManagerRequest.to_json(
-                    compute.ApplyUpdatesToInstancesRegionInstanceGroupManagerRequest(
-                        transcoded_request["query_params"]
-                    ),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -1003,9 +1005,10 @@ class RegionInstanceGroupManagersRestTransport(RegionInstanceGroupManagersTransp
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.Operation.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.Operation()
+            pb_resp = compute.Operation.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_apply_updates_to_instances(resp)
             return resp
 
@@ -1075,18 +1078,15 @@ class RegionInstanceGroupManagersRestTransport(RegionInstanceGroupManagersTransp
             request, metadata = self._interceptor.pre_create_instances(
                 request, metadata
             )
-            request_kwargs = (
-                compute.CreateInstancesRegionInstanceGroupManagerRequest.to_dict(
-                    request
-                )
+            pb_request = compute.CreateInstancesRegionInstanceGroupManagerRequest.pb(
+                request
             )
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             # Jsonify the request body
-            body = compute.RegionInstanceGroupManagersCreateInstancesRequest.to_json(
-                compute.RegionInstanceGroupManagersCreateInstancesRequest(
-                    transcoded_request["body"]
-                ),
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
                 including_default_value_fields=False,
                 use_integers_for_enums=False,
             )
@@ -1095,15 +1095,12 @@ class RegionInstanceGroupManagersRestTransport(RegionInstanceGroupManagersTransp
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.CreateInstancesRegionInstanceGroupManagerRequest.to_json(
-                    compute.CreateInstancesRegionInstanceGroupManagerRequest(
-                        transcoded_request["query_params"]
-                    ),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -1123,9 +1120,10 @@ class RegionInstanceGroupManagersRestTransport(RegionInstanceGroupManagersTransp
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.Operation.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.Operation()
+            pb_resp = compute.Operation.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_create_instances(resp)
             return resp
 
@@ -1192,25 +1190,20 @@ class RegionInstanceGroupManagersRestTransport(RegionInstanceGroupManagersTransp
                 },
             ]
             request, metadata = self._interceptor.pre_delete(request, metadata)
-            request_kwargs = compute.DeleteRegionInstanceGroupManagerRequest.to_dict(
-                request
-            )
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            pb_request = compute.DeleteRegionInstanceGroupManagerRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.DeleteRegionInstanceGroupManagerRequest.to_json(
-                    compute.DeleteRegionInstanceGroupManagerRequest(
-                        transcoded_request["query_params"]
-                    ),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -1229,9 +1222,10 @@ class RegionInstanceGroupManagersRestTransport(RegionInstanceGroupManagersTransp
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.Operation.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.Operation()
+            pb_resp = compute.Operation.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_delete(resp)
             return resp
 
@@ -1301,18 +1295,15 @@ class RegionInstanceGroupManagersRestTransport(RegionInstanceGroupManagersTransp
             request, metadata = self._interceptor.pre_delete_instances(
                 request, metadata
             )
-            request_kwargs = (
-                compute.DeleteInstancesRegionInstanceGroupManagerRequest.to_dict(
-                    request
-                )
+            pb_request = compute.DeleteInstancesRegionInstanceGroupManagerRequest.pb(
+                request
             )
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             # Jsonify the request body
-            body = compute.RegionInstanceGroupManagersDeleteInstancesRequest.to_json(
-                compute.RegionInstanceGroupManagersDeleteInstancesRequest(
-                    transcoded_request["body"]
-                ),
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
                 including_default_value_fields=False,
                 use_integers_for_enums=False,
             )
@@ -1321,15 +1312,12 @@ class RegionInstanceGroupManagersRestTransport(RegionInstanceGroupManagersTransp
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.DeleteInstancesRegionInstanceGroupManagerRequest.to_json(
-                    compute.DeleteInstancesRegionInstanceGroupManagerRequest(
-                        transcoded_request["query_params"]
-                    ),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -1349,9 +1337,10 @@ class RegionInstanceGroupManagersRestTransport(RegionInstanceGroupManagersTransp
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.Operation.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.Operation()
+            pb_resp = compute.Operation.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_delete_instances(resp)
             return resp
 
@@ -1422,16 +1411,17 @@ class RegionInstanceGroupManagersRestTransport(RegionInstanceGroupManagersTransp
             request, metadata = self._interceptor.pre_delete_per_instance_configs(
                 request, metadata
             )
-            request_kwargs = compute.DeletePerInstanceConfigsRegionInstanceGroupManagerRequest.to_dict(
-                request
+            pb_request = (
+                compute.DeletePerInstanceConfigsRegionInstanceGroupManagerRequest.pb(
+                    request
+                )
             )
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             # Jsonify the request body
-            body = compute.RegionInstanceGroupManagerDeleteInstanceConfigReq.to_json(
-                compute.RegionInstanceGroupManagerDeleteInstanceConfigReq(
-                    transcoded_request["body"]
-                ),
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
                 including_default_value_fields=False,
                 use_integers_for_enums=False,
             )
@@ -1440,15 +1430,12 @@ class RegionInstanceGroupManagersRestTransport(RegionInstanceGroupManagersTransp
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.DeletePerInstanceConfigsRegionInstanceGroupManagerRequest.to_json(
-                    compute.DeletePerInstanceConfigsRegionInstanceGroupManagerRequest(
-                        transcoded_request["query_params"]
-                    ),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -1468,9 +1455,10 @@ class RegionInstanceGroupManagersRestTransport(RegionInstanceGroupManagersTransp
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.Operation.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.Operation()
+            pb_resp = compute.Operation.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_delete_per_instance_configs(resp)
             return resp
 
@@ -1531,25 +1519,20 @@ class RegionInstanceGroupManagersRestTransport(RegionInstanceGroupManagersTransp
                 },
             ]
             request, metadata = self._interceptor.pre_get(request, metadata)
-            request_kwargs = compute.GetRegionInstanceGroupManagerRequest.to_dict(
-                request
-            )
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            pb_request = compute.GetRegionInstanceGroupManagerRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.GetRegionInstanceGroupManagerRequest.to_json(
-                    compute.GetRegionInstanceGroupManagerRequest(
-                        transcoded_request["query_params"]
-                    ),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -1568,9 +1551,10 @@ class RegionInstanceGroupManagersRestTransport(RegionInstanceGroupManagersTransp
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.InstanceGroupManager.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.InstanceGroupManager()
+            pb_resp = compute.InstanceGroupManager.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_get(resp)
             return resp
 
@@ -1638,14 +1622,13 @@ class RegionInstanceGroupManagersRestTransport(RegionInstanceGroupManagersTransp
                 },
             ]
             request, metadata = self._interceptor.pre_insert(request, metadata)
-            request_kwargs = compute.InsertRegionInstanceGroupManagerRequest.to_dict(
-                request
-            )
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            pb_request = compute.InsertRegionInstanceGroupManagerRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             # Jsonify the request body
-            body = compute.InstanceGroupManager.to_json(
-                compute.InstanceGroupManager(transcoded_request["body"]),
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
                 including_default_value_fields=False,
                 use_integers_for_enums=False,
             )
@@ -1654,15 +1637,12 @@ class RegionInstanceGroupManagersRestTransport(RegionInstanceGroupManagersTransp
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.InsertRegionInstanceGroupManagerRequest.to_json(
-                    compute.InsertRegionInstanceGroupManagerRequest(
-                        transcoded_request["query_params"]
-                    ),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -1682,9 +1662,10 @@ class RegionInstanceGroupManagersRestTransport(RegionInstanceGroupManagersTransp
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.Operation.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.Operation()
+            pb_resp = compute.Operation.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_insert(resp)
             return resp
 
@@ -1738,25 +1719,20 @@ class RegionInstanceGroupManagersRestTransport(RegionInstanceGroupManagersTransp
                 },
             ]
             request, metadata = self._interceptor.pre_list(request, metadata)
-            request_kwargs = compute.ListRegionInstanceGroupManagersRequest.to_dict(
-                request
-            )
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            pb_request = compute.ListRegionInstanceGroupManagersRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.ListRegionInstanceGroupManagersRequest.to_json(
-                    compute.ListRegionInstanceGroupManagersRequest(
-                        transcoded_request["query_params"]
-                    ),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -1775,9 +1751,10 @@ class RegionInstanceGroupManagersRestTransport(RegionInstanceGroupManagersTransp
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.RegionInstanceGroupManagerList.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.RegionInstanceGroupManagerList()
+            pb_resp = compute.RegionInstanceGroupManagerList.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_list(resp)
             return resp
 
@@ -1829,25 +1806,22 @@ class RegionInstanceGroupManagersRestTransport(RegionInstanceGroupManagersTransp
                 },
             ]
             request, metadata = self._interceptor.pre_list_errors(request, metadata)
-            request_kwargs = (
-                compute.ListErrorsRegionInstanceGroupManagersRequest.to_dict(request)
+            pb_request = compute.ListErrorsRegionInstanceGroupManagersRequest.pb(
+                request
             )
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.ListErrorsRegionInstanceGroupManagersRequest.to_json(
-                    compute.ListErrorsRegionInstanceGroupManagersRequest(
-                        transcoded_request["query_params"]
-                    ),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -1866,9 +1840,10 @@ class RegionInstanceGroupManagersRestTransport(RegionInstanceGroupManagersTransp
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.RegionInstanceGroupManagersListErrorsResponse.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.RegionInstanceGroupManagersListErrorsResponse()
+            pb_resp = compute.RegionInstanceGroupManagersListErrorsResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_list_errors(resp)
             return resp
 
@@ -1922,27 +1897,24 @@ class RegionInstanceGroupManagersRestTransport(RegionInstanceGroupManagersTransp
             request, metadata = self._interceptor.pre_list_managed_instances(
                 request, metadata
             )
-            request_kwargs = (
-                compute.ListManagedInstancesRegionInstanceGroupManagersRequest.to_dict(
+            pb_request = (
+                compute.ListManagedInstancesRegionInstanceGroupManagersRequest.pb(
                     request
                 )
             )
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.ListManagedInstancesRegionInstanceGroupManagersRequest.to_json(
-                    compute.ListManagedInstancesRegionInstanceGroupManagersRequest(
-                        transcoded_request["query_params"]
-                    ),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -1961,9 +1933,10 @@ class RegionInstanceGroupManagersRestTransport(RegionInstanceGroupManagersTransp
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.RegionInstanceGroupManagersListInstancesResponse.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.RegionInstanceGroupManagersListInstancesResponse()
+            pb_resp = compute.RegionInstanceGroupManagersListInstancesResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_list_managed_instances(resp)
             return resp
 
@@ -2017,25 +1990,24 @@ class RegionInstanceGroupManagersRestTransport(RegionInstanceGroupManagersTransp
             request, metadata = self._interceptor.pre_list_per_instance_configs(
                 request, metadata
             )
-            request_kwargs = compute.ListPerInstanceConfigsRegionInstanceGroupManagersRequest.to_dict(
-                request
+            pb_request = (
+                compute.ListPerInstanceConfigsRegionInstanceGroupManagersRequest.pb(
+                    request
+                )
             )
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.ListPerInstanceConfigsRegionInstanceGroupManagersRequest.to_json(
-                    compute.ListPerInstanceConfigsRegionInstanceGroupManagersRequest(
-                        transcoded_request["query_params"]
-                    ),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -2054,9 +2026,12 @@ class RegionInstanceGroupManagersRestTransport(RegionInstanceGroupManagersTransp
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.RegionInstanceGroupManagersListInstanceConfigsResp.from_json(
-                response.content, ignore_unknown_fields=True
+            resp = compute.RegionInstanceGroupManagersListInstanceConfigsResp()
+            pb_resp = compute.RegionInstanceGroupManagersListInstanceConfigsResp.pb(
+                resp
             )
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_list_per_instance_configs(resp)
             return resp
 
@@ -2124,14 +2099,13 @@ class RegionInstanceGroupManagersRestTransport(RegionInstanceGroupManagersTransp
                 },
             ]
             request, metadata = self._interceptor.pre_patch(request, metadata)
-            request_kwargs = compute.PatchRegionInstanceGroupManagerRequest.to_dict(
-                request
-            )
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            pb_request = compute.PatchRegionInstanceGroupManagerRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             # Jsonify the request body
-            body = compute.InstanceGroupManager.to_json(
-                compute.InstanceGroupManager(transcoded_request["body"]),
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
                 including_default_value_fields=False,
                 use_integers_for_enums=False,
             )
@@ -2140,15 +2114,12 @@ class RegionInstanceGroupManagersRestTransport(RegionInstanceGroupManagersTransp
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.PatchRegionInstanceGroupManagerRequest.to_json(
-                    compute.PatchRegionInstanceGroupManagerRequest(
-                        transcoded_request["query_params"]
-                    ),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -2168,9 +2139,10 @@ class RegionInstanceGroupManagersRestTransport(RegionInstanceGroupManagersTransp
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.Operation.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.Operation()
+            pb_resp = compute.Operation.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_patch(resp)
             return resp
 
@@ -2241,16 +2213,17 @@ class RegionInstanceGroupManagersRestTransport(RegionInstanceGroupManagersTransp
             request, metadata = self._interceptor.pre_patch_per_instance_configs(
                 request, metadata
             )
-            request_kwargs = compute.PatchPerInstanceConfigsRegionInstanceGroupManagerRequest.to_dict(
-                request
+            pb_request = (
+                compute.PatchPerInstanceConfigsRegionInstanceGroupManagerRequest.pb(
+                    request
+                )
             )
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             # Jsonify the request body
-            body = compute.RegionInstanceGroupManagerPatchInstanceConfigReq.to_json(
-                compute.RegionInstanceGroupManagerPatchInstanceConfigReq(
-                    transcoded_request["body"]
-                ),
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
                 including_default_value_fields=False,
                 use_integers_for_enums=False,
             )
@@ -2259,15 +2232,12 @@ class RegionInstanceGroupManagersRestTransport(RegionInstanceGroupManagersTransp
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.PatchPerInstanceConfigsRegionInstanceGroupManagerRequest.to_json(
-                    compute.PatchPerInstanceConfigsRegionInstanceGroupManagerRequest(
-                        transcoded_request["query_params"]
-                    ),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -2287,9 +2257,10 @@ class RegionInstanceGroupManagersRestTransport(RegionInstanceGroupManagersTransp
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.Operation.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.Operation()
+            pb_resp = compute.Operation.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_patch_per_instance_configs(resp)
             return resp
 
@@ -2359,18 +2330,15 @@ class RegionInstanceGroupManagersRestTransport(RegionInstanceGroupManagersTransp
             request, metadata = self._interceptor.pre_recreate_instances(
                 request, metadata
             )
-            request_kwargs = (
-                compute.RecreateInstancesRegionInstanceGroupManagerRequest.to_dict(
-                    request
-                )
+            pb_request = compute.RecreateInstancesRegionInstanceGroupManagerRequest.pb(
+                request
             )
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             # Jsonify the request body
-            body = compute.RegionInstanceGroupManagersRecreateRequest.to_json(
-                compute.RegionInstanceGroupManagersRecreateRequest(
-                    transcoded_request["body"]
-                ),
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
                 including_default_value_fields=False,
                 use_integers_for_enums=False,
             )
@@ -2379,15 +2347,12 @@ class RegionInstanceGroupManagersRestTransport(RegionInstanceGroupManagersTransp
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.RecreateInstancesRegionInstanceGroupManagerRequest.to_json(
-                    compute.RecreateInstancesRegionInstanceGroupManagerRequest(
-                        transcoded_request["query_params"]
-                    ),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -2407,9 +2372,10 @@ class RegionInstanceGroupManagersRestTransport(RegionInstanceGroupManagersTransp
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.Operation.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.Operation()
+            pb_resp = compute.Operation.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_recreate_instances(resp)
             return resp
 
@@ -2478,25 +2444,20 @@ class RegionInstanceGroupManagersRestTransport(RegionInstanceGroupManagersTransp
                 },
             ]
             request, metadata = self._interceptor.pre_resize(request, metadata)
-            request_kwargs = compute.ResizeRegionInstanceGroupManagerRequest.to_dict(
-                request
-            )
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            pb_request = compute.ResizeRegionInstanceGroupManagerRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.ResizeRegionInstanceGroupManagerRequest.to_json(
-                    compute.ResizeRegionInstanceGroupManagerRequest(
-                        transcoded_request["query_params"]
-                    ),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -2515,9 +2476,10 @@ class RegionInstanceGroupManagersRestTransport(RegionInstanceGroupManagersTransp
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.Operation.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.Operation()
+            pb_resp = compute.Operation.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_resize(resp)
             return resp
 
@@ -2587,18 +2549,15 @@ class RegionInstanceGroupManagersRestTransport(RegionInstanceGroupManagersTransp
             request, metadata = self._interceptor.pre_set_instance_template(
                 request, metadata
             )
-            request_kwargs = (
-                compute.SetInstanceTemplateRegionInstanceGroupManagerRequest.to_dict(
-                    request
-                )
+            pb_request = (
+                compute.SetInstanceTemplateRegionInstanceGroupManagerRequest.pb(request)
             )
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             # Jsonify the request body
-            body = compute.RegionInstanceGroupManagersSetTemplateRequest.to_json(
-                compute.RegionInstanceGroupManagersSetTemplateRequest(
-                    transcoded_request["body"]
-                ),
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
                 including_default_value_fields=False,
                 use_integers_for_enums=False,
             )
@@ -2607,15 +2566,12 @@ class RegionInstanceGroupManagersRestTransport(RegionInstanceGroupManagersTransp
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.SetInstanceTemplateRegionInstanceGroupManagerRequest.to_json(
-                    compute.SetInstanceTemplateRegionInstanceGroupManagerRequest(
-                        transcoded_request["query_params"]
-                    ),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -2635,9 +2591,10 @@ class RegionInstanceGroupManagersRestTransport(RegionInstanceGroupManagersTransp
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.Operation.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.Operation()
+            pb_resp = compute.Operation.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_set_instance_template(resp)
             return resp
 
@@ -2707,16 +2664,15 @@ class RegionInstanceGroupManagersRestTransport(RegionInstanceGroupManagersTransp
             request, metadata = self._interceptor.pre_set_target_pools(
                 request, metadata
             )
-            request_kwargs = (
-                compute.SetTargetPoolsRegionInstanceGroupManagerRequest.to_dict(request)
+            pb_request = compute.SetTargetPoolsRegionInstanceGroupManagerRequest.pb(
+                request
             )
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             # Jsonify the request body
-            body = compute.RegionInstanceGroupManagersSetTargetPoolsRequest.to_json(
-                compute.RegionInstanceGroupManagersSetTargetPoolsRequest(
-                    transcoded_request["body"]
-                ),
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
                 including_default_value_fields=False,
                 use_integers_for_enums=False,
             )
@@ -2725,15 +2681,12 @@ class RegionInstanceGroupManagersRestTransport(RegionInstanceGroupManagersTransp
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.SetTargetPoolsRegionInstanceGroupManagerRequest.to_json(
-                    compute.SetTargetPoolsRegionInstanceGroupManagerRequest(
-                        transcoded_request["query_params"]
-                    ),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -2753,9 +2706,10 @@ class RegionInstanceGroupManagersRestTransport(RegionInstanceGroupManagersTransp
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.Operation.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.Operation()
+            pb_resp = compute.Operation.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_set_target_pools(resp)
             return resp
 
@@ -2826,16 +2780,17 @@ class RegionInstanceGroupManagersRestTransport(RegionInstanceGroupManagersTransp
             request, metadata = self._interceptor.pre_update_per_instance_configs(
                 request, metadata
             )
-            request_kwargs = compute.UpdatePerInstanceConfigsRegionInstanceGroupManagerRequest.to_dict(
-                request
+            pb_request = (
+                compute.UpdatePerInstanceConfigsRegionInstanceGroupManagerRequest.pb(
+                    request
+                )
             )
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             # Jsonify the request body
-            body = compute.RegionInstanceGroupManagerUpdateInstanceConfigReq.to_json(
-                compute.RegionInstanceGroupManagerUpdateInstanceConfigReq(
-                    transcoded_request["body"]
-                ),
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
                 including_default_value_fields=False,
                 use_integers_for_enums=False,
             )
@@ -2844,15 +2799,12 @@ class RegionInstanceGroupManagersRestTransport(RegionInstanceGroupManagersTransp
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.UpdatePerInstanceConfigsRegionInstanceGroupManagerRequest.to_json(
-                    compute.UpdatePerInstanceConfigsRegionInstanceGroupManagerRequest(
-                        transcoded_request["query_params"]
-                    ),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -2872,9 +2824,10 @@ class RegionInstanceGroupManagersRestTransport(RegionInstanceGroupManagersTransp
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.Operation.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.Operation()
+            pb_resp = compute.Operation.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_update_per_instance_configs(resp)
             return resp
 

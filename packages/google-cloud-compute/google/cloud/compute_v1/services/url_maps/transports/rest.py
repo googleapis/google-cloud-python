@@ -26,6 +26,7 @@ from google.api_core import rest_streaming
 from google.api_core import path_template
 from google.api_core import gapic_v1
 
+from google.protobuf import json_format
 from requests import __version__ as requests_version
 import dataclasses
 import re
@@ -333,6 +334,10 @@ class UrlMapsRestTransport(UrlMapsTransport):
     and call it.
 
     It sends JSON representations of protocol buffers over HTTP/1.1
+
+    NOTE: This REST transport functionality is currently in a beta
+    state (preview). We welcome your feedback via an issue in this
+    library's source repository. Thank you!
     """
 
     def __init__(
@@ -352,35 +357,39 @@ class UrlMapsRestTransport(UrlMapsTransport):
     ) -> None:
         """Instantiate the transport.
 
-        Args:
-            host (Optional[str]):
-                 The hostname to connect to.
-            credentials (Optional[google.auth.credentials.Credentials]): The
-                authorization credentials to attach to requests. These
-                credentials identify the application to the service; if none
-                are specified, the client will attempt to ascertain the
-                credentials from the environment.
+        NOTE: This REST transport functionality is currently in a beta
+        state (preview). We welcome your feedback via a GitHub issue in
+        this library's repository. Thank you!
 
-            credentials_file (Optional[str]): A file with credentials that can
-                be loaded with :func:`google.auth.load_credentials_from_file`.
-                This argument is ignored if ``channel`` is provided.
-            scopes (Optional(Sequence[str])): A list of scopes. This argument is
-                ignored if ``channel`` is provided.
-            client_cert_source_for_mtls (Callable[[], Tuple[bytes, bytes]]): Client
-                certificate to configure mutual TLS HTTP channel. It is ignored
-                if ``channel`` is provided.
-            quota_project_id (Optional[str]): An optional project to use for billing
-                and quota.
-            client_info (google.api_core.gapic_v1.client_info.ClientInfo):
-                The client info used to send a user-agent string along with
-                API requests. If ``None``, then default info will be used.
-                Generally, you only need to set this if you are developing
-                your own client library.
-            always_use_jwt_access (Optional[bool]): Whether self signed JWT should
-                be used for service account credentials.
-            url_scheme: the protocol scheme for the API endpoint.  Normally
-                "https", but for testing or local servers,
-                "http" can be specified.
+         Args:
+             host (Optional[str]):
+                  The hostname to connect to.
+             credentials (Optional[google.auth.credentials.Credentials]): The
+                 authorization credentials to attach to requests. These
+                 credentials identify the application to the service; if none
+                 are specified, the client will attempt to ascertain the
+                 credentials from the environment.
+
+             credentials_file (Optional[str]): A file with credentials that can
+                 be loaded with :func:`google.auth.load_credentials_from_file`.
+                 This argument is ignored if ``channel`` is provided.
+             scopes (Optional(Sequence[str])): A list of scopes. This argument is
+                 ignored if ``channel`` is provided.
+             client_cert_source_for_mtls (Callable[[], Tuple[bytes, bytes]]): Client
+                 certificate to configure mutual TLS HTTP channel. It is ignored
+                 if ``channel`` is provided.
+             quota_project_id (Optional[str]): An optional project to use for billing
+                 and quota.
+             client_info (google.api_core.gapic_v1.client_info.ClientInfo):
+                 The client info used to send a user-agent string along with
+                 API requests. If ``None``, then default info will be used.
+                 Generally, you only need to set this if you are developing
+                 your own client library.
+             always_use_jwt_access (Optional[bool]): Whether self signed JWT should
+                 be used for service account credentials.
+             url_scheme: the protocol scheme for the API endpoint.  Normally
+                 "https", but for testing or local servers,
+                 "http" can be specified.
         """
         # Run the base constructor
         # TODO(yon-mg): resolve other ctor params i.e. scopes, quota, etc.
@@ -459,23 +468,20 @@ class UrlMapsRestTransport(UrlMapsTransport):
                 },
             ]
             request, metadata = self._interceptor.pre_aggregated_list(request, metadata)
-            request_kwargs = compute.AggregatedListUrlMapsRequest.to_dict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            pb_request = compute.AggregatedListUrlMapsRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.AggregatedListUrlMapsRequest.to_json(
-                    compute.AggregatedListUrlMapsRequest(
-                        transcoded_request["query_params"]
-                    ),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -494,9 +500,10 @@ class UrlMapsRestTransport(UrlMapsTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.UrlMapsAggregatedList.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.UrlMapsAggregatedList()
+            pb_resp = compute.UrlMapsAggregatedList.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_aggregated_list(resp)
             return resp
 
@@ -562,21 +569,20 @@ class UrlMapsRestTransport(UrlMapsTransport):
                 },
             ]
             request, metadata = self._interceptor.pre_delete(request, metadata)
-            request_kwargs = compute.DeleteUrlMapRequest.to_dict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            pb_request = compute.DeleteUrlMapRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.DeleteUrlMapRequest.to_json(
-                    compute.DeleteUrlMapRequest(transcoded_request["query_params"]),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -595,9 +601,10 @@ class UrlMapsRestTransport(UrlMapsTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.Operation.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.Operation()
+            pb_resp = compute.Operation.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_delete(resp)
             return resp
 
@@ -669,21 +676,20 @@ class UrlMapsRestTransport(UrlMapsTransport):
                 },
             ]
             request, metadata = self._interceptor.pre_get(request, metadata)
-            request_kwargs = compute.GetUrlMapRequest.to_dict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            pb_request = compute.GetUrlMapRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.GetUrlMapRequest.to_json(
-                    compute.GetUrlMapRequest(transcoded_request["query_params"]),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -702,9 +708,10 @@ class UrlMapsRestTransport(UrlMapsTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.UrlMap.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.UrlMap()
+            pb_resp = compute.UrlMap.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_get(resp)
             return resp
 
@@ -771,12 +778,13 @@ class UrlMapsRestTransport(UrlMapsTransport):
                 },
             ]
             request, metadata = self._interceptor.pre_insert(request, metadata)
-            request_kwargs = compute.InsertUrlMapRequest.to_dict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            pb_request = compute.InsertUrlMapRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             # Jsonify the request body
-            body = compute.UrlMap.to_json(
-                compute.UrlMap(transcoded_request["body"]),
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
                 including_default_value_fields=False,
                 use_integers_for_enums=False,
             )
@@ -785,13 +793,12 @@ class UrlMapsRestTransport(UrlMapsTransport):
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.InsertUrlMapRequest.to_json(
-                    compute.InsertUrlMapRequest(transcoded_request["query_params"]),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -811,9 +818,10 @@ class UrlMapsRestTransport(UrlMapsTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.Operation.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.Operation()
+            pb_resp = compute.Operation.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_insert(resp)
             return resp
 
@@ -883,12 +891,13 @@ class UrlMapsRestTransport(UrlMapsTransport):
             request, metadata = self._interceptor.pre_invalidate_cache(
                 request, metadata
             )
-            request_kwargs = compute.InvalidateCacheUrlMapRequest.to_dict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            pb_request = compute.InvalidateCacheUrlMapRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             # Jsonify the request body
-            body = compute.CacheInvalidationRule.to_json(
-                compute.CacheInvalidationRule(transcoded_request["body"]),
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
                 including_default_value_fields=False,
                 use_integers_for_enums=False,
             )
@@ -897,15 +906,12 @@ class UrlMapsRestTransport(UrlMapsTransport):
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.InvalidateCacheUrlMapRequest.to_json(
-                    compute.InvalidateCacheUrlMapRequest(
-                        transcoded_request["query_params"]
-                    ),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -925,9 +931,10 @@ class UrlMapsRestTransport(UrlMapsTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.Operation.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.Operation()
+            pb_resp = compute.Operation.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_invalidate_cache(resp)
             return resp
 
@@ -978,21 +985,20 @@ class UrlMapsRestTransport(UrlMapsTransport):
                 },
             ]
             request, metadata = self._interceptor.pre_list(request, metadata)
-            request_kwargs = compute.ListUrlMapsRequest.to_dict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            pb_request = compute.ListUrlMapsRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.ListUrlMapsRequest.to_json(
-                    compute.ListUrlMapsRequest(transcoded_request["query_params"]),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -1011,9 +1017,10 @@ class UrlMapsRestTransport(UrlMapsTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.UrlMapList.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.UrlMapList()
+            pb_resp = compute.UrlMapList.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_list(resp)
             return resp
 
@@ -1080,12 +1087,13 @@ class UrlMapsRestTransport(UrlMapsTransport):
                 },
             ]
             request, metadata = self._interceptor.pre_patch(request, metadata)
-            request_kwargs = compute.PatchUrlMapRequest.to_dict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            pb_request = compute.PatchUrlMapRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             # Jsonify the request body
-            body = compute.UrlMap.to_json(
-                compute.UrlMap(transcoded_request["body"]),
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
                 including_default_value_fields=False,
                 use_integers_for_enums=False,
             )
@@ -1094,13 +1102,12 @@ class UrlMapsRestTransport(UrlMapsTransport):
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.PatchUrlMapRequest.to_json(
-                    compute.PatchUrlMapRequest(transcoded_request["query_params"]),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -1120,9 +1127,10 @@ class UrlMapsRestTransport(UrlMapsTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.Operation.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.Operation()
+            pb_resp = compute.Operation.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_patch(resp)
             return resp
 
@@ -1189,12 +1197,13 @@ class UrlMapsRestTransport(UrlMapsTransport):
                 },
             ]
             request, metadata = self._interceptor.pre_update(request, metadata)
-            request_kwargs = compute.UpdateUrlMapRequest.to_dict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            pb_request = compute.UpdateUrlMapRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             # Jsonify the request body
-            body = compute.UrlMap.to_json(
-                compute.UrlMap(transcoded_request["body"]),
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
                 including_default_value_fields=False,
                 use_integers_for_enums=False,
             )
@@ -1203,13 +1212,12 @@ class UrlMapsRestTransport(UrlMapsTransport):
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.UpdateUrlMapRequest.to_json(
-                    compute.UpdateUrlMapRequest(transcoded_request["query_params"]),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -1229,9 +1237,10 @@ class UrlMapsRestTransport(UrlMapsTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.Operation.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.Operation()
+            pb_resp = compute.Operation.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_update(resp)
             return resp
 
@@ -1284,12 +1293,13 @@ class UrlMapsRestTransport(UrlMapsTransport):
                 },
             ]
             request, metadata = self._interceptor.pre_validate(request, metadata)
-            request_kwargs = compute.ValidateUrlMapRequest.to_dict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            pb_request = compute.ValidateUrlMapRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             # Jsonify the request body
-            body = compute.UrlMapsValidateRequest.to_json(
-                compute.UrlMapsValidateRequest(transcoded_request["body"]),
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
                 including_default_value_fields=False,
                 use_integers_for_enums=False,
             )
@@ -1298,13 +1308,12 @@ class UrlMapsRestTransport(UrlMapsTransport):
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.ValidateUrlMapRequest.to_json(
-                    compute.ValidateUrlMapRequest(transcoded_request["query_params"]),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -1324,9 +1333,10 @@ class UrlMapsRestTransport(UrlMapsTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.UrlMapsValidateResponse.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.UrlMapsValidateResponse()
+            pb_resp = compute.UrlMapsValidateResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_validate(resp)
             return resp
 

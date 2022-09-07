@@ -26,6 +26,7 @@ from google.api_core import rest_streaming
 from google.api_core import path_template
 from google.api_core import gapic_v1
 
+from google.protobuf import json_format
 from requests import __version__ as requests_version
 import dataclasses
 import re
@@ -413,6 +414,10 @@ class SecurityPoliciesRestTransport(SecurityPoliciesTransport):
     and call it.
 
     It sends JSON representations of protocol buffers over HTTP/1.1
+
+    NOTE: This REST transport functionality is currently in a beta
+    state (preview). We welcome your feedback via an issue in this
+    library's source repository. Thank you!
     """
 
     def __init__(
@@ -432,35 +437,39 @@ class SecurityPoliciesRestTransport(SecurityPoliciesTransport):
     ) -> None:
         """Instantiate the transport.
 
-        Args:
-            host (Optional[str]):
-                 The hostname to connect to.
-            credentials (Optional[google.auth.credentials.Credentials]): The
-                authorization credentials to attach to requests. These
-                credentials identify the application to the service; if none
-                are specified, the client will attempt to ascertain the
-                credentials from the environment.
+        NOTE: This REST transport functionality is currently in a beta
+        state (preview). We welcome your feedback via a GitHub issue in
+        this library's repository. Thank you!
 
-            credentials_file (Optional[str]): A file with credentials that can
-                be loaded with :func:`google.auth.load_credentials_from_file`.
-                This argument is ignored if ``channel`` is provided.
-            scopes (Optional(Sequence[str])): A list of scopes. This argument is
-                ignored if ``channel`` is provided.
-            client_cert_source_for_mtls (Callable[[], Tuple[bytes, bytes]]): Client
-                certificate to configure mutual TLS HTTP channel. It is ignored
-                if ``channel`` is provided.
-            quota_project_id (Optional[str]): An optional project to use for billing
-                and quota.
-            client_info (google.api_core.gapic_v1.client_info.ClientInfo):
-                The client info used to send a user-agent string along with
-                API requests. If ``None``, then default info will be used.
-                Generally, you only need to set this if you are developing
-                your own client library.
-            always_use_jwt_access (Optional[bool]): Whether self signed JWT should
-                be used for service account credentials.
-            url_scheme: the protocol scheme for the API endpoint.  Normally
-                "https", but for testing or local servers,
-                "http" can be specified.
+         Args:
+             host (Optional[str]):
+                  The hostname to connect to.
+             credentials (Optional[google.auth.credentials.Credentials]): The
+                 authorization credentials to attach to requests. These
+                 credentials identify the application to the service; if none
+                 are specified, the client will attempt to ascertain the
+                 credentials from the environment.
+
+             credentials_file (Optional[str]): A file with credentials that can
+                 be loaded with :func:`google.auth.load_credentials_from_file`.
+                 This argument is ignored if ``channel`` is provided.
+             scopes (Optional(Sequence[str])): A list of scopes. This argument is
+                 ignored if ``channel`` is provided.
+             client_cert_source_for_mtls (Callable[[], Tuple[bytes, bytes]]): Client
+                 certificate to configure mutual TLS HTTP channel. It is ignored
+                 if ``channel`` is provided.
+             quota_project_id (Optional[str]): An optional project to use for billing
+                 and quota.
+             client_info (google.api_core.gapic_v1.client_info.ClientInfo):
+                 The client info used to send a user-agent string along with
+                 API requests. If ``None``, then default info will be used.
+                 Generally, you only need to set this if you are developing
+                 your own client library.
+             always_use_jwt_access (Optional[bool]): Whether self signed JWT should
+                 be used for service account credentials.
+             url_scheme: the protocol scheme for the API endpoint.  Normally
+                 "https", but for testing or local servers,
+                 "http" can be specified.
         """
         # Run the base constructor
         # TODO(yon-mg): resolve other ctor params i.e. scopes, quota, etc.
@@ -555,12 +564,13 @@ class SecurityPoliciesRestTransport(SecurityPoliciesTransport):
                 },
             ]
             request, metadata = self._interceptor.pre_add_rule(request, metadata)
-            request_kwargs = compute.AddRuleSecurityPolicyRequest.to_dict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            pb_request = compute.AddRuleSecurityPolicyRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             # Jsonify the request body
-            body = compute.SecurityPolicyRule.to_json(
-                compute.SecurityPolicyRule(transcoded_request["body"]),
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
                 including_default_value_fields=False,
                 use_integers_for_enums=False,
             )
@@ -569,15 +579,12 @@ class SecurityPoliciesRestTransport(SecurityPoliciesTransport):
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.AddRuleSecurityPolicyRequest.to_json(
-                    compute.AddRuleSecurityPolicyRequest(
-                        transcoded_request["query_params"]
-                    ),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -597,9 +604,10 @@ class SecurityPoliciesRestTransport(SecurityPoliciesTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.Operation.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.Operation()
+            pb_resp = compute.Operation.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_add_rule(resp)
             return resp
 
@@ -651,25 +659,20 @@ class SecurityPoliciesRestTransport(SecurityPoliciesTransport):
                 },
             ]
             request, metadata = self._interceptor.pre_aggregated_list(request, metadata)
-            request_kwargs = compute.AggregatedListSecurityPoliciesRequest.to_dict(
-                request
-            )
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            pb_request = compute.AggregatedListSecurityPoliciesRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.AggregatedListSecurityPoliciesRequest.to_json(
-                    compute.AggregatedListSecurityPoliciesRequest(
-                        transcoded_request["query_params"]
-                    ),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -688,9 +691,10 @@ class SecurityPoliciesRestTransport(SecurityPoliciesTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.SecurityPoliciesAggregatedList.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.SecurityPoliciesAggregatedList()
+            pb_resp = compute.SecurityPoliciesAggregatedList.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_aggregated_list(resp)
             return resp
 
@@ -757,23 +761,20 @@ class SecurityPoliciesRestTransport(SecurityPoliciesTransport):
                 },
             ]
             request, metadata = self._interceptor.pre_delete(request, metadata)
-            request_kwargs = compute.DeleteSecurityPolicyRequest.to_dict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            pb_request = compute.DeleteSecurityPolicyRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.DeleteSecurityPolicyRequest.to_json(
-                    compute.DeleteSecurityPolicyRequest(
-                        transcoded_request["query_params"]
-                    ),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -792,9 +793,10 @@ class SecurityPoliciesRestTransport(SecurityPoliciesTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.Operation.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.Operation()
+            pb_resp = compute.Operation.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_delete(resp)
             return resp
 
@@ -852,23 +854,20 @@ class SecurityPoliciesRestTransport(SecurityPoliciesTransport):
                 },
             ]
             request, metadata = self._interceptor.pre_get(request, metadata)
-            request_kwargs = compute.GetSecurityPolicyRequest.to_dict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            pb_request = compute.GetSecurityPolicyRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.GetSecurityPolicyRequest.to_json(
-                    compute.GetSecurityPolicyRequest(
-                        transcoded_request["query_params"]
-                    ),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -887,9 +886,10 @@ class SecurityPoliciesRestTransport(SecurityPoliciesTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.SecurityPolicy.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.SecurityPolicy()
+            pb_resp = compute.SecurityPolicy.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_get(resp)
             return resp
 
@@ -945,23 +945,20 @@ class SecurityPoliciesRestTransport(SecurityPoliciesTransport):
                 },
             ]
             request, metadata = self._interceptor.pre_get_rule(request, metadata)
-            request_kwargs = compute.GetRuleSecurityPolicyRequest.to_dict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            pb_request = compute.GetRuleSecurityPolicyRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.GetRuleSecurityPolicyRequest.to_json(
-                    compute.GetRuleSecurityPolicyRequest(
-                        transcoded_request["query_params"]
-                    ),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -980,9 +977,10 @@ class SecurityPoliciesRestTransport(SecurityPoliciesTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.SecurityPolicyRule.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.SecurityPolicyRule()
+            pb_resp = compute.SecurityPolicyRule.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_get_rule(resp)
             return resp
 
@@ -1050,12 +1048,13 @@ class SecurityPoliciesRestTransport(SecurityPoliciesTransport):
                 },
             ]
             request, metadata = self._interceptor.pre_insert(request, metadata)
-            request_kwargs = compute.InsertSecurityPolicyRequest.to_dict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            pb_request = compute.InsertSecurityPolicyRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             # Jsonify the request body
-            body = compute.SecurityPolicy.to_json(
-                compute.SecurityPolicy(transcoded_request["body"]),
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
                 including_default_value_fields=False,
                 use_integers_for_enums=False,
             )
@@ -1064,15 +1063,12 @@ class SecurityPoliciesRestTransport(SecurityPoliciesTransport):
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.InsertSecurityPolicyRequest.to_json(
-                    compute.InsertSecurityPolicyRequest(
-                        transcoded_request["query_params"]
-                    ),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -1092,9 +1088,10 @@ class SecurityPoliciesRestTransport(SecurityPoliciesTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.Operation.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.Operation()
+            pb_resp = compute.Operation.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_insert(resp)
             return resp
 
@@ -1146,23 +1143,20 @@ class SecurityPoliciesRestTransport(SecurityPoliciesTransport):
                 },
             ]
             request, metadata = self._interceptor.pre_list(request, metadata)
-            request_kwargs = compute.ListSecurityPoliciesRequest.to_dict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            pb_request = compute.ListSecurityPoliciesRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.ListSecurityPoliciesRequest.to_json(
-                    compute.ListSecurityPoliciesRequest(
-                        transcoded_request["query_params"]
-                    ),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -1181,9 +1175,10 @@ class SecurityPoliciesRestTransport(SecurityPoliciesTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.SecurityPolicyList.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.SecurityPolicyList()
+            pb_resp = compute.SecurityPolicyList.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_list(resp)
             return resp
 
@@ -1241,27 +1236,24 @@ class SecurityPoliciesRestTransport(SecurityPoliciesTransport):
             ) = self._interceptor.pre_list_preconfigured_expression_sets(
                 request, metadata
             )
-            request_kwargs = (
-                compute.ListPreconfiguredExpressionSetsSecurityPoliciesRequest.to_dict(
+            pb_request = (
+                compute.ListPreconfiguredExpressionSetsSecurityPoliciesRequest.pb(
                     request
                 )
             )
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.ListPreconfiguredExpressionSetsSecurityPoliciesRequest.to_json(
-                    compute.ListPreconfiguredExpressionSetsSecurityPoliciesRequest(
-                        transcoded_request["query_params"]
-                    ),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -1280,9 +1272,12 @@ class SecurityPoliciesRestTransport(SecurityPoliciesTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.SecurityPoliciesListPreconfiguredExpressionSetsResponse.from_json(
-                response.content, ignore_unknown_fields=True
+            resp = compute.SecurityPoliciesListPreconfiguredExpressionSetsResponse()
+            pb_resp = (
+                compute.SecurityPoliciesListPreconfiguredExpressionSetsResponse.pb(resp)
             )
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_list_preconfigured_expression_sets(resp)
             return resp
 
@@ -1350,12 +1345,13 @@ class SecurityPoliciesRestTransport(SecurityPoliciesTransport):
                 },
             ]
             request, metadata = self._interceptor.pre_patch(request, metadata)
-            request_kwargs = compute.PatchSecurityPolicyRequest.to_dict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            pb_request = compute.PatchSecurityPolicyRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             # Jsonify the request body
-            body = compute.SecurityPolicy.to_json(
-                compute.SecurityPolicy(transcoded_request["body"]),
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
                 including_default_value_fields=False,
                 use_integers_for_enums=False,
             )
@@ -1364,15 +1360,12 @@ class SecurityPoliciesRestTransport(SecurityPoliciesTransport):
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.PatchSecurityPolicyRequest.to_json(
-                    compute.PatchSecurityPolicyRequest(
-                        transcoded_request["query_params"]
-                    ),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -1392,9 +1385,10 @@ class SecurityPoliciesRestTransport(SecurityPoliciesTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.Operation.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.Operation()
+            pb_resp = compute.Operation.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_patch(resp)
             return resp
 
@@ -1462,12 +1456,13 @@ class SecurityPoliciesRestTransport(SecurityPoliciesTransport):
                 },
             ]
             request, metadata = self._interceptor.pre_patch_rule(request, metadata)
-            request_kwargs = compute.PatchRuleSecurityPolicyRequest.to_dict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            pb_request = compute.PatchRuleSecurityPolicyRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             # Jsonify the request body
-            body = compute.SecurityPolicyRule.to_json(
-                compute.SecurityPolicyRule(transcoded_request["body"]),
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
                 including_default_value_fields=False,
                 use_integers_for_enums=False,
             )
@@ -1476,15 +1471,12 @@ class SecurityPoliciesRestTransport(SecurityPoliciesTransport):
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.PatchRuleSecurityPolicyRequest.to_json(
-                    compute.PatchRuleSecurityPolicyRequest(
-                        transcoded_request["query_params"]
-                    ),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -1504,9 +1496,10 @@ class SecurityPoliciesRestTransport(SecurityPoliciesTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.Operation.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.Operation()
+            pb_resp = compute.Operation.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_patch_rule(resp)
             return resp
 
@@ -1573,23 +1566,20 @@ class SecurityPoliciesRestTransport(SecurityPoliciesTransport):
                 },
             ]
             request, metadata = self._interceptor.pre_remove_rule(request, metadata)
-            request_kwargs = compute.RemoveRuleSecurityPolicyRequest.to_dict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            pb_request = compute.RemoveRuleSecurityPolicyRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.RemoveRuleSecurityPolicyRequest.to_json(
-                    compute.RemoveRuleSecurityPolicyRequest(
-                        transcoded_request["query_params"]
-                    ),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -1608,9 +1598,10 @@ class SecurityPoliciesRestTransport(SecurityPoliciesTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.Operation.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.Operation()
+            pb_resp = compute.Operation.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_remove_rule(resp)
             return resp
 

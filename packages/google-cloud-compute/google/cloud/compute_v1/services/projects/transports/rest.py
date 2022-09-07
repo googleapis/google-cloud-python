@@ -26,6 +26,7 @@ from google.api_core import rest_streaming
 from google.api_core import path_template
 from google.api_core import gapic_v1
 
+from google.protobuf import json_format
 from requests import __version__ as requests_version
 import dataclasses
 import re
@@ -465,6 +466,10 @@ class ProjectsRestTransport(ProjectsTransport):
     and call it.
 
     It sends JSON representations of protocol buffers over HTTP/1.1
+
+    NOTE: This REST transport functionality is currently in a beta
+    state (preview). We welcome your feedback via an issue in this
+    library's source repository. Thank you!
     """
 
     def __init__(
@@ -484,35 +489,39 @@ class ProjectsRestTransport(ProjectsTransport):
     ) -> None:
         """Instantiate the transport.
 
-        Args:
-            host (Optional[str]):
-                 The hostname to connect to.
-            credentials (Optional[google.auth.credentials.Credentials]): The
-                authorization credentials to attach to requests. These
-                credentials identify the application to the service; if none
-                are specified, the client will attempt to ascertain the
-                credentials from the environment.
+        NOTE: This REST transport functionality is currently in a beta
+        state (preview). We welcome your feedback via a GitHub issue in
+        this library's repository. Thank you!
 
-            credentials_file (Optional[str]): A file with credentials that can
-                be loaded with :func:`google.auth.load_credentials_from_file`.
-                This argument is ignored if ``channel`` is provided.
-            scopes (Optional(Sequence[str])): A list of scopes. This argument is
-                ignored if ``channel`` is provided.
-            client_cert_source_for_mtls (Callable[[], Tuple[bytes, bytes]]): Client
-                certificate to configure mutual TLS HTTP channel. It is ignored
-                if ``channel`` is provided.
-            quota_project_id (Optional[str]): An optional project to use for billing
-                and quota.
-            client_info (google.api_core.gapic_v1.client_info.ClientInfo):
-                The client info used to send a user-agent string along with
-                API requests. If ``None``, then default info will be used.
-                Generally, you only need to set this if you are developing
-                your own client library.
-            always_use_jwt_access (Optional[bool]): Whether self signed JWT should
-                be used for service account credentials.
-            url_scheme: the protocol scheme for the API endpoint.  Normally
-                "https", but for testing or local servers,
-                "http" can be specified.
+         Args:
+             host (Optional[str]):
+                  The hostname to connect to.
+             credentials (Optional[google.auth.credentials.Credentials]): The
+                 authorization credentials to attach to requests. These
+                 credentials identify the application to the service; if none
+                 are specified, the client will attempt to ascertain the
+                 credentials from the environment.
+
+             credentials_file (Optional[str]): A file with credentials that can
+                 be loaded with :func:`google.auth.load_credentials_from_file`.
+                 This argument is ignored if ``channel`` is provided.
+             scopes (Optional(Sequence[str])): A list of scopes. This argument is
+                 ignored if ``channel`` is provided.
+             client_cert_source_for_mtls (Callable[[], Tuple[bytes, bytes]]): Client
+                 certificate to configure mutual TLS HTTP channel. It is ignored
+                 if ``channel`` is provided.
+             quota_project_id (Optional[str]): An optional project to use for billing
+                 and quota.
+             client_info (google.api_core.gapic_v1.client_info.ClientInfo):
+                 The client info used to send a user-agent string along with
+                 API requests. If ``None``, then default info will be used.
+                 Generally, you only need to set this if you are developing
+                 your own client library.
+             always_use_jwt_access (Optional[bool]): Whether self signed JWT should
+                 be used for service account credentials.
+             url_scheme: the protocol scheme for the API endpoint.  Normally
+                 "https", but for testing or local servers,
+                 "http" can be specified.
         """
         # Run the base constructor
         # TODO(yon-mg): resolve other ctor params i.e. scopes, quota, etc.
@@ -608,23 +617,20 @@ class ProjectsRestTransport(ProjectsTransport):
             request, metadata = self._interceptor.pre_disable_xpn_host(
                 request, metadata
             )
-            request_kwargs = compute.DisableXpnHostProjectRequest.to_dict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            pb_request = compute.DisableXpnHostProjectRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.DisableXpnHostProjectRequest.to_json(
-                    compute.DisableXpnHostProjectRequest(
-                        transcoded_request["query_params"]
-                    ),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -643,9 +649,10 @@ class ProjectsRestTransport(ProjectsTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.Operation.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.Operation()
+            pb_resp = compute.Operation.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_disable_xpn_host(resp)
             return resp
 
@@ -715,12 +722,13 @@ class ProjectsRestTransport(ProjectsTransport):
             request, metadata = self._interceptor.pre_disable_xpn_resource(
                 request, metadata
             )
-            request_kwargs = compute.DisableXpnResourceProjectRequest.to_dict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            pb_request = compute.DisableXpnResourceProjectRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             # Jsonify the request body
-            body = compute.ProjectsDisableXpnResourceRequest.to_json(
-                compute.ProjectsDisableXpnResourceRequest(transcoded_request["body"]),
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
                 including_default_value_fields=False,
                 use_integers_for_enums=False,
             )
@@ -729,15 +737,12 @@ class ProjectsRestTransport(ProjectsTransport):
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.DisableXpnResourceProjectRequest.to_json(
-                    compute.DisableXpnResourceProjectRequest(
-                        transcoded_request["query_params"]
-                    ),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -757,9 +762,10 @@ class ProjectsRestTransport(ProjectsTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.Operation.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.Operation()
+            pb_resp = compute.Operation.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_disable_xpn_resource(resp)
             return resp
 
@@ -826,23 +832,20 @@ class ProjectsRestTransport(ProjectsTransport):
                 },
             ]
             request, metadata = self._interceptor.pre_enable_xpn_host(request, metadata)
-            request_kwargs = compute.EnableXpnHostProjectRequest.to_dict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            pb_request = compute.EnableXpnHostProjectRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.EnableXpnHostProjectRequest.to_json(
-                    compute.EnableXpnHostProjectRequest(
-                        transcoded_request["query_params"]
-                    ),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -861,9 +864,10 @@ class ProjectsRestTransport(ProjectsTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.Operation.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.Operation()
+            pb_resp = compute.Operation.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_enable_xpn_host(resp)
             return resp
 
@@ -933,12 +937,13 @@ class ProjectsRestTransport(ProjectsTransport):
             request, metadata = self._interceptor.pre_enable_xpn_resource(
                 request, metadata
             )
-            request_kwargs = compute.EnableXpnResourceProjectRequest.to_dict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            pb_request = compute.EnableXpnResourceProjectRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             # Jsonify the request body
-            body = compute.ProjectsEnableXpnResourceRequest.to_json(
-                compute.ProjectsEnableXpnResourceRequest(transcoded_request["body"]),
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
                 including_default_value_fields=False,
                 use_integers_for_enums=False,
             )
@@ -947,15 +952,12 @@ class ProjectsRestTransport(ProjectsTransport):
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.EnableXpnResourceProjectRequest.to_json(
-                    compute.EnableXpnResourceProjectRequest(
-                        transcoded_request["query_params"]
-                    ),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -975,9 +977,10 @@ class ProjectsRestTransport(ProjectsTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.Operation.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.Operation()
+            pb_resp = compute.Operation.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_enable_xpn_resource(resp)
             return resp
 
@@ -1033,21 +1036,20 @@ class ProjectsRestTransport(ProjectsTransport):
                 },
             ]
             request, metadata = self._interceptor.pre_get(request, metadata)
-            request_kwargs = compute.GetProjectRequest.to_dict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            pb_request = compute.GetProjectRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.GetProjectRequest.to_json(
-                    compute.GetProjectRequest(transcoded_request["query_params"]),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -1066,9 +1068,10 @@ class ProjectsRestTransport(ProjectsTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.Project.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.Project()
+            pb_resp = compute.Project.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_get(resp)
             return resp
 
@@ -1125,23 +1128,20 @@ class ProjectsRestTransport(ProjectsTransport):
                 },
             ]
             request, metadata = self._interceptor.pre_get_xpn_host(request, metadata)
-            request_kwargs = compute.GetXpnHostProjectRequest.to_dict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            pb_request = compute.GetXpnHostProjectRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.GetXpnHostProjectRequest.to_json(
-                    compute.GetXpnHostProjectRequest(
-                        transcoded_request["query_params"]
-                    ),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -1160,9 +1160,10 @@ class ProjectsRestTransport(ProjectsTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.Project.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.Project()
+            pb_resp = compute.Project.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_get_xpn_host(resp)
             return resp
 
@@ -1216,23 +1217,20 @@ class ProjectsRestTransport(ProjectsTransport):
             request, metadata = self._interceptor.pre_get_xpn_resources(
                 request, metadata
             )
-            request_kwargs = compute.GetXpnResourcesProjectsRequest.to_dict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            pb_request = compute.GetXpnResourcesProjectsRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.GetXpnResourcesProjectsRequest.to_json(
-                    compute.GetXpnResourcesProjectsRequest(
-                        transcoded_request["query_params"]
-                    ),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -1251,9 +1249,10 @@ class ProjectsRestTransport(ProjectsTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.ProjectsGetXpnResources.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.ProjectsGetXpnResources()
+            pb_resp = compute.ProjectsGetXpnResources.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_get_xpn_resources(resp)
             return resp
 
@@ -1306,12 +1305,13 @@ class ProjectsRestTransport(ProjectsTransport):
                 },
             ]
             request, metadata = self._interceptor.pre_list_xpn_hosts(request, metadata)
-            request_kwargs = compute.ListXpnHostsProjectsRequest.to_dict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            pb_request = compute.ListXpnHostsProjectsRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             # Jsonify the request body
-            body = compute.ProjectsListXpnHostsRequest.to_json(
-                compute.ProjectsListXpnHostsRequest(transcoded_request["body"]),
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
                 including_default_value_fields=False,
                 use_integers_for_enums=False,
             )
@@ -1320,15 +1320,12 @@ class ProjectsRestTransport(ProjectsTransport):
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.ListXpnHostsProjectsRequest.to_json(
-                    compute.ListXpnHostsProjectsRequest(
-                        transcoded_request["query_params"]
-                    ),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -1348,9 +1345,10 @@ class ProjectsRestTransport(ProjectsTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.XpnHostList.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.XpnHostList()
+            pb_resp = compute.XpnHostList.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_list_xpn_hosts(resp)
             return resp
 
@@ -1418,12 +1416,13 @@ class ProjectsRestTransport(ProjectsTransport):
                 },
             ]
             request, metadata = self._interceptor.pre_move_disk(request, metadata)
-            request_kwargs = compute.MoveDiskProjectRequest.to_dict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            pb_request = compute.MoveDiskProjectRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             # Jsonify the request body
-            body = compute.DiskMoveRequest.to_json(
-                compute.DiskMoveRequest(transcoded_request["body"]),
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
                 including_default_value_fields=False,
                 use_integers_for_enums=False,
             )
@@ -1432,13 +1431,12 @@ class ProjectsRestTransport(ProjectsTransport):
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.MoveDiskProjectRequest.to_json(
-                    compute.MoveDiskProjectRequest(transcoded_request["query_params"]),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -1458,9 +1456,10 @@ class ProjectsRestTransport(ProjectsTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.Operation.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.Operation()
+            pb_resp = compute.Operation.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_move_disk(resp)
             return resp
 
@@ -1528,12 +1527,13 @@ class ProjectsRestTransport(ProjectsTransport):
                 },
             ]
             request, metadata = self._interceptor.pre_move_instance(request, metadata)
-            request_kwargs = compute.MoveInstanceProjectRequest.to_dict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            pb_request = compute.MoveInstanceProjectRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             # Jsonify the request body
-            body = compute.InstanceMoveRequest.to_json(
-                compute.InstanceMoveRequest(transcoded_request["body"]),
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
                 including_default_value_fields=False,
                 use_integers_for_enums=False,
             )
@@ -1542,15 +1542,12 @@ class ProjectsRestTransport(ProjectsTransport):
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.MoveInstanceProjectRequest.to_json(
-                    compute.MoveInstanceProjectRequest(
-                        transcoded_request["query_params"]
-                    ),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -1570,9 +1567,10 @@ class ProjectsRestTransport(ProjectsTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.Operation.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.Operation()
+            pb_resp = compute.Operation.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_move_instance(resp)
             return resp
 
@@ -1643,14 +1641,13 @@ class ProjectsRestTransport(ProjectsTransport):
             request, metadata = self._interceptor.pre_set_common_instance_metadata(
                 request, metadata
             )
-            request_kwargs = compute.SetCommonInstanceMetadataProjectRequest.to_dict(
-                request
-            )
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            pb_request = compute.SetCommonInstanceMetadataProjectRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             # Jsonify the request body
-            body = compute.Metadata.to_json(
-                compute.Metadata(transcoded_request["body"]),
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
                 including_default_value_fields=False,
                 use_integers_for_enums=False,
             )
@@ -1659,15 +1656,12 @@ class ProjectsRestTransport(ProjectsTransport):
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.SetCommonInstanceMetadataProjectRequest.to_json(
-                    compute.SetCommonInstanceMetadataProjectRequest(
-                        transcoded_request["query_params"]
-                    ),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -1687,9 +1681,10 @@ class ProjectsRestTransport(ProjectsTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.Operation.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.Operation()
+            pb_resp = compute.Operation.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_set_common_instance_metadata(resp)
             return resp
 
@@ -1759,16 +1754,13 @@ class ProjectsRestTransport(ProjectsTransport):
             request, metadata = self._interceptor.pre_set_default_network_tier(
                 request, metadata
             )
-            request_kwargs = compute.SetDefaultNetworkTierProjectRequest.to_dict(
-                request
-            )
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            pb_request = compute.SetDefaultNetworkTierProjectRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             # Jsonify the request body
-            body = compute.ProjectsSetDefaultNetworkTierRequest.to_json(
-                compute.ProjectsSetDefaultNetworkTierRequest(
-                    transcoded_request["body"]
-                ),
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
                 including_default_value_fields=False,
                 use_integers_for_enums=False,
             )
@@ -1777,15 +1769,12 @@ class ProjectsRestTransport(ProjectsTransport):
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.SetDefaultNetworkTierProjectRequest.to_json(
-                    compute.SetDefaultNetworkTierProjectRequest(
-                        transcoded_request["query_params"]
-                    ),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -1805,9 +1794,10 @@ class ProjectsRestTransport(ProjectsTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.Operation.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.Operation()
+            pb_resp = compute.Operation.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_set_default_network_tier(resp)
             return resp
 
@@ -1877,12 +1867,13 @@ class ProjectsRestTransport(ProjectsTransport):
             request, metadata = self._interceptor.pre_set_usage_export_bucket(
                 request, metadata
             )
-            request_kwargs = compute.SetUsageExportBucketProjectRequest.to_dict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            pb_request = compute.SetUsageExportBucketProjectRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             # Jsonify the request body
-            body = compute.UsageExportLocation.to_json(
-                compute.UsageExportLocation(transcoded_request["body"]),
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
                 including_default_value_fields=False,
                 use_integers_for_enums=False,
             )
@@ -1891,15 +1882,12 @@ class ProjectsRestTransport(ProjectsTransport):
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.SetUsageExportBucketProjectRequest.to_json(
-                    compute.SetUsageExportBucketProjectRequest(
-                        transcoded_request["query_params"]
-                    ),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -1919,9 +1907,10 @@ class ProjectsRestTransport(ProjectsTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.Operation.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.Operation()
+            pb_resp = compute.Operation.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_set_usage_export_bucket(resp)
             return resp
 

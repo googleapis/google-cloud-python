@@ -26,6 +26,7 @@ from google.api_core import rest_streaming
 from google.api_core import path_template
 from google.api_core import gapic_v1
 
+from google.protobuf import json_format
 from requests import __version__ as requests_version
 import dataclasses
 import re
@@ -567,6 +568,10 @@ class NetworkFirewallPoliciesRestTransport(NetworkFirewallPoliciesTransport):
     and call it.
 
     It sends JSON representations of protocol buffers over HTTP/1.1
+
+    NOTE: This REST transport functionality is currently in a beta
+    state (preview). We welcome your feedback via an issue in this
+    library's source repository. Thank you!
     """
 
     def __init__(
@@ -586,35 +591,39 @@ class NetworkFirewallPoliciesRestTransport(NetworkFirewallPoliciesTransport):
     ) -> None:
         """Instantiate the transport.
 
-        Args:
-            host (Optional[str]):
-                 The hostname to connect to.
-            credentials (Optional[google.auth.credentials.Credentials]): The
-                authorization credentials to attach to requests. These
-                credentials identify the application to the service; if none
-                are specified, the client will attempt to ascertain the
-                credentials from the environment.
+        NOTE: This REST transport functionality is currently in a beta
+        state (preview). We welcome your feedback via a GitHub issue in
+        this library's repository. Thank you!
 
-            credentials_file (Optional[str]): A file with credentials that can
-                be loaded with :func:`google.auth.load_credentials_from_file`.
-                This argument is ignored if ``channel`` is provided.
-            scopes (Optional(Sequence[str])): A list of scopes. This argument is
-                ignored if ``channel`` is provided.
-            client_cert_source_for_mtls (Callable[[], Tuple[bytes, bytes]]): Client
-                certificate to configure mutual TLS HTTP channel. It is ignored
-                if ``channel`` is provided.
-            quota_project_id (Optional[str]): An optional project to use for billing
-                and quota.
-            client_info (google.api_core.gapic_v1.client_info.ClientInfo):
-                The client info used to send a user-agent string along with
-                API requests. If ``None``, then default info will be used.
-                Generally, you only need to set this if you are developing
-                your own client library.
-            always_use_jwt_access (Optional[bool]): Whether self signed JWT should
-                be used for service account credentials.
-            url_scheme: the protocol scheme for the API endpoint.  Normally
-                "https", but for testing or local servers,
-                "http" can be specified.
+         Args:
+             host (Optional[str]):
+                  The hostname to connect to.
+             credentials (Optional[google.auth.credentials.Credentials]): The
+                 authorization credentials to attach to requests. These
+                 credentials identify the application to the service; if none
+                 are specified, the client will attempt to ascertain the
+                 credentials from the environment.
+
+             credentials_file (Optional[str]): A file with credentials that can
+                 be loaded with :func:`google.auth.load_credentials_from_file`.
+                 This argument is ignored if ``channel`` is provided.
+             scopes (Optional(Sequence[str])): A list of scopes. This argument is
+                 ignored if ``channel`` is provided.
+             client_cert_source_for_mtls (Callable[[], Tuple[bytes, bytes]]): Client
+                 certificate to configure mutual TLS HTTP channel. It is ignored
+                 if ``channel`` is provided.
+             quota_project_id (Optional[str]): An optional project to use for billing
+                 and quota.
+             client_info (google.api_core.gapic_v1.client_info.ClientInfo):
+                 The client info used to send a user-agent string along with
+                 API requests. If ``None``, then default info will be used.
+                 Generally, you only need to set this if you are developing
+                 your own client library.
+             always_use_jwt_access (Optional[bool]): Whether self signed JWT should
+                 be used for service account credentials.
+             url_scheme: the protocol scheme for the API endpoint.  Normally
+                 "https", but for testing or local servers,
+                 "http" can be specified.
         """
         # Run the base constructor
         # TODO(yon-mg): resolve other ctor params i.e. scopes, quota, etc.
@@ -709,14 +718,13 @@ class NetworkFirewallPoliciesRestTransport(NetworkFirewallPoliciesTransport):
                 },
             ]
             request, metadata = self._interceptor.pre_add_association(request, metadata)
-            request_kwargs = compute.AddAssociationNetworkFirewallPolicyRequest.to_dict(
-                request
-            )
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            pb_request = compute.AddAssociationNetworkFirewallPolicyRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             # Jsonify the request body
-            body = compute.FirewallPolicyAssociation.to_json(
-                compute.FirewallPolicyAssociation(transcoded_request["body"]),
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
                 including_default_value_fields=False,
                 use_integers_for_enums=False,
             )
@@ -725,15 +733,12 @@ class NetworkFirewallPoliciesRestTransport(NetworkFirewallPoliciesTransport):
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.AddAssociationNetworkFirewallPolicyRequest.to_json(
-                    compute.AddAssociationNetworkFirewallPolicyRequest(
-                        transcoded_request["query_params"]
-                    ),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -753,9 +758,10 @@ class NetworkFirewallPoliciesRestTransport(NetworkFirewallPoliciesTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.Operation.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.Operation()
+            pb_resp = compute.Operation.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_add_association(resp)
             return resp
 
@@ -823,14 +829,13 @@ class NetworkFirewallPoliciesRestTransport(NetworkFirewallPoliciesTransport):
                 },
             ]
             request, metadata = self._interceptor.pre_add_rule(request, metadata)
-            request_kwargs = compute.AddRuleNetworkFirewallPolicyRequest.to_dict(
-                request
-            )
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            pb_request = compute.AddRuleNetworkFirewallPolicyRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             # Jsonify the request body
-            body = compute.FirewallPolicyRule.to_json(
-                compute.FirewallPolicyRule(transcoded_request["body"]),
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
                 including_default_value_fields=False,
                 use_integers_for_enums=False,
             )
@@ -839,15 +844,12 @@ class NetworkFirewallPoliciesRestTransport(NetworkFirewallPoliciesTransport):
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.AddRuleNetworkFirewallPolicyRequest.to_json(
-                    compute.AddRuleNetworkFirewallPolicyRequest(
-                        transcoded_request["query_params"]
-                    ),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -867,9 +869,10 @@ class NetworkFirewallPoliciesRestTransport(NetworkFirewallPoliciesTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.Operation.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.Operation()
+            pb_resp = compute.Operation.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_add_rule(resp)
             return resp
 
@@ -936,25 +939,20 @@ class NetworkFirewallPoliciesRestTransport(NetworkFirewallPoliciesTransport):
                 },
             ]
             request, metadata = self._interceptor.pre_clone_rules(request, metadata)
-            request_kwargs = compute.CloneRulesNetworkFirewallPolicyRequest.to_dict(
-                request
-            )
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            pb_request = compute.CloneRulesNetworkFirewallPolicyRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.CloneRulesNetworkFirewallPolicyRequest.to_json(
-                    compute.CloneRulesNetworkFirewallPolicyRequest(
-                        transcoded_request["query_params"]
-                    ),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -973,9 +971,10 @@ class NetworkFirewallPoliciesRestTransport(NetworkFirewallPoliciesTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.Operation.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.Operation()
+            pb_resp = compute.Operation.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_clone_rules(resp)
             return resp
 
@@ -1042,23 +1041,20 @@ class NetworkFirewallPoliciesRestTransport(NetworkFirewallPoliciesTransport):
                 },
             ]
             request, metadata = self._interceptor.pre_delete(request, metadata)
-            request_kwargs = compute.DeleteNetworkFirewallPolicyRequest.to_dict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            pb_request = compute.DeleteNetworkFirewallPolicyRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.DeleteNetworkFirewallPolicyRequest.to_json(
-                    compute.DeleteNetworkFirewallPolicyRequest(
-                        transcoded_request["query_params"]
-                    ),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -1077,9 +1073,10 @@ class NetworkFirewallPoliciesRestTransport(NetworkFirewallPoliciesTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.Operation.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.Operation()
+            pb_resp = compute.Operation.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_delete(resp)
             return resp
 
@@ -1133,23 +1130,20 @@ class NetworkFirewallPoliciesRestTransport(NetworkFirewallPoliciesTransport):
                 },
             ]
             request, metadata = self._interceptor.pre_get(request, metadata)
-            request_kwargs = compute.GetNetworkFirewallPolicyRequest.to_dict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            pb_request = compute.GetNetworkFirewallPolicyRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.GetNetworkFirewallPolicyRequest.to_json(
-                    compute.GetNetworkFirewallPolicyRequest(
-                        transcoded_request["query_params"]
-                    ),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -1168,9 +1162,10 @@ class NetworkFirewallPoliciesRestTransport(NetworkFirewallPoliciesTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.FirewallPolicy.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.FirewallPolicy()
+            pb_resp = compute.FirewallPolicy.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_get(resp)
             return resp
 
@@ -1222,25 +1217,20 @@ class NetworkFirewallPoliciesRestTransport(NetworkFirewallPoliciesTransport):
                 },
             ]
             request, metadata = self._interceptor.pre_get_association(request, metadata)
-            request_kwargs = compute.GetAssociationNetworkFirewallPolicyRequest.to_dict(
-                request
-            )
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            pb_request = compute.GetAssociationNetworkFirewallPolicyRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.GetAssociationNetworkFirewallPolicyRequest.to_json(
-                    compute.GetAssociationNetworkFirewallPolicyRequest(
-                        transcoded_request["query_params"]
-                    ),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -1259,9 +1249,10 @@ class NetworkFirewallPoliciesRestTransport(NetworkFirewallPoliciesTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.FirewallPolicyAssociation.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.FirewallPolicyAssociation()
+            pb_resp = compute.FirewallPolicyAssociation.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_get_association(resp)
             return resp
 
@@ -1354,25 +1345,20 @@ class NetworkFirewallPoliciesRestTransport(NetworkFirewallPoliciesTransport):
                 },
             ]
             request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
-            request_kwargs = compute.GetIamPolicyNetworkFirewallPolicyRequest.to_dict(
-                request
-            )
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            pb_request = compute.GetIamPolicyNetworkFirewallPolicyRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.GetIamPolicyNetworkFirewallPolicyRequest.to_json(
-                    compute.GetIamPolicyNetworkFirewallPolicyRequest(
-                        transcoded_request["query_params"]
-                    ),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -1391,9 +1377,10 @@ class NetworkFirewallPoliciesRestTransport(NetworkFirewallPoliciesTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.Policy.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.Policy()
+            pb_resp = compute.Policy.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_get_iam_policy(resp)
             return resp
 
@@ -1449,25 +1436,20 @@ class NetworkFirewallPoliciesRestTransport(NetworkFirewallPoliciesTransport):
                 },
             ]
             request, metadata = self._interceptor.pre_get_rule(request, metadata)
-            request_kwargs = compute.GetRuleNetworkFirewallPolicyRequest.to_dict(
-                request
-            )
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            pb_request = compute.GetRuleNetworkFirewallPolicyRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.GetRuleNetworkFirewallPolicyRequest.to_json(
-                    compute.GetRuleNetworkFirewallPolicyRequest(
-                        transcoded_request["query_params"]
-                    ),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -1486,9 +1468,10 @@ class NetworkFirewallPoliciesRestTransport(NetworkFirewallPoliciesTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.FirewallPolicyRule.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.FirewallPolicyRule()
+            pb_resp = compute.FirewallPolicyRule.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_get_rule(resp)
             return resp
 
@@ -1556,12 +1539,13 @@ class NetworkFirewallPoliciesRestTransport(NetworkFirewallPoliciesTransport):
                 },
             ]
             request, metadata = self._interceptor.pre_insert(request, metadata)
-            request_kwargs = compute.InsertNetworkFirewallPolicyRequest.to_dict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            pb_request = compute.InsertNetworkFirewallPolicyRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             # Jsonify the request body
-            body = compute.FirewallPolicy.to_json(
-                compute.FirewallPolicy(transcoded_request["body"]),
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
                 including_default_value_fields=False,
                 use_integers_for_enums=False,
             )
@@ -1570,15 +1554,12 @@ class NetworkFirewallPoliciesRestTransport(NetworkFirewallPoliciesTransport):
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.InsertNetworkFirewallPolicyRequest.to_json(
-                    compute.InsertNetworkFirewallPolicyRequest(
-                        transcoded_request["query_params"]
-                    ),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -1598,9 +1579,10 @@ class NetworkFirewallPoliciesRestTransport(NetworkFirewallPoliciesTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.Operation.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.Operation()
+            pb_resp = compute.Operation.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_insert(resp)
             return resp
 
@@ -1652,23 +1634,20 @@ class NetworkFirewallPoliciesRestTransport(NetworkFirewallPoliciesTransport):
                 },
             ]
             request, metadata = self._interceptor.pre_list(request, metadata)
-            request_kwargs = compute.ListNetworkFirewallPoliciesRequest.to_dict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            pb_request = compute.ListNetworkFirewallPoliciesRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.ListNetworkFirewallPoliciesRequest.to_json(
-                    compute.ListNetworkFirewallPoliciesRequest(
-                        transcoded_request["query_params"]
-                    ),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -1687,9 +1666,10 @@ class NetworkFirewallPoliciesRestTransport(NetworkFirewallPoliciesTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.FirewallPolicyList.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.FirewallPolicyList()
+            pb_resp = compute.FirewallPolicyList.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_list(resp)
             return resp
 
@@ -1757,12 +1737,13 @@ class NetworkFirewallPoliciesRestTransport(NetworkFirewallPoliciesTransport):
                 },
             ]
             request, metadata = self._interceptor.pre_patch(request, metadata)
-            request_kwargs = compute.PatchNetworkFirewallPolicyRequest.to_dict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            pb_request = compute.PatchNetworkFirewallPolicyRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             # Jsonify the request body
-            body = compute.FirewallPolicy.to_json(
-                compute.FirewallPolicy(transcoded_request["body"]),
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
                 including_default_value_fields=False,
                 use_integers_for_enums=False,
             )
@@ -1771,15 +1752,12 @@ class NetworkFirewallPoliciesRestTransport(NetworkFirewallPoliciesTransport):
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.PatchNetworkFirewallPolicyRequest.to_json(
-                    compute.PatchNetworkFirewallPolicyRequest(
-                        transcoded_request["query_params"]
-                    ),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -1799,9 +1777,10 @@ class NetworkFirewallPoliciesRestTransport(NetworkFirewallPoliciesTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.Operation.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.Operation()
+            pb_resp = compute.Operation.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_patch(resp)
             return resp
 
@@ -1869,14 +1848,13 @@ class NetworkFirewallPoliciesRestTransport(NetworkFirewallPoliciesTransport):
                 },
             ]
             request, metadata = self._interceptor.pre_patch_rule(request, metadata)
-            request_kwargs = compute.PatchRuleNetworkFirewallPolicyRequest.to_dict(
-                request
-            )
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            pb_request = compute.PatchRuleNetworkFirewallPolicyRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             # Jsonify the request body
-            body = compute.FirewallPolicyRule.to_json(
-                compute.FirewallPolicyRule(transcoded_request["body"]),
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
                 including_default_value_fields=False,
                 use_integers_for_enums=False,
             )
@@ -1885,15 +1863,12 @@ class NetworkFirewallPoliciesRestTransport(NetworkFirewallPoliciesTransport):
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.PatchRuleNetworkFirewallPolicyRequest.to_json(
-                    compute.PatchRuleNetworkFirewallPolicyRequest(
-                        transcoded_request["query_params"]
-                    ),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -1913,9 +1888,10 @@ class NetworkFirewallPoliciesRestTransport(NetworkFirewallPoliciesTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.Operation.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.Operation()
+            pb_resp = compute.Operation.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_patch_rule(resp)
             return resp
 
@@ -1984,25 +1960,22 @@ class NetworkFirewallPoliciesRestTransport(NetworkFirewallPoliciesTransport):
             request, metadata = self._interceptor.pre_remove_association(
                 request, metadata
             )
-            request_kwargs = (
-                compute.RemoveAssociationNetworkFirewallPolicyRequest.to_dict(request)
+            pb_request = compute.RemoveAssociationNetworkFirewallPolicyRequest.pb(
+                request
             )
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.RemoveAssociationNetworkFirewallPolicyRequest.to_json(
-                    compute.RemoveAssociationNetworkFirewallPolicyRequest(
-                        transcoded_request["query_params"]
-                    ),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -2021,9 +1994,10 @@ class NetworkFirewallPoliciesRestTransport(NetworkFirewallPoliciesTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.Operation.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.Operation()
+            pb_resp = compute.Operation.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_remove_association(resp)
             return resp
 
@@ -2090,25 +2064,20 @@ class NetworkFirewallPoliciesRestTransport(NetworkFirewallPoliciesTransport):
                 },
             ]
             request, metadata = self._interceptor.pre_remove_rule(request, metadata)
-            request_kwargs = compute.RemoveRuleNetworkFirewallPolicyRequest.to_dict(
-                request
-            )
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            pb_request = compute.RemoveRuleNetworkFirewallPolicyRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.RemoveRuleNetworkFirewallPolicyRequest.to_json(
-                    compute.RemoveRuleNetworkFirewallPolicyRequest(
-                        transcoded_request["query_params"]
-                    ),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -2127,9 +2096,10 @@ class NetworkFirewallPoliciesRestTransport(NetworkFirewallPoliciesTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.Operation.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.Operation()
+            pb_resp = compute.Operation.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_remove_rule(resp)
             return resp
 
@@ -2223,14 +2193,13 @@ class NetworkFirewallPoliciesRestTransport(NetworkFirewallPoliciesTransport):
                 },
             ]
             request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
-            request_kwargs = compute.SetIamPolicyNetworkFirewallPolicyRequest.to_dict(
-                request
-            )
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            pb_request = compute.SetIamPolicyNetworkFirewallPolicyRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             # Jsonify the request body
-            body = compute.GlobalSetPolicyRequest.to_json(
-                compute.GlobalSetPolicyRequest(transcoded_request["body"]),
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
                 including_default_value_fields=False,
                 use_integers_for_enums=False,
             )
@@ -2239,15 +2208,12 @@ class NetworkFirewallPoliciesRestTransport(NetworkFirewallPoliciesTransport):
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.SetIamPolicyNetworkFirewallPolicyRequest.to_json(
-                    compute.SetIamPolicyNetworkFirewallPolicyRequest(
-                        transcoded_request["query_params"]
-                    ),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -2267,9 +2233,10 @@ class NetworkFirewallPoliciesRestTransport(NetworkFirewallPoliciesTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.Policy.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.Policy()
+            pb_resp = compute.Policy.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_set_iam_policy(resp)
             return resp
 
@@ -2324,14 +2291,15 @@ class NetworkFirewallPoliciesRestTransport(NetworkFirewallPoliciesTransport):
             request, metadata = self._interceptor.pre_test_iam_permissions(
                 request, metadata
             )
-            request_kwargs = (
-                compute.TestIamPermissionsNetworkFirewallPolicyRequest.to_dict(request)
+            pb_request = compute.TestIamPermissionsNetworkFirewallPolicyRequest.pb(
+                request
             )
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             # Jsonify the request body
-            body = compute.TestPermissionsRequest.to_json(
-                compute.TestPermissionsRequest(transcoded_request["body"]),
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
                 including_default_value_fields=False,
                 use_integers_for_enums=False,
             )
@@ -2340,15 +2308,12 @@ class NetworkFirewallPoliciesRestTransport(NetworkFirewallPoliciesTransport):
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.TestIamPermissionsNetworkFirewallPolicyRequest.to_json(
-                    compute.TestIamPermissionsNetworkFirewallPolicyRequest(
-                        transcoded_request["query_params"]
-                    ),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -2368,9 +2333,10 @@ class NetworkFirewallPoliciesRestTransport(NetworkFirewallPoliciesTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.TestPermissionsResponse.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.TestPermissionsResponse()
+            pb_resp = compute.TestPermissionsResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_test_iam_permissions(resp)
             return resp
 

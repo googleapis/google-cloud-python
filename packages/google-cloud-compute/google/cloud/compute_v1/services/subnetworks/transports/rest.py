@@ -26,6 +26,7 @@ from google.api_core import rest_streaming
 from google.api_core import path_template
 from google.api_core import gapic_v1
 
+from google.protobuf import json_format
 from requests import __version__ as requests_version
 import dataclasses
 import re
@@ -435,6 +436,10 @@ class SubnetworksRestTransport(SubnetworksTransport):
     and call it.
 
     It sends JSON representations of protocol buffers over HTTP/1.1
+
+    NOTE: This REST transport functionality is currently in a beta
+    state (preview). We welcome your feedback via an issue in this
+    library's source repository. Thank you!
     """
 
     def __init__(
@@ -454,35 +459,39 @@ class SubnetworksRestTransport(SubnetworksTransport):
     ) -> None:
         """Instantiate the transport.
 
-        Args:
-            host (Optional[str]):
-                 The hostname to connect to.
-            credentials (Optional[google.auth.credentials.Credentials]): The
-                authorization credentials to attach to requests. These
-                credentials identify the application to the service; if none
-                are specified, the client will attempt to ascertain the
-                credentials from the environment.
+        NOTE: This REST transport functionality is currently in a beta
+        state (preview). We welcome your feedback via a GitHub issue in
+        this library's repository. Thank you!
 
-            credentials_file (Optional[str]): A file with credentials that can
-                be loaded with :func:`google.auth.load_credentials_from_file`.
-                This argument is ignored if ``channel`` is provided.
-            scopes (Optional(Sequence[str])): A list of scopes. This argument is
-                ignored if ``channel`` is provided.
-            client_cert_source_for_mtls (Callable[[], Tuple[bytes, bytes]]): Client
-                certificate to configure mutual TLS HTTP channel. It is ignored
-                if ``channel`` is provided.
-            quota_project_id (Optional[str]): An optional project to use for billing
-                and quota.
-            client_info (google.api_core.gapic_v1.client_info.ClientInfo):
-                The client info used to send a user-agent string along with
-                API requests. If ``None``, then default info will be used.
-                Generally, you only need to set this if you are developing
-                your own client library.
-            always_use_jwt_access (Optional[bool]): Whether self signed JWT should
-                be used for service account credentials.
-            url_scheme: the protocol scheme for the API endpoint.  Normally
-                "https", but for testing or local servers,
-                "http" can be specified.
+         Args:
+             host (Optional[str]):
+                  The hostname to connect to.
+             credentials (Optional[google.auth.credentials.Credentials]): The
+                 authorization credentials to attach to requests. These
+                 credentials identify the application to the service; if none
+                 are specified, the client will attempt to ascertain the
+                 credentials from the environment.
+
+             credentials_file (Optional[str]): A file with credentials that can
+                 be loaded with :func:`google.auth.load_credentials_from_file`.
+                 This argument is ignored if ``channel`` is provided.
+             scopes (Optional(Sequence[str])): A list of scopes. This argument is
+                 ignored if ``channel`` is provided.
+             client_cert_source_for_mtls (Callable[[], Tuple[bytes, bytes]]): Client
+                 certificate to configure mutual TLS HTTP channel. It is ignored
+                 if ``channel`` is provided.
+             quota_project_id (Optional[str]): An optional project to use for billing
+                 and quota.
+             client_info (google.api_core.gapic_v1.client_info.ClientInfo):
+                 The client info used to send a user-agent string along with
+                 API requests. If ``None``, then default info will be used.
+                 Generally, you only need to set this if you are developing
+                 your own client library.
+             always_use_jwt_access (Optional[bool]): Whether self signed JWT should
+                 be used for service account credentials.
+             url_scheme: the protocol scheme for the API endpoint.  Normally
+                 "https", but for testing or local servers,
+                 "http" can be specified.
         """
         # Run the base constructor
         # TODO(yon-mg): resolve other ctor params i.e. scopes, quota, etc.
@@ -561,23 +570,20 @@ class SubnetworksRestTransport(SubnetworksTransport):
                 },
             ]
             request, metadata = self._interceptor.pre_aggregated_list(request, metadata)
-            request_kwargs = compute.AggregatedListSubnetworksRequest.to_dict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            pb_request = compute.AggregatedListSubnetworksRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.AggregatedListSubnetworksRequest.to_json(
-                    compute.AggregatedListSubnetworksRequest(
-                        transcoded_request["query_params"]
-                    ),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -596,9 +602,10 @@ class SubnetworksRestTransport(SubnetworksTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.SubnetworkAggregatedList.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.SubnetworkAggregatedList()
+            pb_resp = compute.SubnetworkAggregatedList.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_aggregated_list(resp)
             return resp
 
@@ -665,21 +672,20 @@ class SubnetworksRestTransport(SubnetworksTransport):
                 },
             ]
             request, metadata = self._interceptor.pre_delete(request, metadata)
-            request_kwargs = compute.DeleteSubnetworkRequest.to_dict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            pb_request = compute.DeleteSubnetworkRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.DeleteSubnetworkRequest.to_json(
-                    compute.DeleteSubnetworkRequest(transcoded_request["query_params"]),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -698,9 +704,10 @@ class SubnetworksRestTransport(SubnetworksTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.Operation.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.Operation()
+            pb_resp = compute.Operation.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_delete(resp)
             return resp
 
@@ -770,12 +777,13 @@ class SubnetworksRestTransport(SubnetworksTransport):
             request, metadata = self._interceptor.pre_expand_ip_cidr_range(
                 request, metadata
             )
-            request_kwargs = compute.ExpandIpCidrRangeSubnetworkRequest.to_dict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            pb_request = compute.ExpandIpCidrRangeSubnetworkRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             # Jsonify the request body
-            body = compute.SubnetworksExpandIpCidrRangeRequest.to_json(
-                compute.SubnetworksExpandIpCidrRangeRequest(transcoded_request["body"]),
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
                 including_default_value_fields=False,
                 use_integers_for_enums=False,
             )
@@ -784,15 +792,12 @@ class SubnetworksRestTransport(SubnetworksTransport):
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.ExpandIpCidrRangeSubnetworkRequest.to_json(
-                    compute.ExpandIpCidrRangeSubnetworkRequest(
-                        transcoded_request["query_params"]
-                    ),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -812,9 +817,10 @@ class SubnetworksRestTransport(SubnetworksTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.Operation.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.Operation()
+            pb_resp = compute.Operation.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_expand_ip_cidr_range(resp)
             return resp
 
@@ -873,21 +879,20 @@ class SubnetworksRestTransport(SubnetworksTransport):
                 },
             ]
             request, metadata = self._interceptor.pre_get(request, metadata)
-            request_kwargs = compute.GetSubnetworkRequest.to_dict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            pb_request = compute.GetSubnetworkRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.GetSubnetworkRequest.to_json(
-                    compute.GetSubnetworkRequest(transcoded_request["query_params"]),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -906,9 +911,10 @@ class SubnetworksRestTransport(SubnetworksTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.Subnetwork.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.Subnetwork()
+            pb_resp = compute.Subnetwork.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_get(resp)
             return resp
 
@@ -1001,23 +1007,20 @@ class SubnetworksRestTransport(SubnetworksTransport):
                 },
             ]
             request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
-            request_kwargs = compute.GetIamPolicySubnetworkRequest.to_dict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            pb_request = compute.GetIamPolicySubnetworkRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.GetIamPolicySubnetworkRequest.to_json(
-                    compute.GetIamPolicySubnetworkRequest(
-                        transcoded_request["query_params"]
-                    ),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -1036,9 +1039,10 @@ class SubnetworksRestTransport(SubnetworksTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.Policy.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.Policy()
+            pb_resp = compute.Policy.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_get_iam_policy(resp)
             return resp
 
@@ -1106,12 +1110,13 @@ class SubnetworksRestTransport(SubnetworksTransport):
                 },
             ]
             request, metadata = self._interceptor.pre_insert(request, metadata)
-            request_kwargs = compute.InsertSubnetworkRequest.to_dict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            pb_request = compute.InsertSubnetworkRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             # Jsonify the request body
-            body = compute.Subnetwork.to_json(
-                compute.Subnetwork(transcoded_request["body"]),
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
                 including_default_value_fields=False,
                 use_integers_for_enums=False,
             )
@@ -1120,13 +1125,12 @@ class SubnetworksRestTransport(SubnetworksTransport):
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.InsertSubnetworkRequest.to_json(
-                    compute.InsertSubnetworkRequest(transcoded_request["query_params"]),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -1146,9 +1150,10 @@ class SubnetworksRestTransport(SubnetworksTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.Operation.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.Operation()
+            pb_resp = compute.Operation.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_insert(resp)
             return resp
 
@@ -1202,21 +1207,20 @@ class SubnetworksRestTransport(SubnetworksTransport):
                 },
             ]
             request, metadata = self._interceptor.pre_list(request, metadata)
-            request_kwargs = compute.ListSubnetworksRequest.to_dict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            pb_request = compute.ListSubnetworksRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.ListSubnetworksRequest.to_json(
-                    compute.ListSubnetworksRequest(transcoded_request["query_params"]),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -1235,9 +1239,10 @@ class SubnetworksRestTransport(SubnetworksTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.SubnetworkList.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.SubnetworkList()
+            pb_resp = compute.SubnetworkList.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_list(resp)
             return resp
 
@@ -1289,23 +1294,20 @@ class SubnetworksRestTransport(SubnetworksTransport):
                 },
             ]
             request, metadata = self._interceptor.pre_list_usable(request, metadata)
-            request_kwargs = compute.ListUsableSubnetworksRequest.to_dict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            pb_request = compute.ListUsableSubnetworksRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.ListUsableSubnetworksRequest.to_json(
-                    compute.ListUsableSubnetworksRequest(
-                        transcoded_request["query_params"]
-                    ),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -1324,9 +1326,10 @@ class SubnetworksRestTransport(SubnetworksTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.UsableSubnetworksAggregatedList.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.UsableSubnetworksAggregatedList()
+            pb_resp = compute.UsableSubnetworksAggregatedList.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_list_usable(resp)
             return resp
 
@@ -1394,12 +1397,13 @@ class SubnetworksRestTransport(SubnetworksTransport):
                 },
             ]
             request, metadata = self._interceptor.pre_patch(request, metadata)
-            request_kwargs = compute.PatchSubnetworkRequest.to_dict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            pb_request = compute.PatchSubnetworkRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             # Jsonify the request body
-            body = compute.Subnetwork.to_json(
-                compute.Subnetwork(transcoded_request["body"]),
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
                 including_default_value_fields=False,
                 use_integers_for_enums=False,
             )
@@ -1408,13 +1412,12 @@ class SubnetworksRestTransport(SubnetworksTransport):
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.PatchSubnetworkRequest.to_json(
-                    compute.PatchSubnetworkRequest(transcoded_request["query_params"]),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -1434,9 +1437,10 @@ class SubnetworksRestTransport(SubnetworksTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.Operation.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.Operation()
+            pb_resp = compute.Operation.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_patch(resp)
             return resp
 
@@ -1530,12 +1534,13 @@ class SubnetworksRestTransport(SubnetworksTransport):
                 },
             ]
             request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
-            request_kwargs = compute.SetIamPolicySubnetworkRequest.to_dict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            pb_request = compute.SetIamPolicySubnetworkRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             # Jsonify the request body
-            body = compute.RegionSetPolicyRequest.to_json(
-                compute.RegionSetPolicyRequest(transcoded_request["body"]),
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
                 including_default_value_fields=False,
                 use_integers_for_enums=False,
             )
@@ -1544,15 +1549,12 @@ class SubnetworksRestTransport(SubnetworksTransport):
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.SetIamPolicySubnetworkRequest.to_json(
-                    compute.SetIamPolicySubnetworkRequest(
-                        transcoded_request["query_params"]
-                    ),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -1572,9 +1574,10 @@ class SubnetworksRestTransport(SubnetworksTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.Policy.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.Policy()
+            pb_resp = compute.Policy.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_set_iam_policy(resp)
             return resp
 
@@ -1645,16 +1648,13 @@ class SubnetworksRestTransport(SubnetworksTransport):
             request, metadata = self._interceptor.pre_set_private_ip_google_access(
                 request, metadata
             )
-            request_kwargs = compute.SetPrivateIpGoogleAccessSubnetworkRequest.to_dict(
-                request
-            )
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            pb_request = compute.SetPrivateIpGoogleAccessSubnetworkRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             # Jsonify the request body
-            body = compute.SubnetworksSetPrivateIpGoogleAccessRequest.to_json(
-                compute.SubnetworksSetPrivateIpGoogleAccessRequest(
-                    transcoded_request["body"]
-                ),
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
                 including_default_value_fields=False,
                 use_integers_for_enums=False,
             )
@@ -1663,15 +1663,12 @@ class SubnetworksRestTransport(SubnetworksTransport):
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.SetPrivateIpGoogleAccessSubnetworkRequest.to_json(
-                    compute.SetPrivateIpGoogleAccessSubnetworkRequest(
-                        transcoded_request["query_params"]
-                    ),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -1691,9 +1688,10 @@ class SubnetworksRestTransport(SubnetworksTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.Operation.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.Operation()
+            pb_resp = compute.Operation.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_set_private_ip_google_access(resp)
             return resp
 
@@ -1748,14 +1746,13 @@ class SubnetworksRestTransport(SubnetworksTransport):
             request, metadata = self._interceptor.pre_test_iam_permissions(
                 request, metadata
             )
-            request_kwargs = compute.TestIamPermissionsSubnetworkRequest.to_dict(
-                request
-            )
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            pb_request = compute.TestIamPermissionsSubnetworkRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             # Jsonify the request body
-            body = compute.TestPermissionsRequest.to_json(
-                compute.TestPermissionsRequest(transcoded_request["body"]),
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
                 including_default_value_fields=False,
                 use_integers_for_enums=False,
             )
@@ -1764,15 +1761,12 @@ class SubnetworksRestTransport(SubnetworksTransport):
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.TestIamPermissionsSubnetworkRequest.to_json(
-                    compute.TestIamPermissionsSubnetworkRequest(
-                        transcoded_request["query_params"]
-                    ),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -1792,9 +1786,10 @@ class SubnetworksRestTransport(SubnetworksTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.TestPermissionsResponse.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.TestPermissionsResponse()
+            pb_resp = compute.TestPermissionsResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_test_iam_permissions(resp)
             return resp
 

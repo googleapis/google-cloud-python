@@ -26,6 +26,7 @@ from google.api_core import rest_streaming
 from google.api_core import path_template
 from google.api_core import gapic_v1
 
+from google.protobuf import json_format
 from requests import __version__ as requests_version
 import dataclasses
 import re
@@ -1402,6 +1403,10 @@ class InstancesRestTransport(InstancesTransport):
     and call it.
 
     It sends JSON representations of protocol buffers over HTTP/1.1
+
+    NOTE: This REST transport functionality is currently in a beta
+    state (preview). We welcome your feedback via an issue in this
+    library's source repository. Thank you!
     """
 
     def __init__(
@@ -1421,35 +1426,39 @@ class InstancesRestTransport(InstancesTransport):
     ) -> None:
         """Instantiate the transport.
 
-        Args:
-            host (Optional[str]):
-                 The hostname to connect to.
-            credentials (Optional[google.auth.credentials.Credentials]): The
-                authorization credentials to attach to requests. These
-                credentials identify the application to the service; if none
-                are specified, the client will attempt to ascertain the
-                credentials from the environment.
+        NOTE: This REST transport functionality is currently in a beta
+        state (preview). We welcome your feedback via a GitHub issue in
+        this library's repository. Thank you!
 
-            credentials_file (Optional[str]): A file with credentials that can
-                be loaded with :func:`google.auth.load_credentials_from_file`.
-                This argument is ignored if ``channel`` is provided.
-            scopes (Optional(Sequence[str])): A list of scopes. This argument is
-                ignored if ``channel`` is provided.
-            client_cert_source_for_mtls (Callable[[], Tuple[bytes, bytes]]): Client
-                certificate to configure mutual TLS HTTP channel. It is ignored
-                if ``channel`` is provided.
-            quota_project_id (Optional[str]): An optional project to use for billing
-                and quota.
-            client_info (google.api_core.gapic_v1.client_info.ClientInfo):
-                The client info used to send a user-agent string along with
-                API requests. If ``None``, then default info will be used.
-                Generally, you only need to set this if you are developing
-                your own client library.
-            always_use_jwt_access (Optional[bool]): Whether self signed JWT should
-                be used for service account credentials.
-            url_scheme: the protocol scheme for the API endpoint.  Normally
-                "https", but for testing or local servers,
-                "http" can be specified.
+         Args:
+             host (Optional[str]):
+                  The hostname to connect to.
+             credentials (Optional[google.auth.credentials.Credentials]): The
+                 authorization credentials to attach to requests. These
+                 credentials identify the application to the service; if none
+                 are specified, the client will attempt to ascertain the
+                 credentials from the environment.
+
+             credentials_file (Optional[str]): A file with credentials that can
+                 be loaded with :func:`google.auth.load_credentials_from_file`.
+                 This argument is ignored if ``channel`` is provided.
+             scopes (Optional(Sequence[str])): A list of scopes. This argument is
+                 ignored if ``channel`` is provided.
+             client_cert_source_for_mtls (Callable[[], Tuple[bytes, bytes]]): Client
+                 certificate to configure mutual TLS HTTP channel. It is ignored
+                 if ``channel`` is provided.
+             quota_project_id (Optional[str]): An optional project to use for billing
+                 and quota.
+             client_info (google.api_core.gapic_v1.client_info.ClientInfo):
+                 The client info used to send a user-agent string along with
+                 API requests. If ``None``, then default info will be used.
+                 Generally, you only need to set this if you are developing
+                 your own client library.
+             always_use_jwt_access (Optional[bool]): Whether self signed JWT should
+                 be used for service account credentials.
+             url_scheme: the protocol scheme for the API endpoint.  Normally
+                 "https", but for testing or local servers,
+                 "http" can be specified.
         """
         # Run the base constructor
         # TODO(yon-mg): resolve other ctor params i.e. scopes, quota, etc.
@@ -1548,12 +1557,13 @@ class InstancesRestTransport(InstancesTransport):
             request, metadata = self._interceptor.pre_add_access_config(
                 request, metadata
             )
-            request_kwargs = compute.AddAccessConfigInstanceRequest.to_dict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            pb_request = compute.AddAccessConfigInstanceRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             # Jsonify the request body
-            body = compute.AccessConfig.to_json(
-                compute.AccessConfig(transcoded_request["body"]),
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
                 including_default_value_fields=False,
                 use_integers_for_enums=False,
             )
@@ -1562,15 +1572,12 @@ class InstancesRestTransport(InstancesTransport):
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.AddAccessConfigInstanceRequest.to_json(
-                    compute.AddAccessConfigInstanceRequest(
-                        transcoded_request["query_params"]
-                    ),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -1590,9 +1597,10 @@ class InstancesRestTransport(InstancesTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.Operation.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.Operation()
+            pb_resp = compute.Operation.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_add_access_config(resp)
             return resp
 
@@ -1662,12 +1670,13 @@ class InstancesRestTransport(InstancesTransport):
             request, metadata = self._interceptor.pre_add_resource_policies(
                 request, metadata
             )
-            request_kwargs = compute.AddResourcePoliciesInstanceRequest.to_dict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            pb_request = compute.AddResourcePoliciesInstanceRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             # Jsonify the request body
-            body = compute.InstancesAddResourcePoliciesRequest.to_json(
-                compute.InstancesAddResourcePoliciesRequest(transcoded_request["body"]),
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
                 including_default_value_fields=False,
                 use_integers_for_enums=False,
             )
@@ -1676,15 +1685,12 @@ class InstancesRestTransport(InstancesTransport):
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.AddResourcePoliciesInstanceRequest.to_json(
-                    compute.AddResourcePoliciesInstanceRequest(
-                        transcoded_request["query_params"]
-                    ),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -1704,9 +1710,10 @@ class InstancesRestTransport(InstancesTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.Operation.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.Operation()
+            pb_resp = compute.Operation.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_add_resource_policies(resp)
             return resp
 
@@ -1758,23 +1765,20 @@ class InstancesRestTransport(InstancesTransport):
                 },
             ]
             request, metadata = self._interceptor.pre_aggregated_list(request, metadata)
-            request_kwargs = compute.AggregatedListInstancesRequest.to_dict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            pb_request = compute.AggregatedListInstancesRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.AggregatedListInstancesRequest.to_json(
-                    compute.AggregatedListInstancesRequest(
-                        transcoded_request["query_params"]
-                    ),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -1793,9 +1797,10 @@ class InstancesRestTransport(InstancesTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.InstanceAggregatedList.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.InstanceAggregatedList()
+            pb_resp = compute.InstanceAggregatedList.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_aggregated_list(resp)
             return resp
 
@@ -1863,12 +1868,13 @@ class InstancesRestTransport(InstancesTransport):
                 },
             ]
             request, metadata = self._interceptor.pre_attach_disk(request, metadata)
-            request_kwargs = compute.AttachDiskInstanceRequest.to_dict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            pb_request = compute.AttachDiskInstanceRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             # Jsonify the request body
-            body = compute.AttachedDisk.to_json(
-                compute.AttachedDisk(transcoded_request["body"]),
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
                 including_default_value_fields=False,
                 use_integers_for_enums=False,
             )
@@ -1877,15 +1883,12 @@ class InstancesRestTransport(InstancesTransport):
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.AttachDiskInstanceRequest.to_json(
-                    compute.AttachDiskInstanceRequest(
-                        transcoded_request["query_params"]
-                    ),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -1905,9 +1908,10 @@ class InstancesRestTransport(InstancesTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.Operation.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.Operation()
+            pb_resp = compute.Operation.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_attach_disk(resp)
             return resp
 
@@ -1975,12 +1979,13 @@ class InstancesRestTransport(InstancesTransport):
                 },
             ]
             request, metadata = self._interceptor.pre_bulk_insert(request, metadata)
-            request_kwargs = compute.BulkInsertInstanceRequest.to_dict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            pb_request = compute.BulkInsertInstanceRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             # Jsonify the request body
-            body = compute.BulkInsertInstanceResource.to_json(
-                compute.BulkInsertInstanceResource(transcoded_request["body"]),
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
                 including_default_value_fields=False,
                 use_integers_for_enums=False,
             )
@@ -1989,15 +1994,12 @@ class InstancesRestTransport(InstancesTransport):
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.BulkInsertInstanceRequest.to_json(
-                    compute.BulkInsertInstanceRequest(
-                        transcoded_request["query_params"]
-                    ),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -2017,9 +2019,10 @@ class InstancesRestTransport(InstancesTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.Operation.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.Operation()
+            pb_resp = compute.Operation.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_bulk_insert(resp)
             return resp
 
@@ -2086,21 +2089,20 @@ class InstancesRestTransport(InstancesTransport):
                 },
             ]
             request, metadata = self._interceptor.pre_delete(request, metadata)
-            request_kwargs = compute.DeleteInstanceRequest.to_dict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            pb_request = compute.DeleteInstanceRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.DeleteInstanceRequest.to_json(
-                    compute.DeleteInstanceRequest(transcoded_request["query_params"]),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -2119,9 +2121,10 @@ class InstancesRestTransport(InstancesTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.Operation.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.Operation()
+            pb_resp = compute.Operation.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_delete(resp)
             return resp
 
@@ -2193,23 +2196,20 @@ class InstancesRestTransport(InstancesTransport):
             request, metadata = self._interceptor.pre_delete_access_config(
                 request, metadata
             )
-            request_kwargs = compute.DeleteAccessConfigInstanceRequest.to_dict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            pb_request = compute.DeleteAccessConfigInstanceRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.DeleteAccessConfigInstanceRequest.to_json(
-                    compute.DeleteAccessConfigInstanceRequest(
-                        transcoded_request["query_params"]
-                    ),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -2228,9 +2228,10 @@ class InstancesRestTransport(InstancesTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.Operation.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.Operation()
+            pb_resp = compute.Operation.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_delete_access_config(resp)
             return resp
 
@@ -2299,23 +2300,20 @@ class InstancesRestTransport(InstancesTransport):
                 },
             ]
             request, metadata = self._interceptor.pre_detach_disk(request, metadata)
-            request_kwargs = compute.DetachDiskInstanceRequest.to_dict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            pb_request = compute.DetachDiskInstanceRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.DetachDiskInstanceRequest.to_json(
-                    compute.DetachDiskInstanceRequest(
-                        transcoded_request["query_params"]
-                    ),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -2334,9 +2332,10 @@ class InstancesRestTransport(InstancesTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.Operation.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.Operation()
+            pb_resp = compute.Operation.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_detach_disk(resp)
             return resp
 
@@ -2392,21 +2391,20 @@ class InstancesRestTransport(InstancesTransport):
                 },
             ]
             request, metadata = self._interceptor.pre_get(request, metadata)
-            request_kwargs = compute.GetInstanceRequest.to_dict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            pb_request = compute.GetInstanceRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.GetInstanceRequest.to_json(
-                    compute.GetInstanceRequest(transcoded_request["query_params"]),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -2425,9 +2423,10 @@ class InstancesRestTransport(InstancesTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.Instance.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.Instance()
+            pb_resp = compute.Instance.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_get(resp)
             return resp
 
@@ -2483,25 +2482,20 @@ class InstancesRestTransport(InstancesTransport):
             request, metadata = self._interceptor.pre_get_effective_firewalls(
                 request, metadata
             )
-            request_kwargs = compute.GetEffectiveFirewallsInstanceRequest.to_dict(
-                request
-            )
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            pb_request = compute.GetEffectiveFirewallsInstanceRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.GetEffectiveFirewallsInstanceRequest.to_json(
-                    compute.GetEffectiveFirewallsInstanceRequest(
-                        transcoded_request["query_params"]
-                    ),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -2520,9 +2514,10 @@ class InstancesRestTransport(InstancesTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.InstancesGetEffectiveFirewallsResponse.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.InstancesGetEffectiveFirewallsResponse()
+            pb_resp = compute.InstancesGetEffectiveFirewallsResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_get_effective_firewalls(resp)
             return resp
 
@@ -2576,23 +2571,20 @@ class InstancesRestTransport(InstancesTransport):
             request, metadata = self._interceptor.pre_get_guest_attributes(
                 request, metadata
             )
-            request_kwargs = compute.GetGuestAttributesInstanceRequest.to_dict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            pb_request = compute.GetGuestAttributesInstanceRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.GetGuestAttributesInstanceRequest.to_json(
-                    compute.GetGuestAttributesInstanceRequest(
-                        transcoded_request["query_params"]
-                    ),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -2611,9 +2603,10 @@ class InstancesRestTransport(InstancesTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.GuestAttributes.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.GuestAttributes()
+            pb_resp = compute.GuestAttributes.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_get_guest_attributes(resp)
             return resp
 
@@ -2706,23 +2699,20 @@ class InstancesRestTransport(InstancesTransport):
                 },
             ]
             request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
-            request_kwargs = compute.GetIamPolicyInstanceRequest.to_dict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            pb_request = compute.GetIamPolicyInstanceRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.GetIamPolicyInstanceRequest.to_json(
-                    compute.GetIamPolicyInstanceRequest(
-                        transcoded_request["query_params"]
-                    ),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -2741,9 +2731,10 @@ class InstancesRestTransport(InstancesTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.Policy.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.Policy()
+            pb_resp = compute.Policy.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_get_iam_policy(resp)
             return resp
 
@@ -2795,23 +2786,20 @@ class InstancesRestTransport(InstancesTransport):
                 },
             ]
             request, metadata = self._interceptor.pre_get_screenshot(request, metadata)
-            request_kwargs = compute.GetScreenshotInstanceRequest.to_dict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            pb_request = compute.GetScreenshotInstanceRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.GetScreenshotInstanceRequest.to_json(
-                    compute.GetScreenshotInstanceRequest(
-                        transcoded_request["query_params"]
-                    ),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -2830,9 +2818,10 @@ class InstancesRestTransport(InstancesTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.Screenshot.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.Screenshot()
+            pb_resp = compute.Screenshot.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_get_screenshot(resp)
             return resp
 
@@ -2886,23 +2875,20 @@ class InstancesRestTransport(InstancesTransport):
             request, metadata = self._interceptor.pre_get_serial_port_output(
                 request, metadata
             )
-            request_kwargs = compute.GetSerialPortOutputInstanceRequest.to_dict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            pb_request = compute.GetSerialPortOutputInstanceRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.GetSerialPortOutputInstanceRequest.to_json(
-                    compute.GetSerialPortOutputInstanceRequest(
-                        transcoded_request["query_params"]
-                    ),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -2921,9 +2907,10 @@ class InstancesRestTransport(InstancesTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.SerialPortOutput.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.SerialPortOutput()
+            pb_resp = compute.SerialPortOutput.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_get_serial_port_output(resp)
             return resp
 
@@ -2978,25 +2965,20 @@ class InstancesRestTransport(InstancesTransport):
             request, metadata = self._interceptor.pre_get_shielded_instance_identity(
                 request, metadata
             )
-            request_kwargs = compute.GetShieldedInstanceIdentityInstanceRequest.to_dict(
-                request
-            )
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            pb_request = compute.GetShieldedInstanceIdentityInstanceRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.GetShieldedInstanceIdentityInstanceRequest.to_json(
-                    compute.GetShieldedInstanceIdentityInstanceRequest(
-                        transcoded_request["query_params"]
-                    ),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -3015,9 +2997,10 @@ class InstancesRestTransport(InstancesTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.ShieldedInstanceIdentity.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.ShieldedInstanceIdentity()
+            pb_resp = compute.ShieldedInstanceIdentity.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_get_shielded_instance_identity(resp)
             return resp
 
@@ -3085,12 +3068,13 @@ class InstancesRestTransport(InstancesTransport):
                 },
             ]
             request, metadata = self._interceptor.pre_insert(request, metadata)
-            request_kwargs = compute.InsertInstanceRequest.to_dict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            pb_request = compute.InsertInstanceRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             # Jsonify the request body
-            body = compute.Instance.to_json(
-                compute.Instance(transcoded_request["body"]),
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
                 including_default_value_fields=False,
                 use_integers_for_enums=False,
             )
@@ -3099,13 +3083,12 @@ class InstancesRestTransport(InstancesTransport):
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.InsertInstanceRequest.to_json(
-                    compute.InsertInstanceRequest(transcoded_request["query_params"]),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -3125,9 +3108,10 @@ class InstancesRestTransport(InstancesTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.Operation.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.Operation()
+            pb_resp = compute.Operation.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_insert(resp)
             return resp
 
@@ -3178,21 +3162,20 @@ class InstancesRestTransport(InstancesTransport):
                 },
             ]
             request, metadata = self._interceptor.pre_list(request, metadata)
-            request_kwargs = compute.ListInstancesRequest.to_dict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            pb_request = compute.ListInstancesRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.ListInstancesRequest.to_json(
-                    compute.ListInstancesRequest(transcoded_request["query_params"]),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -3211,9 +3194,10 @@ class InstancesRestTransport(InstancesTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.InstanceList.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.InstanceList()
+            pb_resp = compute.InstanceList.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_list(resp)
             return resp
 
@@ -3267,23 +3251,20 @@ class InstancesRestTransport(InstancesTransport):
                 },
             ]
             request, metadata = self._interceptor.pre_list_referrers(request, metadata)
-            request_kwargs = compute.ListReferrersInstancesRequest.to_dict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            pb_request = compute.ListReferrersInstancesRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.ListReferrersInstancesRequest.to_json(
-                    compute.ListReferrersInstancesRequest(
-                        transcoded_request["query_params"]
-                    ),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -3302,9 +3283,10 @@ class InstancesRestTransport(InstancesTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.InstanceListReferrers.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.InstanceListReferrers()
+            pb_resp = compute.InstanceListReferrers.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_list_referrers(resp)
             return resp
 
@@ -3374,16 +3356,13 @@ class InstancesRestTransport(InstancesTransport):
             request, metadata = self._interceptor.pre_remove_resource_policies(
                 request, metadata
             )
-            request_kwargs = compute.RemoveResourcePoliciesInstanceRequest.to_dict(
-                request
-            )
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            pb_request = compute.RemoveResourcePoliciesInstanceRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             # Jsonify the request body
-            body = compute.InstancesRemoveResourcePoliciesRequest.to_json(
-                compute.InstancesRemoveResourcePoliciesRequest(
-                    transcoded_request["body"]
-                ),
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
                 including_default_value_fields=False,
                 use_integers_for_enums=False,
             )
@@ -3392,15 +3371,12 @@ class InstancesRestTransport(InstancesTransport):
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.RemoveResourcePoliciesInstanceRequest.to_json(
-                    compute.RemoveResourcePoliciesInstanceRequest(
-                        transcoded_request["query_params"]
-                    ),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -3420,9 +3396,10 @@ class InstancesRestTransport(InstancesTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.Operation.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.Operation()
+            pb_resp = compute.Operation.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_remove_resource_policies(resp)
             return resp
 
@@ -3489,21 +3466,20 @@ class InstancesRestTransport(InstancesTransport):
                 },
             ]
             request, metadata = self._interceptor.pre_reset(request, metadata)
-            request_kwargs = compute.ResetInstanceRequest.to_dict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            pb_request = compute.ResetInstanceRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.ResetInstanceRequest.to_json(
-                    compute.ResetInstanceRequest(transcoded_request["query_params"]),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -3522,9 +3498,10 @@ class InstancesRestTransport(InstancesTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.Operation.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.Operation()
+            pb_resp = compute.Operation.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_reset(resp)
             return resp
 
@@ -3591,21 +3568,20 @@ class InstancesRestTransport(InstancesTransport):
                 },
             ]
             request, metadata = self._interceptor.pre_resume(request, metadata)
-            request_kwargs = compute.ResumeInstanceRequest.to_dict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            pb_request = compute.ResumeInstanceRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.ResumeInstanceRequest.to_json(
-                    compute.ResumeInstanceRequest(transcoded_request["query_params"]),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -3624,9 +3600,10 @@ class InstancesRestTransport(InstancesTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.Operation.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.Operation()
+            pb_resp = compute.Operation.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_resume(resp)
             return resp
 
@@ -3683,25 +3660,20 @@ class InstancesRestTransport(InstancesTransport):
             request, metadata = self._interceptor.pre_send_diagnostic_interrupt(
                 request, metadata
             )
-            request_kwargs = compute.SendDiagnosticInterruptInstanceRequest.to_dict(
-                request
-            )
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            pb_request = compute.SendDiagnosticInterruptInstanceRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.SendDiagnosticInterruptInstanceRequest.to_json(
-                    compute.SendDiagnosticInterruptInstanceRequest(
-                        transcoded_request["query_params"]
-                    ),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -3720,9 +3692,10 @@ class InstancesRestTransport(InstancesTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.SendDiagnosticInterruptInstanceResponse.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.SendDiagnosticInterruptInstanceResponse()
+            pb_resp = compute.SendDiagnosticInterruptInstanceResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_send_diagnostic_interrupt(resp)
             return resp
 
@@ -3791,25 +3764,20 @@ class InstancesRestTransport(InstancesTransport):
             request, metadata = self._interceptor.pre_set_deletion_protection(
                 request, metadata
             )
-            request_kwargs = compute.SetDeletionProtectionInstanceRequest.to_dict(
-                request
-            )
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            pb_request = compute.SetDeletionProtectionInstanceRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.SetDeletionProtectionInstanceRequest.to_json(
-                    compute.SetDeletionProtectionInstanceRequest(
-                        transcoded_request["query_params"]
-                    ),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -3828,9 +3796,10 @@ class InstancesRestTransport(InstancesTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.Operation.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.Operation()
+            pb_resp = compute.Operation.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_set_deletion_protection(resp)
             return resp
 
@@ -3902,23 +3871,20 @@ class InstancesRestTransport(InstancesTransport):
             request, metadata = self._interceptor.pre_set_disk_auto_delete(
                 request, metadata
             )
-            request_kwargs = compute.SetDiskAutoDeleteInstanceRequest.to_dict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            pb_request = compute.SetDiskAutoDeleteInstanceRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.SetDiskAutoDeleteInstanceRequest.to_json(
-                    compute.SetDiskAutoDeleteInstanceRequest(
-                        transcoded_request["query_params"]
-                    ),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -3937,9 +3903,10 @@ class InstancesRestTransport(InstancesTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.Operation.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.Operation()
+            pb_resp = compute.Operation.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_set_disk_auto_delete(resp)
             return resp
 
@@ -4033,12 +4000,13 @@ class InstancesRestTransport(InstancesTransport):
                 },
             ]
             request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
-            request_kwargs = compute.SetIamPolicyInstanceRequest.to_dict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            pb_request = compute.SetIamPolicyInstanceRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             # Jsonify the request body
-            body = compute.ZoneSetPolicyRequest.to_json(
-                compute.ZoneSetPolicyRequest(transcoded_request["body"]),
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
                 including_default_value_fields=False,
                 use_integers_for_enums=False,
             )
@@ -4047,15 +4015,12 @@ class InstancesRestTransport(InstancesTransport):
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.SetIamPolicyInstanceRequest.to_json(
-                    compute.SetIamPolicyInstanceRequest(
-                        transcoded_request["query_params"]
-                    ),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -4075,9 +4040,10 @@ class InstancesRestTransport(InstancesTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.Policy.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.Policy()
+            pb_resp = compute.Policy.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_set_iam_policy(resp)
             return resp
 
@@ -4145,12 +4111,13 @@ class InstancesRestTransport(InstancesTransport):
                 },
             ]
             request, metadata = self._interceptor.pre_set_labels(request, metadata)
-            request_kwargs = compute.SetLabelsInstanceRequest.to_dict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            pb_request = compute.SetLabelsInstanceRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             # Jsonify the request body
-            body = compute.InstancesSetLabelsRequest.to_json(
-                compute.InstancesSetLabelsRequest(transcoded_request["body"]),
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
                 including_default_value_fields=False,
                 use_integers_for_enums=False,
             )
@@ -4159,15 +4126,12 @@ class InstancesRestTransport(InstancesTransport):
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.SetLabelsInstanceRequest.to_json(
-                    compute.SetLabelsInstanceRequest(
-                        transcoded_request["query_params"]
-                    ),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -4187,9 +4151,10 @@ class InstancesRestTransport(InstancesTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.Operation.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.Operation()
+            pb_resp = compute.Operation.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_set_labels(resp)
             return resp
 
@@ -4259,12 +4224,13 @@ class InstancesRestTransport(InstancesTransport):
             request, metadata = self._interceptor.pre_set_machine_resources(
                 request, metadata
             )
-            request_kwargs = compute.SetMachineResourcesInstanceRequest.to_dict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            pb_request = compute.SetMachineResourcesInstanceRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             # Jsonify the request body
-            body = compute.InstancesSetMachineResourcesRequest.to_json(
-                compute.InstancesSetMachineResourcesRequest(transcoded_request["body"]),
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
                 including_default_value_fields=False,
                 use_integers_for_enums=False,
             )
@@ -4273,15 +4239,12 @@ class InstancesRestTransport(InstancesTransport):
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.SetMachineResourcesInstanceRequest.to_json(
-                    compute.SetMachineResourcesInstanceRequest(
-                        transcoded_request["query_params"]
-                    ),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -4301,9 +4264,10 @@ class InstancesRestTransport(InstancesTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.Operation.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.Operation()
+            pb_resp = compute.Operation.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_set_machine_resources(resp)
             return resp
 
@@ -4373,12 +4337,13 @@ class InstancesRestTransport(InstancesTransport):
             request, metadata = self._interceptor.pre_set_machine_type(
                 request, metadata
             )
-            request_kwargs = compute.SetMachineTypeInstanceRequest.to_dict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            pb_request = compute.SetMachineTypeInstanceRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             # Jsonify the request body
-            body = compute.InstancesSetMachineTypeRequest.to_json(
-                compute.InstancesSetMachineTypeRequest(transcoded_request["body"]),
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
                 including_default_value_fields=False,
                 use_integers_for_enums=False,
             )
@@ -4387,15 +4352,12 @@ class InstancesRestTransport(InstancesTransport):
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.SetMachineTypeInstanceRequest.to_json(
-                    compute.SetMachineTypeInstanceRequest(
-                        transcoded_request["query_params"]
-                    ),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -4415,9 +4377,10 @@ class InstancesRestTransport(InstancesTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.Operation.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.Operation()
+            pb_resp = compute.Operation.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_set_machine_type(resp)
             return resp
 
@@ -4485,12 +4448,13 @@ class InstancesRestTransport(InstancesTransport):
                 },
             ]
             request, metadata = self._interceptor.pre_set_metadata(request, metadata)
-            request_kwargs = compute.SetMetadataInstanceRequest.to_dict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            pb_request = compute.SetMetadataInstanceRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             # Jsonify the request body
-            body = compute.Metadata.to_json(
-                compute.Metadata(transcoded_request["body"]),
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
                 including_default_value_fields=False,
                 use_integers_for_enums=False,
             )
@@ -4499,15 +4463,12 @@ class InstancesRestTransport(InstancesTransport):
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.SetMetadataInstanceRequest.to_json(
-                    compute.SetMetadataInstanceRequest(
-                        transcoded_request["query_params"]
-                    ),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -4527,9 +4488,10 @@ class InstancesRestTransport(InstancesTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.Operation.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.Operation()
+            pb_resp = compute.Operation.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_set_metadata(resp)
             return resp
 
@@ -4599,12 +4561,13 @@ class InstancesRestTransport(InstancesTransport):
             request, metadata = self._interceptor.pre_set_min_cpu_platform(
                 request, metadata
             )
-            request_kwargs = compute.SetMinCpuPlatformInstanceRequest.to_dict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            pb_request = compute.SetMinCpuPlatformInstanceRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             # Jsonify the request body
-            body = compute.InstancesSetMinCpuPlatformRequest.to_json(
-                compute.InstancesSetMinCpuPlatformRequest(transcoded_request["body"]),
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
                 including_default_value_fields=False,
                 use_integers_for_enums=False,
             )
@@ -4613,15 +4576,12 @@ class InstancesRestTransport(InstancesTransport):
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.SetMinCpuPlatformInstanceRequest.to_json(
-                    compute.SetMinCpuPlatformInstanceRequest(
-                        transcoded_request["query_params"]
-                    ),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -4641,9 +4601,10 @@ class InstancesRestTransport(InstancesTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.Operation.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.Operation()
+            pb_resp = compute.Operation.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_set_min_cpu_platform(resp)
             return resp
 
@@ -4711,12 +4672,13 @@ class InstancesRestTransport(InstancesTransport):
                 },
             ]
             request, metadata = self._interceptor.pre_set_scheduling(request, metadata)
-            request_kwargs = compute.SetSchedulingInstanceRequest.to_dict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            pb_request = compute.SetSchedulingInstanceRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             # Jsonify the request body
-            body = compute.Scheduling.to_json(
-                compute.Scheduling(transcoded_request["body"]),
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
                 including_default_value_fields=False,
                 use_integers_for_enums=False,
             )
@@ -4725,15 +4687,12 @@ class InstancesRestTransport(InstancesTransport):
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.SetSchedulingInstanceRequest.to_json(
-                    compute.SetSchedulingInstanceRequest(
-                        transcoded_request["query_params"]
-                    ),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -4753,9 +4712,10 @@ class InstancesRestTransport(InstancesTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.Operation.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.Operation()
+            pb_resp = compute.Operation.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_set_scheduling(resp)
             return resp
 
@@ -4825,12 +4785,13 @@ class InstancesRestTransport(InstancesTransport):
             request, metadata = self._interceptor.pre_set_service_account(
                 request, metadata
             )
-            request_kwargs = compute.SetServiceAccountInstanceRequest.to_dict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            pb_request = compute.SetServiceAccountInstanceRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             # Jsonify the request body
-            body = compute.InstancesSetServiceAccountRequest.to_json(
-                compute.InstancesSetServiceAccountRequest(transcoded_request["body"]),
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
                 including_default_value_fields=False,
                 use_integers_for_enums=False,
             )
@@ -4839,15 +4800,12 @@ class InstancesRestTransport(InstancesTransport):
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.SetServiceAccountInstanceRequest.to_json(
-                    compute.SetServiceAccountInstanceRequest(
-                        transcoded_request["query_params"]
-                    ),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -4867,9 +4825,10 @@ class InstancesRestTransport(InstancesTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.Operation.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.Operation()
+            pb_resp = compute.Operation.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_set_service_account(resp)
             return resp
 
@@ -4943,16 +4902,15 @@ class InstancesRestTransport(InstancesTransport):
             ) = self._interceptor.pre_set_shielded_instance_integrity_policy(
                 request, metadata
             )
-            request_kwargs = (
-                compute.SetShieldedInstanceIntegrityPolicyInstanceRequest.to_dict(
-                    request
-                )
+            pb_request = compute.SetShieldedInstanceIntegrityPolicyInstanceRequest.pb(
+                request
             )
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             # Jsonify the request body
-            body = compute.ShieldedInstanceIntegrityPolicy.to_json(
-                compute.ShieldedInstanceIntegrityPolicy(transcoded_request["body"]),
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
                 including_default_value_fields=False,
                 use_integers_for_enums=False,
             )
@@ -4961,15 +4919,12 @@ class InstancesRestTransport(InstancesTransport):
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.SetShieldedInstanceIntegrityPolicyInstanceRequest.to_json(
-                    compute.SetShieldedInstanceIntegrityPolicyInstanceRequest(
-                        transcoded_request["query_params"]
-                    ),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -4989,9 +4944,10 @@ class InstancesRestTransport(InstancesTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.Operation.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.Operation()
+            pb_resp = compute.Operation.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_set_shielded_instance_integrity_policy(resp)
             return resp
 
@@ -5059,12 +5015,13 @@ class InstancesRestTransport(InstancesTransport):
                 },
             ]
             request, metadata = self._interceptor.pre_set_tags(request, metadata)
-            request_kwargs = compute.SetTagsInstanceRequest.to_dict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            pb_request = compute.SetTagsInstanceRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             # Jsonify the request body
-            body = compute.Tags.to_json(
-                compute.Tags(transcoded_request["body"]),
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
                 including_default_value_fields=False,
                 use_integers_for_enums=False,
             )
@@ -5073,13 +5030,12 @@ class InstancesRestTransport(InstancesTransport):
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.SetTagsInstanceRequest.to_json(
-                    compute.SetTagsInstanceRequest(transcoded_request["query_params"]),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -5099,9 +5055,10 @@ class InstancesRestTransport(InstancesTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.Operation.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.Operation()
+            pb_resp = compute.Operation.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_set_tags(resp)
             return resp
 
@@ -5171,25 +5128,20 @@ class InstancesRestTransport(InstancesTransport):
             request, metadata = self._interceptor.pre_simulate_maintenance_event(
                 request, metadata
             )
-            request_kwargs = compute.SimulateMaintenanceEventInstanceRequest.to_dict(
-                request
-            )
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            pb_request = compute.SimulateMaintenanceEventInstanceRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.SimulateMaintenanceEventInstanceRequest.to_json(
-                    compute.SimulateMaintenanceEventInstanceRequest(
-                        transcoded_request["query_params"]
-                    ),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -5208,9 +5160,10 @@ class InstancesRestTransport(InstancesTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.Operation.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.Operation()
+            pb_resp = compute.Operation.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_simulate_maintenance_event(resp)
             return resp
 
@@ -5277,21 +5230,20 @@ class InstancesRestTransport(InstancesTransport):
                 },
             ]
             request, metadata = self._interceptor.pre_start(request, metadata)
-            request_kwargs = compute.StartInstanceRequest.to_dict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            pb_request = compute.StartInstanceRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.StartInstanceRequest.to_json(
-                    compute.StartInstanceRequest(transcoded_request["query_params"]),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -5310,9 +5262,10 @@ class InstancesRestTransport(InstancesTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.Operation.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.Operation()
+            pb_resp = compute.Operation.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_start(resp)
             return resp
 
@@ -5382,16 +5335,13 @@ class InstancesRestTransport(InstancesTransport):
             request, metadata = self._interceptor.pre_start_with_encryption_key(
                 request, metadata
             )
-            request_kwargs = compute.StartWithEncryptionKeyInstanceRequest.to_dict(
-                request
-            )
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            pb_request = compute.StartWithEncryptionKeyInstanceRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             # Jsonify the request body
-            body = compute.InstancesStartWithEncryptionKeyRequest.to_json(
-                compute.InstancesStartWithEncryptionKeyRequest(
-                    transcoded_request["body"]
-                ),
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
                 including_default_value_fields=False,
                 use_integers_for_enums=False,
             )
@@ -5400,15 +5350,12 @@ class InstancesRestTransport(InstancesTransport):
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.StartWithEncryptionKeyInstanceRequest.to_json(
-                    compute.StartWithEncryptionKeyInstanceRequest(
-                        transcoded_request["query_params"]
-                    ),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -5428,9 +5375,10 @@ class InstancesRestTransport(InstancesTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.Operation.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.Operation()
+            pb_resp = compute.Operation.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_start_with_encryption_key(resp)
             return resp
 
@@ -5496,21 +5444,20 @@ class InstancesRestTransport(InstancesTransport):
                 },
             ]
             request, metadata = self._interceptor.pre_stop(request, metadata)
-            request_kwargs = compute.StopInstanceRequest.to_dict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            pb_request = compute.StopInstanceRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.StopInstanceRequest.to_json(
-                    compute.StopInstanceRequest(transcoded_request["query_params"]),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -5529,9 +5476,10 @@ class InstancesRestTransport(InstancesTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.Operation.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.Operation()
+            pb_resp = compute.Operation.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_stop(resp)
             return resp
 
@@ -5598,21 +5546,20 @@ class InstancesRestTransport(InstancesTransport):
                 },
             ]
             request, metadata = self._interceptor.pre_suspend(request, metadata)
-            request_kwargs = compute.SuspendInstanceRequest.to_dict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            pb_request = compute.SuspendInstanceRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.SuspendInstanceRequest.to_json(
-                    compute.SuspendInstanceRequest(transcoded_request["query_params"]),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -5631,9 +5578,10 @@ class InstancesRestTransport(InstancesTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.Operation.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.Operation()
+            pb_resp = compute.Operation.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_suspend(resp)
             return resp
 
@@ -5688,12 +5636,13 @@ class InstancesRestTransport(InstancesTransport):
             request, metadata = self._interceptor.pre_test_iam_permissions(
                 request, metadata
             )
-            request_kwargs = compute.TestIamPermissionsInstanceRequest.to_dict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            pb_request = compute.TestIamPermissionsInstanceRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             # Jsonify the request body
-            body = compute.TestPermissionsRequest.to_json(
-                compute.TestPermissionsRequest(transcoded_request["body"]),
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
                 including_default_value_fields=False,
                 use_integers_for_enums=False,
             )
@@ -5702,15 +5651,12 @@ class InstancesRestTransport(InstancesTransport):
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.TestIamPermissionsInstanceRequest.to_json(
-                    compute.TestIamPermissionsInstanceRequest(
-                        transcoded_request["query_params"]
-                    ),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -5730,9 +5676,10 @@ class InstancesRestTransport(InstancesTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.TestPermissionsResponse.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.TestPermissionsResponse()
+            pb_resp = compute.TestPermissionsResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_test_iam_permissions(resp)
             return resp
 
@@ -5800,12 +5747,13 @@ class InstancesRestTransport(InstancesTransport):
                 },
             ]
             request, metadata = self._interceptor.pre_update(request, metadata)
-            request_kwargs = compute.UpdateInstanceRequest.to_dict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            pb_request = compute.UpdateInstanceRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             # Jsonify the request body
-            body = compute.Instance.to_json(
-                compute.Instance(transcoded_request["body"]),
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
                 including_default_value_fields=False,
                 use_integers_for_enums=False,
             )
@@ -5814,13 +5762,12 @@ class InstancesRestTransport(InstancesTransport):
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.UpdateInstanceRequest.to_json(
-                    compute.UpdateInstanceRequest(transcoded_request["query_params"]),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -5840,9 +5787,10 @@ class InstancesRestTransport(InstancesTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.Operation.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.Operation()
+            pb_resp = compute.Operation.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_update(resp)
             return resp
 
@@ -5914,12 +5862,13 @@ class InstancesRestTransport(InstancesTransport):
             request, metadata = self._interceptor.pre_update_access_config(
                 request, metadata
             )
-            request_kwargs = compute.UpdateAccessConfigInstanceRequest.to_dict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            pb_request = compute.UpdateAccessConfigInstanceRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             # Jsonify the request body
-            body = compute.AccessConfig.to_json(
-                compute.AccessConfig(transcoded_request["body"]),
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
                 including_default_value_fields=False,
                 use_integers_for_enums=False,
             )
@@ -5928,15 +5877,12 @@ class InstancesRestTransport(InstancesTransport):
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.UpdateAccessConfigInstanceRequest.to_json(
-                    compute.UpdateAccessConfigInstanceRequest(
-                        transcoded_request["query_params"]
-                    ),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -5956,9 +5902,10 @@ class InstancesRestTransport(InstancesTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.Operation.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.Operation()
+            pb_resp = compute.Operation.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_update_access_config(resp)
             return resp
 
@@ -6028,12 +5975,13 @@ class InstancesRestTransport(InstancesTransport):
             request, metadata = self._interceptor.pre_update_display_device(
                 request, metadata
             )
-            request_kwargs = compute.UpdateDisplayDeviceInstanceRequest.to_dict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            pb_request = compute.UpdateDisplayDeviceInstanceRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             # Jsonify the request body
-            body = compute.DisplayDevice.to_json(
-                compute.DisplayDevice(transcoded_request["body"]),
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
                 including_default_value_fields=False,
                 use_integers_for_enums=False,
             )
@@ -6042,15 +5990,12 @@ class InstancesRestTransport(InstancesTransport):
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.UpdateDisplayDeviceInstanceRequest.to_json(
-                    compute.UpdateDisplayDeviceInstanceRequest(
-                        transcoded_request["query_params"]
-                    ),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -6070,9 +6015,10 @@ class InstancesRestTransport(InstancesTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.Operation.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.Operation()
+            pb_resp = compute.Operation.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_update_display_device(resp)
             return resp
 
@@ -6144,14 +6090,13 @@ class InstancesRestTransport(InstancesTransport):
             request, metadata = self._interceptor.pre_update_network_interface(
                 request, metadata
             )
-            request_kwargs = compute.UpdateNetworkInterfaceInstanceRequest.to_dict(
-                request
-            )
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            pb_request = compute.UpdateNetworkInterfaceInstanceRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             # Jsonify the request body
-            body = compute.NetworkInterface.to_json(
-                compute.NetworkInterface(transcoded_request["body"]),
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
                 including_default_value_fields=False,
                 use_integers_for_enums=False,
             )
@@ -6160,15 +6105,12 @@ class InstancesRestTransport(InstancesTransport):
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.UpdateNetworkInterfaceInstanceRequest.to_json(
-                    compute.UpdateNetworkInterfaceInstanceRequest(
-                        transcoded_request["query_params"]
-                    ),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -6188,9 +6130,10 @@ class InstancesRestTransport(InstancesTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.Operation.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.Operation()
+            pb_resp = compute.Operation.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_update_network_interface(resp)
             return resp
 
@@ -6261,14 +6204,13 @@ class InstancesRestTransport(InstancesTransport):
             request, metadata = self._interceptor.pre_update_shielded_instance_config(
                 request, metadata
             )
-            request_kwargs = (
-                compute.UpdateShieldedInstanceConfigInstanceRequest.to_dict(request)
-            )
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            pb_request = compute.UpdateShieldedInstanceConfigInstanceRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
             # Jsonify the request body
-            body = compute.ShieldedInstanceConfig.to_json(
-                compute.ShieldedInstanceConfig(transcoded_request["body"]),
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
                 including_default_value_fields=False,
                 use_integers_for_enums=False,
             )
@@ -6277,15 +6219,12 @@ class InstancesRestTransport(InstancesTransport):
 
             # Jsonify the query params
             query_params = json.loads(
-                compute.UpdateShieldedInstanceConfigInstanceRequest.to_json(
-                    compute.UpdateShieldedInstanceConfigInstanceRequest(
-                        transcoded_request["query_params"]
-                    ),
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
                     including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
-
             query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
@@ -6305,9 +6244,10 @@ class InstancesRestTransport(InstancesTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = compute.Operation.from_json(
-                response.content, ignore_unknown_fields=True
-            )
+            resp = compute.Operation()
+            pb_resp = compute.Operation.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_update_shielded_instance_config(resp)
             return resp
 

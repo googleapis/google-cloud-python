@@ -25,6 +25,7 @@ except ImportError:
 import grpc
 from grpc.experimental import aio
 from collections.abc import Iterable
+from google.protobuf import json_format
 import json
 import math
 import pytest
@@ -595,7 +596,7 @@ def test_add_association_rest(request_type):
         "name": "name_value",
         "short_name": "short_name_value",
     }
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
@@ -628,7 +629,9 @@ def test_add_association_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.add_association(request)
@@ -666,10 +669,13 @@ def test_add_association_rest_required_fields(
 
     request_init = {}
     request_init["firewall_policy"] = ""
-    request = request_type(request_init)
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        request_type.to_json(
-            request, including_default_value_fields=False, use_integers_for_enums=False
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
     )
 
@@ -704,7 +710,7 @@ def test_add_association_rest_required_fields(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
     return_value = compute.Operation()
@@ -716,17 +722,21 @@ def test_add_association_rest_required_fields(
         with mock.patch.object(path_template, "transcode") as transcode:
             # A uri without fields and an empty body will force all the
             # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
             transcode_result = {
                 "uri": "v1/sample_method",
                 "method": "post",
-                "query_params": request_init,
+                "query_params": pb_request,
             }
-            transcode_result["body"] = {}
+            transcode_result["body"] = pb_request
             transcode.return_value = transcode_result
 
             response_value = Response()
             response_value.status_code = 200
-            json_return_value = compute.Operation.to_json(return_value)
+
+            pb_return_value = compute.Operation.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
 
@@ -779,12 +789,14 @@ def test_add_association_rest_interceptors(null_interceptor):
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
-
+        pb_message = compute.AddAssociationFirewallPolicyRequest.pb(
+            compute.AddAssociationFirewallPolicyRequest()
+        )
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
-            "body": None,
-            "query_params": {},
+            "body": pb_message,
+            "query_params": pb_message,
         }
 
         req.return_value = Response()
@@ -829,7 +841,7 @@ def test_add_association_rest_bad_request(
         "name": "name_value",
         "short_name": "short_name_value",
     }
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
     with mock.patch.object(Session, "request") as req, pytest.raises(
@@ -869,8 +881,8 @@ def test_add_association_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
-
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -933,7 +945,7 @@ def test_add_association_unary_rest(request_type):
         "name": "name_value",
         "short_name": "short_name_value",
     }
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
@@ -966,7 +978,9 @@ def test_add_association_unary_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.add_association_unary(request)
@@ -982,10 +996,13 @@ def test_add_association_unary_rest_required_fields(
 
     request_init = {}
     request_init["firewall_policy"] = ""
-    request = request_type(request_init)
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        request_type.to_json(
-            request, including_default_value_fields=False, use_integers_for_enums=False
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
     )
 
@@ -1020,7 +1037,7 @@ def test_add_association_unary_rest_required_fields(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
     return_value = compute.Operation()
@@ -1032,17 +1049,21 @@ def test_add_association_unary_rest_required_fields(
         with mock.patch.object(path_template, "transcode") as transcode:
             # A uri without fields and an empty body will force all the
             # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
             transcode_result = {
                 "uri": "v1/sample_method",
                 "method": "post",
-                "query_params": request_init,
+                "query_params": pb_request,
             }
-            transcode_result["body"] = {}
+            transcode_result["body"] = pb_request
             transcode.return_value = transcode_result
 
             response_value = Response()
             response_value.status_code = 200
-            json_return_value = compute.Operation.to_json(return_value)
+
+            pb_return_value = compute.Operation.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
 
@@ -1095,12 +1116,14 @@ def test_add_association_unary_rest_interceptors(null_interceptor):
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
-
+        pb_message = compute.AddAssociationFirewallPolicyRequest.pb(
+            compute.AddAssociationFirewallPolicyRequest()
+        )
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
-            "body": None,
-            "query_params": {},
+            "body": pb_message,
+            "query_params": pb_message,
         }
 
         req.return_value = Response()
@@ -1145,7 +1168,7 @@ def test_add_association_unary_rest_bad_request(
         "name": "name_value",
         "short_name": "short_name_value",
     }
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
     with mock.patch.object(Session, "request") as req, pytest.raises(
@@ -1185,8 +1208,8 @@ def test_add_association_unary_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
-
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -1250,27 +1273,27 @@ def test_add_rule_rest(request_type):
         "enable_logging": True,
         "kind": "kind_value",
         "match": {
-            "dest_ip_ranges": ["dest_ip_ranges_value_1", "dest_ip_ranges_value_2"],
+            "dest_ip_ranges": ["dest_ip_ranges_value1", "dest_ip_ranges_value2"],
             "layer4_configs": [
                 {
                     "ip_protocol": "ip_protocol_value",
-                    "ports": ["ports_value_1", "ports_value_2"],
+                    "ports": ["ports_value1", "ports_value2"],
                 }
             ],
-            "src_ip_ranges": ["src_ip_ranges_value_1", "src_ip_ranges_value_2"],
+            "src_ip_ranges": ["src_ip_ranges_value1", "src_ip_ranges_value2"],
             "src_secure_tags": [{"name": "name_value", "state": "state_value"}],
         },
         "priority": 898,
         "rule_name": "rule_name_value",
         "rule_tuple_count": 1737,
-        "target_resources": ["target_resources_value_1", "target_resources_value_2"],
+        "target_resources": ["target_resources_value1", "target_resources_value2"],
         "target_secure_tags": {},
         "target_service_accounts": [
-            "target_service_accounts_value_1",
-            "target_service_accounts_value_2",
+            "target_service_accounts_value1",
+            "target_service_accounts_value2",
         ],
     }
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
@@ -1303,7 +1326,9 @@ def test_add_rule_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.add_rule(request)
@@ -1341,10 +1366,13 @@ def test_add_rule_rest_required_fields(
 
     request_init = {}
     request_init["firewall_policy"] = ""
-    request = request_type(request_init)
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        request_type.to_json(
-            request, including_default_value_fields=False, use_integers_for_enums=False
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
     )
 
@@ -1374,7 +1402,7 @@ def test_add_rule_rest_required_fields(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
     return_value = compute.Operation()
@@ -1386,17 +1414,21 @@ def test_add_rule_rest_required_fields(
         with mock.patch.object(path_template, "transcode") as transcode:
             # A uri without fields and an empty body will force all the
             # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
             transcode_result = {
                 "uri": "v1/sample_method",
                 "method": "post",
-                "query_params": request_init,
+                "query_params": pb_request,
             }
-            transcode_result["body"] = {}
+            transcode_result["body"] = pb_request
             transcode.return_value = transcode_result
 
             response_value = Response()
             response_value.status_code = 200
-            json_return_value = compute.Operation.to_json(return_value)
+
+            pb_return_value = compute.Operation.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
 
@@ -1444,12 +1476,14 @@ def test_add_rule_rest_interceptors(null_interceptor):
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
-
+        pb_message = compute.AddRuleFirewallPolicyRequest.pb(
+            compute.AddRuleFirewallPolicyRequest()
+        )
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
-            "body": None,
-            "query_params": {},
+            "body": pb_message,
+            "query_params": pb_message,
         }
 
         req.return_value = Response()
@@ -1495,27 +1529,27 @@ def test_add_rule_rest_bad_request(
         "enable_logging": True,
         "kind": "kind_value",
         "match": {
-            "dest_ip_ranges": ["dest_ip_ranges_value_1", "dest_ip_ranges_value_2"],
+            "dest_ip_ranges": ["dest_ip_ranges_value1", "dest_ip_ranges_value2"],
             "layer4_configs": [
                 {
                     "ip_protocol": "ip_protocol_value",
-                    "ports": ["ports_value_1", "ports_value_2"],
+                    "ports": ["ports_value1", "ports_value2"],
                 }
             ],
-            "src_ip_ranges": ["src_ip_ranges_value_1", "src_ip_ranges_value_2"],
+            "src_ip_ranges": ["src_ip_ranges_value1", "src_ip_ranges_value2"],
             "src_secure_tags": [{"name": "name_value", "state": "state_value"}],
         },
         "priority": 898,
         "rule_name": "rule_name_value",
         "rule_tuple_count": 1737,
-        "target_resources": ["target_resources_value_1", "target_resources_value_2"],
+        "target_resources": ["target_resources_value1", "target_resources_value2"],
         "target_secure_tags": {},
         "target_service_accounts": [
-            "target_service_accounts_value_1",
-            "target_service_accounts_value_2",
+            "target_service_accounts_value1",
+            "target_service_accounts_value2",
         ],
     }
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
     with mock.patch.object(Session, "request") as req, pytest.raises(
@@ -1555,8 +1589,8 @@ def test_add_rule_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
-
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -1620,27 +1654,27 @@ def test_add_rule_unary_rest(request_type):
         "enable_logging": True,
         "kind": "kind_value",
         "match": {
-            "dest_ip_ranges": ["dest_ip_ranges_value_1", "dest_ip_ranges_value_2"],
+            "dest_ip_ranges": ["dest_ip_ranges_value1", "dest_ip_ranges_value2"],
             "layer4_configs": [
                 {
                     "ip_protocol": "ip_protocol_value",
-                    "ports": ["ports_value_1", "ports_value_2"],
+                    "ports": ["ports_value1", "ports_value2"],
                 }
             ],
-            "src_ip_ranges": ["src_ip_ranges_value_1", "src_ip_ranges_value_2"],
+            "src_ip_ranges": ["src_ip_ranges_value1", "src_ip_ranges_value2"],
             "src_secure_tags": [{"name": "name_value", "state": "state_value"}],
         },
         "priority": 898,
         "rule_name": "rule_name_value",
         "rule_tuple_count": 1737,
-        "target_resources": ["target_resources_value_1", "target_resources_value_2"],
+        "target_resources": ["target_resources_value1", "target_resources_value2"],
         "target_secure_tags": {},
         "target_service_accounts": [
-            "target_service_accounts_value_1",
-            "target_service_accounts_value_2",
+            "target_service_accounts_value1",
+            "target_service_accounts_value2",
         ],
     }
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
@@ -1673,7 +1707,9 @@ def test_add_rule_unary_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.add_rule_unary(request)
@@ -1689,10 +1725,13 @@ def test_add_rule_unary_rest_required_fields(
 
     request_init = {}
     request_init["firewall_policy"] = ""
-    request = request_type(request_init)
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        request_type.to_json(
-            request, including_default_value_fields=False, use_integers_for_enums=False
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
     )
 
@@ -1722,7 +1761,7 @@ def test_add_rule_unary_rest_required_fields(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
     return_value = compute.Operation()
@@ -1734,17 +1773,21 @@ def test_add_rule_unary_rest_required_fields(
         with mock.patch.object(path_template, "transcode") as transcode:
             # A uri without fields and an empty body will force all the
             # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
             transcode_result = {
                 "uri": "v1/sample_method",
                 "method": "post",
-                "query_params": request_init,
+                "query_params": pb_request,
             }
-            transcode_result["body"] = {}
+            transcode_result["body"] = pb_request
             transcode.return_value = transcode_result
 
             response_value = Response()
             response_value.status_code = 200
-            json_return_value = compute.Operation.to_json(return_value)
+
+            pb_return_value = compute.Operation.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
 
@@ -1792,12 +1835,14 @@ def test_add_rule_unary_rest_interceptors(null_interceptor):
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
-
+        pb_message = compute.AddRuleFirewallPolicyRequest.pb(
+            compute.AddRuleFirewallPolicyRequest()
+        )
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
-            "body": None,
-            "query_params": {},
+            "body": pb_message,
+            "query_params": pb_message,
         }
 
         req.return_value = Response()
@@ -1843,27 +1888,27 @@ def test_add_rule_unary_rest_bad_request(
         "enable_logging": True,
         "kind": "kind_value",
         "match": {
-            "dest_ip_ranges": ["dest_ip_ranges_value_1", "dest_ip_ranges_value_2"],
+            "dest_ip_ranges": ["dest_ip_ranges_value1", "dest_ip_ranges_value2"],
             "layer4_configs": [
                 {
                     "ip_protocol": "ip_protocol_value",
-                    "ports": ["ports_value_1", "ports_value_2"],
+                    "ports": ["ports_value1", "ports_value2"],
                 }
             ],
-            "src_ip_ranges": ["src_ip_ranges_value_1", "src_ip_ranges_value_2"],
+            "src_ip_ranges": ["src_ip_ranges_value1", "src_ip_ranges_value2"],
             "src_secure_tags": [{"name": "name_value", "state": "state_value"}],
         },
         "priority": 898,
         "rule_name": "rule_name_value",
         "rule_tuple_count": 1737,
-        "target_resources": ["target_resources_value_1", "target_resources_value_2"],
+        "target_resources": ["target_resources_value1", "target_resources_value2"],
         "target_secure_tags": {},
         "target_service_accounts": [
-            "target_service_accounts_value_1",
-            "target_service_accounts_value_2",
+            "target_service_accounts_value1",
+            "target_service_accounts_value2",
         ],
     }
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
     with mock.patch.object(Session, "request") as req, pytest.raises(
@@ -1903,8 +1948,8 @@ def test_add_rule_unary_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
-
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -1960,7 +2005,7 @@ def test_clone_rules_rest(request_type):
 
     # send a request that will satisfy transcoding
     request_init = {"firewall_policy": "sample1"}
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
@@ -1993,7 +2038,9 @@ def test_clone_rules_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.clone_rules(request)
@@ -2031,10 +2078,13 @@ def test_clone_rules_rest_required_fields(
 
     request_init = {}
     request_init["firewall_policy"] = ""
-    request = request_type(request_init)
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        request_type.to_json(
-            request, including_default_value_fields=False, use_integers_for_enums=False
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
     )
 
@@ -2069,7 +2119,7 @@ def test_clone_rules_rest_required_fields(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
     return_value = compute.Operation()
@@ -2081,16 +2131,20 @@ def test_clone_rules_rest_required_fields(
         with mock.patch.object(path_template, "transcode") as transcode:
             # A uri without fields and an empty body will force all the
             # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
             transcode_result = {
                 "uri": "v1/sample_method",
                 "method": "post",
-                "query_params": request_init,
+                "query_params": pb_request,
             }
             transcode.return_value = transcode_result
 
             response_value = Response()
             response_value.status_code = 200
-            json_return_value = compute.Operation.to_json(return_value)
+
+            pb_return_value = compute.Operation.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
 
@@ -2138,12 +2192,14 @@ def test_clone_rules_rest_interceptors(null_interceptor):
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
-
+        pb_message = compute.CloneRulesFirewallPolicyRequest.pb(
+            compute.CloneRulesFirewallPolicyRequest()
+        )
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
-            "body": None,
-            "query_params": {},
+            "body": pb_message,
+            "query_params": pb_message,
         }
 
         req.return_value = Response()
@@ -2181,7 +2237,7 @@ def test_clone_rules_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"firewall_policy": "sample1"}
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
     with mock.patch.object(Session, "request") as req, pytest.raises(
@@ -2218,8 +2274,8 @@ def test_clone_rules_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
-
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -2272,7 +2328,7 @@ def test_clone_rules_unary_rest(request_type):
 
     # send a request that will satisfy transcoding
     request_init = {"firewall_policy": "sample1"}
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
@@ -2305,7 +2361,9 @@ def test_clone_rules_unary_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.clone_rules_unary(request)
@@ -2321,10 +2379,13 @@ def test_clone_rules_unary_rest_required_fields(
 
     request_init = {}
     request_init["firewall_policy"] = ""
-    request = request_type(request_init)
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        request_type.to_json(
-            request, including_default_value_fields=False, use_integers_for_enums=False
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
     )
 
@@ -2359,7 +2420,7 @@ def test_clone_rules_unary_rest_required_fields(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
     return_value = compute.Operation()
@@ -2371,16 +2432,20 @@ def test_clone_rules_unary_rest_required_fields(
         with mock.patch.object(path_template, "transcode") as transcode:
             # A uri without fields and an empty body will force all the
             # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
             transcode_result = {
                 "uri": "v1/sample_method",
                 "method": "post",
-                "query_params": request_init,
+                "query_params": pb_request,
             }
             transcode.return_value = transcode_result
 
             response_value = Response()
             response_value.status_code = 200
-            json_return_value = compute.Operation.to_json(return_value)
+
+            pb_return_value = compute.Operation.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
 
@@ -2428,12 +2493,14 @@ def test_clone_rules_unary_rest_interceptors(null_interceptor):
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
-
+        pb_message = compute.CloneRulesFirewallPolicyRequest.pb(
+            compute.CloneRulesFirewallPolicyRequest()
+        )
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
-            "body": None,
-            "query_params": {},
+            "body": pb_message,
+            "query_params": pb_message,
         }
 
         req.return_value = Response()
@@ -2471,7 +2538,7 @@ def test_clone_rules_unary_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"firewall_policy": "sample1"}
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
     with mock.patch.object(Session, "request") as req, pytest.raises(
@@ -2508,8 +2575,8 @@ def test_clone_rules_unary_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
-
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -2562,7 +2629,7 @@ def test_delete_rest(request_type):
 
     # send a request that will satisfy transcoding
     request_init = {"firewall_policy": "sample1"}
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
@@ -2595,7 +2662,9 @@ def test_delete_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.delete(request)
@@ -2631,10 +2700,13 @@ def test_delete_rest_required_fields(request_type=compute.DeleteFirewallPolicyRe
 
     request_init = {}
     request_init["firewall_policy"] = ""
-    request = request_type(request_init)
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        request_type.to_json(
-            request, including_default_value_fields=False, use_integers_for_enums=False
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
     )
 
@@ -2664,7 +2736,7 @@ def test_delete_rest_required_fields(request_type=compute.DeleteFirewallPolicyRe
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
     return_value = compute.Operation()
@@ -2676,16 +2748,20 @@ def test_delete_rest_required_fields(request_type=compute.DeleteFirewallPolicyRe
         with mock.patch.object(path_template, "transcode") as transcode:
             # A uri without fields and an empty body will force all the
             # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
             transcode_result = {
                 "uri": "v1/sample_method",
                 "method": "delete",
-                "query_params": request_init,
+                "query_params": pb_request,
             }
             transcode.return_value = transcode_result
 
             response_value = Response()
             response_value.status_code = 200
-            json_return_value = compute.Operation.to_json(return_value)
+
+            pb_return_value = compute.Operation.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
 
@@ -2725,12 +2801,14 @@ def test_delete_rest_interceptors(null_interceptor):
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
-
+        pb_message = compute.DeleteFirewallPolicyRequest.pb(
+            compute.DeleteFirewallPolicyRequest()
+        )
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
-            "body": None,
-            "query_params": {},
+            "body": pb_message,
+            "query_params": pb_message,
         }
 
         req.return_value = Response()
@@ -2768,7 +2846,7 @@ def test_delete_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"firewall_policy": "sample1"}
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
     with mock.patch.object(Session, "request") as req, pytest.raises(
@@ -2805,8 +2883,8 @@ def test_delete_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
-
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -2859,7 +2937,7 @@ def test_delete_unary_rest(request_type):
 
     # send a request that will satisfy transcoding
     request_init = {"firewall_policy": "sample1"}
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
@@ -2892,7 +2970,9 @@ def test_delete_unary_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.delete_unary(request)
@@ -2908,10 +2988,13 @@ def test_delete_unary_rest_required_fields(
 
     request_init = {}
     request_init["firewall_policy"] = ""
-    request = request_type(request_init)
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        request_type.to_json(
-            request, including_default_value_fields=False, use_integers_for_enums=False
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
     )
 
@@ -2941,7 +3024,7 @@ def test_delete_unary_rest_required_fields(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
     return_value = compute.Operation()
@@ -2953,16 +3036,20 @@ def test_delete_unary_rest_required_fields(
         with mock.patch.object(path_template, "transcode") as transcode:
             # A uri without fields and an empty body will force all the
             # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
             transcode_result = {
                 "uri": "v1/sample_method",
                 "method": "delete",
-                "query_params": request_init,
+                "query_params": pb_request,
             }
             transcode.return_value = transcode_result
 
             response_value = Response()
             response_value.status_code = 200
-            json_return_value = compute.Operation.to_json(return_value)
+
+            pb_return_value = compute.Operation.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
 
@@ -3002,12 +3089,14 @@ def test_delete_unary_rest_interceptors(null_interceptor):
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
-
+        pb_message = compute.DeleteFirewallPolicyRequest.pb(
+            compute.DeleteFirewallPolicyRequest()
+        )
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
-            "body": None,
-            "query_params": {},
+            "body": pb_message,
+            "query_params": pb_message,
         }
 
         req.return_value = Response()
@@ -3045,7 +3134,7 @@ def test_delete_unary_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"firewall_policy": "sample1"}
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
     with mock.patch.object(Session, "request") as req, pytest.raises(
@@ -3082,8 +3171,8 @@ def test_delete_unary_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
-
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -3136,7 +3225,7 @@ def test_get_rest(request_type):
 
     # send a request that will satisfy transcoding
     request_init = {"firewall_policy": "sample1"}
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
@@ -3160,7 +3249,9 @@ def test_get_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.FirewallPolicy.to_json(return_value)
+        pb_return_value = compute.FirewallPolicy.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.get(request)
@@ -3187,10 +3278,13 @@ def test_get_rest_required_fields(request_type=compute.GetFirewallPolicyRequest)
 
     request_init = {}
     request_init["firewall_policy"] = ""
-    request = request_type(request_init)
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        request_type.to_json(
-            request, including_default_value_fields=False, use_integers_for_enums=False
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
     )
 
@@ -3218,7 +3312,7 @@ def test_get_rest_required_fields(request_type=compute.GetFirewallPolicyRequest)
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
     return_value = compute.FirewallPolicy()
@@ -3230,16 +3324,20 @@ def test_get_rest_required_fields(request_type=compute.GetFirewallPolicyRequest)
         with mock.patch.object(path_template, "transcode") as transcode:
             # A uri without fields and an empty body will force all the
             # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
             transcode_result = {
                 "uri": "v1/sample_method",
                 "method": "get",
-                "query_params": request_init,
+                "query_params": pb_request,
             }
             transcode.return_value = transcode_result
 
             response_value = Response()
             response_value.status_code = 200
-            json_return_value = compute.FirewallPolicy.to_json(return_value)
+
+            pb_return_value = compute.FirewallPolicy.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
 
@@ -3279,12 +3377,14 @@ def test_get_rest_interceptors(null_interceptor):
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
-
+        pb_message = compute.GetFirewallPolicyRequest.pb(
+            compute.GetFirewallPolicyRequest()
+        )
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
-            "body": None,
-            "query_params": {},
+            "body": pb_message,
+            "query_params": pb_message,
         }
 
         req.return_value = Response()
@@ -3324,7 +3424,7 @@ def test_get_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"firewall_policy": "sample1"}
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
     with mock.patch.object(Session, "request") as req, pytest.raises(
@@ -3361,8 +3461,8 @@ def test_get_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.FirewallPolicy.to_json(return_value)
-
+        pb_return_value = compute.FirewallPolicy.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -3415,7 +3515,7 @@ def test_get_association_rest(request_type):
 
     # send a request that will satisfy transcoding
     request_init = {"firewall_policy": "sample1"}
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
@@ -3431,7 +3531,9 @@ def test_get_association_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.FirewallPolicyAssociation.to_json(return_value)
+        pb_return_value = compute.FirewallPolicyAssociation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.get_association(request)
@@ -3452,10 +3554,13 @@ def test_get_association_rest_required_fields(
 
     request_init = {}
     request_init["firewall_policy"] = ""
-    request = request_type(request_init)
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        request_type.to_json(
-            request, including_default_value_fields=False, use_integers_for_enums=False
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
     )
 
@@ -3485,7 +3590,7 @@ def test_get_association_rest_required_fields(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
     return_value = compute.FirewallPolicyAssociation()
@@ -3497,16 +3602,20 @@ def test_get_association_rest_required_fields(
         with mock.patch.object(path_template, "transcode") as transcode:
             # A uri without fields and an empty body will force all the
             # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
             transcode_result = {
                 "uri": "v1/sample_method",
                 "method": "get",
-                "query_params": request_init,
+                "query_params": pb_request,
             }
             transcode.return_value = transcode_result
 
             response_value = Response()
             response_value.status_code = 200
-            json_return_value = compute.FirewallPolicyAssociation.to_json(return_value)
+
+            pb_return_value = compute.FirewallPolicyAssociation.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
 
@@ -3546,12 +3655,14 @@ def test_get_association_rest_interceptors(null_interceptor):
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
-
+        pb_message = compute.GetAssociationFirewallPolicyRequest.pb(
+            compute.GetAssociationFirewallPolicyRequest()
+        )
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
-            "body": None,
-            "query_params": {},
+            "body": pb_message,
+            "query_params": pb_message,
         }
 
         req.return_value = Response()
@@ -3591,7 +3702,7 @@ def test_get_association_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"firewall_policy": "sample1"}
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
     with mock.patch.object(Session, "request") as req, pytest.raises(
@@ -3628,8 +3739,8 @@ def test_get_association_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.FirewallPolicyAssociation.to_json(return_value)
-
+        pb_return_value = compute.FirewallPolicyAssociation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -3682,7 +3793,7 @@ def test_get_iam_policy_rest(request_type):
 
     # send a request that will satisfy transcoding
     request_init = {"resource": "sample1"}
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
@@ -3696,7 +3807,9 @@ def test_get_iam_policy_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.Policy.to_json(return_value)
+        pb_return_value = compute.Policy.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.get_iam_policy(request)
@@ -3715,10 +3828,13 @@ def test_get_iam_policy_rest_required_fields(
 
     request_init = {}
     request_init["resource"] = ""
-    request = request_type(request_init)
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        request_type.to_json(
-            request, including_default_value_fields=False, use_integers_for_enums=False
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
     )
 
@@ -3748,7 +3864,7 @@ def test_get_iam_policy_rest_required_fields(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
     return_value = compute.Policy()
@@ -3760,16 +3876,20 @@ def test_get_iam_policy_rest_required_fields(
         with mock.patch.object(path_template, "transcode") as transcode:
             # A uri without fields and an empty body will force all the
             # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
             transcode_result = {
                 "uri": "v1/sample_method",
                 "method": "get",
-                "query_params": request_init,
+                "query_params": pb_request,
             }
             transcode.return_value = transcode_result
 
             response_value = Response()
             response_value.status_code = 200
-            json_return_value = compute.Policy.to_json(return_value)
+
+            pb_return_value = compute.Policy.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
 
@@ -3811,12 +3931,14 @@ def test_get_iam_policy_rest_interceptors(null_interceptor):
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
-
+        pb_message = compute.GetIamPolicyFirewallPolicyRequest.pb(
+            compute.GetIamPolicyFirewallPolicyRequest()
+        )
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
-            "body": None,
-            "query_params": {},
+            "body": pb_message,
+            "query_params": pb_message,
         }
 
         req.return_value = Response()
@@ -3854,7 +3976,7 @@ def test_get_iam_policy_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"resource": "sample1"}
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
     with mock.patch.object(Session, "request") as req, pytest.raises(
@@ -3891,8 +4013,8 @@ def test_get_iam_policy_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.Policy.to_json(return_value)
-
+        pb_return_value = compute.Policy.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -3945,7 +4067,7 @@ def test_get_rule_rest(request_type):
 
     # send a request that will satisfy transcoding
     request_init = {"firewall_policy": "sample1"}
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
@@ -3967,7 +4089,9 @@ def test_get_rule_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.FirewallPolicyRule.to_json(return_value)
+        pb_return_value = compute.FirewallPolicyRule.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.get_rule(request)
@@ -3994,10 +4118,13 @@ def test_get_rule_rest_required_fields(
 
     request_init = {}
     request_init["firewall_policy"] = ""
-    request = request_type(request_init)
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        request_type.to_json(
-            request, including_default_value_fields=False, use_integers_for_enums=False
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
     )
 
@@ -4027,7 +4154,7 @@ def test_get_rule_rest_required_fields(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
     return_value = compute.FirewallPolicyRule()
@@ -4039,16 +4166,20 @@ def test_get_rule_rest_required_fields(
         with mock.patch.object(path_template, "transcode") as transcode:
             # A uri without fields and an empty body will force all the
             # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
             transcode_result = {
                 "uri": "v1/sample_method",
                 "method": "get",
-                "query_params": request_init,
+                "query_params": pb_request,
             }
             transcode.return_value = transcode_result
 
             response_value = Response()
             response_value.status_code = 200
-            json_return_value = compute.FirewallPolicyRule.to_json(return_value)
+
+            pb_return_value = compute.FirewallPolicyRule.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
 
@@ -4088,12 +4219,14 @@ def test_get_rule_rest_interceptors(null_interceptor):
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
-
+        pb_message = compute.GetRuleFirewallPolicyRequest.pb(
+            compute.GetRuleFirewallPolicyRequest()
+        )
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
-            "body": None,
-            "query_params": {},
+            "body": pb_message,
+            "query_params": pb_message,
         }
 
         req.return_value = Response()
@@ -4133,7 +4266,7 @@ def test_get_rule_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"firewall_policy": "sample1"}
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
     with mock.patch.object(Session, "request") as req, pytest.raises(
@@ -4170,8 +4303,8 @@ def test_get_rule_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.FirewallPolicyRule.to_json(return_value)
-
+        pb_return_value = compute.FirewallPolicyRule.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -4254,29 +4387,29 @@ def test_insert_rest(request_type):
                 "kind": "kind_value",
                 "match": {
                     "dest_ip_ranges": [
-                        "dest_ip_ranges_value_1",
-                        "dest_ip_ranges_value_2",
+                        "dest_ip_ranges_value1",
+                        "dest_ip_ranges_value2",
                     ],
                     "layer4_configs": [
                         {
                             "ip_protocol": "ip_protocol_value",
-                            "ports": ["ports_value_1", "ports_value_2"],
+                            "ports": ["ports_value1", "ports_value2"],
                         }
                     ],
-                    "src_ip_ranges": ["src_ip_ranges_value_1", "src_ip_ranges_value_2"],
+                    "src_ip_ranges": ["src_ip_ranges_value1", "src_ip_ranges_value2"],
                     "src_secure_tags": [{"name": "name_value", "state": "state_value"}],
                 },
                 "priority": 898,
                 "rule_name": "rule_name_value",
                 "rule_tuple_count": 1737,
                 "target_resources": [
-                    "target_resources_value_1",
-                    "target_resources_value_2",
+                    "target_resources_value1",
+                    "target_resources_value2",
                 ],
                 "target_secure_tags": {},
                 "target_service_accounts": [
-                    "target_service_accounts_value_1",
-                    "target_service_accounts_value_2",
+                    "target_service_accounts_value1",
+                    "target_service_accounts_value2",
                 ],
             }
         ],
@@ -4284,7 +4417,7 @@ def test_insert_rest(request_type):
         "self_link_with_id": "self_link_with_id_value",
         "short_name": "short_name_value",
     }
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
@@ -4317,7 +4450,9 @@ def test_insert_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.insert(request)
@@ -4353,10 +4488,13 @@ def test_insert_rest_required_fields(request_type=compute.InsertFirewallPolicyRe
 
     request_init = {}
     request_init["parent_id"] = ""
-    request = request_type(request_init)
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        request_type.to_json(
-            request, including_default_value_fields=False, use_integers_for_enums=False
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
     )
 
@@ -4394,7 +4532,7 @@ def test_insert_rest_required_fields(request_type=compute.InsertFirewallPolicyRe
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
     return_value = compute.Operation()
@@ -4406,17 +4544,21 @@ def test_insert_rest_required_fields(request_type=compute.InsertFirewallPolicyRe
         with mock.patch.object(path_template, "transcode") as transcode:
             # A uri without fields and an empty body will force all the
             # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
             transcode_result = {
                 "uri": "v1/sample_method",
                 "method": "post",
-                "query_params": request_init,
+                "query_params": pb_request,
             }
-            transcode_result["body"] = {}
+            transcode_result["body"] = pb_request
             transcode.return_value = transcode_result
 
             response_value = Response()
             response_value.status_code = 200
-            json_return_value = compute.Operation.to_json(return_value)
+
+            pb_return_value = compute.Operation.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
 
@@ -4474,12 +4616,14 @@ def test_insert_rest_interceptors(null_interceptor):
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
-
+        pb_message = compute.InsertFirewallPolicyRequest.pb(
+            compute.InsertFirewallPolicyRequest()
+        )
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
-            "body": None,
-            "query_params": {},
+            "body": pb_message,
+            "query_params": pb_message,
         }
 
         req.return_value = Response()
@@ -4547,29 +4691,29 @@ def test_insert_rest_bad_request(
                 "kind": "kind_value",
                 "match": {
                     "dest_ip_ranges": [
-                        "dest_ip_ranges_value_1",
-                        "dest_ip_ranges_value_2",
+                        "dest_ip_ranges_value1",
+                        "dest_ip_ranges_value2",
                     ],
                     "layer4_configs": [
                         {
                             "ip_protocol": "ip_protocol_value",
-                            "ports": ["ports_value_1", "ports_value_2"],
+                            "ports": ["ports_value1", "ports_value2"],
                         }
                     ],
-                    "src_ip_ranges": ["src_ip_ranges_value_1", "src_ip_ranges_value_2"],
+                    "src_ip_ranges": ["src_ip_ranges_value1", "src_ip_ranges_value2"],
                     "src_secure_tags": [{"name": "name_value", "state": "state_value"}],
                 },
                 "priority": 898,
                 "rule_name": "rule_name_value",
                 "rule_tuple_count": 1737,
                 "target_resources": [
-                    "target_resources_value_1",
-                    "target_resources_value_2",
+                    "target_resources_value1",
+                    "target_resources_value2",
                 ],
                 "target_secure_tags": {},
                 "target_service_accounts": [
-                    "target_service_accounts_value_1",
-                    "target_service_accounts_value_2",
+                    "target_service_accounts_value1",
+                    "target_service_accounts_value2",
                 ],
             }
         ],
@@ -4577,7 +4721,7 @@ def test_insert_rest_bad_request(
         "self_link_with_id": "self_link_with_id_value",
         "short_name": "short_name_value",
     }
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
     with mock.patch.object(Session, "request") as req, pytest.raises(
@@ -4621,8 +4765,8 @@ def test_insert_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
-
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -4711,29 +4855,29 @@ def test_insert_unary_rest(request_type):
                 "kind": "kind_value",
                 "match": {
                     "dest_ip_ranges": [
-                        "dest_ip_ranges_value_1",
-                        "dest_ip_ranges_value_2",
+                        "dest_ip_ranges_value1",
+                        "dest_ip_ranges_value2",
                     ],
                     "layer4_configs": [
                         {
                             "ip_protocol": "ip_protocol_value",
-                            "ports": ["ports_value_1", "ports_value_2"],
+                            "ports": ["ports_value1", "ports_value2"],
                         }
                     ],
-                    "src_ip_ranges": ["src_ip_ranges_value_1", "src_ip_ranges_value_2"],
+                    "src_ip_ranges": ["src_ip_ranges_value1", "src_ip_ranges_value2"],
                     "src_secure_tags": [{"name": "name_value", "state": "state_value"}],
                 },
                 "priority": 898,
                 "rule_name": "rule_name_value",
                 "rule_tuple_count": 1737,
                 "target_resources": [
-                    "target_resources_value_1",
-                    "target_resources_value_2",
+                    "target_resources_value1",
+                    "target_resources_value2",
                 ],
                 "target_secure_tags": {},
                 "target_service_accounts": [
-                    "target_service_accounts_value_1",
-                    "target_service_accounts_value_2",
+                    "target_service_accounts_value1",
+                    "target_service_accounts_value2",
                 ],
             }
         ],
@@ -4741,7 +4885,7 @@ def test_insert_unary_rest(request_type):
         "self_link_with_id": "self_link_with_id_value",
         "short_name": "short_name_value",
     }
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
@@ -4774,7 +4918,9 @@ def test_insert_unary_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.insert_unary(request)
@@ -4790,10 +4936,13 @@ def test_insert_unary_rest_required_fields(
 
     request_init = {}
     request_init["parent_id"] = ""
-    request = request_type(request_init)
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        request_type.to_json(
-            request, including_default_value_fields=False, use_integers_for_enums=False
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
     )
 
@@ -4831,7 +4980,7 @@ def test_insert_unary_rest_required_fields(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
     return_value = compute.Operation()
@@ -4843,17 +4992,21 @@ def test_insert_unary_rest_required_fields(
         with mock.patch.object(path_template, "transcode") as transcode:
             # A uri without fields and an empty body will force all the
             # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
             transcode_result = {
                 "uri": "v1/sample_method",
                 "method": "post",
-                "query_params": request_init,
+                "query_params": pb_request,
             }
-            transcode_result["body"] = {}
+            transcode_result["body"] = pb_request
             transcode.return_value = transcode_result
 
             response_value = Response()
             response_value.status_code = 200
-            json_return_value = compute.Operation.to_json(return_value)
+
+            pb_return_value = compute.Operation.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
 
@@ -4911,12 +5064,14 @@ def test_insert_unary_rest_interceptors(null_interceptor):
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
-
+        pb_message = compute.InsertFirewallPolicyRequest.pb(
+            compute.InsertFirewallPolicyRequest()
+        )
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
-            "body": None,
-            "query_params": {},
+            "body": pb_message,
+            "query_params": pb_message,
         }
 
         req.return_value = Response()
@@ -4984,29 +5139,29 @@ def test_insert_unary_rest_bad_request(
                 "kind": "kind_value",
                 "match": {
                     "dest_ip_ranges": [
-                        "dest_ip_ranges_value_1",
-                        "dest_ip_ranges_value_2",
+                        "dest_ip_ranges_value1",
+                        "dest_ip_ranges_value2",
                     ],
                     "layer4_configs": [
                         {
                             "ip_protocol": "ip_protocol_value",
-                            "ports": ["ports_value_1", "ports_value_2"],
+                            "ports": ["ports_value1", "ports_value2"],
                         }
                     ],
-                    "src_ip_ranges": ["src_ip_ranges_value_1", "src_ip_ranges_value_2"],
+                    "src_ip_ranges": ["src_ip_ranges_value1", "src_ip_ranges_value2"],
                     "src_secure_tags": [{"name": "name_value", "state": "state_value"}],
                 },
                 "priority": 898,
                 "rule_name": "rule_name_value",
                 "rule_tuple_count": 1737,
                 "target_resources": [
-                    "target_resources_value_1",
-                    "target_resources_value_2",
+                    "target_resources_value1",
+                    "target_resources_value2",
                 ],
                 "target_secure_tags": {},
                 "target_service_accounts": [
-                    "target_service_accounts_value_1",
-                    "target_service_accounts_value_2",
+                    "target_service_accounts_value1",
+                    "target_service_accounts_value2",
                 ],
             }
         ],
@@ -5014,7 +5169,7 @@ def test_insert_unary_rest_bad_request(
         "self_link_with_id": "self_link_with_id_value",
         "short_name": "short_name_value",
     }
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
     with mock.patch.object(Session, "request") as req, pytest.raises(
@@ -5058,8 +5213,8 @@ def test_insert_unary_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
-
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -5118,7 +5273,7 @@ def test_list_rest(request_type):
 
     # send a request that will satisfy transcoding
     request_init = {}
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
@@ -5132,7 +5287,9 @@ def test_list_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.FirewallPolicyList.to_json(return_value)
+        pb_return_value = compute.FirewallPolicyList.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.list(request)
@@ -5164,12 +5321,14 @@ def test_list_rest_interceptors(null_interceptor):
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
-
+        pb_message = compute.ListFirewallPoliciesRequest.pb(
+            compute.ListFirewallPoliciesRequest()
+        )
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
-            "body": None,
-            "query_params": {},
+            "body": pb_message,
+            "query_params": pb_message,
         }
 
         req.return_value = Response()
@@ -5209,7 +5368,7 @@ def test_list_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {}
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
     with mock.patch.object(Session, "request") as req, pytest.raises(
@@ -5299,7 +5458,7 @@ def test_list_associations_rest(request_type):
 
     # send a request that will satisfy transcoding
     request_init = {}
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
@@ -5311,9 +5470,11 @@ def test_list_associations_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.FirewallPoliciesListAssociationsResponse.to_json(
+        pb_return_value = compute.FirewallPoliciesListAssociationsResponse.pb(
             return_value
         )
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.list_associations(request)
@@ -5343,12 +5504,14 @@ def test_list_associations_rest_interceptors(null_interceptor):
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
-
+        pb_message = compute.ListAssociationsFirewallPolicyRequest.pb(
+            compute.ListAssociationsFirewallPolicyRequest()
+        )
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
-            "body": None,
-            "query_params": {},
+            "body": pb_message,
+            "query_params": pb_message,
         }
 
         req.return_value = Response()
@@ -5390,7 +5553,7 @@ def test_list_associations_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {}
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
     with mock.patch.object(Session, "request") as req, pytest.raises(
@@ -5425,7 +5588,7 @@ def test_move_rest(request_type):
 
     # send a request that will satisfy transcoding
     request_init = {"firewall_policy": "sample1"}
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
@@ -5458,7 +5621,9 @@ def test_move_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.move(request)
@@ -5495,10 +5660,13 @@ def test_move_rest_required_fields(request_type=compute.MoveFirewallPolicyReques
     request_init = {}
     request_init["firewall_policy"] = ""
     request_init["parent_id"] = ""
-    request = request_type(request_init)
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        request_type.to_json(
-            request, including_default_value_fields=False, use_integers_for_enums=False
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
     )
 
@@ -5539,7 +5707,7 @@ def test_move_rest_required_fields(request_type=compute.MoveFirewallPolicyReques
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
     return_value = compute.Operation()
@@ -5551,16 +5719,20 @@ def test_move_rest_required_fields(request_type=compute.MoveFirewallPolicyReques
         with mock.patch.object(path_template, "transcode") as transcode:
             # A uri without fields and an empty body will force all the
             # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
             transcode_result = {
                 "uri": "v1/sample_method",
                 "method": "post",
-                "query_params": request_init,
+                "query_params": pb_request,
             }
             transcode.return_value = transcode_result
 
             response_value = Response()
             response_value.status_code = 200
-            json_return_value = compute.Operation.to_json(return_value)
+
+            pb_return_value = compute.Operation.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
 
@@ -5618,12 +5790,14 @@ def test_move_rest_interceptors(null_interceptor):
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
-
+        pb_message = compute.MoveFirewallPolicyRequest.pb(
+            compute.MoveFirewallPolicyRequest()
+        )
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
-            "body": None,
-            "query_params": {},
+            "body": pb_message,
+            "query_params": pb_message,
         }
 
         req.return_value = Response()
@@ -5661,7 +5835,7 @@ def test_move_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"firewall_policy": "sample1"}
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
     with mock.patch.object(Session, "request") as req, pytest.raises(
@@ -5699,8 +5873,8 @@ def test_move_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
-
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -5754,7 +5928,7 @@ def test_move_unary_rest(request_type):
 
     # send a request that will satisfy transcoding
     request_init = {"firewall_policy": "sample1"}
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
@@ -5787,7 +5961,9 @@ def test_move_unary_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.move_unary(request)
@@ -5804,10 +5980,13 @@ def test_move_unary_rest_required_fields(
     request_init = {}
     request_init["firewall_policy"] = ""
     request_init["parent_id"] = ""
-    request = request_type(request_init)
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        request_type.to_json(
-            request, including_default_value_fields=False, use_integers_for_enums=False
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
     )
 
@@ -5848,7 +6027,7 @@ def test_move_unary_rest_required_fields(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
     return_value = compute.Operation()
@@ -5860,16 +6039,20 @@ def test_move_unary_rest_required_fields(
         with mock.patch.object(path_template, "transcode") as transcode:
             # A uri without fields and an empty body will force all the
             # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
             transcode_result = {
                 "uri": "v1/sample_method",
                 "method": "post",
-                "query_params": request_init,
+                "query_params": pb_request,
             }
             transcode.return_value = transcode_result
 
             response_value = Response()
             response_value.status_code = 200
-            json_return_value = compute.Operation.to_json(return_value)
+
+            pb_return_value = compute.Operation.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
 
@@ -5927,12 +6110,14 @@ def test_move_unary_rest_interceptors(null_interceptor):
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
-
+        pb_message = compute.MoveFirewallPolicyRequest.pb(
+            compute.MoveFirewallPolicyRequest()
+        )
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
-            "body": None,
-            "query_params": {},
+            "body": pb_message,
+            "query_params": pb_message,
         }
 
         req.return_value = Response()
@@ -5970,7 +6155,7 @@ def test_move_unary_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"firewall_policy": "sample1"}
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
     with mock.patch.object(Session, "request") as req, pytest.raises(
@@ -6008,8 +6193,8 @@ def test_move_unary_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
-
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -6093,29 +6278,29 @@ def test_patch_rest(request_type):
                 "kind": "kind_value",
                 "match": {
                     "dest_ip_ranges": [
-                        "dest_ip_ranges_value_1",
-                        "dest_ip_ranges_value_2",
+                        "dest_ip_ranges_value1",
+                        "dest_ip_ranges_value2",
                     ],
                     "layer4_configs": [
                         {
                             "ip_protocol": "ip_protocol_value",
-                            "ports": ["ports_value_1", "ports_value_2"],
+                            "ports": ["ports_value1", "ports_value2"],
                         }
                     ],
-                    "src_ip_ranges": ["src_ip_ranges_value_1", "src_ip_ranges_value_2"],
+                    "src_ip_ranges": ["src_ip_ranges_value1", "src_ip_ranges_value2"],
                     "src_secure_tags": [{"name": "name_value", "state": "state_value"}],
                 },
                 "priority": 898,
                 "rule_name": "rule_name_value",
                 "rule_tuple_count": 1737,
                 "target_resources": [
-                    "target_resources_value_1",
-                    "target_resources_value_2",
+                    "target_resources_value1",
+                    "target_resources_value2",
                 ],
                 "target_secure_tags": {},
                 "target_service_accounts": [
-                    "target_service_accounts_value_1",
-                    "target_service_accounts_value_2",
+                    "target_service_accounts_value1",
+                    "target_service_accounts_value2",
                 ],
             }
         ],
@@ -6123,7 +6308,7 @@ def test_patch_rest(request_type):
         "self_link_with_id": "self_link_with_id_value",
         "short_name": "short_name_value",
     }
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
@@ -6156,7 +6341,9 @@ def test_patch_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.patch(request)
@@ -6192,10 +6379,13 @@ def test_patch_rest_required_fields(request_type=compute.PatchFirewallPolicyRequ
 
     request_init = {}
     request_init["firewall_policy"] = ""
-    request = request_type(request_init)
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        request_type.to_json(
-            request, including_default_value_fields=False, use_integers_for_enums=False
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
     )
 
@@ -6225,7 +6415,7 @@ def test_patch_rest_required_fields(request_type=compute.PatchFirewallPolicyRequ
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
     return_value = compute.Operation()
@@ -6237,17 +6427,21 @@ def test_patch_rest_required_fields(request_type=compute.PatchFirewallPolicyRequ
         with mock.patch.object(path_template, "transcode") as transcode:
             # A uri without fields and an empty body will force all the
             # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
             transcode_result = {
                 "uri": "v1/sample_method",
                 "method": "patch",
-                "query_params": request_init,
+                "query_params": pb_request,
             }
-            transcode_result["body"] = {}
+            transcode_result["body"] = pb_request
             transcode.return_value = transcode_result
 
             response_value = Response()
             response_value.status_code = 200
-            json_return_value = compute.Operation.to_json(return_value)
+
+            pb_return_value = compute.Operation.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
 
@@ -6295,12 +6489,14 @@ def test_patch_rest_interceptors(null_interceptor):
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
-
+        pb_message = compute.PatchFirewallPolicyRequest.pb(
+            compute.PatchFirewallPolicyRequest()
+        )
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
-            "body": None,
-            "query_params": {},
+            "body": pb_message,
+            "query_params": pb_message,
         }
 
         req.return_value = Response()
@@ -6368,29 +6564,29 @@ def test_patch_rest_bad_request(
                 "kind": "kind_value",
                 "match": {
                     "dest_ip_ranges": [
-                        "dest_ip_ranges_value_1",
-                        "dest_ip_ranges_value_2",
+                        "dest_ip_ranges_value1",
+                        "dest_ip_ranges_value2",
                     ],
                     "layer4_configs": [
                         {
                             "ip_protocol": "ip_protocol_value",
-                            "ports": ["ports_value_1", "ports_value_2"],
+                            "ports": ["ports_value1", "ports_value2"],
                         }
                     ],
-                    "src_ip_ranges": ["src_ip_ranges_value_1", "src_ip_ranges_value_2"],
+                    "src_ip_ranges": ["src_ip_ranges_value1", "src_ip_ranges_value2"],
                     "src_secure_tags": [{"name": "name_value", "state": "state_value"}],
                 },
                 "priority": 898,
                 "rule_name": "rule_name_value",
                 "rule_tuple_count": 1737,
                 "target_resources": [
-                    "target_resources_value_1",
-                    "target_resources_value_2",
+                    "target_resources_value1",
+                    "target_resources_value2",
                 ],
                 "target_secure_tags": {},
                 "target_service_accounts": [
-                    "target_service_accounts_value_1",
-                    "target_service_accounts_value_2",
+                    "target_service_accounts_value1",
+                    "target_service_accounts_value2",
                 ],
             }
         ],
@@ -6398,7 +6594,7 @@ def test_patch_rest_bad_request(
         "self_link_with_id": "self_link_with_id_value",
         "short_name": "short_name_value",
     }
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
     with mock.patch.object(Session, "request") as req, pytest.raises(
@@ -6442,8 +6638,8 @@ def test_patch_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
-
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -6533,29 +6729,29 @@ def test_patch_unary_rest(request_type):
                 "kind": "kind_value",
                 "match": {
                     "dest_ip_ranges": [
-                        "dest_ip_ranges_value_1",
-                        "dest_ip_ranges_value_2",
+                        "dest_ip_ranges_value1",
+                        "dest_ip_ranges_value2",
                     ],
                     "layer4_configs": [
                         {
                             "ip_protocol": "ip_protocol_value",
-                            "ports": ["ports_value_1", "ports_value_2"],
+                            "ports": ["ports_value1", "ports_value2"],
                         }
                     ],
-                    "src_ip_ranges": ["src_ip_ranges_value_1", "src_ip_ranges_value_2"],
+                    "src_ip_ranges": ["src_ip_ranges_value1", "src_ip_ranges_value2"],
                     "src_secure_tags": [{"name": "name_value", "state": "state_value"}],
                 },
                 "priority": 898,
                 "rule_name": "rule_name_value",
                 "rule_tuple_count": 1737,
                 "target_resources": [
-                    "target_resources_value_1",
-                    "target_resources_value_2",
+                    "target_resources_value1",
+                    "target_resources_value2",
                 ],
                 "target_secure_tags": {},
                 "target_service_accounts": [
-                    "target_service_accounts_value_1",
-                    "target_service_accounts_value_2",
+                    "target_service_accounts_value1",
+                    "target_service_accounts_value2",
                 ],
             }
         ],
@@ -6563,7 +6759,7 @@ def test_patch_unary_rest(request_type):
         "self_link_with_id": "self_link_with_id_value",
         "short_name": "short_name_value",
     }
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
@@ -6596,7 +6792,9 @@ def test_patch_unary_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.patch_unary(request)
@@ -6612,10 +6810,13 @@ def test_patch_unary_rest_required_fields(
 
     request_init = {}
     request_init["firewall_policy"] = ""
-    request = request_type(request_init)
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        request_type.to_json(
-            request, including_default_value_fields=False, use_integers_for_enums=False
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
     )
 
@@ -6645,7 +6846,7 @@ def test_patch_unary_rest_required_fields(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
     return_value = compute.Operation()
@@ -6657,17 +6858,21 @@ def test_patch_unary_rest_required_fields(
         with mock.patch.object(path_template, "transcode") as transcode:
             # A uri without fields and an empty body will force all the
             # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
             transcode_result = {
                 "uri": "v1/sample_method",
                 "method": "patch",
-                "query_params": request_init,
+                "query_params": pb_request,
             }
-            transcode_result["body"] = {}
+            transcode_result["body"] = pb_request
             transcode.return_value = transcode_result
 
             response_value = Response()
             response_value.status_code = 200
-            json_return_value = compute.Operation.to_json(return_value)
+
+            pb_return_value = compute.Operation.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
 
@@ -6715,12 +6920,14 @@ def test_patch_unary_rest_interceptors(null_interceptor):
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
-
+        pb_message = compute.PatchFirewallPolicyRequest.pb(
+            compute.PatchFirewallPolicyRequest()
+        )
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
-            "body": None,
-            "query_params": {},
+            "body": pb_message,
+            "query_params": pb_message,
         }
 
         req.return_value = Response()
@@ -6788,29 +6995,29 @@ def test_patch_unary_rest_bad_request(
                 "kind": "kind_value",
                 "match": {
                     "dest_ip_ranges": [
-                        "dest_ip_ranges_value_1",
-                        "dest_ip_ranges_value_2",
+                        "dest_ip_ranges_value1",
+                        "dest_ip_ranges_value2",
                     ],
                     "layer4_configs": [
                         {
                             "ip_protocol": "ip_protocol_value",
-                            "ports": ["ports_value_1", "ports_value_2"],
+                            "ports": ["ports_value1", "ports_value2"],
                         }
                     ],
-                    "src_ip_ranges": ["src_ip_ranges_value_1", "src_ip_ranges_value_2"],
+                    "src_ip_ranges": ["src_ip_ranges_value1", "src_ip_ranges_value2"],
                     "src_secure_tags": [{"name": "name_value", "state": "state_value"}],
                 },
                 "priority": 898,
                 "rule_name": "rule_name_value",
                 "rule_tuple_count": 1737,
                 "target_resources": [
-                    "target_resources_value_1",
-                    "target_resources_value_2",
+                    "target_resources_value1",
+                    "target_resources_value2",
                 ],
                 "target_secure_tags": {},
                 "target_service_accounts": [
-                    "target_service_accounts_value_1",
-                    "target_service_accounts_value_2",
+                    "target_service_accounts_value1",
+                    "target_service_accounts_value2",
                 ],
             }
         ],
@@ -6818,7 +7025,7 @@ def test_patch_unary_rest_bad_request(
         "self_link_with_id": "self_link_with_id_value",
         "short_name": "short_name_value",
     }
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
     with mock.patch.object(Session, "request") as req, pytest.raises(
@@ -6862,8 +7069,8 @@ def test_patch_unary_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
-
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -6931,27 +7138,27 @@ def test_patch_rule_rest(request_type):
         "enable_logging": True,
         "kind": "kind_value",
         "match": {
-            "dest_ip_ranges": ["dest_ip_ranges_value_1", "dest_ip_ranges_value_2"],
+            "dest_ip_ranges": ["dest_ip_ranges_value1", "dest_ip_ranges_value2"],
             "layer4_configs": [
                 {
                     "ip_protocol": "ip_protocol_value",
-                    "ports": ["ports_value_1", "ports_value_2"],
+                    "ports": ["ports_value1", "ports_value2"],
                 }
             ],
-            "src_ip_ranges": ["src_ip_ranges_value_1", "src_ip_ranges_value_2"],
+            "src_ip_ranges": ["src_ip_ranges_value1", "src_ip_ranges_value2"],
             "src_secure_tags": [{"name": "name_value", "state": "state_value"}],
         },
         "priority": 898,
         "rule_name": "rule_name_value",
         "rule_tuple_count": 1737,
-        "target_resources": ["target_resources_value_1", "target_resources_value_2"],
+        "target_resources": ["target_resources_value1", "target_resources_value2"],
         "target_secure_tags": {},
         "target_service_accounts": [
-            "target_service_accounts_value_1",
-            "target_service_accounts_value_2",
+            "target_service_accounts_value1",
+            "target_service_accounts_value2",
         ],
     }
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
@@ -6984,7 +7191,9 @@ def test_patch_rule_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.patch_rule(request)
@@ -7022,10 +7231,13 @@ def test_patch_rule_rest_required_fields(
 
     request_init = {}
     request_init["firewall_policy"] = ""
-    request = request_type(request_init)
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        request_type.to_json(
-            request, including_default_value_fields=False, use_integers_for_enums=False
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
     )
 
@@ -7060,7 +7272,7 @@ def test_patch_rule_rest_required_fields(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
     return_value = compute.Operation()
@@ -7072,17 +7284,21 @@ def test_patch_rule_rest_required_fields(
         with mock.patch.object(path_template, "transcode") as transcode:
             # A uri without fields and an empty body will force all the
             # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
             transcode_result = {
                 "uri": "v1/sample_method",
                 "method": "post",
-                "query_params": request_init,
+                "query_params": pb_request,
             }
-            transcode_result["body"] = {}
+            transcode_result["body"] = pb_request
             transcode.return_value = transcode_result
 
             response_value = Response()
             response_value.status_code = 200
-            json_return_value = compute.Operation.to_json(return_value)
+
+            pb_return_value = compute.Operation.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
 
@@ -7135,12 +7351,14 @@ def test_patch_rule_rest_interceptors(null_interceptor):
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
-
+        pb_message = compute.PatchRuleFirewallPolicyRequest.pb(
+            compute.PatchRuleFirewallPolicyRequest()
+        )
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
-            "body": None,
-            "query_params": {},
+            "body": pb_message,
+            "query_params": pb_message,
         }
 
         req.return_value = Response()
@@ -7186,27 +7404,27 @@ def test_patch_rule_rest_bad_request(
         "enable_logging": True,
         "kind": "kind_value",
         "match": {
-            "dest_ip_ranges": ["dest_ip_ranges_value_1", "dest_ip_ranges_value_2"],
+            "dest_ip_ranges": ["dest_ip_ranges_value1", "dest_ip_ranges_value2"],
             "layer4_configs": [
                 {
                     "ip_protocol": "ip_protocol_value",
-                    "ports": ["ports_value_1", "ports_value_2"],
+                    "ports": ["ports_value1", "ports_value2"],
                 }
             ],
-            "src_ip_ranges": ["src_ip_ranges_value_1", "src_ip_ranges_value_2"],
+            "src_ip_ranges": ["src_ip_ranges_value1", "src_ip_ranges_value2"],
             "src_secure_tags": [{"name": "name_value", "state": "state_value"}],
         },
         "priority": 898,
         "rule_name": "rule_name_value",
         "rule_tuple_count": 1737,
-        "target_resources": ["target_resources_value_1", "target_resources_value_2"],
+        "target_resources": ["target_resources_value1", "target_resources_value2"],
         "target_secure_tags": {},
         "target_service_accounts": [
-            "target_service_accounts_value_1",
-            "target_service_accounts_value_2",
+            "target_service_accounts_value1",
+            "target_service_accounts_value2",
         ],
     }
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
     with mock.patch.object(Session, "request") as req, pytest.raises(
@@ -7246,8 +7464,8 @@ def test_patch_rule_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
-
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -7311,27 +7529,27 @@ def test_patch_rule_unary_rest(request_type):
         "enable_logging": True,
         "kind": "kind_value",
         "match": {
-            "dest_ip_ranges": ["dest_ip_ranges_value_1", "dest_ip_ranges_value_2"],
+            "dest_ip_ranges": ["dest_ip_ranges_value1", "dest_ip_ranges_value2"],
             "layer4_configs": [
                 {
                     "ip_protocol": "ip_protocol_value",
-                    "ports": ["ports_value_1", "ports_value_2"],
+                    "ports": ["ports_value1", "ports_value2"],
                 }
             ],
-            "src_ip_ranges": ["src_ip_ranges_value_1", "src_ip_ranges_value_2"],
+            "src_ip_ranges": ["src_ip_ranges_value1", "src_ip_ranges_value2"],
             "src_secure_tags": [{"name": "name_value", "state": "state_value"}],
         },
         "priority": 898,
         "rule_name": "rule_name_value",
         "rule_tuple_count": 1737,
-        "target_resources": ["target_resources_value_1", "target_resources_value_2"],
+        "target_resources": ["target_resources_value1", "target_resources_value2"],
         "target_secure_tags": {},
         "target_service_accounts": [
-            "target_service_accounts_value_1",
-            "target_service_accounts_value_2",
+            "target_service_accounts_value1",
+            "target_service_accounts_value2",
         ],
     }
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
@@ -7364,7 +7582,9 @@ def test_patch_rule_unary_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.patch_rule_unary(request)
@@ -7380,10 +7600,13 @@ def test_patch_rule_unary_rest_required_fields(
 
     request_init = {}
     request_init["firewall_policy"] = ""
-    request = request_type(request_init)
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        request_type.to_json(
-            request, including_default_value_fields=False, use_integers_for_enums=False
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
     )
 
@@ -7418,7 +7641,7 @@ def test_patch_rule_unary_rest_required_fields(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
     return_value = compute.Operation()
@@ -7430,17 +7653,21 @@ def test_patch_rule_unary_rest_required_fields(
         with mock.patch.object(path_template, "transcode") as transcode:
             # A uri without fields and an empty body will force all the
             # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
             transcode_result = {
                 "uri": "v1/sample_method",
                 "method": "post",
-                "query_params": request_init,
+                "query_params": pb_request,
             }
-            transcode_result["body"] = {}
+            transcode_result["body"] = pb_request
             transcode.return_value = transcode_result
 
             response_value = Response()
             response_value.status_code = 200
-            json_return_value = compute.Operation.to_json(return_value)
+
+            pb_return_value = compute.Operation.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
 
@@ -7493,12 +7720,14 @@ def test_patch_rule_unary_rest_interceptors(null_interceptor):
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
-
+        pb_message = compute.PatchRuleFirewallPolicyRequest.pb(
+            compute.PatchRuleFirewallPolicyRequest()
+        )
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
-            "body": None,
-            "query_params": {},
+            "body": pb_message,
+            "query_params": pb_message,
         }
 
         req.return_value = Response()
@@ -7544,27 +7773,27 @@ def test_patch_rule_unary_rest_bad_request(
         "enable_logging": True,
         "kind": "kind_value",
         "match": {
-            "dest_ip_ranges": ["dest_ip_ranges_value_1", "dest_ip_ranges_value_2"],
+            "dest_ip_ranges": ["dest_ip_ranges_value1", "dest_ip_ranges_value2"],
             "layer4_configs": [
                 {
                     "ip_protocol": "ip_protocol_value",
-                    "ports": ["ports_value_1", "ports_value_2"],
+                    "ports": ["ports_value1", "ports_value2"],
                 }
             ],
-            "src_ip_ranges": ["src_ip_ranges_value_1", "src_ip_ranges_value_2"],
+            "src_ip_ranges": ["src_ip_ranges_value1", "src_ip_ranges_value2"],
             "src_secure_tags": [{"name": "name_value", "state": "state_value"}],
         },
         "priority": 898,
         "rule_name": "rule_name_value",
         "rule_tuple_count": 1737,
-        "target_resources": ["target_resources_value_1", "target_resources_value_2"],
+        "target_resources": ["target_resources_value1", "target_resources_value2"],
         "target_secure_tags": {},
         "target_service_accounts": [
-            "target_service_accounts_value_1",
-            "target_service_accounts_value_2",
+            "target_service_accounts_value1",
+            "target_service_accounts_value2",
         ],
     }
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
     with mock.patch.object(Session, "request") as req, pytest.raises(
@@ -7604,8 +7833,8 @@ def test_patch_rule_unary_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
-
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -7661,7 +7890,7 @@ def test_remove_association_rest(request_type):
 
     # send a request that will satisfy transcoding
     request_init = {"firewall_policy": "sample1"}
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
@@ -7694,7 +7923,9 @@ def test_remove_association_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.remove_association(request)
@@ -7732,10 +7963,13 @@ def test_remove_association_rest_required_fields(
 
     request_init = {}
     request_init["firewall_policy"] = ""
-    request = request_type(request_init)
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        request_type.to_json(
-            request, including_default_value_fields=False, use_integers_for_enums=False
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
     )
 
@@ -7770,7 +8004,7 @@ def test_remove_association_rest_required_fields(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
     return_value = compute.Operation()
@@ -7782,16 +8016,20 @@ def test_remove_association_rest_required_fields(
         with mock.patch.object(path_template, "transcode") as transcode:
             # A uri without fields and an empty body will force all the
             # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
             transcode_result = {
                 "uri": "v1/sample_method",
                 "method": "post",
-                "query_params": request_init,
+                "query_params": pb_request,
             }
             transcode.return_value = transcode_result
 
             response_value = Response()
             response_value.status_code = 200
-            json_return_value = compute.Operation.to_json(return_value)
+
+            pb_return_value = compute.Operation.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
 
@@ -7839,12 +8077,14 @@ def test_remove_association_rest_interceptors(null_interceptor):
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
-
+        pb_message = compute.RemoveAssociationFirewallPolicyRequest.pb(
+            compute.RemoveAssociationFirewallPolicyRequest()
+        )
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
-            "body": None,
-            "query_params": {},
+            "body": pb_message,
+            "query_params": pb_message,
         }
 
         req.return_value = Response()
@@ -7882,7 +8122,7 @@ def test_remove_association_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"firewall_policy": "sample1"}
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
     with mock.patch.object(Session, "request") as req, pytest.raises(
@@ -7919,8 +8159,8 @@ def test_remove_association_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
-
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -7973,7 +8213,7 @@ def test_remove_association_unary_rest(request_type):
 
     # send a request that will satisfy transcoding
     request_init = {"firewall_policy": "sample1"}
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
@@ -8006,7 +8246,9 @@ def test_remove_association_unary_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.remove_association_unary(request)
@@ -8022,10 +8264,13 @@ def test_remove_association_unary_rest_required_fields(
 
     request_init = {}
     request_init["firewall_policy"] = ""
-    request = request_type(request_init)
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        request_type.to_json(
-            request, including_default_value_fields=False, use_integers_for_enums=False
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
     )
 
@@ -8060,7 +8305,7 @@ def test_remove_association_unary_rest_required_fields(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
     return_value = compute.Operation()
@@ -8072,16 +8317,20 @@ def test_remove_association_unary_rest_required_fields(
         with mock.patch.object(path_template, "transcode") as transcode:
             # A uri without fields and an empty body will force all the
             # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
             transcode_result = {
                 "uri": "v1/sample_method",
                 "method": "post",
-                "query_params": request_init,
+                "query_params": pb_request,
             }
             transcode.return_value = transcode_result
 
             response_value = Response()
             response_value.status_code = 200
-            json_return_value = compute.Operation.to_json(return_value)
+
+            pb_return_value = compute.Operation.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
 
@@ -8129,12 +8378,14 @@ def test_remove_association_unary_rest_interceptors(null_interceptor):
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
-
+        pb_message = compute.RemoveAssociationFirewallPolicyRequest.pb(
+            compute.RemoveAssociationFirewallPolicyRequest()
+        )
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
-            "body": None,
-            "query_params": {},
+            "body": pb_message,
+            "query_params": pb_message,
         }
 
         req.return_value = Response()
@@ -8172,7 +8423,7 @@ def test_remove_association_unary_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"firewall_policy": "sample1"}
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
     with mock.patch.object(Session, "request") as req, pytest.raises(
@@ -8209,8 +8460,8 @@ def test_remove_association_unary_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
-
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -8263,7 +8514,7 @@ def test_remove_rule_rest(request_type):
 
     # send a request that will satisfy transcoding
     request_init = {"firewall_policy": "sample1"}
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
@@ -8296,7 +8547,9 @@ def test_remove_rule_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.remove_rule(request)
@@ -8334,10 +8587,13 @@ def test_remove_rule_rest_required_fields(
 
     request_init = {}
     request_init["firewall_policy"] = ""
-    request = request_type(request_init)
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        request_type.to_json(
-            request, including_default_value_fields=False, use_integers_for_enums=False
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
     )
 
@@ -8372,7 +8628,7 @@ def test_remove_rule_rest_required_fields(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
     return_value = compute.Operation()
@@ -8384,16 +8640,20 @@ def test_remove_rule_rest_required_fields(
         with mock.patch.object(path_template, "transcode") as transcode:
             # A uri without fields and an empty body will force all the
             # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
             transcode_result = {
                 "uri": "v1/sample_method",
                 "method": "post",
-                "query_params": request_init,
+                "query_params": pb_request,
             }
             transcode.return_value = transcode_result
 
             response_value = Response()
             response_value.status_code = 200
-            json_return_value = compute.Operation.to_json(return_value)
+
+            pb_return_value = compute.Operation.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
 
@@ -8441,12 +8701,14 @@ def test_remove_rule_rest_interceptors(null_interceptor):
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
-
+        pb_message = compute.RemoveRuleFirewallPolicyRequest.pb(
+            compute.RemoveRuleFirewallPolicyRequest()
+        )
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
-            "body": None,
-            "query_params": {},
+            "body": pb_message,
+            "query_params": pb_message,
         }
 
         req.return_value = Response()
@@ -8484,7 +8746,7 @@ def test_remove_rule_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"firewall_policy": "sample1"}
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
     with mock.patch.object(Session, "request") as req, pytest.raises(
@@ -8521,8 +8783,8 @@ def test_remove_rule_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
-
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -8575,7 +8837,7 @@ def test_remove_rule_unary_rest(request_type):
 
     # send a request that will satisfy transcoding
     request_init = {"firewall_policy": "sample1"}
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
@@ -8608,7 +8870,9 @@ def test_remove_rule_unary_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.remove_rule_unary(request)
@@ -8624,10 +8888,13 @@ def test_remove_rule_unary_rest_required_fields(
 
     request_init = {}
     request_init["firewall_policy"] = ""
-    request = request_type(request_init)
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        request_type.to_json(
-            request, including_default_value_fields=False, use_integers_for_enums=False
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
     )
 
@@ -8662,7 +8929,7 @@ def test_remove_rule_unary_rest_required_fields(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
     return_value = compute.Operation()
@@ -8674,16 +8941,20 @@ def test_remove_rule_unary_rest_required_fields(
         with mock.patch.object(path_template, "transcode") as transcode:
             # A uri without fields and an empty body will force all the
             # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
             transcode_result = {
                 "uri": "v1/sample_method",
                 "method": "post",
-                "query_params": request_init,
+                "query_params": pb_request,
             }
             transcode.return_value = transcode_result
 
             response_value = Response()
             response_value.status_code = 200
-            json_return_value = compute.Operation.to_json(return_value)
+
+            pb_return_value = compute.Operation.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
 
@@ -8731,12 +9002,14 @@ def test_remove_rule_unary_rest_interceptors(null_interceptor):
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
-
+        pb_message = compute.RemoveRuleFirewallPolicyRequest.pb(
+            compute.RemoveRuleFirewallPolicyRequest()
+        )
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
-            "body": None,
-            "query_params": {},
+            "body": pb_message,
+            "query_params": pb_message,
         }
 
         req.return_value = Response()
@@ -8774,7 +9047,7 @@ def test_remove_rule_unary_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"firewall_policy": "sample1"}
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
     with mock.patch.object(Session, "request") as req, pytest.raises(
@@ -8811,8 +9084,8 @@ def test_remove_rule_unary_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.Operation.to_json(return_value)
-
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -8875,7 +9148,7 @@ def test_set_iam_policy_rest(request_type):
                     "location": "location_value",
                     "title": "title_value",
                 },
-                "members": ["members_value_1", "members_value_2"],
+                "members": ["members_value1", "members_value2"],
                 "role": "role_value",
             }
         ],
@@ -8886,16 +9159,16 @@ def test_set_iam_policy_rest(request_type):
                     "audit_log_configs": [
                         {
                             "exempted_members": [
-                                "exempted_members_value_1",
-                                "exempted_members_value_2",
+                                "exempted_members_value1",
+                                "exempted_members_value2",
                             ],
                             "ignore_child_exemptions": True,
                             "log_type": "log_type_value",
                         }
                     ],
                     "exempted_members": [
-                        "exempted_members_value_1",
-                        "exempted_members_value_2",
+                        "exempted_members_value1",
+                        "exempted_members_value2",
                     ],
                     "service": "service_value",
                 }
@@ -8912,11 +9185,11 @@ def test_set_iam_policy_rest(request_type):
                             "op": "op_value",
                             "svc": "svc_value",
                             "sys": "sys_value",
-                            "values": ["values_value_1", "values_value_2"],
+                            "values": ["values_value1", "values_value2"],
                         }
                     ],
                     "description": "description_value",
-                    "ins": ["ins_value_1", "ins_value_2"],
+                    "ins": ["ins_value1", "ins_value2"],
                     "log_configs": [
                         {
                             "cloud_audit": {
@@ -8935,14 +9208,14 @@ def test_set_iam_policy_rest(request_type):
                             "data_access": {"log_mode": "log_mode_value"},
                         }
                     ],
-                    "not_ins": ["not_ins_value_1", "not_ins_value_2"],
-                    "permissions": ["permissions_value_1", "permissions_value_2"],
+                    "not_ins": ["not_ins_value1", "not_ins_value2"],
+                    "permissions": ["permissions_value1", "permissions_value2"],
                 }
             ],
             "version": 774,
         },
     }
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
@@ -8956,7 +9229,9 @@ def test_set_iam_policy_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.Policy.to_json(return_value)
+        pb_return_value = compute.Policy.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.set_iam_policy(request)
@@ -8975,10 +9250,13 @@ def test_set_iam_policy_rest_required_fields(
 
     request_init = {}
     request_init["resource"] = ""
-    request = request_type(request_init)
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        request_type.to_json(
-            request, including_default_value_fields=False, use_integers_for_enums=False
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
     )
 
@@ -9006,7 +9284,7 @@ def test_set_iam_policy_rest_required_fields(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
     return_value = compute.Policy()
@@ -9018,17 +9296,21 @@ def test_set_iam_policy_rest_required_fields(
         with mock.patch.object(path_template, "transcode") as transcode:
             # A uri without fields and an empty body will force all the
             # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
             transcode_result = {
                 "uri": "v1/sample_method",
                 "method": "post",
-                "query_params": request_init,
+                "query_params": pb_request,
             }
-            transcode_result["body"] = {}
+            transcode_result["body"] = pb_request
             transcode.return_value = transcode_result
 
             response_value = Response()
             response_value.status_code = 200
-            json_return_value = compute.Policy.to_json(return_value)
+
+            pb_return_value = compute.Policy.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
 
@@ -9076,12 +9358,14 @@ def test_set_iam_policy_rest_interceptors(null_interceptor):
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
-
+        pb_message = compute.SetIamPolicyFirewallPolicyRequest.pb(
+            compute.SetIamPolicyFirewallPolicyRequest()
+        )
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
-            "body": None,
-            "query_params": {},
+            "body": pb_message,
+            "query_params": pb_message,
         }
 
         req.return_value = Response()
@@ -9129,7 +9413,7 @@ def test_set_iam_policy_rest_bad_request(
                     "location": "location_value",
                     "title": "title_value",
                 },
-                "members": ["members_value_1", "members_value_2"],
+                "members": ["members_value1", "members_value2"],
                 "role": "role_value",
             }
         ],
@@ -9140,16 +9424,16 @@ def test_set_iam_policy_rest_bad_request(
                     "audit_log_configs": [
                         {
                             "exempted_members": [
-                                "exempted_members_value_1",
-                                "exempted_members_value_2",
+                                "exempted_members_value1",
+                                "exempted_members_value2",
                             ],
                             "ignore_child_exemptions": True,
                             "log_type": "log_type_value",
                         }
                     ],
                     "exempted_members": [
-                        "exempted_members_value_1",
-                        "exempted_members_value_2",
+                        "exempted_members_value1",
+                        "exempted_members_value2",
                     ],
                     "service": "service_value",
                 }
@@ -9166,11 +9450,11 @@ def test_set_iam_policy_rest_bad_request(
                             "op": "op_value",
                             "svc": "svc_value",
                             "sys": "sys_value",
-                            "values": ["values_value_1", "values_value_2"],
+                            "values": ["values_value1", "values_value2"],
                         }
                     ],
                     "description": "description_value",
-                    "ins": ["ins_value_1", "ins_value_2"],
+                    "ins": ["ins_value1", "ins_value2"],
                     "log_configs": [
                         {
                             "cloud_audit": {
@@ -9189,14 +9473,14 @@ def test_set_iam_policy_rest_bad_request(
                             "data_access": {"log_mode": "log_mode_value"},
                         }
                     ],
-                    "not_ins": ["not_ins_value_1", "not_ins_value_2"],
-                    "permissions": ["permissions_value_1", "permissions_value_2"],
+                    "not_ins": ["not_ins_value1", "not_ins_value2"],
+                    "permissions": ["permissions_value1", "permissions_value2"],
                 }
             ],
             "version": 774,
         },
     }
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
     with mock.patch.object(Session, "request") as req, pytest.raises(
@@ -9236,8 +9520,8 @@ def test_set_iam_policy_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.Policy.to_json(return_value)
-
+        pb_return_value = compute.Policy.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -9294,9 +9578,9 @@ def test_test_iam_permissions_rest(request_type):
     # send a request that will satisfy transcoding
     request_init = {"resource": "sample1"}
     request_init["test_permissions_request_resource"] = {
-        "permissions": ["permissions_value_1", "permissions_value_2"]
+        "permissions": ["permissions_value1", "permissions_value2"]
     }
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
@@ -9308,7 +9592,9 @@ def test_test_iam_permissions_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.TestPermissionsResponse.to_json(return_value)
+        pb_return_value = compute.TestPermissionsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.test_iam_permissions(request)
@@ -9325,10 +9611,13 @@ def test_test_iam_permissions_rest_required_fields(
 
     request_init = {}
     request_init["resource"] = ""
-    request = request_type(request_init)
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        request_type.to_json(
-            request, including_default_value_fields=False, use_integers_for_enums=False
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
     )
 
@@ -9356,7 +9645,7 @@ def test_test_iam_permissions_rest_required_fields(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
     return_value = compute.TestPermissionsResponse()
@@ -9368,17 +9657,21 @@ def test_test_iam_permissions_rest_required_fields(
         with mock.patch.object(path_template, "transcode") as transcode:
             # A uri without fields and an empty body will force all the
             # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
             transcode_result = {
                 "uri": "v1/sample_method",
                 "method": "post",
-                "query_params": request_init,
+                "query_params": pb_request,
             }
-            transcode_result["body"] = {}
+            transcode_result["body"] = pb_request
             transcode.return_value = transcode_result
 
             response_value = Response()
             response_value.status_code = 200
-            json_return_value = compute.TestPermissionsResponse.to_json(return_value)
+
+            pb_return_value = compute.TestPermissionsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
 
@@ -9426,12 +9719,14 @@ def test_test_iam_permissions_rest_interceptors(null_interceptor):
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
-
+        pb_message = compute.TestIamPermissionsFirewallPolicyRequest.pb(
+            compute.TestIamPermissionsFirewallPolicyRequest()
+        )
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
-            "body": None,
-            "query_params": {},
+            "body": pb_message,
+            "query_params": pb_message,
         }
 
         req.return_value = Response()
@@ -9473,9 +9768,9 @@ def test_test_iam_permissions_rest_bad_request(
     # send a request that will satisfy transcoding
     request_init = {"resource": "sample1"}
     request_init["test_permissions_request_resource"] = {
-        "permissions": ["permissions_value_1", "permissions_value_2"]
+        "permissions": ["permissions_value1", "permissions_value2"]
     }
-    request = request_type(request_init)
+    request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
     with mock.patch.object(Session, "request") as req, pytest.raises(
@@ -9515,8 +9810,8 @@ def test_test_iam_permissions_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.TestPermissionsResponse.to_json(return_value)
-
+        pb_return_value = compute.TestPermissionsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
