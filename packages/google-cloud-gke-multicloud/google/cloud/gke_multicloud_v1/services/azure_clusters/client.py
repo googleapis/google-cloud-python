@@ -526,6 +526,13 @@ class AzureClustersClient(metaclass=AzureClustersClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import gke_multicloud_v1
 
             def sample_create_azure_client():
@@ -692,6 +699,13 @@ class AzureClustersClient(metaclass=AzureClustersClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import gke_multicloud_v1
 
             def sample_get_azure_client():
@@ -812,6 +826,13 @@ class AzureClustersClient(metaclass=AzureClustersClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import gke_multicloud_v1
 
             def sample_list_azure_clients():
@@ -938,6 +959,13 @@ class AzureClustersClient(metaclass=AzureClustersClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import gke_multicloud_v1
 
             def sample_delete_azure_client():
@@ -1072,6 +1100,13 @@ class AzureClustersClient(metaclass=AzureClustersClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import gke_multicloud_v1
 
             def sample_create_azure_cluster():
@@ -1084,8 +1119,8 @@ class AzureClustersClient(metaclass=AzureClustersClientMeta):
                 azure_cluster.resource_group_id = "resource_group_id_value"
                 azure_cluster.azure_client = "azure_client_value"
                 azure_cluster.networking.virtual_network_id = "virtual_network_id_value"
-                azure_cluster.networking.pod_address_cidr_blocks = ['pod_address_cidr_blocks_value_1', 'pod_address_cidr_blocks_value_2']
-                azure_cluster.networking.service_address_cidr_blocks = ['service_address_cidr_blocks_value_1', 'service_address_cidr_blocks_value_2']
+                azure_cluster.networking.pod_address_cidr_blocks = ['pod_address_cidr_blocks_value1', 'pod_address_cidr_blocks_value2']
+                azure_cluster.networking.service_address_cidr_blocks = ['service_address_cidr_blocks_value1', 'service_address_cidr_blocks_value2']
                 azure_cluster.control_plane.version = "version_value"
                 azure_cluster.control_plane.ssh_config.authorized_key = "authorized_key_value"
                 azure_cluster.authorization.admin_users.username = "username_value"
@@ -1232,6 +1267,13 @@ class AzureClustersClient(metaclass=AzureClustersClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import gke_multicloud_v1
 
             def sample_update_azure_cluster():
@@ -1244,8 +1286,8 @@ class AzureClustersClient(metaclass=AzureClustersClientMeta):
                 azure_cluster.resource_group_id = "resource_group_id_value"
                 azure_cluster.azure_client = "azure_client_value"
                 azure_cluster.networking.virtual_network_id = "virtual_network_id_value"
-                azure_cluster.networking.pod_address_cidr_blocks = ['pod_address_cidr_blocks_value_1', 'pod_address_cidr_blocks_value_2']
-                azure_cluster.networking.service_address_cidr_blocks = ['service_address_cidr_blocks_value_1', 'service_address_cidr_blocks_value_2']
+                azure_cluster.networking.pod_address_cidr_blocks = ['pod_address_cidr_blocks_value1', 'pod_address_cidr_blocks_value2']
+                azure_cluster.networking.service_address_cidr_blocks = ['service_address_cidr_blocks_value1', 'service_address_cidr_blocks_value2']
                 azure_cluster.control_plane.version = "version_value"
                 azure_cluster.control_plane.ssh_config.authorized_key = "authorized_key_value"
                 azure_cluster.authorization.admin_users.username = "username_value"
@@ -1378,6 +1420,13 @@ class AzureClustersClient(metaclass=AzureClustersClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import gke_multicloud_v1
 
             def sample_get_azure_cluster():
@@ -1481,6 +1530,13 @@ class AzureClustersClient(metaclass=AzureClustersClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import gke_multicloud_v1
 
             def sample_list_azure_clusters():
@@ -1608,6 +1664,13 @@ class AzureClustersClient(metaclass=AzureClustersClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import gke_multicloud_v1
 
             def sample_delete_azure_cluster():
@@ -1734,6 +1797,13 @@ class AzureClustersClient(metaclass=AzureClustersClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import gke_multicloud_v1
 
             def sample_generate_azure_access_token():
@@ -1822,6 +1892,13 @@ class AzureClustersClient(metaclass=AzureClustersClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import gke_multicloud_v1
 
             def sample_create_azure_node_pool():
@@ -1979,6 +2056,13 @@ class AzureClustersClient(metaclass=AzureClustersClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import gke_multicloud_v1
 
             def sample_update_azure_node_pool():
@@ -2120,6 +2204,13 @@ class AzureClustersClient(metaclass=AzureClustersClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import gke_multicloud_v1
 
             def sample_get_azure_node_pool():
@@ -2224,6 +2315,13 @@ class AzureClustersClient(metaclass=AzureClustersClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import gke_multicloud_v1
 
             def sample_list_azure_node_pools():
@@ -2347,6 +2445,13 @@ class AzureClustersClient(metaclass=AzureClustersClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import gke_multicloud_v1
 
             def sample_delete_azure_node_pool():
@@ -2474,6 +2579,13 @@ class AzureClustersClient(metaclass=AzureClustersClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import gke_multicloud_v1
 
             def sample_get_azure_server_config():

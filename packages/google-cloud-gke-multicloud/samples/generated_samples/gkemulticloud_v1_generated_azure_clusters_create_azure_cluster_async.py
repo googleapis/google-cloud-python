@@ -24,6 +24,13 @@
 
 
 # [START gkemulticloud_v1_generated_AzureClusters_CreateAzureCluster_async]
+# This snippet has been automatically generated and should be regarded as a
+# code template only.
+# It will require modifications to work:
+# - It may require correct/in-range values for request initialization.
+# - It may require specifying regional endpoints when creating the service
+#   client as shown in:
+#   https://googleapis.dev/python/google-api-core/latest/client_options.html
 from google.cloud import gke_multicloud_v1
 
 
@@ -37,8 +44,8 @@ async def sample_create_azure_cluster():
     azure_cluster.resource_group_id = "resource_group_id_value"
     azure_cluster.azure_client = "azure_client_value"
     azure_cluster.networking.virtual_network_id = "virtual_network_id_value"
-    azure_cluster.networking.pod_address_cidr_blocks = ['pod_address_cidr_blocks_value_1', 'pod_address_cidr_blocks_value_2']
-    azure_cluster.networking.service_address_cidr_blocks = ['service_address_cidr_blocks_value_1', 'service_address_cidr_blocks_value_2']
+    azure_cluster.networking.pod_address_cidr_blocks = ['pod_address_cidr_blocks_value1', 'pod_address_cidr_blocks_value2']
+    azure_cluster.networking.service_address_cidr_blocks = ['service_address_cidr_blocks_value1', 'service_address_cidr_blocks_value2']
     azure_cluster.control_plane.version = "version_value"
     azure_cluster.control_plane.ssh_config.authorized_key = "authorized_key_value"
     azure_cluster.authorization.admin_users.username = "username_value"

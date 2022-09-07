@@ -502,6 +502,13 @@ class AwsClustersClient(metaclass=AwsClustersClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import gke_multicloud_v1
 
             def sample_create_aws_cluster():
@@ -511,11 +518,11 @@ class AwsClustersClient(metaclass=AwsClustersClientMeta):
                 # Initialize request argument(s)
                 aws_cluster = gke_multicloud_v1.AwsCluster()
                 aws_cluster.networking.vpc_id = "vpc_id_value"
-                aws_cluster.networking.pod_address_cidr_blocks = ['pod_address_cidr_blocks_value_1', 'pod_address_cidr_blocks_value_2']
-                aws_cluster.networking.service_address_cidr_blocks = ['service_address_cidr_blocks_value_1', 'service_address_cidr_blocks_value_2']
+                aws_cluster.networking.pod_address_cidr_blocks = ['pod_address_cidr_blocks_value1', 'pod_address_cidr_blocks_value2']
+                aws_cluster.networking.service_address_cidr_blocks = ['service_address_cidr_blocks_value1', 'service_address_cidr_blocks_value2']
                 aws_cluster.aws_region = "aws_region_value"
                 aws_cluster.control_plane.version = "version_value"
-                aws_cluster.control_plane.subnet_ids = ['subnet_ids_value_1', 'subnet_ids_value_2']
+                aws_cluster.control_plane.subnet_ids = ['subnet_ids_value1', 'subnet_ids_value2']
                 aws_cluster.control_plane.iam_instance_profile = "iam_instance_profile_value"
                 aws_cluster.control_plane.database_encryption.kms_key_arn = "kms_key_arn_value"
                 aws_cluster.control_plane.aws_services_authentication.role_arn = "role_arn_value"
@@ -664,6 +671,13 @@ class AwsClustersClient(metaclass=AwsClustersClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import gke_multicloud_v1
 
             def sample_update_aws_cluster():
@@ -673,11 +687,11 @@ class AwsClustersClient(metaclass=AwsClustersClientMeta):
                 # Initialize request argument(s)
                 aws_cluster = gke_multicloud_v1.AwsCluster()
                 aws_cluster.networking.vpc_id = "vpc_id_value"
-                aws_cluster.networking.pod_address_cidr_blocks = ['pod_address_cidr_blocks_value_1', 'pod_address_cidr_blocks_value_2']
-                aws_cluster.networking.service_address_cidr_blocks = ['service_address_cidr_blocks_value_1', 'service_address_cidr_blocks_value_2']
+                aws_cluster.networking.pod_address_cidr_blocks = ['pod_address_cidr_blocks_value1', 'pod_address_cidr_blocks_value2']
+                aws_cluster.networking.service_address_cidr_blocks = ['service_address_cidr_blocks_value1', 'service_address_cidr_blocks_value2']
                 aws_cluster.aws_region = "aws_region_value"
                 aws_cluster.control_plane.version = "version_value"
-                aws_cluster.control_plane.subnet_ids = ['subnet_ids_value_1', 'subnet_ids_value_2']
+                aws_cluster.control_plane.subnet_ids = ['subnet_ids_value1', 'subnet_ids_value2']
                 aws_cluster.control_plane.iam_instance_profile = "iam_instance_profile_value"
                 aws_cluster.control_plane.database_encryption.kms_key_arn = "kms_key_arn_value"
                 aws_cluster.control_plane.aws_services_authentication.role_arn = "role_arn_value"
@@ -823,6 +837,13 @@ class AwsClustersClient(metaclass=AwsClustersClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import gke_multicloud_v1
 
             def sample_get_aws_cluster():
@@ -925,6 +946,13 @@ class AwsClustersClient(metaclass=AwsClustersClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import gke_multicloud_v1
 
             def sample_list_aws_clusters():
@@ -1050,6 +1078,13 @@ class AwsClustersClient(metaclass=AwsClustersClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import gke_multicloud_v1
 
             def sample_delete_aws_cluster():
@@ -1175,6 +1210,13 @@ class AwsClustersClient(metaclass=AwsClustersClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import gke_multicloud_v1
 
             def sample_generate_aws_access_token():
@@ -1263,6 +1305,13 @@ class AwsClustersClient(metaclass=AwsClustersClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import gke_multicloud_v1
 
             def sample_create_aws_node_pool():
@@ -1421,6 +1470,13 @@ class AwsClustersClient(metaclass=AwsClustersClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import gke_multicloud_v1
 
             def sample_update_aws_node_pool():
@@ -1572,6 +1628,13 @@ class AwsClustersClient(metaclass=AwsClustersClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import gke_multicloud_v1
 
             def sample_get_aws_node_pool():
@@ -1676,6 +1739,13 @@ class AwsClustersClient(metaclass=AwsClustersClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import gke_multicloud_v1
 
             def sample_list_aws_node_pools():
@@ -1799,6 +1869,13 @@ class AwsClustersClient(metaclass=AwsClustersClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import gke_multicloud_v1
 
             def sample_delete_aws_node_pool():
@@ -1926,6 +2003,13 @@ class AwsClustersClient(metaclass=AwsClustersClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import gke_multicloud_v1
 
             def sample_get_aws_server_config():
