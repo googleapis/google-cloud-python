@@ -4273,8 +4273,12 @@ def test_generate_config_report_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.generate_config_report(
-            new_config=any_pb2.Any(type_url="type_url_value"),
-            old_config=any_pb2.Any(type_url="type_url_value"),
+            new_config=any_pb2.Any(
+                type_url="type.googleapis.com/google.protobuf.Empty"
+            ),
+            old_config=any_pb2.Any(
+                type_url="type.googleapis.com/google.protobuf.Empty"
+            ),
         )
 
         # Establish that the underlying call was made with the expected
@@ -4282,10 +4286,10 @@ def test_generate_config_report_flattened():
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
         arg = args[0].new_config
-        mock_val = any_pb2.Any(type_url="type_url_value")
+        mock_val = any_pb2.Any(type_url="type.googleapis.com/google.protobuf.Empty")
         assert arg == mock_val
         arg = args[0].old_config
-        mock_val = any_pb2.Any(type_url="type_url_value")
+        mock_val = any_pb2.Any(type_url="type.googleapis.com/google.protobuf.Empty")
         assert arg == mock_val
 
 
@@ -4299,8 +4303,12 @@ def test_generate_config_report_flattened_error():
     with pytest.raises(ValueError):
         client.generate_config_report(
             servicemanager.GenerateConfigReportRequest(),
-            new_config=any_pb2.Any(type_url="type_url_value"),
-            old_config=any_pb2.Any(type_url="type_url_value"),
+            new_config=any_pb2.Any(
+                type_url="type.googleapis.com/google.protobuf.Empty"
+            ),
+            old_config=any_pb2.Any(
+                type_url="type.googleapis.com/google.protobuf.Empty"
+            ),
         )
 
 
@@ -4323,8 +4331,12 @@ async def test_generate_config_report_flattened_async():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.generate_config_report(
-            new_config=any_pb2.Any(type_url="type_url_value"),
-            old_config=any_pb2.Any(type_url="type_url_value"),
+            new_config=any_pb2.Any(
+                type_url="type.googleapis.com/google.protobuf.Empty"
+            ),
+            old_config=any_pb2.Any(
+                type_url="type.googleapis.com/google.protobuf.Empty"
+            ),
         )
 
         # Establish that the underlying call was made with the expected
@@ -4332,10 +4344,10 @@ async def test_generate_config_report_flattened_async():
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
         arg = args[0].new_config
-        mock_val = any_pb2.Any(type_url="type_url_value")
+        mock_val = any_pb2.Any(type_url="type.googleapis.com/google.protobuf.Empty")
         assert arg == mock_val
         arg = args[0].old_config
-        mock_val = any_pb2.Any(type_url="type_url_value")
+        mock_val = any_pb2.Any(type_url="type.googleapis.com/google.protobuf.Empty")
         assert arg == mock_val
 
 
@@ -4350,8 +4362,12 @@ async def test_generate_config_report_flattened_error_async():
     with pytest.raises(ValueError):
         await client.generate_config_report(
             servicemanager.GenerateConfigReportRequest(),
-            new_config=any_pb2.Any(type_url="type_url_value"),
-            old_config=any_pb2.Any(type_url="type_url_value"),
+            new_config=any_pb2.Any(
+                type_url="type.googleapis.com/google.protobuf.Empty"
+            ),
+            old_config=any_pb2.Any(
+                type_url="type.googleapis.com/google.protobuf.Empty"
+            ),
         )
 
 
