@@ -430,6 +430,13 @@ class MetricsV1Beta3Client(metaclass=MetricsV1Beta3ClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import dataflow_v1beta3
 
             def sample_get_job_metrics():
@@ -520,6 +527,13 @@ class MetricsV1Beta3Client(metaclass=MetricsV1Beta3ClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import dataflow_v1beta3
 
             def sample_get_job_execution_details():
@@ -618,6 +632,13 @@ class MetricsV1Beta3Client(metaclass=MetricsV1Beta3ClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import dataflow_v1beta3
 
             def sample_get_stage_execution_details():
