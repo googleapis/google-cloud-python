@@ -784,7 +784,9 @@ def test_get_resource_from_dict_foreign():
             request={
                 "content_type": "content_type_value",
                 "data": b"data_blob",
-                "extensions": [any_pb2.Any(type_url="type_url_value")],
+                "extensions": [
+                    any_pb2.Any(type_url="type.googleapis.com/google.protobuf.Empty")
+                ],
             }
         )
         call.assert_called()
@@ -895,7 +897,9 @@ def test_post_resource_from_dict_foreign():
             request={
                 "content_type": "content_type_value",
                 "data": b"data_blob",
-                "extensions": [any_pb2.Any(type_url="type_url_value")],
+                "extensions": [
+                    any_pb2.Any(type_url="type.googleapis.com/google.protobuf.Empty")
+                ],
             }
         )
         call.assert_called()
@@ -1006,7 +1010,9 @@ def test_delete_resource_from_dict_foreign():
             request={
                 "content_type": "content_type_value",
                 "data": b"data_blob",
-                "extensions": [any_pb2.Any(type_url="type_url_value")],
+                "extensions": [
+                    any_pb2.Any(type_url="type.googleapis.com/google.protobuf.Empty")
+                ],
             }
         )
         call.assert_called()
@@ -1117,7 +1123,9 @@ def test_put_resource_from_dict_foreign():
             request={
                 "content_type": "content_type_value",
                 "data": b"data_blob",
-                "extensions": [any_pb2.Any(type_url="type_url_value")],
+                "extensions": [
+                    any_pb2.Any(type_url="type.googleapis.com/google.protobuf.Empty")
+                ],
             }
         )
         call.assert_called()
@@ -1228,7 +1236,9 @@ def test_patch_resource_from_dict_foreign():
             request={
                 "content_type": "content_type_value",
                 "data": b"data_blob",
-                "extensions": [any_pb2.Any(type_url="type_url_value")],
+                "extensions": [
+                    any_pb2.Any(type_url="type.googleapis.com/google.protobuf.Empty")
+                ],
             }
         )
         call.assert_called()
