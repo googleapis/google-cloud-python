@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.5.2](https://github.com/googleapis/python-compute/compare/v1.5.1...v1.5.2) (2022-09-07)
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core >= 2.9.0 ([b3047e1](https://github.com/googleapis/python-compute/commit/b3047e110ec6f1198af0429e3ef3b41796d47a5b))
+* **deps:** require protobuf >= 3.20.1 ([b3047e1](https://github.com/googleapis/python-compute/commit/b3047e110ec6f1198af0429e3ef3b41796d47a5b))
+
 ## [1.5.1](https://github.com/googleapis/python-compute/compare/v1.5.0...v1.5.1) (2022-08-12)
 
 
