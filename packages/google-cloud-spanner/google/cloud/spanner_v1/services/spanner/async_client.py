@@ -247,6 +247,13 @@ class SpannerAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import spanner_v1
 
             async def sample_create_session():
@@ -353,6 +360,13 @@ class SpannerAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import spanner_v1
 
             async def sample_batch_create_sessions():
@@ -474,6 +488,13 @@ class SpannerAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import spanner_v1
 
             async def sample_get_session():
@@ -576,6 +597,13 @@ class SpannerAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import spanner_v1
 
             async def sample_list_sessions():
@@ -695,6 +723,13 @@ class SpannerAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import spanner_v1
 
             async def sample_delete_session():
@@ -799,6 +834,13 @@ class SpannerAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import spanner_v1
 
             async def sample_execute_sql():
@@ -888,6 +930,13 @@ class SpannerAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import spanner_v1
 
             async def sample_execute_streaming_sql():
@@ -980,6 +1029,13 @@ class SpannerAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import spanner_v1
 
             async def sample_execute_batch_dml():
@@ -1118,6 +1174,13 @@ class SpannerAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import spanner_v1
 
             async def sample_read():
@@ -1128,7 +1191,7 @@ class SpannerAsyncClient:
                 request = spanner_v1.ReadRequest(
                     session="session_value",
                     table="table_value",
-                    columns=['columns_value_1', 'columns_value_2'],
+                    columns=['columns_value1', 'columns_value2'],
                 )
 
                 # Make the request
@@ -1208,6 +1271,13 @@ class SpannerAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import spanner_v1
 
             async def sample_streaming_read():
@@ -1218,7 +1288,7 @@ class SpannerAsyncClient:
                 request = spanner_v1.ReadRequest(
                     session="session_value",
                     table="table_value",
-                    columns=['columns_value_1', 'columns_value_2'],
+                    columns=['columns_value1', 'columns_value2'],
                 )
 
                 # Make the request
@@ -1294,6 +1364,13 @@ class SpannerAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import spanner_v1
 
             async def sample_begin_transaction():
@@ -1423,6 +1500,13 @@ class SpannerAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import spanner_v1
 
             async def sample_commit():
@@ -1577,6 +1661,13 @@ class SpannerAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import spanner_v1
 
             async def sample_rollback():
@@ -1691,6 +1782,13 @@ class SpannerAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import spanner_v1
 
             async def sample_partition_query():
@@ -1791,6 +1889,13 @@ class SpannerAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import spanner_v1
 
             async def sample_partition_read():

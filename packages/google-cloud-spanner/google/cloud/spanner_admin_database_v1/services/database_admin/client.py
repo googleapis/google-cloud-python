@@ -571,6 +571,13 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import spanner_admin_database_v1
 
             def sample_list_databases():
@@ -690,6 +697,13 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import spanner_admin_database_v1
 
             def sample_create_database():
@@ -816,6 +830,13 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import spanner_admin_database_v1
 
             def sample_get_database():
@@ -919,6 +940,13 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import spanner_admin_database_v1
 
             def sample_update_database_ddl():
@@ -928,7 +956,7 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
                 # Initialize request argument(s)
                 request = spanner_admin_database_v1.UpdateDatabaseDdlRequest(
                     database="database_value",
-                    statements=['statements_value_1', 'statements_value_2'],
+                    statements=['statements_value1', 'statements_value2'],
                 )
 
                 # Make the request
@@ -1064,6 +1092,13 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import spanner_admin_database_v1
 
             def sample_drop_database():
@@ -1148,6 +1183,13 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import spanner_admin_database_v1
 
             def sample_get_database_ddl():
@@ -1252,6 +1294,13 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import spanner_admin_database_v1
             from google.iam.v1 import iam_policy_pb2  # type: ignore
 
@@ -1417,6 +1466,13 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import spanner_admin_database_v1
             from google.iam.v1 import iam_policy_pb2  # type: ignore
 
@@ -1583,6 +1639,13 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import spanner_admin_database_v1
             from google.iam.v1 import iam_policy_pb2  # type: ignore
 
@@ -1593,7 +1656,7 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
                 # Initialize request argument(s)
                 request = iam_policy_pb2.TestIamPermissionsRequest(
                     resource="resource_value",
-                    permissions=['permissions_value_1', 'permissions_value_2'],
+                    permissions=['permissions_value1', 'permissions_value2'],
                 )
 
                 # Make the request
@@ -1704,6 +1767,13 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import spanner_admin_database_v1
 
             def sample_create_backup():
@@ -1853,6 +1923,13 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import spanner_admin_database_v1
 
             def sample_copy_backup():
@@ -2005,6 +2082,13 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import spanner_admin_database_v1
 
             def sample_get_backup():
@@ -2100,6 +2184,13 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import spanner_admin_database_v1
 
             def sample_update_backup():
@@ -2213,6 +2304,13 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import spanner_admin_database_v1
 
             def sample_delete_backup():
@@ -2299,6 +2397,13 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import spanner_admin_database_v1
 
             def sample_list_backups():
@@ -2427,6 +2532,13 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import spanner_admin_database_v1
 
             def sample_restore_database():
@@ -2575,6 +2687,13 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import spanner_admin_database_v1
 
             def sample_list_database_operations():
@@ -2697,6 +2816,13 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import spanner_admin_database_v1
 
             def sample_list_backup_operations():
@@ -2806,6 +2932,13 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import spanner_admin_database_v1
 
             def sample_list_database_roles():

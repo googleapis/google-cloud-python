@@ -24,6 +24,13 @@
 
 
 # [START spanner_v1_generated_DatabaseAdmin_UpdateDatabaseDdl_sync]
+# This snippet has been automatically generated and should be regarded as a
+# code template only.
+# It will require modifications to work:
+# - It may require correct/in-range values for request initialization.
+# - It may require specifying regional endpoints when creating the service
+#   client as shown in:
+#   https://googleapis.dev/python/google-api-core/latest/client_options.html
 from google.cloud import spanner_admin_database_v1
 
 
@@ -34,7 +41,7 @@ def sample_update_database_ddl():
     # Initialize request argument(s)
     request = spanner_admin_database_v1.UpdateDatabaseDdlRequest(
         database="database_value",
-        statements=['statements_value_1', 'statements_value_2'],
+        statements=['statements_value1', 'statements_value2'],
     )
 
     # Make the request
