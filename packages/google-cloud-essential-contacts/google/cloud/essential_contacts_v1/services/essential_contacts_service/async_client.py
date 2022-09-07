@@ -227,6 +227,13 @@ class EssentialContactsServiceAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import essential_contacts_v1
 
             async def sample_create_contact():
@@ -335,6 +342,13 @@ class EssentialContactsServiceAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import essential_contacts_v1
 
             async def sample_update_contact():
@@ -443,6 +457,13 @@ class EssentialContactsServiceAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import essential_contacts_v1
 
             async def sample_list_contacts():
@@ -561,6 +582,13 @@ class EssentialContactsServiceAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import essential_contacts_v1
 
             async def sample_get_contact():
@@ -667,6 +695,13 @@ class EssentialContactsServiceAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import essential_contacts_v1
 
             async def sample_delete_contact():
@@ -753,6 +788,13 @@ class EssentialContactsServiceAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import essential_contacts_v1
 
             async def sample_compute_contacts():
@@ -840,6 +882,13 @@ class EssentialContactsServiceAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import essential_contacts_v1
 
             async def sample_send_test_message():
@@ -848,7 +897,7 @@ class EssentialContactsServiceAsyncClient:
 
                 # Initialize request argument(s)
                 request = essential_contacts_v1.SendTestMessageRequest(
-                    contacts=['contacts_value_1', 'contacts_value_2'],
+                    contacts=['contacts_value1', 'contacts_value2'],
                     resource="resource_value",
                     notification_category="TECHNICAL_INCIDENTS",
                 )
