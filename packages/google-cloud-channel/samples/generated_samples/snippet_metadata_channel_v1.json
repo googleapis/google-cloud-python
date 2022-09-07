@@ -55,33 +55,33 @@
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_ActivateEntitlement_async",
       "segments": [
         {
-          "end": 48,
+          "end": 55,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 48,
+          "end": 55,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 38,
-          "start": 34,
+          "end": 45,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 45,
-          "start": 39,
+          "end": 52,
+          "start": 46,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 49,
-          "start": 46,
+          "end": 56,
+          "start": 53,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -131,33 +131,33 @@
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_ActivateEntitlement_sync",
       "segments": [
         {
-          "end": 48,
+          "end": 55,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 48,
+          "end": 55,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 38,
-          "start": 34,
+          "end": 45,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 45,
-          "start": 39,
+          "end": 52,
+          "start": 46,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 49,
-          "start": 46,
+          "end": 56,
+          "start": 53,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -208,33 +208,33 @@
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_CancelEntitlement_async",
       "segments": [
         {
-          "end": 48,
+          "end": 55,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 48,
+          "end": 55,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 38,
-          "start": 34,
+          "end": 45,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 45,
-          "start": 39,
+          "end": 52,
+          "start": 46,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 49,
-          "start": 46,
+          "end": 56,
+          "start": 53,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -284,33 +284,33 @@
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_CancelEntitlement_sync",
       "segments": [
         {
-          "end": 48,
+          "end": 55,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 48,
+          "end": 55,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 38,
-          "start": 34,
+          "end": 45,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 45,
-          "start": 39,
+          "end": 52,
+          "start": 46,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 49,
-          "start": 46,
+          "end": 56,
+          "start": 53,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -361,33 +361,33 @@
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_ChangeOffer_async",
       "segments": [
         {
-          "end": 49,
+          "end": 56,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 49,
+          "end": 56,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 39,
-          "start": 34,
+          "end": 46,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 46,
-          "start": 40,
+          "end": 53,
+          "start": 47,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 50,
-          "start": 47,
+          "end": 57,
+          "start": 54,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -437,33 +437,33 @@
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_ChangeOffer_sync",
       "segments": [
         {
-          "end": 49,
+          "end": 56,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 49,
+          "end": 56,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 39,
-          "start": 34,
+          "end": 46,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 46,
-          "start": 40,
+          "end": 53,
+          "start": 47,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 50,
-          "start": 47,
+          "end": 57,
+          "start": 54,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -514,33 +514,33 @@
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_ChangeParameters_async",
       "segments": [
         {
-          "end": 48,
+          "end": 55,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 48,
+          "end": 55,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 38,
-          "start": 34,
+          "end": 45,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 45,
-          "start": 39,
+          "end": 52,
+          "start": 46,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 49,
-          "start": 46,
+          "end": 56,
+          "start": 53,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -590,33 +590,33 @@
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_ChangeParameters_sync",
       "segments": [
         {
-          "end": 48,
+          "end": 55,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 48,
+          "end": 55,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 38,
-          "start": 34,
+          "end": 45,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 45,
-          "start": 39,
+          "end": 52,
+          "start": 46,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 49,
-          "start": 46,
+          "end": 56,
+          "start": 53,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -667,33 +667,33 @@
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_ChangeRenewalSettings_async",
       "segments": [
         {
-          "end": 48,
+          "end": 55,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 48,
+          "end": 55,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 38,
-          "start": 34,
+          "end": 45,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 45,
-          "start": 39,
+          "end": 52,
+          "start": 46,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 49,
-          "start": 46,
+          "end": 56,
+          "start": 53,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -743,33 +743,33 @@
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_ChangeRenewalSettings_sync",
       "segments": [
         {
-          "end": 48,
+          "end": 55,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 48,
+          "end": 55,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 38,
-          "start": 34,
+          "end": 45,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 45,
-          "start": 39,
+          "end": 52,
+          "start": 46,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 49,
-          "start": 46,
+          "end": 56,
+          "start": 53,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -820,33 +820,33 @@
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_CheckCloudIdentityAccountsExist_async",
       "segments": [
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 39,
-          "start": 34,
+          "end": 46,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 42,
-          "start": 40,
+          "end": 49,
+          "start": 47,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 46,
-          "start": 43,
+          "end": 53,
+          "start": 50,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -896,33 +896,33 @@
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_CheckCloudIdentityAccountsExist_sync",
       "segments": [
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 39,
-          "start": 34,
+          "end": 46,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 42,
-          "start": 40,
+          "end": 49,
+          "start": 47,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 46,
-          "start": 43,
+          "end": 53,
+          "start": 50,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -973,33 +973,33 @@
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_CreateChannelPartnerLink_async",
       "segments": [
         {
-          "end": 49,
+          "end": 56,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 49,
+          "end": 56,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 43,
-          "start": 34,
+          "end": 50,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 46,
-          "start": 44,
+          "end": 53,
+          "start": 51,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 50,
-          "start": 47,
+          "end": 57,
+          "start": 54,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -1049,33 +1049,33 @@
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_CreateChannelPartnerLink_sync",
       "segments": [
         {
-          "end": 49,
+          "end": 56,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 49,
+          "end": 56,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 43,
-          "start": 34,
+          "end": 50,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 46,
-          "start": 44,
+          "end": 53,
+          "start": 51,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 50,
-          "start": 47,
+          "end": 57,
+          "start": 54,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -1134,33 +1134,33 @@
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_CreateChannelPartnerRepricingConfig_async",
       "segments": [
         {
-          "end": 48,
+          "end": 55,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 48,
+          "end": 55,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 42,
-          "start": 34,
+          "end": 49,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 45,
-          "start": 43,
+          "end": 52,
+          "start": 50,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 49,
-          "start": 46,
+          "end": 56,
+          "start": 53,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -1218,33 +1218,33 @@
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_CreateChannelPartnerRepricingConfig_sync",
       "segments": [
         {
-          "end": 48,
+          "end": 55,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 48,
+          "end": 55,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 42,
-          "start": 34,
+          "end": 49,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 45,
-          "start": 43,
+          "end": 52,
+          "start": 50,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 49,
-          "start": 46,
+          "end": 56,
+          "start": 53,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -1303,33 +1303,33 @@
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_CreateCustomerRepricingConfig_async",
       "segments": [
         {
-          "end": 48,
+          "end": 55,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 48,
+          "end": 55,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 42,
-          "start": 34,
+          "end": 49,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 45,
-          "start": 43,
+          "end": 52,
+          "start": 50,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 49,
-          "start": 46,
+          "end": 56,
+          "start": 53,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -1387,33 +1387,33 @@
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_CreateCustomerRepricingConfig_sync",
       "segments": [
         {
-          "end": 48,
+          "end": 55,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 48,
+          "end": 55,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 42,
-          "start": 34,
+          "end": 49,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 45,
-          "start": 43,
+          "end": 52,
+          "start": 50,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 49,
-          "start": 46,
+          "end": 56,
+          "start": 53,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -1464,33 +1464,33 @@
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_CreateCustomer_async",
       "segments": [
         {
-          "end": 49,
+          "end": 56,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 49,
+          "end": 56,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 43,
-          "start": 34,
+          "end": 50,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 46,
-          "start": 44,
+          "end": 53,
+          "start": 51,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 50,
-          "start": 47,
+          "end": 57,
+          "start": 54,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -1540,33 +1540,33 @@
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_CreateCustomer_sync",
       "segments": [
         {
-          "end": 49,
+          "end": 56,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 49,
+          "end": 56,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 43,
-          "start": 34,
+          "end": 50,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 46,
-          "start": 44,
+          "end": 53,
+          "start": 51,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 50,
-          "start": 47,
+          "end": 57,
+          "start": 54,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -1617,33 +1617,33 @@
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_CreateEntitlement_async",
       "segments": [
         {
-          "end": 52,
+          "end": 59,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 52,
+          "end": 59,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 42,
-          "start": 34,
+          "end": 49,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 49,
-          "start": 43,
+          "end": 56,
+          "start": 50,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 53,
-          "start": 50,
+          "end": 60,
+          "start": 57,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -1693,33 +1693,33 @@
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_CreateEntitlement_sync",
       "segments": [
         {
-          "end": 52,
+          "end": 59,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 52,
+          "end": 59,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 42,
-          "start": 34,
+          "end": 49,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 49,
-          "start": 43,
+          "end": 56,
+          "start": 50,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 53,
-          "start": 50,
+          "end": 60,
+          "start": 57,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -1773,31 +1773,31 @@
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_DeleteChannelPartnerRepricingConfig_async",
       "segments": [
         {
-          "end": 42,
+          "end": 49,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 42,
+          "end": 49,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 38,
-          "start": 34,
+          "end": 45,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "start": 39,
+          "start": 46,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 43,
+          "end": 50,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -1850,31 +1850,31 @@
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_DeleteChannelPartnerRepricingConfig_sync",
       "segments": [
         {
-          "end": 42,
+          "end": 49,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 42,
+          "end": 49,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 38,
-          "start": 34,
+          "end": 45,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "start": 39,
+          "start": 46,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 43,
+          "end": 50,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -1928,31 +1928,31 @@
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_DeleteCustomerRepricingConfig_async",
       "segments": [
         {
-          "end": 42,
+          "end": 49,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 42,
+          "end": 49,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 38,
-          "start": 34,
+          "end": 45,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "start": 39,
+          "start": 46,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 43,
+          "end": 50,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -2005,31 +2005,31 @@
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_DeleteCustomerRepricingConfig_sync",
       "segments": [
         {
-          "end": 42,
+          "end": 49,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 42,
+          "end": 49,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 38,
-          "start": 34,
+          "end": 45,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "start": 39,
+          "start": 46,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 43,
+          "end": 50,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -2083,31 +2083,31 @@
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_DeleteCustomer_async",
       "segments": [
         {
-          "end": 42,
+          "end": 49,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 42,
+          "end": 49,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 38,
-          "start": 34,
+          "end": 45,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "start": 39,
+          "start": 46,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 43,
+          "end": 50,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -2160,31 +2160,31 @@
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_DeleteCustomer_sync",
       "segments": [
         {
-          "end": 42,
+          "end": 49,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 42,
+          "end": 49,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 38,
-          "start": 34,
+          "end": 45,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "start": 39,
+          "start": 46,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 43,
+          "end": 50,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -2235,33 +2235,33 @@
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_GetChannelPartnerLink_async",
       "segments": [
         {
-          "end": 44,
+          "end": 51,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 44,
+          "end": 51,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 38,
-          "start": 34,
+          "end": 45,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 41,
-          "start": 39,
+          "end": 48,
+          "start": 46,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 45,
-          "start": 42,
+          "end": 52,
+          "start": 49,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -2311,33 +2311,33 @@
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_GetChannelPartnerLink_sync",
       "segments": [
         {
-          "end": 44,
+          "end": 51,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 44,
+          "end": 51,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 38,
-          "start": 34,
+          "end": 45,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 41,
-          "start": 39,
+          "end": 48,
+          "start": 46,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 45,
-          "start": 42,
+          "end": 52,
+          "start": 49,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -2392,33 +2392,33 @@
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_GetChannelPartnerRepricingConfig_async",
       "segments": [
         {
-          "end": 44,
+          "end": 51,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 44,
+          "end": 51,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 38,
-          "start": 34,
+          "end": 45,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 41,
-          "start": 39,
+          "end": 48,
+          "start": 46,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 45,
-          "start": 42,
+          "end": 52,
+          "start": 49,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -2472,33 +2472,33 @@
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_GetChannelPartnerRepricingConfig_sync",
       "segments": [
         {
-          "end": 44,
+          "end": 51,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 44,
+          "end": 51,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 38,
-          "start": 34,
+          "end": 45,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 41,
-          "start": 39,
+          "end": 48,
+          "start": 46,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 45,
-          "start": 42,
+          "end": 52,
+          "start": 49,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -2553,33 +2553,33 @@
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_GetCustomerRepricingConfig_async",
       "segments": [
         {
-          "end": 44,
+          "end": 51,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 44,
+          "end": 51,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 38,
-          "start": 34,
+          "end": 45,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 41,
-          "start": 39,
+          "end": 48,
+          "start": 46,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 45,
-          "start": 42,
+          "end": 52,
+          "start": 49,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -2633,33 +2633,33 @@
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_GetCustomerRepricingConfig_sync",
       "segments": [
         {
-          "end": 44,
+          "end": 51,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 44,
+          "end": 51,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 38,
-          "start": 34,
+          "end": 45,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 41,
-          "start": 39,
+          "end": 48,
+          "start": 46,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 45,
-          "start": 42,
+          "end": 52,
+          "start": 49,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -2714,33 +2714,33 @@
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_GetCustomer_async",
       "segments": [
         {
-          "end": 44,
+          "end": 51,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 44,
+          "end": 51,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 38,
-          "start": 34,
+          "end": 45,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 41,
-          "start": 39,
+          "end": 48,
+          "start": 46,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 45,
-          "start": 42,
+          "end": 52,
+          "start": 49,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -2794,33 +2794,33 @@
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_GetCustomer_sync",
       "segments": [
         {
-          "end": 44,
+          "end": 51,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 44,
+          "end": 51,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 38,
-          "start": 34,
+          "end": 45,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 41,
-          "start": 39,
+          "end": 48,
+          "start": 46,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 45,
-          "start": 42,
+          "end": 52,
+          "start": 49,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -2871,33 +2871,33 @@
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_GetEntitlement_async",
       "segments": [
         {
-          "end": 44,
+          "end": 51,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 44,
+          "end": 51,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 38,
-          "start": 34,
+          "end": 45,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 41,
-          "start": 39,
+          "end": 48,
+          "start": 46,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 45,
-          "start": 42,
+          "end": 52,
+          "start": 49,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -2947,33 +2947,33 @@
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_GetEntitlement_sync",
       "segments": [
         {
-          "end": 44,
+          "end": 51,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 44,
+          "end": 51,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 38,
-          "start": 34,
+          "end": 45,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 41,
-          "start": 39,
+          "end": 48,
+          "start": 46,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 45,
-          "start": 42,
+          "end": 52,
+          "start": 49,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -3024,33 +3024,33 @@
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_ImportCustomer_async",
       "segments": [
         {
-          "end": 46,
+          "end": 53,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 46,
+          "end": 53,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 40,
-          "start": 34,
+          "end": 47,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 43,
-          "start": 41,
+          "end": 50,
+          "start": 48,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 47,
-          "start": 44,
+          "end": 54,
+          "start": 51,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -3100,33 +3100,33 @@
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_ImportCustomer_sync",
       "segments": [
         {
-          "end": 46,
+          "end": 53,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 46,
+          "end": 53,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 40,
-          "start": 34,
+          "end": 47,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 43,
-          "start": 41,
+          "end": 50,
+          "start": 48,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 47,
-          "start": 44,
+          "end": 54,
+          "start": 51,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -3177,33 +3177,33 @@
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_ListChannelPartnerLinks_async",
       "segments": [
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 38,
-          "start": 34,
+          "end": 45,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 41,
-          "start": 39,
+          "end": 48,
+          "start": 46,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 46,
-          "start": 42,
+          "end": 53,
+          "start": 49,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -3253,33 +3253,33 @@
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_ListChannelPartnerLinks_sync",
       "segments": [
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 38,
-          "start": 34,
+          "end": 45,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 41,
-          "start": 39,
+          "end": 48,
+          "start": 46,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 46,
-          "start": 42,
+          "end": 53,
+          "start": 49,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -3334,33 +3334,33 @@
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_ListChannelPartnerRepricingConfigs_async",
       "segments": [
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 38,
-          "start": 34,
+          "end": 45,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 41,
-          "start": 39,
+          "end": 48,
+          "start": 46,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 46,
-          "start": 42,
+          "end": 53,
+          "start": 49,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -3414,33 +3414,33 @@
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_ListChannelPartnerRepricingConfigs_sync",
       "segments": [
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 38,
-          "start": 34,
+          "end": 45,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 41,
-          "start": 39,
+          "end": 48,
+          "start": 46,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 46,
-          "start": 42,
+          "end": 53,
+          "start": 49,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -3495,33 +3495,33 @@
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_ListCustomerRepricingConfigs_async",
       "segments": [
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 38,
-          "start": 34,
+          "end": 45,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 41,
-          "start": 39,
+          "end": 48,
+          "start": 46,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 46,
-          "start": 42,
+          "end": 53,
+          "start": 49,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -3575,33 +3575,33 @@
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_ListCustomerRepricingConfigs_sync",
       "segments": [
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 38,
-          "start": 34,
+          "end": 45,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 41,
-          "start": 39,
+          "end": 48,
+          "start": 46,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 46,
-          "start": 42,
+          "end": 53,
+          "start": 49,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -3652,33 +3652,33 @@
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_ListCustomers_async",
       "segments": [
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 38,
-          "start": 34,
+          "end": 45,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 41,
-          "start": 39,
+          "end": 48,
+          "start": 46,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 46,
-          "start": 42,
+          "end": 53,
+          "start": 49,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -3728,33 +3728,33 @@
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_ListCustomers_sync",
       "segments": [
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 38,
-          "start": 34,
+          "end": 45,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 41,
-          "start": 39,
+          "end": 48,
+          "start": 46,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 46,
-          "start": 42,
+          "end": 53,
+          "start": 49,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -3805,33 +3805,33 @@
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_ListEntitlements_async",
       "segments": [
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 38,
-          "start": 34,
+          "end": 45,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 41,
-          "start": 39,
+          "end": 48,
+          "start": 46,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 46,
-          "start": 42,
+          "end": 53,
+          "start": 49,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -3881,33 +3881,33 @@
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_ListEntitlements_sync",
       "segments": [
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 38,
-          "start": 34,
+          "end": 45,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 41,
-          "start": 39,
+          "end": 48,
+          "start": 46,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 46,
-          "start": 42,
+          "end": 53,
+          "start": 49,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -3958,33 +3958,33 @@
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_ListOffers_async",
       "segments": [
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 38,
-          "start": 34,
+          "end": 45,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 41,
-          "start": 39,
+          "end": 48,
+          "start": 46,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 46,
-          "start": 42,
+          "end": 53,
+          "start": 49,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -4034,33 +4034,33 @@
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_ListOffers_sync",
       "segments": [
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 38,
-          "start": 34,
+          "end": 45,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 41,
-          "start": 39,
+          "end": 48,
+          "start": 46,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 46,
-          "start": 42,
+          "end": 53,
+          "start": 49,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -4111,33 +4111,33 @@
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_ListProducts_async",
       "segments": [
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 38,
-          "start": 34,
+          "end": 45,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 41,
-          "start": 39,
+          "end": 48,
+          "start": 46,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 46,
-          "start": 42,
+          "end": 53,
+          "start": 49,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -4187,33 +4187,33 @@
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_ListProducts_sync",
       "segments": [
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 38,
-          "start": 34,
+          "end": 45,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 41,
-          "start": 39,
+          "end": 48,
+          "start": 46,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 46,
-          "start": 42,
+          "end": 53,
+          "start": 49,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -4264,33 +4264,33 @@
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_ListPurchasableOffers_async",
       "segments": [
         {
-          "end": 49,
+          "end": 56,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 49,
+          "end": 56,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 42,
-          "start": 34,
+          "end": 49,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 45,
-          "start": 43,
+          "end": 52,
+          "start": 50,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 50,
-          "start": 46,
+          "end": 57,
+          "start": 53,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -4340,33 +4340,33 @@
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_ListPurchasableOffers_sync",
       "segments": [
         {
-          "end": 49,
+          "end": 56,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 49,
+          "end": 56,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 42,
-          "start": 34,
+          "end": 49,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 45,
-          "start": 43,
+          "end": 52,
+          "start": 50,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 50,
-          "start": 46,
+          "end": 57,
+          "start": 53,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -4417,33 +4417,33 @@
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_ListPurchasableSkus_async",
       "segments": [
         {
-          "end": 49,
+          "end": 56,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 49,
+          "end": 56,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 42,
-          "start": 34,
+          "end": 49,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 45,
-          "start": 43,
+          "end": 52,
+          "start": 50,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 50,
-          "start": 46,
+          "end": 57,
+          "start": 53,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -4493,33 +4493,33 @@
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_ListPurchasableSkus_sync",
       "segments": [
         {
-          "end": 49,
+          "end": 56,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 49,
+          "end": 56,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 42,
-          "start": 34,
+          "end": 49,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 45,
-          "start": 43,
+          "end": 52,
+          "start": 50,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 50,
-          "start": 46,
+          "end": 57,
+          "start": 53,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -4570,33 +4570,33 @@
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_ListSkus_async",
       "segments": [
         {
-          "end": 46,
+          "end": 53,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 46,
+          "end": 53,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 39,
-          "start": 34,
+          "end": 46,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 42,
-          "start": 40,
+          "end": 49,
+          "start": 47,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 47,
-          "start": 43,
+          "end": 54,
+          "start": 50,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -4646,33 +4646,33 @@
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_ListSkus_sync",
       "segments": [
         {
-          "end": 46,
+          "end": 53,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 46,
+          "end": 53,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 39,
-          "start": 34,
+          "end": 46,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 42,
-          "start": 40,
+          "end": 49,
+          "start": 47,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 47,
-          "start": 43,
+          "end": 54,
+          "start": 50,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -4723,33 +4723,33 @@
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_ListSubscribers_async",
       "segments": [
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 38,
-          "start": 34,
+          "end": 45,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 41,
-          "start": 39,
+          "end": 48,
+          "start": 46,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 46,
-          "start": 42,
+          "end": 53,
+          "start": 49,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -4799,33 +4799,33 @@
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_ListSubscribers_sync",
       "segments": [
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 38,
-          "start": 34,
+          "end": 45,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 41,
-          "start": 39,
+          "end": 48,
+          "start": 46,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 46,
-          "start": 42,
+          "end": 53,
+          "start": 49,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -4876,33 +4876,33 @@
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_ListTransferableOffers_async",
       "segments": [
         {
-          "end": 47,
+          "end": 54,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 47,
+          "end": 54,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 40,
-          "start": 34,
+          "end": 47,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 43,
-          "start": 41,
+          "end": 50,
+          "start": 48,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 48,
-          "start": 44,
+          "end": 55,
+          "start": 51,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -4952,33 +4952,33 @@
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_ListTransferableOffers_sync",
       "segments": [
         {
-          "end": 47,
+          "end": 54,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 47,
+          "end": 54,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 40,
-          "start": 34,
+          "end": 47,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 43,
-          "start": 41,
+          "end": 50,
+          "start": 48,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 48,
-          "start": 44,
+          "end": 55,
+          "start": 51,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -5029,33 +5029,33 @@
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_ListTransferableSkus_async",
       "segments": [
         {
-          "end": 46,
+          "end": 53,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 46,
+          "end": 53,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 39,
-          "start": 34,
+          "end": 46,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 42,
-          "start": 40,
+          "end": 49,
+          "start": 47,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 47,
-          "start": 43,
+          "end": 54,
+          "start": 50,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -5105,33 +5105,33 @@
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_ListTransferableSkus_sync",
       "segments": [
         {
-          "end": 46,
+          "end": 53,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 46,
+          "end": 53,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 39,
-          "start": 34,
+          "end": 46,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 42,
-          "start": 40,
+          "end": 49,
+          "start": 47,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 47,
-          "start": 43,
+          "end": 54,
+          "start": 50,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -5182,33 +5182,33 @@
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_LookupOffer_async",
       "segments": [
         {
-          "end": 44,
+          "end": 51,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 44,
+          "end": 51,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 38,
-          "start": 34,
+          "end": 45,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 41,
-          "start": 39,
+          "end": 48,
+          "start": 46,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 45,
-          "start": 42,
+          "end": 52,
+          "start": 49,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -5258,33 +5258,33 @@
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_LookupOffer_sync",
       "segments": [
         {
-          "end": 44,
+          "end": 51,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 44,
+          "end": 51,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 38,
-          "start": 34,
+          "end": 45,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 41,
-          "start": 39,
+          "end": 48,
+          "start": 46,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 45,
-          "start": 42,
+          "end": 52,
+          "start": 49,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -5335,33 +5335,33 @@
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_ProvisionCloudIdentity_async",
       "segments": [
         {
-          "end": 48,
+          "end": 55,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 48,
+          "end": 55,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 38,
-          "start": 34,
+          "end": 45,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 45,
-          "start": 39,
+          "end": 52,
+          "start": 46,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 49,
-          "start": 46,
+          "end": 56,
+          "start": 53,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -5411,33 +5411,33 @@
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_ProvisionCloudIdentity_sync",
       "segments": [
         {
-          "end": 48,
+          "end": 55,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 48,
+          "end": 55,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 38,
-          "start": 34,
+          "end": 45,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 45,
-          "start": 39,
+          "end": 52,
+          "start": 46,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 49,
-          "start": 46,
+          "end": 56,
+          "start": 53,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -5488,33 +5488,33 @@
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_RegisterSubscriber_async",
       "segments": [
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 39,
-          "start": 34,
+          "end": 46,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 42,
-          "start": 40,
+          "end": 49,
+          "start": 47,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 46,
-          "start": 43,
+          "end": 53,
+          "start": 50,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -5564,33 +5564,33 @@
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_RegisterSubscriber_sync",
       "segments": [
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 39,
-          "start": 34,
+          "end": 46,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 42,
-          "start": 40,
+          "end": 49,
+          "start": 47,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 46,
-          "start": 43,
+          "end": 53,
+          "start": 50,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -5641,33 +5641,33 @@
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_StartPaidService_async",
       "segments": [
         {
-          "end": 48,
+          "end": 55,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 48,
+          "end": 55,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 38,
-          "start": 34,
+          "end": 45,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 45,
-          "start": 39,
+          "end": 52,
+          "start": 46,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 49,
-          "start": 46,
+          "end": 56,
+          "start": 53,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -5717,33 +5717,33 @@
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_StartPaidService_sync",
       "segments": [
         {
-          "end": 48,
+          "end": 55,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 48,
+          "end": 55,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 38,
-          "start": 34,
+          "end": 45,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 45,
-          "start": 39,
+          "end": 52,
+          "start": 46,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 49,
-          "start": 46,
+          "end": 56,
+          "start": 53,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -5794,33 +5794,33 @@
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_SuspendEntitlement_async",
       "segments": [
         {
-          "end": 48,
+          "end": 55,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 48,
+          "end": 55,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 38,
-          "start": 34,
+          "end": 45,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 45,
-          "start": 39,
+          "end": 52,
+          "start": 46,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 49,
-          "start": 46,
+          "end": 56,
+          "start": 53,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -5870,33 +5870,33 @@
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_SuspendEntitlement_sync",
       "segments": [
         {
-          "end": 48,
+          "end": 55,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 48,
+          "end": 55,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 38,
-          "start": 34,
+          "end": 45,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 45,
-          "start": 39,
+          "end": 52,
+          "start": 46,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 49,
-          "start": 46,
+          "end": 56,
+          "start": 53,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -5947,33 +5947,33 @@
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_TransferEntitlementsToGoogle_async",
       "segments": [
         {
-          "end": 52,
+          "end": 59,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 52,
+          "end": 59,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 42,
-          "start": 34,
+          "end": 49,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 49,
-          "start": 43,
+          "end": 56,
+          "start": 50,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 53,
-          "start": 50,
+          "end": 60,
+          "start": 57,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -6023,33 +6023,33 @@
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_TransferEntitlementsToGoogle_sync",
       "segments": [
         {
-          "end": 52,
+          "end": 59,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 52,
+          "end": 59,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 42,
-          "start": 34,
+          "end": 49,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 49,
-          "start": 43,
+          "end": 56,
+          "start": 50,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 53,
-          "start": 50,
+          "end": 60,
+          "start": 57,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -6100,33 +6100,33 @@
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_TransferEntitlements_async",
       "segments": [
         {
-          "end": 52,
+          "end": 59,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 52,
+          "end": 59,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 42,
-          "start": 34,
+          "end": 49,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 49,
-          "start": 43,
+          "end": 56,
+          "start": 50,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 53,
-          "start": 50,
+          "end": 60,
+          "start": 57,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -6176,33 +6176,33 @@
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_TransferEntitlements_sync",
       "segments": [
         {
-          "end": 52,
+          "end": 59,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 52,
+          "end": 59,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 42,
-          "start": 34,
+          "end": 49,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 49,
-          "start": 43,
+          "end": 56,
+          "start": 50,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 53,
-          "start": 50,
+          "end": 60,
+          "start": 57,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -6253,33 +6253,33 @@
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_UnregisterSubscriber_async",
       "segments": [
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 39,
-          "start": 34,
+          "end": 46,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 42,
-          "start": 40,
+          "end": 49,
+          "start": 47,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 46,
-          "start": 43,
+          "end": 53,
+          "start": 50,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -6329,33 +6329,33 @@
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_UnregisterSubscriber_sync",
       "segments": [
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 39,
-          "start": 34,
+          "end": 46,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 42,
-          "start": 40,
+          "end": 49,
+          "start": 47,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 46,
-          "start": 43,
+          "end": 53,
+          "start": 50,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -6406,33 +6406,33 @@
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_UpdateChannelPartnerLink_async",
       "segments": [
         {
-          "end": 49,
+          "end": 56,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 49,
+          "end": 56,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 43,
-          "start": 34,
+          "end": 50,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 46,
-          "start": 44,
+          "end": 53,
+          "start": 51,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 50,
-          "start": 47,
+          "end": 57,
+          "start": 54,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -6482,33 +6482,33 @@
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_UpdateChannelPartnerLink_sync",
       "segments": [
         {
-          "end": 49,
+          "end": 56,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 49,
+          "end": 56,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 43,
-          "start": 34,
+          "end": 50,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 46,
-          "start": 44,
+          "end": 53,
+          "start": 51,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 50,
-          "start": 47,
+          "end": 57,
+          "start": 54,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -6563,33 +6563,33 @@
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_UpdateChannelPartnerRepricingConfig_async",
       "segments": [
         {
-          "end": 47,
+          "end": 54,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 47,
+          "end": 54,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 41,
-          "start": 34,
+          "end": 48,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 44,
-          "start": 42,
+          "end": 51,
+          "start": 49,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 48,
-          "start": 45,
+          "end": 55,
+          "start": 52,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -6643,33 +6643,33 @@
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_UpdateChannelPartnerRepricingConfig_sync",
       "segments": [
         {
-          "end": 47,
+          "end": 54,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 47,
+          "end": 54,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 41,
-          "start": 34,
+          "end": 48,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 44,
-          "start": 42,
+          "end": 51,
+          "start": 49,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 48,
-          "start": 45,
+          "end": 55,
+          "start": 52,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -6724,33 +6724,33 @@
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_UpdateCustomerRepricingConfig_async",
       "segments": [
         {
-          "end": 47,
+          "end": 54,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 47,
+          "end": 54,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 41,
-          "start": 34,
+          "end": 48,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 44,
-          "start": 42,
+          "end": 51,
+          "start": 49,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 48,
-          "start": 45,
+          "end": 55,
+          "start": 52,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -6804,33 +6804,33 @@
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_UpdateCustomerRepricingConfig_sync",
       "segments": [
         {
-          "end": 47,
+          "end": 54,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 47,
+          "end": 54,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 41,
-          "start": 34,
+          "end": 48,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 44,
-          "start": 42,
+          "end": 51,
+          "start": 49,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 48,
-          "start": 45,
+          "end": 55,
+          "start": 52,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -6881,33 +6881,33 @@
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_UpdateCustomer_async",
       "segments": [
         {
-          "end": 48,
+          "end": 55,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 48,
+          "end": 55,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 42,
-          "start": 34,
+          "end": 49,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 45,
-          "start": 43,
+          "end": 52,
+          "start": 50,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 49,
-          "start": 46,
+          "end": 56,
+          "start": 53,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -6957,33 +6957,33 @@
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_UpdateCustomer_sync",
       "segments": [
         {
-          "end": 48,
+          "end": 55,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 48,
+          "end": 55,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 42,
-          "start": 34,
+          "end": 49,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 45,
-          "start": 43,
+          "end": 52,
+          "start": 50,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 49,
-          "start": 46,
+          "end": 56,
+          "start": 53,
           "type": "RESPONSE_HANDLING"
         }
       ],
