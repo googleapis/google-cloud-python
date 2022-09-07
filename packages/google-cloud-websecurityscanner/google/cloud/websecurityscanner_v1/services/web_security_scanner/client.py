@@ -458,6 +458,13 @@ class WebSecurityScannerClient(metaclass=WebSecurityScannerClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import websecurityscanner_v1
 
             def sample_create_scan_config():
@@ -532,6 +539,13 @@ class WebSecurityScannerClient(metaclass=WebSecurityScannerClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import websecurityscanner_v1
 
             def sample_delete_scan_config():
@@ -593,6 +607,13 @@ class WebSecurityScannerClient(metaclass=WebSecurityScannerClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import websecurityscanner_v1
 
             def sample_get_scan_config():
@@ -666,6 +687,13 @@ class WebSecurityScannerClient(metaclass=WebSecurityScannerClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import websecurityscanner_v1
 
             def sample_list_scan_configs():
@@ -752,6 +780,13 @@ class WebSecurityScannerClient(metaclass=WebSecurityScannerClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import websecurityscanner_v1
 
             def sample_update_scan_config():
@@ -827,6 +862,13 @@ class WebSecurityScannerClient(metaclass=WebSecurityScannerClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import websecurityscanner_v1
 
             def sample_start_scan_run():
@@ -901,6 +943,13 @@ class WebSecurityScannerClient(metaclass=WebSecurityScannerClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import websecurityscanner_v1
 
             def sample_get_scan_run():
@@ -975,6 +1024,13 @@ class WebSecurityScannerClient(metaclass=WebSecurityScannerClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import websecurityscanner_v1
 
             def sample_list_scan_runs():
@@ -1060,6 +1116,13 @@ class WebSecurityScannerClient(metaclass=WebSecurityScannerClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import websecurityscanner_v1
 
             def sample_stop_scan_run():
@@ -1134,6 +1197,13 @@ class WebSecurityScannerClient(metaclass=WebSecurityScannerClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import websecurityscanner_v1
 
             def sample_list_crawled_urls():
@@ -1219,6 +1289,13 @@ class WebSecurityScannerClient(metaclass=WebSecurityScannerClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import websecurityscanner_v1
 
             def sample_get_finding():
@@ -1292,6 +1369,13 @@ class WebSecurityScannerClient(metaclass=WebSecurityScannerClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import websecurityscanner_v1
 
             def sample_list_findings():
@@ -1377,6 +1461,13 @@ class WebSecurityScannerClient(metaclass=WebSecurityScannerClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import websecurityscanner_v1
 
             def sample_list_finding_type_stats():
