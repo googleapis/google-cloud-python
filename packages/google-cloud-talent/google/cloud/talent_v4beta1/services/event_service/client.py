@@ -448,6 +448,13 @@ class EventServiceClient(metaclass=EventServiceClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import talent_v4beta1
 
             def sample_create_client_event():
@@ -457,7 +464,7 @@ class EventServiceClient(metaclass=EventServiceClientMeta):
                 # Initialize request argument(s)
                 client_event = talent_v4beta1.ClientEvent()
                 client_event.job_event.type_ = "INTERVIEW_GRANTED"
-                client_event.job_event.jobs = ['jobs_value_1', 'jobs_value_2']
+                client_event.job_event.jobs = ['jobs_value1', 'jobs_value2']
                 client_event.event_id = "event_id_value"
 
                 request = talent_v4beta1.CreateClientEventRequest(
