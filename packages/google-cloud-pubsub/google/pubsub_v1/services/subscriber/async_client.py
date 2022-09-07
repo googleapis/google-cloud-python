@@ -248,6 +248,13 @@ class SubscriberAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google import pubsub_v1
 
             async def sample_create_subscription():
@@ -414,6 +421,13 @@ class SubscriberAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google import pubsub_v1
 
             async def sample_get_subscription():
@@ -521,6 +535,13 @@ class SubscriberAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google import pubsub_v1
 
             async def sample_update_subscription():
@@ -608,6 +629,13 @@ class SubscriberAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google import pubsub_v1
 
             async def sample_list_subscriptions():
@@ -731,6 +759,13 @@ class SubscriberAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google import pubsub_v1
 
             async def sample_delete_subscription():
@@ -832,6 +867,13 @@ class SubscriberAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google import pubsub_v1
 
             async def sample_modify_ack_deadline():
@@ -841,7 +883,7 @@ class SubscriberAsyncClient:
                 # Initialize request argument(s)
                 request = pubsub_v1.ModifyAckDeadlineRequest(
                     subscription="subscription_value",
-                    ack_ids=['ack_ids_value_1', 'ack_ids_value_2'],
+                    ack_ids=['ack_ids_value1', 'ack_ids_value2'],
                     ack_deadline_seconds=2066,
                 )
 
@@ -961,6 +1003,13 @@ class SubscriberAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google import pubsub_v1
 
             async def sample_acknowledge():
@@ -970,7 +1019,7 @@ class SubscriberAsyncClient:
                 # Initialize request argument(s)
                 request = pubsub_v1.AcknowledgeRequest(
                     subscription="subscription_value",
-                    ack_ids=['ack_ids_value_1', 'ack_ids_value_2'],
+                    ack_ids=['ack_ids_value1', 'ack_ids_value2'],
                 )
 
                 # Make the request
@@ -1070,6 +1119,13 @@ class SubscriberAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google import pubsub_v1
 
             async def sample_pull():
@@ -1217,6 +1273,13 @@ class SubscriberAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google import pubsub_v1
 
             async def sample_streaming_pull():
@@ -1318,6 +1381,13 @@ class SubscriberAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google import pubsub_v1
 
             async def sample_modify_push_config():
@@ -1432,6 +1502,13 @@ class SubscriberAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google import pubsub_v1
 
             async def sample_get_snapshot():
@@ -1545,6 +1622,13 @@ class SubscriberAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google import pubsub_v1
 
             async def sample_list_snapshots():
@@ -1682,6 +1766,13 @@ class SubscriberAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google import pubsub_v1
 
             async def sample_create_snapshot():
@@ -1819,6 +1910,13 @@ class SubscriberAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google import pubsub_v1
 
             async def sample_update_snapshot():
@@ -1916,6 +2014,13 @@ class SubscriberAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google import pubsub_v1
 
             async def sample_delete_snapshot():
@@ -2015,6 +2120,13 @@ class SubscriberAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google import pubsub_v1
 
             async def sample_seek():

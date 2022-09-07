@@ -24,6 +24,13 @@
 
 
 # [START pubsub_v1_generated_Subscriber_Acknowledge_async]
+# This snippet has been automatically generated and should be regarded as a
+# code template only.
+# It will require modifications to work:
+# - It may require correct/in-range values for request initialization.
+# - It may require specifying regional endpoints when creating the service
+#   client as shown in:
+#   https://googleapis.dev/python/google-api-core/latest/client_options.html
 from google import pubsub_v1
 
 
@@ -34,7 +41,7 @@ async def sample_acknowledge():
     # Initialize request argument(s)
     request = pubsub_v1.AcknowledgeRequest(
         subscription="subscription_value",
-        ack_ids=['ack_ids_value_1', 'ack_ids_value_2'],
+        ack_ids=['ack_ids_value1', 'ack_ids_value2'],
     )
 
     # Make the request
