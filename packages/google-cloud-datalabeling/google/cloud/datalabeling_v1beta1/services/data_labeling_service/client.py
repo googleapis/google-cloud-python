@@ -605,6 +605,13 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import datalabeling_v1beta1
 
             def sample_create_dataset():
@@ -708,6 +715,13 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import datalabeling_v1beta1
 
             def sample_get_dataset():
@@ -806,6 +820,13 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import datalabeling_v1beta1
 
             def sample_list_datasets():
@@ -922,6 +943,13 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import datalabeling_v1beta1
 
             def sample_delete_dataset():
@@ -1010,6 +1038,13 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import datalabeling_v1beta1
 
             def sample_import_data():
@@ -1131,6 +1166,13 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import datalabeling_v1beta1
 
             def sample_export_data():
@@ -1272,6 +1314,13 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import datalabeling_v1beta1
 
             def sample_get_data_item():
@@ -1369,6 +1418,13 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import datalabeling_v1beta1
 
             def sample_list_data_items():
@@ -1485,6 +1541,13 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import datalabeling_v1beta1
 
             def sample_get_annotated_dataset():
@@ -1586,6 +1649,13 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import datalabeling_v1beta1
 
             def sample_list_annotated_datasets():
@@ -1705,6 +1775,13 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import datalabeling_v1beta1
 
             def sample_delete_annotated_dataset():
@@ -1771,6 +1848,13 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import datalabeling_v1beta1
 
             def sample_label_image():
@@ -1912,6 +1996,13 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import datalabeling_v1beta1
 
             def sample_label_video():
@@ -2052,6 +2143,13 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import datalabeling_v1beta1
 
             def sample_label_text():
@@ -2191,6 +2289,13 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import datalabeling_v1beta1
 
             def sample_get_example():
@@ -2299,6 +2404,13 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import datalabeling_v1beta1
 
             def sample_list_examples():
@@ -2419,6 +2531,13 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import datalabeling_v1beta1
 
             def sample_create_annotation_spec_set():
@@ -2532,6 +2651,13 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import datalabeling_v1beta1
 
             def sample_get_annotation_spec_set():
@@ -2635,6 +2761,13 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import datalabeling_v1beta1
 
             def sample_list_annotation_spec_sets():
@@ -2756,6 +2889,13 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import datalabeling_v1beta1
 
             def sample_delete_annotation_spec_set():
@@ -2845,6 +2985,13 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import datalabeling_v1beta1
 
             def sample_create_instruction():
@@ -2963,6 +3110,13 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import datalabeling_v1beta1
 
             def sample_get_instruction():
@@ -3061,6 +3215,13 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import datalabeling_v1beta1
 
             def sample_list_instructions():
@@ -3178,6 +3339,13 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import datalabeling_v1beta1
 
             def sample_delete_instruction():
@@ -3262,6 +3430,13 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import datalabeling_v1beta1
 
             def sample_get_evaluation():
@@ -3362,6 +3537,13 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import datalabeling_v1beta1
 
             def sample_search_evaluations():
@@ -3514,6 +3696,13 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import datalabeling_v1beta1
 
             def sample_search_example_comparisons():
@@ -3630,6 +3819,13 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import datalabeling_v1beta1
 
             def sample_create_evaluation_job():
@@ -3746,6 +3942,13 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import datalabeling_v1beta1
 
             def sample_update_evaluation_job():
@@ -3862,6 +4065,13 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import datalabeling_v1beta1
 
             def sample_get_evaluation_job():
@@ -3963,6 +4173,13 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import datalabeling_v1beta1
 
             def sample_pause_evaluation_job():
@@ -4050,6 +4267,13 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import datalabeling_v1beta1
 
             def sample_resume_evaluation_job():
@@ -4134,6 +4358,13 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import datalabeling_v1beta1
 
             def sample_delete_evaluation_job():
@@ -4220,6 +4451,13 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import datalabeling_v1beta1
 
             def sample_list_evaluation_jobs():
