@@ -266,6 +266,13 @@ class ManagedIdentitiesServiceAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import managedidentities_v1
 
             async def sample_create_microsoft_ad_domain():
@@ -276,7 +283,7 @@ class ManagedIdentitiesServiceAsyncClient:
                 domain = managedidentities_v1.Domain()
                 domain.name = "name_value"
                 domain.reserved_ip_range = "reserved_ip_range_value"
-                domain.locations = ['locations_value_1', 'locations_value_2']
+                domain.locations = ['locations_value1', 'locations_value2']
 
                 request = managedidentities_v1.CreateMicrosoftAdDomainRequest(
                     parent="parent_value",
@@ -415,6 +422,13 @@ class ManagedIdentitiesServiceAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import managedidentities_v1
 
             async def sample_reset_admin_password():
@@ -510,6 +524,13 @@ class ManagedIdentitiesServiceAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import managedidentities_v1
 
             async def sample_list_domains():
@@ -618,6 +639,13 @@ class ManagedIdentitiesServiceAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import managedidentities_v1
 
             async def sample_get_domain():
@@ -714,6 +742,13 @@ class ManagedIdentitiesServiceAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import managedidentities_v1
 
             async def sample_update_domain():
@@ -724,7 +759,7 @@ class ManagedIdentitiesServiceAsyncClient:
                 domain = managedidentities_v1.Domain()
                 domain.name = "name_value"
                 domain.reserved_ip_range = "reserved_ip_range_value"
-                domain.locations = ['locations_value_1', 'locations_value_2']
+                domain.locations = ['locations_value1', 'locations_value2']
 
                 request = managedidentities_v1.UpdateDomainRequest(
                     domain=domain,
@@ -846,6 +881,13 @@ class ManagedIdentitiesServiceAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import managedidentities_v1
 
             async def sample_delete_domain():
@@ -964,6 +1006,13 @@ class ManagedIdentitiesServiceAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import managedidentities_v1
 
             async def sample_attach_trust():
@@ -975,7 +1024,7 @@ class ManagedIdentitiesServiceAsyncClient:
                 trust.target_domain_name = "target_domain_name_value"
                 trust.trust_type = "EXTERNAL"
                 trust.trust_direction = "BIDIRECTIONAL"
-                trust.target_dns_ip_addresses = ['target_dns_ip_addresses_value_1', 'target_dns_ip_addresses_value_2']
+                trust.target_dns_ip_addresses = ['target_dns_ip_addresses_value1', 'target_dns_ip_addresses_value2']
                 trust.trust_handshake_secret = "trust_handshake_secret_value"
 
                 request = managedidentities_v1.AttachTrustRequest(
@@ -1092,6 +1141,13 @@ class ManagedIdentitiesServiceAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import managedidentities_v1
 
             async def sample_reconfigure_trust():
@@ -1102,7 +1158,7 @@ class ManagedIdentitiesServiceAsyncClient:
                 request = managedidentities_v1.ReconfigureTrustRequest(
                     name="name_value",
                     target_domain_name="target_domain_name_value",
-                    target_dns_ip_addresses=['target_dns_ip_addresses_value_1', 'target_dns_ip_addresses_value_2'],
+                    target_dns_ip_addresses=['target_dns_ip_addresses_value1', 'target_dns_ip_addresses_value2'],
                 )
 
                 # Make the request
@@ -1226,6 +1282,13 @@ class ManagedIdentitiesServiceAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import managedidentities_v1
 
             async def sample_detach_trust():
@@ -1237,7 +1300,7 @@ class ManagedIdentitiesServiceAsyncClient:
                 trust.target_domain_name = "target_domain_name_value"
                 trust.trust_type = "EXTERNAL"
                 trust.trust_direction = "BIDIRECTIONAL"
-                trust.target_dns_ip_addresses = ['target_dns_ip_addresses_value_1', 'target_dns_ip_addresses_value_2']
+                trust.target_dns_ip_addresses = ['target_dns_ip_addresses_value1', 'target_dns_ip_addresses_value2']
                 trust.trust_handshake_secret = "trust_handshake_secret_value"
 
                 request = managedidentities_v1.DetachTrustRequest(
@@ -1357,6 +1420,13 @@ class ManagedIdentitiesServiceAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import managedidentities_v1
 
             async def sample_validate_trust():
@@ -1368,7 +1438,7 @@ class ManagedIdentitiesServiceAsyncClient:
                 trust.target_domain_name = "target_domain_name_value"
                 trust.trust_type = "EXTERNAL"
                 trust.trust_direction = "BIDIRECTIONAL"
-                trust.target_dns_ip_addresses = ['target_dns_ip_addresses_value_1', 'target_dns_ip_addresses_value_2']
+                trust.target_dns_ip_addresses = ['target_dns_ip_addresses_value1', 'target_dns_ip_addresses_value2']
                 trust.trust_handshake_secret = "trust_handshake_secret_value"
 
                 request = managedidentities_v1.ValidateTrustRequest(

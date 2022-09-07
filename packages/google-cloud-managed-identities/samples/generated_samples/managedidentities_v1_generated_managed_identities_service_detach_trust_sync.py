@@ -24,6 +24,13 @@
 
 
 # [START managedidentities_v1_generated_ManagedIdentitiesService_DetachTrust_sync]
+# This snippet has been automatically generated and should be regarded as a
+# code template only.
+# It will require modifications to work:
+# - It may require correct/in-range values for request initialization.
+# - It may require specifying regional endpoints when creating the service
+#   client as shown in:
+#   https://googleapis.dev/python/google-api-core/latest/client_options.html
 from google.cloud import managedidentities_v1
 
 
@@ -36,7 +43,7 @@ def sample_detach_trust():
     trust.target_domain_name = "target_domain_name_value"
     trust.trust_type = "EXTERNAL"
     trust.trust_direction = "BIDIRECTIONAL"
-    trust.target_dns_ip_addresses = ['target_dns_ip_addresses_value_1', 'target_dns_ip_addresses_value_2']
+    trust.target_dns_ip_addresses = ['target_dns_ip_addresses_value1', 'target_dns_ip_addresses_value2']
     trust.trust_handshake_secret = "trust_handshake_secret_value"
 
     request = managedidentities_v1.DetachTrustRequest(

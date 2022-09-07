@@ -24,6 +24,13 @@
 
 
 # [START managedidentities_v1_generated_ManagedIdentitiesService_UpdateDomain_sync]
+# This snippet has been automatically generated and should be regarded as a
+# code template only.
+# It will require modifications to work:
+# - It may require correct/in-range values for request initialization.
+# - It may require specifying regional endpoints when creating the service
+#   client as shown in:
+#   https://googleapis.dev/python/google-api-core/latest/client_options.html
 from google.cloud import managedidentities_v1
 
 
@@ -35,7 +42,7 @@ def sample_update_domain():
     domain = managedidentities_v1.Domain()
     domain.name = "name_value"
     domain.reserved_ip_range = "reserved_ip_range_value"
-    domain.locations = ['locations_value_1', 'locations_value_2']
+    domain.locations = ['locations_value1', 'locations_value2']
 
     request = managedidentities_v1.UpdateDomainRequest(
         domain=domain,
