@@ -67,33 +67,33 @@
       "regionTag": "securitycenter_v1p1beta1_generated_SecurityCenter_CreateFinding_async",
       "segments": [
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 39,
-          "start": 34,
+          "end": 46,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 42,
-          "start": 40,
+          "end": 49,
+          "start": 47,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 46,
-          "start": 43,
+          "end": 53,
+          "start": 50,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -155,33 +155,33 @@
       "regionTag": "securitycenter_v1p1beta1_generated_SecurityCenter_CreateFinding_sync",
       "segments": [
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 39,
-          "start": 34,
+          "end": 46,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 42,
-          "start": 40,
+          "end": 49,
+          "start": 47,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 46,
-          "start": 43,
+          "end": 53,
+          "start": 50,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -244,33 +244,33 @@
       "regionTag": "securitycenter_v1p1beta1_generated_SecurityCenter_CreateNotificationConfig_async",
       "segments": [
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 39,
-          "start": 34,
+          "end": 46,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 42,
-          "start": 40,
+          "end": 49,
+          "start": 47,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 46,
-          "start": 43,
+          "end": 53,
+          "start": 50,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -332,33 +332,33 @@
       "regionTag": "securitycenter_v1p1beta1_generated_SecurityCenter_CreateNotificationConfig_sync",
       "segments": [
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 39,
-          "start": 34,
+          "end": 46,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 42,
-          "start": 40,
+          "end": 49,
+          "start": 47,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 46,
-          "start": 43,
+          "end": 53,
+          "start": 50,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -417,33 +417,33 @@
       "regionTag": "securitycenter_v1p1beta1_generated_SecurityCenter_CreateSource_async",
       "segments": [
         {
-          "end": 44,
+          "end": 51,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 44,
+          "end": 51,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 38,
-          "start": 34,
+          "end": 45,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 41,
-          "start": 39,
+          "end": 48,
+          "start": 46,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 45,
-          "start": 42,
+          "end": 52,
+          "start": 49,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -501,33 +501,33 @@
       "regionTag": "securitycenter_v1p1beta1_generated_SecurityCenter_CreateSource_sync",
       "segments": [
         {
-          "end": 44,
+          "end": 51,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 44,
+          "end": 51,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 38,
-          "start": 34,
+          "end": 45,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 41,
-          "start": 39,
+          "end": 48,
+          "start": 46,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 45,
-          "start": 42,
+          "end": 52,
+          "start": 49,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -581,31 +581,31 @@
       "regionTag": "securitycenter_v1p1beta1_generated_SecurityCenter_DeleteNotificationConfig_async",
       "segments": [
         {
-          "end": 42,
+          "end": 49,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 42,
+          "end": 49,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 38,
-          "start": 34,
+          "end": 45,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "start": 39,
+          "start": 46,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 43,
+          "end": 50,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -658,31 +658,31 @@
       "regionTag": "securitycenter_v1p1beta1_generated_SecurityCenter_DeleteNotificationConfig_sync",
       "segments": [
         {
-          "end": 42,
+          "end": 49,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 42,
+          "end": 49,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 38,
-          "start": 34,
+          "end": 45,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "start": 39,
+          "start": 46,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 43,
+          "end": 50,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -737,33 +737,33 @@
       "regionTag": "securitycenter_v1p1beta1_generated_SecurityCenter_GetIamPolicy_async",
       "segments": [
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 34,
-          "start": 32,
+          "end": 41,
+          "start": 39,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 39,
-          "start": 35,
+          "end": 46,
+          "start": 42,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 42,
-          "start": 40,
+          "end": 49,
+          "start": 47,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 46,
-          "start": 43,
+          "end": 53,
+          "start": 50,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -817,33 +817,33 @@
       "regionTag": "securitycenter_v1p1beta1_generated_SecurityCenter_GetIamPolicy_sync",
       "segments": [
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 34,
-          "start": 32,
+          "end": 41,
+          "start": 39,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 39,
-          "start": 35,
+          "end": 46,
+          "start": 42,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 42,
-          "start": 40,
+          "end": 49,
+          "start": 47,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 46,
-          "start": 43,
+          "end": 53,
+          "start": 50,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -898,33 +898,33 @@
       "regionTag": "securitycenter_v1p1beta1_generated_SecurityCenter_GetNotificationConfig_async",
       "segments": [
         {
-          "end": 44,
+          "end": 51,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 44,
+          "end": 51,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 38,
-          "start": 34,
+          "end": 45,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 41,
-          "start": 39,
+          "end": 48,
+          "start": 46,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 45,
-          "start": 42,
+          "end": 52,
+          "start": 49,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -978,33 +978,33 @@
       "regionTag": "securitycenter_v1p1beta1_generated_SecurityCenter_GetNotificationConfig_sync",
       "segments": [
         {
-          "end": 44,
+          "end": 51,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 44,
+          "end": 51,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 38,
-          "start": 34,
+          "end": 45,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 41,
-          "start": 39,
+          "end": 48,
+          "start": 46,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 45,
-          "start": 42,
+          "end": 52,
+          "start": 49,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -1059,33 +1059,33 @@
       "regionTag": "securitycenter_v1p1beta1_generated_SecurityCenter_GetOrganizationSettings_async",
       "segments": [
         {
-          "end": 44,
+          "end": 51,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 44,
+          "end": 51,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 38,
-          "start": 34,
+          "end": 45,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 41,
-          "start": 39,
+          "end": 48,
+          "start": 46,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 45,
-          "start": 42,
+          "end": 52,
+          "start": 49,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -1139,33 +1139,33 @@
       "regionTag": "securitycenter_v1p1beta1_generated_SecurityCenter_GetOrganizationSettings_sync",
       "segments": [
         {
-          "end": 44,
+          "end": 51,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 44,
+          "end": 51,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 38,
-          "start": 34,
+          "end": 45,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 41,
-          "start": 39,
+          "end": 48,
+          "start": 46,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 45,
-          "start": 42,
+          "end": 52,
+          "start": 49,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -1220,33 +1220,33 @@
       "regionTag": "securitycenter_v1p1beta1_generated_SecurityCenter_GetSource_async",
       "segments": [
         {
-          "end": 44,
+          "end": 51,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 44,
+          "end": 51,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 38,
-          "start": 34,
+          "end": 45,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 41,
-          "start": 39,
+          "end": 48,
+          "start": 46,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 45,
-          "start": 42,
+          "end": 52,
+          "start": 49,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -1300,33 +1300,33 @@
       "regionTag": "securitycenter_v1p1beta1_generated_SecurityCenter_GetSource_sync",
       "segments": [
         {
-          "end": 44,
+          "end": 51,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 44,
+          "end": 51,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 38,
-          "start": 34,
+          "end": 45,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 41,
-          "start": 39,
+          "end": 48,
+          "start": 46,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 45,
-          "start": 42,
+          "end": 52,
+          "start": 49,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -1377,33 +1377,33 @@
       "regionTag": "securitycenter_v1p1beta1_generated_SecurityCenter_GroupAssets_async",
       "segments": [
         {
-          "end": 46,
+          "end": 53,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 46,
+          "end": 53,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 39,
-          "start": 34,
+          "end": 46,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 42,
-          "start": 40,
+          "end": 49,
+          "start": 47,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 47,
-          "start": 43,
+          "end": 54,
+          "start": 50,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -1453,33 +1453,33 @@
       "regionTag": "securitycenter_v1p1beta1_generated_SecurityCenter_GroupAssets_sync",
       "segments": [
         {
-          "end": 46,
+          "end": 53,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 46,
+          "end": 53,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 39,
-          "start": 34,
+          "end": 46,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 42,
-          "start": 40,
+          "end": 49,
+          "start": 47,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 47,
-          "start": 43,
+          "end": 54,
+          "start": 50,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -1538,33 +1538,33 @@
       "regionTag": "securitycenter_v1p1beta1_generated_SecurityCenter_GroupFindings_async",
       "segments": [
         {
-          "end": 46,
+          "end": 53,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 46,
+          "end": 53,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 39,
-          "start": 34,
+          "end": 46,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 42,
-          "start": 40,
+          "end": 49,
+          "start": 47,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 47,
-          "start": 43,
+          "end": 54,
+          "start": 50,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -1622,33 +1622,33 @@
       "regionTag": "securitycenter_v1p1beta1_generated_SecurityCenter_GroupFindings_sync",
       "segments": [
         {
-          "end": 46,
+          "end": 53,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 46,
+          "end": 53,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 39,
-          "start": 34,
+          "end": 46,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 42,
-          "start": 40,
+          "end": 49,
+          "start": 47,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 47,
-          "start": 43,
+          "end": 54,
+          "start": 50,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -1703,33 +1703,33 @@
       "regionTag": "securitycenter_v1p1beta1_generated_SecurityCenter_ListAssets_async",
       "segments": [
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 38,
-          "start": 34,
+          "end": 45,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 41,
-          "start": 39,
+          "end": 48,
+          "start": 46,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 46,
-          "start": 42,
+          "end": 53,
+          "start": 49,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -1783,33 +1783,33 @@
       "regionTag": "securitycenter_v1p1beta1_generated_SecurityCenter_ListAssets_sync",
       "segments": [
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 38,
-          "start": 34,
+          "end": 45,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 41,
-          "start": 39,
+          "end": 48,
+          "start": 46,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 46,
-          "start": 42,
+          "end": 53,
+          "start": 49,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -1864,33 +1864,33 @@
       "regionTag": "securitycenter_v1p1beta1_generated_SecurityCenter_ListFindings_async",
       "segments": [
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 38,
-          "start": 34,
+          "end": 45,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 41,
-          "start": 39,
+          "end": 48,
+          "start": 46,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 46,
-          "start": 42,
+          "end": 53,
+          "start": 49,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -1944,33 +1944,33 @@
       "regionTag": "securitycenter_v1p1beta1_generated_SecurityCenter_ListFindings_sync",
       "segments": [
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 38,
-          "start": 34,
+          "end": 45,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 41,
-          "start": 39,
+          "end": 48,
+          "start": 46,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 46,
-          "start": 42,
+          "end": 53,
+          "start": 49,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -2025,33 +2025,33 @@
       "regionTag": "securitycenter_v1p1beta1_generated_SecurityCenter_ListNotificationConfigs_async",
       "segments": [
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 38,
-          "start": 34,
+          "end": 45,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 41,
-          "start": 39,
+          "end": 48,
+          "start": 46,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 46,
-          "start": 42,
+          "end": 53,
+          "start": 49,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -2105,33 +2105,33 @@
       "regionTag": "securitycenter_v1p1beta1_generated_SecurityCenter_ListNotificationConfigs_sync",
       "segments": [
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 38,
-          "start": 34,
+          "end": 45,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 41,
-          "start": 39,
+          "end": 48,
+          "start": 46,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 46,
-          "start": 42,
+          "end": 53,
+          "start": 49,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -2186,33 +2186,33 @@
       "regionTag": "securitycenter_v1p1beta1_generated_SecurityCenter_ListSources_async",
       "segments": [
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 38,
-          "start": 34,
+          "end": 45,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 41,
-          "start": 39,
+          "end": 48,
+          "start": 46,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 46,
-          "start": 42,
+          "end": 53,
+          "start": 49,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -2266,33 +2266,33 @@
       "regionTag": "securitycenter_v1p1beta1_generated_SecurityCenter_ListSources_sync",
       "segments": [
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 38,
-          "start": 34,
+          "end": 45,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 41,
-          "start": 39,
+          "end": 48,
+          "start": 46,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 46,
-          "start": 42,
+          "end": 53,
+          "start": 49,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -2347,33 +2347,33 @@
       "regionTag": "securitycenter_v1p1beta1_generated_SecurityCenter_RunAssetDiscovery_async",
       "segments": [
         {
-          "end": 48,
+          "end": 55,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 48,
+          "end": 55,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 38,
-          "start": 34,
+          "end": 45,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 45,
-          "start": 39,
+          "end": 52,
+          "start": 46,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 49,
-          "start": 46,
+          "end": 56,
+          "start": 53,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -2427,33 +2427,33 @@
       "regionTag": "securitycenter_v1p1beta1_generated_SecurityCenter_RunAssetDiscovery_sync",
       "segments": [
         {
-          "end": 48,
+          "end": 55,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 48,
+          "end": 55,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 38,
-          "start": 34,
+          "end": 45,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 45,
-          "start": 39,
+          "end": 52,
+          "start": 46,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 49,
-          "start": 46,
+          "end": 56,
+          "start": 53,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -2516,33 +2516,33 @@
       "regionTag": "securitycenter_v1p1beta1_generated_SecurityCenter_SetFindingState_async",
       "segments": [
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 39,
-          "start": 34,
+          "end": 46,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 42,
-          "start": 40,
+          "end": 49,
+          "start": 47,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 46,
-          "start": 43,
+          "end": 53,
+          "start": 50,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -2604,33 +2604,33 @@
       "regionTag": "securitycenter_v1p1beta1_generated_SecurityCenter_SetFindingState_sync",
       "segments": [
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 39,
-          "start": 34,
+          "end": 46,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 42,
-          "start": 40,
+          "end": 49,
+          "start": 47,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 46,
-          "start": 43,
+          "end": 53,
+          "start": 50,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -2685,33 +2685,33 @@
       "regionTag": "securitycenter_v1p1beta1_generated_SecurityCenter_SetIamPolicy_async",
       "segments": [
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 34,
-          "start": 32,
+          "end": 41,
+          "start": 39,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 39,
-          "start": 35,
+          "end": 46,
+          "start": 42,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 42,
-          "start": 40,
+          "end": 49,
+          "start": 47,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 46,
-          "start": 43,
+          "end": 53,
+          "start": 50,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -2765,33 +2765,33 @@
       "regionTag": "securitycenter_v1p1beta1_generated_SecurityCenter_SetIamPolicy_sync",
       "segments": [
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 34,
-          "start": 32,
+          "end": 41,
+          "start": 39,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 39,
-          "start": 35,
+          "end": 46,
+          "start": 42,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 42,
-          "start": 40,
+          "end": 49,
+          "start": 47,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 46,
-          "start": 43,
+          "end": 53,
+          "start": 50,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -2850,33 +2850,33 @@
       "regionTag": "securitycenter_v1p1beta1_generated_SecurityCenter_TestIamPermissions_async",
       "segments": [
         {
-          "end": 46,
+          "end": 53,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 46,
+          "end": 53,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 34,
-          "start": 32,
+          "end": 41,
+          "start": 39,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 40,
-          "start": 35,
+          "end": 47,
+          "start": 42,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 43,
-          "start": 41,
+          "end": 50,
+          "start": 48,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 47,
-          "start": 44,
+          "end": 54,
+          "start": 51,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -2934,33 +2934,33 @@
       "regionTag": "securitycenter_v1p1beta1_generated_SecurityCenter_TestIamPermissions_sync",
       "segments": [
         {
-          "end": 46,
+          "end": 53,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 46,
+          "end": 53,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 34,
-          "start": 32,
+          "end": 41,
+          "start": 39,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 40,
-          "start": 35,
+          "end": 47,
+          "start": 42,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 43,
-          "start": 41,
+          "end": 50,
+          "start": 48,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 47,
-          "start": 44,
+          "end": 54,
+          "start": 51,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -3019,33 +3019,33 @@
       "regionTag": "securitycenter_v1p1beta1_generated_SecurityCenter_UpdateFinding_async",
       "segments": [
         {
-          "end": 43,
+          "end": 50,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 43,
+          "end": 50,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
-          "type": "CLIENT_INITIALIZATION"
-        },
-        {
-          "end": 37,
-          "start": 34,
-          "type": "REQUEST_INITIALIZATION"
-        },
-        {
           "end": 40,
           "start": 38,
-          "type": "REQUEST_EXECUTION"
+          "type": "CLIENT_INITIALIZATION"
         },
         {
           "end": 44,
           "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 47,
+          "start": 45,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 51,
+          "start": 48,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -3103,33 +3103,33 @@
       "regionTag": "securitycenter_v1p1beta1_generated_SecurityCenter_UpdateFinding_sync",
       "segments": [
         {
-          "end": 43,
+          "end": 50,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 43,
+          "end": 50,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
-          "type": "CLIENT_INITIALIZATION"
-        },
-        {
-          "end": 37,
-          "start": 34,
-          "type": "REQUEST_INITIALIZATION"
-        },
-        {
           "end": 40,
           "start": 38,
-          "type": "REQUEST_EXECUTION"
+          "type": "CLIENT_INITIALIZATION"
         },
         {
           "end": 44,
           "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 47,
+          "start": 45,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 51,
+          "start": 48,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -3188,33 +3188,33 @@
       "regionTag": "securitycenter_v1p1beta1_generated_SecurityCenter_UpdateNotificationConfig_async",
       "segments": [
         {
-          "end": 43,
+          "end": 50,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 43,
+          "end": 50,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
-          "type": "CLIENT_INITIALIZATION"
-        },
-        {
-          "end": 37,
-          "start": 34,
-          "type": "REQUEST_INITIALIZATION"
-        },
-        {
           "end": 40,
           "start": 38,
-          "type": "REQUEST_EXECUTION"
+          "type": "CLIENT_INITIALIZATION"
         },
         {
           "end": 44,
           "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 47,
+          "start": 45,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 51,
+          "start": 48,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -3272,33 +3272,33 @@
       "regionTag": "securitycenter_v1p1beta1_generated_SecurityCenter_UpdateNotificationConfig_sync",
       "segments": [
         {
-          "end": 43,
+          "end": 50,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 43,
+          "end": 50,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
-          "type": "CLIENT_INITIALIZATION"
-        },
-        {
-          "end": 37,
-          "start": 34,
-          "type": "REQUEST_INITIALIZATION"
-        },
-        {
           "end": 40,
           "start": 38,
-          "type": "REQUEST_EXECUTION"
+          "type": "CLIENT_INITIALIZATION"
         },
         {
           "end": 44,
           "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 47,
+          "start": 45,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 51,
+          "start": 48,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -3353,33 +3353,33 @@
       "regionTag": "securitycenter_v1p1beta1_generated_SecurityCenter_UpdateOrganizationSettings_async",
       "segments": [
         {
-          "end": 43,
+          "end": 50,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 43,
+          "end": 50,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
-          "type": "CLIENT_INITIALIZATION"
-        },
-        {
-          "end": 37,
-          "start": 34,
-          "type": "REQUEST_INITIALIZATION"
-        },
-        {
           "end": 40,
           "start": 38,
-          "type": "REQUEST_EXECUTION"
+          "type": "CLIENT_INITIALIZATION"
         },
         {
           "end": 44,
           "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 47,
+          "start": 45,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 51,
+          "start": 48,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -3433,33 +3433,33 @@
       "regionTag": "securitycenter_v1p1beta1_generated_SecurityCenter_UpdateOrganizationSettings_sync",
       "segments": [
         {
-          "end": 43,
+          "end": 50,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 43,
+          "end": 50,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
-          "type": "CLIENT_INITIALIZATION"
-        },
-        {
-          "end": 37,
-          "start": 34,
-          "type": "REQUEST_INITIALIZATION"
-        },
-        {
           "end": 40,
           "start": 38,
-          "type": "REQUEST_EXECUTION"
+          "type": "CLIENT_INITIALIZATION"
         },
         {
           "end": 44,
           "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 47,
+          "start": 45,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 51,
+          "start": 48,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -3518,33 +3518,33 @@
       "regionTag": "securitycenter_v1p1beta1_generated_SecurityCenter_UpdateSecurityMarks_async",
       "segments": [
         {
-          "end": 43,
+          "end": 50,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 43,
+          "end": 50,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
-          "type": "CLIENT_INITIALIZATION"
-        },
-        {
-          "end": 37,
-          "start": 34,
-          "type": "REQUEST_INITIALIZATION"
-        },
-        {
           "end": 40,
           "start": 38,
-          "type": "REQUEST_EXECUTION"
+          "type": "CLIENT_INITIALIZATION"
         },
         {
           "end": 44,
           "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 47,
+          "start": 45,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 51,
+          "start": 48,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -3602,33 +3602,33 @@
       "regionTag": "securitycenter_v1p1beta1_generated_SecurityCenter_UpdateSecurityMarks_sync",
       "segments": [
         {
-          "end": 43,
+          "end": 50,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 43,
+          "end": 50,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
-          "type": "CLIENT_INITIALIZATION"
-        },
-        {
-          "end": 37,
-          "start": 34,
-          "type": "REQUEST_INITIALIZATION"
-        },
-        {
           "end": 40,
           "start": 38,
-          "type": "REQUEST_EXECUTION"
+          "type": "CLIENT_INITIALIZATION"
         },
         {
           "end": 44,
           "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 47,
+          "start": 45,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 51,
+          "start": 48,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -3687,33 +3687,33 @@
       "regionTag": "securitycenter_v1p1beta1_generated_SecurityCenter_UpdateSource_async",
       "segments": [
         {
-          "end": 43,
+          "end": 50,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 43,
+          "end": 50,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
-          "type": "CLIENT_INITIALIZATION"
-        },
-        {
-          "end": 37,
-          "start": 34,
-          "type": "REQUEST_INITIALIZATION"
-        },
-        {
           "end": 40,
           "start": 38,
-          "type": "REQUEST_EXECUTION"
+          "type": "CLIENT_INITIALIZATION"
         },
         {
           "end": 44,
           "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 47,
+          "start": 45,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 51,
+          "start": 48,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -3771,33 +3771,33 @@
       "regionTag": "securitycenter_v1p1beta1_generated_SecurityCenter_UpdateSource_sync",
       "segments": [
         {
-          "end": 43,
+          "end": 50,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 43,
+          "end": 50,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
-          "type": "CLIENT_INITIALIZATION"
-        },
-        {
-          "end": 37,
-          "start": 34,
-          "type": "REQUEST_INITIALIZATION"
-        },
-        {
           "end": 40,
           "start": 38,
-          "type": "REQUEST_EXECUTION"
+          "type": "CLIENT_INITIALIZATION"
         },
         {
           "end": 44,
           "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 47,
+          "start": 45,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 51,
+          "start": 48,
           "type": "RESPONSE_HANDLING"
         }
       ],

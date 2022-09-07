@@ -538,6 +538,13 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import securitycenter_v1beta1
 
             def sample_create_source():
@@ -650,6 +657,13 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import securitycenter_v1beta1
 
             def sample_create_finding():
@@ -777,6 +791,13 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import securitycenter_v1beta1
             from google.iam.v1 import iam_policy_pb2  # type: ignore
 
@@ -935,6 +956,13 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import securitycenter_v1beta1
 
             def sample_get_organization_settings():
@@ -1036,6 +1064,13 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import securitycenter_v1beta1
 
             def sample_get_source():
@@ -1136,6 +1171,13 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import securitycenter_v1beta1
 
             def sample_group_assets():
@@ -1231,6 +1273,13 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import securitycenter_v1beta1
 
             def sample_group_findings():
@@ -1360,6 +1409,13 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import securitycenter_v1beta1
 
             def sample_list_assets():
@@ -1449,6 +1505,13 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import securitycenter_v1beta1
 
             def sample_list_findings():
@@ -1537,6 +1600,13 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import securitycenter_v1beta1
 
             def sample_list_sources():
@@ -1649,6 +1719,13 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import securitycenter_v1beta1
 
             def sample_run_asset_discovery():
@@ -1769,6 +1846,13 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import securitycenter_v1beta1
 
             def sample_set_finding_state():
@@ -1894,6 +1978,13 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import securitycenter_v1beta1
             from google.iam.v1 import iam_policy_pb2  # type: ignore
 
@@ -2052,6 +2143,13 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import securitycenter_v1beta1
             from google.iam.v1 import iam_policy_pb2  # type: ignore
 
@@ -2062,7 +2160,7 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
                 # Initialize request argument(s)
                 request = iam_policy_pb2.TestIamPermissionsRequest(
                     resource="resource_value",
-                    permissions=['permissions_value_1', 'permissions_value_2'],
+                    permissions=['permissions_value1', 'permissions_value2'],
                 )
 
                 # Make the request
@@ -2160,6 +2258,13 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import securitycenter_v1beta1
 
             def sample_update_finding():
@@ -2270,6 +2375,13 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import securitycenter_v1beta1
 
             def sample_update_organization_settings():
@@ -2371,6 +2483,13 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import securitycenter_v1beta1
 
             def sample_update_source():
@@ -2471,6 +2590,13 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import securitycenter_v1beta1
 
             def sample_update_security_marks():
