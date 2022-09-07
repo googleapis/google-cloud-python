@@ -483,6 +483,13 @@ class ProductServiceClient(metaclass=ProductServiceClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import retail_v2beta
 
             def sample_create_product():
@@ -620,6 +627,13 @@ class ProductServiceClient(metaclass=ProductServiceClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import retail_v2beta
 
             def sample_get_product():
@@ -727,6 +741,13 @@ class ProductServiceClient(metaclass=ProductServiceClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import retail_v2beta
 
             def sample_list_products():
@@ -845,6 +866,13 @@ class ProductServiceClient(metaclass=ProductServiceClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import retail_v2beta
 
             def sample_update_product():
@@ -976,6 +1004,13 @@ class ProductServiceClient(metaclass=ProductServiceClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import retail_v2beta
 
             def sample_delete_product():
@@ -1091,6 +1126,13 @@ class ProductServiceClient(metaclass=ProductServiceClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import retail_v2beta
 
             def sample_import_products():
@@ -1244,6 +1286,13 @@ class ProductServiceClient(metaclass=ProductServiceClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import retail_v2beta
 
             def sample_set_inventory():
@@ -1465,6 +1514,13 @@ class ProductServiceClient(metaclass=ProductServiceClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import retail_v2beta
 
             def sample_add_fulfillment_places():
@@ -1475,7 +1531,7 @@ class ProductServiceClient(metaclass=ProductServiceClientMeta):
                 request = retail_v2beta.AddFulfillmentPlacesRequest(
                     product="product_value",
                     type_="type__value",
-                    place_ids=['place_ids_value_1', 'place_ids_value_2'],
+                    place_ids=['place_ids_value1', 'place_ids_value2'],
                 )
 
                 # Make the request
@@ -1611,6 +1667,13 @@ class ProductServiceClient(metaclass=ProductServiceClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import retail_v2beta
 
             def sample_remove_fulfillment_places():
@@ -1621,7 +1684,7 @@ class ProductServiceClient(metaclass=ProductServiceClientMeta):
                 request = retail_v2beta.RemoveFulfillmentPlacesRequest(
                     product="product_value",
                     type_="type__value",
-                    place_ids=['place_ids_value_1', 'place_ids_value_2'],
+                    place_ids=['place_ids_value1', 'place_ids_value2'],
                 )
 
                 # Make the request
@@ -1768,6 +1831,13 @@ class ProductServiceClient(metaclass=ProductServiceClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import retail_v2beta
 
             def sample_add_local_inventories():
@@ -1920,6 +1990,13 @@ class ProductServiceClient(metaclass=ProductServiceClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import retail_v2beta
 
             def sample_remove_local_inventories():
@@ -1929,7 +2006,7 @@ class ProductServiceClient(metaclass=ProductServiceClientMeta):
                 # Initialize request argument(s)
                 request = retail_v2beta.RemoveLocalInventoriesRequest(
                     product="product_value",
-                    place_ids=['place_ids_value_1', 'place_ids_value_2'],
+                    place_ids=['place_ids_value1', 'place_ids_value2'],
                 )
 
                 # Make the request
