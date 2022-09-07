@@ -59,33 +59,33 @@
       "regionTag": "workflowexecutions_v1beta_generated_Executions_CancelExecution_async",
       "segments": [
         {
-          "end": 44,
+          "end": 51,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 44,
+          "end": 51,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 38,
-          "start": 34,
+          "end": 45,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 41,
-          "start": 39,
+          "end": 48,
+          "start": 46,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 45,
-          "start": 42,
+          "end": 52,
+          "start": 49,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -139,33 +139,33 @@
       "regionTag": "workflowexecutions_v1beta_generated_Executions_CancelExecution_sync",
       "segments": [
         {
-          "end": 44,
+          "end": 51,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 44,
+          "end": 51,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 38,
-          "start": 34,
+          "end": 45,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 41,
-          "start": 39,
+          "end": 48,
+          "start": 46,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 45,
-          "start": 42,
+          "end": 52,
+          "start": 49,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -224,33 +224,33 @@
       "regionTag": "workflowexecutions_v1beta_generated_Executions_CreateExecution_async",
       "segments": [
         {
-          "end": 44,
+          "end": 51,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 44,
+          "end": 51,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 38,
-          "start": 34,
+          "end": 45,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 41,
-          "start": 39,
+          "end": 48,
+          "start": 46,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 45,
-          "start": 42,
+          "end": 52,
+          "start": 49,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -308,33 +308,33 @@
       "regionTag": "workflowexecutions_v1beta_generated_Executions_CreateExecution_sync",
       "segments": [
         {
-          "end": 44,
+          "end": 51,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 44,
+          "end": 51,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 38,
-          "start": 34,
+          "end": 45,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 41,
-          "start": 39,
+          "end": 48,
+          "start": 46,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 45,
-          "start": 42,
+          "end": 52,
+          "start": 49,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -389,33 +389,33 @@
       "regionTag": "workflowexecutions_v1beta_generated_Executions_GetExecution_async",
       "segments": [
         {
-          "end": 44,
+          "end": 51,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 44,
+          "end": 51,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 38,
-          "start": 34,
+          "end": 45,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 41,
-          "start": 39,
+          "end": 48,
+          "start": 46,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 45,
-          "start": 42,
+          "end": 52,
+          "start": 49,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -469,33 +469,33 @@
       "regionTag": "workflowexecutions_v1beta_generated_Executions_GetExecution_sync",
       "segments": [
         {
-          "end": 44,
+          "end": 51,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 44,
+          "end": 51,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 38,
-          "start": 34,
+          "end": 45,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 41,
-          "start": 39,
+          "end": 48,
+          "start": 46,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 45,
-          "start": 42,
+          "end": 52,
+          "start": 49,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -550,33 +550,33 @@
       "regionTag": "workflowexecutions_v1beta_generated_Executions_ListExecutions_async",
       "segments": [
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 38,
-          "start": 34,
+          "end": 45,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 41,
-          "start": 39,
+          "end": 48,
+          "start": 46,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 46,
-          "start": 42,
+          "end": 53,
+          "start": 49,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -630,33 +630,33 @@
       "regionTag": "workflowexecutions_v1beta_generated_Executions_ListExecutions_sync",
       "segments": [
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 38,
-          "start": 34,
+          "end": 45,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 41,
-          "start": 39,
+          "end": 48,
+          "start": 46,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 46,
-          "start": 42,
+          "end": 53,
+          "start": 49,
           "type": "RESPONSE_HANDLING"
         }
       ],
