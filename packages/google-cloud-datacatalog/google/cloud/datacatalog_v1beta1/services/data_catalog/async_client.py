@@ -254,6 +254,13 @@ class DataCatalogAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import datacatalog_v1beta1
 
             async def sample_search_catalog():
@@ -389,6 +396,13 @@ class DataCatalogAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import datacatalog_v1beta1
 
             async def sample_create_entry_group():
@@ -520,6 +534,13 @@ class DataCatalogAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import datacatalog_v1beta1
 
             async def sample_update_entry_group():
@@ -630,6 +651,13 @@ class DataCatalogAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import datacatalog_v1beta1
 
             async def sample_get_entry_group():
@@ -752,6 +780,13 @@ class DataCatalogAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import datacatalog_v1beta1
 
             async def sample_delete_entry_group():
@@ -845,6 +880,13 @@ class DataCatalogAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import datacatalog_v1beta1
 
             async def sample_list_entry_groups():
@@ -967,6 +1009,13 @@ class DataCatalogAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import datacatalog_v1beta1
 
             async def sample_create_entry():
@@ -977,7 +1026,7 @@ class DataCatalogAsyncClient:
                 entry = datacatalog_v1beta1.Entry()
                 entry.type_ = "FILESET"
                 entry.integrated_system = "CLOUD_PUBSUB"
-                entry.gcs_fileset_spec.file_patterns = ['file_patterns_value_1', 'file_patterns_value_2']
+                entry.gcs_fileset_spec.file_patterns = ['file_patterns_value1', 'file_patterns_value2']
 
                 request = datacatalog_v1beta1.CreateEntryRequest(
                     parent="parent_value",
@@ -1105,6 +1154,13 @@ class DataCatalogAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import datacatalog_v1beta1
 
             async def sample_update_entry():
@@ -1115,7 +1171,7 @@ class DataCatalogAsyncClient:
                 entry = datacatalog_v1beta1.Entry()
                 entry.type_ = "FILESET"
                 entry.integrated_system = "CLOUD_PUBSUB"
-                entry.gcs_fileset_spec.file_patterns = ['file_patterns_value_1', 'file_patterns_value_2']
+                entry.gcs_fileset_spec.file_patterns = ['file_patterns_value1', 'file_patterns_value2']
 
                 request = datacatalog_v1beta1.UpdateEntryRequest(
                     entry=entry,
@@ -1256,6 +1312,13 @@ class DataCatalogAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import datacatalog_v1beta1
 
             async def sample_delete_entry():
@@ -1350,6 +1413,13 @@ class DataCatalogAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import datacatalog_v1beta1
 
             async def sample_get_entry():
@@ -1468,6 +1538,13 @@ class DataCatalogAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import datacatalog_v1beta1
 
             async def sample_lookup_entry():
@@ -1556,6 +1633,13 @@ class DataCatalogAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import datacatalog_v1beta1
 
             async def sample_list_entries():
@@ -1672,6 +1756,13 @@ class DataCatalogAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import datacatalog_v1beta1
 
             async def sample_create_tag_template():
@@ -1796,6 +1887,13 @@ class DataCatalogAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import datacatalog_v1beta1
 
             async def sample_get_tag_template():
@@ -1918,6 +2016,13 @@ class DataCatalogAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import datacatalog_v1beta1
 
             async def sample_update_tag_template():
@@ -2042,6 +2147,13 @@ class DataCatalogAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import datacatalog_v1beta1
 
             async def sample_delete_tag_template():
@@ -2155,6 +2267,13 @@ class DataCatalogAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import datacatalog_v1beta1
 
             async def sample_create_tag_template_field():
@@ -2289,6 +2408,13 @@ class DataCatalogAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import datacatalog_v1beta1
 
             async def sample_update_tag_template_field():
@@ -2423,6 +2549,13 @@ class DataCatalogAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import datacatalog_v1beta1
 
             async def sample_rename_tag_template_field():
@@ -2535,6 +2668,13 @@ class DataCatalogAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import datacatalog_v1beta1
 
             async def sample_delete_tag_template_field():
@@ -2649,6 +2789,13 @@ class DataCatalogAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import datacatalog_v1beta1
 
             async def sample_create_tag():
@@ -2768,6 +2915,13 @@ class DataCatalogAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import datacatalog_v1beta1
 
             async def sample_update_tag():
@@ -2883,6 +3037,13 @@ class DataCatalogAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import datacatalog_v1beta1
 
             async def sample_delete_tag():
@@ -2978,6 +3139,13 @@ class DataCatalogAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import datacatalog_v1beta1
 
             async def sample_list_tags():
@@ -3119,6 +3287,13 @@ class DataCatalogAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import datacatalog_v1beta1
             from google.iam.v1 import iam_policy_pb2  # type: ignore
 
@@ -3298,6 +3473,13 @@ class DataCatalogAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import datacatalog_v1beta1
             from google.iam.v1 import iam_policy_pb2  # type: ignore
 
@@ -3469,6 +3651,13 @@ class DataCatalogAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import datacatalog_v1beta1
             from google.iam.v1 import iam_policy_pb2  # type: ignore
 
@@ -3479,7 +3668,7 @@ class DataCatalogAsyncClient:
                 # Initialize request argument(s)
                 request = iam_policy_pb2.TestIamPermissionsRequest(
                     resource="resource_value",
-                    permissions=['permissions_value_1', 'permissions_value_2'],
+                    permissions=['permissions_value1', 'permissions_value2'],
                 )
 
                 # Make the request

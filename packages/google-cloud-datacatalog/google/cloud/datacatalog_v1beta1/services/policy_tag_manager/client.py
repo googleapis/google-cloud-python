@@ -471,6 +471,13 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import datacatalog_v1beta1
 
             def sample_create_taxonomy():
@@ -580,6 +587,13 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import datacatalog_v1beta1
 
             def sample_delete_taxonomy():
@@ -664,6 +678,13 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import datacatalog_v1beta1
 
             def sample_update_taxonomy():
@@ -765,6 +786,13 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import datacatalog_v1beta1
 
             def sample_list_taxonomies():
@@ -873,6 +901,13 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import datacatalog_v1beta1
 
             def sample_get_taxonomy():
@@ -973,6 +1008,13 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import datacatalog_v1beta1
 
             def sample_create_policy_tag():
@@ -1083,6 +1125,13 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import datacatalog_v1beta1
 
             def sample_delete_policy_tag():
@@ -1167,6 +1216,13 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import datacatalog_v1beta1
 
             def sample_update_policy_tag():
@@ -1270,6 +1326,13 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import datacatalog_v1beta1
 
             def sample_list_policy_tags():
@@ -1378,6 +1441,13 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import datacatalog_v1beta1
 
             def sample_get_policy_tag():
@@ -1478,6 +1548,13 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import datacatalog_v1beta1
             from google.iam.v1 import iam_policy_pb2  # type: ignore
 
@@ -1613,6 +1690,13 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import datacatalog_v1beta1
             from google.iam.v1 import iam_policy_pb2  # type: ignore
 
@@ -1749,6 +1833,13 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import datacatalog_v1beta1
             from google.iam.v1 import iam_policy_pb2  # type: ignore
 
@@ -1759,7 +1850,7 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
                 # Initialize request argument(s)
                 request = iam_policy_pb2.TestIamPermissionsRequest(
                     resource="resource_value",
-                    permissions=['permissions_value_1', 'permissions_value_2'],
+                    permissions=['permissions_value1', 'permissions_value2'],
                 )
 
                 # Make the request

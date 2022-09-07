@@ -245,6 +245,13 @@ class PolicyTagManagerSerializationAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import datacatalog_v1
 
             async def sample_replace_taxonomy():
@@ -341,6 +348,13 @@ class PolicyTagManagerSerializationAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import datacatalog_v1
 
             async def sample_import_taxonomies():
@@ -426,6 +440,13 @@ class PolicyTagManagerSerializationAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import datacatalog_v1
 
             async def sample_export_taxonomies():
@@ -436,7 +457,7 @@ class PolicyTagManagerSerializationAsyncClient:
                 request = datacatalog_v1.ExportTaxonomiesRequest(
                     serialized_taxonomies=True,
                     parent="parent_value",
-                    taxonomies=['taxonomies_value_1', 'taxonomies_value_2'],
+                    taxonomies=['taxonomies_value1', 'taxonomies_value2'],
                 )
 
                 # Make the request
