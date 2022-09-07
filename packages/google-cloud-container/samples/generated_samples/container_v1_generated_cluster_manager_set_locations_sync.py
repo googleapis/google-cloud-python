@@ -24,6 +24,13 @@
 
 
 # [START container_v1_generated_ClusterManager_SetLocations_sync]
+# This snippet has been automatically generated and should be regarded as a
+# code template only.
+# It will require modifications to work:
+# - It may require correct/in-range values for request initialization.
+# - It may require specifying regional endpoints when creating the service
+#   client as shown in:
+#   https://googleapis.dev/python/google-api-core/latest/client_options.html
 from google.cloud import container_v1
 
 
@@ -33,7 +40,7 @@ def sample_set_locations():
 
     # Initialize request argument(s)
     request = container_v1.SetLocationsRequest(
-        locations=['locations_value_1', 'locations_value_2'],
+        locations=['locations_value1', 'locations_value2'],
     )
 
     # Make the request

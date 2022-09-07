@@ -441,6 +441,13 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import container_v1beta1
 
             def sample_list_clusters():
@@ -554,6 +561,13 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import container_v1beta1
 
             def sample_get_cluster():
@@ -689,6 +703,13 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import container_v1beta1
 
             def sample_create_cluster():
@@ -814,6 +835,13 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import container_v1beta1
 
             def sample_update_cluster():
@@ -948,6 +976,13 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import container_v1beta1
 
             def sample_update_node_pool():
@@ -1030,6 +1065,13 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import container_v1beta1
 
             def sample_set_node_pool_autoscaling():
@@ -1115,6 +1157,13 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import container_v1beta1
 
             def sample_set_logging_service():
@@ -1265,6 +1314,13 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import container_v1beta1
 
             def sample_set_monitoring_service():
@@ -1417,6 +1473,13 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import container_v1beta1
 
             def sample_set_addons_config():
@@ -1557,6 +1620,13 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import container_v1beta1
 
             def sample_set_locations():
@@ -1568,7 +1638,7 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
                     project_id="project_id_value",
                     zone="zone_value",
                     cluster_id="cluster_id_value",
-                    locations=['locations_value_1', 'locations_value_2'],
+                    locations=['locations_value1', 'locations_value2'],
                 )
 
                 # Make the request
@@ -1706,6 +1776,13 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import container_v1beta1
 
             def sample_update_master():
@@ -1855,6 +1932,13 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import container_v1beta1
 
             def sample_set_master_auth():
@@ -1946,6 +2030,13 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import container_v1beta1
 
             def sample_delete_cluster():
@@ -2073,6 +2164,13 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import container_v1beta1
 
             def sample_list_operations():
@@ -2187,6 +2285,13 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import container_v1beta1
 
             def sample_get_operation():
@@ -2313,6 +2418,13 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import container_v1beta1
 
             def sample_cancel_operation():
@@ -2425,6 +2537,13 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import container_v1beta1
 
             def sample_get_server_config():
@@ -2538,6 +2657,13 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import container_v1beta1
 
             def sample_list_node_pools():
@@ -2662,6 +2788,13 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import container_v1beta1
 
             def sample_get_json_web_keys():
@@ -2743,6 +2876,13 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import container_v1beta1
 
             def sample_get_node_pool():
@@ -2921,6 +3061,13 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import container_v1beta1
 
             def sample_create_node_pool():
@@ -3055,6 +3202,13 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import container_v1beta1
 
             def sample_delete_node_pool():
@@ -3191,6 +3345,13 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import container_v1beta1
 
             def sample_complete_node_pool_upgrade():
@@ -3260,6 +3421,13 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import container_v1beta1
 
             def sample_rollback_node_pool_upgrade():
@@ -3405,6 +3573,13 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import container_v1beta1
 
             def sample_set_node_pool_management():
@@ -3557,6 +3732,13 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import container_v1beta1
 
             def sample_set_labels():
@@ -3714,6 +3896,13 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import container_v1beta1
 
             def sample_set_legacy_abac():
@@ -3851,6 +4040,13 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import container_v1beta1
 
             def sample_start_ip_rotation():
@@ -3978,6 +4174,13 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import container_v1beta1
 
             def sample_complete_ip_rotation():
@@ -4104,6 +4307,13 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import container_v1beta1
 
             def sample_set_node_pool_size():
@@ -4188,6 +4398,13 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import container_v1beta1
 
             def sample_set_network_policy():
@@ -4324,6 +4541,13 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import container_v1beta1
 
             def sample_set_maintenance_policy():
@@ -4454,6 +4678,13 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import container_v1beta1
 
             def sample_list_usable_subnetworks():
@@ -4566,6 +4797,13 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import container_v1beta1
 
             def sample_list_locations():
