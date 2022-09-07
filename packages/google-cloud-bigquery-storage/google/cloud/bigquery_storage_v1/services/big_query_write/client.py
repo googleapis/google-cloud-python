@@ -486,6 +486,13 @@ class BigQueryWriteClient(metaclass=BigQueryWriteClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import bigquery_storage_v1
 
             def sample_create_write_stream():
@@ -629,6 +636,13 @@ class BigQueryWriteClient(metaclass=BigQueryWriteClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import bigquery_storage_v1
 
             def sample_append_rows():
@@ -710,6 +724,13 @@ class BigQueryWriteClient(metaclass=BigQueryWriteClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import bigquery_storage_v1
 
             def sample_get_write_stream():
@@ -807,6 +828,13 @@ class BigQueryWriteClient(metaclass=BigQueryWriteClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import bigquery_storage_v1
 
             def sample_finalize_write_stream():
@@ -905,6 +933,13 @@ class BigQueryWriteClient(metaclass=BigQueryWriteClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import bigquery_storage_v1
 
             def sample_batch_commit_write_streams():
@@ -914,7 +949,7 @@ class BigQueryWriteClient(metaclass=BigQueryWriteClientMeta):
                 # Initialize request argument(s)
                 request = bigquery_storage_v1.BatchCommitWriteStreamsRequest(
                     parent="parent_value",
-                    write_streams=['write_streams_value_1', 'write_streams_value_2'],
+                    write_streams=['write_streams_value1', 'write_streams_value2'],
                 )
 
                 # Make the request
@@ -1011,6 +1046,13 @@ class BigQueryWriteClient(metaclass=BigQueryWriteClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import bigquery_storage_v1
 
             def sample_flush_rows():
