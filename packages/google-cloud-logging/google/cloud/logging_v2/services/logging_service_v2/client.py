@@ -451,6 +451,13 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import logging_v2
 
             def sample_delete_log():
@@ -553,6 +560,13 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import logging_v2
 
             def sample_write_log_entries():
@@ -732,6 +746,13 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import logging_v2
 
             def sample_list_log_entries():
@@ -740,7 +761,7 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
 
                 # Initialize request argument(s)
                 request = logging_v2.ListLogEntriesRequest(
-                    resource_names=['resource_names_value_1', 'resource_names_value_2'],
+                    resource_names=['resource_names_value1', 'resource_names_value2'],
                 )
 
                 # Make the request
@@ -878,6 +899,13 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import logging_v2
 
             def sample_list_monitored_resource_descriptors():
@@ -963,6 +991,13 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import logging_v2
 
             def sample_list_logs():
@@ -1074,6 +1109,13 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import logging_v2
 
             def sample_tail_log_entries():
@@ -1082,7 +1124,7 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
 
                 # Initialize request argument(s)
                 request = logging_v2.TailLogEntriesRequest(
-                    resource_names=['resource_names_value_1', 'resource_names_value_2'],
+                    resource_names=['resource_names_value1', 'resource_names_value2'],
                 )
 
                 # This method expects an iterator which contains
