@@ -24,6 +24,13 @@
 
 
 # [START networkservices_v1_generated_NetworkServices_UpdateHttpRoute_sync]
+# This snippet has been automatically generated and should be regarded as a
+# code template only.
+# It will require modifications to work:
+# - It may require correct/in-range values for request initialization.
+# - It may require specifying regional endpoints when creating the service
+#   client as shown in:
+#   https://googleapis.dev/python/google-api-core/latest/client_options.html
 from google.cloud import network_services_v1
 
 
@@ -34,7 +41,7 @@ def sample_update_http_route():
     # Initialize request argument(s)
     http_route = network_services_v1.HttpRoute()
     http_route.name = "name_value"
-    http_route.hostnames = ['hostnames_value_1', 'hostnames_value_2']
+    http_route.hostnames = ['hostnames_value1', 'hostnames_value2']
 
     request = network_services_v1.UpdateHttpRouteRequest(
         http_route=http_route,

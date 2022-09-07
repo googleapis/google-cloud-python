@@ -281,6 +281,13 @@ class NetworkServicesAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import network_services_v1
 
             async def sample_list_endpoint_policies():
@@ -390,6 +397,13 @@ class NetworkServicesAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import network_services_v1
 
             async def sample_get_endpoint_policy():
@@ -493,6 +507,13 @@ class NetworkServicesAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import network_services_v1
 
             async def sample_create_endpoint_policy():
@@ -631,6 +652,13 @@ class NetworkServicesAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import network_services_v1
 
             async def sample_update_endpoint_policy():
@@ -763,6 +791,13 @@ class NetworkServicesAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import network_services_v1
 
             async def sample_delete_endpoint_policy():
@@ -881,6 +916,13 @@ class NetworkServicesAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import network_services_v1
 
             async def sample_list_gateways():
@@ -990,6 +1032,13 @@ class NetworkServicesAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import network_services_v1
 
             async def sample_get_gateway():
@@ -1094,6 +1143,13 @@ class NetworkServicesAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import network_services_v1
 
             async def sample_create_gateway():
@@ -1233,6 +1289,13 @@ class NetworkServicesAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import network_services_v1
 
             async def sample_update_gateway():
@@ -1364,6 +1427,13 @@ class NetworkServicesAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import network_services_v1
 
             async def sample_delete_gateway():
@@ -1481,6 +1551,13 @@ class NetworkServicesAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import network_services_v1
 
             async def sample_list_grpc_routes():
@@ -1590,6 +1667,13 @@ class NetworkServicesAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import network_services_v1
 
             async def sample_get_grpc_route():
@@ -1689,6 +1773,13 @@ class NetworkServicesAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import network_services_v1
 
             async def sample_create_grpc_route():
@@ -1698,7 +1789,7 @@ class NetworkServicesAsyncClient:
                 # Initialize request argument(s)
                 grpc_route = network_services_v1.GrpcRoute()
                 grpc_route.name = "name_value"
-                grpc_route.hostnames = ['hostnames_value_1', 'hostnames_value_2']
+                grpc_route.hostnames = ['hostnames_value1', 'hostnames_value2']
 
                 request = network_services_v1.CreateGrpcRouteRequest(
                     parent="parent_value",
@@ -1823,6 +1914,13 @@ class NetworkServicesAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import network_services_v1
 
             async def sample_update_grpc_route():
@@ -1832,7 +1930,7 @@ class NetworkServicesAsyncClient:
                 # Initialize request argument(s)
                 grpc_route = network_services_v1.GrpcRoute()
                 grpc_route.name = "name_value"
-                grpc_route.hostnames = ['hostnames_value_1', 'hostnames_value_2']
+                grpc_route.hostnames = ['hostnames_value1', 'hostnames_value2']
 
                 request = network_services_v1.UpdateGrpcRouteRequest(
                     grpc_route=grpc_route,
@@ -1949,6 +2047,13 @@ class NetworkServicesAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import network_services_v1
 
             async def sample_delete_grpc_route():
@@ -2066,6 +2171,13 @@ class NetworkServicesAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import network_services_v1
 
             async def sample_list_http_routes():
@@ -2175,6 +2287,13 @@ class NetworkServicesAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import network_services_v1
 
             async def sample_get_http_route():
@@ -2274,6 +2393,13 @@ class NetworkServicesAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import network_services_v1
 
             async def sample_create_http_route():
@@ -2283,7 +2409,7 @@ class NetworkServicesAsyncClient:
                 # Initialize request argument(s)
                 http_route = network_services_v1.HttpRoute()
                 http_route.name = "name_value"
-                http_route.hostnames = ['hostnames_value_1', 'hostnames_value_2']
+                http_route.hostnames = ['hostnames_value1', 'hostnames_value2']
 
                 request = network_services_v1.CreateHttpRouteRequest(
                     parent="parent_value",
@@ -2408,6 +2534,13 @@ class NetworkServicesAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import network_services_v1
 
             async def sample_update_http_route():
@@ -2417,7 +2550,7 @@ class NetworkServicesAsyncClient:
                 # Initialize request argument(s)
                 http_route = network_services_v1.HttpRoute()
                 http_route.name = "name_value"
-                http_route.hostnames = ['hostnames_value_1', 'hostnames_value_2']
+                http_route.hostnames = ['hostnames_value1', 'hostnames_value2']
 
                 request = network_services_v1.UpdateHttpRouteRequest(
                     http_route=http_route,
@@ -2534,6 +2667,13 @@ class NetworkServicesAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import network_services_v1
 
             async def sample_delete_http_route():
@@ -2651,6 +2791,13 @@ class NetworkServicesAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import network_services_v1
 
             async def sample_list_tcp_routes():
@@ -2760,6 +2907,13 @@ class NetworkServicesAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import network_services_v1
 
             async def sample_get_tcp_route():
@@ -2859,6 +3013,13 @@ class NetworkServicesAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import network_services_v1
 
             async def sample_create_tcp_route():
@@ -2992,6 +3153,13 @@ class NetworkServicesAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import network_services_v1
 
             async def sample_update_tcp_route():
@@ -3117,6 +3285,13 @@ class NetworkServicesAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import network_services_v1
 
             async def sample_delete_tcp_route():
@@ -3234,6 +3409,13 @@ class NetworkServicesAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import network_services_v1
 
             async def sample_list_tls_routes():
@@ -3343,6 +3525,13 @@ class NetworkServicesAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import network_services_v1
 
             async def sample_get_tls_route():
@@ -3442,6 +3631,13 @@ class NetworkServicesAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import network_services_v1
 
             async def sample_create_tls_route():
@@ -3576,6 +3772,13 @@ class NetworkServicesAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import network_services_v1
 
             async def sample_update_tls_route():
@@ -3702,6 +3905,13 @@ class NetworkServicesAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import network_services_v1
 
             async def sample_delete_tls_route():
@@ -3819,6 +4029,13 @@ class NetworkServicesAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import network_services_v1
 
             async def sample_list_service_bindings():
@@ -3928,6 +4145,13 @@ class NetworkServicesAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import network_services_v1
 
             async def sample_get_service_binding():
@@ -4028,6 +4252,13 @@ class NetworkServicesAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import network_services_v1
 
             async def sample_create_service_binding():
@@ -4161,6 +4392,13 @@ class NetworkServicesAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import network_services_v1
 
             async def sample_delete_service_binding():
@@ -4279,6 +4517,13 @@ class NetworkServicesAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import network_services_v1
 
             async def sample_list_meshes():
@@ -4388,6 +4633,13 @@ class NetworkServicesAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import network_services_v1
 
             async def sample_get_mesh():
@@ -4488,6 +4740,13 @@ class NetworkServicesAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import network_services_v1
 
             async def sample_create_mesh():
@@ -4623,6 +4882,13 @@ class NetworkServicesAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import network_services_v1
 
             async def sample_update_mesh():
@@ -4750,6 +5016,13 @@ class NetworkServicesAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import network_services_v1
 
             async def sample_delete_mesh():
