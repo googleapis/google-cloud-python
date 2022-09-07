@@ -123,7 +123,7 @@ def scale_bigtable(bigtable_instance, bigtable_cluster, scale_up):
             new_node_count = min(current_node_count + size_change_step, max_node_count)
             cluster.serve_nodes = new_node_count
             operation = cluster.update()
-            response = operation.result(240)
+            response = operation.result(480)
             logger.info(
                 "Scaled up from {} to {} nodes for {}.".format(
                     current_node_count, new_node_count, response.name
@@ -134,7 +134,7 @@ def scale_bigtable(bigtable_instance, bigtable_cluster, scale_up):
             new_node_count = max(current_node_count - size_change_step, min_node_count)
             cluster.serve_nodes = new_node_count
             operation = cluster.update()
-            response = operation.result(240)
+            response = operation.result(480)
             logger.info(
                 "Scaled down from {} to {} nodes for {}.".format(
                     current_node_count, new_node_count, response.name
