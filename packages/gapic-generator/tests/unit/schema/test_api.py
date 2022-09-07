@@ -32,6 +32,7 @@ from google.iam.v1 import iam_policy_pb2  # type: ignore
 
 from gapic.schema import api
 from gapic.schema import imp
+from gapic.schema import mixins
 from gapic.schema import naming
 from gapic.schema import wrappers
 from gapic.utils import Options
@@ -2275,6 +2276,157 @@ def test_mixin_api_methods_iam_overrides():
     })
     api_schema = api.API.build(fd, 'google.example.v1', opts=opts)
     assert api_schema.mixin_api_methods == {}
+
+
+def create_service_config_with_all_mixins(http_opt_uri='/v1/{name=examples/*}/*'):
+    service_yaml_config = {
+        'apis': [
+            {
+                'name': 'google.cloud.location.Locations',
+            },
+            {
+                'name': 'google.longrunning.Operations',
+            },
+            {
+                'name': 'google.iam.v1.IAMPolicy',
+            },
+        ],
+        'http': {
+            'rules': [
+                # Locations
+                {
+                    'selector': 'google.cloud.location.Locations.ListLocations',
+                    'get': http_opt_uri,
+                    'body': '*'
+                },
+                {
+                    'selector': 'google.cloud.location.Locations.GetLocation',
+                    'get': http_opt_uri,
+                    'body': '*'
+                },
+                # LRO
+                {
+                    'selector': 'google.longrunning.Operations.CancelOperation',
+                    'post': http_opt_uri,
+                    'body': '*',
+                },
+                {
+                    'selector': 'google.longrunning.Operations.DeleteOperation',
+                    'get': http_opt_uri,
+                    'body': '*'
+                },
+                {
+                    'selector': 'google.longrunning.Operations.WaitOperation',
+                    'post': http_opt_uri,
+                    'body': '*'
+                },
+                {
+                    'selector': 'google.longrunning.Operations.GetOperation',
+                    'post': http_opt_uri,
+                    'body': '*'
+                },
+                {
+                    'selector': 'google.longrunning.Operations.ListOperations',
+                    'post': http_opt_uri,
+                    'body': '*'
+                },
+                # IAM
+                {
+                    'selector': 'google.iam.v1.IAMPolicy.SetIamPolicy',
+                    'post': http_opt_uri,
+                    'body': '*'
+                },
+                {
+                    'selector': 'google.iam.v1.IAMPolicy.GetIamPolicy',
+                    'get': http_opt_uri,
+                    'body': '*'
+                },
+                {
+                    'selector': 'google.iam.v1.IAMPolicy.TestIamPermissions',
+                    'post': http_opt_uri,
+                    'body': '*'
+                },
+                {
+                    'selector': 'google.example.v1.Example',
+                }
+            ]
+        }
+    }
+    return service_yaml_config
+
+
+def test_mixin_api_signatures():
+    fd = (
+        make_file_pb2(
+            name='example.proto',
+            package='google.example.v1',
+            messages=(make_message_pb2(name='ExampleRequest', fields=()),),
+        ),)
+    opts = Options(service_yaml_config=create_service_config_with_all_mixins())
+    api_schema = api.API.build(fd, 'google.example.v1', opts=opts)
+    res = api_schema.mixin_api_signatures
+    assert res == mixins.MIXINS_MAP
+
+
+def test_mixin_http_options():
+    fd = (
+        make_file_pb2(
+            name='example.proto',
+            package='google.example.v1',
+            messages=(make_message_pb2(name='ExampleRequest', fields=()),),
+            ),)
+    opts = Options(service_yaml_config={
+        'apis': [
+            {
+                'name': 'google.cloud.location.Locations',
+            },
+            {
+                'name': 'google.longrunning.Operations',
+            },
+            {
+                'name': 'google.iam.v1.IAMPolicy',
+            },
+        ],
+        'http': {
+            'rules': [
+                # LRO
+                {
+                    'selector': 'google.longrunning.Operations.CancelOperation',
+                    'post': '/v1/{name=examples/*}/*',
+                    'body': '*',
+                },
+                {
+                    'selector': 'google.longrunning.Operations.DeleteOperation',
+                    'get': '/v1/{name=examples/*}/*',
+                    'body': '*'
+                },
+                {
+                    'selector': 'google.longrunning.Operations.WaitOperation',
+                    'post': '/v1/{name=examples/*}/*',
+                    'body': '*'
+                },
+                {
+                    'selector': 'google.longrunning.Operations.GetOperation',
+                    'post': '/v1/{name=examples/*}/*',
+                    'body': '*'
+                },
+                {
+                    'selector': 'google.longrunning.Operations.ListOperations',
+                    'post': '/v1/{name=examples/*}/*',
+                    'body': '*'
+                },
+            ]
+        }
+    })
+    api_schema = api.API.build(fd, 'google.example.v1', opts=opts)
+    res = api_schema.mixin_http_options
+    assert res == {
+        'ListOperations': [wrappers.MixinHttpRule('post', '/v1/{name=examples/*}/*', '*')],
+        'GetOperation': [wrappers.MixinHttpRule('post', '/v1/{name=examples/*}/*', '*')],
+        'DeleteOperation': [wrappers.MixinHttpRule('get', '/v1/{name=examples/*}/*', '*')],
+        'CancelOperation': [wrappers.MixinHttpRule('post', '/v1/{name=examples/*}/*', '*')],
+        'WaitOperation': [wrappers.MixinHttpRule('post', '/v1/{name=examples/*}/*', '*')],
+    }
 
 
 def test_mixin_api_methods_lro():

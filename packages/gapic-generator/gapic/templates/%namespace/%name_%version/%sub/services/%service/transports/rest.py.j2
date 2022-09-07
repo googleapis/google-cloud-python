@@ -19,6 +19,16 @@ from google.protobuf import json_format
 {% if service.has_lro %}
 from google.api_core import operations_v1
 {% endif %}
+{% if opts.add_iam_methods or api.has_iam_mixin %}
+from google.iam.v1 import iam_policy_pb2  # type: ignore
+from google.iam.v1 import policy_pb2  # type: ignore
+{% endif %}
+{% if api.has_location_mixin %}
+from google.cloud.location import locations_pb2 # type: ignore
+{% endif %}
+{% if api.has_operations_mixin %}
+from google.longrunning import operations_pb2
+{% endif %}
 from requests import __version__ as requests_version
 import dataclasses
 import re
@@ -113,7 +123,25 @@ class {{ service.name }}RestInterceptor:
         """
         return response
     {% endif %}
+    {% endfor %}
 
+    {% for name, signature in api.mixin_api_signatures.items() %}
+    def pre_{{ name|snake_case }}(self, request: {{signature.request_type}}, metadata: Sequence[Tuple[str, str]]) -> {{signature.response_type}}:
+        """Pre-rpc interceptor for {{ name|snake_case }}
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the {{ service.name }} server.
+        """
+        return request, metadata
+
+    def post_{{ name|snake_case }}(self, response: {{signature.request_type}}) -> {{signature.response_type}}:
+        """Post-rpc interceptor for {{ name|snake_case }}
+
+        Override in a subclass to manipulate the response
+        after it is returned by the {{ service.name }} server but before
+        it is returned to user code.
+        """
+        return response
     {% endfor %}
 
 
@@ -344,7 +372,7 @@ class {{service.name}}RestTransport({{service.name}}Transport):
                 including_default_value_fields=False,
                 use_integers_for_enums={{ opts.rest_numeric_enums }}
             )
-            {%- endif %}{# body_spec #}
+            {%- endif %}
 
             uri = transcoded_request['uri']
             method = transcoded_request['method']
@@ -429,6 +457,8 @@ class {{service.name}}RestTransport({{service.name}}Transport):
         return self._{{method.name}}(self._session, self._host, self._interceptor) # type: ignore
 
     {% endfor %}
+
+    {% include '%namespace/%name_%version/%sub/services/%service/transports/_rest_mixins.py.j2' %}
 
     @property
     def kind(self) -> str:

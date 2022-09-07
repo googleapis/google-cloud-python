@@ -26,6 +26,7 @@ from proto.marshal.rules.dates import DurationRule, TimestampRule
 from requests import Response
 from requests import Request, PreparedRequest
 from requests.sessions import Session
+from google.protobuf import json_format
 {% endif %}
 
 {# Import the service itself as well as every proto module that it imports. #}

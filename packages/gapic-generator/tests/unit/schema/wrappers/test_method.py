@@ -987,3 +987,20 @@ def test_safe_name():
 
     for name, method in unsafe_methods.items():
         assert method.safe_name == f"{name}_"
+
+
+def test_mixin_rule():
+    m = wrappers.MixinHttpRule(
+        'get', '/v1beta1/{name=projects/*}/locations', None)
+    e = {
+        'name': 'projects/sample1'
+    }
+    assert e == m.sample_request
+
+    m = wrappers.MixinHttpRule(
+        'get', '/v1beta1/{name=projects/*}/locations', 'city')
+    e = {
+        'name': 'projects/sample1',
+        'city': {},
+    }
+    assert e == m.sample_request
