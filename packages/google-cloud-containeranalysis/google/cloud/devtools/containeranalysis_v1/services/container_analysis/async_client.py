@@ -255,6 +255,13 @@ class ContainerAnalysisAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud.devtools import containeranalysis_v1
             from google.iam.v1 import iam_policy_pb2  # type: ignore
 
@@ -422,6 +429,13 @@ class ContainerAnalysisAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud.devtools import containeranalysis_v1
             from google.iam.v1 import iam_policy_pb2  # type: ignore
 
@@ -589,6 +603,13 @@ class ContainerAnalysisAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud.devtools import containeranalysis_v1
             from google.iam.v1 import iam_policy_pb2  # type: ignore
 
@@ -599,7 +620,7 @@ class ContainerAnalysisAsyncClient:
                 # Initialize request argument(s)
                 request = iam_policy_pb2.TestIamPermissionsRequest(
                     resource="resource_value",
-                    permissions=['permissions_value_1', 'permissions_value_2'],
+                    permissions=['permissions_value1', 'permissions_value2'],
                 )
 
                 # Make the request
@@ -702,6 +723,13 @@ class ContainerAnalysisAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud.devtools import containeranalysis_v1
 
             async def sample_get_vulnerability_occurrences_summary():
