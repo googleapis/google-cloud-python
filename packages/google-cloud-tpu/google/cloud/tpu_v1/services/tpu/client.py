@@ -489,6 +489,13 @@ class TpuClient(metaclass=TpuClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import tpu_v1
 
             def sample_list_nodes():
@@ -595,6 +602,13 @@ class TpuClient(metaclass=TpuClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import tpu_v1
 
             def sample_get_node():
@@ -688,6 +702,13 @@ class TpuClient(metaclass=TpuClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import tpu_v1
 
             def sample_create_node():
@@ -814,6 +835,13 @@ class TpuClient(metaclass=TpuClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import tpu_v1
 
             def sample_delete_node():
@@ -920,6 +948,13 @@ class TpuClient(metaclass=TpuClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import tpu_v1
 
             def sample_reimage_node():
@@ -1007,6 +1042,13 @@ class TpuClient(metaclass=TpuClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import tpu_v1
 
             def sample_stop_node():
@@ -1094,6 +1136,13 @@ class TpuClient(metaclass=TpuClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import tpu_v1
 
             def sample_start_node():
@@ -1182,6 +1231,13 @@ class TpuClient(metaclass=TpuClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import tpu_v1
 
             def sample_list_tensor_flow_versions():
@@ -1290,6 +1346,13 @@ class TpuClient(metaclass=TpuClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import tpu_v1
 
             def sample_get_tensor_flow_version():
@@ -1383,6 +1446,13 @@ class TpuClient(metaclass=TpuClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import tpu_v1
 
             def sample_list_accelerator_types():
@@ -1489,6 +1559,13 @@ class TpuClient(metaclass=TpuClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import tpu_v1
 
             def sample_get_accelerator_type():
