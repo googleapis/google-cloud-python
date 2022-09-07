@@ -495,6 +495,13 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import bigquery_data_exchange_v1beta1
 
             def sample_list_data_exchanges():
@@ -604,6 +611,13 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import bigquery_data_exchange_v1beta1
 
             def sample_list_org_data_exchanges():
@@ -717,6 +731,13 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import bigquery_data_exchange_v1beta1
 
             def sample_get_data_exchange():
@@ -815,6 +836,13 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import bigquery_data_exchange_v1beta1
 
             def sample_create_data_exchange():
@@ -928,6 +956,13 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import bigquery_data_exchange_v1beta1
 
             def sample_update_data_exchange():
@@ -1042,6 +1077,13 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import bigquery_data_exchange_v1beta1
 
             def sample_delete_data_exchange():
@@ -1126,6 +1168,13 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import bigquery_data_exchange_v1beta1
 
             def sample_list_listings():
@@ -1234,6 +1283,13 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import bigquery_data_exchange_v1beta1
 
             def sample_get_listing():
@@ -1333,6 +1389,13 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import bigquery_data_exchange_v1beta1
 
             def sample_create_listing():
@@ -1444,6 +1507,13 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import bigquery_data_exchange_v1beta1
 
             def sample_update_listing():
@@ -1556,6 +1626,13 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import bigquery_data_exchange_v1beta1
 
             def sample_delete_listing():
@@ -1643,6 +1720,13 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import bigquery_data_exchange_v1beta1
 
             def sample_subscribe_listing():
@@ -1744,6 +1828,13 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import bigquery_data_exchange_v1beta1
             from google.iam.v1 import iam_policy_pb2  # type: ignore
 
@@ -1879,6 +1970,13 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import bigquery_data_exchange_v1beta1
             from google.iam.v1 import iam_policy_pb2  # type: ignore
 
@@ -2014,6 +2112,13 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import bigquery_data_exchange_v1beta1
             from google.iam.v1 import iam_policy_pb2  # type: ignore
 
@@ -2024,7 +2129,7 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
                 # Initialize request argument(s)
                 request = iam_policy_pb2.TestIamPermissionsRequest(
                     resource="resource_value",
-                    permissions=['permissions_value_1', 'permissions_value_2'],
+                    permissions=['permissions_value1', 'permissions_value2'],
                 )
 
                 # Make the request
