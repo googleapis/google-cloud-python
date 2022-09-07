@@ -574,6 +574,13 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import bare_metal_solution_v2
 
             def sample_list_instances():
@@ -682,6 +689,13 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import bare_metal_solution_v2
 
             def sample_get_instance():
@@ -774,6 +788,13 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import bare_metal_solution_v2
 
             def sample_update_instance():
@@ -900,6 +921,13 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import bare_metal_solution_v2
 
             def sample_reset_instance():
@@ -1008,6 +1036,13 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import bare_metal_solution_v2
 
             def sample_start_instance():
@@ -1116,6 +1151,13 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import bare_metal_solution_v2
 
             def sample_stop_instance():
@@ -1224,6 +1266,13 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import bare_metal_solution_v2
 
             def sample_detach_lun():
@@ -1340,6 +1389,13 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import bare_metal_solution_v2
 
             def sample_list_volumes():
@@ -1448,6 +1504,13 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import bare_metal_solution_v2
 
             def sample_get_volume():
@@ -1540,6 +1603,13 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import bare_metal_solution_v2
 
             def sample_update_volume():
@@ -1666,6 +1736,13 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import bare_metal_solution_v2
 
             def sample_resize_volume():
@@ -1780,6 +1857,13 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import bare_metal_solution_v2
 
             def sample_list_networks():
@@ -1890,6 +1974,13 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import bare_metal_solution_v2
 
             def sample_list_network_usage():
@@ -1982,6 +2073,13 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import bare_metal_solution_v2
 
             def sample_get_network():
@@ -2074,6 +2172,13 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import bare_metal_solution_v2
 
             def sample_update_network():
@@ -2198,6 +2303,13 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import bare_metal_solution_v2
 
             def sample_get_lun():
@@ -2291,6 +2403,13 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import bare_metal_solution_v2
 
             def sample_list_luns():
@@ -2399,6 +2518,13 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import bare_metal_solution_v2
 
             def sample_get_nfs_share():
@@ -2490,6 +2616,13 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import bare_metal_solution_v2
 
             def sample_list_nfs_shares():
@@ -2599,6 +2732,13 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import bare_metal_solution_v2
 
             def sample_update_nfs_share():
