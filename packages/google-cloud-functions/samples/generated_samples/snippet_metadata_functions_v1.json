@@ -63,33 +63,33 @@
       "regionTag": "cloudfunctions_v1_generated_CloudFunctionsService_CallFunction_async",
       "segments": [
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 39,
-          "start": 34,
+          "end": 46,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 42,
-          "start": 40,
+          "end": 49,
+          "start": 47,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 46,
-          "start": 43,
+          "end": 53,
+          "start": 50,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -147,33 +147,33 @@
       "regionTag": "cloudfunctions_v1_generated_CloudFunctionsService_CallFunction_sync",
       "segments": [
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 39,
-          "start": 34,
+          "end": 46,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 42,
-          "start": 40,
+          "end": 49,
+          "start": 47,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 46,
-          "start": 43,
+          "end": 53,
+          "start": 50,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -232,33 +232,33 @@
       "regionTag": "cloudfunctions_v1_generated_CloudFunctionsService_CreateFunction_async",
       "segments": [
         {
-          "end": 52,
+          "end": 59,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 52,
+          "end": 59,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 42,
-          "start": 34,
+          "end": 49,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 49,
-          "start": 43,
+          "end": 56,
+          "start": 50,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 53,
-          "start": 50,
+          "end": 60,
+          "start": 57,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -316,33 +316,33 @@
       "regionTag": "cloudfunctions_v1_generated_CloudFunctionsService_CreateFunction_sync",
       "segments": [
         {
-          "end": 52,
+          "end": 59,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 52,
+          "end": 59,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 42,
-          "start": 34,
+          "end": 49,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 49,
-          "start": 43,
+          "end": 56,
+          "start": 50,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 53,
-          "start": 50,
+          "end": 60,
+          "start": 57,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -397,33 +397,33 @@
       "regionTag": "cloudfunctions_v1_generated_CloudFunctionsService_DeleteFunction_async",
       "segments": [
         {
-          "end": 48,
+          "end": 55,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 48,
+          "end": 55,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 38,
-          "start": 34,
+          "end": 45,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 45,
-          "start": 39,
+          "end": 52,
+          "start": 46,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 49,
-          "start": 46,
+          "end": 56,
+          "start": 53,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -477,33 +477,33 @@
       "regionTag": "cloudfunctions_v1_generated_CloudFunctionsService_DeleteFunction_sync",
       "segments": [
         {
-          "end": 48,
+          "end": 55,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 48,
+          "end": 55,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 38,
-          "start": 34,
+          "end": 45,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 45,
-          "start": 39,
+          "end": 52,
+          "start": 46,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 49,
-          "start": 46,
+          "end": 56,
+          "start": 53,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -554,33 +554,33 @@
       "regionTag": "cloudfunctions_v1_generated_CloudFunctionsService_GenerateDownloadUrl_async",
       "segments": [
         {
-          "end": 43,
+          "end": 50,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 43,
+          "end": 50,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
-          "type": "CLIENT_INITIALIZATION"
-        },
-        {
-          "end": 37,
-          "start": 34,
-          "type": "REQUEST_INITIALIZATION"
-        },
-        {
           "end": 40,
           "start": 38,
-          "type": "REQUEST_EXECUTION"
+          "type": "CLIENT_INITIALIZATION"
         },
         {
           "end": 44,
           "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 47,
+          "start": 45,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 51,
+          "start": 48,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -630,33 +630,33 @@
       "regionTag": "cloudfunctions_v1_generated_CloudFunctionsService_GenerateDownloadUrl_sync",
       "segments": [
         {
-          "end": 43,
+          "end": 50,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 43,
+          "end": 50,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
-          "type": "CLIENT_INITIALIZATION"
-        },
-        {
-          "end": 37,
-          "start": 34,
-          "type": "REQUEST_INITIALIZATION"
-        },
-        {
           "end": 40,
           "start": 38,
-          "type": "REQUEST_EXECUTION"
+          "type": "CLIENT_INITIALIZATION"
         },
         {
           "end": 44,
           "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 47,
+          "start": 45,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 51,
+          "start": 48,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -707,33 +707,33 @@
       "regionTag": "cloudfunctions_v1_generated_CloudFunctionsService_GenerateUploadUrl_async",
       "segments": [
         {
-          "end": 43,
+          "end": 50,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 43,
+          "end": 50,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
-          "type": "CLIENT_INITIALIZATION"
-        },
-        {
-          "end": 37,
-          "start": 34,
-          "type": "REQUEST_INITIALIZATION"
-        },
-        {
           "end": 40,
           "start": 38,
-          "type": "REQUEST_EXECUTION"
+          "type": "CLIENT_INITIALIZATION"
         },
         {
           "end": 44,
           "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 47,
+          "start": 45,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 51,
+          "start": 48,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -783,33 +783,33 @@
       "regionTag": "cloudfunctions_v1_generated_CloudFunctionsService_GenerateUploadUrl_sync",
       "segments": [
         {
-          "end": 43,
+          "end": 50,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 43,
+          "end": 50,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
-          "type": "CLIENT_INITIALIZATION"
-        },
-        {
-          "end": 37,
-          "start": 34,
-          "type": "REQUEST_INITIALIZATION"
-        },
-        {
           "end": 40,
           "start": 38,
-          "type": "REQUEST_EXECUTION"
+          "type": "CLIENT_INITIALIZATION"
         },
         {
           "end": 44,
           "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 47,
+          "start": 45,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 51,
+          "start": 48,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -864,33 +864,33 @@
       "regionTag": "cloudfunctions_v1_generated_CloudFunctionsService_GetFunction_async",
       "segments": [
         {
-          "end": 44,
+          "end": 51,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 44,
+          "end": 51,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 38,
-          "start": 34,
+          "end": 45,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 41,
-          "start": 39,
+          "end": 48,
+          "start": 46,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 45,
-          "start": 42,
+          "end": 52,
+          "start": 49,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -944,33 +944,33 @@
       "regionTag": "cloudfunctions_v1_generated_CloudFunctionsService_GetFunction_sync",
       "segments": [
         {
-          "end": 44,
+          "end": 51,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 44,
+          "end": 51,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 38,
-          "start": 34,
+          "end": 45,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 41,
-          "start": 39,
+          "end": 48,
+          "start": 46,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 45,
-          "start": 42,
+          "end": 52,
+          "start": 49,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -1021,33 +1021,33 @@
       "regionTag": "cloudfunctions_v1_generated_CloudFunctionsService_GetIamPolicy_async",
       "segments": [
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 34,
-          "start": 32,
+          "end": 41,
+          "start": 39,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 39,
-          "start": 35,
+          "end": 46,
+          "start": 42,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 42,
-          "start": 40,
+          "end": 49,
+          "start": 47,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 46,
-          "start": 43,
+          "end": 53,
+          "start": 50,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -1097,33 +1097,33 @@
       "regionTag": "cloudfunctions_v1_generated_CloudFunctionsService_GetIamPolicy_sync",
       "segments": [
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 34,
-          "start": 32,
+          "end": 41,
+          "start": 39,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 39,
-          "start": 35,
+          "end": 46,
+          "start": 42,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 42,
-          "start": 40,
+          "end": 49,
+          "start": 47,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 46,
-          "start": 43,
+          "end": 53,
+          "start": 50,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -1174,33 +1174,33 @@
       "regionTag": "cloudfunctions_v1_generated_CloudFunctionsService_ListFunctions_async",
       "segments": [
         {
-          "end": 44,
+          "end": 51,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 44,
+          "end": 51,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 37,
-          "start": 34,
+          "end": 44,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 40,
-          "start": 38,
+          "end": 47,
+          "start": 45,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 45,
-          "start": 41,
+          "end": 52,
+          "start": 48,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -1250,33 +1250,33 @@
       "regionTag": "cloudfunctions_v1_generated_CloudFunctionsService_ListFunctions_sync",
       "segments": [
         {
-          "end": 44,
+          "end": 51,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 44,
+          "end": 51,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 37,
-          "start": 34,
+          "end": 44,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 40,
-          "start": 38,
+          "end": 47,
+          "start": 45,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 45,
-          "start": 41,
+          "end": 52,
+          "start": 48,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -1327,33 +1327,33 @@
       "regionTag": "cloudfunctions_v1_generated_CloudFunctionsService_SetIamPolicy_async",
       "segments": [
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 34,
-          "start": 32,
+          "end": 41,
+          "start": 39,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 39,
-          "start": 35,
+          "end": 46,
+          "start": 42,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 42,
-          "start": 40,
+          "end": 49,
+          "start": 47,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 46,
-          "start": 43,
+          "end": 53,
+          "start": 50,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -1403,33 +1403,33 @@
       "regionTag": "cloudfunctions_v1_generated_CloudFunctionsService_SetIamPolicy_sync",
       "segments": [
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 34,
-          "start": 32,
+          "end": 41,
+          "start": 39,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 39,
-          "start": 35,
+          "end": 46,
+          "start": 42,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 42,
-          "start": 40,
+          "end": 49,
+          "start": 47,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 46,
-          "start": 43,
+          "end": 53,
+          "start": 50,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -1480,33 +1480,33 @@
       "regionTag": "cloudfunctions_v1_generated_CloudFunctionsService_TestIamPermissions_async",
       "segments": [
         {
-          "end": 46,
+          "end": 53,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 46,
+          "end": 53,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 34,
-          "start": 32,
+          "end": 41,
+          "start": 39,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 40,
-          "start": 35,
+          "end": 47,
+          "start": 42,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 43,
-          "start": 41,
+          "end": 50,
+          "start": 48,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 47,
-          "start": 44,
+          "end": 54,
+          "start": 51,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -1556,33 +1556,33 @@
       "regionTag": "cloudfunctions_v1_generated_CloudFunctionsService_TestIamPermissions_sync",
       "segments": [
         {
-          "end": 46,
+          "end": 53,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 46,
+          "end": 53,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 34,
-          "start": 32,
+          "end": 41,
+          "start": 39,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 40,
-          "start": 35,
+          "end": 47,
+          "start": 42,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 43,
-          "start": 41,
+          "end": 50,
+          "start": 48,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 47,
-          "start": 44,
+          "end": 54,
+          "start": 51,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -1637,33 +1637,33 @@
       "regionTag": "cloudfunctions_v1_generated_CloudFunctionsService_UpdateFunction_async",
       "segments": [
         {
-          "end": 51,
+          "end": 58,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 51,
+          "end": 58,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 41,
-          "start": 34,
+          "end": 48,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 48,
-          "start": 42,
+          "end": 55,
+          "start": 49,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 52,
-          "start": 49,
+          "end": 59,
+          "start": 56,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -1717,33 +1717,33 @@
       "regionTag": "cloudfunctions_v1_generated_CloudFunctionsService_UpdateFunction_sync",
       "segments": [
         {
-          "end": 51,
+          "end": 58,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 51,
+          "end": 58,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 41,
-          "start": 34,
+          "end": 48,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 48,
-          "start": 42,
+          "end": 55,
+          "start": 49,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 52,
-          "start": 49,
+          "end": 59,
+          "start": 56,
           "type": "RESPONSE_HANDLING"
         }
       ],
