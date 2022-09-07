@@ -613,6 +613,13 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import artifactregistry_v1beta2
 
             def sample_import_apt_artifacts():
@@ -705,6 +712,13 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import artifactregistry_v1beta2
 
             def sample_import_yum_artifacts():
@@ -794,6 +808,13 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import artifactregistry_v1beta2
 
             def sample_list_repositories():
@@ -902,6 +923,13 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import artifactregistry_v1beta2
 
             def sample_get_repository():
@@ -1001,6 +1029,13 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import artifactregistry_v1beta2
 
             def sample_create_repository():
@@ -1130,6 +1165,13 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import artifactregistry_v1beta2
 
             def sample_update_repository():
@@ -1238,6 +1280,13 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import artifactregistry_v1beta2
 
             def sample_delete_repository():
@@ -1354,6 +1403,13 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import artifactregistry_v1beta2
 
             def sample_list_packages():
@@ -1459,6 +1515,13 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import artifactregistry_v1beta2
 
             def sample_get_package():
@@ -1552,6 +1615,13 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import artifactregistry_v1beta2
 
             def sample_delete_package():
@@ -1665,6 +1735,13 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import artifactregistry_v1beta2
 
             def sample_list_versions():
@@ -1770,6 +1847,13 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import artifactregistry_v1beta2
 
             def sample_get_version():
@@ -1866,6 +1950,13 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import artifactregistry_v1beta2
 
             def sample_delete_version():
@@ -1979,6 +2070,13 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import artifactregistry_v1beta2
 
             def sample_list_files():
@@ -2085,6 +2183,13 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import artifactregistry_v1beta2
 
             def sample_get_file():
@@ -2177,6 +2282,13 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import artifactregistry_v1beta2
 
             def sample_list_tags():
@@ -2282,6 +2394,13 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import artifactregistry_v1beta2
 
             def sample_get_tag():
@@ -2376,6 +2495,13 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import artifactregistry_v1beta2
 
             def sample_create_tag():
@@ -2487,6 +2613,13 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import artifactregistry_v1beta2
 
             def sample_update_tag():
@@ -2592,6 +2725,13 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import artifactregistry_v1beta2
 
             def sample_delete_tag():
@@ -2670,6 +2810,13 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import artifactregistry_v1beta2
             from google.iam.v1 import iam_policy_pb2  # type: ignore
 
@@ -2805,6 +2952,13 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import artifactregistry_v1beta2
             from google.iam.v1 import iam_policy_pb2  # type: ignore
 
@@ -2941,6 +3095,13 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import artifactregistry_v1beta2
             from google.iam.v1 import iam_policy_pb2  # type: ignore
 
@@ -2951,7 +3112,7 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
                 # Initialize request argument(s)
                 request = iam_policy_pb2.TestIamPermissionsRequest(
                     resource="resource_value",
-                    permissions=['permissions_value_1', 'permissions_value_2'],
+                    permissions=['permissions_value1', 'permissions_value2'],
                 )
 
                 # Make the request
@@ -3017,6 +3178,13 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import artifactregistry_v1beta2
 
             def sample_get_project_settings():
@@ -3113,6 +3281,13 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import artifactregistry_v1beta2
 
             def sample_update_project_settings():
