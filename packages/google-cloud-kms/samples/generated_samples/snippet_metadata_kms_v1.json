@@ -67,33 +67,33 @@
       "regionTag": "cloudkms_v1_generated_EkmService_CreateEkmConnection_async",
       "segments": [
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 39,
-          "start": 34,
+          "end": 46,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 42,
-          "start": 40,
+          "end": 49,
+          "start": 47,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 46,
-          "start": 43,
+          "end": 53,
+          "start": 50,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -155,33 +155,33 @@
       "regionTag": "cloudkms_v1_generated_EkmService_CreateEkmConnection_sync",
       "segments": [
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 39,
-          "start": 34,
+          "end": 46,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 42,
-          "start": 40,
+          "end": 49,
+          "start": 47,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 46,
-          "start": 43,
+          "end": 53,
+          "start": 50,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -236,33 +236,33 @@
       "regionTag": "cloudkms_v1_generated_EkmService_GetEkmConnection_async",
       "segments": [
         {
-          "end": 44,
+          "end": 51,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 44,
+          "end": 51,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 38,
-          "start": 34,
+          "end": 45,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 41,
-          "start": 39,
+          "end": 48,
+          "start": 46,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 45,
-          "start": 42,
+          "end": 52,
+          "start": 49,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -316,33 +316,33 @@
       "regionTag": "cloudkms_v1_generated_EkmService_GetEkmConnection_sync",
       "segments": [
         {
-          "end": 44,
+          "end": 51,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 44,
+          "end": 51,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 38,
-          "start": 34,
+          "end": 45,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 41,
-          "start": 39,
+          "end": 48,
+          "start": 46,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 45,
-          "start": 42,
+          "end": 52,
+          "start": 49,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -397,33 +397,33 @@
       "regionTag": "cloudkms_v1_generated_EkmService_ListEkmConnections_async",
       "segments": [
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 38,
-          "start": 34,
+          "end": 45,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 41,
-          "start": 39,
+          "end": 48,
+          "start": 46,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 46,
-          "start": 42,
+          "end": 53,
+          "start": 49,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -477,33 +477,33 @@
       "regionTag": "cloudkms_v1_generated_EkmService_ListEkmConnections_sync",
       "segments": [
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 38,
-          "start": 34,
+          "end": 45,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 41,
-          "start": 39,
+          "end": 48,
+          "start": 46,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 46,
-          "start": 42,
+          "end": 53,
+          "start": 49,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -562,33 +562,33 @@
       "regionTag": "cloudkms_v1_generated_EkmService_UpdateEkmConnection_async",
       "segments": [
         {
-          "end": 43,
+          "end": 50,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 43,
+          "end": 50,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
-          "type": "CLIENT_INITIALIZATION"
-        },
-        {
-          "end": 37,
-          "start": 34,
-          "type": "REQUEST_INITIALIZATION"
-        },
-        {
           "end": 40,
           "start": 38,
-          "type": "REQUEST_EXECUTION"
+          "type": "CLIENT_INITIALIZATION"
         },
         {
           "end": 44,
           "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 47,
+          "start": 45,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 51,
+          "start": 48,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -646,33 +646,33 @@
       "regionTag": "cloudkms_v1_generated_EkmService_UpdateEkmConnection_sync",
       "segments": [
         {
-          "end": 43,
+          "end": 50,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 43,
+          "end": 50,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
-          "type": "CLIENT_INITIALIZATION"
-        },
-        {
-          "end": 37,
-          "start": 34,
-          "type": "REQUEST_INITIALIZATION"
-        },
-        {
           "end": 40,
           "start": 38,
-          "type": "REQUEST_EXECUTION"
+          "type": "CLIENT_INITIALIZATION"
         },
         {
           "end": 44,
           "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 47,
+          "start": 45,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 51,
+          "start": 48,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -731,33 +731,33 @@
       "regionTag": "cloudkms_v1_generated_KeyManagementService_AsymmetricDecrypt_async",
       "segments": [
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 39,
-          "start": 34,
+          "end": 46,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 42,
-          "start": 40,
+          "end": 49,
+          "start": 47,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 46,
-          "start": 43,
+          "end": 53,
+          "start": 50,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -815,33 +815,33 @@
       "regionTag": "cloudkms_v1_generated_KeyManagementService_AsymmetricDecrypt_sync",
       "segments": [
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 39,
-          "start": 34,
+          "end": 46,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 42,
-          "start": 40,
+          "end": 49,
+          "start": 47,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 46,
-          "start": 43,
+          "end": 53,
+          "start": 50,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -900,33 +900,33 @@
       "regionTag": "cloudkms_v1_generated_KeyManagementService_AsymmetricSign_async",
       "segments": [
         {
-          "end": 44,
+          "end": 51,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 44,
+          "end": 51,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 38,
-          "start": 34,
+          "end": 45,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 41,
-          "start": 39,
+          "end": 48,
+          "start": 46,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 45,
-          "start": 42,
+          "end": 52,
+          "start": 49,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -984,33 +984,33 @@
       "regionTag": "cloudkms_v1_generated_KeyManagementService_AsymmetricSign_sync",
       "segments": [
         {
-          "end": 44,
+          "end": 51,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 44,
+          "end": 51,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 38,
-          "start": 34,
+          "end": 45,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 41,
-          "start": 39,
+          "end": 48,
+          "start": 46,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 45,
-          "start": 42,
+          "end": 52,
+          "start": 49,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -1069,33 +1069,33 @@
       "regionTag": "cloudkms_v1_generated_KeyManagementService_CreateCryptoKeyVersion_async",
       "segments": [
         {
-          "end": 44,
+          "end": 51,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 44,
+          "end": 51,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 38,
-          "start": 34,
+          "end": 45,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 41,
-          "start": 39,
+          "end": 48,
+          "start": 46,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 45,
-          "start": 42,
+          "end": 52,
+          "start": 49,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -1153,33 +1153,33 @@
       "regionTag": "cloudkms_v1_generated_KeyManagementService_CreateCryptoKeyVersion_sync",
       "segments": [
         {
-          "end": 44,
+          "end": 51,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 44,
+          "end": 51,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 38,
-          "start": 34,
+          "end": 45,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 41,
-          "start": 39,
+          "end": 48,
+          "start": 46,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 45,
-          "start": 42,
+          "end": 52,
+          "start": 49,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -1242,33 +1242,33 @@
       "regionTag": "cloudkms_v1_generated_KeyManagementService_CreateCryptoKey_async",
       "segments": [
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 39,
-          "start": 34,
+          "end": 46,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 42,
-          "start": 40,
+          "end": 49,
+          "start": 47,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 46,
-          "start": 43,
+          "end": 53,
+          "start": 50,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -1330,33 +1330,33 @@
       "regionTag": "cloudkms_v1_generated_KeyManagementService_CreateCryptoKey_sync",
       "segments": [
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 39,
-          "start": 34,
+          "end": 46,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 42,
-          "start": 40,
+          "end": 49,
+          "start": 47,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 46,
-          "start": 43,
+          "end": 53,
+          "start": 50,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -1419,33 +1419,33 @@
       "regionTag": "cloudkms_v1_generated_KeyManagementService_CreateImportJob_async",
       "segments": [
         {
-          "end": 50,
+          "end": 57,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 50,
+          "end": 57,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 44,
-          "start": 34,
+          "end": 51,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 47,
-          "start": 45,
+          "end": 54,
+          "start": 52,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 51,
-          "start": 48,
+          "end": 58,
+          "start": 55,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -1507,33 +1507,33 @@
       "regionTag": "cloudkms_v1_generated_KeyManagementService_CreateImportJob_sync",
       "segments": [
         {
-          "end": 50,
+          "end": 57,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 50,
+          "end": 57,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 44,
-          "start": 34,
+          "end": 51,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 47,
-          "start": 45,
+          "end": 54,
+          "start": 52,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 51,
-          "start": 48,
+          "end": 58,
+          "start": 55,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -1596,33 +1596,33 @@
       "regionTag": "cloudkms_v1_generated_KeyManagementService_CreateKeyRing_async",
       "segments": [
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 39,
-          "start": 34,
+          "end": 46,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 42,
-          "start": 40,
+          "end": 49,
+          "start": 47,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 46,
-          "start": 43,
+          "end": 53,
+          "start": 50,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -1684,33 +1684,33 @@
       "regionTag": "cloudkms_v1_generated_KeyManagementService_CreateKeyRing_sync",
       "segments": [
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 39,
-          "start": 34,
+          "end": 46,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 42,
-          "start": 40,
+          "end": 49,
+          "start": 47,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 46,
-          "start": 43,
+          "end": 53,
+          "start": 50,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -1769,33 +1769,33 @@
       "regionTag": "cloudkms_v1_generated_KeyManagementService_Decrypt_async",
       "segments": [
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 39,
-          "start": 34,
+          "end": 46,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 42,
-          "start": 40,
+          "end": 49,
+          "start": 47,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 46,
-          "start": 43,
+          "end": 53,
+          "start": 50,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -1853,33 +1853,33 @@
       "regionTag": "cloudkms_v1_generated_KeyManagementService_Decrypt_sync",
       "segments": [
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 39,
-          "start": 34,
+          "end": 46,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 42,
-          "start": 40,
+          "end": 49,
+          "start": 47,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 46,
-          "start": 43,
+          "end": 53,
+          "start": 50,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -1934,33 +1934,33 @@
       "regionTag": "cloudkms_v1_generated_KeyManagementService_DestroyCryptoKeyVersion_async",
       "segments": [
         {
-          "end": 44,
+          "end": 51,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 44,
+          "end": 51,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 38,
-          "start": 34,
+          "end": 45,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 41,
-          "start": 39,
+          "end": 48,
+          "start": 46,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 45,
-          "start": 42,
+          "end": 52,
+          "start": 49,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -2014,33 +2014,33 @@
       "regionTag": "cloudkms_v1_generated_KeyManagementService_DestroyCryptoKeyVersion_sync",
       "segments": [
         {
-          "end": 44,
+          "end": 51,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 44,
+          "end": 51,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 38,
-          "start": 34,
+          "end": 45,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 41,
-          "start": 39,
+          "end": 48,
+          "start": 46,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 45,
-          "start": 42,
+          "end": 52,
+          "start": 49,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -2099,33 +2099,33 @@
       "regionTag": "cloudkms_v1_generated_KeyManagementService_Encrypt_async",
       "segments": [
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 39,
-          "start": 34,
+          "end": 46,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 42,
-          "start": 40,
+          "end": 49,
+          "start": 47,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 46,
-          "start": 43,
+          "end": 53,
+          "start": 50,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -2183,33 +2183,33 @@
       "regionTag": "cloudkms_v1_generated_KeyManagementService_Encrypt_sync",
       "segments": [
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 39,
-          "start": 34,
+          "end": 46,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 42,
-          "start": 40,
+          "end": 49,
+          "start": 47,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 46,
-          "start": 43,
+          "end": 53,
+          "start": 50,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -2272,33 +2272,33 @@
       "regionTag": "cloudkms_v1_generated_KeyManagementService_GenerateRandomBytes_async",
       "segments": [
         {
-          "end": 43,
+          "end": 50,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 43,
+          "end": 50,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
-          "type": "CLIENT_INITIALIZATION"
-        },
-        {
-          "end": 37,
-          "start": 34,
-          "type": "REQUEST_INITIALIZATION"
-        },
-        {
           "end": 40,
           "start": 38,
-          "type": "REQUEST_EXECUTION"
+          "type": "CLIENT_INITIALIZATION"
         },
         {
           "end": 44,
           "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 47,
+          "start": 45,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 51,
+          "start": 48,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -2360,33 +2360,33 @@
       "regionTag": "cloudkms_v1_generated_KeyManagementService_GenerateRandomBytes_sync",
       "segments": [
         {
-          "end": 43,
+          "end": 50,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 43,
+          "end": 50,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
-          "type": "CLIENT_INITIALIZATION"
-        },
-        {
-          "end": 37,
-          "start": 34,
-          "type": "REQUEST_INITIALIZATION"
-        },
-        {
           "end": 40,
           "start": 38,
-          "type": "REQUEST_EXECUTION"
+          "type": "CLIENT_INITIALIZATION"
         },
         {
           "end": 44,
           "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 47,
+          "start": 45,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 51,
+          "start": 48,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -2441,33 +2441,33 @@
       "regionTag": "cloudkms_v1_generated_KeyManagementService_GetCryptoKeyVersion_async",
       "segments": [
         {
-          "end": 44,
+          "end": 51,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 44,
+          "end": 51,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 38,
-          "start": 34,
+          "end": 45,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 41,
-          "start": 39,
+          "end": 48,
+          "start": 46,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 45,
-          "start": 42,
+          "end": 52,
+          "start": 49,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -2521,33 +2521,33 @@
       "regionTag": "cloudkms_v1_generated_KeyManagementService_GetCryptoKeyVersion_sync",
       "segments": [
         {
-          "end": 44,
+          "end": 51,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 44,
+          "end": 51,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 38,
-          "start": 34,
+          "end": 45,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 41,
-          "start": 39,
+          "end": 48,
+          "start": 46,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 45,
-          "start": 42,
+          "end": 52,
+          "start": 49,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -2602,33 +2602,33 @@
       "regionTag": "cloudkms_v1_generated_KeyManagementService_GetCryptoKey_async",
       "segments": [
         {
-          "end": 44,
+          "end": 51,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 44,
+          "end": 51,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 38,
-          "start": 34,
+          "end": 45,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 41,
-          "start": 39,
+          "end": 48,
+          "start": 46,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 45,
-          "start": 42,
+          "end": 52,
+          "start": 49,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -2682,33 +2682,33 @@
       "regionTag": "cloudkms_v1_generated_KeyManagementService_GetCryptoKey_sync",
       "segments": [
         {
-          "end": 44,
+          "end": 51,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 44,
+          "end": 51,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 38,
-          "start": 34,
+          "end": 45,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 41,
-          "start": 39,
+          "end": 48,
+          "start": 46,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 45,
-          "start": 42,
+          "end": 52,
+          "start": 49,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -2763,33 +2763,33 @@
       "regionTag": "cloudkms_v1_generated_KeyManagementService_GetImportJob_async",
       "segments": [
         {
-          "end": 44,
+          "end": 51,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 44,
+          "end": 51,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 38,
-          "start": 34,
+          "end": 45,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 41,
-          "start": 39,
+          "end": 48,
+          "start": 46,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 45,
-          "start": 42,
+          "end": 52,
+          "start": 49,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -2843,33 +2843,33 @@
       "regionTag": "cloudkms_v1_generated_KeyManagementService_GetImportJob_sync",
       "segments": [
         {
-          "end": 44,
+          "end": 51,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 44,
+          "end": 51,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 38,
-          "start": 34,
+          "end": 45,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 41,
-          "start": 39,
+          "end": 48,
+          "start": 46,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 45,
-          "start": 42,
+          "end": 52,
+          "start": 49,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -2924,33 +2924,33 @@
       "regionTag": "cloudkms_v1_generated_KeyManagementService_GetKeyRing_async",
       "segments": [
         {
-          "end": 44,
+          "end": 51,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 44,
+          "end": 51,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 38,
-          "start": 34,
+          "end": 45,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 41,
-          "start": 39,
+          "end": 48,
+          "start": 46,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 45,
-          "start": 42,
+          "end": 52,
+          "start": 49,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -3004,33 +3004,33 @@
       "regionTag": "cloudkms_v1_generated_KeyManagementService_GetKeyRing_sync",
       "segments": [
         {
-          "end": 44,
+          "end": 51,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 44,
+          "end": 51,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 38,
-          "start": 34,
+          "end": 45,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 41,
-          "start": 39,
+          "end": 48,
+          "start": 46,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 45,
-          "start": 42,
+          "end": 52,
+          "start": 49,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -3085,33 +3085,33 @@
       "regionTag": "cloudkms_v1_generated_KeyManagementService_GetPublicKey_async",
       "segments": [
         {
-          "end": 44,
+          "end": 51,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 44,
+          "end": 51,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 38,
-          "start": 34,
+          "end": 45,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 41,
-          "start": 39,
+          "end": 48,
+          "start": 46,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 45,
-          "start": 42,
+          "end": 52,
+          "start": 49,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -3165,33 +3165,33 @@
       "regionTag": "cloudkms_v1_generated_KeyManagementService_GetPublicKey_sync",
       "segments": [
         {
-          "end": 44,
+          "end": 51,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 44,
+          "end": 51,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 38,
-          "start": 34,
+          "end": 45,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 41,
-          "start": 39,
+          "end": 48,
+          "start": 46,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 45,
-          "start": 42,
+          "end": 52,
+          "start": 49,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -3242,33 +3242,33 @@
       "regionTag": "cloudkms_v1_generated_KeyManagementService_ImportCryptoKeyVersion_async",
       "segments": [
         {
-          "end": 47,
+          "end": 54,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 47,
+          "end": 54,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 41,
-          "start": 34,
+          "end": 48,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 44,
-          "start": 42,
+          "end": 51,
+          "start": 49,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 48,
-          "start": 45,
+          "end": 55,
+          "start": 52,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -3318,33 +3318,33 @@
       "regionTag": "cloudkms_v1_generated_KeyManagementService_ImportCryptoKeyVersion_sync",
       "segments": [
         {
-          "end": 47,
+          "end": 54,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 47,
+          "end": 54,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 41,
-          "start": 34,
+          "end": 48,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 44,
-          "start": 42,
+          "end": 51,
+          "start": 49,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 48,
-          "start": 45,
+          "end": 55,
+          "start": 52,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -3399,33 +3399,33 @@
       "regionTag": "cloudkms_v1_generated_KeyManagementService_ListCryptoKeyVersions_async",
       "segments": [
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 38,
-          "start": 34,
+          "end": 45,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 41,
-          "start": 39,
+          "end": 48,
+          "start": 46,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 46,
-          "start": 42,
+          "end": 53,
+          "start": 49,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -3479,33 +3479,33 @@
       "regionTag": "cloudkms_v1_generated_KeyManagementService_ListCryptoKeyVersions_sync",
       "segments": [
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 38,
-          "start": 34,
+          "end": 45,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 41,
-          "start": 39,
+          "end": 48,
+          "start": 46,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 46,
-          "start": 42,
+          "end": 53,
+          "start": 49,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -3560,33 +3560,33 @@
       "regionTag": "cloudkms_v1_generated_KeyManagementService_ListCryptoKeys_async",
       "segments": [
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 38,
-          "start": 34,
+          "end": 45,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 41,
-          "start": 39,
+          "end": 48,
+          "start": 46,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 46,
-          "start": 42,
+          "end": 53,
+          "start": 49,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -3640,33 +3640,33 @@
       "regionTag": "cloudkms_v1_generated_KeyManagementService_ListCryptoKeys_sync",
       "segments": [
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 38,
-          "start": 34,
+          "end": 45,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 41,
-          "start": 39,
+          "end": 48,
+          "start": 46,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 46,
-          "start": 42,
+          "end": 53,
+          "start": 49,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -3721,33 +3721,33 @@
       "regionTag": "cloudkms_v1_generated_KeyManagementService_ListImportJobs_async",
       "segments": [
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 38,
-          "start": 34,
+          "end": 45,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 41,
-          "start": 39,
+          "end": 48,
+          "start": 46,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 46,
-          "start": 42,
+          "end": 53,
+          "start": 49,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -3801,33 +3801,33 @@
       "regionTag": "cloudkms_v1_generated_KeyManagementService_ListImportJobs_sync",
       "segments": [
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 38,
-          "start": 34,
+          "end": 45,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 41,
-          "start": 39,
+          "end": 48,
+          "start": 46,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 46,
-          "start": 42,
+          "end": 53,
+          "start": 49,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -3882,33 +3882,33 @@
       "regionTag": "cloudkms_v1_generated_KeyManagementService_ListKeyRings_async",
       "segments": [
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 38,
-          "start": 34,
+          "end": 45,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 41,
-          "start": 39,
+          "end": 48,
+          "start": 46,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 46,
-          "start": 42,
+          "end": 53,
+          "start": 49,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -3962,33 +3962,33 @@
       "regionTag": "cloudkms_v1_generated_KeyManagementService_ListKeyRings_sync",
       "segments": [
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 38,
-          "start": 34,
+          "end": 45,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 41,
-          "start": 39,
+          "end": 48,
+          "start": 46,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 46,
-          "start": 42,
+          "end": 53,
+          "start": 49,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -4047,33 +4047,33 @@
       "regionTag": "cloudkms_v1_generated_KeyManagementService_MacSign_async",
       "segments": [
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 39,
-          "start": 34,
+          "end": 46,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 42,
-          "start": 40,
+          "end": 49,
+          "start": 47,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 46,
-          "start": 43,
+          "end": 53,
+          "start": 50,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -4131,33 +4131,33 @@
       "regionTag": "cloudkms_v1_generated_KeyManagementService_MacSign_sync",
       "segments": [
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 39,
-          "start": 34,
+          "end": 46,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 42,
-          "start": 40,
+          "end": 49,
+          "start": 47,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 46,
-          "start": 43,
+          "end": 53,
+          "start": 50,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -4220,33 +4220,33 @@
       "regionTag": "cloudkms_v1_generated_KeyManagementService_MacVerify_async",
       "segments": [
         {
-          "end": 46,
+          "end": 53,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 46,
+          "end": 53,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 40,
-          "start": 34,
+          "end": 47,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 43,
-          "start": 41,
+          "end": 50,
+          "start": 48,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 47,
-          "start": 44,
+          "end": 54,
+          "start": 51,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -4308,33 +4308,33 @@
       "regionTag": "cloudkms_v1_generated_KeyManagementService_MacVerify_sync",
       "segments": [
         {
-          "end": 46,
+          "end": 53,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 46,
+          "end": 53,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 40,
-          "start": 34,
+          "end": 47,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 43,
-          "start": 41,
+          "end": 50,
+          "start": 48,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 47,
-          "start": 44,
+          "end": 54,
+          "start": 51,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -4389,33 +4389,33 @@
       "regionTag": "cloudkms_v1_generated_KeyManagementService_RestoreCryptoKeyVersion_async",
       "segments": [
         {
-          "end": 44,
+          "end": 51,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 44,
+          "end": 51,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 38,
-          "start": 34,
+          "end": 45,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 41,
-          "start": 39,
+          "end": 48,
+          "start": 46,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 45,
-          "start": 42,
+          "end": 52,
+          "start": 49,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -4469,33 +4469,33 @@
       "regionTag": "cloudkms_v1_generated_KeyManagementService_RestoreCryptoKeyVersion_sync",
       "segments": [
         {
-          "end": 44,
+          "end": 51,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 44,
+          "end": 51,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 38,
-          "start": 34,
+          "end": 45,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 41,
-          "start": 39,
+          "end": 48,
+          "start": 46,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 45,
-          "start": 42,
+          "end": 52,
+          "start": 49,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -4554,33 +4554,33 @@
       "regionTag": "cloudkms_v1_generated_KeyManagementService_UpdateCryptoKeyPrimaryVersion_async",
       "segments": [
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 39,
-          "start": 34,
+          "end": 46,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 42,
-          "start": 40,
+          "end": 49,
+          "start": 47,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 46,
-          "start": 43,
+          "end": 53,
+          "start": 50,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -4638,33 +4638,33 @@
       "regionTag": "cloudkms_v1_generated_KeyManagementService_UpdateCryptoKeyPrimaryVersion_sync",
       "segments": [
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 45,
+          "end": 52,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 39,
-          "start": 34,
+          "end": 46,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 42,
-          "start": 40,
+          "end": 49,
+          "start": 47,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 46,
-          "start": 43,
+          "end": 53,
+          "start": 50,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -4723,33 +4723,33 @@
       "regionTag": "cloudkms_v1_generated_KeyManagementService_UpdateCryptoKeyVersion_async",
       "segments": [
         {
-          "end": 43,
+          "end": 50,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 43,
+          "end": 50,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
-          "type": "CLIENT_INITIALIZATION"
-        },
-        {
-          "end": 37,
-          "start": 34,
-          "type": "REQUEST_INITIALIZATION"
-        },
-        {
           "end": 40,
           "start": 38,
-          "type": "REQUEST_EXECUTION"
+          "type": "CLIENT_INITIALIZATION"
         },
         {
           "end": 44,
           "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 47,
+          "start": 45,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 51,
+          "start": 48,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -4807,33 +4807,33 @@
       "regionTag": "cloudkms_v1_generated_KeyManagementService_UpdateCryptoKeyVersion_sync",
       "segments": [
         {
-          "end": 43,
+          "end": 50,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 43,
+          "end": 50,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
-          "type": "CLIENT_INITIALIZATION"
-        },
-        {
-          "end": 37,
-          "start": 34,
-          "type": "REQUEST_INITIALIZATION"
-        },
-        {
           "end": 40,
           "start": 38,
-          "type": "REQUEST_EXECUTION"
+          "type": "CLIENT_INITIALIZATION"
         },
         {
           "end": 44,
           "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 47,
+          "start": 45,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 51,
+          "start": 48,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -4892,33 +4892,33 @@
       "regionTag": "cloudkms_v1_generated_KeyManagementService_UpdateCryptoKey_async",
       "segments": [
         {
-          "end": 43,
+          "end": 50,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 43,
+          "end": 50,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
-          "type": "CLIENT_INITIALIZATION"
-        },
-        {
-          "end": 37,
-          "start": 34,
-          "type": "REQUEST_INITIALIZATION"
-        },
-        {
           "end": 40,
           "start": 38,
-          "type": "REQUEST_EXECUTION"
+          "type": "CLIENT_INITIALIZATION"
         },
         {
           "end": 44,
           "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 47,
+          "start": 45,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 51,
+          "start": 48,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -4976,33 +4976,33 @@
       "regionTag": "cloudkms_v1_generated_KeyManagementService_UpdateCryptoKey_sync",
       "segments": [
         {
-          "end": 43,
+          "end": 50,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 43,
+          "end": 50,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
-          "type": "CLIENT_INITIALIZATION"
-        },
-        {
-          "end": 37,
-          "start": 34,
-          "type": "REQUEST_INITIALIZATION"
-        },
-        {
           "end": 40,
           "start": 38,
-          "type": "REQUEST_EXECUTION"
+          "type": "CLIENT_INITIALIZATION"
         },
         {
           "end": 44,
           "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 47,
+          "start": 45,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 51,
+          "start": 48,
           "type": "RESPONSE_HANDLING"
         }
       ],
