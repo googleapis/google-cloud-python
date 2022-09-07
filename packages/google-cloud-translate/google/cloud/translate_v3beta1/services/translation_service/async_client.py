@@ -218,6 +218,13 @@ class TranslationServiceAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import translate_v3beta1
 
             async def sample_translate_text():
@@ -226,7 +233,7 @@ class TranslationServiceAsyncClient:
 
                 # Initialize request argument(s)
                 request = translate_v3beta1.TranslateTextRequest(
-                    contents=['contents_value_1', 'contents_value_2'],
+                    contents=['contents_value1', 'contents_value2'],
                     target_language_code="target_language_code_value",
                     parent="parent_value",
                 )
@@ -294,6 +301,13 @@ class TranslationServiceAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import translate_v3beta1
 
             async def sample_detect_language():
@@ -433,6 +447,13 @@ class TranslationServiceAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import translate_v3beta1
 
             async def sample_get_supported_languages():
@@ -582,6 +603,13 @@ class TranslationServiceAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import translate_v3beta1
 
             async def sample_translate_document():
@@ -667,6 +695,13 @@ class TranslationServiceAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import translate_v3beta1
 
             async def sample_batch_translate_text():
@@ -683,7 +718,7 @@ class TranslationServiceAsyncClient:
                 request = translate_v3beta1.BatchTranslateTextRequest(
                     parent="parent_value",
                     source_language_code="source_language_code_value",
-                    target_language_codes=['target_language_codes_value_1', 'target_language_codes_value_2'],
+                    target_language_codes=['target_language_codes_value1', 'target_language_codes_value2'],
                     input_configs=input_configs,
                     output_config=output_config,
                 )
@@ -778,6 +813,13 @@ class TranslationServiceAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import translate_v3beta1
 
             async def sample_batch_translate_document():
@@ -794,7 +836,7 @@ class TranslationServiceAsyncClient:
                 request = translate_v3beta1.BatchTranslateDocumentRequest(
                     parent="parent_value",
                     source_language_code="source_language_code_value",
-                    target_language_codes=['target_language_codes_value_1', 'target_language_codes_value_2'],
+                    target_language_codes=['target_language_codes_value1', 'target_language_codes_value2'],
                     input_configs=input_configs,
                     output_config=output_config,
                 )
@@ -966,6 +1008,13 @@ class TranslationServiceAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import translate_v3beta1
 
             async def sample_create_glossary():
@@ -1086,6 +1135,13 @@ class TranslationServiceAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import translate_v3beta1
 
             async def sample_list_glossaries():
@@ -1240,6 +1296,13 @@ class TranslationServiceAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import translate_v3beta1
 
             async def sample_get_glossary():
@@ -1346,6 +1409,13 @@ class TranslationServiceAsyncClient:
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import translate_v3beta1
 
             async def sample_delete_glossary():
