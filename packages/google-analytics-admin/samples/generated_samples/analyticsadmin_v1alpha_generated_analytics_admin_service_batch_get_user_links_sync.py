@@ -24,6 +24,13 @@
 
 
 # [START analyticsadmin_v1alpha_generated_AnalyticsAdminService_BatchGetUserLinks_sync]
+# This snippet has been automatically generated and should be regarded as a
+# code template only.
+# It will require modifications to work:
+# - It may require correct/in-range values for request initialization.
+# - It may require specifying regional endpoints when creating the service
+#   client as shown in:
+#   https://googleapis.dev/python/google-api-core/latest/client_options.html
 from google.analytics import admin_v1alpha
 
 
@@ -34,7 +41,7 @@ def sample_batch_get_user_links():
     # Initialize request argument(s)
     request = admin_v1alpha.BatchGetUserLinksRequest(
         parent="parent_value",
-        names=['names_value_1', 'names_value_2'],
+        names=['names_value1', 'names_value2'],
     )
 
     # Make the request

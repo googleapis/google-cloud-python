@@ -637,6 +637,13 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.analytics import admin_v1beta
 
             def sample_get_account():
@@ -735,6 +742,13 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.analytics import admin_v1beta
 
             def sample_list_accounts():
@@ -825,6 +839,13 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.analytics import admin_v1beta
 
             def sample_delete_account():
@@ -910,6 +931,13 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.analytics import admin_v1beta
 
             def sample_update_account():
@@ -1021,6 +1049,13 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.analytics import admin_v1beta
 
             def sample_provision_account_ticket():
@@ -1089,6 +1124,13 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.analytics import admin_v1beta
 
             def sample_list_account_summaries():
@@ -1170,6 +1212,13 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.analytics import admin_v1beta
 
             def sample_get_property():
@@ -1269,6 +1318,13 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.analytics import admin_v1beta
 
             def sample_list_properties():
@@ -1352,6 +1408,13 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.analytics import admin_v1beta
 
             def sample_create_property():
@@ -1457,6 +1520,13 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.analytics import admin_v1beta
 
             def sample_delete_property():
@@ -1554,6 +1624,13 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.analytics import admin_v1beta
 
             def sample_update_property():
@@ -1670,6 +1747,13 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.analytics import admin_v1beta
 
             def sample_create_firebase_link():
@@ -1774,6 +1858,13 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.analytics import admin_v1beta
 
             def sample_delete_firebase_link():
@@ -1859,6 +1950,13 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.analytics import admin_v1beta
 
             def sample_list_firebase_links():
@@ -1968,6 +2066,13 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.analytics import admin_v1beta
 
             def sample_create_google_ads_link():
@@ -2073,6 +2178,13 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.analytics import admin_v1beta
 
             def sample_update_google_ads_link():
@@ -2179,6 +2291,13 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.analytics import admin_v1beta
 
             def sample_delete_google_ads_link():
@@ -2262,6 +2381,13 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.analytics import admin_v1beta
 
             def sample_list_google_ads_links():
@@ -2371,6 +2497,13 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.analytics import admin_v1beta
 
             def sample_get_data_sharing_settings():
@@ -2474,6 +2607,13 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.analytics import admin_v1beta
 
             def sample_get_measurement_protocol_secret():
@@ -2575,6 +2715,13 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.analytics import admin_v1beta
 
             def sample_list_measurement_protocol_secrets():
@@ -2691,6 +2838,13 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.analytics import admin_v1beta
 
             def sample_create_measurement_protocol_secret():
@@ -2806,6 +2960,13 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.analytics import admin_v1beta
 
             def sample_delete_measurement_protocol_secret():
@@ -2898,6 +3059,13 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.analytics import admin_v1beta
 
             def sample_update_measurement_protocol_secret():
@@ -3021,6 +3189,13 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.analytics import admin_v1beta
 
             def sample_acknowledge_user_data_collection():
@@ -3101,6 +3276,13 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.analytics import admin_v1beta
 
             def sample_search_change_history_events():
@@ -3193,6 +3375,13 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.analytics import admin_v1beta
 
             def sample_create_conversion_event():
@@ -3299,6 +3488,13 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.analytics import admin_v1beta
 
             def sample_get_conversion_event():
@@ -3396,6 +3592,13 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.analytics import admin_v1beta
 
             def sample_delete_conversion_event():
@@ -3483,6 +3686,13 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.analytics import admin_v1beta
 
             def sample_list_conversion_events():
@@ -3593,6 +3803,13 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.analytics import admin_v1beta
 
             def sample_create_custom_dimension():
@@ -3702,6 +3919,13 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.analytics import admin_v1beta
 
             def sample_update_custom_dimension():
@@ -3805,6 +4029,13 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.analytics import admin_v1beta
 
             def sample_list_custom_dimensions():
@@ -3913,6 +4144,13 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.analytics import admin_v1beta
 
             def sample_archive_custom_dimension():
@@ -3998,6 +4236,13 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.analytics import admin_v1beta
 
             def sample_get_custom_dimension():
@@ -4093,6 +4338,13 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.analytics import admin_v1beta
 
             def sample_create_custom_metric():
@@ -4201,6 +4453,13 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.analytics import admin_v1beta
 
             def sample_update_custom_metric():
@@ -4304,6 +4563,13 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.analytics import admin_v1beta
 
             def sample_list_custom_metrics():
@@ -4412,6 +4678,13 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.analytics import admin_v1beta
 
             def sample_archive_custom_metric():
@@ -4496,6 +4769,13 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.analytics import admin_v1beta
 
             def sample_get_custom_metric():
@@ -4591,6 +4871,13 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.analytics import admin_v1beta
 
             def sample_get_data_retention_settings():
@@ -4693,6 +4980,13 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.analytics import admin_v1beta
 
             def sample_update_data_retention_settings():
@@ -4809,6 +5103,13 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.analytics import admin_v1beta
 
             def sample_create_data_stream():
@@ -4915,6 +5216,13 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.analytics import admin_v1beta
 
             def sample_delete_data_stream():
@@ -5000,6 +5308,13 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.analytics import admin_v1beta
 
             def sample_update_data_stream():
@@ -5105,6 +5420,13 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.analytics import admin_v1beta
 
             def sample_list_data_streams():
@@ -5213,6 +5535,13 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.analytics import admin_v1beta
 
             def sample_get_data_stream():
