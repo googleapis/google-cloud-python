@@ -440,6 +440,13 @@ class BetaAnalyticsDataClient(metaclass=BetaAnalyticsDataClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.analytics import data_v1beta
 
             def sample_run_report():
@@ -517,6 +524,13 @@ class BetaAnalyticsDataClient(metaclass=BetaAnalyticsDataClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.analytics import data_v1beta
 
             def sample_run_pivot_report():
@@ -591,6 +605,13 @@ class BetaAnalyticsDataClient(metaclass=BetaAnalyticsDataClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.analytics import data_v1beta
 
             def sample_batch_run_reports():
@@ -665,6 +686,13 @@ class BetaAnalyticsDataClient(metaclass=BetaAnalyticsDataClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.analytics import data_v1beta
 
             def sample_batch_run_pivot_reports():
@@ -749,6 +777,13 @@ class BetaAnalyticsDataClient(metaclass=BetaAnalyticsDataClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.analytics import data_v1beta
 
             def sample_get_metadata():
@@ -856,6 +891,13 @@ class BetaAnalyticsDataClient(metaclass=BetaAnalyticsDataClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.analytics import data_v1beta
 
             def sample_run_realtime_report():
@@ -939,6 +981,13 @@ class BetaAnalyticsDataClient(metaclass=BetaAnalyticsDataClientMeta):
 
         .. code-block:: python
 
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.analytics import data_v1beta
 
             def sample_check_compatibility():
