@@ -58,31 +58,31 @@
       "regionTag": "oslogin_v1_generated_OsLoginService_DeletePosixAccount_async",
       "segments": [
         {
-          "end": 42,
+          "end": 49,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 42,
+          "end": 49,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 38,
-          "start": 34,
+          "end": 45,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "start": 39,
+          "start": 46,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 43,
+          "end": 50,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -135,31 +135,31 @@
       "regionTag": "oslogin_v1_generated_OsLoginService_DeletePosixAccount_sync",
       "segments": [
         {
-          "end": 42,
+          "end": 49,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 42,
+          "end": 49,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 38,
-          "start": 34,
+          "end": 45,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "start": 39,
+          "start": 46,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 43,
+          "end": 50,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -213,31 +213,31 @@
       "regionTag": "oslogin_v1_generated_OsLoginService_DeleteSshPublicKey_async",
       "segments": [
         {
-          "end": 42,
+          "end": 49,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 42,
+          "end": 49,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 38,
-          "start": 34,
+          "end": 45,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "start": 39,
+          "start": 46,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 43,
+          "end": 50,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -290,31 +290,31 @@
       "regionTag": "oslogin_v1_generated_OsLoginService_DeleteSshPublicKey_sync",
       "segments": [
         {
-          "end": 42,
+          "end": 49,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 42,
+          "end": 49,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 38,
-          "start": 34,
+          "end": 45,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "start": 39,
+          "start": 46,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 43,
+          "end": 50,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -369,33 +369,33 @@
       "regionTag": "oslogin_v1_generated_OsLoginService_GetLoginProfile_async",
       "segments": [
         {
-          "end": 44,
+          "end": 51,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 44,
+          "end": 51,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 38,
-          "start": 34,
+          "end": 45,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 41,
-          "start": 39,
+          "end": 48,
+          "start": 46,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 45,
-          "start": 42,
+          "end": 52,
+          "start": 49,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -449,33 +449,33 @@
       "regionTag": "oslogin_v1_generated_OsLoginService_GetLoginProfile_sync",
       "segments": [
         {
-          "end": 44,
+          "end": 51,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 44,
+          "end": 51,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 38,
-          "start": 34,
+          "end": 45,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 41,
-          "start": 39,
+          "end": 48,
+          "start": 46,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 45,
-          "start": 42,
+          "end": 52,
+          "start": 49,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -530,33 +530,33 @@
       "regionTag": "oslogin_v1_generated_OsLoginService_GetSshPublicKey_async",
       "segments": [
         {
-          "end": 44,
+          "end": 51,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 44,
+          "end": 51,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 38,
-          "start": 34,
+          "end": 45,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 41,
-          "start": 39,
+          "end": 48,
+          "start": 46,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 45,
-          "start": 42,
+          "end": 52,
+          "start": 49,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -610,33 +610,33 @@
       "regionTag": "oslogin_v1_generated_OsLoginService_GetSshPublicKey_sync",
       "segments": [
         {
-          "end": 44,
+          "end": 51,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 44,
+          "end": 51,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 38,
-          "start": 34,
+          "end": 45,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 41,
-          "start": 39,
+          "end": 48,
+          "start": 46,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 45,
-          "start": 42,
+          "end": 52,
+          "start": 49,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -699,33 +699,33 @@
       "regionTag": "oslogin_v1_generated_OsLoginService_ImportSshPublicKey_async",
       "segments": [
         {
-          "end": 44,
+          "end": 51,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 44,
+          "end": 51,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 38,
-          "start": 34,
+          "end": 45,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 41,
-          "start": 39,
+          "end": 48,
+          "start": 46,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 45,
-          "start": 42,
+          "end": 52,
+          "start": 49,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -787,33 +787,33 @@
       "regionTag": "oslogin_v1_generated_OsLoginService_ImportSshPublicKey_sync",
       "segments": [
         {
-          "end": 44,
+          "end": 51,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 44,
+          "end": 51,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 38,
-          "start": 34,
+          "end": 45,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 41,
-          "start": 39,
+          "end": 48,
+          "start": 46,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 45,
-          "start": 42,
+          "end": 52,
+          "start": 49,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -876,33 +876,33 @@
       "regionTag": "oslogin_v1_generated_OsLoginService_UpdateSshPublicKey_async",
       "segments": [
         {
-          "end": 44,
+          "end": 51,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 44,
+          "end": 51,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 38,
-          "start": 34,
+          "end": 45,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 41,
-          "start": 39,
+          "end": 48,
+          "start": 46,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 45,
-          "start": 42,
+          "end": 52,
+          "start": 49,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -964,33 +964,33 @@
       "regionTag": "oslogin_v1_generated_OsLoginService_UpdateSshPublicKey_sync",
       "segments": [
         {
-          "end": 44,
+          "end": 51,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 44,
+          "end": 51,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 40,
+          "start": 38,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 38,
-          "start": 34,
+          "end": 45,
+          "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 41,
-          "start": 39,
+          "end": 48,
+          "start": 46,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 45,
-          "start": 42,
+          "end": 52,
+          "start": 49,
           "type": "RESPONSE_HANDLING"
         }
       ],
