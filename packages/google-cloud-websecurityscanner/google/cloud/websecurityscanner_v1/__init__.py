@@ -27,6 +27,7 @@ from .types.finding_addon import (
     VulnerableHeaders,
     VulnerableParameters,
     Xss,
+    Xxe,
 )
 from .types.finding_type_stats import FindingTypeStats
 from .types.scan_config import ScanConfig
@@ -92,4 +93,5 @@ __all__ = (
     "VulnerableParameters",
     "WebSecurityScannerClient",
     "Xss",
+    "Xxe",
 )

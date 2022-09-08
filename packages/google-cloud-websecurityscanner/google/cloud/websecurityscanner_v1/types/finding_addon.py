@@ -24,6 +24,7 @@ __protobuf__ = proto.module(
         "VulnerableParameters",
         "VulnerableHeaders",
         "Xss",
+        "Xxe",
     },
 )
 
@@ -206,6 +207,35 @@ class Xss(proto.Message):
     stored_xss_seeding_url = proto.Field(
         proto.STRING,
         number=4,
+    )
+
+
+class Xxe(proto.Message):
+    r"""Information reported for an XXE.
+
+    Attributes:
+        payload_value (str):
+            The XML string that triggered the XXE
+            vulnerability. Non-payload values might be
+            redacted.
+        payload_location (google.cloud.websecurityscanner_v1.types.Xxe.Location):
+            Location within the request where the payload
+            was placed.
+    """
+
+    class Location(proto.Enum):
+        r"""Locations within a request where XML was substituted."""
+        LOCATION_UNSPECIFIED = 0
+        COMPLETE_REQUEST_BODY = 1
+
+    payload_value = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    payload_location = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=Location,
     )
 
 

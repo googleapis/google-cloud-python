@@ -44,6 +44,7 @@ class ScanRunWarningTrace(proto.Message):
         TOO_MANY_CRAWL_RESULTS = 2
         TOO_MANY_FUZZ_TASKS = 3
         BLOCKED_BY_IAP = 4
+        NO_STARTING_URL_FOUND_FOR_MANAGED_SCAN = 5
 
     code = proto.Field(
         proto.ENUM,

@@ -49,7 +49,7 @@ class ScanRunErrorTrace(proto.Message):
     class Code(proto.Enum):
         r"""Output only.
         Defines an error reason code.
-        Next id: 7
+        Next id: 8
         """
         CODE_UNSPECIFIED = 0
         INTERNAL_ERROR = 1

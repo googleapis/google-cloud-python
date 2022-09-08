@@ -93,6 +93,9 @@ class Finding(proto.Message):
         xss (google.cloud.websecurityscanner_v1.types.Xss):
             Output only. An addon containing information
             reported for an XSS, if any.
+        xxe (google.cloud.websecurityscanner_v1.types.Xxe):
+            Output only. An addon containing information
+            reported for an XXE, if any.
     """
 
     class Severity(proto.Enum):
@@ -177,6 +180,11 @@ class Finding(proto.Message):
         proto.MESSAGE,
         number=14,
         message=finding_addon.Xss,
+    )
+    xxe = proto.Field(
+        proto.MESSAGE,
+        number=18,
+        message=finding_addon.Xxe,
     )
 
 

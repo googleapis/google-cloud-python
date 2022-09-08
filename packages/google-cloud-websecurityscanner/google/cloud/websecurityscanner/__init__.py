@@ -29,6 +29,7 @@ from google.cloud.websecurityscanner_v1.types.finding_addon import (
     VulnerableHeaders,
     VulnerableParameters,
     Xss,
+    Xxe,
 )
 from google.cloud.websecurityscanner_v1.types.finding_type_stats import FindingTypeStats
 from google.cloud.websecurityscanner_v1.types.scan_config import ScanConfig
@@ -73,6 +74,7 @@ __all__ = (
     "VulnerableHeaders",
     "VulnerableParameters",
     "Xss",
+    "Xxe",
     "FindingTypeStats",
     "ScanConfig",
     "ScanConfigError",

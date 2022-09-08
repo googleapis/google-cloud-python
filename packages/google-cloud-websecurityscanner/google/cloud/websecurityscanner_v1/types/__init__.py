@@ -22,6 +22,7 @@ from .finding_addon import (
     VulnerableHeaders,
     VulnerableParameters,
     Xss,
+    Xxe,
 )
 from .finding_type_stats import FindingTypeStats
 from .scan_config import ScanConfig
@@ -60,6 +61,7 @@ __all__ = (
     "VulnerableHeaders",
     "VulnerableParameters",
     "Xss",
+    "Xxe",
     "FindingTypeStats",
     "ScanConfig",
     "ScanConfigError",

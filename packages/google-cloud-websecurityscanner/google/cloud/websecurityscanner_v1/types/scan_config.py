@@ -69,6 +69,9 @@ class ScanConfig(proto.Message):
             static IP address scan feature. If enabled, the
             scanner will access applications from static IP
             addresses.
+        ignore_http_status_errors (bool):
+            Whether to keep scanning even if most
+            requests return HTTP error codes.
     """
 
     class UserAgent(proto.Enum):
@@ -312,6 +315,10 @@ class ScanConfig(proto.Message):
     static_ip_scan = proto.Field(
         proto.BOOL,
         number=14,
+    )
+    ignore_http_status_errors = proto.Field(
+        proto.BOOL,
+        number=15,
     )
 
 

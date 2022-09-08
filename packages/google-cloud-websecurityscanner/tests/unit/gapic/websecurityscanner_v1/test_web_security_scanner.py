@@ -18,8 +18,8 @@ import os
 # try/except added for compatibility with python < 3.8
 try:
     from unittest import mock
-    from unittest.mock import AsyncMock
-except ImportError:
+    from unittest.mock import AsyncMock  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
     import mock
 
 import math
@@ -739,6 +739,7 @@ def test_create_scan_config(request_type, transport: str = "grpc"):
             risk_level=scan_config.ScanConfig.RiskLevel.NORMAL,
             managed_scan=True,
             static_ip_scan=True,
+            ignore_http_status_errors=True,
         )
         response = client.create_scan_config(request)
 
@@ -762,6 +763,7 @@ def test_create_scan_config(request_type, transport: str = "grpc"):
     assert response.risk_level == scan_config.ScanConfig.RiskLevel.NORMAL
     assert response.managed_scan is True
     assert response.static_ip_scan is True
+    assert response.ignore_http_status_errors is True
 
 
 def test_create_scan_config_empty_call():
@@ -813,6 +815,7 @@ async def test_create_scan_config_async(
                 risk_level=scan_config.ScanConfig.RiskLevel.NORMAL,
                 managed_scan=True,
                 static_ip_scan=True,
+                ignore_http_status_errors=True,
             )
         )
         response = await client.create_scan_config(request)
@@ -837,6 +840,7 @@ async def test_create_scan_config_async(
     assert response.risk_level == scan_config.ScanConfig.RiskLevel.NORMAL
     assert response.managed_scan is True
     assert response.static_ip_scan is True
+    assert response.ignore_http_status_errors is True
 
 
 @pytest.mark.asyncio
@@ -1091,6 +1095,7 @@ def test_get_scan_config(request_type, transport: str = "grpc"):
             risk_level=scan_config.ScanConfig.RiskLevel.NORMAL,
             managed_scan=True,
             static_ip_scan=True,
+            ignore_http_status_errors=True,
         )
         response = client.get_scan_config(request)
 
@@ -1114,6 +1119,7 @@ def test_get_scan_config(request_type, transport: str = "grpc"):
     assert response.risk_level == scan_config.ScanConfig.RiskLevel.NORMAL
     assert response.managed_scan is True
     assert response.static_ip_scan is True
+    assert response.ignore_http_status_errors is True
 
 
 def test_get_scan_config_empty_call():
@@ -1161,6 +1167,7 @@ async def test_get_scan_config_async(
                 risk_level=scan_config.ScanConfig.RiskLevel.NORMAL,
                 managed_scan=True,
                 static_ip_scan=True,
+                ignore_http_status_errors=True,
             )
         )
         response = await client.get_scan_config(request)
@@ -1185,6 +1192,7 @@ async def test_get_scan_config_async(
     assert response.risk_level == scan_config.ScanConfig.RiskLevel.NORMAL
     assert response.managed_scan is True
     assert response.static_ip_scan is True
+    assert response.ignore_http_status_errors is True
 
 
 @pytest.mark.asyncio
@@ -1643,6 +1651,7 @@ def test_update_scan_config(request_type, transport: str = "grpc"):
             risk_level=scan_config.ScanConfig.RiskLevel.NORMAL,
             managed_scan=True,
             static_ip_scan=True,
+            ignore_http_status_errors=True,
         )
         response = client.update_scan_config(request)
 
@@ -1666,6 +1675,7 @@ def test_update_scan_config(request_type, transport: str = "grpc"):
     assert response.risk_level == scan_config.ScanConfig.RiskLevel.NORMAL
     assert response.managed_scan is True
     assert response.static_ip_scan is True
+    assert response.ignore_http_status_errors is True
 
 
 def test_update_scan_config_empty_call():
@@ -1717,6 +1727,7 @@ async def test_update_scan_config_async(
                 risk_level=scan_config.ScanConfig.RiskLevel.NORMAL,
                 managed_scan=True,
                 static_ip_scan=True,
+                ignore_http_status_errors=True,
             )
         )
         response = await client.update_scan_config(request)
@@ -1741,6 +1752,7 @@ async def test_update_scan_config_async(
     assert response.risk_level == scan_config.ScanConfig.RiskLevel.NORMAL
     assert response.managed_scan is True
     assert response.static_ip_scan is True
+    assert response.ignore_http_status_errors is True
 
 
 @pytest.mark.asyncio
