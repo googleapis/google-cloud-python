@@ -1,6 +1,13 @@
 # Changelog
 
 
+## [1.4.0](https://github.com/googleapis/gapic-generator-python/compare/v1.3.1...v1.4.0) (2022-09-07)
+
+
+### Features
+
+* Implement REST support for MixIns ([#1378](https://github.com/googleapis/gapic-generator-python/issues/1378)) ([0e38fa8](https://github.com/googleapis/gapic-generator-python/commit/0e38fa839460401453b510b616f1e22bcdead60d))
+
 ## [1.3.1](https://github.com/googleapis/gapic-generator-python/compare/v1.3.0...v1.3.1) (2022-09-07)
 
 
