@@ -84,7 +84,7 @@ def _modify_app_profile_helper(
     )
 
     operation = app_profile.update(ignore_warnings=ignore_warnings)
-    operation.result(timeout=120)
+    operation.result(timeout=240)
 
     alt_profile = instance.app_profile(app_profile_id)
     alt_profile.reload()
