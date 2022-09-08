@@ -18,8 +18,8 @@ import os
 # try/except added for compatibility with python < 3.8
 try:
     from unittest import mock
-    from unittest.mock import AsyncMock
-except ImportError:
+    from unittest.mock import AsyncMock  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
     import mock
 
 import grpc
@@ -34,6 +34,7 @@ from proto.marshal.rules.dates import DurationRule, TimestampRule
 from requests import Response
 from requests import Request, PreparedRequest
 from requests.sessions import Session
+from google.protobuf import json_format
 
 from google.api_core import client_options
 from google.api_core import exceptions as core_exceptions
@@ -732,7 +733,7 @@ def test_delete_rest_interceptors(null_interceptor):
             ("cephalopod", "squid"),
         ]
         pre.return_value = request, metadata
-        post.return_value = compute.DeleteZoneOperationResponse
+        post.return_value = compute.DeleteZoneOperationResponse()
 
         client.delete(
             request,
@@ -1063,7 +1064,7 @@ def test_get_rest_interceptors(null_interceptor):
             ("cephalopod", "squid"),
         ]
         pre.return_value = request, metadata
-        post.return_value = compute.Operation
+        post.return_value = compute.Operation()
 
         client.get(
             request,
@@ -1373,7 +1374,7 @@ def test_list_rest_interceptors(null_interceptor):
             ("cephalopod", "squid"),
         ]
         pre.return_value = request, metadata
-        post.return_value = compute.OperationList
+        post.return_value = compute.OperationList()
 
         client.list(
             request,
@@ -1753,7 +1754,7 @@ def test_wait_rest_interceptors(null_interceptor):
             ("cephalopod", "squid"),
         ]
         pre.return_value = request, metadata
-        post.return_value = compute.Operation
+        post.return_value = compute.Operation()
 
         client.wait(
             request,

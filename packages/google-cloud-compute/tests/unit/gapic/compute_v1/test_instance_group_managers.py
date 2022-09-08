@@ -18,8 +18,8 @@ import os
 # try/except added for compatibility with python < 3.8
 try:
     from unittest import mock
-    from unittest.mock import AsyncMock
-except ImportError:
+    from unittest.mock import AsyncMock  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
     import mock
 
 import grpc
@@ -34,6 +34,7 @@ from proto.marshal.rules.dates import DurationRule, TimestampRule
 from requests import Response
 from requests import Request, PreparedRequest
 from requests.sessions import Session
+from google.protobuf import json_format
 
 from google.api_core import client_options
 from google.api_core import exceptions as core_exceptions
@@ -820,7 +821,7 @@ def test_abandon_instances_rest_interceptors(null_interceptor):
             ("cephalopod", "squid"),
         ]
         pre.return_value = request, metadata
-        post.return_value = compute.Operation
+        post.return_value = compute.Operation()
 
         client.abandon_instances(
             request,
@@ -1156,7 +1157,7 @@ def test_abandon_instances_unary_rest_interceptors(null_interceptor):
             ("cephalopod", "squid"),
         ]
         pre.return_value = request, metadata
-        post.return_value = compute.Operation
+        post.return_value = compute.Operation()
 
         client.abandon_instances_unary(
             request,
@@ -1479,7 +1480,7 @@ def test_aggregated_list_rest_interceptors(null_interceptor):
             ("cephalopod", "squid"),
         ]
         pre.return_value = request, metadata
-        post.return_value = compute.InstanceGroupManagerAggregatedList
+        post.return_value = compute.InstanceGroupManagerAggregatedList()
 
         client.aggregated_list(
             request,
@@ -1888,7 +1889,7 @@ def test_apply_updates_to_instances_rest_interceptors(null_interceptor):
             ("cephalopod", "squid"),
         ]
         pre.return_value = request, metadata
-        post.return_value = compute.Operation
+        post.return_value = compute.Operation()
 
         client.apply_updates_to_instances(
             request,
@@ -2230,7 +2231,7 @@ def test_apply_updates_to_instances_unary_rest_interceptors(null_interceptor):
             ("cephalopod", "squid"),
         ]
         pre.return_value = request, metadata
-        post.return_value = compute.Operation
+        post.return_value = compute.Operation()
 
         client.apply_updates_to_instances_unary(
             request,
@@ -2598,7 +2599,7 @@ def test_create_instances_rest_interceptors(null_interceptor):
             ("cephalopod", "squid"),
         ]
         pre.return_value = request, metadata
-        post.return_value = compute.Operation
+        post.return_value = compute.Operation()
 
         client.create_instances(
             request,
@@ -2948,7 +2949,7 @@ def test_create_instances_unary_rest_interceptors(null_interceptor):
             ("cephalopod", "squid"),
         ]
         pre.return_value = request, metadata
-        post.return_value = compute.Operation
+        post.return_value = compute.Operation()
 
         client.create_instances_unary(
             request,
@@ -3308,7 +3309,7 @@ def test_delete_rest_interceptors(null_interceptor):
             ("cephalopod", "squid"),
         ]
         pre.return_value = request, metadata
-        post.return_value = compute.Operation
+        post.return_value = compute.Operation()
 
         client.delete(
             request,
@@ -3629,7 +3630,7 @@ def test_delete_unary_rest_interceptors(null_interceptor):
             ("cephalopod", "squid"),
         ]
         pre.return_value = request, metadata
-        post.return_value = compute.Operation
+        post.return_value = compute.Operation()
 
         client.delete_unary(
             request,
@@ -3978,7 +3979,7 @@ def test_delete_instances_rest_interceptors(null_interceptor):
             ("cephalopod", "squid"),
         ]
         pre.return_value = request, metadata
-        post.return_value = compute.Operation
+        post.return_value = compute.Operation()
 
         client.delete_instances(
             request,
@@ -4316,7 +4317,7 @@ def test_delete_instances_unary_rest_interceptors(null_interceptor):
             ("cephalopod", "squid"),
         ]
         pre.return_value = request, metadata
-        post.return_value = compute.Operation
+        post.return_value = compute.Operation()
 
         client.delete_instances_unary(
             request,
@@ -4675,7 +4676,7 @@ def test_delete_per_instance_configs_rest_interceptors(null_interceptor):
             ("cephalopod", "squid"),
         ]
         pre.return_value = request, metadata
-        post.return_value = compute.Operation
+        post.return_value = compute.Operation()
 
         client.delete_per_instance_configs(
             request,
@@ -5011,7 +5012,7 @@ def test_delete_per_instance_configs_unary_rest_interceptors(null_interceptor):
             ("cephalopod", "squid"),
         ]
         pre.return_value = request, metadata
-        post.return_value = compute.Operation
+        post.return_value = compute.Operation()
 
         client.delete_per_instance_configs_unary(
             request,
@@ -5348,7 +5349,7 @@ def test_get_rest_interceptors(null_interceptor):
             ("cephalopod", "squid"),
         ]
         pre.return_value = request, metadata
-        post.return_value = compute.InstanceGroupManager
+        post.return_value = compute.InstanceGroupManager()
 
         client.get(
             request,
@@ -5749,7 +5750,7 @@ def test_insert_rest_interceptors(null_interceptor):
             ("cephalopod", "squid"),
         ]
         pre.return_value = request, metadata
-        post.return_value = compute.Operation
+        post.return_value = compute.Operation()
 
         client.insert(
             request,
@@ -6197,7 +6198,7 @@ def test_insert_unary_rest_interceptors(null_interceptor):
             ("cephalopod", "squid"),
         ]
         pre.return_value = request, metadata
-        post.return_value = compute.Operation
+        post.return_value = compute.Operation()
 
         client.insert_unary(
             request,
@@ -6582,7 +6583,7 @@ def test_list_rest_interceptors(null_interceptor):
             ("cephalopod", "squid"),
         ]
         pre.return_value = request, metadata
-        post.return_value = compute.InstanceGroupManagerList
+        post.return_value = compute.InstanceGroupManagerList()
 
         client.list(
             request,
@@ -6952,7 +6953,7 @@ def test_list_errors_rest_interceptors(null_interceptor):
             ("cephalopod", "squid"),
         ]
         pre.return_value = request, metadata
-        post.return_value = compute.InstanceGroupManagersListErrorsResponse
+        post.return_value = compute.InstanceGroupManagersListErrorsResponse()
 
         client.list_errors(
             request,
@@ -7342,7 +7343,7 @@ def test_list_managed_instances_rest_interceptors(null_interceptor):
             ("cephalopod", "squid"),
         ]
         pre.return_value = request, metadata
-        post.return_value = compute.InstanceGroupManagersListManagedInstancesResponse
+        post.return_value = compute.InstanceGroupManagersListManagedInstancesResponse()
 
         client.list_managed_instances(
             request,
@@ -7733,7 +7734,7 @@ def test_list_per_instance_configs_rest_interceptors(null_interceptor):
             ("cephalopod", "squid"),
         ]
         pre.return_value = request, metadata
-        post.return_value = compute.InstanceGroupManagersListPerInstanceConfigsResp
+        post.return_value = compute.InstanceGroupManagersListPerInstanceConfigsResp()
 
         client.list_per_instance_configs(
             request,
@@ -8208,7 +8209,7 @@ def test_patch_rest_interceptors(null_interceptor):
             ("cephalopod", "squid"),
         ]
         pre.return_value = request, metadata
-        post.return_value = compute.Operation
+        post.return_value = compute.Operation()
 
         client.patch(
             request,
@@ -8675,7 +8676,7 @@ def test_patch_unary_rest_interceptors(null_interceptor):
             ("cephalopod", "squid"),
         ]
         pre.return_value = request, metadata
-        post.return_value = compute.Operation
+        post.return_value = compute.Operation()
 
         client.patch_unary(
             request,
@@ -9111,7 +9112,7 @@ def test_patch_per_instance_configs_rest_interceptors(null_interceptor):
             ("cephalopod", "squid"),
         ]
         pre.return_value = request, metadata
-        post.return_value = compute.Operation
+        post.return_value = compute.Operation()
 
         client.patch_per_instance_configs(
             request,
@@ -9467,7 +9468,7 @@ def test_patch_per_instance_configs_unary_rest_interceptors(null_interceptor):
             ("cephalopod", "squid"),
         ]
         pre.return_value = request, metadata
-        post.return_value = compute.Operation
+        post.return_value = compute.Operation()
 
         client.patch_per_instance_configs_unary(
             request,
@@ -9836,7 +9837,7 @@ def test_recreate_instances_rest_interceptors(null_interceptor):
             ("cephalopod", "squid"),
         ]
         pre.return_value = request, metadata
-        post.return_value = compute.Operation
+        post.return_value = compute.Operation()
 
         client.recreate_instances(
             request,
@@ -10172,7 +10173,7 @@ def test_recreate_instances_unary_rest_interceptors(null_interceptor):
             ("cephalopod", "squid"),
         ]
         pre.return_value = request, metadata
-        post.return_value = compute.Operation
+        post.return_value = compute.Operation()
 
         client.recreate_instances_unary(
             request,
@@ -10548,7 +10549,7 @@ def test_resize_rest_interceptors(null_interceptor):
             ("cephalopod", "squid"),
         ]
         pre.return_value = request, metadata
-        post.return_value = compute.Operation
+        post.return_value = compute.Operation()
 
         client.resize(
             request,
@@ -10894,7 +10895,7 @@ def test_resize_unary_rest_interceptors(null_interceptor):
             ("cephalopod", "squid"),
         ]
         pre.return_value = request, metadata
-        post.return_value = compute.Operation
+        post.return_value = compute.Operation()
 
         client.resize_unary(
             request,
@@ -11244,7 +11245,7 @@ def test_set_instance_template_rest_interceptors(null_interceptor):
             ("cephalopod", "squid"),
         ]
         pre.return_value = request, metadata
-        post.return_value = compute.Operation
+        post.return_value = compute.Operation()
 
         client.set_instance_template(
             request,
@@ -11580,7 +11581,7 @@ def test_set_instance_template_unary_rest_interceptors(null_interceptor):
             ("cephalopod", "squid"),
         ]
         pre.return_value = request, metadata
-        post.return_value = compute.Operation
+        post.return_value = compute.Operation()
 
         client.set_instance_template_unary(
             request,
@@ -11939,7 +11940,7 @@ def test_set_target_pools_rest_interceptors(null_interceptor):
             ("cephalopod", "squid"),
         ]
         pre.return_value = request, metadata
-        post.return_value = compute.Operation
+        post.return_value = compute.Operation()
 
         client.set_target_pools(
             request,
@@ -12277,7 +12278,7 @@ def test_set_target_pools_unary_rest_interceptors(null_interceptor):
             ("cephalopod", "squid"),
         ]
         pre.return_value = request, metadata
-        post.return_value = compute.Operation
+        post.return_value = compute.Operation()
 
         client.set_target_pools_unary(
             request,
@@ -12645,7 +12646,7 @@ def test_update_per_instance_configs_rest_interceptors(null_interceptor):
             ("cephalopod", "squid"),
         ]
         pre.return_value = request, metadata
-        post.return_value = compute.Operation
+        post.return_value = compute.Operation()
 
         client.update_per_instance_configs(
             request,
@@ -13001,7 +13002,7 @@ def test_update_per_instance_configs_unary_rest_interceptors(null_interceptor):
             ("cephalopod", "squid"),
         ]
         pre.return_value = request, metadata
-        post.return_value = compute.Operation
+        post.return_value = compute.Operation()
 
         client.update_per_instance_configs_unary(
             request,

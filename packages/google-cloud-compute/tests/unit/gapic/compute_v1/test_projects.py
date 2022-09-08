@@ -18,8 +18,8 @@ import os
 # try/except added for compatibility with python < 3.8
 try:
     from unittest import mock
-    from unittest.mock import AsyncMock
-except ImportError:
+    from unittest.mock import AsyncMock  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
     import mock
 
 import grpc
@@ -34,6 +34,7 @@ from proto.marshal.rules.dates import DurationRule, TimestampRule
 from requests import Response
 from requests import Request, PreparedRequest
 from requests.sessions import Session
+from google.protobuf import json_format
 
 from google.api_core import client_options
 from google.api_core import exceptions as core_exceptions
@@ -749,7 +750,7 @@ def test_disable_xpn_host_rest_interceptors(null_interceptor):
             ("cephalopod", "squid"),
         ]
         pre.return_value = request, metadata
-        post.return_value = compute.Operation
+        post.return_value = compute.Operation()
 
         client.disable_xpn_host(
             request,
@@ -1034,7 +1035,7 @@ def test_disable_xpn_host_unary_rest_interceptors(null_interceptor):
             ("cephalopod", "squid"),
         ]
         pre.return_value = request, metadata
-        post.return_value = compute.Operation
+        post.return_value = compute.Operation()
 
         client.disable_xpn_host_unary(
             request,
@@ -1353,7 +1354,7 @@ def test_disable_xpn_resource_rest_interceptors(null_interceptor):
             ("cephalopod", "squid"),
         ]
         pre.return_value = request, metadata
-        post.return_value = compute.Operation
+        post.return_value = compute.Operation()
 
         client.disable_xpn_resource(
             request,
@@ -1660,7 +1661,7 @@ def test_disable_xpn_resource_unary_rest_interceptors(null_interceptor):
             ("cephalopod", "squid"),
         ]
         pre.return_value = request, metadata
-        post.return_value = compute.Operation
+        post.return_value = compute.Operation()
 
         client.disable_xpn_resource_unary(
             request,
@@ -1977,7 +1978,7 @@ def test_enable_xpn_host_rest_interceptors(null_interceptor):
             ("cephalopod", "squid"),
         ]
         pre.return_value = request, metadata
-        post.return_value = compute.Operation
+        post.return_value = compute.Operation()
 
         client.enable_xpn_host(
             request,
@@ -2262,7 +2263,7 @@ def test_enable_xpn_host_unary_rest_interceptors(null_interceptor):
             ("cephalopod", "squid"),
         ]
         pre.return_value = request, metadata
-        post.return_value = compute.Operation
+        post.return_value = compute.Operation()
 
         client.enable_xpn_host_unary(
             request,
@@ -2581,7 +2582,7 @@ def test_enable_xpn_resource_rest_interceptors(null_interceptor):
             ("cephalopod", "squid"),
         ]
         pre.return_value = request, metadata
-        post.return_value = compute.Operation
+        post.return_value = compute.Operation()
 
         client.enable_xpn_resource(
             request,
@@ -2888,7 +2889,7 @@ def test_enable_xpn_resource_unary_rest_interceptors(null_interceptor):
             ("cephalopod", "squid"),
         ]
         pre.return_value = request, metadata
-        post.return_value = compute.Operation
+        post.return_value = compute.Operation()
 
         client.enable_xpn_resource_unary(
             request,
@@ -3175,7 +3176,7 @@ def test_get_rest_interceptors(null_interceptor):
             ("cephalopod", "squid"),
         ]
         pre.return_value = request, metadata
-        post.return_value = compute.Project
+        post.return_value = compute.Project()
 
         client.get(
             request,
@@ -3455,7 +3456,7 @@ def test_get_xpn_host_rest_interceptors(null_interceptor):
             ("cephalopod", "squid"),
         ]
         pre.return_value = request, metadata
-        post.return_value = compute.Project
+        post.return_value = compute.Project()
 
         client.get_xpn_host(
             request,
@@ -3743,7 +3744,7 @@ def test_get_xpn_resources_rest_interceptors(null_interceptor):
             ("cephalopod", "squid"),
         ]
         pre.return_value = request, metadata
-        post.return_value = compute.ProjectsGetXpnResources
+        post.return_value = compute.ProjectsGetXpnResources()
 
         client.get_xpn_resources(
             request,
@@ -4097,7 +4098,7 @@ def test_list_xpn_hosts_rest_interceptors(null_interceptor):
             ("cephalopod", "squid"),
         ]
         pre.return_value = request, metadata
-        post.return_value = compute.XpnHostList
+        post.return_value = compute.XpnHostList()
 
         client.list_xpn_hosts(
             request,
@@ -4480,7 +4481,7 @@ def test_move_disk_rest_interceptors(null_interceptor):
             ("cephalopod", "squid"),
         ]
         pre.return_value = request, metadata
-        post.return_value = compute.Operation
+        post.return_value = compute.Operation()
 
         client.move_disk(
             request,
@@ -4786,7 +4787,7 @@ def test_move_disk_unary_rest_interceptors(null_interceptor):
             ("cephalopod", "squid"),
         ]
         pre.return_value = request, metadata
-        post.return_value = compute.Operation
+        post.return_value = compute.Operation()
 
         client.move_disk_unary(
             request,
@@ -5116,7 +5117,7 @@ def test_move_instance_rest_interceptors(null_interceptor):
             ("cephalopod", "squid"),
         ]
         pre.return_value = request, metadata
-        post.return_value = compute.Operation
+        post.return_value = compute.Operation()
 
         client.move_instance(
             request,
@@ -5424,7 +5425,7 @@ def test_move_instance_unary_rest_interceptors(null_interceptor):
             ("cephalopod", "squid"),
         ]
         pre.return_value = request, metadata
-        post.return_value = compute.Operation
+        post.return_value = compute.Operation()
 
         client.move_instance_unary(
             request,
@@ -5755,7 +5756,7 @@ def test_set_common_instance_metadata_rest_interceptors(null_interceptor):
             ("cephalopod", "squid"),
         ]
         pre.return_value = request, metadata
-        post.return_value = compute.Operation
+        post.return_value = compute.Operation()
 
         client.set_common_instance_metadata(
             request,
@@ -6063,7 +6064,7 @@ def test_set_common_instance_metadata_unary_rest_interceptors(null_interceptor):
             ("cephalopod", "squid"),
         ]
         pre.return_value = request, metadata
-        post.return_value = compute.Operation
+        post.return_value = compute.Operation()
 
         client.set_common_instance_metadata_unary(
             request,
@@ -6393,7 +6394,7 @@ def test_set_default_network_tier_rest_interceptors(null_interceptor):
             ("cephalopod", "squid"),
         ]
         pre.return_value = request, metadata
-        post.return_value = compute.Operation
+        post.return_value = compute.Operation()
 
         client.set_default_network_tier(
             request,
@@ -6700,7 +6701,7 @@ def test_set_default_network_tier_unary_rest_interceptors(null_interceptor):
             ("cephalopod", "squid"),
         ]
         pre.return_value = request, metadata
-        post.return_value = compute.Operation
+        post.return_value = compute.Operation()
 
         client.set_default_network_tier_unary(
             request,
@@ -7030,7 +7031,7 @@ def test_set_usage_export_bucket_rest_interceptors(null_interceptor):
             ("cephalopod", "squid"),
         ]
         pre.return_value = request, metadata
-        post.return_value = compute.Operation
+        post.return_value = compute.Operation()
 
         client.set_usage_export_bucket(
             request,
@@ -7339,7 +7340,7 @@ def test_set_usage_export_bucket_unary_rest_interceptors(null_interceptor):
             ("cephalopod", "squid"),
         ]
         pre.return_value = request, metadata
-        post.return_value = compute.Operation
+        post.return_value = compute.Operation()
 
         client.set_usage_export_bucket_unary(
             request,

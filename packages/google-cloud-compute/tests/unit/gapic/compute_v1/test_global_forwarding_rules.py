@@ -18,8 +18,8 @@ import os
 # try/except added for compatibility with python < 3.8
 try:
     from unittest import mock
-    from unittest.mock import AsyncMock
-except ImportError:
+    from unittest.mock import AsyncMock  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
     import mock
 
 import grpc
@@ -34,6 +34,7 @@ from proto.marshal.rules.dates import DurationRule, TimestampRule
 from requests import Response
 from requests import Request, PreparedRequest
 from requests.sessions import Session
+from google.protobuf import json_format
 
 from google.api_core import client_options
 from google.api_core import exceptions as core_exceptions
@@ -806,7 +807,7 @@ def test_delete_rest_interceptors(null_interceptor):
             ("cephalopod", "squid"),
         ]
         pre.return_value = request, metadata
-        post.return_value = compute.Operation
+        post.return_value = compute.Operation()
 
         client.delete(
             request,
@@ -1108,7 +1109,7 @@ def test_delete_unary_rest_interceptors(null_interceptor):
             ("cephalopod", "squid"),
         ]
         pre.return_value = request, metadata
-        post.return_value = compute.Operation
+        post.return_value = compute.Operation()
 
         client.delete_unary(
             request,
@@ -1442,7 +1443,7 @@ def test_get_rest_interceptors(null_interceptor):
             ("cephalopod", "squid"),
         ]
         pre.return_value = request, metadata
-        post.return_value = compute.ForwardingRule
+        post.return_value = compute.ForwardingRule()
 
         client.get(
             request,
@@ -1807,7 +1808,7 @@ def test_insert_rest_interceptors(null_interceptor):
             ("cephalopod", "squid"),
         ]
         pre.return_value = request, metadata
-        post.return_value = compute.Operation
+        post.return_value = compute.Operation()
 
         client.insert(
             request,
@@ -2198,7 +2199,7 @@ def test_insert_unary_rest_interceptors(null_interceptor):
             ("cephalopod", "squid"),
         ]
         pre.return_value = request, metadata
-        post.return_value = compute.Operation
+        post.return_value = compute.Operation()
 
         client.insert_unary(
             request,
@@ -2543,7 +2544,7 @@ def test_list_rest_interceptors(null_interceptor):
             ("cephalopod", "squid"),
         ]
         pre.return_value = request, metadata
-        post.return_value = compute.ForwardingRuleList
+        post.return_value = compute.ForwardingRuleList()
 
         client.list(
             request,
@@ -2966,7 +2967,7 @@ def test_patch_rest_interceptors(null_interceptor):
             ("cephalopod", "squid"),
         ]
         pre.return_value = request, metadata
-        post.return_value = compute.Operation
+        post.return_value = compute.Operation()
 
         client.patch(
             request,
@@ -3364,7 +3365,7 @@ def test_patch_unary_rest_interceptors(null_interceptor):
             ("cephalopod", "squid"),
         ]
         pre.return_value = request, metadata
-        post.return_value = compute.Operation
+        post.return_value = compute.Operation()
 
         client.patch_unary(
             request,
@@ -3742,7 +3743,7 @@ def test_set_labels_rest_interceptors(null_interceptor):
             ("cephalopod", "squid"),
         ]
         pre.return_value = request, metadata
-        post.return_value = compute.Operation
+        post.return_value = compute.Operation()
 
         client.set_labels(
             request,
@@ -4058,7 +4059,7 @@ def test_set_labels_unary_rest_interceptors(null_interceptor):
             ("cephalopod", "squid"),
         ]
         pre.return_value = request, metadata
-        post.return_value = compute.Operation
+        post.return_value = compute.Operation()
 
         client.set_labels_unary(
             request,
@@ -4395,7 +4396,7 @@ def test_set_target_rest_interceptors(null_interceptor):
             ("cephalopod", "squid"),
         ]
         pre.return_value = request, metadata
-        post.return_value = compute.Operation
+        post.return_value = compute.Operation()
 
         client.set_target(
             request,
@@ -4703,7 +4704,7 @@ def test_set_target_unary_rest_interceptors(null_interceptor):
             ("cephalopod", "squid"),
         ]
         pre.return_value = request, metadata
-        post.return_value = compute.Operation
+        post.return_value = compute.Operation()
 
         client.set_target_unary(
             request,
