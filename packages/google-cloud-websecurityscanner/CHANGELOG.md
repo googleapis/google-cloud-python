@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-cloud-websecurityscanner/#history
 
+## [1.9.0](https://github.com/googleapis/python-websecurityscanner/compare/v1.8.3...v1.9.0) (2022-09-08)
+
+
+### Features
+
+* added NO_STARTING_URL_FOUND_FOR_MANAGED_SCAN to ScanRunWarningTrace.Code ([42f2a1e](https://github.com/googleapis/python-websecurityscanner/commit/42f2a1e7e815a508274d4939f07aadc7441aea2d))
+
+
+### Bug Fixes
+
+* Added fix to return a list of the endpoints that encountered errors during crawl, along with the specific error message when the starting URL returns Http errors ([42f2a1e](https://github.com/googleapis/python-websecurityscanner/commit/42f2a1e7e815a508274d4939f07aadc7441aea2d))
+* GoogleAccount is deprecated ([42f2a1e](https://github.com/googleapis/python-websecurityscanner/commit/42f2a1e7e815a508274d4939f07aadc7441aea2d))
+
 ## [1.8.3](https://github.com/googleapis/python-websecurityscanner/compare/v1.8.2...v1.8.3) (2022-08-30)
 
 
