@@ -54,6 +54,7 @@ from .stream import (
     ReadStream,
     WriteStream,
     DataFormat,
+    WriteStreamView,
 )
 from .table import (
     TableFieldSchema,
@@ -93,6 +94,7 @@ __all__ = (
     "ReadStream",
     "WriteStream",
     "DataFormat",
+    "WriteStreamView",
     "TableFieldSchema",
     "TableSchema",
 )

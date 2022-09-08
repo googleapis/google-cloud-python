@@ -25,6 +25,7 @@ __protobuf__ = proto.module(
     package="google.cloud.bigquery.storage.v1",
     manifest={
         "DataFormat",
+        "WriteStreamView",
         "ReadSession",
         "ReadStream",
         "WriteStream",
@@ -37,6 +38,15 @@ class DataFormat(proto.Enum):
     DATA_FORMAT_UNSPECIFIED = 0
     AVRO = 1
     ARROW = 2
+
+
+class WriteStreamView(proto.Enum):
+    r"""WriteStreamView is a view enum that controls what details
+    about a write stream should be returned.
+    """
+    WRITE_STREAM_VIEW_UNSPECIFIED = 0
+    BASIC = 1
+    FULL = 2
 
 
 class ReadSession(proto.Message):
@@ -305,6 +315,11 @@ class WriteStream(proto.Message):
             of date during the life time of the stream.
         write_mode (google.cloud.bigquery_storage_v1.types.WriteStream.WriteMode):
             Immutable. Mode of the stream.
+        location (str):
+            Immutable. The geographic location where the
+            stream's dataset resides. See
+            https://cloud.google.com/bigquery/docs/locations
+            for supported locations.
     """
 
     class Type(proto.Enum):
@@ -347,6 +362,10 @@ class WriteStream(proto.Message):
         proto.ENUM,
         number=7,
         enum=WriteMode,
+    )
+    location = proto.Field(
+        proto.STRING,
+        number=8,
     )
 
 

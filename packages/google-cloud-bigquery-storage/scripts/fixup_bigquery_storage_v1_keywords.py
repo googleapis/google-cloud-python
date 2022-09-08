@@ -45,7 +45,7 @@ class bigquery_storageCallTransformer(cst.CSTTransformer):
         'create_write_stream': ('parent', 'write_stream', ),
         'finalize_write_stream': ('name', ),
         'flush_rows': ('write_stream', 'offset', ),
-        'get_write_stream': ('name', ),
+        'get_write_stream': ('name', 'view', ),
         'read_rows': ('read_stream', 'offset', ),
         'split_read_stream': ('name', 'fraction', ),
     }

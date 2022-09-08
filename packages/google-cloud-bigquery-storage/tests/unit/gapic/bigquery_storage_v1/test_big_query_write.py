@@ -18,8 +18,8 @@ import os
 # try/except added for compatibility with python < 3.8
 try:
     from unittest import mock
-    from unittest.mock import AsyncMock
-except ImportError:
+    from unittest.mock import AsyncMock  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
     import mock
 
 import grpc
@@ -720,6 +720,7 @@ def test_create_write_stream(request_type, transport: str = "grpc"):
             name="name_value",
             type_=stream.WriteStream.Type.COMMITTED,
             write_mode=stream.WriteStream.WriteMode.INSERT,
+            location="location_value",
         )
         response = client.create_write_stream(request)
 
@@ -733,6 +734,7 @@ def test_create_write_stream(request_type, transport: str = "grpc"):
     assert response.name == "name_value"
     assert response.type_ == stream.WriteStream.Type.COMMITTED
     assert response.write_mode == stream.WriteStream.WriteMode.INSERT
+    assert response.location == "location_value"
 
 
 def test_create_write_stream_empty_call():
@@ -776,6 +778,7 @@ async def test_create_write_stream_async(
                 name="name_value",
                 type_=stream.WriteStream.Type.COMMITTED,
                 write_mode=stream.WriteStream.WriteMode.INSERT,
+                location="location_value",
             )
         )
         response = await client.create_write_stream(request)
@@ -790,6 +793,7 @@ async def test_create_write_stream_async(
     assert response.name == "name_value"
     assert response.type_ == stream.WriteStream.Type.COMMITTED
     assert response.write_mode == stream.WriteStream.WriteMode.INSERT
+    assert response.location == "location_value"
 
 
 @pytest.mark.asyncio
@@ -1050,6 +1054,7 @@ def test_get_write_stream(request_type, transport: str = "grpc"):
             name="name_value",
             type_=stream.WriteStream.Type.COMMITTED,
             write_mode=stream.WriteStream.WriteMode.INSERT,
+            location="location_value",
         )
         response = client.get_write_stream(request)
 
@@ -1063,6 +1068,7 @@ def test_get_write_stream(request_type, transport: str = "grpc"):
     assert response.name == "name_value"
     assert response.type_ == stream.WriteStream.Type.COMMITTED
     assert response.write_mode == stream.WriteStream.WriteMode.INSERT
+    assert response.location == "location_value"
 
 
 def test_get_write_stream_empty_call():
@@ -1102,6 +1108,7 @@ async def test_get_write_stream_async(
                 name="name_value",
                 type_=stream.WriteStream.Type.COMMITTED,
                 write_mode=stream.WriteStream.WriteMode.INSERT,
+                location="location_value",
             )
         )
         response = await client.get_write_stream(request)
@@ -1116,6 +1123,7 @@ async def test_get_write_stream_async(
     assert response.name == "name_value"
     assert response.type_ == stream.WriteStream.Type.COMMITTED
     assert response.write_mode == stream.WriteStream.WriteMode.INSERT
+    assert response.location == "location_value"
 
 
 @pytest.mark.asyncio

@@ -554,11 +554,20 @@ class GetWriteStreamRequest(proto.Message):
         name (str):
             Required. Name of the stream to get, in the form of
             ``projects/{project}/datasets/{dataset}/tables/{table}/streams/{stream}``.
+        view (google.cloud.bigquery_storage_v1.types.WriteStreamView):
+            Indicates whether to get full or partial view
+            of the WriteStream. If not set, view returned
+            will be basic.
     """
 
     name = proto.Field(
         proto.STRING,
         number=1,
+    )
+    view = proto.Field(
+        proto.ENUM,
+        number=3,
+        enum=stream.WriteStreamView,
     )
 
 

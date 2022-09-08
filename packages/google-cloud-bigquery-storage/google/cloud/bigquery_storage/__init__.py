@@ -59,6 +59,7 @@ from google.cloud.bigquery_storage_v1.types.stream import ReadSession
 from google.cloud.bigquery_storage_v1.types.stream import ReadStream
 from google.cloud.bigquery_storage_v1.types.stream import WriteStream
 from google.cloud.bigquery_storage_v1.types.stream import DataFormat
+from google.cloud.bigquery_storage_v1.types.stream import WriteStreamView
 from google.cloud.bigquery_storage_v1.types.table import TableFieldSchema
 from google.cloud.bigquery_storage_v1.types.table import TableSchema
 
@@ -99,6 +100,7 @@ __all__ = (
     "ReadStream",
     "WriteStream",
     "DataFormat",
+    "WriteStreamView",
     "TableFieldSchema",
     "TableSchema",
 )
